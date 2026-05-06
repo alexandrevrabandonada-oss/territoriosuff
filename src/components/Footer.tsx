@@ -5,7 +5,7 @@ export function Footer() {
     <footer className="site-footer" role="contentinfo">
       <div className="site-footer-inner">
         <div className="site-footer-brand">
-          <img src="/brand/uff-logo.svg" alt="Universidade Federal Fluminense" />
+          <img src="/brand/uff-logo-vertical-blue.png" alt="Universidade Federal Fluminense" />
           <span aria-hidden="true" />
           <img src="/brand/semear-logo-full.jpeg" alt="Projeto UFF SEMEAR" />
         </div>

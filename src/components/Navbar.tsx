@@ -45,7 +45,7 @@ export function Navbar() {
     <header className="site-topbar">
       <div className="site-topbar-inner">
         <Link to="/" className="site-brand" aria-label="SEMEAR - Início">
-          <img src="/brand/uff-logo.svg" alt="Universidade Federal Fluminense" className="site-uff-logo" />
+          <img src="/brand/uff-logo-vertical-blue.png" alt="Universidade Federal Fluminense" className="site-uff-logo" />
           <span aria-hidden="true" />
           <img src="/brand/semear-logo-full.jpeg" alt="Projeto UFF SEMEAR" className="site-semear-logo" />
         </Link>

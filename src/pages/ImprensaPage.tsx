@@ -25,7 +25,7 @@ const contacts = [
 
 const downloads = [
   { label: "Baixar logo SEMEAR (SVG)", href: "/brand/semear-logo.svg" },
-  { label: "Baixar logo UFF (SVG)", href: "/brand/uff-logo.svg" }
+  { label: "Baixar logo UFF (PNG)", href: "/brand/uff-logo-vertical-blue.png" }
 ];
 
 export function ImprensaPage() {
@@ -110,7 +110,7 @@ export function ImprensaPage() {
               loading="lazy"
             />
             <img
-              src="/brand/uff-logo.svg"
+              src="/brand/uff-logo-vertical-blue.png"
               alt="Prévia da marca institucional da Universidade Federal Fluminense"
               className="w-full rounded-xl border border-border-subtle bg-white p-3"
               loading="lazy"
@@ -134,4 +134,3 @@ export function ImprensaPage() {
     </section>
   );
 }
-
