@@ -155,12 +155,12 @@ export function HomePage() {
   }, [latestBlog, reports]);
 
   return (
-    <section className="home-mockup">
+    <section className="home-mockup" aria-labelledby="home-title">
       <div className="home-hero">
         <div className="home-hero-copy">
           <p className="home-kicker">Monitoramento do ar - UFF</p>
           <p className="home-project">Projeto UFF</p>
-          <h1 aria-label="SEMEAR">
+          <h1 id="home-title" aria-label="Projeto UFF SEMEAR">
             <span>SEME</span><span>AR</span>
           </h1>
           <h2>Conhecimento que semeia ciência. Dados que cultivam soluções para o futuro.</h2>
@@ -171,6 +171,8 @@ export function HomePage() {
 
           <form
             className="home-search"
+            role="search"
+            aria-label="Busca no portal SEMEAR"
             onSubmit={(event) => {
               event.preventDefault();
               const form = new FormData(event.currentTarget);
@@ -181,7 +183,12 @@ export function HomePage() {
             <svg className="h-5 w-5 shrink-0 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z" />
             </svg>
-            <input name="q" type="search" placeholder="Buscar relatórios, notas técnicas, boletins, anexos..." />
+            <input
+              aria-label="Buscar no portal SEMEAR"
+              name="q"
+              type="search"
+              placeholder="Buscar relatórios, notas técnicas, boletins, anexos..."
+            />
             <button type="submit">Buscar</button>
           </form>
 
@@ -201,7 +208,7 @@ export function HomePage() {
           <div className="home-dandelion-leaf home-dandelion-leaf-b" />
         </div>
 
-        <aside className="home-now" aria-label="Dados agora">
+        <section className="home-now" aria-label="Dados agora" aria-live="polite">
           <div className="home-now-head">
             <h2>Dados agora</h2>
             <span><i />Atualizado há 2 min</span>
@@ -234,10 +241,10 @@ export function HomePage() {
             </div>
           </div>
           <Link to="/dados" className="home-now-link">Ver todos os indicadores <span>+</span></Link>
-        </aside>
+        </section>
       </div>
 
-      <div className="home-card-grid">
+      <nav className="home-card-grid" aria-label="Principais áreas do portal">
         {navCards.map((card) => (
           <Link key={card.to} to={card.to} className="home-feature-card">
             <span className={card.tone === "green" ? "home-feature-icon green" : "home-feature-icon"}>
@@ -250,7 +257,7 @@ export function HomePage() {
             <i aria-hidden="true">→</i>
           </Link>
         ))}
-      </div>
+      </nav>
 
       <div className="home-lower-grid">
         <section className="home-timeline">
@@ -274,7 +281,7 @@ export function HomePage() {
           </div>
           {(loading ? Array.from({ length: 3 }, (_, index) => null) : news).map((item, index) => {
             if (!item) {
-              return <div key={index} className="home-news-skeleton" />;
+              return <div key={index} className="home-news-skeleton" role="status" aria-label="Carregando novidade" />;
             }
             return (
               <Link key={item.key} to={item.to} className="home-news-row">
