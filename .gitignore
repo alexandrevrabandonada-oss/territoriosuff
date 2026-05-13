@@ -31,3 +31,4 @@ playwright-report/
 playwright/.cache/
 reports/relatorio_*.md
 reeports/
+scratch/

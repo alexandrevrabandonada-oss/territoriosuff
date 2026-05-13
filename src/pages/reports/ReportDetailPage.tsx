@@ -143,7 +143,7 @@ export function ReportDetailPage() {
   };
 
   const handleShare = async () => {
-    const shareUrl = `${window.location.origin}/s/relatorios/${report.slug}`;
+    const shareUrl = `${window.location.origin}/relatorios/${report.slug}`;
     trackShare("relatorios", report.slug, "detail");
     if (navigator.share) {
       try {

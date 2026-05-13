@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { Navigate, useLocation } from "react-router-dom";
-import { isAdmin } from "../lib/supabase/auth";
 import { LoadingCard } from "./LoadingCard";
 
 interface AdminGuardProps {
@@ -17,19 +16,32 @@ export function AdminGuard({ children }: AdminGuardProps) {
   const location = useLocation();
 
   useEffect(() => {
+    let active = true;
+
     async function checkAccess() {
       try {
+        const { isAdmin } = await import("../lib/supabase/auth");
         const isUserAdmin = await isAdmin();
-        setAuthorized(isUserAdmin);
+        if (active) {
+          setAuthorized(isUserAdmin);
+        }
       } catch (error) {
         console.error("[AdminGuard] Erro ao verificar acesso:", error);
-        setAuthorized(false);
+        if (active) {
+          setAuthorized(false);
+        }
       } finally {
-        setLoading(false);
+        if (active) {
+          setLoading(false);
+        }
       }
     }
 
     checkAccess();
+
+    return () => {
+      active = false;
+    };
   }, [location.pathname]);
 
   if (loading) {
@@ -41,8 +53,6 @@ export function AdminGuard({ children }: AdminGuardProps) {
   }
 
   if (!authorized) {
-    // Redireciona para login se não autorizado
-    // Salva a localização atual para redirecionar de volta após o login
     return <Navigate to="/admin/login" state={{ from: location }} replace />;
   }
 

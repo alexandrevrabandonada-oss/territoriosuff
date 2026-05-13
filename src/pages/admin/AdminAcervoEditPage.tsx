@@ -1,7 +1,7 @@
 import { useEffect, useState, useCallback } from "react";
-import { useNavigate, useParams, Link } from "react-router-dom";
+import { useNavigate, useParams, Link, useLocation } from "react-router-dom";
 import { supabase } from "../../lib/supabase/client";
-import { adminUploadMedia } from "../../lib/admin/media";
+import { adminUploadMedia, formatAssetSize, getMediaAssetById, isImageAsset, type MediaAssetRecord } from "../../lib/admin/media";
 
 const TYPES = [
   { value: "artigo_cientifico", label: "Artigo Científico" },
@@ -22,15 +22,45 @@ const STATUSES = [
   { value: "archived", label: "Arquivado" },
 ];
 
+type AcervoMediaAsset = MediaAssetRecord & {
+  url: string;
+  type: string;
+};
+
+function normalizeMediaAsset(asset: Partial<MediaAssetRecord> & { id: string; title: string; public_url?: string; url?: string; mime_type?: string; type?: string }): AcervoMediaAsset {
+  return {
+    id: asset.id,
+    bucket: asset.bucket || "",
+    path: asset.path || "",
+    public_url: asset.public_url || asset.url || "",
+    file_name: asset.file_name || asset.title,
+    mime_type: asset.mime_type || asset.type || "application/octet-stream",
+    size_bytes: asset.size_bytes || 0,
+    title: asset.title,
+    description: asset.description || "",
+    alt_text: asset.alt_text || "",
+    credit: asset.credit || "",
+    source: asset.source || "",
+    tags: asset.tags || [],
+    status: asset.status || "draft",
+    created_at: asset.created_at,
+    url: asset.url || asset.public_url || "",
+    type: asset.type || asset.mime_type || "application/octet-stream",
+  };
+}
+
 export function AdminAcervoEditPage() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const assetIdFromUrl = searchParams.get("assetId");
   const isNew = !id;
 
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [collections, setCollections] = useState<any[]>([]);
-  const [recentAssets, setRecentAssets] = useState<any[]>([]);
+  const [recentAssets, setRecentAssets] = useState<MediaAssetRecord[]>([]);
   const [assetSearch, setAssetSearch] = useState("");
 
   // Form State
@@ -48,10 +78,11 @@ export function AdminAcervoEditPage() {
   const [tags, setTags] = useState("");
   const [collectionId, setCollectionId] = useState("");
   const [coverAssetId, setCoverAssetId] = useState("");
-  const [media, setMedia] = useState<any[]>([]);
+  const [media, setMedia] = useState<AcervoMediaAsset[]>([]);
 
   // Quick Upload State
   const [isUploading, setIsUploading] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
 
   const loadData = useCallback(async () => {
     if (!supabase) return;
@@ -60,7 +91,7 @@ export function AdminAcervoEditPage() {
     const [{ data: colls }, { data: assets }] = await Promise.all([
       supabase.from("acervo_collections").select("id, title").order("title"),
       supabase.from("media_assets")
-        .select("id, title, public_url, mime_type")
+        .select("id, bucket, path, title, file_name, public_url, mime_type, size_bytes, alt_text, status, created_at")
         .ilike("title", `%${assetSearch}%`)
         .order("created_at", { ascending: false })
         .limit(12)
@@ -68,6 +99,17 @@ export function AdminAcervoEditPage() {
 
     setCollections(colls || []);
     setRecentAssets(assets || []);
+
+    if (isNew && assetIdFromUrl) {
+      const asset = await getMediaAssetById(assetIdFromUrl);
+      if (asset) {
+        if (!title) setTitle(asset.title);
+        addMediaAsset(asset);
+        if (isImageAsset(asset)) {
+          setCoverAssetId(asset.id);
+        }
+      }
+    }
 
     if (!isNew && loading) { // Only load item once
       const { data, error } = await supabase.from("acervo_items").select("*").eq("id", id).single();
@@ -91,11 +133,11 @@ export function AdminAcervoEditPage() {
         setTags(data.tags?.join(", ") || "");
         setCollectionId(data.related_collection_id || "");
         setCoverAssetId(data.cover_asset_id || "");
-        setMedia(data.media || []);
+        setMedia((data.media || []).map((item: any) => normalizeMediaAsset(item)));
       }
     }
     setLoading(false);
-  }, [id, isNew, navigate, assetSearch]);
+  }, [id, isNew, navigate, assetSearch, assetIdFromUrl, loading]);
 
   useEffect(() => {
     loadData();
@@ -118,6 +160,53 @@ export function AdminAcervoEditPage() {
     e.preventDefault();
     if (!supabase) return;
     setSaving(true);
+
+    // Validações
+    if (!title.trim()) {
+      alert("⚠️ O título é obrigatório.");
+      setSaving(false);
+      return;
+    }
+
+    if (status === "published") {
+      if (!slug.trim()) {
+        alert("⚠️ O slug da URL é obrigatório.");
+        setSaving(false);
+        return;
+      }
+      if (!summary.trim()) {
+        alert("⚠️ O resumo é obrigatório para publicação.");
+        setSaving(false);
+        return;
+      }
+      if (!type) {
+        alert("⚠️ O tipo do item é obrigatório.");
+        setSaving(false);
+        return;
+      }
+      if (["artigo_cientifico", "noticia", "documento"].includes(type) && !sourceName.trim()) {
+        alert("⚠️ A fonte é obrigatória para este tipo de conteúdo.");
+        setSaving(false);
+        return;
+      }
+
+      // Validação de Alt Text para Capa e todos os Anexos que sejam imagem
+      const imagesToValidate = media.filter(m => m.type?.startsWith("image/") || m.mime_type?.startsWith("image/"));
+      const invalidImage = imagesToValidate.find(img => !img.alt_text?.trim());
+      
+      if (invalidImage) {
+        alert(`♿ Erro de Acessibilidade: A imagem "${invalidImage.title}" não possui texto alternativo. Por favor, ajuste os metadados antes de publicar.`);
+        setSaving(false);
+        return;
+      }
+
+      const selectedCover = recentAssets.find(a => a.id === coverAssetId) || media.find(m => m.id === coverAssetId);
+      if (selectedCover && selectedCover.mime_type?.startsWith("image/") && !selectedCover.alt_text?.trim()) {
+        alert("♿ Erro de Acessibilidade: A imagem de capa não possui texto alternativo. Por favor, ajuste os metadados da imagem antes de publicar.");
+        setSaving(false);
+        return;
+      }
+    }
 
     const payload = {
       title,
@@ -145,10 +234,16 @@ export function AdminAcervoEditPage() {
         const { error } = await supabase.from("acervo_items").update(payload).eq("id", id);
         if (error) throw error;
       }
-      alert("Item salvo com sucesso!");
-      navigate("/admin/acervo");
+      
+      if (status === "published") {
+        setShowSuccess(true);
+      } else {
+        alert("🎉 Alterações salvas como rascunho!");
+        navigate("/admin/acervo");
+      }
     } catch (err: any) {
-      alert("Erro ao salvar: " + err.message);
+      console.error("[Acervo] Erro ao salvar:", err);
+      alert("❌ Erro ao salvar: " + err.message);
     } finally {
       setSaving(false);
     }
@@ -178,13 +273,24 @@ export function AdminAcervoEditPage() {
     }
   };
 
-  const addMediaAsset = (asset: any) => {
-    if (media.some(m => m.id === asset.id)) return;
-    setMedia([...media, { id: asset.id, title: asset.title, url: asset.public_url, type: asset.mime_type }]);
+  const addMediaAsset = (asset: Partial<MediaAssetRecord> & { id: string; title: string; public_url?: string; url?: string; mime_type?: string; type?: string }) => {
+    const normalizedAsset = normalizeMediaAsset(asset);
+    if (media.some((mediaItem) => mediaItem.id === normalizedAsset.id)) return;
+    setMedia((currentMedia) => [...currentMedia, normalizedAsset]);
   };
 
   const removeMediaAsset = (assetId: string) => {
     setMedia(media.filter(m => m.id !== assetId));
+    if (coverAssetId === assetId) setCoverAssetId("");
+  };
+
+  const moveMedia = (index: number, direction: 'up' | 'down') => {
+    const newMedia = [...media];
+    const targetIndex = direction === 'up' ? index - 1 : index + 1;
+    if (targetIndex < 0 || targetIndex >= newMedia.length) return;
+    
+    [newMedia[index], newMedia[targetIndex]] = [newMedia[targetIndex], newMedia[index]];
+    setMedia(newMedia);
   };
 
   if (loading) {
@@ -214,22 +320,136 @@ export function AdminAcervoEditPage() {
               Preview
             </Link>
           )}
+          <button
+            type="button"
+            onClick={() => {
+              const url = `${window.location.origin}/acervo/item/${slug}`;
+              navigator.clipboard.writeText(url);
+              alert("Link público copiado!");
+            }}
+            className="p-2 text-slate-400 hover:text-emerald-600 transition-all"
+            title="Copiar Link Público"
+          >
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
+            </svg>
+          </button>
           <button 
             type="button" 
             onClick={() => navigate("/admin/acervo")}
             className="px-6 py-2 text-slate-500 font-bold hover:bg-slate-100 rounded-xl transition-all"
           >
-            Cancelar
+            Sair
           </button>
-          <button 
-            type="submit" 
-            disabled={saving}
-            className="px-8 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-black rounded-xl shadow-lg shadow-emerald-600/20 transition-all active:scale-[0.98] disabled:opacity-50"
-          >
-            {saving ? "Salvando..." : "Salvar Agora"}
-          </button>
+          
+          {status !== 'published' && (
+            <button 
+              type="submit" 
+              onClick={() => setStatus('published')}
+              disabled={saving}
+              className="px-8 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-black rounded-xl shadow-lg shadow-emerald-600/20 transition-all active:scale-[0.98] disabled:opacity-50 flex items-center gap-2"
+            >
+              {saving ? "Publicando..." : "🚀 Publicar Agora"}
+            </button>
+          )}
+
+          {status === 'published' && (
+            <button 
+              type="submit"
+              disabled={saving}
+              className="px-8 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-black rounded-xl shadow-lg shadow-emerald-600/20 transition-all active:scale-[0.98] disabled:opacity-50"
+            >
+              {saving ? "Atualizando..." : "Salvar Alterações"}
+            </button>
+          )}
+
+          {status !== 'draft' && (
+            <button 
+              type="submit"
+              onClick={() => setStatus('draft')}
+              disabled={saving}
+              className="px-6 py-3 bg-white border border-slate-200 text-slate-600 font-bold rounded-xl hover:bg-slate-50 transition-all"
+            >
+              Mudar para Rascunho
+            </button>
+          )}
+
+          {status === 'draft' && (
+            <button 
+              type="submit"
+              disabled={saving}
+              className="px-6 py-3 bg-slate-900 text-white font-bold rounded-xl hover:bg-slate-800 transition-all"
+            >
+              Salvar Rascunho
+            </button>
+          )}
+
+          {status !== 'archived' && (
+            <button 
+              type="submit"
+              onClick={() => setStatus('archived')}
+              disabled={saving}
+              className="p-3 text-slate-400 hover:text-rose-500 transition-all"
+              title="Arquivar Item"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" />
+              </svg>
+            </button>
+          )}
         </div>
       </div>
+
+      {showSuccess && (
+        <div className="fixed right-4 top-4 z-50 w-full max-w-md animate-in slide-in-from-top-4 fade-in duration-300">
+          <div className="rounded-[2rem] border border-emerald-100 bg-white p-5 shadow-2xl shadow-emerald-500/10">
+            <div className="flex items-start gap-4">
+              <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-2xl bg-emerald-500 text-2xl text-white shadow-lg shadow-emerald-500/20">
+                ✨
+              </div>
+              <div className="min-w-0 flex-1">
+                <div className="flex items-start justify-between gap-3">
+                  <div>
+                    <p className="text-sm font-black uppercase tracking-widest text-emerald-600">Publicado</p>
+                    <h3 className="mt-1 text-lg font-black text-slate-900">Item visível no portal</h3>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setShowSuccess(false)}
+                    className="rounded-xl p-2 text-slate-300 transition-all hover:bg-slate-50 hover:text-slate-500"
+                    title="Fechar aviso"
+                  >
+                    <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                  </button>
+                </div>
+                <p className="mt-2 text-sm font-medium text-slate-500">Seu item do Acervo foi publicado com sucesso e já pode ser consultado publicamente.</p>
+                <div className="mt-4 flex flex-wrap gap-2">
+                  <Link
+                    to={`/acervo/item/${slug}`}
+                    target="_blank"
+                    className="inline-flex items-center justify-center gap-2 rounded-xl bg-emerald-600 px-4 py-3 text-xs font-black uppercase tracking-widest text-white transition-all hover:bg-emerald-700"
+                  >
+                    <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                    </svg>
+                    Ver no portal
+                  </Link>
+                  <button
+                    type="button"
+                    onClick={() => navigate("/admin/acervo")}
+                    className="inline-flex items-center justify-center rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-xs font-black uppercase tracking-widest text-slate-600 transition-all hover:bg-slate-100"
+                  >
+                    Voltar para a lista
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Main Content Form */}
@@ -363,7 +583,7 @@ export function AdminAcervoEditPage() {
                     className="p-1.5 border-2 border-transparent rounded-xl hover:border-emerald-500 transition-all bg-slate-50 group relative"
                   >
                     <div className="aspect-square bg-white rounded-lg overflow-hidden border border-slate-200">
-                      {asset.mime_type.startsWith("image/") ? (
+                      {isImageAsset(asset) ? (
                         <img src={asset.public_url} alt="" className="w-full h-full object-cover" />
                       ) : (
                         <div className="flex flex-col items-center justify-center h-full text-slate-300">
@@ -373,6 +593,7 @@ export function AdminAcervoEditPage() {
                         </div>
                       )}
                     </div>
+                    <span className="mt-1 block truncate text-[8px] font-black uppercase tracking-widest text-slate-400">{asset.mime_type.split("/")[1]}</span>
                   </button>
                 ))}
               </div>
@@ -388,7 +609,7 @@ export function AdminAcervoEditPage() {
                     <div key={m.id} className="flex items-center justify-between p-3 bg-slate-50 rounded-2xl border border-slate-100 group">
                       <div className="flex items-center gap-3 min-w-0">
                         <div className="w-10 h-10 bg-white rounded-lg flex items-center justify-center text-slate-400 border border-slate-200 flex-shrink-0 overflow-hidden">
-                          {m.type?.startsWith("image/") ? (
+                          {isImageAsset(m) ? (
                             <img src={m.url} alt="" className="w-full h-full object-cover" />
                           ) : (
                             <span className="text-[10px] font-black uppercase">PDF</span>
@@ -396,6 +617,8 @@ export function AdminAcervoEditPage() {
                         </div>
                         <div className="min-w-0">
                           <p className="text-xs font-black text-slate-900 truncate">{m.title}</p>
+                          <p className="text-[9px] font-bold uppercase tracking-widest text-slate-400 truncate">{m.file_name || m.title}</p>
+                          <p className="text-[9px] font-bold uppercase tracking-widest text-slate-400">{m.mime_type} • {m.size_bytes ? formatAssetSize(m.size_bytes) : "Tamanho indisponível"}</p>
                           <button 
                             type="button" 
                             onClick={() => setCoverAssetId(m.id)}
@@ -405,15 +628,37 @@ export function AdminAcervoEditPage() {
                           </button>
                         </div>
                       </div>
-                      <button 
-                        type="button" 
-                        onClick={() => removeMediaAsset(m.id)}
-                        className="p-2 text-slate-300 hover:text-rose-500 transition-all opacity-0 group-hover:opacity-100"
-                      >
-                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                        </svg>
-                      </button>
+                      <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                        <button 
+                          type="button" 
+                          onClick={() => moveMedia(media.indexOf(m), 'up')}
+                          className="p-1.5 text-slate-400 hover:text-slate-600 transition-all disabled:opacity-30"
+                          disabled={media.indexOf(m) === 0}
+                        >
+                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
+                          </svg>
+                        </button>
+                        <button 
+                          type="button" 
+                          onClick={() => moveMedia(media.indexOf(m), 'down')}
+                          className="p-1.5 text-slate-400 hover:text-slate-600 transition-all disabled:opacity-30"
+                          disabled={media.indexOf(m) === media.length - 1}
+                        >
+                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                          </svg>
+                        </button>
+                        <button 
+                          type="button" 
+                          onClick={() => removeMediaAsset(m.id)}
+                          className="p-1.5 text-slate-300 hover:text-rose-500 transition-all"
+                        >
+                          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                          </svg>
+                        </button>
+                      </div>
                     </div>
                   ))}
                 </div>
@@ -522,6 +767,20 @@ export function AdminAcervoEditPage() {
                 </div>
               )}
             </div>
+            {coverAssetId && (media.find(m => m.id === coverAssetId) || recentAssets.find(a => a.id === coverAssetId)) && (
+              <div className="rounded-2xl border border-slate-100 bg-slate-50 p-4">
+                {(() => {
+                  const coverAsset = media.find(m => m.id === coverAssetId) || recentAssets.find(a => a.id === coverAssetId);
+                  if (!coverAsset) return null;
+                  return (
+                    <>
+                      <p className="text-sm font-black text-slate-900 break-all">{coverAsset.file_name || coverAsset.title}</p>
+                      <p className="mt-1 text-[10px] font-black uppercase tracking-widest text-slate-400">{coverAsset.mime_type} • {coverAsset.size_bytes ? formatAssetSize(coverAsset.size_bytes) : "Tamanho indisponível"}</p>
+                    </>
+                  );
+                })()}
+              </div>
+            )}
           </section>
         </div>
       </div>

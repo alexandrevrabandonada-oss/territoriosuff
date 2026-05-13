@@ -1,25 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { Link } from "react-router-dom";
 import { supabase } from "../../lib/supabase/client";
-import { adminUploadMedia } from "../../lib/admin/media";
-
-interface MediaAsset {
-  id: string;
-  bucket: string;
-  path: string;
-  public_url: string;
-  file_name: string;
-  mime_type: string;
-  size_bytes: number;
-  title: string;
-  description: string;
-  alt_text: string;
-  credit: string;
-  source: string;
-  tags: string[];
-  status: string;
-  created_at: string;
-}
+import { adminUploadMedia, formatAssetSize, isImageAsset, type MediaAssetRecord } from "../../lib/admin/media";
 
 const ALLOWED_MIME_TYPES = [
   "application/pdf",
@@ -39,12 +21,12 @@ const BUCKETS = [
 ];
 
 export function AdminUploadsPage() {
-  const [recentAssets, setRecentAssets] = useState<MediaAsset[]>([]);
+  const [recentAssets, setRecentAssets] = useState<MediaAssetRecord[]>([]);
   const [loading, setLoading] = useState(true);
   const [isUploading, setIsUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [error, setError] = useState<string | null>(null);
-  const [successId, setSuccessId] = useState<string | null>(null);
+  const [successAsset, setSuccessAsset] = useState<MediaAssetRecord | null>(null);
 
   // Form State
   const [file, setFile] = useState<File | null>(null);
@@ -92,7 +74,7 @@ export function AdminUploadsPage() {
       setFile(selectedFile);
       setTitle(selectedFile.name.replace(/\.[^/.]+$/, "")); // Nome sem extensão como título inicial
       setError(null);
-      setSuccessId(null);
+      setSuccessAsset(null);
     }
   };
 
@@ -129,7 +111,7 @@ export function AdminUploadsPage() {
       });
 
       setUploadProgress(100);
-      setSuccessId(asset.id);
+      setSuccessAsset(asset);
       
       // Reset Form
       setFile(null);
@@ -306,14 +288,91 @@ export function AdminUploadsPage() {
               </div>
             )}
 
-            {successId && (
-              <div className="p-5 bg-emerald-50 text-emerald-700 text-sm font-bold rounded-2xl border border-emerald-100 flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <span className="text-xl">✅</span> Upload concluído com sucesso!
+            {successAsset && (
+              <div className="p-8 bg-emerald-50 text-emerald-900 rounded-[2rem] border border-emerald-100 shadow-lg shadow-emerald-500/10 flex flex-col gap-6 animate-in zoom-in duration-300">
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 bg-emerald-500 text-white rounded-2xl flex items-center justify-center text-2xl shadow-lg shadow-emerald-500/20">
+                    ✅
+                  </div>
+                  <div>
+                    <p className="text-lg font-black leading-tight">Upload concluído!</p>
+                    <p className="text-xs font-bold text-emerald-600 uppercase tracking-widest">O arquivo está pronto para uso.</p>
+                  </div>
                 </div>
-                <Link to={`/admin/acervo/novo?media_id=${successId}`} className="px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition-all text-xs">
-                  Usar no Acervo
-                </Link>
+
+                <div className="rounded-[1.5rem] border border-emerald-100 bg-white/90 p-5 shadow-sm">
+                  <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
+                    <div className="h-28 w-full overflow-hidden rounded-2xl border border-emerald-100 bg-emerald-50 sm:h-24 sm:w-24 sm:flex-shrink-0">
+                      {isImageAsset(successAsset) ? (
+                        <img src={successAsset.public_url} alt={successAsset.alt_text || successAsset.title} className="h-full w-full object-cover" />
+                      ) : (
+                        <div className="flex h-full w-full flex-col items-center justify-center text-emerald-700">
+                          <svg className="h-10 w-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                          </svg>
+                          <span className="mt-2 text-[10px] font-black uppercase tracking-[0.22em]">PDF</span>
+                        </div>
+                      )}
+                    </div>
+
+                    <div className="grid flex-1 grid-cols-1 gap-3 sm:grid-cols-2">
+                      <div>
+                        <p className="text-[10px] font-black uppercase tracking-[0.22em] text-emerald-600">Nome do arquivo</p>
+                        <p className="mt-1 text-sm font-black text-slate-900 break-all">{successAsset.file_name}</p>
+                      </div>
+                      <div>
+                        <p className="text-[10px] font-black uppercase tracking-[0.22em] text-emerald-600">Tipo</p>
+                        <p className="mt-1 text-sm font-black text-slate-900">{successAsset.mime_type}</p>
+                      </div>
+                      <div>
+                        <p className="text-[10px] font-black uppercase tracking-[0.22em] text-emerald-600">Tamanho</p>
+                        <p className="mt-1 text-sm font-black text-slate-900">{formatAssetSize(successAsset.size_bytes)}</p>
+                      </div>
+                      <div>
+                        <p className="text-[10px] font-black uppercase tracking-[0.22em] text-emerald-600">Título interno</p>
+                        <p className="mt-1 text-sm font-black text-slate-900">{successAsset.title}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex flex-wrap gap-2 pt-2">
+                  <a 
+                    href={successAsset.public_url} 
+                    target="_blank" 
+                    rel="noreferrer"
+                    className="flex-1 py-3 bg-white border border-emerald-200 text-[10px] font-black text-emerald-700 uppercase tracking-widest rounded-xl hover:bg-emerald-100 transition-all text-center"
+                  >
+                    Abrir arquivo
+                  </a>
+                  <button 
+                    onClick={() => copyToClipboard(successAsset.public_url)}
+                    className="flex-1 py-3 bg-white border border-emerald-200 text-[10px] font-black text-emerald-700 uppercase tracking-widest rounded-xl hover:bg-emerald-100 transition-all"
+                  >
+                    Copiar URL
+                  </button>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                  <Link to={`/admin/acervo/novo?assetId=${successAsset.id}`} className="flex flex-col items-center p-4 bg-white rounded-2xl border border-emerald-100 hover:shadow-md transition-all group">
+                    <span className="text-2xl mb-2 group-hover:scale-110 transition-transform">📚</span>
+                    <span className="text-[10px] font-black uppercase text-emerald-700">Usar no Acervo</span>
+                  </Link>
+                  <Link to={`/admin/relatorios/novo?assetId=${successAsset.id}`} className="flex flex-col items-center p-4 bg-white rounded-2xl border border-emerald-100 hover:shadow-md transition-all group">
+                    <span className="text-2xl mb-2 group-hover:scale-110 transition-transform">📄</span>
+                    <span className="text-[10px] font-black uppercase text-emerald-700">Usar em Relatório</span>
+                  </Link>
+                  <Link to={`/admin/blog/novo?assetId=${successAsset.id}`} className="flex flex-col items-center p-4 bg-white rounded-2xl border border-emerald-100 hover:shadow-md transition-all group">
+                    <span className="text-2xl mb-2 group-hover:scale-110 transition-transform">✍️</span>
+                    <span className="text-[10px] font-black uppercase text-emerald-700">Usar no Blog</span>
+                  </Link>
+                </div>
+                
+                <div className="flex items-center justify-center gap-4 pt-2 border-t border-emerald-100">
+                  <button onClick={() => setSuccessAsset(null)} className="text-[10px] font-black uppercase text-emerald-600 hover:text-emerald-800 transition-colors">
+                    Fazer outro Upload
+                  </button>
+                </div>
               </div>
             )}
 
@@ -360,31 +419,33 @@ export function AdminUploadsPage() {
               <div className="py-20 text-center text-slate-400 italic bg-white rounded-3xl border border-slate-100">Sem uploads ainda.</div>
             ) : (
               recentAssets.map((asset) => (
-                <div key={asset.id} className="bg-white p-4 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-all group">
-                  <div className="flex items-center gap-4 mb-4">
-                    <div className="w-14 h-14 bg-slate-50 rounded-xl flex items-center justify-center text-slate-400 overflow-hidden border border-slate-100 relative">
-                      {asset.mime_type.startsWith("image/") ? (
+                <div key={asset.id} className="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-all group">
+                  <div className="flex items-center gap-4 mb-5">
+                    <div className="w-16 h-16 bg-slate-50 rounded-2xl flex items-center justify-center text-slate-400 overflow-hidden border border-slate-100 relative shadow-inner">
+                      {isImageAsset(asset) ? (
                         <img src={asset.public_url} alt="" className="w-full h-full object-cover" />
                       ) : (
                         <div className="text-center">
-                          <svg className="w-6 h-6 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <svg className="w-7 h-7 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
                           </svg>
                           <span className="text-[8px] font-black uppercase">PDF</span>
                         </div>
                       )}
-                      <div className={`absolute bottom-0 right-0 w-3 h-3 border-2 border-white rounded-full ${asset.status === 'published' ? 'bg-emerald-500' : 'bg-amber-400'}`} title={asset.status} />
+                      <div className={`absolute bottom-1 right-1 w-3 h-3 border-2 border-white rounded-full ${asset.status === 'published' ? 'bg-emerald-500' : 'bg-amber-400'}`} title={asset.status} />
                     </div>
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-black text-slate-900 truncate">{asset.title}</p>
-                      <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">{asset.bucket} • {(asset.size_bytes / 1024 / 1024).toFixed(2)}MB</p>
+                      <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">
+                        {asset.mime_type.split("/")[1]} • {formatAssetSize(asset.size_bytes)}
+                      </p>
                     </div>
                   </div>
                   
-                  <div className="flex gap-2">
+                  <div className="grid grid-cols-2 gap-2 mb-3">
                     <button 
                       onClick={() => copyToClipboard(asset.public_url)}
-                      className="flex-1 py-2 bg-slate-50 hover:bg-slate-100 text-[10px] font-black text-slate-600 uppercase tracking-widest rounded-lg transition-all"
+                      className="py-2 bg-slate-50 hover:bg-slate-100 text-[9px] font-black text-slate-600 uppercase tracking-widest rounded-lg transition-all"
                     >
                       Copiar URL
                     </button>
@@ -392,12 +453,25 @@ export function AdminUploadsPage() {
                       href={asset.public_url} 
                       target="_blank" 
                       rel="noreferrer"
-                      className="p-2 bg-slate-50 hover:bg-emerald-50 text-slate-400 hover:text-emerald-600 rounded-lg transition-all"
+                      className="py-2 bg-slate-50 hover:bg-emerald-50 text-[9px] font-black text-slate-600 uppercase tracking-widest rounded-lg transition-all text-center"
                     >
-                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                      </svg>
+                      Abrir
                     </a>
+                  </div>
+
+                  <div className="pt-3 border-t border-slate-50 flex items-center justify-between gap-1">
+                    <p className="text-[8px] font-black text-slate-300 uppercase tracking-widest">Usar em:</p>
+                    <div className="flex items-center gap-1">
+                      <Link to={`/admin/acervo/novo?assetId=${asset.id}`} className="p-1.5 bg-slate-50 hover:bg-emerald-50 text-slate-400 hover:text-emerald-600 rounded-lg transition-all" title="Acervo">
+                        📚
+                      </Link>
+                      <Link to={`/admin/relatorios/novo?assetId=${asset.id}`} className="p-1.5 bg-slate-50 hover:bg-emerald-50 text-slate-400 hover:text-emerald-600 rounded-lg transition-all" title="Relatório">
+                        📄
+                      </Link>
+                      <Link to={`/admin/blog/novo?assetId=${asset.id}`} className="p-1.5 bg-slate-50 hover:bg-emerald-50 text-slate-400 hover:text-emerald-600 rounded-lg transition-all" title="Blog">
+                        ✍️
+                      </Link>
+                    </div>
                   </div>
                 </div>
               ))

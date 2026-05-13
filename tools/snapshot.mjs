@@ -56,10 +56,14 @@ function listTree(dir, depth = 3, prefix = "") {
 function extractRoutes(appPath) {
   if (!fs.existsSync(appPath)) return [];
   const raw = fs.readFileSync(appPath, "utf8");
+
+  const portalSplit = raw.split("<PortalLayout>");
+  const publicRaw = portalSplit.length > 1 ? portalSplit[1].split("</PortalLayout>")[0] : raw;
+
   const re = /path\s*=\s*["']([^"']+)["']/g;
   const found = new Set();
   let match;
-  while ((match = re.exec(raw)) !== null) found.add(match[1]);
+  while ((match = re.exec(publicRaw)) !== null) found.add(match[1]);
   return Array.from(found).sort();
 }
 

@@ -242,7 +242,21 @@ export async function createRegistration(payload: RegistrationPayload): Promise<
 // Acervo
 // ─────────────────────────────────────────
 
-export type AcervoKind = "paper" | "news" | "video" | "photo" | "report" | "link";
+export type AcervoKind =
+  | "artigo_cientifico"
+  | "noticia"
+  | "materia"
+  | "foto"
+  | "video"
+  | "documento"
+  | "relatorio_tecnico"
+  | "memoria"
+  | "outro"
+  | "paper"
+  | "news"
+  | "photo"
+  | "report"
+  | "link";
 
 export type AcervoItem = {
   id: string;
@@ -283,12 +297,25 @@ export type ListAcervoParams = {
 };
 
 function rowToAcervoItem(row: Record<string, unknown>): AcervoItem {
+  const meta = row.meta && typeof row.meta === "object" && !Array.isArray(row.meta)
+    ? (row.meta as Record<string, unknown>)
+    : {};
+  const rowMedia = Array.isArray(row.media)
+    ? row.media
+    : Array.isArray(meta.media)
+      ? meta.media
+      : null;
+
   return {
     id: String(row.id ?? ""),
-    kind: (row.kind as AcervoKind) ?? "link",
+    kind: ((row.type ?? row.kind) as AcervoKind) ?? "link",
     title: String(row.title ?? "Sem título"),
     slug: String(row.slug ?? ""),
-    excerpt: typeof row.excerpt === "string" ? row.excerpt : null,
+    excerpt: typeof row.summary === "string"
+      ? row.summary
+      : typeof row.excerpt === "string"
+        ? row.excerpt
+        : null,
     content_md: typeof row.content_md === "string" ? row.content_md : null,
     cover_url: typeof row.cover_url === "string" ? row.cover_url : null,
     cover_thumb_url: typeof row.cover_thumb_url === "string" ? row.cover_thumb_url : null,
@@ -300,16 +327,33 @@ function rowToAcervoItem(row: Record<string, unknown>): AcervoItem {
     year: typeof row.year === "number" ? row.year : null,
     city: typeof row.city === "string" ? row.city : "Volta Redonda",
     tags: Array.isArray(row.tags) ? (row.tags as string[]) : [],
-    meta: row.meta && typeof row.meta === "object" && !Array.isArray(row.meta)
-      ? (row.meta as Record<string, unknown>)
-      : {},
+    meta,
     curator_note: typeof row.curator_note === "string" ? row.curator_note : null,
     authors: typeof row.authors === "string" ? row.authors : null,
     doi: typeof row.doi === "string" ? row.doi : null,
     featured: Boolean(row.featured),
     source_type: typeof row.source_type === "string" ? row.source_type : null,
-    media: (row.meta && typeof row.meta === "object" && Array.isArray((row.meta as Record<string, unknown>).media))
-      ? ((row.meta as Record<string, unknown>).media as Array<{ url: string; type: string; title?: string }>)
+    media: rowMedia
+      ? rowMedia
+        .filter((item): item is Record<string, unknown> => !!item && typeof item === "object" && !Array.isArray(item))
+        .map((item) => ({
+          url: typeof item.url === "string"
+            ? item.url
+            : typeof item.public_url === "string"
+              ? item.public_url
+              : "",
+          type: typeof item.type === "string"
+            ? item.type
+            : typeof item.mime_type === "string"
+              ? item.mime_type
+              : "application/octet-stream",
+          title: typeof item.title === "string"
+            ? item.title
+            : typeof item.file_name === "string"
+              ? item.file_name
+              : undefined,
+        }))
+        .filter((item) => Boolean(item.url))
       : null,
     created_at: typeof row.created_at === "string" ? row.created_at : ""
   };
@@ -322,11 +366,12 @@ export async function listAcervoItems(params: ListAcervoParams = {}): Promise<Ac
 
     let query = supabase
       .from("acervo_items")
-      .select("id, kind, title, slug, excerpt, cover_url, cover_thumb_url, cover_small_url, source_name, source_url, published_at, publish_at, year, city, tags, featured, source_type, created_at")
+      .select("id, type, title, slug, summary, cover_url, cover_thumb_url, cover_small_url, source_name, source_url, published_at, publish_at, year, city, tags, featured, source_type, created_at")
+      .eq("status", "published")
       .order("published_at", { ascending: false, nullsFirst: false })
       .range(offset, offset + limit - 1);
 
-    if (kind) query = query.eq("kind", kind);
+    if (kind) query = query.eq("type", kind);
     if (year) query = query.eq("year", year);
     if (featured !== undefined) query = query.eq("featured", featured);
     if (source_type) query = query.eq("source_type", source_type);
@@ -352,8 +397,9 @@ export async function getAcervoBySlug(slug: string): Promise<AcervoItem | null> 
     const supabase = assertSupabase();
     const { data, error } = await supabase
       .from("acervo_items")
-      .select("id, kind, title, slug, excerpt, content_md, source_name, source_url, published_at, publish_at, year, city, tags, meta, curator_note, authors, doi, featured, source_type, created_at")
+      .select("id, type, title, slug, summary, content_md, source_name, source_url, published_at, publish_at, year, city, tags, meta, media, curator_note, authors, doi, featured, source_type, created_at")
       .eq("slug", slug)
+      .eq("status", "published")
       .maybeSingle();
     if (error) throw error;
     if (!data) return null;
@@ -391,7 +437,6 @@ export async function getAcervoByYear(year: number, limit = 200): Promise<Acervo
     throw toAppError("Falha ao carregar itens da linha do tempo", error);
   }
 }
-
 // ─────────────────────────────────────────
 // Blog
 // ─────────────────────────────────────────
@@ -408,7 +453,9 @@ export type BlogPost = {
   tags: string[];
   published_at: string | null;
   publish_at: string | null;
-  status: "draft" | "published";
+  status: "draft" | "scheduled" | "published" | "archived";
+  category: string | null;
+  author_name: string | null;
   created_at: string;
 };
 
@@ -416,6 +463,7 @@ function isPublishTimeReached(publishAt: string | null): boolean {
   if (!publishAt) return true;
   return new Date(publishAt).getTime() <= Date.now();
 }
+
 
 export type ListBlogParams = {
   q?: string;
@@ -430,7 +478,7 @@ function rowToBlogPost(row: Record<string, unknown>): BlogPost {
     id: String(row.id ?? ""),
     slug: String(row.slug ?? ""),
     title: String(row.title ?? "Sem título"),
-    excerpt: typeof row.excerpt === "string" ? row.excerpt : null,
+    excerpt: typeof row.summary === "string" ? row.summary : null,
     content_md: typeof row.content_md === "string" ? row.content_md : null,
     cover_url: typeof row.cover_url === "string" ? row.cover_url : null,
     cover_thumb_url: typeof row.cover_thumb_url === "string" ? row.cover_thumb_url : null,
@@ -438,8 +486,10 @@ function rowToBlogPost(row: Record<string, unknown>): BlogPost {
     tags: Array.isArray(row.tags) ? (row.tags as string[]) : [],
     published_at: typeof row.published_at === "string" ? row.published_at : null,
     publish_at: typeof row.publish_at === "string" ? row.publish_at : null,
-    status: (row.status as "draft" | "published") ?? "draft",
-    created_at: typeof row.created_at === "string" ? row.created_at : ""
+    status: (row.status as any) ?? "draft",
+    created_at: typeof row.created_at === "string" ? row.created_at : "",
+    category: typeof row.category === "string" ? row.category : null,
+    author_name: typeof row.author_name === "string" ? row.author_name : null
   };
 }
 
@@ -450,7 +500,7 @@ export async function listBlogPosts(params: ListBlogParams = {}): Promise<BlogPo
 
     let query = supabase
       .from("blog_posts")
-      .select("id, slug, title, excerpt, cover_url, cover_thumb_url, cover_small_url, tags, published_at, publish_at, status, created_at")
+      .select("id, slug, title, summary, cover_url, cover_thumb_url, cover_small_url, tags, published_at, publish_at, status, created_at, category, author_name")
       .eq("status", "published")
       .order("published_at", { ascending: false, nullsFirst: false })
       .range(offset, offset + limit - 1);
@@ -519,11 +569,16 @@ export type ListReportsParams = {
   limit?: number;
 };
 
-function rowToReportDocument(row: Record<string, unknown>): ReportDocument {
-  const kindRaw = typeof row.kind === "string" ? row.kind : "relatorio";
-  const kind = (["relatorio", "nota-tecnica", "boletim", "anexo"].includes(kindRaw)
-    ? kindRaw
+function normalizeReportKind(value: unknown): ReportKind {
+  if (value === "nota técnica") return "nota-tecnica";
+
+  return (["relatorio", "nota-tecnica", "boletim", "anexo"].includes(String(value))
+    ? String(value)
     : "relatorio") as ReportKind;
+}
+
+function rowToReportDocument(row: Record<string, unknown>): ReportDocument {
+  const kind = normalizeReportKind(row.type ?? row.kind);
 
   return {
     id: String(row.id ?? ""),
@@ -550,13 +605,13 @@ export async function listReports(params: ListReportsParams = {}): Promise<Repor
     let query = supabase
       .from("reports")
       .select("*")
+      .eq("status", "published")
       .order("featured", { ascending: false, nullsFirst: false })
       .order("published_at", { ascending: false, nullsFirst: false })
       .order("created_at", { ascending: false })
       .limit(limit);
 
     if (typeof year === "number") query = query.eq("year", year);
-    if (kind) query = query.eq("kind", kind);
     if (tag) query = query.contains("tags", [tag]);
     if (q) {
       const term = q.trim();
@@ -567,7 +622,9 @@ export async function listReports(params: ListReportsParams = {}): Promise<Repor
 
     const { data, error } = await query;
     if (error) throw error;
-    return ((data || []) as Record<string, unknown>[]).map(rowToReportDocument);
+    return ((data || []) as Record<string, unknown>[])
+      .map(rowToReportDocument)
+      .filter((report) => !kind || report.kind === kind);
   } catch (error) {
     throw toAppError("Falha ao listar relatorios", error);
   }
@@ -584,6 +641,7 @@ export async function getReportBySlug(slug: string): Promise<ReportDocument | nu
       .from("reports")
       .select("*")
       .eq("slug", slug)
+      .eq("status", "published")
       .maybeSingle();
     if (error) throw error;
     if (!data) return null;

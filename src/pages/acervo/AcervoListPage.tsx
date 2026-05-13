@@ -5,7 +5,7 @@ import { IconShell, SectionHeader, SurfaceCard } from "../../components/BrandSys
 import { BrandIllustratedEmptyState, BrandTextureSkeleton } from "../../components/BrandMicro";
 import { DocumentalCard } from "../../components/CardFamilies";
 import { listAcervoItems, type AcervoItem, type AcervoKind } from "../../lib/api";
-import { type AcervoArea, AREA_KINDS } from "../../lib/acervo";
+import { ACERVO_KIND_LABELS, type AcervoArea, AREA_KINDS } from "../../lib/acervo";
 
 const AREA_META: Record<AcervoArea, { label: string; emoji: string; description: string; color: string }> = {
   artigos: {
@@ -26,15 +26,6 @@ const AREA_META: Record<AcervoArea, { label: string; emoji: string; description:
     description: "Vídeos, fotorreportagens e materiais audiovisuais.",
     color: "border-primaria/60"
   }
-};
-
-const KIND_LABELS: Record<AcervoKind, string> = {
-  paper: "Artigo",
-  report: "Relatório",
-  news: "Notícia",
-  link: "Link",
-  video: "Vídeo",
-  photo: "Foto"
 };
 
 const SOURCE_TYPE_LABELS: Record<string, string> = {
@@ -222,7 +213,7 @@ export function AcervoListPage() {
                   >
                     <DocumentalCard
                       variant="compact"
-                      kindLabel={KIND_LABELS[item.kind]}
+                      kindLabel={ACERVO_KIND_LABELS[item.kind]}
                       date={dateStr}
                       title={item.title}
                       summary={summary}

@@ -15,6 +15,7 @@ import {
 import { BrandRadialDivider, BrandTextureSkeleton, BrandWatermarkPanel } from "../../components/BrandMicro";
 import { AxisSectionHeader, AxisEyebrow } from "../../components/AxisSystem";
 import { listFeaturedAcervo, type AcervoItem } from "../../lib/api";
+import { ACERVO_KIND_LABELS } from "../../lib/acervo";
 
 const areas = [
     {
@@ -42,15 +43,6 @@ const areas = [
         tone: "lab" as const,
     },
 ];
-
-const KIND_LABELS: Record<string, string> = {
-    paper: "Artigo",
-    report: "Relatório",
-    news: "Notícia",
-    link: "Link",
-    video: "Vídeo",
-    photo: "Foto",
-};
 
 export function AcervoPage() {
     const [featured, setFeatured] = useState<AcervoItem[]>([]);
@@ -155,7 +147,7 @@ export function AcervoPage() {
                                         <EditorialCardBody className="justify-between">
                                             <div className="space-y-2">
                                                 <EditorialCardMeta className="justify-between">
-                                                    <Chip tone="active">{KIND_LABELS[item.kind] ?? item.kind}</Chip>
+                                                    <Chip tone="active">{ACERVO_KIND_LABELS[item.kind] ?? item.kind}</Chip>
                                                     {item.year ? <span>{item.year}</span> : null}
                                                 </EditorialCardMeta>
                                                 <EditorialCardTitle className="line-clamp-2 text-base md:text-lg">

@@ -78,7 +78,21 @@ export type RegistrationResult = {
   status: "confirmed" | "waitlist";
 };
 
-export type AcervoKind = "paper" | "news" | "video" | "photo" | "report" | "link";
+export type AcervoKind =
+  | "artigo_cientifico"
+  | "noticia"
+  | "materia"
+  | "foto"
+  | "video"
+  | "documento"
+  | "relatorio_tecnico"
+  | "memoria"
+  | "outro"
+  | "paper"
+  | "news"
+  | "photo"
+  | "report"
+  | "link";
 
 export type AcervoItem = {
   id: string;
@@ -135,7 +149,9 @@ export type BlogPost = {
   tags: string[];
   published_at: string | null;
   publish_at: string | null;
-  status: "draft" | "published";
+  status: "draft" | "scheduled" | "published" | "archived";
+  category: string | null;
+  author_name: string | null;
   created_at: string;
 };
 

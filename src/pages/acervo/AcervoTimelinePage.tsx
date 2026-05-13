@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 
 import { getAcervoByYear, getAcervoYearIndex, type AcervoItem, type AcervoYearIndex } from "../../lib/api";
-import { type AcervoArea, AREA_KINDS } from "../../lib/acervo";
+import { ACERVO_KIND_LABELS, type AcervoArea, AREA_KINDS } from "../../lib/acervo";
 import { getOptimizedCover } from "../../lib/imageOptimization";
 import { Chip, EditorialCard, EditorialCardActions, EditorialCardBody, EditorialCardExcerpt, EditorialCardMeta, EditorialCardTitle, IconShell, SurfaceCard } from "../../components/BrandSystem";
 import { AxisSectionHeader, AxisEyebrow, AxisDivider } from "../../components/AxisSystem";
@@ -28,21 +28,12 @@ const AREA_META: Record<AcervoArea, { label: string; emoji: string; description:
   }
 };
 
-const KIND_LABELS: Record<string, string> = {
-  paper: "Artigo",
-  report: "Relatório",
-  news: "Notícia",
-  link: "Link",
-  video: "Vídeo",
-  photo: "Foto"
-};
-
 function isAcervoArea(value: string | undefined): value is AcervoArea {
   return value === "artigos" || value === "noticias" || value === "midias";
 }
 
 function TypeBadge({ kind }: { kind: string }) {
-  return <span className="ui-chip">{KIND_LABELS[kind] || "Link"}</span>;
+  return <span className="ui-chip">{ACERVO_KIND_LABELS[kind as keyof typeof ACERVO_KIND_LABELS] || "Link"}</span>;
 }
 
 export function AcervoTimelinePage() {

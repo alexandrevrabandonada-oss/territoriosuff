@@ -4,30 +4,14 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import { LoadingCard } from "./components/LoadingCard";
 import { RouteObservability } from "./components/RouteObservability";
 import { PortalLayout } from "./layout/PortalLayout";
-import { AdminLayout } from "./layout/AdminLayout";
-import { AdminGuard } from "./components/AdminGuard";
 
 // Eager-loaded (critical path)
 import { HomePage } from "./pages/HomePage";
 import { DadosPage } from "./pages/DadosPage";
 
-// Admin Pages
-import { AdminLoginPage } from "./pages/admin/AdminLoginPage";
-import { AdminDashboardPage } from "./pages/admin/AdminDashboardPage";
-import { AdminUploadsPage } from "./pages/admin/AdminUploadsPage";
-import { AdminAcervoListPage } from "./pages/admin/AdminAcervoListPage";
-import { AdminAcervoEditPage } from "./pages/admin/AdminAcervoEditPage";
-import { AdminPaperWizardPage } from "./pages/admin/AdminPaperWizardPage";
-import { AdminBlogListPage } from "./pages/admin/AdminBlogListPage";
-import { AdminBlogEditPage } from "./pages/admin/AdminBlogEditPage";
-import { AdminAgendaListPage } from "./pages/admin/AdminAgendaListPage";
-import { AdminAgendaEditPage } from "./pages/admin/AdminAgendaEditPage";
-import { AdminAgendaInscriptionsPage } from "./pages/admin/AdminAgendaInscriptionsPage";
-import { AdminReportsListPage } from "./pages/admin/AdminReportsListPage";
-import { AdminReportsEditPage } from "./pages/admin/AdminReportsEditPage";
-import { AdminPlaceholderPage } from "./pages/admin/AdminPlaceholderPage";
+const AdminRoutes = lazy(() => import("./admin/AdminRoutes"));
 
-// Lazy-loaded (non-critical)
+// Lazy-loaded (non-critical public)
 const SobrePage = lazy(() => import("./pages/SobrePage").then((m) => ({ default: m.SobrePage })));
 const AgendaPage = lazy(() => import("./pages/AgendaPage").then((m) => ({ default: m.AgendaPage })));
 const InscricoesPage = lazy(() => import("./pages/InscricoesPage").then((m) => ({ default: m.InscricoesPage })));
@@ -77,35 +61,7 @@ export default function App() {
       <Suspense fallback={<LoadingCard message="Carregando..." />}>
         <Routes>
           {/* Admin Area */}
-          <Route path="/admin/login" element={<AdminLoginPage />} />
-          <Route
-            path="/admin/*"
-            element={
-              <AdminGuard>
-                <AdminLayout>
-                  <Routes>
-                    <Route path="/" element={<AdminDashboardPage />} />
-                    <Route path="/acervo" element={<AdminAcervoListPage />} />
-                    <Route path="/acervo/novo" element={<AdminAcervoEditPage />} />
-                    <Route path="/acervo/artigos/novo" element={<AdminPaperWizardPage />} />
-                    <Route path="/acervo/:id" element={<AdminAcervoEditPage />} />
-                    <Route path="/uploads" element={<AdminUploadsPage />} />
-                    <Route path="/relatorios" element={<AdminReportsListPage />} />
-                    <Route path="/relatorios/novo" element={<AdminReportsEditPage />} />
-                    <Route path="/relatorios/:id" element={<AdminReportsEditPage />} />
-                    <Route path="/blog" element={<AdminBlogListPage />} />
-                    <Route path="/blog/novo" element={<AdminBlogEditPage />} />
-                    <Route path="/blog/:id" element={<AdminBlogEditPage />} />
-                    <Route path="/agenda" element={<AdminAgendaListPage />} />
-                    <Route path="/agenda/novo" element={<AdminAgendaEditPage />} />
-                    <Route path="/agenda/:id" element={<AdminAgendaEditPage />} />
-                    <Route path="/agenda/:id/inscricoes" element={<AdminAgendaInscriptionsPage />} />
-                    <Route path="*" element={<Navigate to="/admin" replace />} />
-                  </Routes>
-                </AdminLayout>
-              </AdminGuard>
-            }
-          />
+          <Route path="/admin/*" element={<AdminRoutes />} />
 
           {/* Public Portal */}
           <Route
@@ -154,4 +110,3 @@ export default function App() {
     </>
   );
 }
-

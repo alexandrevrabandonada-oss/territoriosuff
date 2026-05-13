@@ -8,9 +8,26 @@ import type { AcervoKind } from "./api";
 
 export type AcervoArea = "artigos" | "noticias" | "midias";
 
+export const ACERVO_KIND_LABELS: Record<AcervoKind, string> = {
+    artigo_cientifico: "Artigo científico",
+    noticia: "Notícia",
+    materia: "Matéria",
+    foto: "Fotografia",
+    video: "Vídeo",
+    documento: "Documento",
+    relatorio_tecnico: "Relatório técnico",
+    memoria: "Memória",
+    outro: "Link externo",
+    paper: "Artigo científico",
+    news: "Notícia",
+    photo: "Fotografia",
+    report: "Relatório",
+    link: "Link externo"
+};
+
 // Map UI area → DB kind values
 export const AREA_KINDS: Record<AcervoArea, AcervoKind[]> = {
-    artigos: ["paper", "report"],
-    noticias: ["news", "link"],
-    midias: ["video", "photo"]
+    artigos: ["artigo_cientifico", "documento", "relatorio_tecnico", "paper", "report"],
+    noticias: ["noticia", "materia", "outro", "news", "link"],
+    midias: ["video", "foto", "memoria", "photo"]
 };

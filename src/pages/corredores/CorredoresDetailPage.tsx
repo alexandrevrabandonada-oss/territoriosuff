@@ -28,9 +28,9 @@ function ItemLink({ kind, refId }: { kind: string; refId: string }) {
             typeLabel = "Postagem";
             break;
         case "event":
-            url = `/agenda/${refId}`;
+            url = "/agenda";
             icon = "📅";
-            typeLabel = "Evento";
+            typeLabel = "Agenda";
             break;
         default:
             break;

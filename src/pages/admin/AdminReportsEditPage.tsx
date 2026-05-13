@@ -1,14 +1,25 @@
 import { useEffect, useState, useCallback } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useLocation, Link } from "react-router-dom";
 import { supabase } from "../../lib/supabase/client";
-import { adminUploadMedia } from "../../lib/admin/media";
+import { adminUploadMedia, formatAssetSize, getMediaAssetById, isImageAsset, type MediaAssetRecord } from "../../lib/admin/media";
 
 const TYPES = [
   { value: "relatorio", label: "Relatório" },
-  { value: "nota técnica", label: "Nota Técnica" },
+  { value: "nota-tecnica", label: "Nota Técnica" },
   { value: "boletim", label: "Boletim" },
   { value: "anexo", label: "Anexo" },
 ];
+
+function normalizeReportType(value: unknown): string {
+  if (value === "nota técnica") return "nota-tecnica";
+  if (typeof value === "string" && TYPES.some((option) => option.value === value)) return value;
+  return "relatorio";
+}
+
+function toDbReportType(value: string): string {
+  if (value === "nota-tecnica") return "nota técnica";
+  return value;
+}
 
 const STATUSES = [
   { value: "draft", label: "Rascunho" },
@@ -19,12 +30,18 @@ const STATUSES = [
 export function AdminReportsEditPage() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const assetIdFromUrl = searchParams.get("assetId");
   const isNew = !id;
 
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
-  const [recentAssets, setRecentAssets] = useState<any[]>([]);
+  const [showSuccess, setShowSuccess] = useState(false);
+  const [recentAssets, setRecentAssets] = useState<MediaAssetRecord[]>([]);
+  const [selectedPdfAsset, setSelectedPdfAsset] = useState<MediaAssetRecord | null>(null);
+  const [selectedCoverAsset, setSelectedCoverAsset] = useState<MediaAssetRecord | null>(null);
 
   // Form State
   const [title, setTitle] = useState("");
@@ -41,6 +58,18 @@ export function AdminReportsEditPage() {
   const [coverUrl, setCoverUrl] = useState("");
   const [coverAssetId, setCoverAssetId] = useState("");
 
+  const applyPdfAsset = (asset: MediaAssetRecord) => {
+    setPdfAssetId(asset.id);
+    setPdfUrl(asset.public_url);
+    setSelectedPdfAsset(asset);
+  };
+
+  const applyCoverAsset = (asset: MediaAssetRecord) => {
+    setCoverAssetId(asset.id);
+    setCoverUrl(asset.public_url);
+    setSelectedCoverAsset(asset);
+  };
+
   const loadData = useCallback(async () => {
     if (!supabase) return;
     setLoading(true);
@@ -48,9 +77,8 @@ export function AdminReportsEditPage() {
     // Load Recent Assets
     const { data: assets } = await supabase
       .from("media_assets")
-      .select("id, title, public_url, mime_type")
-      .order("created_at", { ascending: false })
-      .limit(12);
+      .select("id, bucket, path, title, file_name, public_url, mime_type, size_bytes, alt_text, status, created_at")
+      .order("created_at", { ascending: false });
     setRecentAssets(assets || []);
 
     if (!isNew) {
@@ -64,7 +92,7 @@ export function AdminReportsEditPage() {
         setTitle(data.title);
         setSlug(data.slug);
         setSummary(data.summary || "");
-        setType(data.type);
+        setType(normalizeReportType(data.type || data.kind));
         setStatus(data.status);
         setYear(data.year);
         setPublishedAt(data.published_at || "");
@@ -74,6 +102,14 @@ export function AdminReportsEditPage() {
         setPdfAssetId(data.pdf_asset_id || "");
         setCoverUrl(data.cover_url || "");
         setCoverAssetId(data.cover_asset_id || "");
+
+        const [pdfAsset, coverAsset] = await Promise.all([
+          data.pdf_asset_id ? getMediaAssetById(data.pdf_asset_id) : Promise.resolve(null),
+          data.cover_asset_id ? getMediaAssetById(data.cover_asset_id) : Promise.resolve(null),
+        ]);
+
+        setSelectedPdfAsset(pdfAsset);
+        setSelectedCoverAsset(coverAsset);
       }
     }
     setLoading(false);
@@ -82,6 +118,34 @@ export function AdminReportsEditPage() {
   useEffect(() => {
     loadData();
   }, [loadData]);
+
+  useEffect(() => {
+    let active = true;
+
+    async function applyAssetFromUrl() {
+      if (!assetIdFromUrl) return;
+
+      const asset = await getMediaAssetById(assetIdFromUrl);
+      if (!active || !asset) return;
+
+      setTitle((currentTitle) => currentTitle.trim() ? currentTitle : asset.title);
+
+      if (asset.mime_type === "application/pdf") {
+        applyPdfAsset(asset);
+        return;
+      }
+
+      if (isImageAsset(asset)) {
+        applyCoverAsset(asset);
+      }
+    }
+
+    void applyAssetFromUrl();
+
+    return () => {
+      active = false;
+    };
+  }, [assetIdFromUrl]);
 
   // Slug Auto-gen
   useEffect(() => {
@@ -111,11 +175,9 @@ export function AdminReportsEditPage() {
       });
       
       if (isCover) {
-        setCoverAssetId(asset.id);
-        setCoverUrl(asset.public_url);
+        applyCoverAsset(asset);
       } else {
-        setPdfAssetId(asset.id);
-        setPdfUrl(asset.public_url);
+        applyPdfAsset(asset);
       }
       loadData();
     } catch (err: any) {
@@ -130,11 +192,32 @@ export function AdminReportsEditPage() {
     if (!supabase) return;
     setSaving(true);
 
+    // Validações
+    if (!title.trim()) {
+      alert("⚠️ O título é obrigatório.");
+      setSaving(false);
+      return;
+    }
+
+    if (status === "published") {
+      if (!slug.trim()) {
+        alert("⚠️ O slug da URL é obrigatório.");
+        setSaving(false);
+        return;
+      }
+      if (!pdfUrl) {
+        alert("⚠️ Um documento PDF é obrigatório para publicação oficial.");
+        setSaving(false);
+        return;
+      }
+    }
+
     const payload = {
       title,
       slug,
       summary,
-      type,
+      type: toDbReportType(type),
+      kind: type,
       status,
       year,
       published_at: publishedAt || null,
@@ -154,8 +237,12 @@ export function AdminReportsEditPage() {
         const { error } = await supabase.from("reports").update(payload).eq("id", id);
         if (error) throw error;
       }
-      alert("Relatório salvo com sucesso!");
-      navigate("/admin/relatorios");
+      if (status === "published") {
+        setShowSuccess(true);
+      } else {
+        alert("🎉 Relatório salvo como rascunho!");
+        navigate("/admin/relatorios");
+      }
     } catch (err: any) {
       alert("Erro ao salvar: " + err.message);
     } finally {
@@ -177,22 +264,137 @@ export function AdminReportsEditPage() {
           <p className="text-slate-500 mt-1 font-medium">Gestão de transparência e documentos técnicos.</p>
         </div>
         <div className="flex items-center gap-3">
+          {!isNew && (
+            <Link 
+              to={`/relatorios/${slug}`} 
+              target="_blank"
+              className="px-4 py-2 text-slate-500 font-bold hover:bg-slate-100 rounded-xl transition-all flex items-center gap-2 border border-slate-200"
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+              </svg>
+              Preview
+            </Link>
+          )}
+          <button
+            type="button"
+            onClick={() => {
+              const url = `${window.location.origin}/relatorios/${slug}`;
+              navigator.clipboard.writeText(url);
+              alert("Link público copiado!");
+            }}
+            className="p-2 text-slate-400 hover:text-emerald-600 transition-all"
+            title="Copiar Link Público"
+          >
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
+            </svg>
+          </button>
           <button 
             type="button" 
             onClick={() => navigate("/admin/relatorios")}
             className="px-6 py-2 text-slate-500 font-bold hover:bg-slate-100 rounded-xl transition-all"
           >
-            Cancelar
+            Sair
           </button>
-          <button 
-            type="submit" 
-            disabled={saving}
-            className="px-10 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-black rounded-2xl shadow-xl shadow-emerald-600/20 transition-all active:scale-[0.98] disabled:opacity-50"
-          >
-            {saving ? "Sincronizando..." : "Salvar Relatório"}
-          </button>
+          
+          {status !== 'published' && (
+            <button 
+              type="submit" 
+              onClick={() => setStatus('published')}
+              disabled={saving}
+              className="px-10 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-black rounded-2xl shadow-xl shadow-emerald-600/20 transition-all active:scale-[0.98] disabled:opacity-50 flex items-center gap-2"
+            >
+              {saving ? "Publicando..." : "🚀 Publicar Agora"}
+            </button>
+          )}
+
+          {status === 'published' && (
+            <button 
+              type="submit"
+              disabled={saving}
+              className="px-10 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-black rounded-2xl shadow-xl shadow-emerald-600/20 transition-all active:scale-[0.98] disabled:opacity-50"
+            >
+              {saving ? "Atualizando..." : "Salvar Alterações"}
+            </button>
+          )}
+
+          {status !== 'draft' && (
+            <button 
+              type="submit"
+              onClick={() => setStatus('draft')}
+              disabled={saving}
+              className="px-6 py-3 bg-white border border-slate-200 text-slate-600 font-bold rounded-xl hover:bg-slate-50 transition-all"
+            >
+              Mudar para Rascunho
+            </button>
+          )}
+
+          {status === 'draft' && (
+            <button 
+              type="submit"
+              disabled={saving}
+              className="px-6 py-3 bg-slate-900 text-white font-bold rounded-xl hover:bg-slate-800 transition-all"
+            >
+              Salvar Rascunho
+            </button>
+          )}
+
+          {status !== 'archived' && (
+            <button 
+              type="submit"
+              onClick={() => setStatus('archived')}
+              disabled={saving}
+              className="p-3 text-slate-400 hover:text-rose-500 transition-all"
+              title="Arquivar Item"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" />
+              </svg>
+            </button>
+          )}
         </div>
       </div>
+
+      {showSuccess && (
+        <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-in fade-in duration-300">
+          <div className="bg-white rounded-[2.5rem] p-10 max-w-md w-full shadow-2xl border border-emerald-100 text-center space-y-6 animate-in zoom-in duration-300">
+            <div className="w-24 h-24 bg-emerald-500 text-white rounded-[2rem] flex items-center justify-center text-5xl mx-auto shadow-xl shadow-emerald-500/20">
+              📄
+            </div>
+            <div>
+              <h3 className="text-2xl font-black text-slate-900">Relatório Publicado!</h3>
+              <p className="text-slate-500 mt-2 font-medium">O documento técnico agora está disponível na biblioteca pública do portal SEMEAR.</p>
+            </div>
+            <div className="grid grid-cols-1 gap-3 pt-4">
+              <Link 
+                to={`/relatorios/${slug}`} 
+                target="_blank"
+                className="w-full py-4 bg-emerald-600 text-white font-black rounded-2xl hover:bg-emerald-700 transition-all shadow-lg shadow-emerald-600/20 flex items-center justify-center gap-2"
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                </svg>
+                Ver no Portal
+              </Link>
+              <button 
+                onClick={() => navigate("/admin/relatorios")}
+                className="w-full py-4 bg-slate-50 text-slate-600 font-bold rounded-2xl hover:bg-slate-100 transition-all"
+              >
+                Voltar para a Lista
+              </button>
+              <button 
+                onClick={() => setShowSuccess(false)}
+                className="w-full py-2 text-slate-400 font-bold text-xs uppercase tracking-widest hover:text-slate-600 transition-all"
+              >
+                Continuar Editando
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <div className="lg:col-span-2 space-y-6">
@@ -257,13 +459,13 @@ export function AdminReportsEditPage() {
                       </svg>
                     </div>
                     <div>
-                      <p className="text-sm font-bold text-slate-900 truncate max-w-md">{pdfUrl.split('/').pop()}</p>
-                      <p className="text-[10px] font-black text-emerald-600 uppercase tracking-widest mt-1">PDF Vinculado com sucesso</p>
+                      <p className="text-sm font-bold text-slate-900 truncate max-w-md">{selectedPdfAsset?.file_name || pdfUrl.split('/').pop()}</p>
+                      <p className="text-[10px] font-black text-emerald-600 uppercase tracking-widest mt-1">{selectedPdfAsset?.mime_type || "application/pdf"} • {selectedPdfAsset?.size_bytes ? formatAssetSize(selectedPdfAsset.size_bytes) : "Tamanho indisponível"}</p>
                     </div>
                   </div>
                   <button 
                     type="button" 
-                    onClick={() => { setPdfUrl(""); setPdfAssetId(""); }}
+                    onClick={() => { setPdfUrl(""); setPdfAssetId(""); setSelectedPdfAsset(null); }}
                     className="p-2 text-slate-300 hover:text-rose-500 transition-all"
                   >
                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -283,7 +485,7 @@ export function AdminReportsEditPage() {
                   <button
                     key={asset.id}
                     type="button"
-                    onClick={() => { setPdfAssetId(asset.id); setPdfUrl(asset.public_url); }}
+                    onClick={() => applyPdfAsset(asset)}
                     className={`p-2 border-2 rounded-xl transition-all ${
                       pdfAssetId === asset.id ? "bg-emerald-50 border-emerald-500 shadow-md scale-105" : "bg-white border-slate-100 hover:border-emerald-200"
                     }`}
@@ -388,7 +590,7 @@ export function AdminReportsEditPage() {
                   <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                     <button 
                       type="button" 
-                      onClick={() => { setCoverUrl(""); setCoverAssetId(""); }}
+                      onClick={() => { setCoverUrl(""); setCoverAssetId(""); setSelectedCoverAsset(null); }}
                       className="px-4 py-2 bg-rose-600 text-white rounded-xl font-black text-xs uppercase tracking-widest"
                     >
                       Remover
@@ -404,12 +606,18 @@ export function AdminReportsEditPage() {
                 </div>
               )}
             </div>
+            {coverUrl && (
+              <div className="rounded-2xl border border-slate-100 bg-slate-50 p-4">
+                <p className="text-sm font-black text-slate-900 break-all">{selectedCoverAsset?.file_name || selectedCoverAsset?.title || coverUrl.split('/').pop()}</p>
+                <p className="mt-1 text-[10px] font-black uppercase tracking-widest text-slate-400">{selectedCoverAsset?.mime_type || "image"} • {selectedCoverAsset?.size_bytes ? formatAssetSize(selectedCoverAsset.size_bytes) : "Tamanho indisponível"}</p>
+              </div>
+            )}
             <div className="grid grid-cols-4 gap-2">
               {recentAssets.filter(a => a.mime_type.startsWith("image/")).slice(0, 4).map(asset => (
                 <button
                   key={asset.id}
                   type="button"
-                  onClick={() => { setCoverAssetId(asset.id); setCoverUrl(asset.public_url); }}
+                  onClick={() => applyCoverAsset(asset)}
                   className={`aspect-square rounded-lg border-2 transition-all overflow-hidden ${
                     coverAssetId === asset.id ? "border-emerald-500 scale-105" : "border-transparent hover:border-slate-300"
                   }`}

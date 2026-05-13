@@ -1,17 +1,9 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { getCollectionBySlug, type CollectionWithItems } from "../../lib/api";
+import { ACERVO_KIND_LABELS } from "../../lib/acervo";
 import { getOptimizedCover } from "../../lib/imageOptimization";
 import { trackShare } from "../../lib/observability";
-
-const KIND_LABELS: Record<string, string> = {
-    paper: "Artigo científico",
-    report: "Relatório",
-    news: "Notícia",
-    link: "Link externo",
-    video: "Vídeo",
-    photo: "Fotografia"
-};
 
 export function CollectionDetailPage() {
     const { slug } = useParams<{ slug: string }>();
@@ -174,7 +166,7 @@ export function CollectionDetailPage() {
                                 className="group flex flex-col gap-2 rounded-xl border border-ciano/20 bg-fundo/70 p-5 transition-all hover:border-ciano hover:bg-base/20 shadow-sm"
                             >
                                 <span className="inline-block self-start rounded-full bg-ciano/10 px-2 py-0.5 text-[9px] font-bold uppercase tracking-widest text-ciano transition-colors group-hover:bg-ciano/20">
-                                    {KIND_LABELS[item.kind] ?? item.kind}
+                                    {ACERVO_KIND_LABELS[item.kind as keyof typeof ACERVO_KIND_LABELS] ?? item.kind}
                                 </span>
                                 <h3 className="line-clamp-3 text-sm font-bold text-texto leading-snug group-hover:text-ciano">{item.title}</h3>
                                 {item.published_at && (

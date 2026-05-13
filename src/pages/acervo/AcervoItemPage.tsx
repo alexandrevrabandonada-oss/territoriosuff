@@ -2,16 +2,8 @@ import { useEffect, useState, useRef } from "react";
 import { Link, useParams } from "react-router-dom";
 
 import { getAcervoBySlug, listCollectionsForItem, getRelatedItemsByCollections, type AcervoItem, type AcervoCollection } from "../../lib/api";
+import { ACERVO_KIND_LABELS } from "../../lib/acervo";
 import { trackShare } from "../../lib/observability";
-
-const KIND_LABELS: Record<string, string> = {
-    paper: "Artigo científico",
-    report: "Relatório",
-    news: "Notícia",
-    link: "Link externo",
-    video: "Vídeo",
-    photo: "Fotografia"
-};
 
 const SOURCE_TYPE_LABELS: Record<string, string> = {
     cientifico: "Científico",
@@ -138,7 +130,7 @@ export function AcervoItemPage() {
                     {/* Kind badges */}
                     <div className="flex flex-wrap gap-2">
                         <span className="inline-block rounded-full bg-brand-primary/10 px-3 py-0.5 text-xs font-bold uppercase tracking-widest text-brand-primary">
-                            {KIND_LABELS[item.kind] ?? item.kind}
+                            {ACERVO_KIND_LABELS[item.kind as keyof typeof ACERVO_KIND_LABELS] ?? item.kind}
                         </span>
                         {item.source_type && (
                             <span className="inline-block rounded-full bg-accent-green/10 px-3 py-0.5 text-xs font-bold uppercase tracking-widest text-accent-green">
@@ -324,7 +316,7 @@ export function AcervoItemPage() {
                                         className="group flex flex-col rounded-xl border border-border-subtle bg-bg-surface p-4 transition-all hover:border-brand-primary/30 hover:shadow-md"
                                     >
                                         <span className="mb-2 inline-block self-start rounded-full bg-brand-primary/10 px-2 py-0.5 text-[9px] font-bold uppercase tracking-widest text-brand-primary group-hover:bg-brand-primary/20 transition-colors">
-                                            {KIND_LABELS[rel.kind] ?? rel.kind}
+                                            {ACERVO_KIND_LABELS[rel.kind as keyof typeof ACERVO_KIND_LABELS] ?? rel.kind}
                                         </span>
                                         <h4 className="text-sm font-bold text-text-primary group-hover:text-brand-primary line-clamp-2 leading-snug">
                                             {rel.title}

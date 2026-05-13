@@ -7,6 +7,7 @@ interface Report {
   title: string;
   slug: string;
   type: string;
+  kind?: string | null;
   status: string;
   year: number;
   featured: boolean;
@@ -16,7 +17,7 @@ interface Report {
 
 const TYPE_LABELS: Record<string, string> = {
   relatorio: "Relatório",
-  "nota técnica": "Nota Técnica",
+  "nota-tecnica": "Nota Técnica",
   boletim: "Boletim",
   anexo: "Anexo",
 };
@@ -33,11 +34,19 @@ const STATUS_COLORS: Record<string, string> = {
   archived: "bg-rose-100 text-rose-700",
 };
 
+function normalizeReportType(value: unknown): string {
+  if (value === "nota técnica") return "nota-tecnica";
+  if (typeof value === "string" && value.length > 0) return value;
+  return "relatorio";
+}
+
 export function AdminReportsListPage() {
   const [reports, setReports] = useState<Report[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [filterType, setFilterType] = useState("");
+  const [filterYear, setFilterYear] = useState("");
+  const [filterStatus, setFilterStatus] = useState("");
   const navigate = useNavigate();
 
   const loadReports = useCallback(async () => {
@@ -46,14 +55,17 @@ export function AdminReportsListPage() {
 
     let query = supabase
       .from("reports")
-      .select("id, title, slug, type, status, year, featured, published_at, pdf_url")
+      .select("id, title, slug, type, kind, status, year, featured, published_at, pdf_url")
       .order("published_at", { ascending: false });
 
     if (searchTerm) {
-      query = query.ilike("title", `%${searchTerm}%`);
+      query = query.or(`title.ilike.%${searchTerm}%,slug.ilike.%${searchTerm}%`);
     }
-    if (filterType) {
-      query = query.eq("type", filterType);
+    if (filterYear) {
+      query = query.eq("year", parseInt(filterYear));
+    }
+    if (filterStatus) {
+      query = query.eq("status", filterStatus);
     }
 
     const { data, error } = await query;
@@ -61,10 +73,18 @@ export function AdminReportsListPage() {
     if (error) {
       console.error("[Reports] Erro ao carregar:", error);
     } else {
-      setReports(data || []);
+      const normalized = ((data || []) as Report[]).filter((report) => {
+        if (!filterType) return true;
+        return normalizeReportType(report.type || report.kind) === filterType;
+      }).map((report) => ({
+        ...report,
+        type: normalizeReportType(report.type || report.kind),
+      }));
+
+      setReports(normalized);
     }
     setLoading(false);
-  }, [searchTerm, filterType]);
+  }, [searchTerm, filterType, filterYear, filterStatus]);
 
   useEffect(() => {
     loadReports();
@@ -130,6 +150,34 @@ export function AdminReportsListPage() {
           </select>
         </div>
 
+        <div className="w-32">
+          <label className="block text-xs font-black text-slate-400 uppercase tracking-widest mb-2">Ano</label>
+          <select
+            value={filterYear}
+            onChange={(e) => setFilterYear(e.target.value)}
+            className="w-full px-5 py-3 bg-slate-50 border border-slate-100 rounded-xl font-bold"
+          >
+            <option value="">Todos</option>
+            {Array.from({ length: 5 }, (_, i) => new Date().getFullYear() - i).map(year => (
+              <option key={year} value={year}>{year}</option>
+            ))}
+          </select>
+        </div>
+
+        <div className="w-40">
+          <label className="block text-xs font-black text-slate-400 uppercase tracking-widest mb-2">Status</label>
+          <select
+            value={filterStatus}
+            onChange={(e) => setFilterStatus(e.target.value)}
+            className="w-full px-5 py-3 bg-slate-50 border border-slate-100 rounded-xl font-bold"
+          >
+            <option value="">Todos</option>
+            {Object.entries(STATUS_LABELS).map(([val, label]) => (
+              <option key={val} value={val}>{label}</option>
+            ))}
+          </select>
+        </div>
+
         <button 
           onClick={() => loadReports()}
           className="p-3 text-slate-400 hover:text-emerald-600 transition-colors"
@@ -166,7 +214,17 @@ export function AdminReportsListPage() {
                           <span className="w-2 h-2 bg-amber-400 rounded-full animate-pulse" title="Em Destaque" />
                         )}
                         <div>
-                          <p className="font-bold text-slate-900 leading-snug">{report.title}</p>
+                          <div className="flex items-center gap-2">
+                            <p className="font-bold text-slate-900 leading-snug">{report.title}</p>
+                            {!report.pdf_url && (
+                              <span className="px-2 py-0.5 bg-rose-50 text-rose-600 text-[8px] font-black uppercase rounded-md border border-rose-100 flex items-center gap-1">
+                                <svg className="w-2.5 h-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                                </svg>
+                                Sem PDF
+                              </span>
+                            )}
+                          </div>
                           <p className="text-[10px] font-mono text-slate-400 mt-1 uppercase tracking-tighter">/{report.slug}</p>
                         </div>
                       </div>

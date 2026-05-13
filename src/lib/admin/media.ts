@@ -1,5 +1,23 @@
 import { supabase } from "../supabase/client";
 
+export interface MediaAssetRecord {
+  id: string;
+  bucket: string;
+  path: string;
+  public_url: string;
+  file_name: string;
+  mime_type: string;
+  size_bytes: number;
+  title: string;
+  description?: string;
+  alt_text?: string;
+  credit?: string;
+  source?: string;
+  tags?: string[];
+  status?: string;
+  created_at?: string;
+}
+
 export interface UploadOptions {
   bucket: string;
   file: File;
@@ -10,6 +28,43 @@ export interface UploadOptions {
   source?: string;
   tags?: string[];
   status?: "draft" | "published" | "archived";
+}
+
+export function isImageAsset(asset: Pick<MediaAssetRecord, "mime_type"> | null | undefined) {
+  return Boolean(asset?.mime_type?.startsWith("image/"));
+}
+
+export function isPdfAsset(asset: Pick<MediaAssetRecord, "mime_type"> | null | undefined) {
+  return asset?.mime_type === "application/pdf";
+}
+
+export function formatAssetSize(sizeBytes: number | null | undefined) {
+  if (!sizeBytes || Number.isNaN(sizeBytes)) return "0 B";
+  if (sizeBytes < 1024) return `${sizeBytes} B`;
+
+  const units = ["KB", "MB", "GB"];
+  let size = sizeBytes / 1024;
+  let unitIndex = 0;
+
+  while (size >= 1024 && unitIndex < units.length - 1) {
+    size /= 1024;
+    unitIndex += 1;
+  }
+
+  return `${size.toFixed(2)} ${units[unitIndex]}`;
+}
+
+export async function getMediaAssetById(assetId: string): Promise<MediaAssetRecord | null> {
+  if (!supabase) throw new Error("Supabase não configurado.");
+
+  const { data, error } = await supabase
+    .from("media_assets")
+    .select("id, bucket, path, public_url, file_name, mime_type, size_bytes, title, description, alt_text, credit, source, tags, status, created_at")
+    .eq("id", assetId)
+    .maybeSingle();
+
+  if (error) throw error;
+  return data as MediaAssetRecord | null;
 }
 
 /**
@@ -90,5 +145,5 @@ export async function adminUploadMedia(options: UploadOptions) {
     throw dbError;
   }
 
-  return asset;
+  return asset as MediaAssetRecord;
 }

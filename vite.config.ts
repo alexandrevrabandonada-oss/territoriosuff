@@ -42,8 +42,19 @@ export default defineConfig({
     sourcemap: true,
     rollupOptions: {
       output: {
-        manualChunks(id) {
-          const normalizedId = id.replace(/\\/g, "/");
+          manualChunks(id) {
+            const normalizedId = id.replace(/\\/g, "/");
+            
+            if (
+              normalizedId.includes("/src/admin/") ||
+              normalizedId.includes("/pages/admin/") ||
+              normalizedId.includes("/lib/admin/") ||
+              normalizedId.includes("/layout/AdminLayout") ||
+              normalizedId.includes("/components/AdminGuard")
+            ) {
+              return "admin-bundle";
+            }
+
           if (!normalizedId.includes("node_modules")) return undefined;
 
           if (normalizedId.includes("/react-dom/") || normalizedId.includes("/react/")) {

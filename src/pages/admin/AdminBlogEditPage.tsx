@@ -1,7 +1,7 @@
 import { useEffect, useState, useCallback } from "react";
-import { useNavigate, useParams, Link } from "react-router-dom";
+import { useNavigate, useParams, Link, useLocation } from "react-router-dom";
 import { supabase } from "../../lib/supabase/client";
-import { adminUploadMedia } from "../../lib/admin/media";
+import { adminUploadMedia, formatAssetSize, getMediaAssetById, isImageAsset, isPdfAsset, type MediaAssetRecord } from "../../lib/admin/media";
 
 const CATEGORIES = [
   "Notícias",
@@ -19,17 +19,48 @@ const STATUSES = [
   { value: "archived", label: "Arquivado" },
 ];
 
+function toLocalDateTimeInput(value: string | null | undefined): string {
+  if (!value) return "";
+
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return "";
+
+  const offset = date.getTimezoneOffset();
+  const localDate = new Date(date.getTime() - offset * 60_000);
+  return localDate.toISOString().slice(0, 16);
+}
+
+function renderMarkdownPreview(text: string): string {
+  return text
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/^###\s+(.+)$/gm, "<h3>$1</h3>")
+    .replace(/^##\s+(.+)$/gm, "<h2>$1</h2>")
+    .replace(/^#\s+(.+)$/gm, "<h1>$1</h1>")
+    .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
+    .replace(/\*(.+?)\*/g, "<em>$1</em>")
+    .replace(/\[(.+?)\]\((.+?)\)/g, '<a href="$2" target="_blank" rel="noreferrer">$1</a>')
+    .replace(/\n/g, "<br />");
+}
+
 export function AdminBlogEditPage() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const assetIdFromUrl = searchParams.get("assetId");
   const isNew = !id;
 
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
-  const [recentAssets, setRecentAssets] = useState<any[]>([]);
+  const [recentAssets, setRecentAssets] = useState<MediaAssetRecord[]>([]);
   const [showPreview, setShowPreview] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
   const [assetSearch, setAssetSearch] = useState("");
+  const [selectedCoverAsset, setSelectedCoverAsset] = useState<MediaAssetRecord | null>(null);
+  const [attachmentAsset, setAttachmentAsset] = useState<MediaAssetRecord | null>(null);
 
   // Form State
   const [title, setTitle] = useState("");
@@ -43,19 +74,36 @@ export function AdminBlogEditPage() {
   const [tags, setTags] = useState("");
   const [coverAssetId, setCoverAssetId] = useState("");
 
+  const applyCoverAsset = (asset: MediaAssetRecord) => {
+    setCoverAssetId(asset.id);
+    setSelectedCoverAsset(asset);
+  };
+
   const loadData = useCallback(async () => {
     if (!supabase) return;
     setLoading(true);
 
     const [{ data: assets }] = await Promise.all([
       supabase.from("media_assets")
-        .select("id, title, public_url, mime_type, alt_text")
+        .select("id, bucket, path, title, file_name, public_url, mime_type, size_bytes, alt_text, status, created_at")
         .ilike("title", `%${assetSearch}%`)
         .order("created_at", { ascending: false })
         .limit(12)
     ]);
     
     setRecentAssets(assets || []);
+
+    if (isNew && assetIdFromUrl) {
+      const asset = await getMediaAssetById(assetIdFromUrl);
+      if (asset) {
+        if (!title) setTitle(asset.title);
+        if (isImageAsset(asset)) {
+          applyCoverAsset(asset);
+        } else if (isPdfAsset(asset)) {
+          setAttachmentAsset(asset);
+        }
+      }
+    }
 
     if (!isNew && loading) {
       const { data, error } = await supabase.from("blog_posts").select("*").eq("id", id).single();
@@ -72,13 +120,17 @@ export function AdminBlogEditPage() {
         setCategory(data.category || "Notícias");
         setStatus(data.status);
         setAuthorName(data.author_name || "");
-        setPublishAt(data.publish_at || "");
+        setPublishAt(toLocalDateTimeInput(data.publish_at || data.published_at));
         setTags(data.tags?.join(", ") || "");
         setCoverAssetId(data.cover_asset_id || "");
+        if (data.cover_asset_id) {
+          const coverAsset = await getMediaAssetById(data.cover_asset_id);
+          setSelectedCoverAsset(coverAsset);
+        }
       }
     }
     setLoading(false);
-  }, [id, isNew, navigate, assetSearch]);
+  }, [id, isNew, navigate, assetSearch, assetIdFromUrl, loading]);
 
   useEffect(() => {
     loadData();
@@ -104,14 +156,18 @@ export function AdminBlogEditPage() {
     setIsUploading(true);
     try {
       const asset = await adminUploadMedia({
-        bucket: "media",
+        bucket: file.type === "application/pdf" ? "blog" : "media",
         file,
         title: file.name.replace(/\.[^/.]+$/, ""),
         status: "published",
         altText: `Capa da matéria: ${title || file.name}`
       });
-      
-      setCoverAssetId(asset.id);
+
+      if (isImageAsset(asset)) {
+        applyCoverAsset(asset);
+      } else if (isPdfAsset(asset)) {
+        setAttachmentAsset(asset);
+      }
       loadData();
     } catch (err: any) {
       alert("Erro no upload: " + err.message);
@@ -124,34 +180,54 @@ export function AdminBlogEditPage() {
     e.preventDefault();
     if (!supabase) return;
 
-    // Alertas de validação
-    if (status === "published" && !summary.trim()) {
-      alert("⚠️ O resumo é obrigatório para publicação.");
-      return;
-    }
-    if (status === "published" && !coverAssetId) {
-      alert("⚠️ Uma imagem de capa é obrigatória para publicação.");
-      return;
-    }
+    const coverAsset = selectedCoverAsset || recentAssets.find((asset) => asset.id === coverAssetId) || null;
+    const normalizedPublishAt = publishAt ? new Date(publishAt).toISOString() : null;
 
-    const selectedAsset = recentAssets.find(a => a.id === coverAssetId);
-    if (status === "published" && selectedAsset && !selectedAsset.alt_text) {
-      alert("♿ Alerta de Acessibilidade: A imagem de capa selecionada não possui texto alternativo. Por favor, ajuste no banco de mídias para garantir acessibilidade.");
+    // Alertas de validação
+    if (status === "published") {
+      if (!title.trim()) {
+        alert("⚠️ O título é obrigatório.");
+        return;
+      }
+      if (!summary.trim()) {
+        alert("⚠️ O resumo é obrigatório para publicação.");
+        return;
+      }
+      if (!contentMd.trim()) {
+        alert("⚠️ O corpo da matéria não pode estar vazio.");
+        return;
+      }
+
+      if (!coverAsset) {
+        const shouldContinueWithoutCover = window.confirm("Nenhuma capa foi selecionada. A capa e recomendada para a publicacao no portal. Deseja publicar mesmo assim?");
+        if (!shouldContinueWithoutCover) {
+          return;
+        }
+      }
+
+      if (coverAsset && !coverAsset.alt_text?.trim()) {
+        alert("♿ Erro de Acessibilidade: A imagem de capa selecionada não possui texto alternativo. Por favor, ajuste no banco de mídias antes de publicar.");
+        setSaving(false);
+        return;
+      }
     }
 
     setSaving(true);
+    const attachmentBlock = attachmentAsset && !contentMd.includes(attachmentAsset.public_url)
+      ? `\n\n## Anexo\n\n[📄 ${attachmentAsset.title}](${attachmentAsset.public_url})`
+      : "";
     const payload = {
       title,
       slug,
       summary,
-      content_md: contentMd,
+      content_md: `${contentMd}${attachmentBlock}`,
       category,
       status,
       author_name: authorName,
-      publish_at: publishAt || null,
+      publish_at: normalizedPublishAt,
       tags: tags.split(",").map(t => t.trim()).filter(Boolean),
       cover_asset_id: coverAssetId || null,
-      published_at: status === "published" ? new Date().toISOString() : null
+      published_at: status === "published" ? (normalizedPublishAt || new Date().toISOString()) : null
     };
 
     try {
@@ -162,8 +238,12 @@ export function AdminBlogEditPage() {
         const { error } = await supabase.from("blog_posts").update(payload).eq("id", id);
         if (error) throw error;
       }
-      alert("Matéria salva com sucesso!");
-      navigate("/admin/blog");
+      if (status === "published") {
+        setShowSuccess(true);
+      } else {
+        alert("🎉 Matéria salva como rascunho com sucesso!");
+        navigate("/admin/blog");
+      }
     } catch (err: any) {
       alert("Erro ao salvar: " + err.message);
     } finally {
@@ -208,14 +288,136 @@ export function AdminBlogEditPage() {
             </Link>
           )}
           <button 
-            type="submit" 
-            disabled={saving}
-            className="px-10 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-black rounded-2xl shadow-xl shadow-emerald-600/20 transition-all active:scale-[0.98] disabled:opacity-50 uppercase tracking-widest text-xs"
+            type="button"
+            onClick={() => {
+              const url = `${window.location.origin}/blog/${slug}`;
+              navigator.clipboard.writeText(url);
+              alert("Link público copiado!");
+            }}
+            className="p-2 text-slate-400 hover:text-emerald-600 transition-all"
+            title="Copiar Link Público"
           >
-            {saving ? "Salvando..." : "Salvar Agora"}
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
+            </svg>
           </button>
+
+          <button 
+            type="button" 
+            onClick={() => navigate("/admin/blog")}
+            className="px-6 py-2 text-slate-500 font-bold hover:bg-slate-100 rounded-xl transition-all"
+          >
+            Sair
+          </button>
+          
+          {status !== 'published' && (
+            <button 
+              type="submit" 
+              onClick={() => setStatus('published')}
+              disabled={saving}
+              className="px-10 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-black rounded-2xl shadow-xl shadow-emerald-600/20 transition-all active:scale-[0.98] disabled:opacity-50 uppercase tracking-widest text-xs"
+            >
+              {saving ? "Publicando..." : "🚀 Publicar Agora"}
+            </button>
+          )}
+
+          {status === 'published' && (
+            <button 
+              type="submit"
+              disabled={saving}
+              className="px-10 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-black rounded-2xl shadow-xl shadow-emerald-600/20 transition-all active:scale-[0.98] disabled:opacity-50 uppercase tracking-widest text-xs"
+            >
+              {saving ? "Atualizando..." : "Salvar Alterações"}
+            </button>
+          )}
+
+          {status !== 'draft' && (
+            <button 
+              type="submit"
+              onClick={() => setStatus('draft')}
+              disabled={saving}
+              className="px-6 py-3 bg-white border border-slate-200 text-slate-600 font-bold rounded-xl hover:bg-slate-50 transition-all"
+            >
+              Mudar para Rascunho
+            </button>
+          )}
+
+          {status === 'draft' && (
+            <button 
+              type="submit"
+              disabled={saving}
+              className="px-6 py-3 bg-slate-900 text-white font-bold rounded-xl hover:bg-slate-800 transition-all"
+            >
+              Salvar Rascunho
+            </button>
+          )}
+
+          {status !== 'archived' && (
+            <button 
+              type="submit"
+              onClick={() => setStatus('archived')}
+              disabled={saving}
+              className="p-3 text-slate-400 hover:text-rose-500 transition-all"
+              title="Arquivar Item"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" />
+              </svg>
+            </button>
+          )}
         </div>
       </div>
+
+      {showSuccess && (
+        <div className="fixed right-4 top-4 z-50 w-full max-w-md animate-in slide-in-from-top-4 fade-in duration-300">
+          <div className="rounded-[2rem] border border-emerald-100 bg-white p-5 shadow-2xl shadow-emerald-500/10">
+            <div className="flex items-start gap-4">
+              <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-2xl bg-emerald-500 text-2xl text-white shadow-lg shadow-emerald-500/20">
+                ✍️
+              </div>
+              <div className="min-w-0 flex-1">
+                <div className="flex items-start justify-between gap-3">
+                  <div>
+                    <p className="text-sm font-black uppercase tracking-widest text-emerald-600">Publicado</p>
+                    <h3 className="mt-1 text-lg font-black text-slate-900">Matéria visível no portal</h3>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setShowSuccess(false)}
+                    className="rounded-xl p-2 text-slate-300 transition-all hover:bg-slate-50 hover:text-slate-500"
+                    title="Fechar aviso"
+                  >
+                    <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                  </button>
+                </div>
+                <p className="mt-2 text-sm font-medium text-slate-500">O post foi publicado e ja pode ser acessado na area publica do blog.</p>
+                <div className="mt-4 flex flex-wrap gap-2">
+                  <Link
+                    to={`/blog/${slug}`}
+                    target="_blank"
+                    className="inline-flex items-center justify-center gap-2 rounded-xl bg-emerald-600 px-4 py-3 text-xs font-black uppercase tracking-widest text-white transition-all hover:bg-emerald-700"
+                  >
+                    <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                    </svg>
+                    Ver no portal
+                  </Link>
+                  <button
+                    type="button"
+                    onClick={() => navigate("/admin/blog")}
+                    className="inline-flex items-center justify-center rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-xs font-black uppercase tracking-widest text-slate-600 transition-all hover:bg-slate-100"
+                  >
+                    Voltar para a lista
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <div className="lg:col-span-2 space-y-6">
@@ -247,7 +449,12 @@ export function AdminBlogEditPage() {
               </div>
 
               <div>
-                <label className="block text-xs font-black text-slate-400 uppercase tracking-widest mb-2">Resumo (Lide)</label>
+                <div className="flex items-center justify-between mb-2">
+                  <label className="block text-xs font-black text-slate-400 uppercase tracking-widest">Resumo (Lide)</label>
+                  <span className={`text-[10px] font-bold ${summary.length > 280 ? 'text-rose-500' : 'text-slate-400'}`}>
+                    {summary.length} / 280 caracteres
+                  </span>
+                </div>
                 <textarea
                   value={summary}
                   onChange={(e) => setSummary(e.target.value)}
@@ -257,14 +464,7 @@ export function AdminBlogEditPage() {
               </div>
 
               <div className="relative">
-                {showPreview ? (
-                  <div className="bg-slate-50 rounded-2xl p-8 border border-slate-100 h-[600px] overflow-y-auto prose prose-slate prose-emerald max-w-none shadow-inner">
-                    <h1 className="font-black text-slate-900 mb-4">{title || "Título da Matéria"}</h1>
-                    <p className="lead font-bold text-slate-500 mb-8">{summary}</p>
-                    <div className="markdown-content" dangerouslySetInnerHTML={{ __html: contentMd.replace(/\n/g, "<br/>") }} />
-                    <p className="text-[10px] text-slate-300 italic mt-20 border-t pt-4">Preview simplificado do conteúdo.</p>
-                  </div>
-                ) : (
+                <div className={`grid gap-4 ${showPreview ? "xl:grid-cols-2" : "grid-cols-1"}`}>
                   <div>
                     <label className="block text-xs font-black text-slate-400 uppercase tracking-widest mb-2">Conteúdo Markdown</label>
                     <textarea
@@ -274,7 +474,16 @@ export function AdminBlogEditPage() {
                       placeholder="# Comece aqui...\n\nUse Markdown para formatar seu texto."
                     />
                   </div>
-                )}
+
+                  {showPreview && (
+                    <div className="bg-slate-50 rounded-2xl p-8 border border-slate-100 h-[600px] overflow-y-auto prose prose-slate prose-emerald max-w-none shadow-inner">
+                      <h1 className="font-black text-slate-900 mb-4">{title || "Título da Matéria"}</h1>
+                      <p className="lead font-bold text-slate-500 mb-8">{summary || "Resumo da matéria"}</p>
+                      <div className="markdown-content" dangerouslySetInnerHTML={{ __html: renderMarkdownPreview(contentMd) }} />
+                      <p className="text-[10px] text-slate-300 italic mt-20 border-t pt-4">Preview simplificado do conteúdo em tempo real.</p>
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
           </section>
@@ -320,17 +529,18 @@ export function AdminBlogEditPage() {
                 </select>
               </div>
 
-              {status === "scheduled" && (
-                <div>
-                  <label className="block text-xs font-black text-slate-400 uppercase tracking-widest mb-2">Agendar Para</label>
-                  <input
-                    type="datetime-local"
-                    value={publishAt}
-                    onChange={(e) => setPublishAt(e.target.value)}
-                    className="w-full px-5 py-3 bg-slate-50 border border-slate-100 rounded-xl font-bold"
-                  />
-                </div>
-              )}
+              <div>
+                <label className="block text-xs font-black text-slate-400 uppercase tracking-widest mb-2">Data de Publicação</label>
+                <input
+                  type="datetime-local"
+                  value={publishAt}
+                  onChange={(e) => setPublishAt(e.target.value)}
+                  className="w-full px-5 py-3 bg-slate-50 border border-slate-100 rounded-xl font-bold"
+                />
+                <p className="mt-2 text-[10px] font-bold uppercase tracking-widest text-slate-400">
+                  {status === "scheduled" ? "A materia sera liberada no horario definido." : "Se vazio, a publicacao usa o momento do salvamento."}
+                </p>
+              </div>
 
               <div>
                 <label className="block text-xs font-black text-slate-400 uppercase tracking-widest mb-2">Tags (vírgulas)</label>
@@ -360,22 +570,22 @@ export function AdminBlogEditPage() {
               <h2 className="text-xl font-black text-slate-900">Imagem de Capa</h2>
               <label className={`cursor-pointer px-4 py-2 bg-emerald-50 text-emerald-700 rounded-xl font-black text-xs border border-emerald-100 hover:bg-emerald-100 transition-all ${isUploading ? 'opacity-50' : ''}`}>
                 {isUploading ? "Enviando..." : "+ Novo Upload"}
-                <input type="file" className="hidden" accept="image/*" onChange={handleQuickUpload} disabled={isUploading} />
+                <input type="file" className="hidden" accept=".pdf,image/*" onChange={handleQuickUpload} disabled={isUploading} />
               </label>
             </div>
             
             <div className="aspect-video bg-slate-50 rounded-2xl border-2 border-dashed border-slate-100 overflow-hidden relative group">
-              {coverAssetId && recentAssets.find(a => a.id === coverAssetId) ? (
+              {coverAssetId && (selectedCoverAsset || recentAssets.find(a => a.id === coverAssetId)) ? (
                 <>
                   <img 
-                    src={recentAssets.find(a => a.id === coverAssetId).public_url} 
+                    src={(selectedCoverAsset || recentAssets.find(a => a.id === coverAssetId))?.public_url} 
                     alt="Capa" 
                     className="w-full h-full object-cover"
                   />
                   <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                     <button 
                       type="button" 
-                      onClick={() => setCoverAssetId("")}
+                      onClick={() => { setCoverAssetId(""); setSelectedCoverAsset(null); }}
                       className="px-4 py-2 bg-rose-600 text-white rounded-xl font-black text-xs uppercase tracking-widest"
                     >
                       Remover Capa
@@ -394,6 +604,76 @@ export function AdminBlogEditPage() {
                   </p>
                 </div>
               )}
+            </div>
+            {coverAssetId && (selectedCoverAsset || recentAssets.find(a => a.id === coverAssetId)) && (
+              <div className="rounded-2xl border border-slate-100 bg-slate-50 p-4">
+                {(() => {
+                  const asset = selectedCoverAsset || recentAssets.find(a => a.id === coverAssetId);
+                  if (!asset) return null;
+                  return (
+                    <>
+                      <p className="text-sm font-black text-slate-900 break-all">{asset.file_name || asset.title}</p>
+                      <p className="mt-1 text-[10px] font-black uppercase tracking-widest text-slate-400">{asset.mime_type} • {asset.size_bytes ? formatAssetSize(asset.size_bytes) : "Tamanho indisponível"}</p>
+                    </>
+                  );
+                })()}
+              </div>
+            )}
+
+            {!coverAssetId && (
+              <div className="rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 text-xs font-bold text-amber-900">
+                Capa recomendada: a publicacao pode seguir sem imagem, mas os cards do portal ficam melhores com uma capa definida.
+              </div>
+            )}
+
+            <div className="rounded-[2rem] border border-slate-100 bg-slate-50 p-5 space-y-4">
+              <div className="flex items-center justify-between gap-4">
+                <div>
+                  <h3 className="text-sm font-black text-slate-900 uppercase tracking-widest">Documento Anexo</h3>
+                  <p className="mt-1 text-xs font-bold text-slate-500">O PDF selecionado entra como anexo da matéria no momento de salvar.</p>
+                </div>
+                {attachmentAsset && (
+                  <button
+                    type="button"
+                    onClick={() => setAttachmentAsset(null)}
+                    className="rounded-xl border border-rose-100 bg-white px-3 py-2 text-[10px] font-black uppercase tracking-widest text-rose-600 transition-all hover:bg-rose-50"
+                  >
+                    Remover Anexo
+                  </button>
+                )}
+              </div>
+
+              {attachmentAsset ? (
+                <div className="flex items-center gap-4 rounded-2xl border border-slate-100 bg-white p-4">
+                  <div className="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-2xl border border-slate-200 bg-slate-50 text-rose-500">
+                    <svg className="h-7 w-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                    </svg>
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <p className="text-sm font-black text-slate-900 break-all">{attachmentAsset.file_name || attachmentAsset.title}</p>
+                    <p className="mt-1 text-[10px] font-black uppercase tracking-widest text-slate-400">{attachmentAsset.mime_type} • {attachmentAsset.size_bytes ? formatAssetSize(attachmentAsset.size_bytes) : "Tamanho indisponível"}</p>
+                  </div>
+                </div>
+              ) : (
+                <p className="rounded-2xl border border-dashed border-slate-200 bg-white px-4 py-6 text-center text-xs font-bold text-slate-400">Nenhum PDF selecionado.</p>
+              )}
+
+              <div className="grid grid-cols-4 gap-2">
+                {recentAssets.filter((asset) => isPdfAsset(asset)).map((asset) => (
+                  <button
+                    key={asset.id}
+                    type="button"
+                    onClick={() => setAttachmentAsset(asset)}
+                    className={`rounded-xl border-2 p-3 text-center transition-all ${attachmentAsset?.id === asset.id ? "border-emerald-500 bg-emerald-50 shadow-md" : "border-slate-100 bg-white hover:border-emerald-200"}`}
+                  >
+                    <svg className={`mx-auto h-8 w-8 ${attachmentAsset?.id === asset.id ? "text-emerald-500" : "text-slate-300"}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                    </svg>
+                    <span className="mt-2 block truncate text-[8px] font-black uppercase tracking-widest text-slate-400">{asset.title}</span>
+                  </button>
+                ))}
+              </div>
             </div>
 
             <div className="space-y-4">
@@ -415,7 +695,7 @@ export function AdminBlogEditPage() {
                   <button
                     key={asset.id}
                     type="button"
-                    onClick={() => setCoverAssetId(asset.id)}
+                    onClick={() => applyCoverAsset(asset)}
                     className={`aspect-square rounded-lg border-2 transition-all overflow-hidden ${
                       coverAssetId === asset.id ? "border-emerald-500 scale-105 shadow-md" : "border-transparent hover:border-slate-300"
                     }`}
