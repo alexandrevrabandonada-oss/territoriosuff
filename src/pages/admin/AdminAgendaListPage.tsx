@@ -10,7 +10,8 @@ interface EventItem {
   status: string;
   capacity: number;
   location_name: string;
-  registrations_count: { count: number }[];
+  bairro: string;
+  registrations: { count: number }[];
 }
 
 const STATUS_LABELS: Record<string, string> = {
@@ -28,7 +29,7 @@ const STATUS_COLORS: Record<string, string> = {
 };
 
 export function AdminAgendaListPage() {
-  const [events, setEvents] = useState<any[]>([]);
+  const [events, setEvents] = useState<EventItem[]>([]);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
@@ -56,16 +57,22 @@ export function AdminAgendaListPage() {
     loadEvents();
   }, [loadEvents]);
 
+  const copyLink = (id: string) => {
+    const url = `${window.location.origin}/agenda`; // In reality, we might have a slug for events too
+    navigator.clipboard.writeText(url);
+    alert("Link da agenda copiado!");
+  };
+
   return (
     <div className="space-y-8 animate-in fade-in duration-500">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-slate-900 tracking-tight">Agenda SEMEAR</h1>
-          <p className="text-slate-500 mt-1">Gestão de eventos, oficinas e atividades territoriais.</p>
+          <h1 className="text-3xl font-black text-slate-900 tracking-tight">Agenda & Territórios</h1>
+          <p className="text-slate-500 mt-1 font-medium">Gestão de eventos, oficinas e atividades de campo.</p>
         </div>
         <Link 
           to="/admin/agenda/novo"
-          className="inline-flex items-center gap-2 px-6 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl shadow-lg shadow-emerald-600/20 transition-all"
+          className="inline-flex items-center gap-2 px-8 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-black rounded-2xl shadow-xl shadow-emerald-600/20 transition-all active:scale-[0.98] uppercase tracking-widest text-xs"
         >
           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
@@ -74,78 +81,93 @@ export function AdminAgendaListPage() {
         </Link>
       </div>
 
-      <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+      <div className="bg-white rounded-[2rem] border border-slate-200 shadow-xl shadow-slate-200/40 overflow-hidden">
         {loading ? (
-          <div className="p-20 text-center text-slate-400 italic">Carregando agenda...</div>
+          <div className="p-20 text-center text-slate-400 italic font-medium">Carregando atividades...</div>
         ) : events.length === 0 ? (
-          <div className="p-20 text-center text-slate-400 italic">Nenhum evento encontrado.</div>
+          <div className="p-20 text-center text-slate-400 italic font-medium">Nenhum evento encontrado.</div>
         ) : (
           <div className="overflow-x-auto">
-            <table className="w-full text-left">
-              <thead className="bg-slate-50 border-b border-slate-200">
-                <tr>
-                  <th className="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Evento</th>
-                  <th className="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Data / Local</th>
-                  <th className="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Inscritos</th>
-                  <th className="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Status</th>
-                  <th className="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider text-right">Ações</th>
+            <table className="w-full text-left border-collapse">
+              <thead>
+                <tr className="bg-slate-50/50 border-b border-slate-100">
+                  <th className="px-8 py-5 text-[10px] font-black text-slate-400 uppercase tracking-widest">Evento</th>
+                  <th className="px-8 py-5 text-[10px] font-black text-slate-400 uppercase tracking-widest">Data / Local</th>
+                  <th className="px-8 py-5 text-[10px] font-black text-slate-400 uppercase tracking-widest">Ocupação</th>
+                  <th className="px-8 py-5 text-[10px] font-black text-slate-400 uppercase tracking-widest">Status</th>
+                  <th className="px-8 py-5 text-[10px] font-black text-slate-400 uppercase tracking-widest text-right">Ações</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-100">
+              <tbody className="divide-y divide-slate-50">
                 {events.map((event) => {
                   const regCount = event.registrations?.[0]?.count || 0;
-                  const isFull = event.capacity && regCount >= event.capacity;
+                  const capacity = event.capacity || 0;
+                  const isFull = capacity > 0 && regCount >= capacity;
+                  const waitlist = capacity > 0 && regCount > capacity ? regCount - capacity : 0;
                   
                   return (
                     <tr key={event.id} className="hover:bg-slate-50/50 transition-colors group">
-                      <td className="px-6 py-4">
-                        <p className="font-bold text-slate-900 line-clamp-1">{event.title}</p>
-                        <p className="text-[10px] text-slate-400 uppercase font-bold mt-0.5">{event.bairro || "Sul Fluminense"}</p>
+                      <td className="px-8 py-6">
+                        <p className="font-bold text-slate-900 leading-snug">{event.title}</p>
+                        <p className="text-[10px] font-black text-slate-400 mt-1 uppercase tracking-widest">{event.bairro || "Sul Fluminense"}</p>
                       </td>
-                      <td className="px-6 py-4">
-                        <p className="text-sm text-slate-700 font-medium">
+                      <td className="px-8 py-6">
+                        <p className="text-xs font-bold text-slate-700">
                           {new Date(event.start_at).toLocaleDateString("pt-BR")} às {new Date(event.start_at).toLocaleTimeString("pt-BR", { hour: '2-digit', minute: '2-digit' })}
                         </p>
-                        <p className="text-xs text-slate-500">{event.location_name || event.location || "Local a definir"}</p>
+                        <p className="text-[10px] font-bold text-slate-400 mt-1">{event.location_name || "Local a definir"}</p>
                       </td>
-                      <td className="px-6 py-4">
-                        <div className="flex flex-col gap-1">
-                          <div className="flex items-center justify-between text-[10px] font-bold">
-                            <span className={isFull ? "text-rose-600" : "text-emerald-600"}>{regCount}</span>
-                            <span className="text-slate-400">/ {event.capacity || "∞"}</span>
+                      <td className="px-8 py-6">
+                        <div className="flex flex-col gap-1.5 max-w-[120px]">
+                          <div className="flex items-center justify-between text-[10px] font-black uppercase tracking-tighter">
+                            <span className={isFull ? "text-rose-600" : "text-emerald-600"}>
+                              {regCount} {waitlist > 0 && <span className="text-rose-400">({waitlist} fila)</span>}
+                            </span>
+                            <span className="text-slate-300">/ {capacity || "∞"}</span>
                           </div>
-                          <div className="w-24 h-1.5 bg-slate-100 rounded-full overflow-hidden">
+                          <div className="w-full h-2 bg-slate-100 rounded-full overflow-hidden shadow-inner">
                             <div 
                               className={`h-full transition-all ${isFull ? "bg-rose-500" : "bg-emerald-500"}`} 
-                              style={{ width: `${Math.min(100, (regCount / (event.capacity || regCount || 1)) * 100)}%` }}
+                              style={{ width: `${Math.min(100, (regCount / (capacity || regCount || 1)) * 100)}%` }}
                             />
                           </div>
                         </div>
                       </td>
-                      <td className="px-6 py-4">
-                        <span className={`text-[10px] uppercase tracking-widest font-bold px-2 py-1 rounded-full ${STATUS_COLORS[event.status]}`}>
+                      <td className="px-8 py-6">
+                        <span className={`text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full border ${STATUS_COLORS[event.status]}`}>
                           {STATUS_LABELS[event.status]}
                         </span>
                       </td>
-                      <td className="px-6 py-4 text-right space-x-2">
-                        <button 
-                          onClick={() => navigate(`/admin/agenda/${event.id}/inscricoes`)}
-                          className="p-2 text-slate-400 hover:text-emerald-600 transition-colors"
-                          title="Ver Inscritos"
-                        >
-                          <svg className="w-5 h-5 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
-                          </svg>
-                        </button>
-                        <button 
-                          onClick={() => navigate(`/admin/agenda/${event.id}`)}
-                          className="p-2 text-slate-400 hover:text-blue-600 transition-colors"
-                          title="Editar"
-                        >
-                          <svg className="w-5 h-5 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
-                          </svg>
-                        </button>
+                      <td className="px-8 py-6 text-right">
+                        <div className="flex items-center justify-end gap-2">
+                          <button 
+                            onClick={() => copyLink(event.id)}
+                            className="p-2 text-slate-400 hover:text-emerald-600 transition-colors"
+                            title="Copiar Link Público"
+                          >
+                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
+                            </svg>
+                          </button>
+                          <button 
+                            onClick={() => navigate(`/admin/agenda/${event.id}/inscricoes`)}
+                            className="p-2 text-slate-400 hover:text-emerald-600 transition-colors"
+                            title="Ver Inscritos"
+                          >
+                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                            </svg>
+                          </button>
+                          <button 
+                            onClick={() => navigate(`/admin/agenda/${event.id}`)}
+                            className="p-2 text-slate-400 hover:text-slate-900 transition-colors"
+                            title="Editar"
+                          >
+                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                            </svg>
+                          </button>
+                        </div>
                       </td>
                     </tr>
                   );

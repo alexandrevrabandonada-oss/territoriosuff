@@ -1,11 +1,12 @@
 import { useEffect, useState, useCallback } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { supabase } from "../../lib/supabase/client";
+import { adminUploadMedia } from "../../lib/admin/media";
 
 const STATUSES = [
   { value: "draft", label: "Rascunho" },
   { value: "published", label: "Publicado" },
-  { value: "completed", label: "Realizado (Encerrado)" },
+  { value: "completed", label: "Realizado" },
   { value: "cancelled", label: "Cancelado" },
 ];
 
@@ -16,7 +17,9 @@ export function AdminAgendaEditPage() {
 
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
   const [recentAssets, setRecentAssets] = useState<any[]>([]);
+  const [assetSearch, setAssetSearch] = useState("");
 
   // Form State
   const [title, setTitle] = useState("");
@@ -34,10 +37,14 @@ export function AdminAgendaEditPage() {
     if (!supabase) return;
     setLoading(true);
 
-    const { data: assets } = await supabase.from("media_assets").select("id, title, public_url, mime_type").order("created_at", { ascending: false }).limit(20);
+    const { data: assets } = await supabase.from("media_assets")
+      .select("id, title, public_url, mime_type")
+      .ilike("title", `%${assetSearch}%`)
+      .order("created_at", { ascending: false })
+      .limit(12);
     setRecentAssets(assets || []);
 
-    if (!isNew) {
+    if (!isNew && loading) {
       const { data, error } = await supabase.from("events").select("*").eq("id", id).single();
       if (error) {
         alert("Erro ao carregar evento: " + error.message);
@@ -58,11 +65,34 @@ export function AdminAgendaEditPage() {
       }
     }
     setLoading(false);
-  }, [id, isNew, navigate]);
+  }, [id, isNew, navigate, assetSearch]);
 
   useEffect(() => {
     loadData();
   }, [loadData]);
+
+  const handleQuickUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setIsUploading(true);
+    try {
+      const asset = await adminUploadMedia({
+        bucket: "media",
+        file,
+        title: file.name.replace(/\.[^/.]+$/, ""),
+        status: "published",
+        altText: `Capa do evento: ${title || file.name}`
+      });
+      
+      setCoverAssetId(asset.id);
+      loadData();
+    } catch (err: any) {
+      alert("Erro no upload: " + err.message);
+    } finally {
+      setIsUploading(false);
+    }
+  };
 
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -99,29 +129,33 @@ export function AdminAgendaEditPage() {
     }
   };
 
-  if (loading) return <div className="p-20 text-center text-slate-400 italic">Carregando evento...</div>;
+  if (loading) return <div className="p-20 text-center text-slate-400 italic font-medium">Carregando editor...</div>;
 
   return (
-    <form onSubmit={handleSave} className="space-y-8 animate-in fade-in duration-500 pb-20">
+    <form onSubmit={handleSave} className="space-y-8 animate-in fade-in duration-500 pb-24">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-200 pb-6">
-        <div>
-          <h1 className="text-3xl font-bold text-slate-900 tracking-tight">
-            {isNew ? "Novo Evento" : "Editar Evento"}
-          </h1>
-          <p className="text-slate-500 mt-1">Organize oficinas, palestras ou atividades de campo.</p>
-        </div>
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-4">
           <button 
             type="button" 
             onClick={() => navigate("/admin/agenda")}
-            className="px-6 py-2 text-slate-500 font-bold hover:bg-slate-100 rounded-xl transition-all"
+            className="w-10 h-10 bg-slate-100 rounded-full flex items-center justify-center text-slate-400 hover:bg-slate-200 transition-colors"
           >
-            Cancelar
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+            </svg>
           </button>
+          <div>
+            <h1 className="text-3xl font-black text-slate-900 tracking-tight">
+              {isNew ? "Novo Evento" : "Editar Evento"}
+            </h1>
+            <p className="text-slate-500 mt-1 font-medium">Gestão de oficinas, palestras e atividades territoriais.</p>
+          </div>
+        </div>
+        <div className="flex items-center gap-3">
           <button 
             type="submit" 
             disabled={saving}
-            className="px-8 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl shadow-lg shadow-emerald-600/20 transition-all disabled:opacity-50"
+            className="px-10 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-black rounded-2xl shadow-xl shadow-emerald-600/20 transition-all active:scale-[0.98] disabled:opacity-50 uppercase tracking-widest text-xs"
           >
             {saving ? "Salvando..." : "Salvar Evento"}
           </button>
@@ -129,78 +163,77 @@ export function AdminAgendaEditPage() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        {/* Main Form */}
         <div className="lg:col-span-2 space-y-6">
-          <section className="bg-white p-8 rounded-2xl border border-slate-200 shadow-sm space-y-4">
-            <h2 className="text-xl font-bold text-slate-900 mb-4">Informações do Evento</h2>
+          <section className="bg-white p-8 rounded-[2.5rem] border border-slate-200 shadow-sm space-y-6">
+            <h2 className="text-xl font-black text-slate-900">Configuração Básica</h2>
             
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-semibold text-slate-700 mb-1">Título do Evento</label>
+                <label className="block text-xs font-black text-slate-400 uppercase tracking-widest mb-2">Título da Atividade</label>
                 <input
                   type="text"
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
                   required
-                  className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-emerald-500/20 font-bold"
-                  placeholder="Ex: Oficina de Saúde Ambiental no Retiro"
+                  className="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl focus:ring-4 focus:ring-emerald-500/10 focus:border-emerald-500 font-bold text-xl"
+                  placeholder="Ex: Oficina de Mapeamento Participativo"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-semibold text-slate-700 mb-1">Descrição</label>
+                <label className="block text-xs font-black text-slate-400 uppercase tracking-widest mb-2">Descrição Detalhada</label>
                 <textarea
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
-                  className="w-full px-4 py-2 bg-slate-50 border border-slate-200 rounded-xl h-32"
-                  placeholder="Conte mais sobre o que será feito no evento..."
+                  className="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl h-40 font-medium"
+                  placeholder="Objetivos, público-alvo e cronograma resumido..."
                 />
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-semibold text-slate-700 mb-1">Data/Hora Início</label>
+                  <label className="block text-xs font-black text-slate-400 uppercase tracking-widest mb-2">Início (Data e Hora)</label>
                   <input
                     type="datetime-local"
                     value={startAt}
                     onChange={(e) => setStartAt(e.target.value)}
                     required
-                    className="w-full px-4 py-2 bg-slate-50 border border-slate-200 rounded-xl"
+                    className="w-full px-5 py-3 bg-slate-50 border border-slate-100 rounded-xl font-bold"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-semibold text-slate-700 mb-1">Data/Hora Fim (Opcional)</label>
+                  <label className="block text-xs font-black text-slate-400 uppercase tracking-widest mb-2">Fim (Opcional)</label>
                   <input
                     type="datetime-local"
                     value={endAt}
                     onChange={(e) => setEndAt(e.target.value)}
-                    className="w-full px-4 py-2 bg-slate-50 border border-slate-200 rounded-xl"
+                    className="w-full px-5 py-3 bg-slate-50 border border-slate-100 rounded-xl font-bold"
                   />
                 </div>
               </div>
             </div>
           </section>
 
-          <section className="bg-white p-8 rounded-2xl border border-slate-200 shadow-sm space-y-4">
-            <h2 className="text-xl font-bold text-slate-900 mb-4">Localização</h2>
+          <section className="bg-white p-8 rounded-[2.5rem] border border-slate-200 shadow-sm space-y-6">
+            <h2 className="text-xl font-black text-slate-900">Localização Territorial</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-semibold text-slate-700 mb-1">Nome do Local</label>
+                <label className="block text-xs font-black text-slate-400 uppercase tracking-widest mb-2">Nome do Local</label>
                 <input
                   type="text"
                   value={locationName}
                   onChange={(e) => setLocationName(e.target.value)}
-                  className="w-full px-4 py-2 bg-slate-50 border border-slate-200 rounded-xl"
-                  placeholder="Ex: CRAS Retiro / Sede da Associação"
+                  className="w-full px-5 py-3 bg-slate-50 border border-slate-100 rounded-xl font-bold"
+                  placeholder="Ex: Sede do CRAS Sul"
                 />
               </div>
               <div>
-                <label className="block text-sm font-semibold text-slate-700 mb-1">Bairro</label>
+                <label className="block text-xs font-black text-slate-400 uppercase tracking-widest mb-2">Bairro / Cidade</label>
                 <input
                   type="text"
                   value={bairro}
                   onChange={(e) => setBairro(e.target.value)}
-                  className="w-full px-4 py-2 bg-slate-50 border border-slate-200 rounded-xl"
+                  className="w-full px-5 py-3 bg-slate-50 border border-slate-100 rounded-xl font-bold"
                   placeholder="Ex: Retiro, Volta Redonda"
                 />
               </div>
@@ -208,76 +241,112 @@ export function AdminAgendaEditPage() {
           </section>
         </div>
 
-        {/* Sidebar */}
         <div className="space-y-6">
-          <section className="bg-white p-8 rounded-2xl border border-slate-200 shadow-sm space-y-4">
-            <h2 className="text-xl font-bold text-slate-900 mb-4">Status & Vagas</h2>
+          <section className="bg-white p-8 rounded-[2.5rem] border border-slate-200 shadow-sm space-y-6">
+            <h2 className="text-xl font-black text-slate-900">Vagas & Inscrições</h2>
             
-            <div>
-              <label className="block text-sm font-semibold text-slate-700 mb-1">Status</label>
-              <select
-                value={status}
-                onChange={(e) => setStatus(e.target.value)}
-                className={`w-full px-4 py-2 border rounded-xl font-bold ${
-                  status === "published" ? "bg-emerald-50 border-emerald-200 text-emerald-700" : "bg-slate-50 border-slate-200"
-                }`}
-              >
-                {STATUSES.map(s => <option key={s.value} value={s.value}>{s.label}</option>)}
-              </select>
-            </div>
+            <div className="space-y-4">
+              <div>
+                <label className="block text-xs font-black text-slate-400 uppercase tracking-widest mb-2">Status do Evento</label>
+                <select
+                  value={status}
+                  onChange={(e) => setStatus(e.target.value)}
+                  className={`w-full px-5 py-3 border rounded-xl font-black transition-colors ${
+                    status === "published" ? "bg-emerald-50 border-emerald-200 text-emerald-700" : "bg-slate-50 border-slate-100"
+                  }`}
+                >
+                  {STATUSES.map(s => <option key={s.value} value={s.value}>{s.label}</option>)}
+                </select>
+              </div>
 
-            <div>
-              <label className="block text-sm font-semibold text-slate-700 mb-1">Capacidade Total</label>
-              <input
-                type="number"
-                value={capacity}
-                onChange={(e) => setCapacity(parseInt(e.target.value))}
-                className="w-full px-4 py-2 bg-slate-50 border border-slate-200 rounded-xl"
-              />
-              <p className="text-[10px] text-slate-400 mt-1 italic">Deixe 0 para vagas ilimitadas.</p>
-            </div>
+              <div>
+                <label className="block text-xs font-black text-slate-400 uppercase tracking-widest mb-2">Capacidade Máxima</label>
+                <input
+                  type="number"
+                  value={capacity}
+                  onChange={(e) => setCapacity(parseInt(e.target.value))}
+                  className="w-full px-5 py-3 bg-slate-50 border border-slate-100 rounded-xl font-bold text-center"
+                />
+                <p className="text-[10px] font-bold text-slate-400 mt-2 italic uppercase tracking-tighter">0 = Sem limite de vagas</p>
+              </div>
 
-            <div className="flex items-center justify-between p-4 bg-slate-50 rounded-xl border border-slate-100">
-              <label className="text-sm font-bold text-slate-700">Inscrições Online</label>
-              <button
-                type="button"
-                onClick={() => setRegistrationEnabled(!registrationEnabled)}
-                className={`w-12 h-6 rounded-full transition-colors relative ${registrationEnabled ? "bg-emerald-500" : "bg-slate-300"}`}
-              >
-                <div className={`absolute top-1 w-4 h-4 bg-white rounded-full transition-all ${registrationEnabled ? "right-1" : "left-1"}`} />
-              </button>
+              <div className="flex items-center justify-between p-5 bg-slate-50 rounded-[1.5rem] border border-slate-100">
+                <div>
+                  <label className="block text-xs font-black text-slate-900 uppercase tracking-widest">Ativar Inscrições</label>
+                  <p className="text-[10px] font-bold text-slate-400 uppercase">Habilitar form público</p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setRegistrationEnabled(!registrationEnabled)}
+                  className={`w-14 h-8 rounded-full transition-all relative shadow-inner ${registrationEnabled ? "bg-emerald-500" : "bg-slate-300"}`}
+                >
+                  <div className={`absolute top-1 w-6 h-6 bg-white rounded-full transition-all shadow-md ${registrationEnabled ? "right-1" : "left-1"}`} />
+                </button>
+              </div>
             </div>
           </section>
 
-          <section className="bg-white p-8 rounded-2xl border border-slate-200 shadow-sm space-y-4">
-            <h2 className="text-xl font-bold text-slate-900 mb-4">Capa do Evento</h2>
-            <div className="aspect-video bg-slate-50 rounded-xl border border-slate-200 overflow-hidden relative">
+          <section className="bg-white p-8 rounded-[2.5rem] border border-slate-200 shadow-sm space-y-6">
+            <div className="flex items-center justify-between">
+              <h2 className="text-xl font-black text-slate-900">Capa</h2>
+              <label className={`cursor-pointer px-4 py-2 bg-emerald-50 text-emerald-700 rounded-xl font-black text-xs border border-emerald-100 hover:bg-emerald-100 transition-all ${isUploading ? 'opacity-50' : ''}`}>
+                {isUploading ? "..." : "Upload"}
+                <input type="file" className="hidden" accept="image/*" onChange={handleQuickUpload} disabled={isUploading} />
+              </label>
+            </div>
+            
+            <div className="aspect-video bg-slate-50 rounded-2xl border-2 border-dashed border-slate-100 overflow-hidden relative group">
               {coverAssetId && recentAssets.find(a => a.id === coverAssetId) ? (
-                <img 
-                  src={recentAssets.find(a => a.id === coverAssetId).public_url} 
-                  alt="Capa" 
-                  className="w-full h-full object-cover"
-                />
+                <>
+                  <img 
+                    src={recentAssets.find(a => a.id === coverAssetId).public_url} 
+                    alt="Capa" 
+                    className="w-full h-full object-cover"
+                  />
+                  <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                    <button 
+                      type="button" 
+                      onClick={() => setCoverAssetId("")}
+                      className="px-4 py-2 bg-rose-600 text-white rounded-xl font-black text-xs uppercase tracking-widest"
+                    >
+                      Remover
+                    </button>
+                  </div>
+                </>
               ) : (
-                <div className="flex flex-col items-center justify-center h-full p-4 text-center">
-                  <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Sem Imagem</p>
+                <div className="flex flex-col items-center justify-center h-full p-6 text-center">
+                  <p className="text-[10px] font-black text-slate-300 uppercase tracking-widest leading-relaxed">
+                    Selecione abaixo ou suba nova capa
+                  </p>
                 </div>
               )}
             </div>
-            
-            <div className="grid grid-cols-4 gap-2">
-              {recentAssets.filter(a => a.mime_type.startsWith("image/")).slice(0, 8).map(asset => (
-                <button
-                  key={asset.id}
-                  type="button"
-                  onClick={() => setCoverAssetId(asset.id)}
-                  className={`aspect-square rounded border-2 transition-all overflow-hidden ${
-                    coverAssetId === asset.id ? "border-emerald-500 scale-105" : "border-transparent hover:border-slate-300"
-                  }`}
-                >
-                  <img src={asset.public_url} alt="" className="w-full h-full object-cover" />
-                </button>
-              ))}
+
+            <div className="space-y-4">
+              <div className="flex items-center gap-3 bg-slate-50 p-3 rounded-2xl border border-slate-100">
+                <input 
+                  type="text" 
+                  placeholder="Buscar mídias..." 
+                  className="bg-transparent border-none p-0 focus:ring-0 text-xs font-bold flex-1"
+                  value={assetSearch}
+                  onChange={(e) => setAssetSearch(e.target.value)}
+                />
+              </div>
+
+              <div className="grid grid-cols-4 gap-2">
+                {recentAssets.filter(a => a.mime_type.startsWith("image/")).map(asset => (
+                  <button
+                    key={asset.id}
+                    type="button"
+                    onClick={() => setCoverAssetId(asset.id)}
+                    className={`aspect-square rounded-lg border-2 transition-all overflow-hidden ${
+                      coverAssetId === asset.id ? "border-emerald-500 scale-105 shadow-md" : "border-transparent hover:border-slate-300"
+                    }`}
+                  >
+                    <img src={asset.public_url} alt="" className="w-full h-full object-cover" />
+                  </button>
+                ))}
+              </div>
             </div>
           </section>
         </div>

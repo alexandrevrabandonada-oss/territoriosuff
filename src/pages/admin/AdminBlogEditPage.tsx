@@ -1,6 +1,7 @@
 import { useEffect, useState, useCallback } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, Link } from "react-router-dom";
 import { supabase } from "../../lib/supabase/client";
+import { adminUploadMedia } from "../../lib/admin/media";
 
 const CATEGORIES = [
   "Notícias",
@@ -25,8 +26,10 @@ export function AdminBlogEditPage() {
 
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
   const [recentAssets, setRecentAssets] = useState<any[]>([]);
   const [showPreview, setShowPreview] = useState(false);
+  const [assetSearch, setAssetSearch] = useState("");
 
   // Form State
   const [title, setTitle] = useState("");
@@ -44,10 +47,17 @@ export function AdminBlogEditPage() {
     if (!supabase) return;
     setLoading(true);
 
-    const { data: assets } = await supabase.from("media_assets").select("id, title, public_url, mime_type, alt_text").order("created_at", { ascending: false }).limit(20);
+    const [{ data: assets }] = await Promise.all([
+      supabase.from("media_assets")
+        .select("id, title, public_url, mime_type, alt_text")
+        .ilike("title", `%${assetSearch}%`)
+        .order("created_at", { ascending: false })
+        .limit(12)
+    ]);
+    
     setRecentAssets(assets || []);
 
-    if (!isNew) {
+    if (!isNew && loading) {
       const { data, error } = await supabase.from("blog_posts").select("*").eq("id", id).single();
       if (error) {
         alert("Erro ao carregar matéria: " + error.message);
@@ -68,7 +78,7 @@ export function AdminBlogEditPage() {
       }
     }
     setLoading(false);
-  }, [id, isNew, navigate]);
+  }, [id, isNew, navigate, assetSearch]);
 
   useEffect(() => {
     loadData();
@@ -87,22 +97,46 @@ export function AdminBlogEditPage() {
     }
   }, [title, isNew]);
 
+  const handleQuickUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setIsUploading(true);
+    try {
+      const asset = await adminUploadMedia({
+        bucket: "media",
+        file,
+        title: file.name.replace(/\.[^/.]+$/, ""),
+        status: "published",
+        altText: `Capa da matéria: ${title || file.name}`
+      });
+      
+      setCoverAssetId(asset.id);
+      loadData();
+    } catch (err: any) {
+      alert("Erro no upload: " + err.message);
+    } finally {
+      setIsUploading(false);
+    }
+  };
+
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!supabase) return;
 
     // Alertas de validação
     if (status === "published" && !summary.trim()) {
-      alert("Aviso: O resumo é obrigatório para publicação.");
+      alert("⚠️ O resumo é obrigatório para publicação.");
       return;
     }
     if (status === "published" && !coverAssetId) {
-      alert("Aviso: Uma imagem de capa é recomendada para publicação.");
+      alert("⚠️ Uma imagem de capa é obrigatória para publicação.");
+      return;
     }
 
     const selectedAsset = recentAssets.find(a => a.id === coverAssetId);
     if (status === "published" && selectedAsset && !selectedAsset.alt_text) {
-      alert("Aviso de Acessibilidade: A imagem de capa selecionada não possui texto alternativo. Considere adicionar um no banco de mídias.");
+      alert("♿ Alerta de Acessibilidade: A imagem de capa selecionada não possui texto alternativo. Por favor, ajuste no banco de mídias para garantir acessibilidade.");
     }
 
     setSaving(true);
@@ -137,90 +171,108 @@ export function AdminBlogEditPage() {
     }
   };
 
-  if (loading) return <div className="p-20 text-center text-slate-400 italic">Carregando editor...</div>;
+  if (loading) return <div className="p-20 text-center text-slate-400 italic font-medium">Carregando editor...</div>;
 
   return (
-    <form onSubmit={handleSave} className="space-y-8 animate-in fade-in duration-500 pb-20">
+    <form onSubmit={handleSave} className="space-y-8 animate-in fade-in duration-500 pb-24">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-200 pb-6">
-        <div>
-          <h1 className="text-3xl font-bold text-slate-900 tracking-tight">
-            {isNew ? "Nova Matéria" : "Editar Matéria"}
-          </h1>
-          <p className="text-slate-500 mt-1">Crie conteúdos envolventes para a comunidade SEMEAR.</p>
-        </div>
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-4">
           <button 
             type="button" 
             onClick={() => navigate("/admin/blog")}
-            className="px-6 py-2 text-slate-500 font-bold hover:bg-slate-100 rounded-xl transition-all"
+            className="w-10 h-10 bg-slate-100 rounded-full flex items-center justify-center text-slate-400 hover:bg-slate-200 transition-colors"
           >
-            Cancelar
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+            </svg>
           </button>
+          <div>
+            <h1 className="text-3xl font-black text-slate-900 tracking-tight">
+              {isNew ? "Nova Matéria" : "Editar Matéria"}
+            </h1>
+            <p className="text-slate-500 mt-1 font-medium">Redação e curadoria de conteúdo editorial.</p>
+          </div>
+        </div>
+        <div className="flex items-center gap-3">
+          {!isNew && (
+            <Link 
+              to={`/blog/${slug}`} 
+              target="_blank"
+              className="px-4 py-2 text-slate-500 font-bold hover:bg-slate-100 rounded-xl transition-all flex items-center gap-2 border border-slate-200"
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+              </svg>
+              Preview
+            </Link>
+          )}
           <button 
             type="submit" 
             disabled={saving}
-            className="px-8 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl shadow-lg shadow-emerald-600/20 transition-all disabled:opacity-50"
+            className="px-10 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-black rounded-2xl shadow-xl shadow-emerald-600/20 transition-all active:scale-[0.98] disabled:opacity-50 uppercase tracking-widest text-xs"
           >
-            {saving ? "Salvando..." : "Salvar Matéria"}
+            {saving ? "Salvando..." : "Salvar Agora"}
           </button>
         </div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        {/* Main Content Form */}
         <div className="lg:col-span-2 space-y-6">
-          <section className="bg-white p-8 rounded-2xl border border-slate-200 shadow-sm space-y-4">
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="text-xl font-bold text-slate-900">Conteúdo Editorial</h2>
+          <section className="bg-white p-8 rounded-[2.5rem] border border-slate-200 shadow-sm space-y-6">
+            <div className="flex items-center justify-between mb-2">
+              <h2 className="text-xl font-black text-slate-900">Corpo Editorial</h2>
               <button 
                 type="button"
                 onClick={() => setShowPreview(!showPreview)}
-                className={`px-4 py-1 rounded-full text-xs font-bold transition-all ${
-                  showPreview ? "bg-emerald-600 text-white" : "bg-slate-100 text-slate-500 hover:bg-slate-200"
+                className={`px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest transition-all ${
+                  showPreview ? "bg-slate-900 text-white" : "bg-slate-100 text-slate-500 hover:bg-slate-200"
                 }`}
               >
-                {showPreview ? "Ocultar Preview" : "Ver Preview"}
+                {showPreview ? "Editor" : "Ver Preview"}
               </button>
             </div>
             
-            <div className="space-y-4">
+            <div className="space-y-5">
               <div>
-                <label className="block text-sm font-semibold text-slate-700 mb-1">Título da Matéria</label>
+                <label className="block text-xs font-black text-slate-400 uppercase tracking-widest mb-2">Título da Notícia</label>
                 <input
                   type="text"
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
                   required
-                  className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-xl font-bold focus:ring-2 focus:ring-emerald-500/20"
-                  placeholder="Ex: Novo Posto de Monitoramento em Volta Redonda"
+                  className="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl focus:ring-4 focus:ring-emerald-500/10 focus:border-emerald-500 font-bold text-xl"
+                  placeholder="Ex: Novo Avanço no Monitoramento da Qualidade do Ar"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-semibold text-slate-700 mb-1">Resumo (Summary)</label>
+                <label className="block text-xs font-black text-slate-400 uppercase tracking-widest mb-2">Resumo (Lide)</label>
                 <textarea
                   value={summary}
                   onChange={(e) => setSummary(e.target.value)}
-                  className="w-full px-4 py-2 bg-slate-50 border border-slate-200 rounded-xl h-24"
-                  placeholder="Introdução rápida que aparece nos cards de listagem..."
+                  className="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl h-28 font-medium italic text-slate-600"
+                  placeholder="Introdução rápida que aparece nos cards de listagem e topo da matéria..."
                 />
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div className={showPreview ? "block" : "col-span-2"}>
-                  <label className="block text-sm font-semibold text-slate-700 mb-1">Conteúdo (Markdown)</label>
-                  <textarea
-                    value={contentMd}
-                    onChange={(e) => setContentMd(e.target.value)}
-                    className="w-full px-4 py-2 bg-slate-50 border border-slate-200 rounded-xl font-mono text-sm h-[500px]"
-                    placeholder="Escreva aqui sua matéria..."
-                  />
-                </div>
-                {showPreview && (
-                  <div className="bg-slate-50 rounded-xl p-6 border border-slate-200 h-[500px] overflow-y-auto prose prose-slate prose-sm max-w-none">
-                    <h1 className="mt-0">{title || "Título do Post"}</h1>
-                    <div dangerouslySetInnerHTML={{ __html: contentMd.replace(/\n/g, "<br/>") }} />
-                    <p className="text-slate-400 italic text-[10px] mt-8">(Preview básico de texto)</p>
+              <div className="relative">
+                {showPreview ? (
+                  <div className="bg-slate-50 rounded-2xl p-8 border border-slate-100 h-[600px] overflow-y-auto prose prose-slate prose-emerald max-w-none shadow-inner">
+                    <h1 className="font-black text-slate-900 mb-4">{title || "Título da Matéria"}</h1>
+                    <p className="lead font-bold text-slate-500 mb-8">{summary}</p>
+                    <div className="markdown-content" dangerouslySetInnerHTML={{ __html: contentMd.replace(/\n/g, "<br/>") }} />
+                    <p className="text-[10px] text-slate-300 italic mt-20 border-t pt-4">Preview simplificado do conteúdo.</p>
+                  </div>
+                ) : (
+                  <div>
+                    <label className="block text-xs font-black text-slate-400 uppercase tracking-widest mb-2">Conteúdo Markdown</label>
+                    <textarea
+                      value={contentMd}
+                      onChange={(e) => setContentMd(e.target.value)}
+                      className="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl font-mono text-sm h-[600px] shadow-inner"
+                      placeholder="# Comece aqui...\n\nUse Markdown para formatar seu texto."
+                    />
                   </div>
                 )}
               </div>
@@ -228,98 +280,150 @@ export function AdminBlogEditPage() {
           </section>
         </div>
 
-        {/* Sidebar Controls */}
         <div className="space-y-6">
-          <section className="bg-white p-8 rounded-2xl border border-slate-200 shadow-sm space-y-4">
-            <h2 className="text-xl font-bold text-slate-900 mb-4">Configurações</h2>
+          <section className="bg-white p-8 rounded-[2.5rem] border border-slate-200 shadow-sm space-y-6">
+            <h2 className="text-xl font-black text-slate-900">Configurações</h2>
             
-            <div>
-              <label className="block text-sm font-semibold text-slate-700 mb-1">Categoria</label>
-              <select
-                value={category}
-                onChange={(e) => setCategory(e.target.value)}
-                className="w-full px-4 py-2 bg-slate-50 border border-slate-200 rounded-xl"
-              >
-                {CATEGORIES.map(c => <option key={c} value={c}>{c}</option>)}
-              </select>
-            </div>
-
-            <div>
-              <label className="block text-sm font-semibold text-slate-700 mb-1">Autor (Exibido)</label>
-              <input
-                type="text"
-                value={authorName}
-                onChange={(e) => setAuthorName(e.target.value)}
-                className="w-full px-4 py-2 bg-slate-50 border border-slate-200 rounded-xl"
-                placeholder="Ex: Dr. Fulano de Tal"
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-semibold text-slate-700 mb-1">Status Editorial</label>
-              <select
-                value={status}
-                onChange={(e) => setStatus(e.target.value)}
-                className={`w-full px-4 py-2 border rounded-xl font-bold transition-colors ${
-                  status === "published" ? "bg-emerald-50 border-emerald-200 text-emerald-700" : "bg-slate-50 border-slate-200 text-slate-700"
-                }`}
-              >
-                {STATUSES.map(s => <option key={s.value} value={s.value}>{s.label}</option>)}
-              </select>
-            </div>
-
-            {status === "scheduled" && (
+            <div className="space-y-4">
               <div>
-                <label className="block text-sm font-semibold text-slate-700 mb-1">Agendar para</label>
+                <label className="block text-xs font-black text-slate-400 uppercase tracking-widest mb-2">Categoria</label>
+                <select
+                  value={category}
+                  onChange={(e) => setCategory(e.target.value)}
+                  className="w-full px-5 py-3 bg-slate-50 border border-slate-100 rounded-xl font-bold"
+                >
+                  {CATEGORIES.map(c => <option key={c} value={c}>{c}</option>)}
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-xs font-black text-slate-400 uppercase tracking-widest mb-2">Autor da Matéria</label>
                 <input
-                  type="datetime-local"
-                  value={publishAt}
-                  onChange={(e) => setPublishAt(e.target.value)}
-                  className="w-full px-4 py-2 bg-slate-50 border border-slate-200 rounded-xl"
+                  type="text"
+                  value={authorName}
+                  onChange={(e) => setAuthorName(e.target.value)}
+                  className="w-full px-5 py-3 bg-slate-50 border border-slate-100 rounded-xl font-bold"
+                  placeholder="Ex: Equipe de Comunicação"
                 />
               </div>
-            )}
 
-            <div>
-              <label className="block text-sm font-semibold text-slate-700 mb-1">Slug (URL)</label>
-              <input
-                type="text"
-                value={slug}
-                onChange={(e) => setSlug(e.target.value)}
-                className="w-full px-4 py-2 bg-slate-50 border border-slate-200 rounded-xl font-mono text-xs"
-              />
+              <div>
+                <label className="block text-xs font-black text-slate-400 uppercase tracking-widest mb-2">Status Editorial</label>
+                <select
+                  value={status}
+                  onChange={(e) => setStatus(e.target.value)}
+                  className={`w-full px-5 py-3 border rounded-xl font-black transition-colors ${
+                    status === "published" ? "bg-emerald-50 border-emerald-200 text-emerald-700" : "bg-slate-50 border-slate-100"
+                  }`}
+                >
+                  {STATUSES.map(s => <option key={s.value} value={s.value}>{s.label}</option>)}
+                </select>
+              </div>
+
+              {status === "scheduled" && (
+                <div>
+                  <label className="block text-xs font-black text-slate-400 uppercase tracking-widest mb-2">Agendar Para</label>
+                  <input
+                    type="datetime-local"
+                    value={publishAt}
+                    onChange={(e) => setPublishAt(e.target.value)}
+                    className="w-full px-5 py-3 bg-slate-50 border border-slate-100 rounded-xl font-bold"
+                  />
+                </div>
+              )}
+
+              <div>
+                <label className="block text-xs font-black text-slate-400 uppercase tracking-widest mb-2">Tags (vírgulas)</label>
+                <input
+                  type="text"
+                  value={tags}
+                  onChange={(e) => setTags(e.target.value)}
+                  className="w-full px-5 py-3 bg-slate-50 border border-slate-100 rounded-xl font-bold"
+                  placeholder="saude, clima, uff"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-black text-slate-400 uppercase tracking-widest mb-2">Slug Personalizado</label>
+                <input
+                  type="text"
+                  value={slug}
+                  onChange={(e) => setSlug(e.target.value)}
+                  className="w-full px-5 py-3 bg-slate-100 rounded-xl border-none font-mono text-xs font-bold text-slate-500"
+                />
+              </div>
             </div>
           </section>
 
-          <section className="bg-white p-8 rounded-2xl border border-slate-200 shadow-sm space-y-4">
-            <h2 className="text-xl font-bold text-slate-900 mb-4">Capa da Matéria</h2>
-            <div className="aspect-video bg-slate-50 rounded-xl border border-slate-200 overflow-hidden relative group">
+          <section className="bg-white p-8 rounded-[2.5rem] border border-slate-200 shadow-sm space-y-6">
+            <div className="flex items-center justify-between">
+              <h2 className="text-xl font-black text-slate-900">Imagem de Capa</h2>
+              <label className={`cursor-pointer px-4 py-2 bg-emerald-50 text-emerald-700 rounded-xl font-black text-xs border border-emerald-100 hover:bg-emerald-100 transition-all ${isUploading ? 'opacity-50' : ''}`}>
+                {isUploading ? "Enviando..." : "+ Novo Upload"}
+                <input type="file" className="hidden" accept="image/*" onChange={handleQuickUpload} disabled={isUploading} />
+              </label>
+            </div>
+            
+            <div className="aspect-video bg-slate-50 rounded-2xl border-2 border-dashed border-slate-100 overflow-hidden relative group">
               {coverAssetId && recentAssets.find(a => a.id === coverAssetId) ? (
-                <img 
-                  src={recentAssets.find(a => a.id === coverAssetId).public_url} 
-                  alt="Capa" 
-                  className="w-full h-full object-cover"
-                />
+                <>
+                  <img 
+                    src={recentAssets.find(a => a.id === coverAssetId).public_url} 
+                    alt="Capa" 
+                    className="w-full h-full object-cover"
+                  />
+                  <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                    <button 
+                      type="button" 
+                      onClick={() => setCoverAssetId("")}
+                      className="px-4 py-2 bg-rose-600 text-white rounded-xl font-black text-xs uppercase tracking-widest"
+                    >
+                      Remover Capa
+                    </button>
+                  </div>
+                </>
               ) : (
-                <div className="flex flex-col items-center justify-center h-full p-4 text-center">
-                  <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Nenhuma Capa Selecionada</p>
+                <div className="flex flex-col items-center justify-center h-full p-6 text-center">
+                  <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center text-slate-200 shadow-sm mb-3">
+                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                    </svg>
+                  </div>
+                  <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest leading-relaxed">
+                    Selecione uma imagem abaixo ou suba uma nova para a capa
+                  </p>
                 </div>
               )}
             </div>
-            
-            <div className="grid grid-cols-4 gap-2">
-              {recentAssets.filter(a => a.mime_type.startsWith("image/")).slice(0, 8).map(asset => (
-                <button
-                  key={asset.id}
-                  type="button"
-                  onClick={() => setCoverAssetId(asset.id)}
-                  className={`aspect-square rounded border-2 transition-all overflow-hidden ${
-                    coverAssetId === asset.id ? "border-emerald-500 scale-105" : "border-transparent hover:border-slate-300"
-                  }`}
-                >
-                  <img src={asset.public_url} alt="" className="w-full h-full object-cover" />
-                </button>
-              ))}
+
+            <div className="space-y-4">
+              <div className="flex items-center gap-3 bg-slate-50 p-3 rounded-2xl border border-slate-100">
+                <svg className="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+                <input 
+                  type="text" 
+                  placeholder="Buscar imagens..." 
+                  className="bg-transparent border-none p-0 focus:ring-0 text-xs font-bold flex-1"
+                  value={assetSearch}
+                  onChange={(e) => setAssetSearch(e.target.value)}
+                />
+              </div>
+
+              <div className="grid grid-cols-4 gap-2">
+                {recentAssets.filter(a => a.mime_type.startsWith("image/")).map(asset => (
+                  <button
+                    key={asset.id}
+                    type="button"
+                    onClick={() => setCoverAssetId(asset.id)}
+                    className={`aspect-square rounded-lg border-2 transition-all overflow-hidden ${
+                      coverAssetId === asset.id ? "border-emerald-500 scale-105 shadow-md" : "border-transparent hover:border-slate-300"
+                    }`}
+                  >
+                    <img src={asset.public_url} alt="" className="w-full h-full object-cover" />
+                  </button>
+                ))}
+              </div>
             </div>
           </section>
         </div>

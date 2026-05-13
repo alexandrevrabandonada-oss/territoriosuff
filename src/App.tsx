@@ -23,6 +23,8 @@ import { AdminBlogEditPage } from "./pages/admin/AdminBlogEditPage";
 import { AdminAgendaListPage } from "./pages/admin/AdminAgendaListPage";
 import { AdminAgendaEditPage } from "./pages/admin/AdminAgendaEditPage";
 import { AdminAgendaInscriptionsPage } from "./pages/admin/AdminAgendaInscriptionsPage";
+import { AdminReportsListPage } from "./pages/admin/AdminReportsListPage";
+import { AdminReportsEditPage } from "./pages/admin/AdminReportsEditPage";
 import { AdminPlaceholderPage } from "./pages/admin/AdminPlaceholderPage";
 
 // Lazy-loaded (non-critical)
@@ -88,7 +90,9 @@ export default function App() {
                     <Route path="/acervo/artigos/novo" element={<AdminPaperWizardPage />} />
                     <Route path="/acervo/:id" element={<AdminAcervoEditPage />} />
                     <Route path="/uploads" element={<AdminUploadsPage />} />
-                    <Route path="/relatorios" element={<AdminPlaceholderPage title="Relatórios" />} />
+                    <Route path="/relatorios" element={<AdminReportsListPage />} />
+                    <Route path="/relatorios/novo" element={<AdminReportsEditPage />} />
+                    <Route path="/relatorios/:id" element={<AdminReportsEditPage />} />
                     <Route path="/blog" element={<AdminBlogListPage />} />
                     <Route path="/blog/novo" element={<AdminBlogEditPage />} />
                     <Route path="/blog/:id" element={<AdminBlogEditPage />} />

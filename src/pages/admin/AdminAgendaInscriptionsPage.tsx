@@ -8,8 +8,16 @@ interface Registration {
   email: string;
   whatsapp: string;
   bairro: string;
+  status: string;
   created_at: string;
 }
+
+const REG_STATUS_LABELS: Record<string, string> = {
+  confirmed: "Confirmado",
+  attended: "Presente",
+  cancelled: "Cancelado",
+  waiting: "Fila de Espera",
+};
 
 export function AdminAgendaInscriptionsPage() {
   const { id } = useParams();
@@ -22,19 +30,26 @@ export function AdminAgendaInscriptionsPage() {
     if (!supabase || !id) return;
     setLoading(true);
 
-    const { data: evt } = await supabase.from("events").select("title").eq("id", id).single();
+    const { data: evt } = await supabase.from("events").select("title, capacity").eq("id", id).single();
     setEvent(evt);
 
     const { data: regs, error } = await supabase
       .from("registrations")
       .select("*")
       .eq("event_id", id)
-      .order("created_at", { ascending: false });
+      .order("created_at", { ascending: true });
 
     if (error) {
       console.error("[Agenda] Erro ao carregar inscritos:", error);
     } else {
-      setRegistrations(regs || []);
+      // Processar fila de espera localmente se não estiver no banco (fallback operacional)
+      const capacity = evt?.capacity || 0;
+      const processedRegs = regs?.map((reg, index) => ({
+        ...reg,
+        status: (capacity > 0 && index >= capacity) ? "waiting" : reg.status
+      })) || [];
+      
+      setRegistrations(processedRegs);
     }
     setLoading(false);
   }, [id]);
@@ -43,15 +58,32 @@ export function AdminAgendaInscriptionsPage() {
     loadData();
   }, [loadData]);
 
+  const toggleAttendance = async (regId: string, currentStatus: string) => {
+    if (!supabase) return;
+    const newStatus = currentStatus === "attended" ? "confirmed" : "attended";
+    
+    const { error } = await supabase
+      .from("registrations")
+      .update({ status: newStatus })
+      .eq("id", regId);
+
+    if (error) {
+      alert("Erro ao atualizar presença: " + error.message);
+    } else {
+      loadData();
+    }
+  };
+
   const exportToCSV = () => {
     if (registrations.length === 0) return;
 
-    const headers = ["Nome", "Email", "WhatsApp", "Bairro", "Data Inscricao"];
+    const headers = ["Nome", "Email", "WhatsApp", "Bairro", "Status", "Data Inscrição"];
     const rows = registrations.map(reg => [
       reg.name,
       reg.email,
       reg.whatsapp || "",
       reg.bairro || "",
+      REG_STATUS_LABELS[reg.status] || reg.status,
       new Date(reg.created_at).toLocaleString("pt-BR")
     ]);
 
@@ -71,71 +103,123 @@ export function AdminAgendaInscriptionsPage() {
     document.body.removeChild(link);
   };
 
-  if (loading) return <div className="p-20 text-center text-slate-400 italic">Carregando inscritos...</div>;
+  if (loading) return <div className="p-20 text-center text-slate-400 italic font-medium">Carregando inscritos...</div>;
+
+  const attendingCount = registrations.filter(r => r.status === "attended").length;
+  const waitingCount = registrations.filter(r => r.status === "waiting").length;
 
   return (
     <div className="space-y-8 animate-in fade-in duration-500">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <div>
+        <div className="flex items-center gap-4">
           <button 
             onClick={() => navigate("/admin/agenda")}
-            className="text-slate-400 hover:text-slate-600 flex items-center gap-2 mb-2 transition-colors"
+            className="w-10 h-10 bg-slate-100 rounded-full flex items-center justify-center text-slate-400 hover:bg-slate-200 transition-colors"
           >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
             </svg>
-            <span className="text-sm font-bold">Voltar para Agenda</span>
           </button>
-          <h1 className="text-3xl font-bold text-slate-900 tracking-tight">Inscrições</h1>
-          <p className="text-slate-500 mt-1">{event?.title}</p>
+          <div>
+            <h1 className="text-3xl font-black text-slate-900 tracking-tight">Gestão de Inscrições</h1>
+            <p className="text-slate-500 mt-1 font-medium">{event?.title}</p>
+          </div>
         </div>
-        <button 
-          onClick={exportToCSV}
-          disabled={registrations.length === 0}
-          className="inline-flex items-center gap-2 px-6 py-3 bg-white border border-slate-200 hover:border-emerald-500 text-slate-700 font-bold rounded-xl shadow-sm transition-all disabled:opacity-50"
-        >
-          <svg className="w-5 h-5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-          </svg>
-          Exportar CSV
-        </button>
+        <div className="flex items-center gap-3">
+          <button 
+            onClick={exportToCSV}
+            disabled={registrations.length === 0}
+            className="inline-flex items-center gap-2 px-6 py-2.5 bg-white border border-slate-200 hover:border-emerald-500 text-slate-700 font-black rounded-xl shadow-sm transition-all disabled:opacity-50 uppercase tracking-widest text-[10px]"
+          >
+            <svg className="w-4 h-4 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+            </svg>
+            Exportar CSV
+          </button>
+        </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm text-center">
-          <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Total de Inscritos</p>
-          <p className="text-4xl font-black text-emerald-600">{registrations.length}</p>
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+        <div className="bg-white p-6 rounded-[2rem] border border-slate-200 shadow-sm text-center">
+          <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Inscritos</p>
+          <p className="text-3xl font-black text-slate-900">{registrations.length}</p>
         </div>
-        <div className="md:col-span-2 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
-          <h2 className="text-sm font-bold text-slate-400 uppercase tracking-widest mb-4">Lista de Participantes</h2>
-          {registrations.length === 0 ? (
-            <p className="text-sm text-slate-400 italic py-8 text-center">Nenhuma inscrição realizada até o momento.</p>
-          ) : (
-            <div className="overflow-x-auto">
-              <table className="w-full text-left">
-                <thead className="bg-slate-50 border-b border-slate-200">
-                  <tr>
-                    <th className="px-4 py-3 text-[10px] font-bold text-slate-500 uppercase">Nome / Email</th>
-                    <th className="px-4 py-3 text-[10px] font-bold text-slate-500 uppercase">WhatsApp</th>
-                    <th className="px-4 py-3 text-[10px] font-bold text-slate-500 uppercase">Bairro</th>
+        <div className="bg-white p-6 rounded-[2rem] border border-slate-200 shadow-sm text-center">
+          <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Confirmados</p>
+          <p className="text-3xl font-black text-emerald-600">{registrations.filter(r => r.status !== 'waiting').length}</p>
+        </div>
+        <div className="bg-white p-6 rounded-[2rem] border border-slate-200 shadow-sm text-center">
+          <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Presentes</p>
+          <p className="text-3xl font-black text-blue-600">{attendingCount}</p>
+        </div>
+        <div className="bg-white p-6 rounded-[2rem] border border-slate-200 shadow-sm text-center">
+          <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Em Espera</p>
+          <p className="text-3xl font-black text-rose-600">{waitingCount}</p>
+        </div>
+      </div>
+
+      <div className="bg-white rounded-[2.5rem] border border-slate-200 shadow-xl shadow-slate-200/40 overflow-hidden">
+        <div className="px-8 py-6 border-b border-slate-50 flex items-center justify-between">
+          <h2 className="text-sm font-black text-slate-900 uppercase tracking-widest">Lista de Participantes</h2>
+          <span className="text-[10px] font-bold text-slate-400 uppercase italic">Ordenado por data de inscrição</span>
+        </div>
+        
+        {registrations.length === 0 ? (
+          <div className="p-20 text-center text-slate-400 italic font-medium">Nenhuma inscrição realizada até o momento.</div>
+        ) : (
+          <div className="overflow-x-auto">
+            <table className="w-full text-left border-collapse">
+              <thead>
+                <tr className="bg-slate-50/50">
+                  <th className="px-8 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest">Participante</th>
+                  <th className="px-8 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest">Contato</th>
+                  <th className="px-8 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest">Bairro</th>
+                  <th className="px-8 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest">Status</th>
+                  <th className="px-8 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest text-right">Presença</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-50">
+                {registrations.map(reg => (
+                  <tr key={reg.id} className={`hover:bg-slate-50/50 transition-colors ${reg.status === 'waiting' ? 'bg-rose-50/20' : ''}`}>
+                    <td className="px-8 py-5">
+                      <p className="font-bold text-slate-900 leading-none">{reg.name}</p>
+                      <p className="text-[10px] font-medium text-slate-400 mt-1">{reg.email}</p>
+                    </td>
+                    <td className="px-8 py-5">
+                      <span className="text-xs font-bold text-slate-600">{reg.whatsapp || "--"}</span>
+                    </td>
+                    <td className="px-8 py-5">
+                      <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">{reg.bairro || "--"}</span>
+                    </td>
+                    <td className="px-8 py-5">
+                      <span className={`text-[9px] font-black uppercase tracking-widest px-2 py-0.5 rounded-full border ${
+                        reg.status === 'attended' ? 'bg-blue-100 text-blue-700 border-blue-200' :
+                        reg.status === 'waiting' ? 'bg-rose-100 text-rose-700 border-rose-200' :
+                        'bg-slate-100 text-slate-600 border-slate-200'
+                      }`}>
+                        {REG_STATUS_LABELS[reg.status] || reg.status}
+                      </span>
+                    </td>
+                    <td className="px-8 py-5 text-right">
+                      <button
+                        onClick={() => toggleAttendance(reg.id, reg.status)}
+                        disabled={reg.status === 'waiting'}
+                        className={`p-2 rounded-xl transition-all ${
+                          reg.status === 'attended' ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/20' : 'bg-slate-100 text-slate-400 hover:bg-emerald-50 hover:text-emerald-600'
+                        } disabled:opacity-30`}
+                        title={reg.status === 'attended' ? 'Marcar como não presente' : 'Confirmar Presença'}
+                      >
+                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                        </svg>
+                      </button>
+                    </td>
                   </tr>
-                </thead>
-                <tbody className="divide-y divide-slate-100 text-sm">
-                  {registrations.map(reg => (
-                    <tr key={reg.id} className="hover:bg-slate-50 transition-colors">
-                      <td className="px-4 py-3">
-                        <p className="font-bold text-slate-900">{reg.name}</p>
-                        <p className="text-xs text-slate-500">{reg.email}</p>
-                      </td>
-                      <td className="px-4 py-3 text-slate-600">{reg.whatsapp || "--"}</td>
-                      <td className="px-4 py-3 text-slate-600">{reg.bairro || "--"}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          )}
-        </div>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
       </div>
     </div>
   );
