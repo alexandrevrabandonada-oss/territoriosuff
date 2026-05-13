@@ -130,7 +130,7 @@ export function AdminBlogEditPage() {
       }
     }
     setLoading(false);
-  }, [id, isNew, navigate, assetSearch, assetIdFromUrl, loading]);
+  }, [id, isNew, navigate, assetSearch, assetIdFromUrl]);
 
   useEffect(() => {
     loadData();
