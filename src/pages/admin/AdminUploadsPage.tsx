@@ -3,6 +3,54 @@ import { Link } from "react-router-dom";
 import { supabase } from "../../lib/supabase/client";
 import { adminUploadMedia, formatAssetSize, isImageAsset, type MediaAssetRecord } from "../../lib/admin/media";
 
+const ACERVO_EDITORIAL_TYPES = [
+  {
+    value: "artigo_cientifico",
+    label: "Artigo científico",
+    description: "Para papers, PDFs acadêmicos, estudos e pesquisas.",
+  },
+  {
+    value: "noticia",
+    label: "Notícia ou matéria",
+    description: "Para reportagens, matérias históricas e clipping jornalístico.",
+  },
+  {
+    value: "midia",
+    label: "Mídia",
+    description: "Para fotos, vídeos, imagens e registros audiovisuais.",
+  },
+  {
+    value: "documento",
+    label: "Documento histórico",
+    description: "Para atas, documentos escaneados e registros públicos antigos.",
+  },
+  {
+    value: "relatorio_tecnico",
+    label: "Relatório técnico",
+    description: "Para notas técnicas, boletins, medições e documentos oficiais.",
+  },
+  {
+    value: "outro",
+    label: "Outro",
+    description: "Para conteúdos do Acervo que não se encaixam nas categorias acima.",
+  },
+] as const;
+
+const ACERVO_ACTIONS = [
+  { type: "artigo_cientifico", label: "Criar item de Acervo como Artigo Científico", emoji: "📄" },
+  { type: "noticia", label: "Criar item de Acervo como Notícia", emoji: "📰" },
+  { type: "midia", label: "Criar item de Acervo como Mídia", emoji: "🎬" },
+  { type: "documento", label: "Criar item de Acervo como Documento", emoji: "🏛️" },
+];
+
+function buildAcervoLink(assetId: string, type: string) {
+  return `/admin/acervo/novo?assetId=${assetId}&type=${type}`;
+}
+
+function getAcervoTypeLabel(type: string | null | undefined) {
+  return ACERVO_EDITORIAL_TYPES.find((option) => option.value === type)?.label ?? "Outro";
+}
+
 const ALLOWED_MIME_TYPES = [
   "application/pdf",
   "image/jpeg",
@@ -13,8 +61,8 @@ const ALLOWED_MIME_TYPES = [
 const MAX_FILE_SIZE = 15 * 1024 * 1024; // 15MB
 
 const BUCKETS = [
-  { id: "media", label: "Mídia Geral" },
   { id: "acervo", label: "Acervo" },
+  { id: "media", label: "Mídia Geral (fora do Acervo)" },
   { id: "blog", label: "Blog" },
   { id: "reports", label: "Relatórios" },
   { id: "transparency", label: "Transparência" },
@@ -36,7 +84,8 @@ export function AdminUploadsPage() {
   const [credit, setCredit] = useState("");
   const [source, setSource] = useState("");
   const [tags, setTags] = useState("");
-  const [bucket, setBucket] = useState("media");
+  const [bucket, setBucket] = useState("acervo");
+  const [acervoContentType, setAcervoContentType] = useState("artigo_cientifico");
   const [status, setStatus] = useState("draft");
 
   const loadRecentAssets = useCallback(async () => {
@@ -92,6 +141,10 @@ export function AdminUploadsPage() {
       setError("Texto alternativo é obrigatório para imagens publicadas.");
       return;
     }
+    if (bucket === "acervo" && !acervoContentType) {
+      setError("Selecione o tipo editorial do Acervo antes de enviar.");
+      return;
+    }
 
     setIsUploading(true);
     setUploadProgress(20);
@@ -106,6 +159,8 @@ export function AdminUploadsPage() {
         altText,
         credit,
         source,
+        acervoContentType: bucket === "acervo" ? acervoContentType : undefined,
+        contentCategory: bucket === "acervo" ? "acervo" : bucket,
         tags: tags.split(",").map(t => t.trim()).filter(Boolean),
         status: status as any
       });
@@ -121,6 +176,7 @@ export function AdminUploadsPage() {
       setCredit("");
       setSource("");
       setTags("");
+      setAcervoContentType("artigo_cientifico");
       
       await loadRecentAssets();
     } catch (err: any) {
@@ -220,6 +276,34 @@ export function AdminUploadsPage() {
                   {BUCKETS.map(b => <option key={b.id} value={b.id}>{b.label}</option>)}
                 </select>
               </div>
+
+              {bucket === "acervo" && (
+                <div className="md:col-span-2 rounded-[1.75rem] border border-emerald-100 bg-emerald-50/50 p-5">
+                  <div className="mb-4">
+                    <p className="text-xs font-black uppercase tracking-[0.22em] text-emerald-700">Tipo de conteúdo no Acervo</p>
+                    <p className="mt-1 text-sm font-medium text-slate-600">Esta escolha define onde o item será exibido no portal: artigos, notícias/matérias, mídias ou documentos.</p>
+                  </div>
+                  <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
+                    {ACERVO_EDITORIAL_TYPES.map((option) => (
+                      <label
+                        key={option.value}
+                        className={`cursor-pointer rounded-2xl border p-4 transition-all ${acervoContentType === option.value ? "border-emerald-500 bg-white shadow-sm" : "border-emerald-100 bg-white/70 hover:border-emerald-300"}`}
+                      >
+                        <input
+                          type="radio"
+                          name="acervo-content-type"
+                          value={option.value}
+                          checked={acervoContentType === option.value}
+                          onChange={(e) => setAcervoContentType(e.target.value)}
+                          className="sr-only"
+                        />
+                        <span className="block text-sm font-black text-slate-900">{option.label}</span>
+                        <span className="mt-1 block text-xs font-medium text-slate-500">{option.description}</span>
+                      </label>
+                    ))}
+                  </div>
+                </div>
+              )}
 
               <div>
                 <label className="block text-xs font-black text-slate-400 uppercase tracking-widest mb-2">Status Inicial</label>
@@ -329,6 +413,12 @@ export function AdminUploadsPage() {
                         <p className="mt-1 text-sm font-black text-slate-900">{formatAssetSize(successAsset.size_bytes)}</p>
                       </div>
                       <div>
+                        <p className="text-[10px] font-black uppercase tracking-[0.22em] text-emerald-600">Categoria editorial</p>
+                        <p className="mt-1 text-sm font-black text-slate-900">
+                          {successAsset.bucket === "acervo" ? getAcervoTypeLabel(successAsset.acervo_content_type) : "Não se aplica"}
+                        </p>
+                      </div>
+                      <div>
                         <p className="text-[10px] font-black uppercase tracking-[0.22em] text-emerald-600">Título interno</p>
                         <p className="mt-1 text-sm font-black text-slate-900">{successAsset.title}</p>
                       </div>
@@ -353,20 +443,43 @@ export function AdminUploadsPage() {
                   </button>
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                  <Link to={`/admin/acervo/novo?assetId=${successAsset.id}`} className="flex flex-col items-center p-4 bg-white rounded-2xl border border-emerald-100 hover:shadow-md transition-all group">
-                    <span className="text-2xl mb-2 group-hover:scale-110 transition-transform">📚</span>
-                    <span className="text-[10px] font-black uppercase text-emerald-700">Usar no Acervo</span>
-                  </Link>
-                  <Link to={`/admin/relatorios/novo?assetId=${successAsset.id}`} className="flex flex-col items-center p-4 bg-white rounded-2xl border border-emerald-100 hover:shadow-md transition-all group">
-                    <span className="text-2xl mb-2 group-hover:scale-110 transition-transform">📄</span>
-                    <span className="text-[10px] font-black uppercase text-emerald-700">Usar em Relatório</span>
-                  </Link>
-                  <Link to={`/admin/blog/novo?assetId=${successAsset.id}`} className="flex flex-col items-center p-4 bg-white rounded-2xl border border-emerald-100 hover:shadow-md transition-all group">
-                    <span className="text-2xl mb-2 group-hover:scale-110 transition-transform">✍️</span>
-                    <span className="text-[10px] font-black uppercase text-emerald-700">Usar no Blog</span>
-                  </Link>
-                </div>
+                {successAsset.bucket === "acervo" ? (
+                  <div className="space-y-4">
+                    <Link
+                      to={buildAcervoLink(successAsset.id, successAsset.acervo_content_type || acervoContentType)}
+                      className="flex items-center justify-center rounded-2xl bg-emerald-600 px-5 py-4 text-center text-xs font-black uppercase tracking-widest text-white transition-all hover:bg-emerald-700"
+                    >
+                      Criar item no Acervo
+                    </Link>
+                    <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+                      {ACERVO_ACTIONS.map((action) => (
+                        <Link
+                          key={action.type}
+                          to={buildAcervoLink(successAsset.id, action.type)}
+                          className="flex flex-col items-center rounded-2xl border border-emerald-100 bg-white p-4 text-center transition-all hover:shadow-md"
+                        >
+                          <span className="mb-2 text-2xl">{action.emoji}</span>
+                          <span className="text-[10px] font-black uppercase text-emerald-700">{action.label}</span>
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                ) : (
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                    <Link to={buildAcervoLink(successAsset.id, "outro")} className="flex flex-col items-center p-4 bg-white rounded-2xl border border-emerald-100 hover:shadow-md transition-all group">
+                      <span className="text-2xl mb-2 group-hover:scale-110 transition-transform">📚</span>
+                      <span className="text-[10px] font-black uppercase text-emerald-700">Usar no Acervo</span>
+                    </Link>
+                    <Link to={`/admin/relatorios/novo?assetId=${successAsset.id}`} className="flex flex-col items-center p-4 bg-white rounded-2xl border border-emerald-100 hover:shadow-md transition-all group">
+                      <span className="text-2xl mb-2 group-hover:scale-110 transition-transform">📄</span>
+                      <span className="text-[10px] font-black uppercase text-emerald-700">Usar em Relatório</span>
+                    </Link>
+                    <Link to={`/admin/blog/novo?assetId=${successAsset.id}`} className="flex flex-col items-center p-4 bg-white rounded-2xl border border-emerald-100 hover:shadow-md transition-all group">
+                      <span className="text-2xl mb-2 group-hover:scale-110 transition-transform">✍️</span>
+                      <span className="text-[10px] font-black uppercase text-emerald-700">Usar no Blog</span>
+                    </Link>
+                  </div>
+                )}
                 
                 <div className="flex items-center justify-center gap-4 pt-2 border-t border-emerald-100">
                   <button onClick={() => setSuccessAsset(null)} className="text-[10px] font-black uppercase text-emerald-600 hover:text-emerald-800 transition-colors">
@@ -439,6 +552,11 @@ export function AdminUploadsPage() {
                       <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">
                         {asset.mime_type.split("/")[1]} • {formatAssetSize(asset.size_bytes)}
                       </p>
+                      {asset.bucket === "acervo" && asset.acervo_content_type && (
+                        <p className="mt-1 text-[10px] font-black uppercase tracking-widest text-emerald-600">
+                          {getAcervoTypeLabel(asset.acervo_content_type)}
+                        </p>
+                      )}
                     </div>
                   </div>
                   
@@ -462,7 +580,7 @@ export function AdminUploadsPage() {
                   <div className="pt-3 border-t border-slate-50 flex items-center justify-between gap-1">
                     <p className="text-[8px] font-black text-slate-300 uppercase tracking-widest">Usar em:</p>
                     <div className="flex items-center gap-1">
-                      <Link to={`/admin/acervo/novo?assetId=${asset.id}`} className="p-1.5 bg-slate-50 hover:bg-emerald-50 text-slate-400 hover:text-emerald-600 rounded-lg transition-all" title="Acervo">
+                      <Link to={buildAcervoLink(asset.id, asset.acervo_content_type || "outro")} className="p-1.5 bg-slate-50 hover:bg-emerald-50 text-slate-400 hover:text-emerald-600 rounded-lg transition-all" title="Acervo">
                         📚
                       </Link>
                       <Link to={`/admin/relatorios/novo?assetId=${asset.id}`} className="p-1.5 bg-slate-50 hover:bg-emerald-50 text-slate-400 hover:text-emerald-600 rounded-lg transition-all" title="Relatório">

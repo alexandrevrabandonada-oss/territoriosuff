@@ -20,18 +20,18 @@ import { ACERVO_KIND_LABELS } from "../../lib/acervo";
 const areas = [
     {
         href: "/acervo/artigos",
-        label: "Artigos",
+        label: "Artigos científicos",
         emoji: "📄",
         description:
-            "Publicações científicas, relatórios técnicos e textos acadêmicos produzidos ou referenciados pelo projeto SEMEAR.",
+            "Papers, estudos, textos acadêmicos e publicações científicas produzidas ou referenciadas pelo projeto SEMEAR.",
         tone: "brand" as const,
     },
     {
         href: "/acervo/noticias",
-        label: "Notícias",
+        label: "Notícias e matérias",
         emoji: "📰",
         description:
-            "Cobertura jornalística, notas de imprensa e registros de eventos relacionados à qualidade do ar e meio ambiente.",
+            "Cobertura jornalística, matérias históricas, clipping e registros editoriais sobre qualidade do ar e meio ambiente.",
         tone: "seed" as const,
     },
     {
@@ -41,6 +41,14 @@ const areas = [
         description:
             "Vídeos, fotorreportagens, podcasts e materiais audiovisuais de memória pública e comunicação ambiental.",
         tone: "lab" as const,
+    },
+    {
+        href: "/acervo/documentos",
+        label: "Documentos e relatórios",
+        emoji: "🏛️",
+        description:
+            "Atas, documentos históricos, relatórios técnicos, boletins e materiais institucionais de referência.",
+        tone: "warm" as const,
     },
 ];
 
@@ -95,7 +103,7 @@ export function AcervoPage() {
             </Link>
 
             {/* Áreas do acervo */}
-            <div className="grid gap-5 md:grid-cols-3">
+            <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-4">
                 {areas.map((area) => (
                     <Link key={area.href} to={area.href} className="group motion-list-item block h-full">
                         <EditorialCard variant="standard" tone="acervo">

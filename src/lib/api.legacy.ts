@@ -246,6 +246,7 @@ export type AcervoKind =
   | "artigo_cientifico"
   | "noticia"
   | "materia"
+  | "midia"
   | "foto"
   | "video"
   | "documento"
@@ -366,7 +367,7 @@ export async function listAcervoItems(params: ListAcervoParams = {}): Promise<Ac
 
     let query = supabase
       .from("acervo_items")
-      .select("id, type, title, slug, summary, cover_url, cover_thumb_url, cover_small_url, source_name, source_url, published_at, publish_at, year, city, tags, featured, source_type, created_at")
+      .select("id, type, title, slug, summary, cover_url, cover_thumb_url, cover_small_url, source_name, source_url, authors, published_at, publish_at, year, city, tags, featured, source_type, created_at")
       .eq("status", "published")
       .order("published_at", { ascending: false, nullsFirst: false })
       .range(offset, offset + limit - 1);

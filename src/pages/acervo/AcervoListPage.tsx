@@ -9,22 +9,28 @@ import { ACERVO_KIND_LABELS, type AcervoArea, AREA_KINDS } from "../../lib/acerv
 
 const AREA_META: Record<AcervoArea, { label: string; emoji: string; description: string; color: string }> = {
   artigos: {
-    label: "Artigos",
+    label: "Artigos científicos",
     emoji: "📄",
-    description: "Publicações científicas, relatórios técnicos e papers acadêmicos.",
+    description: "Papers, estudos e publicações acadêmicas do Acervo SEMEAR.",
     color: "border-ciano/60"
   },
   noticias: {
-    label: "Notícias",
+    label: "Notícias e matérias",
     emoji: "📰",
-    description: "Cobertura jornalística e links sobre qualidade do ar e meio ambiente.",
+    description: "Cobertura jornalística, matérias históricas e clipping sobre qualidade do ar e meio ambiente.",
     color: "border-acento/60"
   },
   midias: {
     label: "Mídias",
     emoji: "🎬",
-    description: "Vídeos, fotorreportagens e materiais audiovisuais.",
+    description: "Fotos, vídeos, galerias e materiais audiovisuais do Acervo.",
     color: "border-primaria/60"
+  },
+  documentos: {
+    label: "Documentos e relatórios",
+    emoji: "🏛️",
+    description: "Documentos históricos, relatórios técnicos, boletins e registros institucionais.",
+    color: "border-accent-brown/60"
   }
 };
 
@@ -36,7 +42,7 @@ const SOURCE_TYPE_LABELS: Record<string, string> = {
 };
 
 function isAcervoArea(value: string | undefined): value is AcervoArea {
-  return value === "artigos" || value === "noticias" || value === "midias";
+  return value === "artigos" || value === "noticias" || value === "midias" || value === "documentos";
 }
 
 export function AcervoListPage() {
@@ -106,7 +112,7 @@ export function AcervoListPage() {
   if (!isAcervoArea(area)) {
     return (
       <p aria-live="polite" className="rounded-md border border-error bg-error/10 p-3 text-base text-error" role="alert">
-        Área inválida. Use /acervo/artigos, /acervo/noticias ou /acervo/midias.
+        Área inválida. Use /acervo/artigos, /acervo/noticias, /acervo/midias ou /acervo/documentos.
       </p>
     );
   }
