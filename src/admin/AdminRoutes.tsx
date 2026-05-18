@@ -5,6 +5,7 @@ import { AdminGuard } from "../components/AdminGuard";
 
 const AdminLayout = lazy(() => import("../layout/AdminLayout").then((m) => ({ default: m.AdminLayout })));
 const AdminLoginPage = lazy(() => import("../pages/admin/AdminLoginPage").then((m) => ({ default: m.AdminLoginPage })));
+const AdminResetPasswordPage = lazy(() => import("../pages/admin/AdminResetPasswordPage").then((m) => ({ default: m.AdminResetPasswordPage })));
 const AdminDashboardPage = lazy(() => import("../pages/admin/AdminDashboardPage").then((m) => ({ default: m.AdminDashboardPage })));
 const AdminUploadsPage = lazy(() => import("../pages/admin/AdminUploadsPage").then((m) => ({ default: m.AdminUploadsPage })));
 const AdminAcervoListPage = lazy(() => import("../pages/admin/AdminAcervoListPage").then((m) => ({ default: m.AdminAcervoListPage })));
@@ -50,6 +51,7 @@ export default function AdminRoutes() {
   return (
     <Routes>
       <Route path="login" element={<AdminLoginPage />} />
+      <Route path="reset-password" element={<AdminResetPasswordPage />} />
       <Route path="*" element={<AdminShell />} />
     </Routes>
   );
