@@ -29,7 +29,10 @@ export function PortalLayout({ children }: PropsWithChildren) {
   }, [isOnline, location.pathname]);
 
   return (
-    <div className="min-h-screen bg-bg-page">
+    <div className="portal-shell min-h-screen bg-bg-page">
+      <div className="portal-ambient portal-ambient-a" aria-hidden="true" />
+      <div className="portal-ambient portal-ambient-b" aria-hidden="true" />
+      <div className="portal-grid" aria-hidden="true" />
       {/* Skip Link for keyboard navigation */}
       <a
         href="#main-content"
@@ -53,7 +56,7 @@ export function PortalLayout({ children }: PropsWithChildren) {
           />
         </div>
       )}
-      <main id="main-content" tabIndex={-1} className="mx-auto w-full max-w-7xl px-4 pb-0 pt-16 md:px-6 md:pt-20">{children}</main>
+      <main id="main-content" tabIndex={-1} className="portal-main mx-auto w-full max-w-7xl px-4 pb-0 pt-16 md:px-6 md:pt-20">{children}</main>
       <Footer />
     </div>
   );

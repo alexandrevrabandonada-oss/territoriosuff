@@ -107,6 +107,7 @@ export function Navbar() {
           <img src="/brand/uff-logo-vertical-blue.png" alt="Universidade Federal Fluminense" className="site-uff-logo" />
           <span aria-hidden="true" />
           <img src="/brand/semear-logo-full.jpeg" alt="Projeto UFF SEMEAR" className="site-semear-logo" />
+          <small>Portal público</small>
         </Link>
 
         <nav className="site-nav" aria-label="Navegação principal">

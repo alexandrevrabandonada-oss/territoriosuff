@@ -272,39 +272,55 @@ export function DadosPage() {
   };
 
   return (
-    <section className="space-y-10 md:space-y-12">
+    <section className="data-dashboard space-y-8 md:space-y-10">
       {!isOnline && (
-        <OfflineBanner
-          description="Algumas leituras podem ficar desatualizadas até a conexão voltar. A lista da estação e o histórico carregado continuam disponíveis."
-          onRetry={() => window.location.reload()}
-        />
+        <div className="data-alert">
+          <OfflineBanner
+            description="Algumas leituras podem ficar desatualizadas até a conexão voltar. A lista da estação e o histórico carregado continuam disponíveis."
+            onRetry={() => window.location.reload()}
+          />
+        </div>
       )}
 
-      <SurfaceCard className="axis-section-header-dados overflow-hidden p-5 md:p-6">
-        <div className="grid gap-4 lg:grid-cols-[minmax(0,1.05fr)_minmax(320px,0.95fr)] lg:items-end">
-          <div className="space-y-3">
+      <SurfaceCard className="data-hero overflow-hidden p-0">
+        <div className="data-hero-grid">
+          <div className="data-hero-copy">
             <div className="flex items-center gap-3">
-              <IconShell tone="lab" className="rounded-full">
+              <IconShell tone="lab" className="data-hero-icon">
                 <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                 </svg>
               </IconShell>
               <div className="space-y-1">
                 <AxisEyebrow axis="dados">Painel ambiental</AxisEyebrow>
-                <h1 className="axis-heading-dados text-2xl md:text-4xl">Dados ao vivo</h1>
+                <h1 className="data-hero-title">Dados ao vivo</h1>
               </div>
             </div>
-            <p className="max-w-2xl text-sm leading-relaxed text-text-secondary md:text-base">
-              Veja a estação, acompanhe o estado atual e exporte o recorte em CSV.
+            <p className="data-hero-lede">
+              Monitoramento ambiental em tempo quase real, com leitura pública, recortes comparáveis e exportação para auditoria cidadã.
             </p>
+            <div className="data-hero-strip" aria-label="Indicadores rápidos">
+              <div>
+                <span>Estação</span>
+                <strong>{selectedStation?.name ?? "Aguardando seleção"}</strong>
+              </div>
+              <div>
+                <span>Status</span>
+                <strong>{selectedStationId ? (isOnline ? "Online" : "Offline") : "Sem estação"}</strong>
+              </div>
+              <div>
+                <span>Última leitura</span>
+                <strong>{stats.lastTime ? formatDate(stats.lastTime) : "Aguardando"}</strong>
+              </div>
+            </div>
           </div>
 
-          <div className="space-y-3">
+          <div className="data-control-panel">
             <div className="grid gap-3 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-end">
               <label className="block">
-                <span className="mb-2 block text-xs font-semibold uppercase tracking-[0.16em] text-text-secondary">Estação</span>
+                <span className="data-control-label">Estação</span>
                 <select
-                  className="motion-input motion-focus w-full rounded-full border border-border-subtle bg-surface-1 px-4 py-2.5 text-sm text-text-primary"
+                  className="data-select"
                   disabled={!stations.length}
                   onChange={(e) => setSelectedStationId(e.target.value || null)}
                   value={selectedStationId ?? ""}
@@ -318,7 +334,7 @@ export function DadosPage() {
                 </select>
               </label>
               <button
-                className="ui-btn-primary px-4"
+                className="data-refresh"
                 disabled={!selectedStationId || loadingMeasurements}
                 onClick={() => selectedStationId && void loadMeasurements(selectedStationId)}
                 type="button"
@@ -327,31 +343,31 @@ export function DadosPage() {
               </button>
             </div>
 
-            <div className="grid gap-2 sm:grid-cols-3">
-              <div className="rounded-2xl border border-border-subtle bg-surface-2 px-3.5 py-3">
-                <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-text-secondary">Status</p>
+            <div className="data-status-grid">
+              <div className="data-status-card">
+                <p>Status</p>
                 <p className={`mt-1.5 inline-flex items-center rounded-full border px-2.5 py-1 text-xs font-bold ${selectedStationId ? (isOnline ? "border-emerald-500/20 bg-emerald-50 text-emerald-800" : "border-red-500/20 bg-red-50 text-red-900") : "border-slate-300 bg-slate-50 text-slate-700"}`}>
                   {selectedStationId ? (isOnline ? "Online" : "Offline") : "Sem estação"}
                 </p>
               </div>
-              <div className="rounded-2xl border border-border-subtle bg-surface-2 px-3.5 py-3">
-                <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-text-secondary">Qualidade</p>
-                <p className="mt-1.5 text-sm font-semibold text-text-primary">
+              <div className="data-status-card">
+                <p>Qualidade</p>
+                <strong>
                   {selectedStationId && stationHealth.has(selectedStationId)
                     ? getHealthBadgeInfo(stationHealth.get(selectedStationId)!.health_status).label
                     : "Sem leitura"}
-                </p>
+                </strong>
               </div>
-              <div className="rounded-2xl border border-border-subtle bg-surface-2 px-3.5 py-3">
-                <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-text-secondary">Atualização</p>
-                <p className="mt-1.5 text-sm font-semibold text-text-primary">{stats.lastTime ? formatDate(stats.lastTime) : "Aguardando"}</p>
+              <div className="data-status-card">
+                <p>Atualização</p>
+                <strong>{stats.lastTime ? formatDate(stats.lastTime) : "Aguardando"}</strong>
               </div>
             </div>
           </div>
         </div>
       </SurfaceCard>
 
-      <SurfaceCard className="p-5 md:p-6">
+      <SurfaceCard className="data-info-panel p-5 md:p-6">
         <div className="grid gap-5 lg:grid-cols-[minmax(0,1.15fr)_minmax(280px,0.85fr)] lg:items-start">
           <div className="space-y-4">
             <SectionHeader
@@ -375,7 +391,7 @@ export function DadosPage() {
             </ul>
           </div>
 
-          <div className="signature-surface p-4 md:p-5">
+          <div className="data-export-card p-4 md:p-5">
             <p className="text-xs font-semibold uppercase tracking-[0.18em] text-brand-primary">CSV</p>
             <p className="mt-2 text-sm leading-relaxed text-text-secondary">
               Baixe o recorte do período visível quando houver leitura disponível.
@@ -610,7 +626,6 @@ export function DadosPage() {
     </section>
   );
 }
-
 
 
 

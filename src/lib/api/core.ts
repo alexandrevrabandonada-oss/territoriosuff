@@ -82,6 +82,7 @@ export type AcervoKind =
   | "artigo_cientifico"
   | "noticia"
   | "materia"
+  | "midia"
   | "foto"
   | "video"
   | "documento"

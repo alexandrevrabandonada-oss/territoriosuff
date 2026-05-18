@@ -70,7 +70,7 @@ Como registrar bug:
 ## 2. Criar item do Acervo
 
 Objetivo:
-- validar criacao, salvamento, publicacao e exibicao publica de um item do Acervo usando asset real enviado no passo anterior.
+- validar criacao, salvamento, publicacao e exibicao publica de um item do Acervo usando asset real enviado no passo anterior e classificacao editorial ja definida no upload.
 
 Dados minimos obrigatorios:
 - titulo
@@ -81,17 +81,20 @@ Dados minimos obrigatorios:
 - asset de imagem ou documento associado
 
 Passo a passo:
-1. A partir de `/admin/uploads`, clicar em `Usar no Acervo` no asset enviado; alternativamente abrir `/admin/acervo/novo?assetId=<id>`.
-2. Confirmar que o asset foi anexado ou preselecionado.
-3. Preencher `Titulo do Item`.
-4. Ajustar `Slug da URL`.
-5. Preencher `Resumo Executivo`.
-6. Preencher `Corpo do Texto (Markdown)` com conteudo minimo.
-7. Preencher `Veiculo / Fonte` quando o tipo exigir.
-8. Confirmar `Status Editorial = Rascunho` e salvar rascunho.
-9. Reabrir o item, revisar dados e clicar em `Publicar Agora`.
-10. Usar `Preview` ou `Ver no portal`.
-11. Confirmar que o item aparece em `/acervo` e em `/acervo/item/:slug`.
+1. Em `/admin/uploads`, selecionar `Destino (Bucket) = Acervo`.
+2. Na secao `Tipo de conteudo no Acervo`, escolher a categoria editorial correta antes do upload.
+3. Concluir o upload.
+4. No card de sucesso, clicar em `Criar item no Acervo` ou em uma das acoes especificas (`Artigo Cientifico`, `Noticia`, `Midia`, `Documento`).
+5. Confirmar que `/admin/acervo/novo?assetId=<id>&type=<tipo>` abriu com tipo preselecionado e arquivo vinculado.
+6. Confirmar que imagem foi sugerida como capa e que PDF ficou anexado como arquivo principal quando aplicavel.
+7. Preencher `Titulo do Item`.
+8. Ajustar `Slug da URL`.
+9. Preencher `Resumo Executivo`.
+10. Completar os campos especificos do tipo editorial selecionado.
+11. Confirmar `Status Editorial = Rascunho` e salvar rascunho.
+12. Reabrir o item, revisar dados e clicar em `Publicar Agora`.
+13. Usar `Preview` ou `Ver no portal`.
+14. Confirmar que o item aparece em `/acervo` e em `/acervo/item/:slug`.
 
 Resultado esperado:
 - item salvo em rascunho sem erro
@@ -100,6 +103,8 @@ Resultado esperado:
 - item visivel na listagem publica e na pagina individual
 
 Problemas comuns:
+- bucket correto com tipo editorial errado
+- upload em `Acervo` sem selecionar a categoria editorial esperada pela pauta
 - slug vazio ou duplicado
 - resumo ausente na publicacao
 - fonte ausente para tipos que exigem esse campo

@@ -7,9 +7,10 @@ const TYPES = [
   { value: "artigo_cientifico", label: "Artigo Científico" },
   { value: "noticia", label: "Notícia" },
   { value: "materia", label: "Matéria" },
+  { value: "midia", label: "Mídia" },
   { value: "foto", label: "Foto" },
   { value: "video", label: "Vídeo" },
-  { value: "documento", label: "Documento" },
+  { value: "documento", label: "Documento Histórico" },
   { value: "relatorio_tecnico", label: "Relatório Técnico" },
   { value: "memoria", label: "Memória" },
   { value: "outro", label: "Outro" },
@@ -26,6 +27,28 @@ type AcervoMediaAsset = MediaAssetRecord & {
   url: string;
   type: string;
 };
+
+type AcervoMeta = {
+  journal_or_institution?: string;
+  thematic_area?: string;
+  source_author?: string;
+  media_subtype?: string;
+  media_credit?: string;
+  visual_description?: string;
+  media_location?: string;
+  document_context?: string;
+  document_category?: string;
+};
+
+function normalizeAcervoType(value: string | null | undefined, asset?: Partial<MediaAssetRecord> | null) {
+  if (!value) return asset?.acervo_content_type || "artigo_cientifico";
+  if (value === "documento_historico") return "documento";
+  return value;
+}
+
+function isPdfLike(asset: Pick<MediaAssetRecord, "mime_type"> | null | undefined) {
+  return asset?.mime_type === "application/pdf";
+}
 
 function normalizeMediaAsset(asset: Partial<MediaAssetRecord> & { id: string; title: string; public_url?: string; url?: string; mime_type?: string; type?: string }): AcervoMediaAsset {
   return {
@@ -55,6 +78,7 @@ export function AdminAcervoEditPage() {
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const assetIdFromUrl = searchParams.get("assetId");
+  const typeFromUrl = searchParams.get("type");
   const isNew = !id;
 
   const [loading, setLoading] = useState(true);
@@ -73,12 +97,14 @@ export function AdminAcervoEditPage() {
   const [sourceName, setSourceName] = useState("");
   const [sourceUrl, setSourceUrl] = useState("");
   const [authors, setAuthors] = useState("");
+  const [doi, setDoi] = useState("");
   const [publishedAt, setPublishedAt] = useState("");
   const [publishAt, setPublishAt] = useState("");
   const [tags, setTags] = useState("");
   const [collectionId, setCollectionId] = useState("");
   const [coverAssetId, setCoverAssetId] = useState("");
   const [media, setMedia] = useState<AcervoMediaAsset[]>([]);
+  const [meta, setMeta] = useState<AcervoMeta>({});
 
   // Quick Upload State
   const [isUploading, setIsUploading] = useState(false);
@@ -104,11 +130,17 @@ export function AdminAcervoEditPage() {
       const asset = await getMediaAssetById(assetIdFromUrl);
       if (asset) {
         if (!title) setTitle(asset.title);
+        setType(normalizeAcervoType(typeFromUrl, asset));
+        if (!sourceName && asset.source_name) setSourceName(asset.source_name);
+        if (!sourceUrl && asset.source_url) setSourceUrl(asset.source_url);
+        if (!publishedAt && asset.source_date) setPublishedAt(asset.source_date);
         addMediaAsset(asset);
         if (isImageAsset(asset)) {
           setCoverAssetId(asset.id);
         }
       }
+    } else if (isNew && typeFromUrl) {
+      setType(normalizeAcervoType(typeFromUrl));
     }
 
     if (!isNew && loading) { // Only load item once
@@ -128,16 +160,18 @@ export function AdminAcervoEditPage() {
         setSourceName(data.source_name || "");
         setSourceUrl(data.source_url || "");
         setAuthors(data.authors || "");
+        setDoi(data.doi || "");
         setPublishedAt(data.published_at || "");
         setPublishAt(data.publish_at || "");
         setTags(data.tags?.join(", ") || "");
         setCollectionId(data.related_collection_id || "");
         setCoverAssetId(data.cover_asset_id || "");
         setMedia((data.media || []).map((item: any) => normalizeMediaAsset(item)));
+        setMeta((data.meta && typeof data.meta === "object") ? data.meta : {});
       }
     }
     setLoading(false);
-  }, [id, isNew, navigate, assetSearch, assetIdFromUrl]);
+  }, [id, isNew, navigate, assetSearch, assetIdFromUrl, typeFromUrl, title, sourceName, sourceUrl, publishedAt]);
 
   useEffect(() => {
     loadData();
@@ -184,8 +218,13 @@ export function AdminAcervoEditPage() {
         setSaving(false);
         return;
       }
-      if (["artigo_cientifico", "noticia", "documento"].includes(type) && !sourceName.trim()) {
+      if (["artigo_cientifico", "noticia", "documento", "relatorio_tecnico"].includes(type) && !sourceName.trim()) {
         alert("⚠️ A fonte é obrigatória para este tipo de conteúdo.");
+        setSaving(false);
+        return;
+      }
+      if (type === "artigo_cientifico" && !authors.trim()) {
+        alert("⚠️ Informe os autores do artigo científico antes de publicar.");
         setSaving(false);
         return;
       }
@@ -208,6 +247,18 @@ export function AdminAcervoEditPage() {
       }
     }
 
+    const normalizedSourceType = type === "artigo_cientifico"
+      ? "cientifico"
+      : type === "noticia" || type === "materia"
+        ? "imprensa"
+        : type === "relatorio_tecnico"
+          ? "institucional"
+          : type === "midia"
+            ? "audiovisual"
+            : type === "documento"
+              ? "historico"
+              : null;
+
     const payload = {
       title,
       slug,
@@ -218,11 +269,14 @@ export function AdminAcervoEditPage() {
       source_name: sourceName,
       source_url: sourceUrl,
       authors,
+      doi: doi || null,
       published_at: publishedAt || null,
       publish_at: publishAt || null,
+      source_type: normalizedSourceType,
       tags: tags.split(",").map(t => t.trim()).filter(Boolean),
       related_collection_id: collectionId || null,
       cover_asset_id: coverAssetId || null,
+      meta,
       media
     };
 
@@ -234,7 +288,7 @@ export function AdminAcervoEditPage() {
         const { error } = await supabase.from("acervo_items").update(payload).eq("id", id);
         if (error) throw error;
       }
-      
+
       if (status === "published") {
         setShowSuccess(true);
       } else {
@@ -260,7 +314,9 @@ export function AdminAcervoEditPage() {
         file,
         title: file.name.replace(/\.[^/.]+$/, ""),
         status: "published",
-        altText: `Anexo de ${title}`
+        altText: `Anexo de ${title}`,
+        acervoContentType: type === "documento" ? "documento" : type,
+        contentCategory: "acervo"
       });
       
       addMediaAsset(asset);
@@ -277,7 +333,19 @@ export function AdminAcervoEditPage() {
     const normalizedAsset = normalizeMediaAsset(asset);
     if (media.some((mediaItem) => mediaItem.id === normalizedAsset.id)) return;
     setMedia((currentMedia) => [...currentMedia, normalizedAsset]);
+    if (!coverAssetId && isImageAsset(normalizedAsset)) {
+      setCoverAssetId(normalizedAsset.id);
+    }
   };
+
+  const updateMeta = (key: keyof AcervoMeta, value: string) => {
+    setMeta((current) => ({ ...current, [key]: value }));
+  };
+
+  const isMediaType = type === "midia" || type === "foto" || type === "video" || type === "memoria";
+  const isScientificType = type === "artigo_cientifico";
+  const isNewsType = type === "noticia" || type === "materia";
+  const isHistoricalDocument = type === "documento";
 
   const removeMediaAsset = (assetId: string) => {
     setMedia(media.filter(m => m.id !== assetId));
@@ -510,7 +578,7 @@ export function AdminAcervoEditPage() {
             <h2 className="text-xl font-black text-slate-900">Fontes & Autores</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
-                <label className="block text-xs font-black text-slate-400 uppercase tracking-widest mb-2">Autor(es)</label>
+                <label className="block text-xs font-black text-slate-400 uppercase tracking-widest mb-2">{isNewsType ? "Autor da matéria" : isMediaType ? "Crédito / autoria" : "Autor(es)"}</label>
                 <input
                   type="text"
                   value={authors}
@@ -520,7 +588,7 @@ export function AdminAcervoEditPage() {
                 />
               </div>
               <div>
-                <label className="block text-xs font-black text-slate-400 uppercase tracking-widest mb-2">Data Original</label>
+                <label className="block text-xs font-black text-slate-400 uppercase tracking-widest mb-2">{isMediaType ? "Data aproximada" : "Data original"}</label>
                 <input
                   type="date"
                   value={publishedAt}
@@ -529,7 +597,7 @@ export function AdminAcervoEditPage() {
                 />
               </div>
               <div>
-                <label className="block text-xs font-black text-slate-400 uppercase tracking-widest mb-2">Veículo / Fonte</label>
+                <label className="block text-xs font-black text-slate-400 uppercase tracking-widest mb-2">{isScientificType ? "Periódico / instituição" : isNewsType ? "Veículo / fonte" : isMediaType ? "Fonte do registro" : isHistoricalDocument ? "Origem / fonte" : "Fonte"}</label>
                 <input
                   type="text"
                   value={sourceName}
@@ -539,7 +607,7 @@ export function AdminAcervoEditPage() {
                 />
               </div>
               <div>
-                <label className="block text-xs font-black text-slate-400 uppercase tracking-widest mb-2">Link Externo</label>
+                <label className="block text-xs font-black text-slate-400 uppercase tracking-widest mb-2">{isNewsType ? "Link da matéria" : isScientificType ? "Link externo" : "Link externo"}</label>
                 <input
                   type="url"
                   value={sourceUrl}
@@ -548,8 +616,129 @@ export function AdminAcervoEditPage() {
                   placeholder="https://..."
                 />
               </div>
+              {isScientificType && (
+                <>
+                  <div>
+                    <label className="block text-xs font-black text-slate-400 uppercase tracking-widest mb-2">DOI</label>
+                    <input
+                      type="text"
+                      value={doi}
+                      onChange={(e) => setDoi(e.target.value)}
+                      className="w-full px-5 py-3 bg-slate-50 border border-slate-100 rounded-xl font-bold"
+                      placeholder="10.1234/exemplo.2026.001"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-black text-slate-400 uppercase tracking-widest mb-2">Área temática</label>
+                    <input
+                      type="text"
+                      value={meta.thematic_area || ""}
+                      onChange={(e) => updateMeta("thematic_area", e.target.value)}
+                      className="w-full px-5 py-3 bg-slate-50 border border-slate-100 rounded-xl font-bold"
+                      placeholder="Ex: Saúde ambiental"
+                    />
+                  </div>
+                </>
+              )}
+              {isMediaType && (
+                <>
+                  <div>
+                    <label className="block text-xs font-black text-slate-400 uppercase tracking-widest mb-2">Tipo de mídia</label>
+                    <select
+                      value={meta.media_subtype || "foto"}
+                      onChange={(e) => updateMeta("media_subtype", e.target.value)}
+                      className="w-full px-5 py-3 bg-slate-50 border border-slate-100 rounded-xl font-bold"
+                    >
+                      <option value="foto">Foto</option>
+                      <option value="video">Vídeo</option>
+                      <option value="audio">Áudio</option>
+                      <option value="galeria">Galeria</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label className="block text-xs font-black text-slate-400 uppercase tracking-widest mb-2">Local</label>
+                    <input
+                      type="text"
+                      value={meta.media_location || ""}
+                      onChange={(e) => updateMeta("media_location", e.target.value)}
+                      className="w-full px-5 py-3 bg-slate-50 border border-slate-100 rounded-xl font-bold"
+                      placeholder="Ex: Volta Redonda, RJ"
+                    />
+                  </div>
+                </>
+              )}
             </div>
           </section>
+
+          {(isScientificType || isNewsType || isMediaType || isHistoricalDocument || type === "relatorio_tecnico") && (
+            <section className="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm space-y-5">
+              <h2 className="text-xl font-black text-slate-900">Campos específicos</h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {isScientificType && (
+                  <>
+                    <div>
+                      <label className="block text-xs font-black text-slate-400 uppercase tracking-widest mb-2">Palavras-chave</label>
+                      <input
+                        type="text"
+                        value={tags}
+                        onChange={(e) => setTags(e.target.value)}
+                        className="w-full px-5 py-3 bg-slate-50 border border-slate-100 rounded-xl font-bold"
+                        placeholder="ciência, qualidade do ar, epidemiologia"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-black text-slate-400 uppercase tracking-widest mb-2">Instituição complementar</label>
+                      <input
+                        type="text"
+                        value={meta.journal_or_institution || ""}
+                        onChange={(e) => updateMeta("journal_or_institution", e.target.value)}
+                        className="w-full px-5 py-3 bg-slate-50 border border-slate-100 rounded-xl font-bold"
+                        placeholder="Laboratório, programa ou centro de pesquisa"
+                      />
+                    </div>
+                  </>
+                )}
+                {isNewsType && (
+                  <div className="md:col-span-2">
+                    <label className="block text-xs font-black text-slate-400 uppercase tracking-widest mb-2">Contexto editorial</label>
+                    <textarea
+                      value={contentMd}
+                      onChange={(e) => setContentMd(e.target.value)}
+                      className="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl h-32 font-medium"
+                      placeholder="Contexto da notícia, clipping, histórico e observações da curadoria."
+                    />
+                  </div>
+                )}
+                {isMediaType && (
+                  <>
+                    <div className="md:col-span-2">
+                      <label className="block text-xs font-black text-slate-400 uppercase tracking-widest mb-2">Descrição visual</label>
+                      <textarea
+                        value={meta.visual_description || ""}
+                        onChange={(e) => updateMeta("visual_description", e.target.value)}
+                        className="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl h-28 font-medium"
+                        placeholder="Descreva o conteúdo visual e o contexto do registro."
+                      />
+                    </div>
+                    <div className="md:col-span-2 rounded-2xl border border-amber-100 bg-amber-50 px-4 py-3 text-xs font-bold text-amber-700">
+                      Imagens publicadas no Acervo continuam exigindo alt_text no asset vinculado.
+                    </div>
+                  </>
+                )}
+                {isHistoricalDocument && (
+                  <div className="md:col-span-2">
+                    <label className="block text-xs font-black text-slate-400 uppercase tracking-widest mb-2">Contexto histórico</label>
+                    <textarea
+                      value={meta.document_context || ""}
+                      onChange={(e) => updateMeta("document_context", e.target.value)}
+                      className="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl h-32 font-medium"
+                      placeholder="Explique a origem, o período e a relevância histórica do documento."
+                    />
+                  </div>
+                )}
+              </div>
+            </section>
+          )}
 
           <section className="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm space-y-6">
             <div className="flex items-center justify-between">
@@ -677,7 +866,11 @@ export function AdminAcervoEditPage() {
                 <label className="block text-xs font-black text-slate-400 uppercase tracking-widest mb-2">Tipo de Item</label>
                 <select
                   value={type}
-                  onChange={(e) => setType(e.target.value)}
+                  onChange={(e) => {
+                    const nextType = e.target.value;
+                    setType(nextType);
+                    if (nextType === "documento") updateMeta("document_category", "historico");
+                  }}
                   className="w-full px-5 py-3 bg-slate-50 border border-slate-100 rounded-xl font-bold"
                 >
                   {TYPES.map(t => <option key={t.value} value={t.value}>{t.label}</option>)}

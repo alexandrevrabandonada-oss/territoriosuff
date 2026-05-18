@@ -13,6 +13,11 @@ export interface MediaAssetRecord {
   alt_text?: string;
   credit?: string;
   source?: string;
+  acervo_content_type?: string;
+  content_category?: string;
+  source_date?: string;
+  source_name?: string;
+  source_url?: string;
   tags?: string[];
   status?: string;
   created_at?: string;
@@ -26,6 +31,11 @@ export interface UploadOptions {
   altText?: string;
   credit?: string;
   source?: string;
+  acervoContentType?: string;
+  contentCategory?: string;
+  sourceDate?: string;
+  sourceName?: string;
+  sourceUrl?: string;
   tags?: string[];
   status?: "draft" | "published" | "archived";
 }
@@ -59,7 +69,7 @@ export async function getMediaAssetById(assetId: string): Promise<MediaAssetReco
 
   const { data, error } = await supabase
     .from("media_assets")
-    .select("id, bucket, path, public_url, file_name, mime_type, size_bytes, title, description, alt_text, credit, source, tags, status, created_at")
+    .select("id, bucket, path, public_url, file_name, mime_type, size_bytes, title, description, alt_text, credit, source, acervo_content_type, content_category, source_date, source_name, source_url, tags, status, created_at")
     .eq("id", assetId)
     .maybeSingle();
 
@@ -82,6 +92,11 @@ export async function adminUploadMedia(options: UploadOptions) {
     altText = "",
     credit = "",
     source = "",
+    acervoContentType = "",
+    contentCategory = bucket,
+    sourceDate = "",
+    sourceName = "",
+    sourceUrl = "",
     tags = [],
     status = "draft"
   } = options;
@@ -132,6 +147,11 @@ export async function adminUploadMedia(options: UploadOptions) {
       alt_text: altText,
       credit,
       source,
+      acervo_content_type: acervoContentType || null,
+      content_category: contentCategory || null,
+      source_date: sourceDate || null,
+      source_name: sourceName || null,
+      source_url: sourceUrl || null,
       tags,
       status,
       created_by: user.id
