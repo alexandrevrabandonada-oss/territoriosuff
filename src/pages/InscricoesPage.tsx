@@ -139,6 +139,7 @@ export function InscricoesPage() {
               type="text"
               value={form.name}
               aria-required="true"
+              autoComplete="name"
               placeholder="Digite seu nome completo"
             />
             <p className="mt-1 text-sm text-text-secondary">Informe seu nome como consta em documento oficial.</p>
@@ -156,6 +157,7 @@ export function InscricoesPage() {
               type="email"
               value={form.email}
               aria-required="true"
+              autoComplete="email"
               placeholder="exemplo@email.com"
             />
             <p className="mt-1 text-sm text-text-secondary">Usaremos este e-mail para confirmações e comunicados.</p>
@@ -173,6 +175,7 @@ export function InscricoesPage() {
               type="tel"
               value={form.whatsapp}
               aria-required="true"
+              autoComplete="tel"
               placeholder="(21) 99999-9999"
             />
             <p className="mt-1 text-sm text-text-secondary">Número com DDD para contato direto.</p>
@@ -190,6 +193,7 @@ export function InscricoesPage() {
               type="text"
               value={form.bairro}
               aria-required="true"
+              autoComplete="address-level3"
               placeholder="Nome do bairro onde reside"
             />
             <p className="mt-1 text-sm text-text-secondary">Ajuda-nos a entender o alcance territorial do projeto.</p>

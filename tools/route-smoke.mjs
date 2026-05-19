@@ -32,7 +32,9 @@ function runSmoke() {
     'path="/acervo/artigos/novo"',
     'path="/agenda/:id"',
     'path="/agenda/novo"',
-    'path="/uploads"'
+    'path="/uploads"',
+    'path="/corredores"',
+    'path="/corredores/:slug"'
   ];
 
   let failed = false;

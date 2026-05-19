@@ -3,7 +3,7 @@ import { IconShell, SurfaceCard } from "../components/BrandSystem";
 
 const participationLinks = [
   { href: "/agenda", label: "Inscricoes e agenda" },
-  { href: "/conversar", label: "Conversar" },
+  { href: "/conversar", label: "Conversas e atividades" },
   { href: "/alertas", label: "Receber alertas" },
   { href: "/dados", label: "Acompanhar dados" }
 ];
@@ -26,7 +26,7 @@ export function ComoParticiparPage() {
         <h2 className="text-lg font-black text-text-primary">Canais de participacao</h2>
         <ul className="mt-3 list-disc space-y-2 pl-5 text-sm text-text-secondary md:text-base">
           <li>Inscreva-se nas atividades da agenda para oficinas, rodas de conversa e encontros tecnicos.</li>
-          <li>Use o canal Conversar para enviar relatos, perguntas e contribuicoes da sua comunidade.</li>
+          <li>Use a área Conversas e atividades para acompanhar registros de campo e enviar relatos, perguntas e contribuições da sua comunidade.</li>
           <li>Ative alertas para receber avisos de qualidade do ar diretamente no seu dispositivo.</li>
           <li>Acompanhe o painel de dados para monitorar tendencias e apoiar debates publicos.</li>
         </ul>

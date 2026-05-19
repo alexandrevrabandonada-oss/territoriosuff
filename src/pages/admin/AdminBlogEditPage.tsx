@@ -1,5 +1,6 @@
 import { useEffect, useState, useCallback } from "react";
 import { useNavigate, useParams, Link, useLocation } from "react-router-dom";
+import { SafeMarkdown } from "../../components/SafeMarkdown";
 import { supabase } from "../../lib/supabase/client";
 import { adminUploadMedia, formatAssetSize, getMediaAssetById, isImageAsset, isPdfAsset, type MediaAssetRecord } from "../../lib/admin/media";
 
@@ -28,20 +29,6 @@ function toLocalDateTimeInput(value: string | null | undefined): string {
   const offset = date.getTimezoneOffset();
   const localDate = new Date(date.getTime() - offset * 60_000);
   return localDate.toISOString().slice(0, 16);
-}
-
-function renderMarkdownPreview(text: string): string {
-  return text
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/^###\s+(.+)$/gm, "<h3>$1</h3>")
-    .replace(/^##\s+(.+)$/gm, "<h2>$1</h2>")
-    .replace(/^#\s+(.+)$/gm, "<h1>$1</h1>")
-    .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
-    .replace(/\*(.+?)\*/g, "<em>$1</em>")
-    .replace(/\[(.+?)\]\((.+?)\)/g, '<a href="$2" target="_blank" rel="noreferrer">$1</a>')
-    .replace(/\n/g, "<br />");
 }
 
 export function AdminBlogEditPage() {
@@ -480,7 +467,7 @@ export function AdminBlogEditPage() {
                     <div className="bg-slate-50 rounded-2xl p-8 border border-slate-100 h-[600px] overflow-y-auto prose prose-slate prose-emerald max-w-none shadow-inner">
                       <h1 className="font-black text-slate-900 mb-4">{title || "Título da Matéria"}</h1>
                       <p className="lead font-bold text-slate-500 mb-8">{summary || "Resumo da matéria"}</p>
-                      <div className="markdown-content" dangerouslySetInnerHTML={{ __html: renderMarkdownPreview(contentMd) }} />
+                      <SafeMarkdown text={contentMd} className="markdown-content" />
                       <p className="text-[10px] text-slate-300 italic mt-20 border-t pt-4">Preview simplificado do conteúdo em tempo real.</p>
                     </div>
                   )}

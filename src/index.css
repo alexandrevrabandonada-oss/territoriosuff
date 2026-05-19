@@ -560,6 +560,42 @@ button {
   touch-action: manipulation;
 }
 
+.tts-control {
+  @apply inline-flex;
+}
+
+.tts-button {
+  @apply inline-flex min-h-[44px] items-center gap-2 rounded-full border border-brand-primary/20 bg-white/90 px-4 py-2 text-xs font-black uppercase tracking-[0.14em] text-brand-primary shadow-sm shadow-brand-primary/5 transition-all hover:-translate-y-0.5 hover:border-brand-primary/40 hover:bg-brand-primary hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary focus-visible:ring-offset-2;
+}
+
+.activity-grid {
+  @apply grid gap-6 lg:grid-cols-2;
+}
+
+.activity-card {
+  @apply overflow-hidden rounded-[2rem] border border-brand-primary/10 bg-white shadow-[0_24px_70px_rgba(17,38,59,0.10)];
+}
+
+.activity-card-copy {
+  @apply space-y-4 p-5 md:p-7;
+}
+
+.activity-card-kicker {
+  @apply inline-flex rounded-full border border-emerald-500/20 bg-emerald-50 px-3 py-1 text-[10px] font-black uppercase tracking-[0.18em] text-emerald-700;
+}
+
+.instagram-embed-shell {
+  @apply min-h-[520px] overflow-hidden bg-slate-50;
+}
+
+.instagram-embed-frame {
+  @apply h-[560px] w-full border-0;
+}
+
+.instagram-card-fallback {
+  @apply flex min-h-52 items-center justify-center bg-gradient-to-br from-rose-50 via-white to-amber-50 p-6 text-center text-sm font-black uppercase tracking-[0.16em] text-brand-primary;
+}
+
 #main-content:focus {
   outline: none;
 }

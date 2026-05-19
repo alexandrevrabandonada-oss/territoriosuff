@@ -39,7 +39,7 @@ function buildChunksManifest() {
 
 export default defineConfig({
   build: {
-    sourcemap: true,
+    sourcemap: process.env.SENTRY_AUTH_TOKEN ? "hidden" : false,
     rollupOptions: {
       output: {
           manualChunks(id) {

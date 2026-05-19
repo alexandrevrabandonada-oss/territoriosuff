@@ -19,7 +19,7 @@ assertAll(editContent, [
   'const { error } = await supabase.from("blog_posts").insert(payload);',
   'const { error } = await supabase.from("blog_posts").update(payload).eq("id", id);',
   'if (!contentMd.trim()) {',
-  'renderMarkdownPreview(contentMd)',
+  '<SafeMarkdown text={contentMd} className="markdown-content" />',
   'setAttachmentAsset(asset);',
   'const attachmentBlock = attachmentAsset && !contentMd.includes(attachmentAsset.public_url)',
   'cover_asset_id: coverAssetId || null,',

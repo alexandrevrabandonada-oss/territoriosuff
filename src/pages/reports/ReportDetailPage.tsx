@@ -4,6 +4,7 @@ import { Link, useParams } from "react-router-dom";
 import { IconShell, SurfaceCard } from "../../components/BrandSystem";
 import { BrandIllustratedEmptyState, BrandRadialDivider, BrandTextureSkeleton } from "../../components/BrandMicro";
 import { OfflineBanner } from "../../components/OfflineBanner";
+import { TextToSpeechButton } from "../../components/TextToSpeechButton";
 import { getReportBySlug, type ReportDocument } from "../../lib/api";
 import { trackShare } from "../../lib/observability";
 
@@ -188,6 +189,14 @@ export function ReportDetailPage() {
           {typeof report.year === "number" && <span>Ano: {report.year}</span>}
         </div>
 
+        <div className="mt-5">
+          <TextToSpeechButton
+            label="Ouvir resumo"
+            title={report.title}
+            text={report.summary || "Relatório disponível para consulta em PDF."}
+          />
+        </div>
+
         {report.tags.length > 0 && (
           <div className="mt-4 flex flex-wrap gap-1">
             {report.tags.map((tag) => (
@@ -287,7 +296,6 @@ export function ReportDetailPage() {
     </section>
   );
 }
-
 
 
 

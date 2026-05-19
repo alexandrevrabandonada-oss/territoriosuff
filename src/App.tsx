@@ -47,10 +47,6 @@ const ReportDetailPage = lazy(() => import("./pages/reports/ReportDetailPage").t
 const ConversarListPage = lazy(() => import("./pages/conversar/ConversarListPage").then((m) => ({ default: m.ConversarListPage })));
 const ConversarDetailPage = lazy(() => import("./pages/conversar/ConversarDetailPage").then((m) => ({ default: m.ConversarDetailPage })));
 
-// Corredores lazy-loaded
-const CorredoresListPage = lazy(() => import("./pages/corredores/CorredoresListPage").then((m) => ({ default: m.CorredoresListPage })));
-const CorredoresDetailPage = lazy(() => import("./pages/corredores/CorredoresDetailPage").then((m) => ({ default: m.CorredoresDetailPage })));
-
 // Mapa lazy-loaded
 const MapaPage = lazy(() => import("./pages/MapaPage").then((m) => ({ default: m.MapaPage })));
 
@@ -75,8 +71,6 @@ export default function App() {
                   <Route path="/agenda" element={<AgendaPage />} />
                   <Route path="/conversar" element={<ConversarListPage />} />
                   <Route path="/conversar/:slug" element={<ConversarDetailPage />} />
-                  <Route path="/corredores" element={<CorredoresListPage />} />
-                  <Route path="/corredores/:slug" element={<CorredoresDetailPage />} />
                   <Route path="/mapa" element={<MapaPage />} />
                   <Route path="/inscricoes" element={<InscricoesPage />} />
                   <Route path="/sobre" element={<SobrePage />} />

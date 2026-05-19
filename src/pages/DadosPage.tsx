@@ -8,6 +8,7 @@ import { OfflineBanner } from "../components/OfflineBanner";
 import { EmptyState } from "../components/EmptyState";
 import { ErrorState } from "../components/ErrorState";
 import { SkeletonCard } from "../components/SkeletonCard";
+import { TextToSpeechButton } from "../components/TextToSpeechButton";
 import type { DownsampledMeasurement, StationOverview, StationHealth } from "../lib/api";
 import { classifyOmsPollutant } from "../lib/airQuality";
 import { trackCsvDownload } from "../lib/observability";
@@ -287,7 +288,7 @@ export function DadosPage() {
           <div className="data-hero-copy">
             <div className="flex items-center gap-3">
               <IconShell tone="lab" className="data-hero-icon">
-                <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                 </svg>
               </IconShell>
@@ -527,6 +528,13 @@ export function DadosPage() {
                     <div className="signature-surface p-4 md:p-5">
                       <p className="text-xs font-semibold uppercase tracking-[0.18em] text-brand-primary">Resumo</p>
                       <p className="mt-2 text-sm leading-relaxed text-text-secondary">{textualSummary}</p>
+                      <div className="mt-4">
+                        <TextToSpeechButton
+                          label="Ouvir resumo"
+                          title="Resumo dos dados ambientais"
+                          text={textualSummary}
+                        />
+                      </div>
                       <div className="mt-3 grid gap-3 sm:grid-cols-2">
                         <div className="rounded-2xl bg-surface-2 p-3.5">
                           <p className="text-xs font-semibold uppercase tracking-[0.18em] text-text-secondary">Período</p>
@@ -566,7 +574,7 @@ export function DadosPage() {
                       disabled={currentMeasurements.length === 0}
                       onClick={handleExportCSV}
                       type="button"
-                      aria-label="CSV"
+                      aria-label="Baixar dados visíveis em CSV"
                     >
                       CSV
                     </button>
@@ -585,14 +593,17 @@ export function DadosPage() {
                     </summary>
                     <div className="mt-4 overflow-x-auto">
                       <table className="min-w-full border-collapse text-sm">
+                        <caption className="sr-only">
+                          Leituras ambientais da estação selecionada no período visível, com data, partículas, temperatura, umidade e qualidade.
+                        </caption>
                         <thead>
                           <tr className="border-b border-border-subtle text-left text-xs uppercase tracking-wide text-brand-primary">
-                            <th className="px-3 py-2 font-bold">Data/Hora</th>
-                            <th className="px-3 py-2 font-bold">PM2.5 (µg/m³)</th>
-                            <th className="px-3 py-2 font-bold">PM10 (µg/m³)</th>
-                            <th className="px-3 py-2 font-bold">Temp (°C)</th>
-                            <th className="px-3 py-2 font-bold">Umid. (%)</th>
-                            <th className="px-3 py-2 font-bold">Qualidade</th>
+                            <th scope="col" className="px-3 py-2 font-bold">Data/Hora</th>
+                            <th scope="col" className="px-3 py-2 font-bold">PM2.5 (µg/m³)</th>
+                            <th scope="col" className="px-3 py-2 font-bold">PM10 (µg/m³)</th>
+                            <th scope="col" className="px-3 py-2 font-bold">Temp (°C)</th>
+                            <th scope="col" className="px-3 py-2 font-bold">Umid. (%)</th>
+                            <th scope="col" className="px-3 py-2 font-bold">Qualidade</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -626,8 +637,6 @@ export function DadosPage() {
     </section>
   );
 }
-
-
 
 
 

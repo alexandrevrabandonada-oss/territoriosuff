@@ -1,6 +1,6 @@
 import { createElement } from "react";
 
-type OgKind = "dados" | "blog" | "acervo" | "relatorios" | "dossies" | "boletim" | "corredores" | string;
+type OgKind = "dados" | "blog" | "acervo" | "relatorios" | "dossies" | "boletim" | string;
 
 type OgParams = {
   kind: OgKind;
@@ -42,8 +42,6 @@ function getKindLabel(kind: string) {
       return "DOSSIES";
     case "BOLETIM":
       return "BOLETIM";
-    case "CORREDORES":
-      return "CORREDORES";
     default:
       return "SEMEAR";
   }

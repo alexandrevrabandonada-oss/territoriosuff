@@ -5,7 +5,7 @@ const quickLinks = [
   { href: "/dados", label: "Painel de dados" },
   { href: "/alertas", label: "Alertas de qualidade do ar" },
   { href: "/agenda", label: "Agenda pública" },
-  { href: "/conversar", label: "Canal Conversar" }
+  { href: "/conversar", label: "Conversas e atividades" }
 ];
 
 export function ComoLerDadosPage() {

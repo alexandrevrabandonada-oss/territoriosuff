@@ -10,8 +10,7 @@ const links = [
   { href: "/acervo/linha", label: "Linha do Tempo" },
   { href: "/relatorios", label: "Relatórios" },
   { href: "/agenda", label: "Agenda" },
-  { href: "/conversar", label: "Conversar" },
-  { href: "/corredores", label: "Corredores" },
+  { href: "/conversar", label: "Conversas e atividades" },
   { href: "/sobre", label: "Guias" }
 ];
 
@@ -22,7 +21,7 @@ const mobileGroups = [
       { href: "/", label: "Home" },
       { href: "/dados", label: "Dados" },
       { href: "/agenda", label: "Agenda" },
-      { href: "/conversar", label: "Conversar" }
+      { href: "/conversar", label: "Conversas e atividades" }
     ]
   },
   {
@@ -31,7 +30,6 @@ const mobileGroups = [
       { href: "/acervo", label: "Acervo" },
       { href: "/acervo/linha", label: "Linha do Tempo" },
       { href: "/relatorios", label: "Relatórios" },
-      { href: "/corredores", label: "Corredores" },
       { href: "/mapa", label: "Mapa" },
       { href: "/dossies", label: "Dossiês" }
     ]

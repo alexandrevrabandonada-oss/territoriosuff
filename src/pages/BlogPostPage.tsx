@@ -3,19 +3,13 @@ import { Link, useParams } from "react-router-dom";
 
 import { IconShell, SurfaceCard } from "../components/BrandSystem";
 import { BrandIllustratedEmptyState, BrandRadialDivider, BrandTextureSkeleton, BrandWatermarkPanel } from "../components/BrandMicro";
+import { SafeMarkdown } from "../components/SafeMarkdown";
+import { TextToSpeechButton } from "../components/TextToSpeechButton";
 import { getBlogPostBySlug, type BlogPost } from "../lib/api";
 import { trackShare } from "../lib/observability";
 
 function SimpleMarkdown({ text }: { text: string }) {
-    const html = text
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
-        .replace(/\*(.+?)\*/g, "<em>$1</em>")
-        .replace(/\n/g, "<br />");
-    // eslint-disable-next-line react/no-danger
-    return <div className="space-y-4 text-[15px] leading-relaxed text-text-primary md:text-base" dangerouslySetInnerHTML={{ __html: html }} />;
+    return <SafeMarkdown text={text} className="space-y-4 text-[15px] leading-relaxed text-text-primary md:text-base" />;
 }
 
 export function BlogPostPage() {
@@ -135,6 +129,14 @@ export function BlogPostPage() {
                             {post.excerpt}
                         </p>
                     )}
+
+                    <div className="mb-6">
+                        <TextToSpeechButton
+                            label="Ouvir post"
+                            title={post.title}
+                            text={[post.excerpt, post.content_md].filter(Boolean).join("\n\n")}
+                        />
+                    </div>
 
                     <BrandWatermarkPanel>
                         <BrandRadialDivider className="radial-divider-subtle my-6" />

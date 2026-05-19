@@ -1,10 +1,10 @@
 import { useEffect, useState, useMemo } from "react";
 import { Link } from "react-router-dom";
-import { MapContainer, TileLayer, Marker, Popup, GeoJSON } from "react-leaflet";
+import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 
-import { getStationOverview, getStationHealth, listCorridors, type StationOverview, type StationHealth, type ClimateCorridor } from "../lib/api";
+import { getStationOverview, getStationHealth, type StationOverview, type StationHealth } from "../lib/api";
 
 import { OfflineBanner } from "../components/OfflineBanner";
 import { Chip, IconShell, SurfaceCard } from "../components/BrandSystem";
@@ -73,7 +73,6 @@ function getHealthMarkerIcon(health: string | undefined) {
 export function MapaPage() {
   const [stations, setStations] = useState<StationOverview[]>([]);
   const [stationHealth, setStationHealth] = useState<Map<string, StationHealth>>(new Map());
-  const [corridors, setCorridors] = useState<ClimateCorridor[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [isOnline, setIsOnline] = useState(typeof navigator === "undefined" ? true : navigator.onLine);
@@ -95,10 +94,9 @@ export function MapaPage() {
       try {
         setLoading(true);
         setError(null);
-        const [stationsData, healthData, corridorsData] = await Promise.all([
+        const [stationsData, healthData] = await Promise.all([
           getStationOverview(),
           getStationHealth(),
-          listCorridors(),
         ]);
         setStations(stationsData);
         
@@ -108,8 +106,6 @@ export function MapaPage() {
           healthMap.set(h.station_id, h);
         });
         setStationHealth(healthMap);
-        
-        setCorridors(corridorsData);
       } catch (err) {
         const message = err instanceof Error ? err.message : "Falha ao carregar dados do mapa.";
         setError(`${message}${ENV_HINT}`);
@@ -129,7 +125,9 @@ export function MapaPage() {
 
   return (
     <section className="portal-stage map-stage space-y-8 md:space-y-10">
-      <a href="#mapa-lista" className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-md focus:bg-white focus:px-4 focus:py-2 focus:text-sm focus:font-bold focus:text-brand-primary focus:shadow-lg">Pular o mapa e ir para a lista acessível</a>
+      <a href="#mapa-lista" className="inline-flex min-h-[44px] items-center rounded-full border border-brand-primary/20 bg-white/90 px-4 py-2 text-xs font-black uppercase tracking-[0.14em] text-brand-primary shadow-sm shadow-brand-primary/5 focus:fixed focus:left-4 focus:top-4 focus:z-50">
+        Pular mapa e ir para lista acessível
+      </a>
       {!isOnline && (
         <OfflineBanner
           description="O mapa interativo depende de tiles externos. A lista abaixo continua disponível mesmo sem conexão."
@@ -141,13 +139,13 @@ export function MapaPage() {
         <div className="portal-stage-hero-inner">
           <div className="portal-stage-copy">
               <IconShell tone="brand" className="portal-stage-icon">
-                <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
                 </svg>
               </IconShell>
-              <h1>Estações e corredores climáticos</h1>
+              <h1>Mapa de monitoramento</h1>
             <p>
-              Visualize a localização das estações e dos corredores climáticos mapeados em Volta Redonda e região. Se o mapa não carregar, use a lista acessível abaixo.
+              Visualize a localização das estações de monitoramento em Volta Redonda e região. Se o mapa não carregar, use a lista acessível abaixo.
             </p>
           </div>
           <div className="portal-stage-stat gap-4">
@@ -174,7 +172,7 @@ export function MapaPage() {
           <div>
             <p className="text-xs font-black uppercase tracking-[0.2em] text-brand-primary">Mapa interativo</p>
             <h2 className="mt-2 text-2xl font-black tracking-[-0.04em] text-text-primary md:text-3xl">Navegação espacial do monitoramento</h2>
-            <p className="mt-1 text-sm text-text-secondary">Estações, corredores e leitura complementar na lista acessível.</p>
+            <p className="mt-1 text-sm text-text-secondary">Estações e leitura complementar na lista acessível.</p>
           </div>
         </div>
 
@@ -191,7 +189,7 @@ export function MapaPage() {
               description="Sem conexão, o mapa pode não carregar. A lista acessível abaixo continua disponível."
               onRetry={() => window.location.reload()}
             />
-            <p className="text-sm text-text-secondary">Use a lista de estações e corredores para navegação completa enquanto estiver offline.</p>
+            <p className="text-sm text-text-secondary">Use a lista de estações para navegação completa enquanto estiver offline.</p>
           </div>
         ) : (
           <div className="relative" style={{ height: "520px" }}>
@@ -243,43 +241,6 @@ export function MapaPage() {
                   </Marker>
                 );
               })}
-
-              {/* Corridor GeoJSON layers */}
-              {corridors.map((corridor) => {
-                if (!corridor.geometry_json) return null;
-                
-                try {
-                  return (
-                    <GeoJSON
-                      key={corridor.id}
-                      data={corridor.geometry_json}
-                      style={{
-                        color: "#10b981",
-                        weight: 3,
-                        opacity: 0.6,
-                        fillOpacity: 0.2,
-                      }}
-                      onEachFeature={(feature, layer) => {
-                        layer.bindPopup(`
-                          <div class="p-2">
-                            <h3 class="font-bold text-sm mb-1">${corridor.title}</h3>
-                            <p class="text-xs text-gray-600 mb-2">${corridor.excerpt || ""}</p>
-                            <a 
-                              href="/corredores/${corridor.slug}" 
-                              class="ui-btn-primary motion-action inline-block mt-2 px-3 py-1 text-xs"
-                            >
-                              Abrir corredor climático
-                            </a>
-                          </div>
-                        `);
-                      }}
-                    />
-                  );
-                } catch (e) {
-                  console.warn(`Invalid GeoJSON for corridor ${corridor.slug}:`, e);
-                  return null;
-                }
-              })}
             </MapContainer>
           </div>
         )}
@@ -305,10 +266,6 @@ export function MapaPage() {
                 <div style={{ backgroundColor: '#a1a1a1', color: '#fff', borderRadius: '50%', width: '24px', height: '24px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '12px', fontWeight: 'bold' }}>?</div>
                 <span className="text-xs text-text-secondary"><strong>Desconhecido:</strong> sem dados</span>
               </div>
-              <div className="flex items-center gap-2">
-                <div style={{ backgroundColor: '#10b981', height: '4px', width: '30px' }}></div>
-                <span className="text-xs text-text-secondary"><strong>Corredor climático</strong></span>
-              </div>
             </div>
           </div>
         )}
@@ -317,7 +274,7 @@ export function MapaPage() {
       {/* Accessible Fallback List */}
       <section id="mapa-lista" tabIndex={-1} aria-labelledby="mapa-lista-titulo">
         <SurfaceCard className="portal-list-panel p-6 md:p-8">
-          <h2 id="mapa-lista-titulo" className="mb-4 text-lg font-bold text-brand-primary">Lista acessível de estações e corredores</h2>
+          <h2 id="mapa-lista-titulo" className="mb-4 text-lg font-bold text-brand-primary">Lista de estações</h2>
           <p className="mb-4 text-sm text-text-secondary">
             Informações acessíveis para leitores de tela e navegação sem JavaScript.
           </p>
@@ -358,44 +315,6 @@ export function MapaPage() {
                         className="ui-btn-primary motion-focus motion-action px-4 py-2 text-sm"
                       >
                         Abrir dados da estação
-                      </Link>
-                    </div>
-                  </li>
-                ))}
-              </ul>
-            )}
-          </div>
-
-          <div>
-            <h3 className="mb-3 text-md font-bold text-text-primary">Corredores Climáticos</h3>
-            {loading ? (
-              <p aria-live="polite" className="text-sm text-text-secondary" role="status">
-                Carregando corredores...
-              </p>
-            ) : corridors.length === 0 ? (
-              <p className="text-sm text-text-secondary">Nenhum corredor climático encontrado no momento.</p>
-            ) : (
-              <ul className="space-y-3">
-                {corridors.map((corridor) => (
-                  <li key={corridor.id} className="rounded-[1.35rem] border border-border-subtle bg-surface-1 p-4 motion-surface motion-surface-hover">
-                    <div className="flex flex-wrap items-start justify-between gap-4">
-                      <div className="flex-1">
-                        <h4 className="font-bold text-text-primary">{corridor.title}</h4>
-                        {corridor.excerpt && (
-                          <p className="mt-2 text-sm text-text-secondary">{corridor.excerpt}</p>
-                        )}
-                        {corridor.featured && (
-                          <span className="mt-2 inline-block rounded-full bg-accent-green/10 px-2 py-1 text-xs font-bold text-accent-green">
-                            Em Destaque
-                          </span>
-                        )}
-                      </div>
-                      <Link
-                        to={`/corredores/${corridor.slug}`}
-                        aria-label={`Abrir corredor ${corridor.title}`}
-                        className="ui-btn-secondary motion-focus motion-action px-4 py-2 text-sm"
-                      >
-                        Abrir corredor
                       </Link>
                     </div>
                   </li>

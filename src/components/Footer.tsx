@@ -18,15 +18,15 @@ export function Footer() {
           <Link to="/governanca">Equipe</Link>
           <Link to="/transparencia">Transparência</Link>
           <Link to="/privacidade-lgpd">FAQ</Link>
-          <Link to="/conversar">Contato</Link>
+          <Link to="/conversar">Conversas e atividades</Link>
         </nav>
 
         <div className="site-footer-social">
           <strong>Siga-nos</strong>
           <div>
-            <a href="https://www.instagram.com/" aria-label="Instagram">◎</a>
-            <a href="https://www.youtube.com/" aria-label="YouTube">▶</a>
-            <Link to="/conversar" aria-label="Conversar">@</Link>
+            <a href="https://www.instagram.com/" aria-label="Abrir Instagram do SEMEAR" rel="noopener noreferrer" target="_blank">◎</a>
+            <a href="https://www.youtube.com/" aria-label="Abrir YouTube do SEMEAR" rel="noopener noreferrer" target="_blank">▶</a>
+            <Link to="/conversar" aria-label="Conversas e atividades">@</Link>
           </div>
         </div>
 

@@ -108,6 +108,7 @@ export function AdminResetPasswordPage() {
                 onChange={(e) => setPassword(e.target.value)}
                 required
                 minLength={8}
+                autoComplete="new-password"
                 className="w-full rounded-2xl border border-slate-200 bg-white/80 px-5 py-4 font-medium text-slate-900 transition-all focus:border-emerald-500 focus:outline-none focus:ring-4 focus:ring-emerald-500/10"
                 placeholder="••••••••"
               />
@@ -124,19 +125,20 @@ export function AdminResetPasswordPage() {
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 required
                 minLength={8}
+                autoComplete="new-password"
                 className="w-full rounded-2xl border border-slate-200 bg-white/80 px-5 py-4 font-medium text-slate-900 transition-all focus:border-emerald-500 focus:outline-none focus:ring-4 focus:ring-emerald-500/10"
                 placeholder="••••••••"
               />
             </div>
 
             {error && (
-              <div className="rounded-2xl border border-red-200 bg-red-50 px-5 py-4 text-sm font-medium text-red-700">
+              <div className="rounded-2xl border border-red-200 bg-red-50 px-5 py-4 text-sm font-medium text-red-700" role="alert">
                 {error}
               </div>
             )}
 
             {message && (
-              <div className="rounded-2xl border border-emerald-200 bg-emerald-50 px-5 py-4 text-sm font-medium text-emerald-700">
+              <div className="rounded-2xl border border-emerald-200 bg-emerald-50 px-5 py-4 text-sm font-medium text-emerald-700" role="status" aria-live="polite">
                 {message}
               </div>
             )}

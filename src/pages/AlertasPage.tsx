@@ -17,9 +17,6 @@ export function AlertasPage() {
     const [quietStart, setQuietStart] = useState("22:00");
     const [quietEnd, setQuietEnd] = useState("07:00");
 
-    const [testLoading, setTestLoading] = useState(false);
-    const [testMessage, setTestMessage] = useState<string | null>(null);
-
     useEffect(() => {
         if ("Notification" in window) {
             setStatus(Notification.permission);
@@ -105,32 +102,6 @@ export function AlertasPage() {
         }
     }
 
-    async function sendTest() {
-        setTestLoading(true);
-        setTestMessage(null);
-        setError(null);
-
-        try {
-            const apiKey = import.meta.env.VITE_INGEST_API_KEY || "";
-            const response = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/test-push`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": `Bearer ${apiKey}`
-                }
-            });
-
-            const data = await response.json();
-            if (!response.ok) throw new Error(data.error || "Erro no teste.");
-
-            setTestMessage(`Sucesso! Notificações enviadas para ${data.sent} assinantes.`);
-        } catch (err) {
-            setError(err instanceof Error ? err.message : "Falha ao enviar teste.");
-        } finally {
-            setTestLoading(false);
-        }
-    }
-
     return (
         <section className="portal-stage alerts-stage space-y-8 pb-20 md:space-y-10">
             <SurfaceCard className="portal-stage-hero portal-stage-hero-warm overflow-hidden p-0">
@@ -170,13 +141,6 @@ export function AlertasPage() {
                     </div>
                 )}
 
-                {testMessage && (
-                    <div className="mb-6 rounded-xl border border-base/50 bg-base/10 p-4 text-sm text-base font-bold flex items-center gap-3">
-                        <span className="text-lg">✅</span>
-                        <span>{testMessage}</span>
-                    </div>
-                )}
-
                 <div className="space-y-8">
                     {/* Filtro por Estação */}
                     <div className="space-y-4">
@@ -191,13 +155,14 @@ export function AlertasPage() {
                                 onChange={(e) => setStationCodeFilter(e.target.value)}
                                 className="w-full rounded-xl bg-texto/5 border border-texto/10 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-cta/50 appearance-none"
                                 disabled={isSubscribed}
+                                aria-describedby="station-help"
                             >
                                 <option value="">Todas as estações</option>
                                 {stations.map(s => (
                                     <option key={s.id} value={s.code as string}>{s.name}</option>
                                 ))}
                             </select>
-                            <p className="text-[10px] text-texto/40">Selecione uma estação específica ou receba alertas de toda a rede.</p>
+                            <p id="station-help" className="text-[10px] text-texto/40">Selecione uma estação específica ou receba alertas de toda a rede.</p>
                         </div>
                     </div>
 
@@ -217,8 +182,9 @@ export function AlertasPage() {
                                     className="w-full rounded-xl bg-texto/5 border border-texto/10 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-cta/50"
                                     min="1"
                                     disabled={isSubscribed}
+                                    aria-describedby="pm25-help"
                                 />
-                                <p className="text-[10px] text-texto/40 italic">Recomendado: 35</p>
+                                <p id="pm25-help" className="text-[10px] text-texto/40 italic">Recomendado: 35</p>
                             </div>
                             <div className="space-y-2">
                                 <label htmlFor="pm10" className="block text-xs font-bold text-texto/60">
@@ -233,8 +199,9 @@ export function AlertasPage() {
                                     className="w-full rounded-xl bg-texto/5 border border-texto/10 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-cta/50"
                                     min="1"
                                     disabled={isSubscribed}
+                                    aria-describedby="pm10-help"
                                 />
-                                <p className="text-[10px] text-texto/40 text-right">Aviso para particulas maiores.</p>
+                                <p id="pm10-help" className="text-[10px] text-texto/40 text-right">Aviso para particulas maiores.</p>
                             </div>
                         </div>
                     </div>
@@ -244,8 +211,9 @@ export function AlertasPage() {
                         <h3 className="text-xs font-black uppercase text-cta tracking-[0.2em]">Modo Silencioso</h3>
                         <div className="grid grid-cols-2 gap-4 rounded-xl bg-texto/5 p-4 border border-texto/5">
                             <div className="space-y-1">
-                                <label className="text-[10px] font-bold text-texto/40 uppercase">Início</label>
+                                <label htmlFor="quiet-start" className="text-[10px] font-bold text-texto/40 uppercase">Início</label>
                                 <input
+                                    id="quiet-start"
                                     type="time"
                                     value={quietStart}
                                     onChange={(e) => setQuietStart(e.target.value)}
@@ -254,8 +222,9 @@ export function AlertasPage() {
                                 />
                             </div>
                             <div className="space-y-1 border-l border-texto/10 pl-4">
-                                <label className="text-[10px] font-bold text-texto/40 uppercase">Fim</label>
+                                <label htmlFor="quiet-end" className="text-[10px] font-bold text-texto/40 uppercase">Fim</label>
                                 <input
+                                    id="quiet-end"
                                     type="time"
                                     value={quietEnd}
                                     onChange={(e) => setQuietEnd(e.target.value)}
@@ -280,7 +249,9 @@ export function AlertasPage() {
                             className="w-full rounded-xl bg-texto/5 border border-texto/10 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-cta/50"
                             min="10"
                             disabled={isSubscribed}
+                            aria-describedby="cooldown-help"
                         />
+                        <p id="cooldown-help" className="text-[10px] text-texto/40">Intervalo mínimo recomendado: 10 minutos.</p>
                     </div>
 
                     {isSubscribed ? (
@@ -294,30 +265,24 @@ export function AlertasPage() {
                                 </p>
                             </div>
 
-                            <button
-                                className="w-full rounded-xl border border-cta bg-cta/10 py-3 text-xs font-black uppercase tracking-[0.2em] text-cta transition-all hover:bg-cta hover:text-base active:scale-95 disabled:opacity-50"
-                                disabled={testLoading}
-                                onClick={sendTest}
-                            >
-                                {testLoading ? "Enviando..." : "Enviar Notificação de Teste"}
-                            </button>
-
                             <p className="text-[10px] text-center text-texto/30 italic">
-                                Para alterar as preferências, remova a permissão nas configurações do navegador e reinscreva-se.
+                                Testes de disparo devem ser feitos no ambiente administrativo/servidor. Para alterar as preferências, remova a permissão nas configurações do navegador e reinscreva-se.
                             </p>
                         </div>
                     ) : (
                         <button
+                            type="button"
                             className="w-full rounded-xl bg-cta py-4 text-sm font-black uppercase tracking-[0.2em] text-base shadow-lg transition-all hover:scale-[1.02] hover:shadow-cta/20 active:scale-[0.98] disabled:opacity-50 mt-6"
                             disabled={loading || status === "denied"}
                             onClick={subscribe}
+                            aria-busy={loading}
                         >
                             {loading ? "Salvando Configurações..." : "Confirmar e Ativar Alertas"}
                         </button>
                     )}
 
                     {status === "denied" && (
-                        <div className="rounded-lg bg-acento/5 p-4 text-center">
+                        <div className="rounded-lg bg-acento/5 p-4 text-center" role="alert">
                             <p className="text-xs text-acento font-medium italic">
                                 As notificações foram bloqueadas. Por favor, libere o acesso nas configurações do site (cadeado na barra de endereços).
                             </p>

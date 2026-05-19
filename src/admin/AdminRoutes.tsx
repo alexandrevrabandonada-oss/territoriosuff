@@ -13,6 +13,8 @@ const AdminAcervoEditPage = lazy(() => import("../pages/admin/AdminAcervoEditPag
 const AdminPaperWizardPage = lazy(() => import("../pages/admin/AdminPaperWizardPage").then((m) => ({ default: m.AdminPaperWizardPage })));
 const AdminBlogListPage = lazy(() => import("../pages/admin/AdminBlogListPage").then((m) => ({ default: m.AdminBlogListPage })));
 const AdminBlogEditPage = lazy(() => import("../pages/admin/AdminBlogEditPage").then((m) => ({ default: m.AdminBlogEditPage })));
+const AdminActivitiesListPage = lazy(() => import("../pages/admin/AdminActivitiesListPage").then((m) => ({ default: m.AdminActivitiesListPage })));
+const AdminActivitiesEditPage = lazy(() => import("../pages/admin/AdminActivitiesEditPage").then((m) => ({ default: m.AdminActivitiesEditPage })));
 const AdminAgendaListPage = lazy(() => import("../pages/admin/AdminAgendaListPage").then((m) => ({ default: m.AdminAgendaListPage })));
 const AdminAgendaEditPage = lazy(() => import("../pages/admin/AdminAgendaEditPage").then((m) => ({ default: m.AdminAgendaEditPage })));
 const AdminAgendaInscriptionsPage = lazy(() => import("../pages/admin/AdminAgendaInscriptionsPage").then((m) => ({ default: m.AdminAgendaInscriptionsPage })));
@@ -36,6 +38,9 @@ function AdminShell() {
           <Route path="blog" element={<AdminBlogListPage />} />
           <Route path="blog/novo" element={<AdminBlogEditPage />} />
           <Route path="blog/:id" element={<AdminBlogEditPage />} />
+          <Route path="atividades" element={<AdminActivitiesListPage />} />
+          <Route path="atividades/novo" element={<AdminActivitiesEditPage />} />
+          <Route path="atividades/:id" element={<AdminActivitiesEditPage />} />
           <Route path="agenda" element={<AdminAgendaListPage />} />
           <Route path="agenda/novo" element={<AdminAgendaEditPage />} />
           <Route path="agenda/:id" element={<AdminAgendaEditPage />} />

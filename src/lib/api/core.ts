@@ -316,6 +316,13 @@ export type Conversation = {
   excerpt: string | null;
   body_md: string | null;
   status: "draft" | "published";
+  meta?: {
+    kind?: "conversation" | "activity";
+    instagram_url?: string;
+    activity_date?: string;
+    location?: string;
+    [key: string]: unknown;
+  } | null;
   created_at: string;
 };
 
@@ -393,5 +400,4 @@ export function normalizeOpsKpi(raw?: Partial<OpsKPI> | null): OpsKPI {
     scheduled_content_items_count: toSafeNumber(raw?.scheduled_content_items_count)
   };
 }
-
 

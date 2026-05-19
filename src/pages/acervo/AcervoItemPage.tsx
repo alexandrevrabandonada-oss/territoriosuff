@@ -5,6 +5,8 @@ import { getAcervoBySlug, listCollectionsForItem, getRelatedItemsByCollections, 
 import { ACERVO_KIND_LABELS } from "../../lib/acervo";
 import { trackShare } from "../../lib/observability";
 import { IconShell, SurfaceCard } from "../../components/BrandSystem";
+import { SafeMarkdown } from "../../components/SafeMarkdown";
+import { TextToSpeechButton } from "../../components/TextToSpeechButton";
 
 const SOURCE_TYPE_LABELS: Record<string, string> = {
     cientifico: "Científico",
@@ -14,15 +16,7 @@ const SOURCE_TYPE_LABELS: Record<string, string> = {
 };
 
 function SimpleMarkdown({ text }: { text: string }) {
-    const html = text
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
-        .replace(/\*(.+?)\*/g, "<em>$1</em>")
-        .replace(/\n/g, "<br />");
-    // eslint-disable-next-line react/no-danger
-    return <div className="text-sm leading-relaxed text-text-primary" dangerouslySetInnerHTML={{ __html: html }} />;
+    return <SafeMarkdown text={text} className="text-sm leading-relaxed text-text-primary" />;
 }
 
 export function AcervoItemPage() {
@@ -271,6 +265,14 @@ export function AcervoItemPage() {
                         <p className="mb-6 text-base font-semibold leading-relaxed text-text-primary">{item.excerpt}</p>
                     )}
 
+                    <div className="mb-6">
+                        <TextToSpeechButton
+                            label="Ouvir item"
+                            title={item.title}
+                            text={[item.excerpt, item.curator_note, item.content_md].filter(Boolean).join("\n\n")}
+                        />
+                    </div>
+
                     {/* Body */}
                     {item.content_md ? <SimpleMarkdown text={item.content_md} /> : null}
 
@@ -285,9 +287,9 @@ export function AcervoItemPage() {
                                         onClick={() => setActiveMedia(m)}
                                         className="inline-flex items-center gap-2 rounded-lg bg-brand-primary px-5 py-3 text-sm font-black uppercase tracking-wide text-white transition-colors hover:bg-brand-primary/90"
                                         type="button"
-                                        aria-label={isPdf ? "Abrir PDF" : "Ver imagem"}
+                                        aria-label={`${isPdf ? "Abrir PDF" : "Ver imagem"}${m.title ? `: ${m.title}` : ""}`}
                                     >
-                                        <span className="text-xl">{isPdf ? "📄" : "🖼️"}</span>
+                                        <span className="text-xl" aria-hidden="true">{isPdf ? "📄" : "🖼️"}</span>
                                         {m.title || (isPdf ? "Abrir PDF" : "Ver Imagem")}
                                     </button>
                                 );

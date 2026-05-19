@@ -25,11 +25,17 @@ const AREA_META: Record<AcervoArea, { label: string; emoji: string; description:
     emoji: "🎬",
     description: "Vídeos, fotorreportagens e materiais audiovisuais.",
     color: "border-primaria/60"
+  },
+  documentos: {
+    label: "Documentos",
+    emoji: "🏛️",
+    description: "Atas, relatórios técnicos, boletins e materiais institucionais.",
+    color: "border-amber-500/60"
   }
 };
 
 function isAcervoArea(value: string | undefined): value is AcervoArea {
-  return value === "artigos" || value === "noticias" || value === "midias";
+  return value === "artigos" || value === "noticias" || value === "midias" || value === "documentos";
 }
 
 function TypeBadge({ kind }: { kind: string }) {

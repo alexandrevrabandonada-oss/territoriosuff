@@ -14,7 +14,10 @@ assertAll(routes, [
   'path="blog" element={<AdminBlogListPage />}',
   'path="blog/novo" element={<AdminBlogEditPage />}',
   'path="blog/:id" element={<AdminBlogEditPage />}',
+  'path="atividades" element={<AdminActivitiesListPage />}',
+  'path="atividades/novo" element={<AdminActivitiesEditPage />}',
+  'path="atividades/:id" element={<AdminActivitiesEditPage />}',
   '<Route index element={<AdminDashboardPage />} />',
 ], label);
 
-ok(label, "Admin route tree covers dashboard, uploads, acervo, reports and blog editor flows.");
+ok(label, "Admin route tree covers dashboard, uploads, acervo, reports, blog and activities editor flows.");

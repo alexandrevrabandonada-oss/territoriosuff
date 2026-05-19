@@ -198,12 +198,13 @@ export function AdminReportsListPage() {
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse">
+              <caption className="sr-only">Relatórios administrativos filtrados, com tipo, ano, status e ações.</caption>
               <thead>
                 <tr className="bg-slate-50/50 border-b border-slate-100">
-                  <th className="px-8 py-5 text-[10px] font-black text-slate-400 uppercase tracking-widest">Documento</th>
-                  <th className="px-8 py-5 text-[10px] font-black text-slate-400 uppercase tracking-widest">Tipo / Ano</th>
-                  <th className="px-8 py-5 text-[10px] font-black text-slate-400 uppercase tracking-widest">Status</th>
-                  <th className="px-8 py-5 text-[10px] font-black text-slate-400 uppercase tracking-widest text-right">Ações</th>
+                  <th scope="col" className="px-8 py-5 text-[10px] font-black text-slate-400 uppercase tracking-widest">Documento</th>
+                  <th scope="col" className="px-8 py-5 text-[10px] font-black text-slate-400 uppercase tracking-widest">Tipo / Ano</th>
+                  <th scope="col" className="px-8 py-5 text-[10px] font-black text-slate-400 uppercase tracking-widest">Status</th>
+                  <th scope="col" className="px-8 py-5 text-[10px] font-black text-slate-400 uppercase tracking-widest text-right">Ações</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-50">

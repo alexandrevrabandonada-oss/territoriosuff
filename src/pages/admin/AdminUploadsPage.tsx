@@ -438,7 +438,7 @@ export function AdminUploadsPage() {
                   <a 
                     href={successAsset.public_url} 
                     target="_blank" 
-                    rel="noreferrer"
+                    rel="noopener noreferrer"
                     className="flex-1 py-3 bg-white border border-emerald-200 text-[10px] font-black text-emerald-700 uppercase tracking-widest rounded-xl hover:bg-emerald-100 transition-all text-center"
                   >
                     Abrir arquivo
@@ -581,7 +581,7 @@ export function AdminUploadsPage() {
                     <a 
                       href={asset.public_url} 
                       target="_blank" 
-                      rel="noreferrer"
+                      rel="noopener noreferrer"
                       className="py-2 bg-slate-50 hover:bg-emerald-50 text-[9px] font-black text-slate-600 uppercase tracking-widest rounded-lg transition-all text-center"
                     >
                       Abrir

@@ -107,6 +107,15 @@ function toAppError(scope: string, error: unknown): Error {
   return new Error(`${scope}: ${message}`);
 }
 
+function isDemoRecord(row: Record<string, unknown>): boolean {
+  const slug = typeof row.slug === "string" ? row.slug : "";
+  const meta = row.meta && typeof row.meta === "object" && !Array.isArray(row.meta)
+    ? row.meta as Record<string, unknown>
+    : {};
+
+  return slug.startsWith("demo-") || meta.demo === true || meta.demo === "true";
+}
+
 function parseCapacity(value: unknown): number | null {
   if (typeof value !== "number" || !Number.isFinite(value)) return null;
   if (value < 0) return null;
@@ -367,7 +376,7 @@ export async function listAcervoItems(params: ListAcervoParams = {}): Promise<Ac
 
     let query = supabase
       .from("acervo_items")
-      .select("id, type, title, slug, summary, cover_url, cover_thumb_url, cover_small_url, source_name, source_url, authors, published_at, publish_at, year, city, tags, featured, source_type, created_at")
+      .select("id, type, title, slug, summary, cover_url, cover_thumb_url, cover_small_url, source_name, source_url, authors, published_at, publish_at, year, city, tags, meta, featured, source_type, created_at")
       .eq("status", "published")
       .order("published_at", { ascending: false, nullsFirst: false })
       .range(offset, offset + limit - 1);
@@ -382,6 +391,7 @@ export async function listAcervoItems(params: ListAcervoParams = {}): Promise<Ac
     const { data, error } = await query;
     if (error) throw error;
     return ((data ?? []) as Record<string, unknown>[])
+      .filter((row) => !isDemoRecord(row))
       .map(rowToAcervoItem)
       .filter((item) => isPublishTimeReached(item.publish_at));
   } catch (error) {
@@ -404,6 +414,7 @@ export async function getAcervoBySlug(slug: string): Promise<AcervoItem | null> 
       .maybeSingle();
     if (error) throw error;
     if (!data) return null;
+    if (isDemoRecord(data as Record<string, unknown>)) return null;
     const item = rowToAcervoItem(data as Record<string, unknown>);
     if (!isPublishTimeReached(item.publish_at)) return null;
     return item;
@@ -420,9 +431,28 @@ export type AcervoYearIndex = {
 export async function getAcervoYearIndex(): Promise<AcervoYearIndex[]> {
   try {
     const supabase = assertSupabase();
-    const { data, error } = await supabase.rpc("get_acervo_year_index");
+    const { data, error } = await supabase
+      .from("acervo_items")
+      .select("slug, meta, year, published_at, publish_at")
+      .eq("status", "published")
+      .order("year", { ascending: false, nullsFirst: false });
     if (error) throw error;
-    return (data || []) as AcervoYearIndex[];
+    const totals = new Map<number, number>();
+    for (const row of (data || []) as Record<string, unknown>[]) {
+      if (isDemoRecord(row)) continue;
+      const publishAt = typeof row.publish_at === "string" ? row.publish_at : null;
+      if (!isPublishTimeReached(publishAt)) continue;
+      const year = typeof row.year === "number"
+        ? row.year
+        : typeof row.published_at === "string"
+          ? new Date(row.published_at).getFullYear()
+          : NaN;
+      if (!Number.isFinite(year)) continue;
+      totals.set(year, (totals.get(year) ?? 0) + 1);
+    }
+    return Array.from(totals.entries())
+      .sort(([a], [b]) => b - a)
+      .map(([year, total]) => ({ year, total }));
   } catch (error) {
     throw toAppError("Falha ao carregar indice da linha do tempo", error);
   }
@@ -431,9 +461,18 @@ export async function getAcervoYearIndex(): Promise<AcervoYearIndex[]> {
 export async function getAcervoByYear(year: number, limit = 200): Promise<AcervoItem[]> {
   try {
     const supabase = assertSupabase();
-    const { data, error } = await supabase.rpc("get_acervo_by_year", { p_year: year, p_limit: limit });
+    const { data, error } = await supabase
+      .from("acervo_items")
+      .select("id, type, title, slug, summary, cover_url, cover_thumb_url, cover_small_url, source_name, source_url, published_at, publish_at, year, city, tags, meta, featured, source_type, created_at")
+      .eq("status", "published")
+      .eq("year", year)
+      .order("published_at", { ascending: false, nullsFirst: false })
+      .limit(limit);
     if (error) throw error;
-    return ((data || []) as Record<string, unknown>[]).map(rowToAcervoItem).filter((item) => isPublishTimeReached(item.publish_at));
+    return ((data || []) as Record<string, unknown>[])
+      .filter((row) => !isDemoRecord(row))
+      .map(rowToAcervoItem)
+      .filter((item) => isPublishTimeReached(item.publish_at));
   } catch (error) {
     throw toAppError("Falha ao carregar itens da linha do tempo", error);
   }
@@ -514,6 +553,7 @@ export async function listBlogPosts(params: ListBlogParams = {}): Promise<BlogPo
     const { data, error } = await query;
     if (error) throw error;
     return ((data ?? []) as Record<string, unknown>[])
+      .filter((row) => !isDemoRecord(row))
       .map(rowToBlogPost)
       .filter((post) => isPublishTimeReached(post.publish_at));
   } catch (error) {
@@ -532,6 +572,7 @@ export async function getBlogPostBySlug(slug: string): Promise<BlogPost | null> 
       .maybeSingle();
     if (error) throw error;
     if (!data) return null;
+    if (isDemoRecord(data as Record<string, unknown>)) return null;
     const post = rowToBlogPost(data as Record<string, unknown>);
     if (!isPublishTimeReached(post.publish_at)) return null;
     return post;
@@ -1003,8 +1044,10 @@ export async function getSystemStatus(): Promise<SystemStatus> {
       },
       content: {
         upcoming_events: (events.data ?? []) as EventSummary[],
-        latest_acervo: ((acervo.data ?? []) as any[]).filter((item) => isPublishTimeReached(String(item.publish_at ?? "") || null)),
-        latest_blog: blog,
+        latest_acervo: ((acervo.data ?? []) as Record<string, unknown>[])
+          .filter((item) => !isDemoRecord(item))
+          .filter((item) => isPublishTimeReached(String(item.publish_at ?? "") || null)),
+        latest_blog: blog.filter((post) => !String(post.slug ?? "").startsWith("demo-")),
         reports_published_month: reportsPublishedMonth.count || 0
       },
       transparency: {
@@ -1053,7 +1096,10 @@ export async function searchAcervo(q: string, limit = 10): Promise<AcervoItem[]>
       .limit(limit);
 
     if (error) throw error;
-    return (data as AcervoItem[]).filter((item) => isPublishTimeReached(item.publish_at ?? null));
+    return ((data ?? []) as Record<string, unknown>[])
+      .filter((row) => !isDemoRecord(row))
+      .map(rowToAcervoItem)
+      .filter((item) => isPublishTimeReached(item.publish_at ?? null));
   } catch (error) {
     throw toAppError("Falha ao buscar no acervo", error);
   }
@@ -1073,7 +1119,10 @@ export async function searchBlog(q: string, limit = 10): Promise<BlogPost[]> {
       .limit(limit);
 
     if (error) throw error;
-    return (data as BlogPost[]).filter((post) => isPublishTimeReached(post.publish_at ?? null));
+    return ((data ?? []) as Record<string, unknown>[])
+      .filter((row) => !isDemoRecord(row))
+      .map(rowToBlogPost)
+      .filter((post) => isPublishTimeReached(post.publish_at ?? null));
   } catch (error) {
     throw toAppError("Falha ao buscar no blog", error);
   }
@@ -1347,6 +1396,13 @@ export type Conversation = {
   excerpt: string | null;
   body_md: string | null;
   status: "draft" | "published";
+  meta?: {
+    kind?: "conversation" | "activity";
+    instagram_url?: string;
+    activity_date?: string;
+    location?: string;
+    [key: string]: unknown;
+  } | null;
   created_at: string;
 };
 
@@ -1369,7 +1425,8 @@ export async function listConversations(): Promise<Conversation[]> {
       .order("created_at", { ascending: false });
 
     if (error) throw error;
-    return (data || []) as Conversation[];
+    return ((data || []) as Record<string, unknown>[])
+      .filter((row) => !isDemoRecord(row)) as Conversation[];
   } catch (error) {
     throw toAppError("Falha ao listar rodas de conversa", error);
   }
@@ -1386,7 +1443,9 @@ export async function getConversationBySlug(slug: string): Promise<Conversation 
       .maybeSingle();
 
     if (error) throw error;
-    return (data || null) as Conversation | null;
+    if (!data) return null;
+    if (isDemoRecord(data as Record<string, unknown>)) return null;
+    return data as Conversation;
   } catch (error) {
     throw toAppError("Falha ao carregar roda de conversa", error);
   }
@@ -1487,7 +1546,8 @@ export async function listCorridors(options?: { featuredOnly?: boolean }): Promi
     const { data, error } = await query;
 
     if (error) throw error;
-    return (data || []) as ClimateCorridor[];
+    return ((data || []) as Record<string, unknown>[])
+      .filter((row) => !isDemoRecord(row)) as ClimateCorridor[];
   } catch (error) {
     throw toAppError("Falha ao listar corredores climáticos", error);
   }
@@ -1505,7 +1565,9 @@ export async function listFeaturedCorridors(limit: number = 3): Promise<ClimateC
       .limit(limit);
 
     if (error) throw error;
-    return (data || []) as ClimateCorridor[];
+    return ((data || []) as Record<string, unknown>[])
+      .filter((row) => !isDemoRecord(row))
+      .slice(0, limit) as ClimateCorridor[];
   } catch (error) {
     throw toAppError("Falha ao listar corredores em destaque", error);
   }
@@ -1522,6 +1584,7 @@ export async function getCorridorBySlug(slug: string): Promise<ClimateCorridorWi
 
     if (corrError) throw corrError;
     if (!corridor) return null;
+    if (isDemoRecord(corridor as Record<string, unknown>)) return null;
 
     const { data: links, error: linksError } = await supabase
       .from("climate_corridor_links")

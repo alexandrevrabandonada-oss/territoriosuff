@@ -9,17 +9,10 @@ import {
     ConversationComment
 } from "../../lib/api";
 import { IconShell, SurfaceCard } from "../../components/BrandSystem";
+import { SafeMarkdown } from "../../components/SafeMarkdown";
 
 function SimpleMarkdown({ text }: { text: string }) {
-    const html = text
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
-        .replace(/\*(.+?)\*/g, "<em>$1</em>")
-        .replace(/\n/g, "<br />");
-    // eslint-disable-next-line react/no-danger
-    return <div className="space-y-4 text-base leading-relaxed text-text-primary" dangerouslySetInnerHTML={{ __html: html }} />;
+    return <SafeMarkdown text={text} className="space-y-4 text-base leading-relaxed text-text-primary" />;
 }
 
 export function ConversarDetailPage() {
@@ -122,7 +115,7 @@ export function ConversarDetailPage() {
         return (
             <div className="mx-auto max-w-4xl px-4 py-12 text-center">
                 <p className="text-error">{error || "Conversa não encontrada"}</p>
-                <Link to="/conversar" className="mt-4 inline-block text-brand-primary underline">Voltar para a lista</Link>
+                <Link to="/conversar" className="mt-4 inline-block text-brand-primary underline">Voltar para conversas e atividades</Link>
             </div>
         );
     }
@@ -130,7 +123,7 @@ export function ConversarDetailPage() {
     return (
         <main className="portal-stage mx-auto max-w-5xl space-y-8 md:space-y-10">
             <Link to="/conversar" className="mb-6 inline-flex items-center text-sm font-semibold text-brand-primary hover:underline">
-                ← Voltar para Conversar
+                ← Voltar para conversas e atividades
             </Link>
 
             <SurfaceCard className="portal-detail-article p-5 md:p-8">
@@ -187,7 +180,11 @@ export function ConversarDetailPage() {
                     <h3 className="mb-6 text-xl font-bold text-text-primary">Deixe sua contribuição</h3>
 
                     {submitSuccess && (
-                        <div className={`mb-6 rounded-lg border p-4 text-sm font-bold ${submitSuccess.type === 'success' ? 'border-accent-green/30 bg-accent-green/10 text-accent-green' : 'border-warning/30 bg-warning/10 text-warning'}`}>
+                        <div
+                            className={`mb-6 rounded-lg border p-4 text-sm font-bold ${submitSuccess.type === 'success' ? 'border-accent-green/30 bg-accent-green/10 text-accent-green' : 'border-warning/30 bg-warning/10 text-warning'}`}
+                            role={submitSuccess.type === "success" ? "status" : "alert"}
+                            aria-live={submitSuccess.type === "success" ? "polite" : "assertive"}
+                        >
                             {submitSuccess.msg}
                         </div>
                     )}
@@ -215,6 +212,8 @@ export function ConversarDetailPage() {
                                 onChange={(e) => setName(e.target.value)}
                                 className="w-full rounded-lg border border-brand-primary/30 bg-white px-4 py-2 text-text-primary focus:border-brand-primary focus:outline-none focus:ring-1 focus:ring-brand-primary"
                                 placeholder="Ex: Maria Santos"
+                                aria-required="true"
+                                autoComplete="name"
                             />
                         </div>
                         <div>
@@ -229,12 +228,14 @@ export function ConversarDetailPage() {
                                 onChange={(e) => setBody(e.target.value)}
                                 className="w-full rounded-lg border border-brand-primary/30 bg-white px-4 py-2 text-text-primary focus:border-brand-primary focus:outline-none focus:ring-1 focus:ring-brand-primary"
                                 placeholder="Compartilhe seu relato, dúvida ou sugestão..."
+                                aria-required="true"
                             />
                         </div>
                         <button
                             type="submit"
                             disabled={submitting}
                             className="mt-2 inline-flex items-center justify-center rounded-lg bg-brand-primary px-6 py-3 font-black uppercase tracking-widest text-white transition-all hover:brightness-110 disabled:opacity-50"
+                            aria-busy={submitting}
                         >
                             {submitting ? "Enviando..." : "Publicar Comentário"}
                         </button>

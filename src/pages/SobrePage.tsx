@@ -142,7 +142,7 @@ export function SobrePage() {
               </svg>
             </div>
             <div>
-              <h3 className="font-bold text-text-primary">Mapeamento de Corredores Climáticos</h3>
+              <h3 className="font-bold text-text-primary">Mapeamento territorial climático</h3>
               <p className="mt-1 text-sm text-text-secondary">
                 Identificação e documentação de rotas e territórios estratégicos para adaptação climática e infraestrutura verde urbana.
               </p>

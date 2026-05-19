@@ -105,6 +105,7 @@ export function AdminLoginPage() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
+                autoComplete="email"
                 className="w-full rounded-2xl border border-slate-200 bg-white/80 px-5 py-4 font-medium text-slate-900 transition-all focus:border-emerald-500 focus:outline-none focus:ring-4 focus:ring-emerald-500/10"
                 placeholder="exemplo@id.uff.br"
               />
@@ -132,6 +133,7 @@ export function AdminLoginPage() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
+                  autoComplete={mode === "login" ? "current-password" : "new-password"}
                   className="w-full rounded-2xl border border-slate-200 bg-white/80 px-5 py-4 font-medium text-slate-900 transition-all focus:border-emerald-500 focus:outline-none focus:ring-4 focus:ring-emerald-500/10"
                   placeholder="••••••••"
                 />
@@ -139,8 +141,8 @@ export function AdminLoginPage() {
             )}
 
             {error && (
-              <div className="p-4 bg-rose-50 text-rose-600 text-sm font-bold rounded-2xl border border-rose-100 animate-in fade-in zoom-in-95 duration-300">
-                ⚠️ {error}
+              <div className="p-4 bg-rose-50 text-rose-600 text-sm font-bold rounded-2xl border border-rose-100 animate-in fade-in zoom-in-95 duration-300" role="alert">
+                <span aria-hidden="true">⚠️</span> {error}
               </div>
             )}
 

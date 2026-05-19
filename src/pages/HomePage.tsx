@@ -5,7 +5,6 @@ import type {
   AcervoCollection,
   AcervoItem,
   BlogPost,
-  ClimateCorridor,
   Event,
   ReportDocument,
   StationOverview,
@@ -24,14 +23,14 @@ const navCards = [
   { to: "/acervo", label: "Acervo", copy: "Documentos, publicações e materiais técnicos.", tone: "green", icon: "archive" },
   { to: "/relatorios", label: "Relatórios", copy: "Relatórios, notas técnicas, boletins e anexos oficiais.", tone: "blue", icon: "file" },
   { to: "/agenda", label: "Agenda", copy: "Eventos, reuniões e atividades do projeto.", tone: "green", icon: "calendar" },
-  { to: "/corredores", label: "Corredores Climáticos", copy: "Mapas, análises e estudos dos corredores climáticos.", tone: "blue", icon: "wind" }
+  { to: "/conversar", label: "Conversas e atividades", copy: "Registros de campo, escuta pública e ações no território.", tone: "blue", icon: "chat" }
 ];
 
 const timeline = [
   { year: "2019", label: "Início do projeto SEMEAR na UFF" },
   { year: "2020", label: "Expansão da rede de monitoramento" },
   { year: "2021", label: "Primeiros relatórios e boletins públicos" },
-  { year: "2022", label: "Corredores climáticos e modelagens" },
+  { year: "2022", label: "Modelagens ambientais e recortes territoriais" },
   { year: "2023", label: "Integração de dados e novos parceiros" },
   { year: "2024+", label: "Inovação contínua e impacto social" }
 ];
@@ -59,10 +58,10 @@ function Icon({ name }: { name: string }) {
       </svg>
     );
   }
-  if (name === "wind") {
+  if (name === "chat") {
     return (
       <svg className={common} fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 8h10a3 3 0 1 0-3-3M4 14h14a3 3 0 1 1-3 3M4 20h7" />
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 10h8M8 14h5m6 5-4-4H7a4 4 0 01-4-4V7a4 4 0 014-4h10a4 4 0 014 4v4a4 4 0 01-4 4h-1l3 4z" />
       </svg>
     );
   }
@@ -90,7 +89,6 @@ export function HomePage() {
   const [latestBlog, setLatestBlog] = useState<BlogPost | null>(null);
   const [, setTransparency] = useState<TransparencySummary | null>(null);
   const [, setCollections] = useState<AcervoCollection[]>([]);
-  const [, setCorridors] = useState<ClimateCorridor[]>([]);
   const [reports, setReports] = useState<ReportDocument[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -103,14 +101,13 @@ export function HomePage() {
           import("../lib/api/content"),
           import("../lib/api/transparency")
         ]);
-        const [stationsData, eventsData, acervoData, blogData, transData, collectionsData, corridorsData, reportsData] = await Promise.all([
+        const [stationsData, eventsData, acervoData, blogData, transData, collectionsData, reportsData] = await Promise.all([
           monitoringApi.getStationOverview(),
           contentApi.listUpcomingEvents(),
           contentApi.listAcervoItems({ featured: true, limit: 6 }),
           contentApi.listBlogPosts({ limit: 1 }),
           transparencyApi.getTransparencySummary(),
           contentApi.listFeaturedCollections(3),
-          contentApi.listFeaturedCorridors(3),
           contentApi.listLatestReports(3)
         ]);
         setStations(stationsData);
@@ -119,7 +116,6 @@ export function HomePage() {
         setLatestBlog(blogData[0] || null);
         setTransparency(transData);
         setCollections(collectionsData as AcervoCollection[]);
-        setCorridors(corridorsData);
         setReports(reportsData.slice(0, 3));
       } catch (err) {
         console.error("Erro ao carregar dados da home:", err);
@@ -197,7 +193,7 @@ export function HomePage() {
             <Link to="/relatorios">Relatórios 2024</Link>
             <Link to="/relatorios">Boletins mensais</Link>
             <Link to="/relatorios">Notas técnicas</Link>
-            <Link to="/corredores">Corredores climáticos</Link>
+            <Link to="/conversar">Atividades recentes</Link>
           </div>
         </div>
 

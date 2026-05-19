@@ -208,6 +208,7 @@ export function SearchPage() {
           <div className="flex flex-wrap gap-2">
             {(["todos", "acervo", "blog", "relatorios", "transparencia", "agenda"] as SearchType[]).map((t) => (
               <button
+                type="button"
                 key={t}
                 onClick={() => handleTipoChange(t)}
                 className={`ui-segment-tab motion-chip-action inline-flex min-h-[40px] items-center gap-2 px-3.5 py-2 ${
@@ -242,6 +243,7 @@ export function SearchPage() {
           description={error}
           action={
             <button
+              type="button"
               onClick={() => window.location.reload()}
               className="ui-btn-primary motion-focus motion-action px-5"
             >

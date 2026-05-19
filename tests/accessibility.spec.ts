@@ -79,7 +79,7 @@ test.describe("Accessibility smoke @a11y", () => {
 
     await expect(page.getByRole("link", { name: /pular mapa e ir para lista/i })).toBeVisible();
     await expect(page.getByRole("heading", { name: /mapa de monitoramento/i, level: 1 })).toBeVisible();
-    await expect(page.getByRole("heading", { name: /lista de estações e corredores/i, level: 2 })).toBeVisible();
+    await expect(page.getByRole("heading", { name: /lista de estações/i, level: 2 })).toBeVisible();
 
     const list = page.locator("#mapa-lista ul");
     await expect(list.first()).toBeVisible();
