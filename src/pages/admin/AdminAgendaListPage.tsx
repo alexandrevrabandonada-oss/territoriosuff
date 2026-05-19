@@ -64,15 +64,16 @@ export function AdminAgendaListPage() {
   };
 
   return (
-    <div className="space-y-8 animate-in fade-in duration-500">
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+    <div className="admin-list-page space-y-8 animate-in fade-in duration-500">
+      <div className="admin-list-hero flex flex-col justify-between gap-4 md:flex-row md:items-center">
         <div>
-          <h1 className="text-3xl font-black text-slate-900 tracking-tight">Agenda & Territórios</h1>
-          <p className="text-slate-500 mt-1 font-medium">Gestão de eventos, oficinas e atividades de campo.</p>
+          <span className="admin-command-eyebrow">Operação territorial</span>
+          <h1 className="mt-4 text-4xl font-black tracking-tight text-white md:text-5xl">Agenda & Territórios</h1>
+          <p className="mt-3 max-w-2xl text-base font-medium text-slate-300">Gestão de eventos, oficinas, inscrições e atividades de campo.</p>
         </div>
         <Link 
           to="/admin/agenda/novo"
-          className="inline-flex items-center gap-2 px-8 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-black rounded-2xl shadow-xl shadow-emerald-600/20 transition-all active:scale-[0.98] uppercase tracking-widest text-xs"
+          className="admin-command-cta"
         >
           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
@@ -81,7 +82,7 @@ export function AdminAgendaListPage() {
         </Link>
       </div>
 
-      <div className="bg-white rounded-[2rem] border border-slate-200 shadow-xl shadow-slate-200/40 overflow-hidden">
+      <div className="admin-table-shell overflow-hidden">
         {loading ? (
           <div className="p-20 text-center text-slate-400 italic font-medium">Carregando atividades...</div>
         ) : events.length === 0 ? (

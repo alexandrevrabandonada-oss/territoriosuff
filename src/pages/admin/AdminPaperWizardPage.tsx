@@ -377,13 +377,13 @@ export function AdminPaperWizardPage() {
   };
 
   return (
-    <div className="max-w-4xl mx-auto space-y-8 animate-in fade-in duration-500 pb-24">
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+    <div className="admin-wizard-page mx-auto max-w-5xl space-y-8 pb-24 animate-in fade-in duration-500">
+      <div className="admin-editor-hero flex flex-col justify-between gap-6 md:flex-row md:items-center">
         <button 
           onClick={() => navigate("/admin/acervo")}
-          className="text-slate-400 hover:text-slate-900 flex items-center gap-2 transition-all font-bold group"
+          className="group flex items-center gap-2 font-bold text-white/75 transition-all hover:text-white"
         >
-          <div className="w-8 h-8 bg-slate-100 rounded-full flex items-center justify-center group-hover:bg-slate-200 transition-colors">
+          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-white/10 transition-colors group-hover:bg-white/15">
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
             </svg>
@@ -391,7 +391,13 @@ export function AdminPaperWizardPage() {
           <span className="text-sm">Voltar ao Acervo</span>
         </button>
         
-        <div className="flex items-center gap-3">
+        <div className="relative z-10">
+          <span className="admin-command-eyebrow">Wizard científico</span>
+          <h1 className="mt-4 text-4xl font-black tracking-tight text-white md:text-5xl">Novo Artigo</h1>
+          <p className="mt-3 max-w-xl text-base font-medium text-slate-300">Fluxo guiado para cadastrar papers, estudos e referências acadêmicas no Acervo.</p>
+        </div>
+
+        <div className="relative z-10 flex items-center gap-3">
           {[1,2,3,4,5].map(i => (
             <div 
               key={i} 
@@ -407,12 +413,12 @@ export function AdminPaperWizardPage() {
         </div>
       </div>
 
-      <div className="bg-white rounded-[2.5rem] border border-slate-200 shadow-2xl shadow-slate-200/40 overflow-hidden">
+      <div className="admin-wizard-card overflow-hidden">
         <div className="p-8 md:p-16">
           {renderStep()}
         </div>
 
-        <div className="p-8 bg-slate-50 border-t border-slate-100 flex items-center justify-between">
+        <div className="flex items-center justify-between border-t border-slate-100 bg-slate-50/80 p-8">
           <button
             onClick={handlePrev}
             disabled={step === 1 || loading}

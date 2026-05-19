@@ -76,23 +76,24 @@ export function AdminResetPasswordPage() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-900 flex items-center justify-center p-4 relative overflow-hidden">
+    <div className="admin-auth-shell relative flex min-h-screen items-center justify-center overflow-hidden p-4">
       <div className="absolute top-0 left-0 w-full h-full overflow-hidden -z-10">
         <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-emerald-500/10 rounded-full blur-[120px]" />
         <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-blue-500/10 rounded-full blur-[120px]" />
       </div>
 
-      <div className="max-w-md w-full bg-white rounded-[2rem] shadow-2xl overflow-hidden border border-white/20">
+      <div className="admin-auth-card w-full max-w-md overflow-hidden">
         <div className="p-8 sm:p-12">
           <div className="flex justify-center mb-8">
-            <div className="w-20 h-20 bg-emerald-500 rounded-3xl flex items-center justify-center font-bold text-white text-4xl shadow-xl shadow-emerald-500/20">
+            <div className="admin-auth-mark flex h-20 w-20 items-center justify-center rounded-3xl text-4xl font-black text-white">
               S
             </div>
           </div>
 
           <div className="text-center mb-10">
-            <h2 className="text-3xl font-black text-slate-900 tracking-tight">Redefinir Senha</h2>
-            <p className="text-slate-500 mt-2 font-medium">Defina uma nova senha para o acesso administrativo.</p>
+            <p className="admin-eyebrow justify-center border-0 bg-transparent text-emerald-700">Área segura SEMEAR</p>
+            <h2 className="mt-4 text-4xl font-black tracking-tight text-slate-950">Redefinir Senha</h2>
+            <p className="mt-3 text-slate-500 font-medium">Defina uma nova senha para o acesso administrativo.</p>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-5">
@@ -107,7 +108,7 @@ export function AdminResetPasswordPage() {
                 onChange={(e) => setPassword(e.target.value)}
                 required
                 minLength={8}
-                className="w-full px-5 py-4 rounded-2xl bg-slate-50 border border-slate-100 focus:outline-none focus:ring-4 focus:ring-emerald-500/10 focus:border-emerald-500 transition-all text-slate-900 font-medium"
+                className="w-full rounded-2xl border border-slate-200 bg-white/80 px-5 py-4 font-medium text-slate-900 transition-all focus:border-emerald-500 focus:outline-none focus:ring-4 focus:ring-emerald-500/10"
                 placeholder="••••••••"
               />
             </div>
@@ -123,7 +124,7 @@ export function AdminResetPasswordPage() {
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 required
                 minLength={8}
-                className="w-full px-5 py-4 rounded-2xl bg-slate-50 border border-slate-100 focus:outline-none focus:ring-4 focus:ring-emerald-500/10 focus:border-emerald-500 transition-all text-slate-900 font-medium"
+                className="w-full rounded-2xl border border-slate-200 bg-white/80 px-5 py-4 font-medium text-slate-900 transition-all focus:border-emerald-500 focus:outline-none focus:ring-4 focus:ring-emerald-500/10"
                 placeholder="••••••••"
               />
             </div>
@@ -143,7 +144,7 @@ export function AdminResetPasswordPage() {
             <button
               type="submit"
               disabled={loading || Boolean(authError)}
-              className="w-full bg-emerald-600 hover:bg-emerald-700 disabled:bg-slate-300 text-white font-black py-4 rounded-2xl transition-all shadow-lg shadow-emerald-500/20 uppercase tracking-wider"
+              className="w-full rounded-2xl bg-gradient-to-r from-emerald-600 via-teal-600 to-blue-700 py-5 text-sm font-black uppercase tracking-widest text-white shadow-xl shadow-emerald-600/20 transition-all hover:shadow-2xl hover:shadow-emerald-600/25 disabled:cursor-not-allowed disabled:opacity-50"
             >
               {loading ? "Atualizando..." : "Salvar nova senha"}
             </button>

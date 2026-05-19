@@ -76,15 +76,16 @@ export function AdminBlogListPage() {
   };
 
   return (
-    <div className="space-y-8 animate-in fade-in duration-500">
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+    <div className="admin-list-page space-y-8 animate-in fade-in duration-500">
+      <div className="admin-list-hero flex flex-col justify-between gap-4 md:flex-row md:items-center">
         <div>
-          <h1 className="text-3xl font-black text-slate-900 tracking-tight">Blog & Notícias</h1>
-          <p className="text-slate-500 mt-1 font-medium">Gestão editorial e comunicação com a rede SEMEAR.</p>
+          <span className="admin-command-eyebrow">Redação pública</span>
+          <h1 className="mt-4 text-4xl font-black tracking-tight text-white md:text-5xl">Blog & Notícias</h1>
+          <p className="mt-3 max-w-2xl text-base font-medium text-slate-300">Gestão editorial, matérias, notícias e comunicação com a rede SEMEAR.</p>
         </div>
         <Link 
           to="/admin/blog/novo"
-          className="inline-flex items-center gap-2 px-8 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-black rounded-2xl shadow-xl shadow-emerald-600/20 transition-all active:scale-[0.98] uppercase tracking-widest text-xs"
+          className="admin-command-cta"
         >
           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
@@ -93,7 +94,7 @@ export function AdminBlogListPage() {
         </Link>
       </div>
 
-      <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm flex flex-wrap gap-4 items-end">
+      <div className="admin-filter-bar flex flex-wrap items-end gap-4 p-6">
         <div className="flex-1 min-w-[240px]">
           <label className="block text-xs font-black text-slate-400 uppercase tracking-widest mb-2">Busca por título</label>
           <input
@@ -130,7 +131,7 @@ export function AdminBlogListPage() {
         </button>
       </div>
 
-      <div className="bg-white rounded-[2rem] border border-slate-200 shadow-xl shadow-slate-200/40 overflow-hidden">
+      <div className="admin-table-shell overflow-hidden">
         {loading ? (
           <div className="p-20 text-center text-slate-400 italic font-medium">Carregando editorias...</div>
         ) : posts.length === 0 ? (

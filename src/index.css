@@ -154,6 +154,345 @@
   .admin-auth-card {
     @apply relative z-10 rounded-[2.35rem] border border-white/70 bg-white/[0.90] shadow-[0_34px_90px_rgba(0,0,0,0.34)] backdrop-blur-xl;
   }
+
+  .admin-command-hero {
+    @apply relative grid overflow-hidden rounded-[2.5rem] border border-white/10 bg-slate-950 p-8 shadow-[0_34px_90px_rgba(15,23,42,0.24)] md:grid-cols-[minmax(0,1fr)_22rem] md:p-10;
+    background:
+      radial-gradient(circle at 12% 8%, rgba(16, 185, 129, 0.32), transparent 20rem),
+      radial-gradient(circle at 82% 16%, rgba(0, 93, 170, 0.34), transparent 22rem),
+      linear-gradient(135deg, #071426 0%, #0d2746 52%, #063d4a 100%);
+  }
+
+  .admin-command-hero::before {
+    content: "";
+    @apply pointer-events-none absolute inset-0 opacity-35;
+    background-image:
+      linear-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.08) 1px, transparent 1px);
+    background-size: 36px 36px;
+    mask-image: radial-gradient(circle at 22% 28%, rgba(0, 0, 0, 0.9), transparent 68%);
+  }
+
+  .admin-command-hero::after {
+    content: "";
+    @apply pointer-events-none absolute -right-16 -top-16 h-80 w-80 rounded-full opacity-70;
+    background:
+      repeating-radial-gradient(circle at center, rgba(255, 255, 255, 0.18) 0 1px, transparent 1px 5px),
+      radial-gradient(circle at center, rgba(16, 185, 129, 0.24), transparent 68%);
+  }
+
+  .admin-command-eyebrow {
+    @apply inline-flex w-fit items-center rounded-full border border-white/15 bg-white/10 px-3.5 py-1.5 text-[10px] font-black uppercase tracking-[0.24em] text-emerald-100 backdrop-blur;
+  }
+
+  .admin-command-cta,
+  .admin-command-ghost {
+    @apply inline-flex min-h-11 items-center justify-center rounded-full px-5 text-xs font-black uppercase tracking-[0.18em] transition-all;
+  }
+
+  .admin-command-cta {
+    @apply bg-white text-slate-950 shadow-[0_18px_44px_rgba(255,255,255,0.16)] hover:-translate-y-0.5 hover:bg-emerald-50 hover:text-slate-950;
+  }
+
+  .admin-command-ghost {
+    @apply border border-white/20 bg-white/10 text-white hover:-translate-y-0.5 hover:bg-white/15 hover:text-white;
+  }
+
+  .admin-command-board {
+    @apply relative z-10 mt-8 grid gap-3 self-end md:mt-0;
+  }
+
+  .admin-command-board > div:not(.admin-command-signal) {
+    @apply rounded-[1.65rem] border border-white/[0.12] bg-white/[0.08] p-5 text-white backdrop-blur;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  }
+
+  .admin-command-board span,
+  .admin-command-board small {
+    @apply block text-[10px] font-black uppercase tracking-[0.18em] text-slate-300;
+  }
+
+  .admin-command-board strong {
+    @apply mt-1 block text-4xl font-black tracking-tight text-white;
+  }
+
+  .admin-command-signal {
+    @apply inline-flex items-center gap-3 rounded-full border border-emerald-300/20 bg-emerald-300/10 px-4 py-3 text-[10px] font-black uppercase tracking-[0.18em] text-emerald-100;
+  }
+
+  .admin-command-signal i {
+    @apply h-2.5 w-2.5 rounded-full bg-emerald-300 shadow-[0_0_0_6px_rgba(110,231,183,0.12)];
+  }
+
+  .admin-kpi-card {
+    @apply flex min-h-32 items-center gap-4 p-5;
+  }
+
+  .admin-kpi-card::after {
+    content: "";
+    @apply pointer-events-none absolute bottom-0 left-0 h-1 w-full;
+    background: linear-gradient(90deg, rgba(0, 93, 170, 0.5), rgba(16, 185, 129, 0.5));
+  }
+
+  .admin-kpi-icon {
+    @apply flex h-16 w-16 flex-shrink-0 items-center justify-center rounded-[1.35rem] border border-white/70 bg-white text-3xl shadow-[0_14px_34px_rgba(15,23,42,0.08)];
+  }
+
+  .admin-kpi-blue::after {
+    background: linear-gradient(90deg, #005daa, #39a3ff);
+  }
+
+  .admin-kpi-amber::after {
+    background: linear-gradient(90deg, #d97706, #fbbf24);
+  }
+
+  .admin-kpi-emerald::after {
+    background: linear-gradient(90deg, #059669, #2dd4bf);
+  }
+
+  .admin-kpi-indigo::after {
+    background: linear-gradient(90deg, #4f46e5, #60a5fa);
+  }
+
+  .admin-kpi-rose::after {
+    background: linear-gradient(90deg, #e11d48, #fb7185);
+  }
+
+  .admin-count-pill {
+    @apply inline-flex h-12 min-w-12 items-center justify-center rounded-2xl bg-slate-950 px-4 text-lg font-black text-white shadow-[0_18px_40px_rgba(15,23,42,0.18)];
+  }
+
+  .admin-priority-panel {
+    background:
+      radial-gradient(circle at 0% 0%, rgba(244, 63, 94, 0.08), transparent 16rem),
+      rgba(255, 255, 255, 0.9);
+  }
+
+  .admin-priority-row {
+    @apply flex items-center gap-4 rounded-[1.4rem] border bg-white/80 p-4 shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-[0_18px_44px_rgba(15,23,42,0.09)];
+  }
+
+  .admin-priority-row.is-critical {
+    @apply border-rose-200/80 bg-rose-50/80;
+  }
+
+  .admin-priority-row.is-warning {
+    @apply border-amber-200/80 bg-amber-50/80;
+  }
+
+  .admin-priority-indicator {
+    @apply h-12 w-1.5 rounded-full bg-rose-500;
+  }
+
+  .admin-priority-row.is-warning .admin-priority-indicator {
+    @apply bg-amber-500;
+  }
+
+  .admin-priority-row span {
+    @apply text-[9px] font-black uppercase tracking-[0.2em] text-slate-500;
+  }
+
+  .admin-priority-row p {
+    @apply mt-1 line-clamp-1 text-sm font-black text-slate-950;
+  }
+
+  .admin-priority-row small {
+    @apply mt-1 block text-[10px] font-bold uppercase tracking-wide text-slate-500;
+  }
+
+  .admin-priority-action {
+    @apply flex-shrink-0 rounded-full bg-slate-950 px-4 py-2 text-[10px] font-black uppercase tracking-[0.18em] text-white transition hover:bg-emerald-700 hover:text-white;
+  }
+
+  .admin-activity-feature {
+    @apply relative overflow-hidden rounded-[2.25rem] border border-white/10 bg-slate-950 p-7 shadow-[0_28px_74px_rgba(15,23,42,0.22)];
+    background:
+      radial-gradient(circle at 88% 10%, rgba(16, 185, 129, 0.26), transparent 18rem),
+      radial-gradient(circle at 5% 90%, rgba(0, 93, 170, 0.24), transparent 18rem),
+      linear-gradient(145deg, #081827, #102033 60%, #0b3b45);
+  }
+
+  .admin-activity-feature::before {
+    content: "";
+    @apply pointer-events-none absolute inset-0 opacity-25;
+    background-image: radial-gradient(circle at 20% 30%, rgba(255, 255, 255, 0.2) 0 1px, transparent 1.5px);
+    background-size: 28px 28px;
+  }
+
+  .admin-activity-row-dark {
+    @apply relative z-10 flex items-center gap-4 rounded-[1.45rem] border border-white/10 bg-white/[0.07] p-4 text-white backdrop-blur transition-all hover:-translate-y-0.5 hover:bg-white/[0.11] hover:text-white;
+  }
+
+  .admin-activity-row-dark p {
+    @apply line-clamp-1 text-sm font-black text-white;
+  }
+
+  .admin-activity-row-dark small {
+    @apply mt-1 block line-clamp-1 text-[10px] font-bold uppercase tracking-[0.15em] text-slate-300;
+  }
+
+  .admin-activity-row-dark > span {
+    @apply flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-white/10 text-lg font-black text-emerald-100 transition group-hover:bg-white group-hover:text-slate-950;
+  }
+
+  .admin-list-hero {
+    @apply relative overflow-hidden rounded-[2.35rem] border border-white/10 bg-slate-950 p-8 shadow-[0_30px_82px_rgba(15,23,42,0.22)] md:p-9;
+    background:
+      radial-gradient(circle at 14% 10%, rgba(16, 185, 129, 0.24), transparent 20rem),
+      radial-gradient(circle at 86% 18%, rgba(0, 93, 170, 0.34), transparent 22rem),
+      linear-gradient(135deg, #071426 0%, #102033 58%, #0b3b45 100%);
+  }
+
+  .admin-list-hero::before {
+    content: "";
+    @apply pointer-events-none absolute inset-0 opacity-25;
+    background-image:
+      linear-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.08) 1px, transparent 1px);
+    background-size: 34px 34px;
+    mask-image: linear-gradient(90deg, rgba(0, 0, 0, 0.8), transparent 72%);
+  }
+
+  .admin-list-hero > * {
+    @apply relative z-10;
+  }
+
+  .admin-filter-bar,
+  .admin-table-shell {
+    @apply relative overflow-hidden rounded-[2rem] border border-white/70 bg-white/[0.90] shadow-[0_24px_70px_rgba(15,23,42,0.10)] backdrop-blur-xl;
+  }
+
+  .admin-filter-bar::before,
+  .admin-table-shell::before {
+    content: "";
+    @apply pointer-events-none absolute inset-x-0 top-0 h-px;
+    background: linear-gradient(90deg, transparent, rgba(0, 93, 170, 0.28), rgba(16, 185, 129, 0.3), transparent);
+  }
+
+  .admin-table-shell table {
+    @apply relative z-10;
+  }
+
+  .admin-table-shell thead tr {
+    @apply border-b border-slate-200/70 bg-slate-950;
+  }
+
+  .admin-table-shell thead th {
+    @apply px-7 py-5 text-[10px] font-black uppercase tracking-[0.22em] text-slate-300;
+  }
+
+  .admin-table-shell tbody {
+    @apply divide-y divide-slate-100;
+  }
+
+  .admin-table-shell tbody tr {
+    @apply transition-colors hover:bg-emerald-50/45;
+  }
+
+  .admin-table-shell tbody td {
+    @apply px-7 py-5;
+  }
+
+  .admin-editor-hero {
+    @apply relative overflow-hidden rounded-[2.35rem] border border-white/10 bg-slate-950 p-8 shadow-[0_30px_82px_rgba(15,23,42,0.22)] md:p-9;
+    background:
+      radial-gradient(circle at 16% 12%, rgba(16, 185, 129, 0.24), transparent 20rem),
+      radial-gradient(circle at 90% 18%, rgba(0, 93, 170, 0.34), transparent 22rem),
+      linear-gradient(135deg, #071426 0%, #102033 58%, #0b3b45 100%);
+  }
+
+  .admin-editor-hero::before {
+    content: "";
+    @apply pointer-events-none absolute inset-0 opacity-25;
+    background-image:
+      radial-gradient(circle at 14% 22%, rgba(255, 255, 255, 0.18) 0 1px, transparent 1.5px),
+      radial-gradient(circle at 78% 60%, rgba(255, 255, 255, 0.12) 0 1px, transparent 1.5px);
+    background-size: 32px 32px;
+  }
+
+  .admin-editor-hero > * {
+    @apply relative z-10;
+  }
+
+  .admin-editor-page section {
+    @apply relative overflow-hidden rounded-[2rem] border border-white/70 bg-white/[0.90] shadow-[0_24px_70px_rgba(15,23,42,0.10)] backdrop-blur-xl;
+  }
+
+  .admin-editor-page section::before {
+    content: "";
+    @apply pointer-events-none absolute inset-x-0 top-0 h-px;
+    background: linear-gradient(90deg, transparent, rgba(0, 93, 170, 0.22), rgba(16, 185, 129, 0.26), transparent);
+  }
+
+  .admin-editor-page input,
+  .admin-editor-page textarea,
+  .admin-editor-page select {
+    @apply border-slate-200/80 bg-white/80 shadow-[inset_0_1px_0_rgba(255,255,255,0.7),0_10px_24px_rgba(15,23,42,0.04)];
+  }
+
+  .admin-editor-page label {
+    @apply text-slate-500;
+  }
+
+  .admin-editor-page h2 {
+    @apply tracking-tight;
+  }
+
+  .admin-editor-hero button:not([type="submit"]) {
+    @apply border-white/15 bg-white/10 text-white hover:bg-white/15 hover:text-white;
+  }
+
+  .admin-empty-state,
+  .admin-wizard-card {
+    @apply relative overflow-hidden rounded-[2.25rem] border border-white/70 bg-white/[0.90] shadow-[0_24px_70px_rgba(15,23,42,0.10)] backdrop-blur-xl;
+  }
+
+  .admin-empty-state::before,
+  .admin-wizard-card::before {
+    content: "";
+    @apply pointer-events-none absolute inset-x-0 top-0 h-px;
+    background: linear-gradient(90deg, transparent, rgba(0, 93, 170, 0.24), rgba(16, 185, 129, 0.26), transparent);
+  }
+
+  .admin-wizard-page input,
+  .admin-wizard-page textarea,
+  .admin-wizard-page select {
+    @apply border-slate-200/80 bg-white/80 shadow-[inset_0_1px_0_rgba(255,255,255,0.7),0_10px_24px_rgba(15,23,42,0.04)];
+  }
+
+  .admin-ingest-panel,
+  .admin-upload-sidebar,
+  .admin-success-panel {
+    @apply relative overflow-hidden rounded-[2.25rem] border border-white/70 bg-white/[0.90] shadow-[0_24px_70px_rgba(15,23,42,0.10)] backdrop-blur-xl;
+  }
+
+  .admin-ingest-panel::before,
+  .admin-upload-sidebar::before,
+  .admin-success-panel::before {
+    content: "";
+    @apply pointer-events-none absolute inset-x-0 top-0 h-px;
+    background: linear-gradient(90deg, transparent, rgba(0, 93, 170, 0.24), rgba(16, 185, 129, 0.26), transparent);
+  }
+
+  .admin-ingest-panel input,
+  .admin-ingest-panel textarea,
+  .admin-ingest-panel select {
+    @apply border-slate-200/80 bg-white/80 shadow-[inset_0_1px_0_rgba(255,255,255,0.7),0_10px_24px_rgba(15,23,42,0.04)];
+  }
+
+  .admin-success-panel {
+    background:
+      radial-gradient(circle at 8% 12%, rgba(16, 185, 129, 0.18), transparent 16rem),
+      linear-gradient(135deg, rgba(236, 253, 245, 0.96), rgba(255, 255, 255, 0.94));
+  }
+
+  .admin-upload-submit {
+    @apply rounded-2xl bg-gradient-to-r from-emerald-600 via-teal-600 to-blue-700 shadow-xl shadow-emerald-600/20 hover:shadow-2xl hover:shadow-emerald-600/25;
+  }
+
+  .admin-upload-sidebar {
+    @apply self-start;
+  }
 }
 
 html {

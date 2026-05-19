@@ -358,49 +358,79 @@ export function AdminDashboardPage() {
   }, [loadDashboard]);
 
   const statCards = [
-    { label: "Acervo publicado", value: stats.acervoPublished, sub: "Itens ativos no portal", icon: "📚", color: "text-blue-600", bg: "bg-blue-50" },
-    { label: "Rascunhos", value: stats.draftsTotal, sub: "Conteúdos pendentes", icon: "📝", color: "text-amber-600", bg: "bg-amber-50" },
-    { label: "Uploads totais", value: stats.uploadsTotal, sub: "Arquivos armazenados", icon: "☁️", color: "text-emerald-600", bg: "bg-emerald-50" },
-    { label: "Relatórios publicados", value: stats.reportsPublished, sub: "Biblioteca oficial", icon: "📄", color: "text-indigo-600", bg: "bg-indigo-50" },
-    { label: "Eventos futuros", value: stats.upcomingEvents, sub: "Agenda viva", icon: "🗓️", color: "text-rose-600", bg: "bg-rose-50" },
+    { label: "Acervo publicado", value: stats.acervoPublished, sub: "Itens ativos no portal", icon: "📚", tone: "blue" },
+    { label: "Rascunhos", value: stats.draftsTotal, sub: "Conteúdos pendentes", icon: "📝", tone: "amber" },
+    { label: "Uploads totais", value: stats.uploadsTotal, sub: "Arquivos armazenados", icon: "☁️", tone: "emerald" },
+    { label: "Relatórios publicados", value: stats.reportsPublished, sub: "Biblioteca oficial", icon: "📄", tone: "indigo" },
+    { label: "Eventos futuros", value: stats.upcomingEvents, sub: "Agenda viva", icon: "🗓️", tone: "rose" },
   ];
+
+  const totalContent = stats.acervoPublished + stats.reportsPublished + stats.upcomingEvents;
+  const pendingScore = pendencies.length + stats.draftsTotal;
+  const primaryActivity = activityGroups.find((group) => group.key === "uploads");
+  const secondaryActivityGroups = activityGroups.filter((group) => group.key !== "uploads");
 
   return (
     <div className="admin-page space-y-8 animate-in fade-in duration-500">
-      <div className="admin-hero-panel flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-        <div>
-          <span className="admin-eyebrow">Cockpit editorial</span>
-          <h1 className="mt-3 text-4xl font-black tracking-tight text-slate-950 md:text-5xl">Central Operacional</h1>
-          <p className="mt-3 max-w-2xl text-base font-medium text-slate-500">Controle publicações, pendências, uploads e agenda em uma visão executiva para operação diária do SEMEAR.</p>
+      <div className="admin-command-hero">
+        <div className="relative z-10 max-w-3xl">
+          <span className="admin-command-eyebrow">Cockpit editorial</span>
+          <h1 className="mt-5 text-4xl font-black tracking-tight text-white md:text-6xl">Central Operacional</h1>
+          <p className="mt-4 max-w-2xl text-base font-medium leading-relaxed text-slate-300 md:text-lg">
+            Controle publicações, pendências, uploads e agenda em uma visão executiva para operação diária do SEMEAR.
+          </p>
+          <div className="mt-7 flex flex-wrap gap-3">
+            <Link to="/admin/uploads" className="admin-command-cta">
+              Novo upload
+            </Link>
+            <Link to="/admin/acervo" className="admin-command-ghost">
+              Revisar acervo
+            </Link>
+          </div>
         </div>
-        <div className="admin-live-pill">
-          <span className="h-2 w-2 animate-pulse rounded-full bg-emerald-400" />
-          Visão consolidada do dia
+        <div className="admin-command-board">
+          <div>
+            <span>Produção ativa</span>
+            <strong>{loading ? "..." : totalContent}</strong>
+            <small>publicações, relatórios e eventos</small>
+          </div>
+          <div>
+            <span>Atenção editorial</span>
+            <strong className={pendingScore > 0 ? "text-amber-200" : "text-emerald-200"}>{loading ? "..." : pendingScore}</strong>
+            <small>itens para revisão</small>
+          </div>
+          <div className="admin-command-signal">
+            <i />
+            Visão consolidada em tempo real
+          </div>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-5">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-5">
         {statCards.map((card) => (
-          <div key={card.label} className="admin-kpi-card flex items-center gap-4 p-6">
-            <div className={`flex h-14 w-14 items-center justify-center rounded-2xl text-3xl shadow-inner ${card.bg}`}>
-              {card.icon}
+          <div key={card.label} className={`admin-kpi-card admin-kpi-${card.tone}`}>
+            <div className="admin-kpi-icon">
+              <span>{card.icon}</span>
             </div>
-            <div>
-              <p className="text-[10px] font-black uppercase tracking-widest text-slate-400">{card.label}</p>
-              <p className={`text-2xl font-black ${card.color}`}>{loading ? "..." : card.value}</p>
-              <p className="text-[10px] font-bold uppercase text-slate-300">{card.sub}</p>
+            <div className="min-w-0">
+              <p className="text-[10px] font-black uppercase tracking-[0.22em] text-slate-400">{card.label}</p>
+              <p className="mt-1 text-3xl font-black text-slate-950">{loading ? "..." : card.value}</p>
+              <p className="mt-1 text-[10px] font-bold uppercase text-slate-400">{card.sub}</p>
             </div>
           </div>
         ))}
       </div>
 
       <div className="grid grid-cols-1 gap-8 lg:grid-cols-12">
-        <div className="space-y-8 lg:col-span-4">
-          <section className="admin-panel p-8">
-            <h2 className="mb-8 flex items-center gap-3 text-lg font-black text-slate-900">
-              <span className="h-3 w-3 rounded-full bg-rose-500 animate-ping" />
-              Pendências críticas
-            </h2>
+        <div className="space-y-8 lg:col-span-5">
+          <section className="admin-panel admin-priority-panel p-7">
+            <div className="mb-7 flex items-start justify-between gap-4">
+              <div>
+                <span className="admin-eyebrow border-rose-200 bg-rose-50 text-rose-700">Prioridade</span>
+                <h2 className="mt-3 text-2xl font-black tracking-tight text-slate-950">Pendências críticas</h2>
+              </div>
+              <span className="admin-count-pill">{loading ? "..." : pendencies.length}</span>
+            </div>
 
             {loading ? (
               <div className="py-20 text-center font-medium italic text-slate-300">Analisando pendências do dia...</div>
@@ -409,25 +439,19 @@ export function AdminDashboardPage() {
                 {pendencies.map((pendency) => (
                   <div
                     key={pendency.id}
-                    className={`rounded-[1.5rem] border p-5 transition-all ${pendency.severity === "critical"
-                      ? "border-rose-100 bg-rose-50 hover:bg-rose-100"
-                      : "border-amber-100 bg-amber-50 hover:bg-amber-100"
-                    }`}
+                    className={`admin-priority-row ${pendency.severity === "critical" ? "is-critical" : "is-warning"}`}
                   >
-                    <div className="mb-2 flex items-center justify-between gap-3">
-                      <span className={`rounded-full px-2 py-0.5 text-[9px] font-black uppercase tracking-widest ${pendency.severity === "critical" ? "bg-rose-600 text-white" : "bg-amber-600 text-white"}`}>
-                        {pendency.area}
-                      </span>
+                    <div className="admin-priority-indicator" />
+                    <div className="min-w-0 flex-1">
+                      <span>{pendency.area}</span>
+                      <p>{pendency.title}</p>
+                      <small>{pendency.reason}</small>
                     </div>
-                    <p className="line-clamp-1 text-sm font-black text-slate-900">{pendency.title}</p>
-                    <p className={`mt-1 text-[10px] font-bold uppercase ${pendency.severity === "critical" ? "text-rose-600" : "text-amber-600"}`}>
-                      {pendency.reason}
-                    </p>
                     <Link
                       to={pendency.link}
-                      className={`mt-4 block w-full rounded-xl py-2.5 text-center text-[10px] font-black uppercase tracking-widest text-white transition-all ${pendency.severity === "critical" ? "bg-rose-600 hover:bg-rose-700" : "bg-amber-600 hover:bg-amber-700"}`}
+                      className="admin-priority-action"
                     >
-                      Corrigir agora
+                      Abrir
                     </Link>
                   </div>
                 ))}
@@ -441,12 +465,14 @@ export function AdminDashboardPage() {
             )}
           </section>
 
-          <section className="admin-panel p-8">
-            <h2 className="mb-8 flex items-center gap-3 text-xl font-black text-slate-900">
-              <span className="rounded-xl bg-slate-900 p-2 text-xs text-white">⚡</span>
-              Ações rápidas
-            </h2>
-            <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+          <section className="admin-panel p-7">
+            <div className="mb-7 flex items-center justify-between gap-4">
+              <div>
+                <span className="admin-eyebrow">Atalhos</span>
+                <h2 className="mt-3 text-2xl font-black tracking-tight text-slate-950">Ações rápidas</h2>
+              </div>
+            </div>
+            <div className="grid grid-cols-2 gap-3">
               <Link to="/admin/acervo/artigos/novo" className="admin-action-tile group flex flex-col items-center p-5">
                 <span className="mb-3 text-3xl transition-transform group-hover:scale-110">📄</span>
                 <span className="text-center text-[9px] font-black uppercase leading-tight text-slate-600">Novo artigo científico</span>
@@ -475,44 +501,76 @@ export function AdminDashboardPage() {
           </section>
         </div>
 
-        <div className="space-y-8 lg:col-span-8">
-          {activityGroups.map((group) => (
-            <section key={group.key} className="admin-panel p-8">
-              <h2 className="mb-8 flex items-center gap-3 text-xl font-black text-slate-900">
-                <span className="rounded-xl bg-slate-900 p-2 text-xs text-white">🕒</span>
-                {group.title}
-              </h2>
+        <div className="space-y-8 lg:col-span-7">
+          {primaryActivity && (
+            <section className="admin-activity-feature">
+              <div>
+                <span className="admin-command-eyebrow">Fluxo de entrada</span>
+                <h2 className="mt-3 text-3xl font-black tracking-tight text-white">{primaryActivity.title}</h2>
+              </div>
 
               {loading ? (
-                <div className="py-16 text-center font-medium italic text-slate-300">Carregando atividade...</div>
-              ) : group.items.length > 0 ? (
-                <div className="space-y-4">
-                  {group.items.map((item) => (
-                    <div key={item.id} className="admin-row group flex items-center justify-between p-5">
-                      <div className="flex items-center gap-4">
-                        <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white text-xl shadow-inner">
-                          {item.icon}
-                        </div>
-                        <div>
-                          <p className="line-clamp-1 text-sm font-black text-slate-900">{item.title}</p>
-                          <p className="mt-1 text-[10px] font-bold uppercase tracking-widest text-slate-400">
-                            {item.meta} • {formatTimestamp(item.timestamp)}
-                          </p>
-                        </div>
+                <div className="py-16 text-center font-medium italic text-white/55">Carregando atividade...</div>
+              ) : primaryActivity.items.length > 0 ? (
+                <div className="mt-7 space-y-3">
+                  {primaryActivity.items.map((item) => (
+                    <Link key={item.id} to={item.link} className="admin-activity-row-dark group">
+                      <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white/10 text-xl text-white shadow-inner">
+                        {item.icon}
                       </div>
-                      <Link to={item.link} className="rounded-xl bg-white p-3 text-slate-300 transition-all group-hover:text-emerald-600 group-hover:shadow-sm">
-                        <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M9 5l7 7-7 7" />
-                        </svg>
-                      </Link>
-                    </div>
+                      <div className="min-w-0 flex-1">
+                        <p>{item.title}</p>
+                        <small>{item.meta} • {formatTimestamp(item.timestamp)}</small>
+                      </div>
+                      <span>→</span>
+                    </Link>
                   ))}
                 </div>
               ) : (
-                <p className="py-10 text-center font-medium italic text-slate-400">{group.empty}</p>
+                <p className="py-10 text-center font-medium italic text-white/60">{primaryActivity.empty}</p>
               )}
             </section>
-          ))}
+          )}
+
+          <div className="grid grid-cols-1 gap-6 xl:grid-cols-2">
+            {secondaryActivityGroups.map((group) => (
+              <section key={group.key} className="admin-panel p-6">
+                <div className="mb-6">
+                  <span className="admin-eyebrow">Atividade</span>
+                  <h2 className="mt-3 text-xl font-black tracking-tight text-slate-950">{group.title}</h2>
+                </div>
+
+                {loading ? (
+                  <div className="py-16 text-center font-medium italic text-slate-300">Carregando atividade...</div>
+                ) : group.items.length > 0 ? (
+                  <div className="space-y-3">
+                    {group.items.map((item) => (
+                      <div key={item.id} className="admin-row group flex items-center justify-between p-4">
+                        <div className="flex min-w-0 items-center gap-3">
+                          <div className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-2xl bg-white text-lg shadow-inner">
+                            {item.icon}
+                          </div>
+                          <div className="min-w-0">
+                            <p className="line-clamp-1 text-sm font-black text-slate-900">{item.title}</p>
+                            <p className="mt-1 line-clamp-1 text-[9px] font-bold uppercase tracking-widest text-slate-400">
+                              {item.meta}
+                            </p>
+                          </div>
+                        </div>
+                        <Link to={item.link} className="rounded-xl bg-white p-2 text-slate-300 transition-all group-hover:text-emerald-600 group-hover:shadow-sm">
+                          <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M9 5l7 7-7 7" />
+                          </svg>
+                        </Link>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <p className="py-10 text-center font-medium italic text-slate-400">{group.empty}</p>
+                )}
+              </section>
+            ))}
+          </div>
         </div>
       </div>
     </div>

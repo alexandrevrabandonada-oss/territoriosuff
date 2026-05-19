@@ -109,8 +109,8 @@ export function AdminAgendaInscriptionsPage() {
   const waitingCount = registrations.filter(r => r.status === "waiting").length;
 
   return (
-    <div className="space-y-8 animate-in fade-in duration-500">
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+    <div className="admin-list-page space-y-8 animate-in fade-in duration-500">
+      <div className="admin-list-hero flex flex-col justify-between gap-4 md:flex-row md:items-center">
         <div className="flex items-center gap-4">
           <button 
             onClick={() => navigate("/admin/agenda")}
@@ -121,15 +121,16 @@ export function AdminAgendaInscriptionsPage() {
             </svg>
           </button>
           <div>
-            <h1 className="text-3xl font-black text-slate-900 tracking-tight">Gestão de Inscrições</h1>
-            <p className="text-slate-500 mt-1 font-medium">{event?.title}</p>
+            <span className="admin-command-eyebrow">Participação pública</span>
+            <h1 className="mt-4 text-4xl font-black tracking-tight text-white md:text-5xl">Gestão de Inscrições</h1>
+            <p className="mt-3 max-w-2xl text-base font-medium text-slate-300">{event?.title}</p>
           </div>
         </div>
         <div className="flex items-center gap-3">
           <button 
             onClick={exportToCSV}
             disabled={registrations.length === 0}
-            className="inline-flex items-center gap-2 px-6 py-2.5 bg-white border border-slate-200 hover:border-emerald-500 text-slate-700 font-black rounded-xl shadow-sm transition-all disabled:opacity-50 uppercase tracking-widest text-[10px]"
+            className="admin-command-cta disabled:opacity-50"
           >
             <svg className="w-4 h-4 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
@@ -140,25 +141,25 @@ export function AdminAgendaInscriptionsPage() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-        <div className="bg-white p-6 rounded-[2rem] border border-slate-200 shadow-sm text-center">
+        <div className="admin-kpi-card admin-kpi-blue text-center">
           <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Inscritos</p>
           <p className="text-3xl font-black text-slate-900">{registrations.length}</p>
         </div>
-        <div className="bg-white p-6 rounded-[2rem] border border-slate-200 shadow-sm text-center">
+        <div className="admin-kpi-card admin-kpi-emerald text-center">
           <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Confirmados</p>
           <p className="text-3xl font-black text-emerald-600">{registrations.filter(r => r.status !== 'waiting').length}</p>
         </div>
-        <div className="bg-white p-6 rounded-[2rem] border border-slate-200 shadow-sm text-center">
+        <div className="admin-kpi-card admin-kpi-indigo text-center">
           <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Presentes</p>
           <p className="text-3xl font-black text-blue-600">{attendingCount}</p>
         </div>
-        <div className="bg-white p-6 rounded-[2rem] border border-slate-200 shadow-sm text-center">
+        <div className="admin-kpi-card admin-kpi-rose text-center">
           <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Em Espera</p>
           <p className="text-3xl font-black text-rose-600">{waitingCount}</p>
         </div>
       </div>
 
-      <div className="bg-white rounded-[2.5rem] border border-slate-200 shadow-xl shadow-slate-200/40 overflow-hidden">
+      <div className="admin-table-shell overflow-hidden">
         <div className="px-8 py-6 border-b border-slate-50 flex items-center justify-between">
           <h2 className="text-sm font-black text-slate-900 uppercase tracking-widest">Lista de Participantes</h2>
           <span className="text-[10px] font-bold text-slate-400 uppercase italic">Ordenado por data de inscrição</span>

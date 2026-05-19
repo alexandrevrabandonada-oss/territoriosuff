@@ -91,16 +91,17 @@ export function AdminAcervoListPage() {
   };
 
   return (
-    <div className="space-y-8 animate-in fade-in duration-500">
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+    <div className="admin-list-page space-y-8 animate-in fade-in duration-500">
+      <div className="admin-list-hero flex flex-col justify-between gap-4 md:flex-row md:items-center">
         <div>
-          <h1 className="text-3xl font-bold text-slate-900 tracking-tight">Acervo SEMEAR</h1>
-          <p className="text-slate-500 mt-1">Gestão de conteúdos técnicos e históricos.</p>
+          <span className="admin-command-eyebrow">Biblioteca viva</span>
+          <h1 className="mt-4 text-4xl font-black tracking-tight text-white md:text-5xl">Acervo SEMEAR</h1>
+          <p className="mt-3 max-w-2xl text-base font-medium text-slate-300">Gestão de conteúdos técnicos, históricos, científicos e editoriais do projeto.</p>
         </div>
         <div className="flex items-center gap-3">
           <Link 
             to="/admin/acervo/artigos/novo"
-            className="inline-flex items-center gap-2 px-4 py-3 bg-white border border-slate-200 hover:border-emerald-500 text-slate-700 font-bold rounded-xl shadow-sm transition-all"
+            className="admin-command-ghost"
           >
             <svg className="w-5 h-5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
@@ -109,7 +110,7 @@ export function AdminAcervoListPage() {
           </Link>
           <Link 
             to="/admin/acervo/novo"
-            className="inline-flex items-center gap-2 px-6 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl shadow-lg shadow-emerald-600/20 transition-all"
+            className="admin-command-cta"
           >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
@@ -120,7 +121,7 @@ export function AdminAcervoListPage() {
       </div>
 
       {/* Filtros */}
-      <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-wrap gap-4 items-end">
+      <div className="admin-filter-bar flex flex-wrap items-end gap-4 p-6">
         <div className="flex-1 min-w-[200px]">
           <label className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Busca</label>
           <input
@@ -172,7 +173,7 @@ export function AdminAcervoListPage() {
       </div>
 
       {/* Tabela */}
-      <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+      <div className="admin-table-shell overflow-hidden">
         {loading ? (
           <div className="p-20 text-center text-slate-400 italic">Carregando acervo...</div>
         ) : items.length === 0 ? (

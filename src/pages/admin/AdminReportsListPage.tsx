@@ -107,15 +107,16 @@ export function AdminReportsListPage() {
   };
 
   return (
-    <div className="space-y-8 animate-in fade-in duration-500">
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+    <div className="admin-list-page space-y-8 animate-in fade-in duration-500">
+      <div className="admin-list-hero flex flex-col justify-between gap-4 md:flex-row md:items-center">
         <div>
-          <h1 className="text-3xl font-black text-slate-900 tracking-tight">Relatórios Oficiais</h1>
-          <p className="text-slate-500 mt-1 font-medium">Gestão de documentos técnicos, notas e boletins.</p>
+          <span className="admin-command-eyebrow">Documentação técnica</span>
+          <h1 className="mt-4 text-4xl font-black tracking-tight text-white md:text-5xl">Relatórios Oficiais</h1>
+          <p className="mt-3 max-w-2xl text-base font-medium text-slate-300">Gestão de documentos técnicos, notas, boletins e materiais oficiais.</p>
         </div>
         <Link 
           to="/admin/relatorios/novo"
-          className="inline-flex items-center gap-2 px-8 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-black rounded-2xl shadow-xl shadow-emerald-600/20 transition-all active:scale-[0.98] uppercase tracking-widest text-xs"
+          className="admin-command-cta"
         >
           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
@@ -124,7 +125,7 @@ export function AdminReportsListPage() {
         </Link>
       </div>
 
-      <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm flex flex-wrap gap-4 items-end">
+      <div className="admin-filter-bar flex flex-wrap items-end gap-4 p-6">
         <div className="flex-1 min-w-[240px]">
           <label className="block text-xs font-black text-slate-400 uppercase tracking-widest mb-2">Busca por título</label>
           <input
@@ -189,7 +190,7 @@ export function AdminReportsListPage() {
         </button>
       </div>
 
-      <div className="bg-white rounded-[2rem] border border-slate-200 shadow-xl shadow-slate-200/40 overflow-hidden">
+      <div className="admin-table-shell overflow-hidden">
         {loading ? (
           <div className="p-20 text-center text-slate-400 italic font-medium">Carregando documentos...</div>
         ) : reports.length === 0 ? (

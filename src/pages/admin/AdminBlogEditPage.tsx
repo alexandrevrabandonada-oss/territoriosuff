@@ -254,8 +254,8 @@ export function AdminBlogEditPage() {
   if (loading) return <div className="p-20 text-center text-slate-400 italic font-medium">Carregando editor...</div>;
 
   return (
-    <form onSubmit={handleSave} className="space-y-8 animate-in fade-in duration-500 pb-24">
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-200 pb-6">
+    <form onSubmit={handleSave} className="admin-editor-page space-y-8 animate-in fade-in duration-500 pb-24">
+      <div className="admin-editor-hero flex flex-col justify-between gap-4 md:flex-row md:items-center">
         <div className="flex items-center gap-4">
           <button 
             type="button" 
@@ -267,10 +267,11 @@ export function AdminBlogEditPage() {
             </svg>
           </button>
           <div>
-            <h1 className="text-3xl font-black text-slate-900 tracking-tight">
+            <span className="admin-command-eyebrow">Redação editorial</span>
+            <h1 className="mt-4 text-4xl font-black tracking-tight text-white md:text-5xl">
               {isNew ? "Nova Matéria" : "Editar Matéria"}
             </h1>
-            <p className="text-slate-500 mt-1 font-medium">Redação e curadoria de conteúdo editorial.</p>
+            <p className="mt-3 max-w-2xl text-base font-medium text-slate-300">Redação e curadoria de conteúdo editorial.</p>
           </div>
         </div>
         <div className="flex items-center gap-3">
@@ -278,7 +279,7 @@ export function AdminBlogEditPage() {
             <Link 
               to={`/blog/${slug}`} 
               target="_blank"
-              className="px-4 py-2 text-slate-500 font-bold hover:bg-slate-100 rounded-xl transition-all flex items-center gap-2 border border-slate-200"
+              className="admin-command-ghost"
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -305,7 +306,7 @@ export function AdminBlogEditPage() {
           <button 
             type="button" 
             onClick={() => navigate("/admin/blog")}
-            className="px-6 py-2 text-slate-500 font-bold hover:bg-slate-100 rounded-xl transition-all"
+            className="admin-command-ghost"
           >
             Sair
           </button>
@@ -315,7 +316,7 @@ export function AdminBlogEditPage() {
               type="submit" 
               onClick={() => setStatus('published')}
               disabled={saving}
-              className="px-10 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-black rounded-2xl shadow-xl shadow-emerald-600/20 transition-all active:scale-[0.98] disabled:opacity-50 uppercase tracking-widest text-xs"
+              className="admin-command-cta disabled:opacity-50"
             >
               {saving ? "Publicando..." : "🚀 Publicar Agora"}
             </button>
@@ -325,7 +326,7 @@ export function AdminBlogEditPage() {
             <button 
               type="submit"
               disabled={saving}
-              className="px-10 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-black rounded-2xl shadow-xl shadow-emerald-600/20 transition-all active:scale-[0.98] disabled:opacity-50 uppercase tracking-widest text-xs"
+              className="admin-command-cta disabled:opacity-50"
             >
               {saving ? "Atualizando..." : "Salvar Alterações"}
             </button>

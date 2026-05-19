@@ -189,19 +189,26 @@ export function AdminUploadsPage() {
   };
 
   return (
-    <div className="admin-page space-y-8 pb-20 animate-in fade-in duration-500">
-      <div className="admin-hero-panel flex flex-col justify-between gap-4 md:flex-row md:items-center">
+    <div className="admin-upload-page space-y-8 pb-20 animate-in fade-in duration-500">
+      <div className="admin-list-hero flex flex-col justify-between gap-4 md:flex-row md:items-center">
         <div>
-          <span className="admin-eyebrow">Ingestão inteligente</span>
-          <h1 className="mt-3 text-4xl font-black tracking-tight text-slate-950 md:text-5xl">Gestão de Mídia</h1>
-          <p className="mt-3 max-w-2xl text-base font-medium text-slate-500">Classifique arquivos por finalidade editorial e acelere a publicação em acervo, blog, relatórios e transparência.</p>
+          <span className="admin-command-eyebrow">Ingestão inteligente</span>
+          <h1 className="mt-4 text-4xl font-black tracking-tight text-white md:text-5xl">Gestão de Mídia</h1>
+          <p className="mt-3 max-w-2xl text-base font-medium text-slate-300">Classifique arquivos por finalidade editorial e acelere a publicação em acervo, blog, relatórios e transparência.</p>
+        </div>
+        <div className="admin-command-board">
+          <div>
+            <span>Arquivos recentes</span>
+            <strong>{loading ? "..." : recentAssets.length}</strong>
+            <small>últimos registros carregados</small>
+          </div>
         </div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Upload Form */}
         <div className="lg:col-span-2 space-y-6">
-          <form onSubmit={handleUpload} className="admin-panel space-y-6 p-8">
+          <form onSubmit={handleUpload} className="admin-ingest-panel space-y-6 p-8">
             <div 
               className={`admin-dropzone relative flex flex-col items-center justify-center rounded-[2rem] border-2 border-dashed p-10 text-center transition-all ${
                 file ? "border-emerald-300 bg-emerald-50/60" : "border-slate-200 bg-white/60 hover:border-emerald-400"
@@ -374,7 +381,7 @@ export function AdminUploadsPage() {
             )}
 
             {successAsset && (
-              <div className="p-8 bg-emerald-50 text-emerald-900 rounded-[2rem] border border-emerald-100 shadow-lg shadow-emerald-500/10 flex flex-col gap-6 animate-in zoom-in duration-300">
+              <div className="admin-success-panel flex flex-col gap-6 p-8 text-emerald-950 animate-in zoom-in duration-300">
                 <div className="flex items-center gap-4">
                   <div className="w-12 h-12 bg-emerald-500 text-white rounded-2xl flex items-center justify-center text-2xl shadow-lg shadow-emerald-500/20">
                     ✅
@@ -505,7 +512,7 @@ export function AdminUploadsPage() {
             <button
               type="submit"
               disabled={isUploading || !file}
-              className="w-full py-5 bg-emerald-600 hover:bg-emerald-700 text-white font-black rounded-2xl shadow-xl shadow-emerald-600/20 transition-all active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed uppercase tracking-widest text-sm"
+              className="admin-upload-submit w-full py-5 text-sm font-black uppercase tracking-widest text-white transition-all active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50"
             >
               {isUploading ? "Enviando para o Servidor..." : "Iniciar Upload"}
             </button>
@@ -513,9 +520,12 @@ export function AdminUploadsPage() {
         </div>
 
         {/* Recent Uploads Sidebar */}
-        <div className="space-y-6">
-          <div className="flex items-center justify-between px-2">
-            <h2 className="text-lg font-black uppercase tracking-tight text-slate-900">Últimos Envios</h2>
+        <div className="admin-upload-sidebar space-y-6 p-6">
+          <div className="flex items-center justify-between">
+            <div>
+              <span className="admin-eyebrow">Fila recente</span>
+              <h2 className="mt-3 text-xl font-black uppercase tracking-tight text-slate-950">Últimos Envios</h2>
+            </div>
             <button 
               onClick={() => loadRecentAssets()}
               className="p-2 text-slate-400 hover:text-emerald-600 transition-colors"
