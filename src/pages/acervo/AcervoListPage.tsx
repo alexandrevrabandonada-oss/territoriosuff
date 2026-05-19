@@ -72,6 +72,22 @@ function isAcervoArea(value: string | undefined): value is AcervoArea {
   return value === "artigos" || value === "noticias" || value === "midias" || value === "documentos";
 }
 
+function highlightText(text: string, highlight: string) {
+  if (!highlight.trim()) return <span>{text}</span>;
+  const parts = text.split(new RegExp(`(${highlight.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&')})`, 'gi'));
+  return (
+    <>
+      {parts.map((part, i) =>
+        part.toLowerCase() === highlight.toLowerCase() ? (
+          <mark key={i} className="bg-amber-100 text-amber-950 px-0.5 rounded font-semibold">{part}</mark>
+        ) : (
+          part
+        )
+      )}
+    </>
+  );
+}
+
 export function AcervoListPage() {
   const { area } = useParams<{ area: string }>();
   const [items, setItems] = useState<AcervoItem[]>([]);
@@ -287,6 +303,31 @@ export function AcervoListPage() {
             </label>
           </div>
         </div>
+
+        {allTags.length > 0 && (
+          <div className="flex flex-wrap items-center gap-2 border-t border-border-subtle pt-4 mt-4">
+            <span className="text-xs font-black uppercase tracking-[0.16em] text-text-secondary">Tags Populares:</span>
+            <div className="flex flex-wrap gap-1.5 max-h-[80px] overflow-y-auto">
+              {allTags.slice(0, 15).map((tag) => {
+                const isActive = tagFilter === tag;
+                return (
+                  <button
+                    key={tag}
+                    type="button"
+                    onClick={() => setTagFilter(isActive ? "" : tag)}
+                    className={`rounded-full px-3 py-1 text-xs font-semibold border transition-all ${
+                      isActive
+                        ? "border-brand-primary bg-brand-primary text-white shadow-md shadow-brand-primary/10"
+                        : "border-border-subtle bg-surface-2 text-text-secondary hover:border-brand-primary/30 hover:text-text-primary"
+                    }`}
+                  >
+                    #{tag}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        )}
       </SurfaceCard>
 
       <SurfaceCard className="overflow-hidden p-0">
@@ -354,10 +395,12 @@ export function AcervoListPage() {
 
                         <div className="space-y-2">
                           <h3 className="line-clamp-3 text-xl font-black leading-[1.05] tracking-[-0.025em] text-text-primary transition-colors group-hover:text-brand-primary-dark">
-                            {item.title}
+                            {highlightText(item.title, search)}
                           </h3>
                           {summary && (
-                            <p className="line-clamp-3 text-sm leading-relaxed text-text-secondary">{summary}</p>
+                            <p className="line-clamp-3 text-sm leading-relaxed text-text-secondary">
+                              {highlightText(summary, search)}
+                            </p>
                           )}
                         </div>
 

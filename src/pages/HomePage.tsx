@@ -198,10 +198,54 @@ export function HomePage() {
         </div>
 
         <div className="home-dandelion" aria-hidden="true">
-          <div className="home-dandelion-head" />
-          <div className="home-dandelion-stem" />
-          <div className="home-dandelion-leaf home-dandelion-leaf-a" />
-          <div className="home-dandelion-leaf home-dandelion-leaf-b" />
+          <svg viewBox="0 0 400 400" className="w-full h-full text-brand-primary" fill="none" stroke="currentColor">
+            <defs>
+              <linearGradient id="dandelion-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stopColor="#10b981" stopOpacity="0.85" />
+                <stop offset="50%" stopColor="#00b7b1" stopOpacity="0.9" />
+                <stop offset="100%" stopColor="#005daa" stopOpacity="0.75" />
+              </linearGradient>
+            </defs>
+            <path d="M200,200 Q195,330 220,380" stroke="url(#dandelion-grad)" strokeWidth="3" strokeLinecap="round" />
+            <circle cx="200" cy="200" r="12" fill="url(#dandelion-grad)" />
+            <circle cx="200" cy="200" r="26" stroke="url(#dandelion-grad)" strokeWidth="1" strokeDasharray="3,3" className="animate-spin-slow" style={{ transformOrigin: "200px 200px" }} />
+            {Array.from({ length: 14 }).map((_, i) => {
+              const angle = (i * 360) / 14;
+              const rad = (angle * Math.PI) / 180;
+              const x1 = 200 + Math.cos(rad) * 12;
+              const y1 = 200 + Math.sin(rad) * 12;
+              const x2 = 200 + Math.cos(rad) * 80;
+              const y2 = 200 + Math.sin(rad) * 80;
+              const seedX = 200 + Math.cos(rad) * 90;
+              const seedY = 200 + Math.sin(rad) * 90;
+              return (
+                <g key={i} className="opacity-70 hover:opacity-100 transition-opacity duration-300">
+                  <line x1={x1} y1={y1} x2={x2} y2={y2} stroke="url(#dandelion-grad)" strokeWidth="1.5" />
+                  <line 
+                    x1={x2 - Math.sin(rad) * 5} 
+                    y1={y2 + Math.cos(rad) * 5} 
+                    x2={x2 + Math.sin(rad) * 5} 
+                    y2={y2 - Math.cos(rad) * 5} 
+                    stroke="url(#dandelion-grad)" 
+                    strokeWidth="1.2" 
+                  />
+                  <circle cx={seedX} cy={seedY} r="2" fill="url(#dandelion-grad)" />
+                </g>
+              );
+            })}
+            <g className="animate-pulse">
+              <path d="M120,80 Q105,70 95,85" stroke="url(#dandelion-grad)" strokeWidth="1" />
+              <circle cx="95" cy="85" r="2" fill="url(#dandelion-grad)" />
+            </g>
+            <g className="animate-pulse" style={{ animationDelay: "1s" }}>
+              <path d="M280,70 Q300,55 315,65" stroke="url(#dandelion-grad)" strokeWidth="1" />
+              <circle cx="315" cy="65" r="2" fill="url(#dandelion-grad)" />
+            </g>
+            <g className="animate-pulse" style={{ animationDelay: "2s" }}>
+              <path d="M320,150 Q340,135 348,152" stroke="url(#dandelion-grad)" strokeWidth="1" />
+              <circle cx="348" cy="152" r="2" fill="url(#dandelion-grad)" />
+            </g>
+          </svg>
         </div>
 
         <section className="home-now" aria-label="Dados agora" aria-live="polite">

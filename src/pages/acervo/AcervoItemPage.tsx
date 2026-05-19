@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useMemo } from "react";
 import { Link, useParams } from "react-router-dom";
 
 import { getAcervoBySlug, listCollectionsForItem, getRelatedItemsByCollections, type AcervoItem, type AcervoCollection } from "../../lib/api";
@@ -19,6 +19,108 @@ function SimpleMarkdown({ text }: { text: string }) {
     return <SafeMarkdown text={text} className="text-sm leading-relaxed text-text-primary" />;
 }
 
+function slugify(text: string) {
+    return text
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/(^-|-$)+/g, "");
+}
+
+interface HeadingItem {
+    id: string;
+    text: string;
+    level: number;
+}
+
+function renderInline(text: string) {
+    const pattern = /(\*\*([^*]+)\*\*|\*([^*]+)\*)/g;
+    const nodes: any[] = [];
+    let lastIndex = 0;
+    let match: RegExpExecArray | null;
+
+    while ((match = pattern.exec(text))) {
+        if (match.index > lastIndex) {
+            nodes.push(text.slice(lastIndex, match.index));
+        }
+
+        if (match[2]) {
+            nodes.push(<strong key={`strong-${match.index}`}>{match[2]}</strong>);
+        } else if (match[3]) {
+            nodes.push(<em key={`em-${match.index}`}>{match[3]}</em>);
+        }
+
+        lastIndex = pattern.lastIndex;
+    }
+
+    if (lastIndex < text.length) {
+        nodes.push(text.slice(lastIndex));
+    }
+
+    return nodes.length > 0 ? nodes : text;
+}
+
+function EnhancedMarkdown({ text, fontSize }: { text: string; fontSize: number }) {
+    const lines = text.split(/\r?\n/);
+    const counts: Record<string, number> = {};
+
+    return (
+        <div style={{ fontSize: `${fontSize}px` }} className="space-y-5 leading-relaxed font-serif">
+            {lines.map((line, index) => {
+                const headingMatch = line.match(/^(#{1,6})\s+(.*)$/);
+                if (headingMatch) {
+                    const level = headingMatch[1].length;
+                    const content = headingMatch[2].trim();
+                    let id = slugify(content);
+                    if (counts[id] !== undefined) {
+                        counts[id]++;
+                        id = `${id}-${counts[id]}`;
+                    } else {
+                        counts[id] = 0;
+                    }
+
+                    const classes = 
+                        level === 1 ? "text-3xl font-black mt-8 mb-4 border-b pb-2 font-sans" :
+                        level === 2 ? "text-2xl font-black mt-6 mb-3 border-b pb-1 font-sans" :
+                        level === 3 ? "text-xl font-bold mt-5 mb-2 font-sans" :
+                        "text-lg font-bold mt-4 mb-2 font-sans";
+
+                    const Tag = `h${level}` as keyof JSX.IntrinsicElements;
+                    return (
+                        <Tag key={index} id={id} className={classes}>
+                            {content}
+                        </Tag>
+                    );
+                }
+
+                const listMatch = line.match(/^[\*\-]\s+(.*)$/);
+                if (listMatch) {
+                    return (
+                        <ul key={index} className="list-disc pl-6 space-y-1 my-2">
+                            <li>{renderInline(listMatch[1])}</li>
+                        </ul>
+                    );
+                }
+
+                if (!line.trim()) return <div key={index} className="h-2" />;
+
+                if (line.startsWith(">")) {
+                    return (
+                        <blockquote key={index} className="border-l-4 border-brand-primary bg-brand-primary/5 px-4 py-3 italic my-4 rounded-r-lg">
+                            {renderInline(line.substring(1).trim())}
+                        </blockquote>
+                    );
+                }
+
+                return (
+                    <p key={index} className="text-justify my-3 leading-relaxed">
+                        {renderInline(line)}
+                    </p>
+                );
+            })}
+        </div>
+    );
+}
+
 export function AcervoItemPage() {
     const { slug } = useParams<{ slug: string }>();
     const [item, setItem] = useState<AcervoItem | null>(null);
@@ -32,6 +134,40 @@ export function AcervoItemPage() {
     const [isOffline, setIsOffline] = useState(!navigator.onLine);
     const modalCloseButtonRef = useRef<HTMLButtonElement>(null);
     const previousActiveElementRef = useRef<HTMLElement | null>(null);
+
+    // Reader Mode State
+    const [readerMode, setReaderMode] = useState(false);
+    const [readerTheme, setReaderTheme] = useState<"claro" | "sepia" | "escuro">("claro");
+    const [fontSize, setFontSize] = useState(18); // Default 18px
+    const [scrollProgress, setScrollProgress] = useState(0);
+    const [activeHeadingId, setActiveHeadingId] = useState<string>("");
+
+    useEffect(() => {
+        if (readerMode) {
+            document.body.classList.add("reader-mode-active");
+            window.scrollTo(0, 0);
+        } else {
+            document.body.classList.remove("reader-mode-active");
+        }
+        return () => {
+            document.body.classList.remove("reader-mode-active");
+        };
+    }, [readerMode]);
+
+    useEffect(() => {
+        if (!readerMode) return;
+        const handleScroll = () => {
+            const total = document.documentElement.scrollHeight - window.innerHeight;
+            if (total <= 0) {
+                setScrollProgress(0);
+                return;
+            }
+            const progress = (window.scrollY / total) * 100;
+            setScrollProgress(progress);
+        };
+        window.addEventListener("scroll", handleScroll);
+        return () => window.removeEventListener("scroll", handleScroll);
+    }, [readerMode]);
 
     useEffect(() => {
         const handleOnline = () => setIsOffline(false);
@@ -98,6 +234,277 @@ export function AcervoItemPage() {
         return () => { cancelled = true; };
     }, [slug]);
 
+    const headings = useMemo(() => {
+        if (!item?.content_md) return [];
+        const list: HeadingItem[] = [];
+        const counts: Record<string, number> = {};
+        const lines = item.content_md.split(/\r?\n/);
+        lines.forEach((line) => {
+            const match = line.match(/^(#{1,6})\s+(.*)$/);
+            if (match) {
+                const level = match[1].length;
+                const text = match[2].trim();
+                let id = slugify(text);
+                if (counts[id] !== undefined) {
+                    counts[id]++;
+                    id = `${id}-${counts[id]}`;
+                } else {
+                    counts[id] = 0;
+                }
+                list.push({ id, text, level });
+            }
+        });
+        return list;
+    }, [item?.content_md]);
+
+    useEffect(() => {
+        if (!readerMode || headings.length === 0) return;
+        const handleScroll = () => {
+            let currentActive = headings[0]?.id || "";
+            for (const heading of headings) {
+                const el = document.getElementById(heading.id);
+                if (el) {
+                    const rect = el.getBoundingClientRect();
+                    if (rect.top <= 120) {
+                        currentActive = heading.id;
+                    } else {
+                        break;
+                    }
+                }
+            }
+            setActiveHeadingId(currentActive);
+        };
+        window.addEventListener("scroll", handleScroll);
+        return () => window.removeEventListener("scroll", handleScroll);
+    }, [readerMode, headings]);
+
+    const themeClasses = {
+        claro: "bg-[#fcfbf9] text-zinc-900",
+        sepia: "bg-[#f5ebd6] text-[#4a3621]",
+        escuro: "bg-[#18181b] text-zinc-100"
+    };
+
+    const borderClasses = {
+        claro: "border-zinc-200",
+        sepia: "border-[#e6d8bc]",
+        escuro: "border-zinc-800"
+    };
+
+    const textSecondaryClasses = {
+        claro: "text-zinc-600",
+        sepia: "text-[#70583d]",
+        escuro: "text-zinc-400"
+    };
+
+    if (readerMode && item) {
+        return (
+            <div className={`min-h-screen transition-colors duration-300 ${themeClasses[readerTheme]} p-4 md:p-6 rounded-2xl border ${borderClasses[readerTheme]}`}>
+                {/* Top progress bar */}
+                <div className="fixed top-0 left-0 right-0 z-50 h-1 bg-brand-primary/20">
+                    <div 
+                        className="h-full bg-brand-primary transition-all duration-100" 
+                        style={{ width: `${scrollProgress}%` }}
+                    />
+                </div>
+
+                {/* Sticky Reader Toolbar */}
+                <header className={`sticky top-0 z-40 border-b backdrop-blur-md bg-opacity-95 ${themeClasses[readerTheme]} ${borderClasses[readerTheme]} -mx-4 md:-mx-6 -mt-4 md:-mt-6 mb-8 px-4 py-3 shadow-sm flex flex-wrap items-center justify-between gap-4`}>
+                    <button
+                        onClick={() => setReaderMode(false)}
+                        className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg border text-sm font-semibold transition-colors ${
+                            readerTheme === "escuro"
+                                ? "border-zinc-800 hover:bg-zinc-800 hover:text-white"
+                                : "border-zinc-200 hover:bg-zinc-100 hover:text-zinc-950"
+                        }`}
+                    >
+                        ← Sair do Modo Leitura
+                    </button>
+
+                    <div className="flex flex-wrap items-center gap-5">
+                        {/* Font Size Adjusters */}
+                        <div className="flex items-center gap-1.5">
+                            <span className={`text-[10px] font-black uppercase tracking-wider ${textSecondaryClasses[readerTheme]}`}>Fonte</span>
+                            <button
+                                onClick={() => setFontSize(Math.max(14, fontSize - 2))}
+                                disabled={fontSize <= 14}
+                                className={`h-8 w-8 rounded-full border text-xs font-bold transition-all flex items-center justify-center ${
+                                    readerTheme === "escuro"
+                                        ? "border-zinc-800 hover:bg-zinc-800 disabled:opacity-30"
+                                        : "border-zinc-200 hover:bg-zinc-100 disabled:opacity-30"
+                                }`}
+                                aria-label="Diminuir fonte"
+                            >
+                                -
+                            </button>
+                            <span className="text-xs font-semibold tabular-nums px-1">{fontSize}px</span>
+                            <button
+                                onClick={() => setFontSize(Math.min(28, fontSize + 2))}
+                                disabled={fontSize >= 28}
+                                className={`h-8 w-8 rounded-full border text-xs font-bold transition-all flex items-center justify-center ${
+                                    readerTheme === "escuro"
+                                        ? "border-zinc-800 hover:bg-zinc-800 disabled:opacity-30"
+                                        : "border-zinc-200 hover:bg-zinc-100 disabled:opacity-30"
+                                }`}
+                                aria-label="Aumentar fonte"
+                            >
+                                +
+                            </button>
+                        </div>
+
+                        {/* Theme Selectors */}
+                        <div className={`flex items-center gap-1 border-l pl-5 ${borderClasses[readerTheme]}`}>
+                            {(["claro", "sepia", "escuro"] as const).map((t) => {
+                                const active = readerTheme === t;
+                                const labels = { claro: "Claro", sepia: "Sepia", escuro: "Escuro" };
+                                return (
+                                    <button
+                                        key={t}
+                                        onClick={() => setReaderTheme(t)}
+                                        className={`rounded-full px-3 py-1.5 text-xs font-bold transition-all border ${
+                                            active
+                                                ? "border-brand-primary bg-brand-primary text-white shadow-sm"
+                                                : readerTheme === "escuro"
+                                                    ? "border-zinc-800 hover:bg-zinc-800 text-zinc-300"
+                                                    : "border-zinc-200 hover:bg-zinc-100 text-zinc-700"
+                                        }`}
+                                    >
+                                        {labels[t]}
+                                    </button>
+                                );
+                            })}
+                        </div>
+                    </div>
+                </header>
+
+                {/* Content Area */}
+                <div className="grid gap-8 lg:grid-cols-[250px_1fr]">
+                    {/* Sidebar TOC */}
+                    <aside className="hidden lg:block">
+                        <div className={`sticky top-24 max-h-[calc(100vh-140px)] overflow-y-auto pr-4 py-2 border-r ${borderClasses[readerTheme]}`}>
+                            <p className={`text-[10px] font-black uppercase tracking-[0.2em] mb-4 ${textSecondaryClasses[readerTheme]}`}>Sumário</p>
+                            {headings.length === 0 ? (
+                                <p className={`text-xs italic ${textSecondaryClasses[readerTheme]}`}>Nenhum cabeçalho encontrado.</p>
+                            ) : (
+                                <nav className="space-y-1.5">
+                                    {headings.map((h, i) => {
+                                        const isActive = activeHeadingId === h.id;
+                                        return (
+                                            <a
+                                                key={i}
+                                                href={`#${h.id}`}
+                                                onClick={(e) => {
+                                                    e.preventDefault();
+                                                    document.getElementById(h.id)?.scrollIntoView({ behavior: "smooth" });
+                                                    setActiveHeadingId(h.id);
+                                                }}
+                                                className={`block text-sm transition-colors py-0.5 leading-snug ${
+                                                    h.level === 1 ? "font-bold text-base" : h.level === 2 ? "pl-3 text-sm font-semibold" : "pl-6 text-xs"
+                                                } ${
+                                                    isActive 
+                                                        ? "text-brand-primary font-bold border-l-2 border-brand-primary pl-2 -ml-2" 
+                                                        : readerTheme === "escuro"
+                                                            ? "text-zinc-400 hover:text-white"
+                                                            : "text-zinc-600 hover:text-zinc-950"
+                                                }`}
+                                            >
+                                                {h.text}
+                                            </a>
+                                        );
+                                    })}
+                                </nav>
+                            )}
+                        </div>
+                    </aside>
+
+                    {/* Article Body */}
+                    <article className="mx-auto max-w-3xl lg:mx-0 w-full">
+                        {/* Kind badges */}
+                        <div className="flex flex-wrap gap-2 mb-4">
+                            <span className="inline-block rounded-full bg-brand-primary/10 px-3 py-0.5 text-[10px] font-bold uppercase tracking-widest text-brand-primary">
+                                {ACERVO_KIND_LABELS[item.kind as keyof typeof ACERVO_KIND_LABELS] ?? item.kind}
+                            </span>
+                            {item.source_type && (
+                                <span className={`inline-block rounded-full px-3 py-0.5 text-[10px] font-bold uppercase tracking-widest ${
+                                    readerTheme === "escuro" ? "bg-zinc-800 text-zinc-300" : "bg-zinc-200 text-zinc-700"
+                                }`}>
+                                    {SOURCE_TYPE_LABELS[item.source_type] || item.source_type}
+                                </span>
+                            )}
+                        </div>
+
+                        <h1 className="text-3xl font-black tracking-tight leading-tight md:text-4xl lg:text-5xl font-sans">
+                            {item.title}
+                        </h1>
+
+                        {item.authors && (
+                            <p className={`mt-3 text-base italic font-medium ${textSecondaryClasses[readerTheme]}`}>
+                                Por: {item.authors}
+                            </p>
+                        )}
+
+                        {/* Metadata details */}
+                        <div className={`mt-6 flex flex-wrap gap-x-6 gap-y-2 text-xs border-y py-3 ${borderClasses[readerTheme]} ${textSecondaryClasses[readerTheme]}`}>
+                            {item.source_name && (
+                                <span>
+                                    <span className="font-semibold uppercase tracking-wider">Fonte:</span> {item.source_name}
+                                </span>
+                            )}
+                            {item.published_at && (
+                                <span>
+                                    <span className="font-semibold uppercase tracking-wider">Data:</span> {new Date(item.published_at).toLocaleDateString("pt-BR")}
+                                </span>
+                            )}
+                            {item.doi && (
+                                <span>
+                                    <span className="font-semibold uppercase tracking-wider">DOI:</span> {item.doi}
+                                </span>
+                            )}
+                        </div>
+
+                        {/* Audio reader */}
+                        <div className="my-6">
+                            <TextToSpeechButton
+                                label="Ouvir item"
+                                title={item.title}
+                                text={[item.excerpt, item.curator_note, item.content_md].filter(Boolean).join("\n\n")}
+                            />
+                        </div>
+
+                        {/* Curator Note inside Reader */}
+                        {item.curator_note && (
+                            <div className={`my-6 rounded-xl border p-5 italic ${
+                                readerTheme === "escuro" 
+                                    ? "bg-zinc-900 border-zinc-800" 
+                                    : readerTheme === "sepia" 
+                                        ? "bg-[#ecdcb9] border-[#dfcb9a]" 
+                                        : "bg-zinc-50 border-zinc-150"
+                            }`}>
+                                <span className="mb-2 block text-[10px] font-bold uppercase tracking-widest text-brand-primary">Nota da Curadoria</span>
+                                <p className="text-sm">"{item.curator_note}"</p>
+                            </div>
+                        )}
+
+                        {/* Excerpt */}
+                        {item.excerpt && (
+                            <p className="my-6 text-xl font-bold leading-relaxed text-justify font-sans">
+                                {item.excerpt}
+                            </p>
+                        )}
+
+                        {/* Body content */}
+                        <div className="mt-8">
+                            {item.content_md ? (
+                                <EnhancedMarkdown text={item.content_md} fontSize={fontSize} />
+                            ) : (
+                                <p className="italic">Nenhum conteúdo em Markdown disponível para este item.</p>
+                            )}
+                        </div>
+                    </article>
+                </div>
+            </div>
+        );
+    }
+
     return (
         <section className="portal-stage acervo-detail-stage space-y-8 md:space-y-10">
             <Link
@@ -141,6 +548,13 @@ export function AcervoItemPage() {
                                 ⭐ Destaque
                             </span>
                         )}
+                        <button
+                            className="inline-flex items-center gap-1 rounded-full bg-brand-primary/10 px-3 py-0.5 text-[10px] font-bold uppercase tracking-widest text-brand-primary hover:bg-brand-primary/20"
+                            onClick={() => setReaderMode(true)}
+                            type="button"
+                        >
+                            📖 Modo Leitura
+                        </button>
                         <button
                             className="inline-flex items-center gap-1 rounded-full bg-brand-primary/10 px-3 py-0.5 text-[10px] font-bold uppercase tracking-widest text-brand-primary hover:bg-brand-primary/20"
                             onClick={() => {
