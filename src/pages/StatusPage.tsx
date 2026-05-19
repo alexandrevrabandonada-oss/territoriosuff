@@ -7,6 +7,7 @@ import {
   EditorialCardExcerpt,
   EditorialCardMeta,
   EditorialCardTitle,
+  IconShell,
   SectionHeader,
   SurfaceCard
 } from "../components/BrandSystem";
@@ -266,14 +267,24 @@ export function StatusPage() {
   }
 
   return (
-    <section className="space-y-10 animate-in fade-in slide-in-from-bottom-4 duration-700 pb-20">
-      <header className="flex flex-col gap-2">
-        <p className="text-[10px] font-black uppercase tracking-[0.3em] text-ciano">Diagnostico em Tempo Real</p>
-        <h1 className="text-4xl font-black text-texto">Status do Sistema</h1>
-        <p className="text-sm text-texto/60">Visao consolidada da integridade tecnica e de conteudo do portal.</p>
-      </header>
+    <section className="portal-stage status-stage space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700 pb-20 md:space-y-10">
+      <SurfaceCard className="portal-stage-hero portal-stage-hero-lab overflow-hidden p-0">
+        <div className="portal-stage-hero-inner">
+          <div className="portal-stage-copy">
+            <IconShell tone="lab" className="portal-stage-icon">
+              <span aria-hidden="true">⎈</span>
+            </IconShell>
+            <h1>Status do Sistema</h1>
+            <p>Visão consolidada da integridade técnica, operacional, financeira e editorial do portal SEMEAR.</p>
+          </div>
+          <div className="portal-stage-stat">
+            <span>{status.monitoring.stations_count}</span>
+            <small>estação(ões) monitorada(s)</small>
+          </div>
+        </div>
+      </SurfaceCard>
 
-      <section className="rounded-2xl border border-ciano/30 bg-fundo/60 p-6 md:p-8">
+      <SurfaceCard className="portal-list-panel p-6 md:p-8">
         <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
           <div>
             <p className="text-[10px] font-black uppercase tracking-[0.28em] text-ciano">Boletim Mensal</p>
@@ -400,7 +411,7 @@ export function StatusPage() {
           </div>
           {copyFeedback && <p className="mt-3 text-xs font-bold text-ciano">{copyFeedback}</p>}
         </div>
-      </section>
+      </SurfaceCard>
 
       <SurfaceCard className="p-6 md:p-8">
         <SectionHeader

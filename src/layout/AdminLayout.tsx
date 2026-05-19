@@ -84,36 +84,36 @@ export function AdminLayout({ children }: AdminLayoutProps) {
   };
 
   return (
-    <div className="flex h-screen bg-slate-50 text-slate-900 overflow-hidden font-sans">
+    <div className="admin-shell flex h-screen overflow-hidden font-sans text-slate-900">
       {/* Mobile Sidebar Overlay */}
       {isSidebarOpen && (
         <div 
-          className="fixed inset-0 bg-black/50 z-40 lg:hidden"
+          className="fixed inset-0 z-40 bg-slate-950/70 backdrop-blur-sm lg:hidden"
           onClick={() => setIsSidebarOpen(false)}
         />
       )}
 
       {/* Sidebar */}
       <aside 
-        className={`fixed inset-y-0 left-0 w-64 bg-slate-900 text-white transform transition-transform duration-300 ease-in-out z-50 lg:relative lg:translate-x-0 ${
+        className={`admin-sidebar fixed inset-y-0 left-0 z-50 w-72 transform text-white transition-transform duration-300 ease-in-out lg:relative lg:translate-x-0 ${
           isSidebarOpen ? "translate-x-0" : "-translate-x-0"
         } ${!isSidebarOpen && "hidden lg:flex lg:flex-col"}`}
       >
-        <div className="p-6 flex items-center gap-3">
-          <div className="w-8 h-8 bg-emerald-500 rounded-lg flex items-center justify-center font-bold text-white">S</div>
-          <h1 className="text-xl font-bold tracking-tight">SEMEAR <span className="text-emerald-400 text-xs block uppercase tracking-widest font-medium opacity-80">Admin</span></h1>
+        <div className="admin-brand flex items-center gap-3 p-6">
+          <div className="admin-brand-mark">S</div>
+          <h1 className="text-xl font-black tracking-tight">SEMEAR <span className="block text-xs font-bold uppercase tracking-[0.3em] text-emerald-200/90">Admin</span></h1>
         </div>
 
-        <nav className="flex-1 px-4 py-4 space-y-1">
+        <nav className="flex-1 space-y-2 px-4 py-4">
           {menuItems.map((item) => (
             <Link
               key={item.path}
               to={item.path}
               onClick={() => setIsSidebarOpen(false)}
-              className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all ${
+              className={`admin-nav-item ${
                 location.pathname === item.path 
-                  ? "bg-emerald-600 text-white shadow-lg shadow-emerald-900/20" 
-                  : "hover:bg-slate-800 text-slate-400 hover:text-white"
+                  ? "admin-nav-item-active" 
+                  : ""
               }`}
             >
               <item.icon />
@@ -122,10 +122,10 @@ export function AdminLayout({ children }: AdminLayoutProps) {
           ))}
         </nav>
 
-        <div className="p-4 border-t border-slate-800">
+        <div className="border-t border-white/10 p-4">
           <button 
             onClick={handleLogout}
-            className="flex items-center gap-3 w-full px-4 py-3 rounded-xl text-slate-400 hover:bg-rose-900/20 hover:text-rose-400 transition-all"
+            className="flex w-full items-center gap-3 rounded-2xl px-4 py-3 text-slate-300 transition-all hover:bg-rose-500/12 hover:text-rose-100"
           >
             <Icons.Logout />
             <span className="font-medium">Sair</span>
@@ -136,9 +136,9 @@ export function AdminLayout({ children }: AdminLayoutProps) {
       {/* Main Content */}
       <main className="flex-1 flex flex-col min-w-0 overflow-hidden">
         {/* Topbar */}
-        <header className="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-6 shrink-0">
+        <header className="admin-topbar flex h-20 shrink-0 items-center justify-between px-6">
           <button 
-            className="p-2 lg:hidden text-slate-600 hover:bg-slate-100 rounded-lg"
+            className="rounded-xl p-2 text-slate-600 hover:bg-slate-100 lg:hidden"
             onClick={() => setIsSidebarOpen(true)}
           >
             <Icons.Menu />
@@ -149,15 +149,15 @@ export function AdminLayout({ children }: AdminLayoutProps) {
               <span className="text-sm font-semibold text-slate-900">{profile?.email?.split('@')[0]}</span>
               <span className="text-xs text-slate-500 uppercase tracking-wider font-bold">Administrador</span>
             </div>
-            <div className="w-10 h-10 bg-slate-100 rounded-full flex items-center justify-center text-slate-600 border border-slate-200">
+            <div className="admin-avatar flex h-11 w-11 items-center justify-center rounded-full text-slate-600">
               <Icons.User />
             </div>
           </div>
         </header>
 
         {/* Page Content */}
-        <div className="flex-1 overflow-y-auto p-6 md:p-8">
-          <div className="max-w-6xl mx-auto">
+        <div className="admin-content flex-1 overflow-y-auto p-6 md:p-8">
+          <div className="admin-content-inner mx-auto max-w-7xl">
             {children}
           </div>
         </div>

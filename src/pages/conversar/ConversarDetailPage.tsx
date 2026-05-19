@@ -8,6 +8,7 @@ import {
     Conversation,
     ConversationComment
 } from "../../lib/api";
+import { IconShell, SurfaceCard } from "../../components/BrandSystem";
 
 function SimpleMarkdown({ text }: { text: string }) {
     const html = text
@@ -127,13 +128,17 @@ export function ConversarDetailPage() {
     }
 
     return (
-        <main className="mx-auto max-w-4xl px-4 py-8 md:py-12">
+        <main className="portal-stage mx-auto max-w-5xl space-y-8 md:space-y-10">
             <Link to="/conversar" className="mb-6 inline-flex items-center text-sm font-semibold text-brand-primary hover:underline">
                 ← Voltar para Conversar
             </Link>
 
-            <article className="mb-16">
-                <h1 className="mb-6 text-3xl font-black text-text-primary md:text-5xl">{conversation.title}</h1>
+            <SurfaceCard className="portal-detail-article p-5 md:p-8">
+                <div className="mb-5 flex items-center gap-3">
+                    <IconShell tone="seed" className="h-12 w-12 rounded-2xl"><span aria-hidden="true">💬</span></IconShell>
+                    <span className="text-xs font-black uppercase tracking-[0.2em] text-brand-primary">Conversa pública</span>
+                </div>
+                <h1 className="mb-6 text-3xl font-black tracking-[-0.045em] text-text-primary md:text-5xl">{conversation.title}</h1>
                 {conversation.excerpt && (
                     <p className="mb-8 border-l-4 border-brand-primary/30 pl-4 text-xl italic text-text-secondary">
                         {conversation.excerpt}
@@ -146,9 +151,9 @@ export function ConversarDetailPage() {
                         <p className="italic text-text-secondary">Esta conversa não possui descrição detalhada ainda.</p>
                     )}
                 </div>
-            </article>
+            </SurfaceCard>
 
-            <section className="border-t border-brand-primary/10 pt-16">
+            <SurfaceCard className="portal-list-panel p-5 md:p-8">
                 <h2 className="mb-8 text-2xl font-black uppercase tracking-wider text-brand-primary">Comentários e Contribuições</h2>
 
                 <div className="mb-12 space-y-6">
@@ -235,7 +240,7 @@ export function ConversarDetailPage() {
                         </button>
                     </div>
                 </form>
-            </section>
+            </SurfaceCard>
         </main>
     );
 }

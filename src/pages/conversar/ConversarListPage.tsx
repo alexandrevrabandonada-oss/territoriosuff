@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { IconShell, SurfaceCard } from "../../components/BrandSystem";
 import { Conversation, listConversations } from "../../lib/api";
 
 export function ConversarListPage() {
@@ -44,25 +45,36 @@ export function ConversarListPage() {
     }
 
     return (
-        <main className="mx-auto max-w-4xl px-4 py-8 md:py-12">
-            <header className="mb-12">
-                <h1 className="mb-4 text-3xl font-black text-text-primary md:text-5xl">Conversar</h1>
-                <p className="max-w-2xl text-lg text-text-secondary">
-                    Espaço de participação direta. Rodas de conversa, fóruns e feedback sobre o clima e a cidade em Volta Redonda e no Sul Fluminense.
-                </p>
-            </header>
+        <section className="portal-stage space-y-8 md:space-y-10">
+            <SurfaceCard className="portal-stage-hero portal-stage-hero-seed overflow-hidden p-0">
+                <div className="portal-stage-hero-inner">
+                    <div className="portal-stage-copy">
+                        <IconShell tone="seed" className="portal-stage-icon">
+                            <span aria-hidden="true">💬</span>
+                        </IconShell>
+                        <h1>Conversar com o território</h1>
+                        <p>
+                            Rodas de conversa, fóruns e feedback público para transformar leitura ambiental em escuta, pactos locais e ação coletiva.
+                        </p>
+                    </div>
+                    <div className="portal-stage-stat">
+                        <span>{conversations.length}</span>
+                        <small>conversa(s) ativa(s)</small>
+                    </div>
+                </div>
+            </SurfaceCard>
 
             {conversations.length === 0 ? (
-                <div className="rounded-xl border border-dashed border-border-subtle bg-bg-surface py-20 text-center">
+                <SurfaceCard className="portal-list-panel py-20 text-center">
                     <p className="text-text-secondary">Nenhuma roda de conversa ativa no momento.</p>
-                </div>
+                </SurfaceCard>
             ) : (
-                <div className="grid gap-6">
+                <div className="portal-thread-list">
                     {conversations.map((c) => (
                         <Link
                             key={c.id}
                             to={`/conversar/${c.slug}`}
-                            className="group relative block overflow-hidden rounded-2xl border border-border-subtle bg-white p-6 transition-all hover:border-brand-primary/30 hover:shadow-md"
+                            className="portal-thread-row group"
                         >
                             <h2 className="mb-2 text-xl font-bold text-text-primary group-hover:text-brand-primary">{c.title}</h2>
                             {c.excerpt && <p className="mb-4 text-sm text-text-secondary">{c.excerpt}</p>}
@@ -75,6 +87,6 @@ export function ConversarListPage() {
                     ))}
                 </div>
             )}
-        </main>
+        </section>
     );
 }

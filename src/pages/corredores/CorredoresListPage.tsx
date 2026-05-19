@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
+import { IconShell, SurfaceCard } from "../../components/BrandSystem";
 import { BrandIllustratedEmptyState, BrandTextureSkeleton } from "../../components/BrandMicro";
-import { AxisSectionHeader } from "../../components/AxisSystem";
 import { TerritorialCard } from "../../components/CardFamilies";
 import { ClimateCorridor, listCorridors } from "../../lib/api";
 import { getOptimizedCover } from "../../lib/imageOptimization";
@@ -53,18 +53,26 @@ export function CorredoresListPage() {
   }
 
   return (
-    <section className="space-y-10 md:space-y-12">
-      <AxisSectionHeader
-        axis="corredor"
-        eyebrow="Território"
-        title="Corredores Climáticos"
-        description="Navegue pelas rotas e recortes territoriais monitorados. Descubra os impactos reais e as soluções coletivas em Volta Redonda e no Sul Fluminense."
-        action={
-          <Link to="/mapa" className="ui-btn-ghost px-4">
-            Ver mapa
-          </Link>
-        }
-      />
+    <section className="portal-stage corridors-stage space-y-8 md:space-y-10">
+      <SurfaceCard className="portal-stage-hero portal-stage-hero-lab overflow-hidden p-0">
+        <div className="portal-stage-hero-inner">
+          <div className="portal-stage-copy">
+            <IconShell tone="lab" className="portal-stage-icon">
+              <span aria-hidden="true">🗺️</span>
+            </IconShell>
+            <h1>Corredores climáticos e recortes territoriais monitorados.</h1>
+            <p>
+              Rotas, bairros e áreas de atenção conectando evidências ambientais, impactos reais e soluções coletivas no Sul Fluminense.
+            </p>
+          </div>
+          <div className="portal-stage-actions">
+            <Link to="/mapa" className="ui-btn-primary">
+              Ver mapa
+            </Link>
+            <span>{loading ? "..." : corridors.length} corredor(es)</span>
+          </div>
+        </div>
+      </SurfaceCard>
 
       {corridors.length === 0 ? (
         <BrandIllustratedEmptyState
@@ -91,4 +99,3 @@ export function CorredoresListPage() {
     </section>
   );
 }
-

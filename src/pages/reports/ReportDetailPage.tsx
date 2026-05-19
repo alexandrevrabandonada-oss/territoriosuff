@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 
-import { SurfaceCard } from "../../components/BrandSystem";
+import { IconShell, SurfaceCard } from "../../components/BrandSystem";
 import { BrandIllustratedEmptyState, BrandRadialDivider, BrandTextureSkeleton } from "../../components/BrandMicro";
 import { OfflineBanner } from "../../components/OfflineBanner";
 import { getReportBySlug, type ReportDocument } from "../../lib/api";
@@ -163,7 +163,7 @@ export function ReportDetailPage() {
   };
 
   return (
-    <section className="space-y-6">
+    <section className="portal-stage report-detail-stage space-y-8 md:space-y-10">
       <Link to="/relatorios" className="inline-flex items-center gap-1 text-xs font-semibold text-brand-primary/70 hover:text-brand-primary">
         ← Voltar aos relatórios
       </Link>
@@ -175,9 +175,12 @@ export function ReportDetailPage() {
         />
       )}
 
-      <SurfaceCard className="signature-shell logo-watermark-soft p-5 md:p-8">
-        <p className="text-xs font-bold uppercase tracking-[0.2em] text-brand-primary">Documento oficial</p>
-        <h1 className="mt-2 text-2xl font-black text-text-primary md:text-4xl">{report.title}</h1>
+      <SurfaceCard className="portal-detail-article p-5 md:p-8">
+        <div className="mb-5 flex items-center gap-3">
+          <IconShell tone="warm" className="h-12 w-12 rounded-2xl"><span aria-hidden="true">📄</span></IconShell>
+          <p className="text-xs font-bold uppercase tracking-[0.2em] text-brand-primary">Documento oficial</p>
+        </div>
+        <h1 className="mt-2 text-3xl font-black leading-tight tracking-[-0.045em] text-text-primary md:text-5xl">{report.title}</h1>
         {report.summary && <p className="mt-3 text-base leading-relaxed text-text-secondary">{report.summary}</p>}
 
         <div className="mt-4 flex flex-wrap items-center gap-3 text-xs text-text-secondary">
@@ -284,7 +287,6 @@ export function ReportDetailPage() {
     </section>
   );
 }
-
 
 
 

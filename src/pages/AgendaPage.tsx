@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
+import { IconShell, SurfaceCard } from "../components/BrandSystem";
 import { listUpcomingEvents, type Event } from "../lib/api";
 import { trackShare } from "../lib/observability";
 
@@ -36,16 +37,26 @@ export function AgendaPage() {
   }, []);
 
   return (
-    <section className="space-y-6">
-      <div className="rounded-2xl border border-border-subtle bg-white p-6 shadow-sm md:p-8">
-        <p className="text-xs font-bold uppercase tracking-[0.2em] text-brand-primary">Atividades</p>
-        <h1 className="mt-2 text-2xl font-black uppercase tracking-wide text-text-primary md:text-4xl">Agenda</h1>
-        <p className="mt-3 text-base leading-relaxed text-text-secondary">
-          Confira os próximos eventos, oficinas e atividades públicas do SEMEAR.
-        </p>
-      </div>
+    <section className="portal-stage space-y-8 md:space-y-10">
+      <SurfaceCard className="portal-stage-hero portal-stage-hero-warm overflow-hidden p-0">
+        <div className="portal-stage-hero-inner">
+          <div className="portal-stage-copy">
+            <IconShell tone="warm" className="portal-stage-icon">
+              <span aria-hidden="true">📅</span>
+            </IconShell>
+            <h1>Agenda pública SEMEAR</h1>
+            <p>
+              Oficinas, rodas de conversa, atividades de campo e encontros abertos organizados para aproximar dados ambientais da comunidade.
+            </p>
+          </div>
+          <div className="portal-stage-stat">
+            <span>{loading ? "..." : events.length}</span>
+            <small>evento(s) disponível(is)</small>
+          </div>
+        </div>
+      </SurfaceCard>
 
-      <section className="rounded-2xl border border-border-subtle bg-white p-6 shadow-sm">
+      <SurfaceCard className="portal-list-panel p-5 md:p-6">
         {loading ? <p className="text-base text-text-secondary">Carregando eventos...</p> : null}
         {!loading && !events.length ? (
           <p aria-live="polite" className="text-base text-text-secondary" role="status">
@@ -56,11 +67,11 @@ export function AgendaPage() {
           <ul className="space-y-4">
             {events.map((event) => (
               <li
-                className="flex flex-col gap-3 rounded-lg border border-border-subtle bg-bg-surface p-5 md:flex-row md:items-center md:justify-between"
+                className="portal-event-row"
                 key={event.id}
               >
                 <div className="flex-1">
-                  <p className="text-lg font-black text-text-primary">{String(event.title ?? "Sem titulo")}</p>
+                  <p className="text-lg font-black text-text-primary">{String(event.title ?? "Sem título")}</p>
                   <p className="mt-1 text-sm text-text-secondary">Inicio: {formatDate(String(event.start_at ?? ""))}</p>
                   <p className="text-sm text-text-secondary">
                     Local: {typeof event.location === "string" && event.location.trim() ? event.location : "Local nao informado."}
@@ -68,7 +79,7 @@ export function AgendaPage() {
                 </div>
                 <div className="flex gap-2">
                   <button
-                    className="inline-flex w-fit min-h-[44px] items-center rounded-md border border-brand-primary px-4 py-2 text-sm font-bold uppercase tracking-wide text-brand-primary transition-colors hover:bg-brand-primary hover:text-white"
+                    className="ui-btn-ghost"
                     onClick={() => {
                       const shareUrl = `${window.location.origin}/s/agenda/${event.id}`;
                       trackShare("agenda", event.id, "agenda");
@@ -87,7 +98,7 @@ export function AgendaPage() {
                     Compartilhar
                   </button>
                   <Link
-                    className="inline-flex w-fit min-h-[44px] items-center rounded-md bg-brand-primary px-4 py-2 text-sm font-bold uppercase tracking-wide text-white transition-colors hover:bg-brand-primary/90"
+                    className="ui-btn-primary"
                     to={`/inscricoes?eventId=${encodeURIComponent(event.id)}`}
                   >
                     Inscrever-se
@@ -97,7 +108,7 @@ export function AgendaPage() {
             ))}
           </ul>
         ) : null}
-      </section>
+      </SurfaceCard>
 
       {error ? (
         <p aria-live="assertive" className="rounded-md border border-error bg-error/10 p-3 text-base text-error" role="alert">

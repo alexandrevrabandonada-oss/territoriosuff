@@ -3,6 +3,7 @@ import { Link, useSearchParams } from "react-router-dom";
 
 import { EmptyState } from "../components/EmptyState";
 import { ErrorState } from "../components/ErrorState";
+import { SurfaceCard } from "../components/BrandSystem";
 import { SkeletonCard } from "../components/SkeletonCard";
 import {
   searchAcervo,
@@ -181,10 +182,10 @@ export function SearchPage() {
   };
 
   return (
-    <section className="space-y-10 animate-in fade-in slide-in-from-bottom-4 duration-700">
-      <header className="space-y-5">
+    <section className="portal-stage search-stage space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700 md:space-y-10">
+      <SurfaceCard className="portal-search-hero p-5 md:p-7">
         <div>
-          <h1 className="text-4xl font-black text-text-primary">Busca no Portal</h1>
+          <h1 className="text-4xl font-black tracking-[-0.055em] text-text-primary md:text-6xl">Busca no Portal</h1>
           <p className="mt-2 max-w-2xl text-base leading-relaxed text-text-secondary">
             Encontre dados, acervo, blog, relatórios, transparência e agenda em uma busca única e acessível.
           </p>
@@ -198,7 +199,7 @@ export function SearchPage() {
             placeholder="Busque por tema, título, estação ou documento"
             value={query}
             onChange={(e) => setSearchParams({ q: e.target.value, tipo })}
-            className="motion-input motion-focus w-full rounded-xl border-2 p-5 pr-14 text-base font-semibold text-text-primary placeholder:text-text-secondary/60"
+            className="motion-input motion-focus w-full rounded-[1.35rem] border border-brand-primary/15 bg-white/[0.9] p-5 pr-14 text-base font-semibold text-text-primary shadow-[0_18px_45px_rgba(17,38,59,0.08)] placeholder:text-text-secondary/60"
           />
         </div>
 
@@ -229,7 +230,7 @@ export function SearchPage() {
             ))}
           </div>
         </div>
-      </header>
+      </SurfaceCard>
 
       {loading ? (
         <div className="grid gap-5 md:grid-cols-2">
@@ -259,7 +260,7 @@ export function SearchPage() {
           description="Digite acima para pesquisar conteúdo editorial, dados, documentos e agenda."
         />
       ) : (
-        <div className="space-y-12 pb-20">
+        <div className="portal-results space-y-12 pb-20">
           {results.mixed.length > 0 && (
             <section aria-labelledby="main-results-heading">
               <h2 id="main-results-heading" className="mb-4 flex items-center gap-2 text-base font-black uppercase tracking-wider text-brand-primary">

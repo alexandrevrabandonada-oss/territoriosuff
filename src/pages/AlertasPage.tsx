@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { IconShell, SurfaceCard } from "../components/BrandSystem";
 import { listStations, type Station } from "../lib/api";
 
 export function AlertasPage() {
@@ -131,16 +132,23 @@ export function AlertasPage() {
     }
 
     return (
-        <section className="mx-auto max-w-2xl space-y-8 py-10 px-4 pb-20">
-            <header className="text-center space-y-2">
-                <h1 className="text-3xl font-black text-cta md:text-4xl italic tracking-tight">Configurações de Alerta</h1>
-                <p className="text-texto/70 text-sm md:text-base leading-relaxed">
-                    Ajuste seus critérios para receber notificações inteligentes e personalizadas.
-                </p>
-            </header>
+        <section className="portal-stage alerts-stage space-y-8 pb-20 md:space-y-10">
+            <SurfaceCard className="portal-stage-hero portal-stage-hero-warm overflow-hidden p-0">
+                <div className="portal-stage-hero-inner">
+                    <div className="portal-stage-copy">
+                        <IconShell tone="warm" className="portal-stage-icon"><span aria-hidden="true">🔔</span></IconShell>
+                        <h1>Configurações de alerta</h1>
+                        <p>Ajuste critérios para receber notificações de qualidade do ar com foco por estação, limiar e horário silencioso.</p>
+                    </div>
+                    <div className="portal-stage-stat">
+                        <span>{status === "granted" ? "ON" : "OFF"}</span>
+                        <small>{status === "granted" ? "monitoramento ativo" : status === "denied" ? "bloqueadas" : "configuração pendente"}</small>
+                    </div>
+                </div>
+            </SurfaceCard>
 
-            <div
-                className="rounded-2xl border border-ciano/30 bg-fundo/80 p-8 shadow-2xl backdrop-blur-md"
+            <SurfaceCard
+                className="portal-alert-panel p-5 md:p-8"
                 aria-live="polite"
             >
                 <div className="flex items-center gap-4 mb-8">
@@ -316,9 +324,9 @@ export function AlertasPage() {
                         </div>
                     )}
                 </div>
-            </div>
+            </SurfaceCard>
 
-            <footer className="rounded-2xl bg-texto/5 p-6 text-[11px] leading-relaxed text-texto/50 text-center border border-texto/5">
+            <footer className="portal-list-panel rounded-[1.75rem] p-6 text-center text-[11px] leading-relaxed text-text-secondary">
                 <p>Configurações avançadas persistidas no navegador via <strong>Push Manager</strong> e sincronizadas anonimamente com o portal.</p>
             </footer>
         </section>

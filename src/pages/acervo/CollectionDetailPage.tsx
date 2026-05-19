@@ -4,6 +4,7 @@ import { getCollectionBySlug, type CollectionWithItems } from "../../lib/api";
 import { ACERVO_KIND_LABELS } from "../../lib/acervo";
 import { getOptimizedCover } from "../../lib/imageOptimization";
 import { trackShare } from "../../lib/observability";
+import { IconShell, SurfaceCard } from "../../components/BrandSystem";
 
 export function CollectionDetailPage() {
     const { slug } = useParams<{ slug: string }>();
@@ -65,7 +66,8 @@ export function CollectionDetailPage() {
     if (error || !collection) return <p className="text-sm text-acento" aria-live="assertive">{error || "Coleção não encontrada."}</p>;
 
     return (
-        <section className="space-y-8">
+        <section className="portal-stage dossie-detail-stage space-y-8 md:space-y-10">
+            <SurfaceCard className="portal-detail-article p-5 md:p-8">
             <div className="flex flex-col gap-6 md:flex-row md:items-start">
                 {collection.cover_url && (
                     <div className="w-full md:w-1/3">
@@ -104,7 +106,11 @@ export function CollectionDetailPage() {
                             🔗 Compartilhar
                         </button>
                     </div>
-                    <h1 className="text-3xl font-black text-texto md:text-5xl">{collection.title}</h1>
+                    <div className="flex items-center gap-3">
+                        <IconShell tone="warm" className="h-12 w-12 rounded-2xl"><span aria-hidden="true">📚</span></IconShell>
+                        <span className="text-xs font-black uppercase tracking-[0.2em] text-brand-primary">Dossiê curado</span>
+                    </div>
+                    <h1 className="text-3xl font-black tracking-[-0.045em] text-text-primary md:text-5xl">{collection.title}</h1>
                     <p className="text-base text-texto/90 leading-relaxed md:text-lg">{collection.excerpt}</p>
                     <div className="flex flex-wrap gap-2">
                         {collection.tags.map((tag) => (
@@ -115,8 +121,9 @@ export function CollectionDetailPage() {
                     </div>
                 </div>
             </div>
+            </SurfaceCard>
 
-            <div className="space-y-4">
+            <SurfaceCard className="portal-list-panel space-y-4 p-5 md:p-6">
                 <div className="flex flex-col gap-4 md:flex-row md:items-end justify-between border-b border-ciano/20 pb-4">
                     <h2 className="text-xl font-black uppercase tracking-wide text-cta">Itens desta Coleção</h2>
                     <div className="flex flex-wrap gap-2">
@@ -178,7 +185,7 @@ export function CollectionDetailPage() {
                         ))}
                     </div>
                 )}
-            </div>
+            </SurfaceCard>
         </section>
     );
 }

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
+import { IconShell, SurfaceCard } from "../../components/BrandSystem";
 import { BrandIllustratedEmptyState, BrandOrganicPlaceholder, BrandRadialDivider, BrandTextureSkeleton, BrandWatermarkPanel } from "../../components/BrandMicro";
 import { getCorridorBySlug, type ClimateCorridorWithLinks } from "../../lib/api";
 import { getOptimizedCover } from "../../lib/imageOptimization";
@@ -39,7 +40,7 @@ function ItemLink({ kind, refId }: { kind: string; refId: string }) {
     return (
         <Link
             to={url}
-            className="group flex flex-col justify-center rounded-2xl border border-border-subtle bg-white p-4 transition-all duration-300 hover:-translate-y-1 hover:border-brand-primary/30 hover:shadow-md md:p-6"
+            className="portal-demo-card group"
         >
             <div className="mb-2 text-2xl">{icon}</div>
             <div className="mb-1 text-[10px] font-black uppercase tracking-widest text-brand-primary/70">
@@ -100,7 +101,7 @@ export function CorredoresDetailPage() {
     const events = corridor.links.filter((l) => l.item_kind === "event");
 
     return (
-        <main className="mx-auto max-w-5xl px-4 py-7 md:py-12">
+        <main className="portal-stage mx-auto max-w-6xl space-y-8 md:space-y-10">
             <Link
                 to="/corredores"
                 className="mb-8 inline-flex items-center text-xs font-bold uppercase tracking-widest text-text-secondary transition-colors hover:text-text-primary"
@@ -108,8 +109,12 @@ export function CorredoresDetailPage() {
                 ← Voltar aos Corredores
             </Link>
 
-            <header className="mb-12 md:mb-16">
+            <SurfaceCard className="portal-detail-article p-5 md:p-8">
                 <BrandWatermarkPanel>
+                <div className="mb-5 flex items-center gap-3">
+                    <IconShell tone="lab" className="h-12 w-12 rounded-2xl"><span aria-hidden="true">🧭</span></IconShell>
+                    <span className="text-xs font-black uppercase tracking-[0.2em] text-brand-primary">Corredor climático</span>
+                </div>
                 {corridor.featured && (
                     <span className="mb-4 inline-block rounded-full border border-brand-primary/30 bg-brand-primary/10 px-3 py-1 text-[10px] font-black uppercase tracking-widest text-brand-primary">
                         Destaque Editorial
@@ -124,11 +129,11 @@ export function CorredoresDetailPage() {
                     </p>
                 )}
                 </BrandWatermarkPanel>
-            </header>
+            </SurfaceCard>
 
             {/* Cover Image */}
             {corridor.cover_url && (
-                <section className="mb-12 overflow-hidden rounded-3xl border border-border-subtle shadow-md">
+                <section className="overflow-hidden rounded-[2rem] border border-brand-primary/10 shadow-[0_24px_70px_rgba(17,38,59,0.12)]">
                     <img
                         src={getOptimizedCover(corridor, "cover") || corridor.cover_url}
                         alt={corridor.title}
@@ -141,7 +146,7 @@ export function CorredoresDetailPage() {
 
             {/* Editorial Note - "O que observar aqui" */}
             {corridor.note_md && (
-                <section className="mb-12 rounded-3xl border border-brand-primary/20 bg-brand-primary/5 p-6 md:mb-16 md:p-8">
+                <SurfaceCard className="portal-list-panel p-6 md:p-8">
                     <h2 className="mb-4 flex items-center gap-3 text-xl font-black uppercase tracking-tight text-brand-primary md:text-2xl">
                         <span className="text-3xl">👁️</span>
                         O que observar aqui
@@ -149,12 +154,12 @@ export function CorredoresDetailPage() {
                     <div className="prose prose-lg max-w-none text-text-primary">
                         <p className="whitespace-pre-wrap leading-relaxed">{corridor.note_md}</p>
                     </div>
-                </section>
+                </SurfaceCard>
             )}
 
             {/* Geometry / Map Placeholder */}
             {corridor.geometry_json ? (
-                <section className="mb-14 overflow-hidden rounded-3xl border border-border-subtle bg-white shadow-md md:mb-20">
+                <SurfaceCard className="portal-list-panel overflow-hidden p-0">
                     <div className="p-6 md:p-8">
                         <h3 className="mb-4 text-lg font-black uppercase tracking-tight text-text-primary md:text-xl">
                             Geometria do Corredor
@@ -171,11 +176,11 @@ export function CorredoresDetailPage() {
                             Visualização interativa em desenvolvimento.
                         </p>
                     </div>
-                </section>
+                </SurfaceCard>
             ) : (
-                <section className="mb-14 overflow-hidden rounded-3xl border border-border-subtle bg-white shadow-md md:mb-20">
+                <SurfaceCard className="portal-list-panel overflow-hidden p-0">
                     <BrandOrganicPlaceholder className="h-56 md:h-96" label="Corredores" subtitle="Mapa em breve" />
-                </section>
+                </SurfaceCard>
             )}
 
             {/* Connected Content - Organized by Type */}

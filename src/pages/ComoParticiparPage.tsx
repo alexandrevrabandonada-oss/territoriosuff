@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { IconShell, SurfaceCard } from "../components/BrandSystem";
 
 const participationLinks = [
   { href: "/agenda", label: "Inscricoes e agenda" },
@@ -9,15 +10,19 @@ const participationLinks = [
 
 export function ComoParticiparPage() {
   return (
-    <div className="space-y-6">
-      <section className="rounded-2xl border border-border-subtle bg-white p-6 shadow-sm md:p-8">
-        <h1 className="text-2xl font-black text-text-primary md:text-3xl">Como Participar</h1>
-        <p className="mt-3 text-sm text-text-secondary md:text-base">
-          Formas simples de participar das atividades publicas e acompanhar os resultados do projeto.
-        </p>
-      </section>
+    <section className="portal-stage space-y-8 md:space-y-10">
+      <SurfaceCard className="portal-stage-hero portal-stage-hero-seed overflow-hidden p-0">
+        <div className="portal-stage-hero-inner">
+          <div className="portal-stage-copy">
+            <IconShell tone="seed" className="portal-stage-icon"><span aria-hidden="true">🤝</span></IconShell>
+            <h1>Como participar</h1>
+            <p>Formas simples de entrar nas atividades públicas, receber alertas, acompanhar dados e contribuir com relatos do território.</p>
+          </div>
+          <div className="portal-stage-stat"><span>4</span><small>canais de participação</small></div>
+        </div>
+      </SurfaceCard>
 
-      <section className="rounded-2xl border border-border-subtle bg-white p-6 shadow-sm">
+      <SurfaceCard className="portal-list-panel p-6">
         <h2 className="text-lg font-black text-text-primary">Canais de participacao</h2>
         <ul className="mt-3 list-disc space-y-2 pl-5 text-sm text-text-secondary md:text-base">
           <li>Inscreva-se nas atividades da agenda para oficinas, rodas de conversa e encontros tecnicos.</li>
@@ -25,9 +30,9 @@ export function ComoParticiparPage() {
           <li>Ative alertas para receber avisos de qualidade do ar diretamente no seu dispositivo.</li>
           <li>Acompanhe o painel de dados para monitorar tendencias e apoiar debates publicos.</li>
         </ul>
-      </section>
+      </SurfaceCard>
 
-      <section className="rounded-2xl border border-border-subtle bg-white p-6 shadow-sm">
+      <SurfaceCard className="portal-list-panel p-6">
         <h2 className="text-lg font-black text-text-primary">Atalhos</h2>
         <ul className="mt-3 flex flex-wrap gap-2">
           {participationLinks.map((item) => (
@@ -41,16 +46,16 @@ export function ComoParticiparPage() {
             </li>
           ))}
         </ul>
-      </section>
+      </SurfaceCard>
 
-      <section className="rounded-2xl border border-border-subtle bg-brand-primary-soft p-6">
+      <SurfaceCard className="portal-list-panel border-brand-primary/15 bg-brand-primary-soft p-6">
         <h2 className="text-lg font-black text-brand-primary">Acessibilidade e contato</h2>
         <ul className="mt-3 list-disc space-y-2 pl-5 text-sm text-text-primary">
           <li>Conteudo pensado para leitura objetiva, com linguagem simples e estrutura por blocos.</li>
           <li>Se precisar de suporte para participar de atividades, escreva para <a className="font-semibold text-brand-primary underline" href="mailto:contato@semear.uff.br">contato@semear.uff.br</a>.</li>
           <li>Tambem e possivel acompanhar atualizacoes de situacao em <Link className="font-semibold text-brand-primary underline" to="/status">/status</Link>.</li>
         </ul>
-      </section>
-    </div>
+      </SurfaceCard>
+    </section>
   );
 }

@@ -1,6 +1,7 @@
 import { FormEvent, useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 
+import { IconShell, SurfaceCard } from "../components/BrandSystem";
 import { createRegistration, getEventSummary, type EventSummary } from "../lib/api";
 
 type FormState = {
@@ -95,15 +96,22 @@ export function InscricoesPage() {
   }
 
   return (
-    <section className="space-y-6">
-      <div className="rounded-2xl border border-border-subtle bg-white p-6 shadow-sm md:p-8">
-        <h1 className="text-2xl font-black text-text-primary md:text-4xl">Inscrições em Eventos</h1>
-        <p className="mt-3 text-base text-text-secondary">
-          Preencha o formulário abaixo para se inscrever em atividades públicas do projeto SEMEAR.
-        </p>
-      </div>
+    <section className="portal-stage inscriptions-stage space-y-8 md:space-y-10">
+      <SurfaceCard className="portal-stage-hero portal-stage-hero-warm overflow-hidden p-0">
+        <div className="portal-stage-hero-inner">
+          <div className="portal-stage-copy">
+            <IconShell tone="warm" className="portal-stage-icon"><span aria-hidden="true">📝</span></IconShell>
+            <h1>Inscrições em eventos</h1>
+            <p>Preencha o formulário para participar de oficinas, encontros públicos e atividades territoriais do projeto SEMEAR.</p>
+          </div>
+          <div className="portal-stage-stat">
+            <span>{event ? "1" : "0"}</span>
+            <small>evento selecionado</small>
+          </div>
+        </div>
+      </SurfaceCard>
 
-      <section className="rounded-2xl border border-border-subtle bg-white p-6 shadow-sm">
+      <SurfaceCard className="portal-list-panel p-5 md:p-6">
         {loadingEvent ? <p className="text-base text-text-secondary">Carregando dados do evento...</p> : null}
         {event ? (
           <div className="mb-6 rounded-lg border border-brand-primary/30 bg-brand-primary-soft p-4">
@@ -223,7 +231,7 @@ export function InscricoesPage() {
             )}
           </button>
         </form>
-      </section>
+      </SurfaceCard>
 
       {success ? (
         <div aria-live="polite" className="rounded-lg border-2 border-success bg-success/10 p-4" role="status">

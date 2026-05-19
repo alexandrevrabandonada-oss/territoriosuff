@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 
-import { SurfaceCard } from "../components/BrandSystem";
+import { IconShell, SurfaceCard } from "../components/BrandSystem";
 import { BrandIllustratedEmptyState, BrandRadialDivider, BrandTextureSkeleton, BrandWatermarkPanel } from "../components/BrandMicro";
 import { getBlogPostBySlug, type BlogPost } from "../lib/api";
 import { trackShare } from "../lib/observability";
@@ -70,7 +70,7 @@ export function BlogPostPage() {
     }
 
     return (
-        <article className="mx-auto max-w-4xl space-y-6 px-1 md:px-0">
+        <article className="portal-stage mx-auto max-w-5xl space-y-8 md:space-y-10">
             <Link
                 className="inline-flex items-center gap-1 text-sm font-semibold text-brand-primary hover:underline"
                 to="/blog"
@@ -78,7 +78,7 @@ export function BlogPostPage() {
                 ← Voltar ao Blog
             </Link>
 
-            <SurfaceCard className="signature-shell logo-watermark-soft overflow-hidden p-0">
+            <SurfaceCard className="portal-detail-article overflow-hidden p-0">
                 {post.cover_url && (
                     <img
                         alt={post.title}
@@ -87,6 +87,10 @@ export function BlogPostPage() {
                     />
                 )}
                 <div className="p-5 md:p-10">
+                    <div className="mb-5 flex items-center gap-3">
+                        <IconShell tone="seed" className="h-12 w-12 rounded-2xl"><span aria-hidden="true">✍️</span></IconShell>
+                        <span className="text-xs font-black uppercase tracking-[0.2em] text-brand-primary">Blog editorial</span>
+                    </div>
                     <div className="mb-4 flex flex-wrap items-center gap-2.5 text-xs font-semibold uppercase tracking-wider text-text-secondary md:gap-3">
                         <span>{post.published_at ? new Date(post.published_at).toLocaleDateString("pt-BR") : "Draft"}</span>
                         {post.tags.length > 0 && (

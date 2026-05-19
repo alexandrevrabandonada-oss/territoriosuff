@@ -4,6 +4,7 @@ import { Link, useParams } from "react-router-dom";
 import { getAcervoBySlug, listCollectionsForItem, getRelatedItemsByCollections, type AcervoItem, type AcervoCollection } from "../../lib/api";
 import { ACERVO_KIND_LABELS } from "../../lib/acervo";
 import { trackShare } from "../../lib/observability";
+import { IconShell, SurfaceCard } from "../../components/BrandSystem";
 
 const SOURCE_TYPE_LABELS: Record<string, string> = {
     cientifico: "Científico",
@@ -104,7 +105,7 @@ export function AcervoItemPage() {
     }, [slug]);
 
     return (
-        <section className="space-y-6">
+        <section className="portal-stage acervo-detail-stage space-y-8 md:space-y-10">
             <Link
                 className="inline-flex items-center gap-1 text-xs font-semibold text-brand-primary/70 hover:text-brand-primary"
                 to="/acervo"
@@ -126,7 +127,11 @@ export function AcervoItemPage() {
                     </p>
                 </div>
             ) : (
-                <article className="rounded-2xl border border-border-subtle bg-white p-6 md:p-8">
+                <SurfaceCard className="portal-detail-article p-5 md:p-8">
+                    <div className="mb-5 flex items-center gap-3">
+                        <IconShell tone="brand" className="h-12 w-12 rounded-2xl"><span aria-hidden="true">🗂️</span></IconShell>
+                        <span className="text-xs font-black uppercase tracking-[0.2em] text-brand-primary">Item do acervo</span>
+                    </div>
                     {/* Kind badges */}
                     <div className="flex flex-wrap gap-2">
                         <span className="inline-block rounded-full bg-brand-primary/10 px-3 py-0.5 text-xs font-bold uppercase tracking-widest text-brand-primary">
@@ -326,7 +331,7 @@ export function AcervoItemPage() {
                             </div>
                         </div>
                     )}
-                </article>
+                </SurfaceCard>
             )}
 
             {/* Media Viewer Modal */}

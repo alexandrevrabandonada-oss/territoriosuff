@@ -1,8 +1,8 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 
+import { IconShell, SurfaceCard } from "../components/BrandSystem";
 import { BrandIllustratedEmptyState, BrandTextureSkeleton } from "../components/BrandMicro";
-import { AxisSectionHeader } from "../components/AxisSystem";
 import { EditorialFamilyCard } from "../components/CardFamilies";
 import { listBlogPosts, type BlogPost } from "../lib/api";
 import { getOptimizedCover } from "../lib/imageOptimization";
@@ -43,13 +43,24 @@ export function BlogListPage() {
     const isScheduled = (post: BlogPost) => Boolean(post.publish_at) && new Date(post.publish_at as string).getTime() > Date.now();
 
     return (
-        <section className="space-y-10 md:space-y-12">
-            <AxisSectionHeader
-                axis="blog"
-                eyebrow="Comunicação"
-                title="Blog da Emenda"
-                description="Acompanhe as últimas atualizações, notícias institucionais e artigos sobre o monitoramento do ar."
-            />
+        <section className="portal-stage blog-stage space-y-8 md:space-y-10">
+            <SurfaceCard className="portal-stage-hero portal-stage-hero-seed overflow-hidden p-0">
+                <div className="portal-stage-hero-inner">
+                    <div className="portal-stage-copy">
+                        <IconShell tone="seed" className="portal-stage-icon">
+                            <span aria-hidden="true">✍️</span>
+                        </IconShell>
+                        <h1>Blog editorial do SEMEAR</h1>
+                        <p>
+                            Atualizações institucionais, bastidores de campo e textos de comunicação pública sobre monitoramento do ar e participação territorial.
+                        </p>
+                    </div>
+                    <div className="portal-stage-stat">
+                        <span>{loading ? "..." : posts.length}</span>
+                        <small>publicação(ões)</small>
+                    </div>
+                </div>
+            </SurfaceCard>
 
             {loading ? (
                 <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
@@ -97,4 +108,3 @@ export function BlogListPage() {
         </section>
     );
 }
-

@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { listCollections, type AcervoCollection } from "../../lib/api";
 import { getOptimizedCover } from "../../lib/imageOptimization";
+import { IconShell, SurfaceCard } from "../../components/BrandSystem";
 import { BrandIllustratedEmptyState, BrandTextureSkeleton } from "../../components/BrandMicro";
-import { AxisSectionHeader } from "../../components/AxisSystem";
 import { FeaturedCard } from "../../components/CardFamilies";
 
 export function CollectionsListPage() {
@@ -28,13 +28,17 @@ export function CollectionsListPage() {
   }, []);
 
   return (
-    <section className="space-y-10 md:space-y-12">
-      <AxisSectionHeader
-        axis="dossie"
-        eyebrow="Biblioteca temática"
-        title="Dossiês"
-        description="Coleções curadas pela equipe do SEMEAR para facilitar a navegação por temas, recortes e documentos editoriais."
-      />
+    <section className="portal-stage dossie-stage space-y-8 md:space-y-10">
+      <SurfaceCard className="portal-stage-hero portal-stage-hero-documental overflow-hidden p-0">
+        <div className="portal-stage-hero-inner">
+          <div className="portal-stage-copy">
+            <IconShell tone="warm" className="portal-stage-icon"><span aria-hidden="true">📚</span></IconShell>
+            <h1>Dossiês temáticos</h1>
+            <p>Coleções curadas pela equipe do SEMEAR para facilitar a navegação por temas, recortes territoriais e documentos editoriais.</p>
+          </div>
+          <div className="portal-stage-stat"><span>{loading ? "..." : collections.length}</span><small>dossiê(s) publicado(s)</small></div>
+        </div>
+      </SurfaceCard>
 
       {loading ? (
         <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3" aria-live="polite" aria-busy="true">

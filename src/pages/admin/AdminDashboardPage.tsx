@@ -366,21 +366,22 @@ export function AdminDashboardPage() {
   ];
 
   return (
-    <div className="space-y-8 animate-in fade-in duration-500">
-      <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+    <div className="admin-page space-y-8 animate-in fade-in duration-500">
+      <div className="admin-hero-panel flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
         <div>
-          <h1 className="text-3xl font-black tracking-tight text-slate-900">Central Operacional</h1>
-          <p className="mt-1 font-medium italic text-slate-500">O que a equipe precisa resolver hoje.</p>
+          <span className="admin-eyebrow">Cockpit editorial</span>
+          <h1 className="mt-3 text-4xl font-black tracking-tight text-slate-950 md:text-5xl">Central Operacional</h1>
+          <p className="mt-3 max-w-2xl text-base font-medium text-slate-500">Controle publicações, pendências, uploads e agenda em uma visão executiva para operação diária do SEMEAR.</p>
         </div>
-        <div className="flex items-center gap-4 text-[10px] font-black uppercase tracking-widest text-slate-400">
-          <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
+        <div className="admin-live-pill">
+          <span className="h-2 w-2 animate-pulse rounded-full bg-emerald-400" />
           Visão consolidada do dia
         </div>
       </div>
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-5">
         {statCards.map((card) => (
-          <div key={card.label} className="flex items-center gap-4 rounded-[2rem] border border-slate-200 bg-white p-6 shadow-sm">
+          <div key={card.label} className="admin-kpi-card flex items-center gap-4 p-6">
             <div className={`flex h-14 w-14 items-center justify-center rounded-2xl text-3xl shadow-inner ${card.bg}`}>
               {card.icon}
             </div>
@@ -395,7 +396,7 @@ export function AdminDashboardPage() {
 
       <div className="grid grid-cols-1 gap-8 lg:grid-cols-12">
         <div className="space-y-8 lg:col-span-4">
-          <section className="rounded-[2.5rem] border border-slate-200 bg-white p-8 shadow-xl shadow-slate-100">
+          <section className="admin-panel p-8">
             <h2 className="mb-8 flex items-center gap-3 text-lg font-black text-slate-900">
               <span className="h-3 w-3 rounded-full bg-rose-500 animate-ping" />
               Pendências críticas
@@ -440,29 +441,29 @@ export function AdminDashboardPage() {
             )}
           </section>
 
-          <section className="rounded-[2.5rem] border border-slate-200 bg-white p-8 shadow-sm">
+          <section className="admin-panel p-8">
             <h2 className="mb-8 flex items-center gap-3 text-xl font-black text-slate-900">
               <span className="rounded-xl bg-slate-900 p-2 text-xs text-white">⚡</span>
               Ações rápidas
             </h2>
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
-              <Link to="/admin/acervo/artigos/novo" className="group flex flex-col items-center rounded-[1.5rem] border border-slate-100 bg-slate-50 p-5 shadow-sm transition-all hover:border-emerald-200 hover:bg-emerald-50">
+              <Link to="/admin/acervo/artigos/novo" className="admin-action-tile group flex flex-col items-center p-5">
                 <span className="mb-3 text-3xl transition-transform group-hover:scale-110">📄</span>
                 <span className="text-center text-[9px] font-black uppercase leading-tight text-slate-600">Novo artigo científico</span>
               </Link>
-              <Link to="/admin/blog/novo" className="group flex flex-col items-center rounded-[1.5rem] border border-slate-100 bg-slate-50 p-5 shadow-sm transition-all hover:border-emerald-200 hover:bg-emerald-50">
+              <Link to="/admin/blog/novo" className="admin-action-tile group flex flex-col items-center p-5">
                 <span className="mb-3 text-3xl transition-transform group-hover:scale-110">✍️</span>
                 <span className="text-center text-[9px] font-black uppercase leading-tight text-slate-600">Nova matéria</span>
               </Link>
-              <Link to="/admin/relatorios/novo" className="group flex flex-col items-center rounded-[1.5rem] border border-slate-100 bg-slate-50 p-5 shadow-sm transition-all hover:border-emerald-200 hover:bg-emerald-50">
+              <Link to="/admin/relatorios/novo" className="admin-action-tile group flex flex-col items-center p-5">
                 <span className="mb-3 text-3xl transition-transform group-hover:scale-110">📊</span>
                 <span className="text-center text-[9px] font-black uppercase leading-tight text-slate-600">Novo relatório</span>
               </Link>
-              <Link to="/admin/agenda/novo" className="group flex flex-col items-center rounded-[1.5rem] border border-slate-100 bg-slate-50 p-5 shadow-sm transition-all hover:border-emerald-200 hover:bg-emerald-50">
+              <Link to="/admin/agenda/novo" className="admin-action-tile group flex flex-col items-center p-5">
                 <span className="mb-3 text-3xl transition-transform group-hover:scale-110">🗓️</span>
                 <span className="text-center text-[9px] font-black uppercase leading-tight text-slate-600">Novo evento</span>
               </Link>
-              <Link to="/admin/uploads" className="group flex flex-col items-center rounded-[1.5rem] border border-slate-100 bg-slate-50 p-5 shadow-sm transition-all hover:border-emerald-200 hover:bg-emerald-50">
+              <Link to="/admin/uploads" className="admin-action-tile group flex flex-col items-center p-5">
                 <span className="mb-3 text-3xl transition-transform group-hover:scale-110">☁️</span>
                 <span className="text-center text-[9px] font-black uppercase leading-tight text-slate-600">Subir arquivo</span>
               </Link>
@@ -476,7 +477,7 @@ export function AdminDashboardPage() {
 
         <div className="space-y-8 lg:col-span-8">
           {activityGroups.map((group) => (
-            <section key={group.key} className="rounded-[2.5rem] border border-slate-200 bg-white p-8 shadow-sm">
+            <section key={group.key} className="admin-panel p-8">
               <h2 className="mb-8 flex items-center gap-3 text-xl font-black text-slate-900">
                 <span className="rounded-xl bg-slate-900 p-2 text-xs text-white">🕒</span>
                 {group.title}
@@ -487,7 +488,7 @@ export function AdminDashboardPage() {
               ) : group.items.length > 0 ? (
                 <div className="space-y-4">
                   {group.items.map((item) => (
-                    <div key={item.id} className="group flex items-center justify-between rounded-[1.5rem] border border-slate-100 bg-slate-50 p-5 transition-all hover:bg-white hover:shadow-md">
+                    <div key={item.id} className="admin-row group flex items-center justify-between p-5">
                       <div className="flex items-center gap-4">
                         <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white text-xl shadow-inner">
                           {item.icon}

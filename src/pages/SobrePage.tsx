@@ -1,34 +1,28 @@
+import { IconShell, SurfaceCard } from "../components/BrandSystem";
 import { INSTITUTIONAL_CITATION, INSTITUTIONAL_COORDINATION, INSTITUTIONAL_FUNDING, INSTITUTIONAL_SUMMARY, INSTITUTIONAL_TAGLINE, INSTITUTIONAL_UNIVERSITY_FULL_NAME } from "../content/institucional";
 
 export function SobrePage() {
   return (
-    <div className="space-y-8">
+    <section className="portal-stage about-stage space-y-8 md:space-y-10">
       {/* Hero Section */}
-      <section className="rounded-2xl border border-border-subtle bg-white p-8 shadow-sm md:p-12">
-        <div className="mb-6 flex items-center gap-3">
-          <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-brand-primary text-white font-black text-xl">
-            UFF
+      <SurfaceCard className="portal-stage-hero portal-stage-hero-lab overflow-hidden p-0">
+        <div className="portal-stage-hero-inner">
+          <div className="portal-stage-copy">
+            <IconShell tone="brand" className="portal-stage-icon"><span className="font-black" aria-hidden="true">UFF</span></IconShell>
+            <h1>Sistema de Monitoramento e Memória Socioambiental</h1>
+            <p>{INSTITUTIONAL_SUMMARY}</p>
+            <p className="!text-sm">{INSTITUTIONAL_CITATION}</p>
           </div>
-          <div className="flex flex-col">
-            <span className="text-xs font-semibold uppercase tracking-wider text-text-secondary">{INSTITUTIONAL_UNIVERSITY_FULL_NAME}</span>
-            <span className="text-base font-black uppercase tracking-wide text-brand-primary">SEMEAR</span>
+          <div className="portal-stage-stat">
+            <span>SEMEAR</span>
+            <small>{INSTITUTIONAL_UNIVERSITY_FULL_NAME}</small>
           </div>
         </div>
-
-        <h1 className="text-4xl font-black text-text-primary md:text-5xl">
-          Sistema de Monitoramento e Memória Socioambiental
-        </h1>
-        <p className="mt-4 text-lg text-text-secondary leading-relaxed">
-          {INSTITUTIONAL_SUMMARY}
-        </p>
-        <p className="mt-3 text-sm leading-relaxed text-text-secondary">
-          {INSTITUTIONAL_CITATION}
-        </p>
-      </section>
+      </SurfaceCard>
 
       {/* Institutional Framework */}
       <section className="grid gap-6 md:grid-cols-2">
-        <div className="rounded-2xl border border-border-subtle bg-white p-6 shadow-sm">
+        <div className="portal-list-panel rounded-[1.75rem] p-6">
           <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-lg bg-brand-primary/10 text-brand-primary">
             <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
@@ -40,7 +34,7 @@ export function SobrePage() {
           </p>
         </div>
 
-        <div className="rounded-2xl border border-border-subtle bg-white p-6 shadow-sm">
+        <div className="portal-list-panel rounded-[1.75rem] p-6">
           <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-lg bg-accent-green/10 text-accent-green">
             <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -54,7 +48,7 @@ export function SobrePage() {
       </section>
 
       {/* Core Principles */}
-      <section className="rounded-2xl border border-border-subtle bg-white p-8 shadow-sm">
+      <SurfaceCard className="portal-list-panel p-6 md:p-8">
         <h2 className="mb-6 text-2xl font-black text-text-primary">Princípios e Valores</h2>
         <div className="grid gap-6 md:grid-cols-3">
           <div>
@@ -93,10 +87,10 @@ export function SobrePage() {
             </p>
           </div>
         </div>
-      </section>
+      </SurfaceCard>
 
       {/* What We Do */}
-      <section className="rounded-2xl border border-border-subtle bg-white p-8 shadow-sm">
+      <SurfaceCard className="portal-list-panel p-6 md:p-8">
         <h2 className="mb-6 text-2xl font-black text-text-primary">O Que Fazemos</h2>
         <div className="space-y-4">
           <div className="flex gap-4">
@@ -155,10 +149,10 @@ export function SobrePage() {
             </div>
           </div>
         </div>
-      </section>
+      </SurfaceCard>
 
       {/* Team & Contact */}
-      <section className="rounded-2xl border border-border-subtle bg-brand-primary-soft p-8">
+      <SurfaceCard className="portal-list-panel border-brand-primary/15 bg-brand-primary-soft p-6 md:p-8">
         <h2 className="mb-4 text-2xl font-black text-brand-primary">Coordenação e Contato</h2>
         <p className="text-base text-text-primary">
           <strong>Coordenação Institucional:</strong> {INSTITUTIONAL_COORDINATION}
@@ -169,7 +163,7 @@ export function SobrePage() {
         <p className="mt-2 text-base text-text-primary">
           <strong>Transparência:</strong> Acesse a <a href="/transparencia" className="text-brand-primary hover:underline">prestação de contas completa</a>
         </p>
-      </section>
-    </div>
+      </SurfaceCard>
+    </section>
   );
 }

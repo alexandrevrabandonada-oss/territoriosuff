@@ -5,7 +5,7 @@ import { getAcervoByYear, getAcervoYearIndex, type AcervoItem, type AcervoYearIn
 import { ACERVO_KIND_LABELS, type AcervoArea, AREA_KINDS } from "../../lib/acervo";
 import { getOptimizedCover } from "../../lib/imageOptimization";
 import { Chip, EditorialCard, EditorialCardActions, EditorialCardBody, EditorialCardExcerpt, EditorialCardMeta, EditorialCardTitle, IconShell, SurfaceCard } from "../../components/BrandSystem";
-import { AxisSectionHeader, AxisEyebrow, AxisDivider } from "../../components/AxisSystem";
+import { AxisEyebrow } from "../../components/AxisSystem";
 
 const AREA_META: Record<AcervoArea, { label: string; emoji: string; description: string; color: string }> = {
   artigos: {
@@ -101,13 +101,17 @@ export function AcervoTimelinePage() {
   const meta = AREA_META[area];
 
   return (
-    <section className="space-y-10 md:space-y-12">
-      <AxisSectionHeader
-        axis="timeline"
-        eyebrow={`Acervo / ${meta.label}`}
-        title={`${meta.emoji} ${meta.label}`}
-        description={meta.description}
-      />
+    <section className="portal-stage timeline-stage space-y-8 md:space-y-10">
+      <SurfaceCard className="portal-stage-hero portal-stage-hero-documental overflow-hidden p-0">
+        <div className="portal-stage-hero-inner">
+          <div className="portal-stage-copy">
+            <IconShell tone="warm" className="portal-stage-icon"><span aria-hidden="true">{meta.emoji}</span></IconShell>
+            <h1>Linha do tempo do acervo</h1>
+            <p>{meta.description} Navegue por ano para acompanhar a memória pública preservada pelo SEMEAR.</p>
+          </div>
+          <div className="portal-stage-stat"><span>{selectedYear ?? "—"}</span><small>ano selecionado</small></div>
+        </div>
+      </SurfaceCard>
 
       <div className="grid gap-6 md:grid-cols-[minmax(240px,280px)_minmax(0,1fr)]">
         <aside className="space-y-4 md:sticky md:top-24 md:self-start">

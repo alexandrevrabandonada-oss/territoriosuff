@@ -4,7 +4,7 @@ import { useSearchParams } from "react-router-dom";
 import { EmptyState } from "../components/EmptyState";
 import { ErrorState } from "../components/ErrorState";
 import { SkeletonCard } from "../components/SkeletonCard";
-import { AxisEyebrow, AxisDivider } from "../components/AxisSystem";
+import { IconShell, SurfaceCard } from "../components/BrandSystem";
 import {
   getTransparencySummary,
   listExpenses,
@@ -267,41 +267,44 @@ export function TransparenciaPage() {
   }
 
   return (
-    <div className="space-y-8">
-      <section className="axis-section-header-dados rounded-2xl border p-8 shadow-sm md:p-12">
-        <div className="mb-6 flex items-center justify-between gap-3">
-          <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-accent-lab/15 text-accent-lab">
+    <section className="portal-stage transparency-stage space-y-8 md:space-y-10">
+      <SurfaceCard className="portal-stage-hero portal-stage-hero-lab overflow-hidden p-0">
+        <div className="portal-stage-hero-inner">
+          <div className="portal-stage-copy">
+            <IconShell tone="lab" className="portal-stage-icon">
             <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
             </svg>
+            </IconShell>
+            <h1>Transparência e prestação de contas</h1>
+            <p>Acompanhamento financeiro público, auditável e exportável do projeto SEMEAR, com filtros por período, categoria e fornecedor.</p>
           </div>
-          <div>
-            <AxisEyebrow axis="dados">Governança financeira</AxisEyebrow>
-            <h1 className="axis-heading-dados text-3xl md:text-4xl">Transparência e prestação de contas</h1>
-            <p className="mt-2 text-base text-text-secondary">Acompanhamento financeiro público e auditável do projeto SEMEAR</p>
+          <div className="portal-stage-stat">
+            <span>{summary ? formatBRL(summary.total_cents) : "R$ 0"}</span>
+            <small>total histórico publicado</small>
           </div>
         </div>
+      </SurfaceCard>
 
-        <div className="mt-6 rounded-lg border border-accent-lab/30 bg-accent-lab/10 p-4">
+      <SurfaceCard className="portal-list-panel p-5 md:p-6">
           <p className="text-sm font-semibold text-accent-lab">{INSTITUTIONAL_FUNDING} · todos os recursos são públicos</p>
           <p className="mt-1 text-sm text-text-secondary">Prestação de contas permanente e acessível à população</p>
-        </div>
-      </section>
+      </SurfaceCard>
 
       <section className="grid gap-6 md:grid-cols-3">
-        <div className="rounded-2xl border border-accent-lab/20 bg-accent-lab/5 p-6 shadow-sm">
+        <div className="portal-kpi-card portal-kpi-card-lab">
           <p className="text-sm font-semibold uppercase tracking-wider text-text-secondary">Total histórico</p>
           <p className="mt-2 text-3xl font-black text-success">{summary ? formatBRL(summary.total_cents) : "R$ 0,00"}</p>
           <p className="mt-1 text-xs text-text-secondary">{INSTITUTIONAL_FUNDING}</p>
         </div>
 
-        <div className="rounded-2xl border border-border-subtle bg-white p-6 shadow-sm">
+        <div className="portal-kpi-card">
           <p className="text-sm font-semibold uppercase tracking-wider text-text-secondary">Total no período filtrado</p>
           <p className="mt-2 text-3xl font-black text-brand-primary">{formatBRL(periodKpis.total)}</p>
           <p className="mt-1 text-xs text-text-secondary">{periodKpis.count} lançamento(s)</p>
         </div>
 
-        <div className="rounded-2xl border border-border-subtle bg-white p-6 shadow-sm">
+        <div className="portal-kpi-card">
           <p className="text-sm font-semibold uppercase tracking-wider text-text-secondary">Top categorias (período)</p>
           <div className="mt-2 space-y-1">
             {periodKpis.topCategories.slice(0, 3).map(([cat, amount]) => (
@@ -315,7 +318,7 @@ export function TransparenciaPage() {
         </div>
       </section>
 
-      <section className="rounded-2xl border border-border-subtle bg-white p-8 shadow-sm">
+      <SurfaceCard className="portal-filter-panel p-6 md:p-8">
         <h2 className="text-lg font-black text-text-primary">Filtrar lançamentos</h2>
         <div className="mt-4 grid gap-4 md:grid-cols-4">
           <div>
@@ -344,10 +347,10 @@ export function TransparenciaPage() {
             <input id="filtro-fornecedor" type="search" value={vendorQuery} onChange={(e) => setVendorQuery(e.target.value)} placeholder="Digite o nome" className="motion-input motion-focus w-full rounded-md px-3 py-2 text-sm" />
           </div>
         </div>
-      </section>
+      </SurfaceCard>
 
       <section className="grid gap-6 md:grid-cols-2">
-        <div className="rounded-2xl border border-border-subtle bg-white p-6 shadow-sm">
+        <div className="portal-list-panel rounded-[1.75rem] p-6">
           <h3 className="text-sm font-semibold uppercase tracking-wider text-text-secondary">Top categorias (filtro ativo)</h3>
           <div className="mt-3 space-y-2">
             {periodKpis.topCategories.map(([cat, amount]) => (
@@ -360,7 +363,7 @@ export function TransparenciaPage() {
           </div>
         </div>
 
-        <div className="rounded-2xl border border-border-subtle bg-white p-6 shadow-sm">
+        <div className="portal-list-panel rounded-[1.75rem] p-6">
           <h3 className="text-sm font-semibold uppercase tracking-wider text-text-secondary">Top fornecedores (filtro ativo)</h3>
           <div className="mt-3 space-y-2">
             {periodKpis.topVendors.map(([vendor, amount]) => (
@@ -374,7 +377,7 @@ export function TransparenciaPage() {
         </div>
       </section>
 
-      <section className="rounded-2xl border border-border-subtle bg-white p-8 shadow-sm">
+      <SurfaceCard className="portal-list-panel p-6 md:p-8">
         <div className="mb-6 flex items-center justify-between gap-3">
           <div>
             <h2 className="text-2xl font-black text-text-primary">Despesas lançadas</h2>
@@ -432,9 +435,9 @@ export function TransparenciaPage() {
             </tbody>
           </table>
         </div>
-      </section>
+      </SurfaceCard>
 
-      <section className="rounded-2xl border border-border-subtle bg-white p-8 shadow-sm">
+      <SurfaceCard className="portal-list-panel p-6 md:p-8">
         <h2 className="text-2xl font-black text-text-primary">Links oficiais de controle</h2>
         <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {links.map((link) => (
@@ -448,7 +451,7 @@ export function TransparenciaPage() {
             <div className="col-span-full"><EmptyState title="Nenhum link oficial disponível no momento" description="Os links oficiais aparecerão aqui quando forem publicados." /></div>
           )}
         </div>
-      </section>
+      </SurfaceCard>
 
       {viewerExpense?.document_url && (
         <div
@@ -489,7 +492,7 @@ export function TransparenciaPage() {
           </div>
         </div>
       )}
-    </div>
+    </section>
   );
 }
 

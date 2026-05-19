@@ -7,7 +7,7 @@ import "leaflet/dist/leaflet.css";
 import { getStationOverview, getStationHealth, listCorridors, type StationOverview, type StationHealth, type ClimateCorridor } from "../lib/api";
 
 import { OfflineBanner } from "../components/OfflineBanner";
-import { Chip, IconShell, SectionHeader, SurfaceCard } from "../components/BrandSystem";
+import { Chip, IconShell, SurfaceCard } from "../components/BrandSystem";
 
 // Fix default marker icons in react-leaflet
 import markerIcon2x from "leaflet/dist/images/marker-icon-2x.png";
@@ -128,7 +128,7 @@ export function MapaPage() {
   }, [stations]);
 
   return (
-    <section className="space-y-6">
+    <section className="portal-stage map-stage space-y-8 md:space-y-10">
       <a href="#mapa-lista" className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-md focus:bg-white focus:px-4 focus:py-2 focus:text-sm focus:font-bold focus:text-brand-primary focus:shadow-lg">Pular o mapa e ir para a lista acessível</a>
       {!isOnline && (
         <OfflineBanner
@@ -137,27 +137,26 @@ export function MapaPage() {
         />
       )}
 
-      <SurfaceCard className="logo-watermark-soft p-6 md:p-8">
-        <div className="grid gap-5 lg:grid-cols-[minmax(0,1.1fr)_auto] lg:items-end">
-          <div className="space-y-3">
-            <div className="flex items-center gap-3">
-              <IconShell tone="brand" className="h-11 w-11 rounded-2xl">
+      <SurfaceCard className="portal-stage-hero portal-stage-hero-lab overflow-hidden p-0">
+        <div className="portal-stage-hero-inner">
+          <div className="portal-stage-copy">
+              <IconShell tone="brand" className="portal-stage-icon">
                 <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
                 </svg>
               </IconShell>
-              <div>
-                <p className="section-badge">Mapa de monitoramento</p>
-                <h1 className="mt-2 text-3xl font-black text-text-primary md:text-5xl">Estações e corredores climáticos</h1>
-              </div>
-            </div>
-            <p className="max-w-3xl text-base leading-relaxed text-text-secondary md:text-lg">
+              <h1>Estações e corredores climáticos</h1>
+            <p>
               Visualize a localização das estações e dos corredores climáticos mapeados em Volta Redonda e região. Se o mapa não carregar, use a lista acessível abaixo.
             </p>
           </div>
-          <div className="flex flex-wrap gap-2">
+          <div className="portal-stage-stat gap-4">
+            <span>{loading ? "..." : stations.length}</span>
+            <small>estação(ões) no mapa</small>
+            <div className="flex flex-wrap gap-2">
             <Chip tone="active">Acessível</Chip>
             <Chip tone="seed">Offline friendly</Chip>
+            </div>
           </div>
         </div>
       </SurfaceCard>
@@ -170,12 +169,14 @@ export function MapaPage() {
       )}
 
       {/* Map Section */}
-      <SurfaceCard className="p-6 md:p-8">
-        <SectionHeader
-          eyebrow="Mapa"
-          title="Mapa interativo"
-          description="Navegação espacial das estações e corredores, com leitura complementar na lista acessível."
-        />
+      <SurfaceCard className="portal-map-panel p-5 md:p-6">
+        <div className="mb-5 flex flex-col gap-2 md:flex-row md:items-end md:justify-between">
+          <div>
+            <p className="text-xs font-black uppercase tracking-[0.2em] text-brand-primary">Mapa interativo</p>
+            <h2 className="mt-2 text-2xl font-black tracking-[-0.04em] text-text-primary md:text-3xl">Navegação espacial do monitoramento</h2>
+            <p className="mt-1 text-sm text-text-secondary">Estações, corredores e leitura complementar na lista acessível.</p>
+          </div>
+        </div>
 
         {loading ? (
           <div className="mt-6 rounded-[1.5rem] border border-border-subtle bg-surface-2 p-6">
@@ -193,7 +194,7 @@ export function MapaPage() {
             <p className="text-sm text-text-secondary">Use a lista de estações e corredores para navegação completa enquanto estiver offline.</p>
           </div>
         ) : (
-          <div className="mt-6 relative" style={{ height: "500px" }}>
+          <div className="relative" style={{ height: "520px" }}>
             <MapContainer
               center={mapCenter}
               zoom={13}
@@ -285,7 +286,7 @@ export function MapaPage() {
 
         {/* Legend */}
         {!loading && (
-          <div className="mt-4 rounded-[1.35rem] border border-border-subtle bg-surface-1 p-4">
+          <div className="mt-4 rounded-[1.35rem] border border-brand-primary/10 bg-white/[0.88] p-4 shadow-[0_14px_36px_rgba(17,38,59,0.06)]">
             <p className="text-xs font-bold uppercase tracking-wide text-brand-primary mb-3">Legenda</p>
             <div className="grid gap-3 md:grid-cols-2">
               <div className="flex items-center gap-2">
@@ -315,7 +316,7 @@ export function MapaPage() {
 
       {/* Accessible Fallback List */}
       <section id="mapa-lista" tabIndex={-1} aria-labelledby="mapa-lista-titulo">
-        <SurfaceCard className="p-6 md:p-8">
+        <SurfaceCard className="portal-list-panel p-6 md:p-8">
           <h2 id="mapa-lista-titulo" className="mb-4 text-lg font-bold text-brand-primary">Lista acessível de estações e corredores</h2>
           <p className="mb-4 text-sm text-text-secondary">
             Informações acessíveis para leitores de tela e navegação sem JavaScript.

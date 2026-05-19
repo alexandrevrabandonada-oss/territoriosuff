@@ -189,21 +189,22 @@ export function AdminUploadsPage() {
   };
 
   return (
-    <div className="space-y-8 animate-in fade-in duration-500 pb-20">
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+    <div className="admin-page space-y-8 pb-20 animate-in fade-in duration-500">
+      <div className="admin-hero-panel flex flex-col justify-between gap-4 md:flex-row md:items-center">
         <div>
-          <h1 className="text-3xl font-bold text-slate-900 tracking-tight">Gestão de Mídia</h1>
-          <p className="text-slate-500 mt-1">Envie e gerencie arquivos do ecossistema SEMEAR.</p>
+          <span className="admin-eyebrow">Ingestão inteligente</span>
+          <h1 className="mt-3 text-4xl font-black tracking-tight text-slate-950 md:text-5xl">Gestão de Mídia</h1>
+          <p className="mt-3 max-w-2xl text-base font-medium text-slate-500">Classifique arquivos por finalidade editorial e acelere a publicação em acervo, blog, relatórios e transparência.</p>
         </div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Upload Form */}
         <div className="lg:col-span-2 space-y-6">
-          <form onSubmit={handleUpload} className="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm space-y-6">
+          <form onSubmit={handleUpload} className="admin-panel space-y-6 p-8">
             <div 
-              className={`relative border-2 border-dashed rounded-2xl p-10 transition-all flex flex-col items-center justify-center text-center ${
-                file ? "border-emerald-200 bg-emerald-50/30" : "border-slate-200 hover:border-emerald-400 bg-slate-50/50"
+              className={`admin-dropzone relative flex flex-col items-center justify-center rounded-[2rem] border-2 border-dashed p-10 text-center transition-all ${
+                file ? "border-emerald-300 bg-emerald-50/60" : "border-slate-200 bg-white/60 hover:border-emerald-400"
               }`}
             >
               <input
@@ -514,7 +515,7 @@ export function AdminUploadsPage() {
         {/* Recent Uploads Sidebar */}
         <div className="space-y-6">
           <div className="flex items-center justify-between px-2">
-            <h2 className="text-lg font-black text-slate-900 uppercase tracking-tight">Últimos Envios</h2>
+            <h2 className="text-lg font-black uppercase tracking-tight text-slate-900">Últimos Envios</h2>
             <button 
               onClick={() => loadRecentAssets()}
               className="p-2 text-slate-400 hover:text-emerald-600 transition-colors"
@@ -529,10 +530,10 @@ export function AdminUploadsPage() {
             {loading ? (
               <div className="py-20 text-center text-slate-400 italic font-medium">Carregando mídias...</div>
             ) : recentAssets.length === 0 ? (
-              <div className="py-20 text-center text-slate-400 italic bg-white rounded-3xl border border-slate-100">Sem uploads ainda.</div>
+              <div className="admin-panel py-20 text-center font-medium italic text-slate-400">Sem uploads ainda.</div>
             ) : (
               recentAssets.map((asset) => (
-                <div key={asset.id} className="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-all group">
+                <div key={asset.id} className="admin-media-card group p-5">
                   <div className="flex items-center gap-4 mb-5">
                     <div className="w-16 h-16 bg-slate-50 rounded-2xl flex items-center justify-center text-slate-400 overflow-hidden border border-slate-100 relative shadow-inner">
                       {isImageAsset(asset) ? (

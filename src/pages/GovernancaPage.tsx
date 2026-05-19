@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import changelogRaw from "../../data/changelog.md?raw";
 
 import { INSTITUTIONAL_CITATION, INSTITUTIONAL_COORDINATION, INSTITUTIONAL_FUNDING, INSTITUTIONAL_SUMMARY, INSTITUTIONAL_TAGLINE } from "../content/institucional";
-import { SectionHeader, SurfaceCard } from "../components/BrandSystem";
+import { IconShell, SurfaceCard } from "../components/BrandSystem";
 import { BrandRadialDivider, BrandWatermarkPanel } from "../components/BrandMicro";
 
 function getLatestChangelogEntries(markdown: string, limit = 10): string[] {
@@ -26,16 +26,26 @@ const governanceLinks = [
 
 export function GovernancaPage() {
   return (
-    <section className="space-y-6">
-      <SurfaceCard className="signature-shell logo-watermark-soft p-6 md:p-8">
-        <SectionHeader
-          eyebrow="Governança"
-          title="Governança e Publicação"
-          description={`${INSTITUTIONAL_TAGLINE}. Regras públicas de publicação, correção, privacidade e transparência técnica do portal SEMEAR.`}
-        />
+    <section className="portal-stage space-y-8 md:space-y-10">
+      <SurfaceCard className="portal-stage-hero portal-stage-hero-lab overflow-hidden p-0">
+        <div className="portal-stage-hero-inner">
+          <div className="portal-stage-copy">
+            <IconShell tone="lab" className="portal-stage-icon">
+              <span aria-hidden="true">⚖️</span>
+            </IconShell>
+            <h1>Governança e publicação</h1>
+            <p>
+              {INSTITUTIONAL_TAGLINE}. Regras públicas de publicação, correção, privacidade e transparência técnica do portal SEMEAR.
+            </p>
+          </div>
+          <div className="portal-stage-stat">
+            <span>{latestEntries.length}</span>
+            <small>itens recentes no changelog</small>
+          </div>
+        </div>
       </SurfaceCard>
 
-      <SurfaceCard className="p-6">
+      <SurfaceCard className="portal-list-panel p-6">
         <BrandWatermarkPanel>
         <h2 className="text-lg font-black text-text-primary">Política de publicação</h2>
         <ul className="mt-3 list-disc space-y-2 pl-5 text-sm text-text-secondary md:text-base">
@@ -47,7 +57,7 @@ export function GovernancaPage() {
         </BrandWatermarkPanel>
       </SurfaceCard>
 
-      <SurfaceCard className="p-6">
+      <SurfaceCard className="portal-list-panel p-6">
         <h2 className="text-lg font-black text-text-primary">Critérios de correção</h2>
         <ul className="mt-3 list-disc space-y-2 pl-5 text-sm text-text-secondary md:text-base">
           <li>Correções editoriais simples podem ser aplicadas sem republicação quando não alteram o sentido do conteúdo.</li>
@@ -58,7 +68,7 @@ export function GovernancaPage() {
         <BrandRadialDivider className="radial-divider-subtle mt-4" />
       </SurfaceCard>
 
-      <SurfaceCard className="p-6">
+      <SurfaceCard className="portal-list-panel p-6">
         <h2 className="text-lg font-black text-text-primary">Privacidade e transparência técnica</h2>
         <ul className="mt-3 list-disc space-y-2 pl-5 text-sm text-text-secondary md:text-base">
           <li>Direitos de privacidade, dados pessoais e canais de contato estão descritos em <Link className="font-semibold text-brand-primary underline" to="/privacidade-lgpd">/privacidade-lgpd</Link>.</li>
@@ -70,7 +80,7 @@ export function GovernancaPage() {
         </ul>
       </SurfaceCard>
 
-      <SurfaceCard className="p-6">
+      <SurfaceCard className="portal-list-panel p-6">
         <h2 className="text-lg font-black text-text-primary">Atalhos institucionais</h2>
         <ul className="mt-3 flex flex-wrap gap-2">
           {governanceLinks.map((item) => (

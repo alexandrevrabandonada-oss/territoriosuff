@@ -85,15 +85,24 @@ export function ReportsListPage() {
   const regularReports = useMemo(() => reports.filter((item) => !featuredIds.has(item.id)), [featuredIds, reports]);
 
   return (
-    <section className="space-y-10 md:space-y-12">
-      <AxisSectionHeader
-        axis="relatorio"
-        eyebrow="Biblioteca oficial"
-        title="Relatórios"
-        description="Relatórios, notas técnicas, boletins e anexos oficiais em PDF para consulta pública e controle social."
-      />
+    <section className="portal-stage reports-stage space-y-8 md:space-y-10">
+      <SurfaceCard className="portal-stage-hero portal-stage-hero-documental overflow-hidden p-0">
+        <div className="portal-stage-hero-inner">
+          <div className="portal-stage-copy">
+            <AxisEyebrow axis="relatorio">Biblioteca oficial</AxisEyebrow>
+            <h1>Relatórios, notas técnicas e boletins para controle social.</h1>
+            <p>
+              Uma base documental em PDF para consulta pública, memória técnica e acompanhamento institucional do projeto SEMEAR.
+            </p>
+          </div>
+          <div className="portal-stage-stat">
+            <span>{loading ? "..." : reports.length}</span>
+            <small>documento(s) filtrado(s)</small>
+          </div>
+        </div>
+      </SurfaceCard>
 
-      <SurfaceCard className="p-5 md:p-6">
+      <SurfaceCard className="portal-filter-panel p-5 md:p-6">
         <div className="grid gap-5 md:grid-cols-4">
           <label className="block">
             <span className="mb-1 block text-xs font-semibold uppercase tracking-wide text-text-secondary">Ano</span>
@@ -245,5 +254,4 @@ export function ReportsListPage() {
     </section>
   );
 }
-
 
