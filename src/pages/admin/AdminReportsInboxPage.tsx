@@ -346,7 +346,17 @@ export function AdminReportsInboxPage() {
               {/* Localização e Ocorrência */}
               <div className="space-y-4">
                 <div>
-                  <p className="text-xs font-bold text-slate-400">📍 Localização informada</p>
+                  <div className="flex items-center justify-between">
+                    <p className="text-xs font-bold text-slate-400">📍 Localização informada</p>
+                    <a
+                      href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(selectedReport.location)}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-[11px] text-emerald-400 hover:text-emerald-300 font-bold flex items-center gap-1 transition-colors hover:underline"
+                    >
+                      Ver no Google Maps ↗
+                    </a>
+                  </div>
                   <p className="text-sm text-slate-200 font-medium bg-slate-950 p-3 rounded-lg border border-slate-800/80 mt-1">
                     {selectedReport.location}
                   </p>
