@@ -142,6 +142,13 @@ export function AdminReportsInboxPage() {
     }
   };
 
+  // Estatísticas de triagem
+  const totalCount = reports.length;
+  const newCount = reports.filter((r) => r.status === "new").length;
+  const reviewedCount = reports.filter((r) => r.status === "reviewed").length;
+  const resolvedCount = reports.filter((r) => r.status === "resolved").length;
+  const archivedCount = reports.filter((r) => r.status === "archived").length;
+
   // Filtrar relatos
   const filteredReports = reports.filter((report) => {
     const matchesSearch =
@@ -224,6 +231,64 @@ export function AdminReportsInboxPage() {
           <p className="mt-3 max-w-2xl text-base font-medium text-slate-300">
             Caixa de entrada para revisão, triagem e encaminhamento dos relatos de problemas ambientais recebidos.
           </p>
+        </div>
+      </div>
+
+      {/* KPI Stats Row */}
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-5">
+        <div className="admin-kpi-card admin-kpi-indigo">
+          <div className="admin-kpi-icon">
+            <span>📥</span>
+          </div>
+          <div className="min-w-0">
+            <p className="text-[10px] font-black uppercase tracking-[0.22em] text-slate-400">Total Recebido</p>
+            <p className="mt-1 text-3xl font-black text-slate-950">{loading ? "..." : totalCount}</p>
+            <p className="mt-1 text-[10px] font-bold uppercase text-slate-400">Geral</p>
+          </div>
+        </div>
+
+        <div className="admin-kpi-card admin-kpi-blue">
+          <div className="admin-kpi-icon">
+            <span>🆕</span>
+          </div>
+          <div className="min-w-0">
+            <p className="text-[10px] font-black uppercase tracking-[0.22em] text-slate-400">Novos</p>
+            <p className="mt-1 text-3xl font-black text-slate-950">{loading ? "..." : newCount}</p>
+            <p className="mt-1 text-[10px] font-bold uppercase text-slate-400">Aguardando triagem</p>
+          </div>
+        </div>
+
+        <div className="admin-kpi-card admin-kpi-amber">
+          <div className="admin-kpi-icon">
+            <span>⏳</span>
+          </div>
+          <div className="min-w-0">
+            <p className="text-[10px] font-black uppercase tracking-[0.22em] text-slate-400">Em Revisão</p>
+            <p className="mt-1 text-3xl font-black text-slate-950">{loading ? "..." : reviewedCount}</p>
+            <p className="mt-1 text-[10px] font-bold uppercase text-slate-400">Sendo avaliados</p>
+          </div>
+        </div>
+
+        <div className="admin-kpi-card admin-kpi-emerald">
+          <div className="admin-kpi-icon">
+            <span>✅</span>
+          </div>
+          <div className="min-w-0">
+            <p className="text-[10px] font-black uppercase tracking-[0.22em] text-slate-400">Resolvidos</p>
+            <p className="mt-1 text-3xl font-black text-slate-950">{loading ? "..." : resolvedCount}</p>
+            <p className="mt-1 text-[10px] font-bold uppercase text-slate-400">Casos solucionados</p>
+          </div>
+        </div>
+
+        <div className="admin-kpi-card admin-kpi-slate">
+          <div className="admin-kpi-icon">
+            <span>📁</span>
+          </div>
+          <div className="min-w-0">
+            <p className="text-[10px] font-black uppercase tracking-[0.22em] text-slate-400">Arquivados</p>
+            <p className="mt-1 text-3xl font-black text-slate-950">{loading ? "..." : archivedCount}</p>
+            <p className="mt-1 text-[10px] font-bold uppercase text-slate-400">Finalizados</p>
+          </div>
         </div>
       </div>
 

@@ -8,6 +8,7 @@ interface DashboardStats {
   uploadsTotal: number;
   reportsPublished: number;
   upcomingEvents: number;
+  environmentalReportsNew: number;
 }
 
 interface Pendency {
@@ -70,6 +71,21 @@ type RecentEventRecord = {
   created_at?: string | null;
 };
 
+type RecentEnvironmentalReportRecord = {
+  id: string;
+  reporter_name: string;
+  category: string;
+  created_at: string;
+};
+
+const REPORT_CATEGORY_LABELS: Record<string, string> = {
+  ar_fumaca: "Ar / Fumaça",
+  residuos_lixo: "Lixo / Resíduos",
+  agua_esgoto: "Água / Esgoto",
+  desmatamento_poda: "Desmatamento / Poda",
+  outros: "Outros",
+};
+
 function formatTimestamp(value: string): string {
   const date = new Date(value);
   return `${date.toLocaleDateString("pt-BR")} às ${date.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" })}`;
@@ -87,6 +103,7 @@ export function AdminDashboardPage() {
     uploadsTotal: 0,
     reportsPublished: 0,
     upcomingEvents: 0,
+    environmentalReportsNew: 0,
   });
   const [pendencies, setPendencies] = useState<Pendency[]>([]);
   const [activityGroups, setActivityGroups] = useState<ActivityGroup[]>([]);
@@ -108,6 +125,7 @@ export function AdminDashboardPage() {
         { count: uploadsTotalCount },
         { count: reportsPublishedCount },
         { count: upcomingEventsCount },
+        { count: environmentalReportsNewCount },
         { data: publishedImagesNoAlt },
         { data: uploadsNoTitle },
         { data: oldAcervoDrafts },
@@ -119,6 +137,7 @@ export function AdminDashboardPage() {
         { data: recentBlogPublished },
         { data: recentReportsEdited },
         { data: recentEventsCreated },
+        { data: recentEnvironmentalReportsNew },
       ] = await Promise.all([
         supabase.from("acervo_items").select("*", { count: "exact", head: true }).eq("status", "published"),
         supabase.from("acervo_items").select("*", { count: "exact", head: true }).eq("status", "draft"),
@@ -127,6 +146,7 @@ export function AdminDashboardPage() {
         supabase.from("media_assets").select("*", { count: "exact", head: true }),
         supabase.from("reports").select("*", { count: "exact", head: true }).eq("status", "published"),
         supabase.from("events").select("*", { count: "exact", head: true }).gte("start_at", now.toISOString()).neq("status", "cancelled"),
+        supabase.from("environmental_reports").select("*", { count: "exact", head: true }).eq("status", "new"),
         supabase
           .from("media_assets")
           .select("id, title, file_name")
@@ -198,6 +218,12 @@ export function AdminDashboardPage() {
           .select("id, title, created_at")
           .order("created_at", { ascending: false })
           .limit(5),
+        supabase
+          .from("environmental_reports")
+          .select("id, reporter_name, category, created_at")
+          .eq("status", "new")
+          .order("created_at", { ascending: false })
+          .limit(5),
       ]);
 
       setStats({
@@ -206,9 +232,22 @@ export function AdminDashboardPage() {
         uploadsTotal: uploadsTotalCount || 0,
         reportsPublished: reportsPublishedCount || 0,
         upcomingEvents: upcomingEventsCount || 0,
+        environmentalReportsNew: environmentalReportsNewCount || 0,
       });
 
       const nextPendencies: Pendency[] = [];
+
+      (recentEnvironmentalReportsNew as RecentEnvironmentalReportRecord[] | null | undefined)?.forEach((item) => {
+        const catLabel = REPORT_CATEGORY_LABELS[item.category] || item.category;
+        nextPendencies.push({
+          id: `env-report-${item.id}`,
+          area: "Relato Cidadão",
+          title: `Ocorrência: ${catLabel}`,
+          reason: `Relato novo pendente de triagem (por ${item.reporter_name})`,
+          link: "/admin/relatos",
+          severity: "critical",
+        });
+      });
 
       (publishedImagesNoAlt as PendingRecord[] | null | undefined)?.forEach((item) => {
         nextPendencies.push({
@@ -366,7 +405,7 @@ export function AdminDashboardPage() {
   ];
 
   const totalContent = stats.acervoPublished + stats.reportsPublished + stats.upcomingEvents;
-  const pendingScore = pendencies.length + stats.draftsTotal;
+  const pendingScore = pendencies.length + stats.draftsTotal + stats.environmentalReportsNew;
   const primaryActivity = activityGroups.find((group) => group.key === "uploads");
   const secondaryActivityGroups = activityGroups.filter((group) => group.key !== "uploads");
 
@@ -492,6 +531,14 @@ export function AdminDashboardPage() {
               <Link to="/admin/uploads" className="admin-action-tile group flex flex-col items-center p-5">
                 <span className="mb-3 text-3xl transition-transform group-hover:scale-110">☁️</span>
                 <span className="text-center text-[9px] font-black uppercase leading-tight text-slate-600">Subir arquivo</span>
+              </Link>
+              <Link to="/admin/relatos" className="admin-action-tile group flex flex-col items-center p-5">
+                <span className="mb-3 text-3xl transition-transform group-hover:scale-110">📥</span>
+                <span className="text-center text-[9px] font-black uppercase leading-tight text-slate-600">Relatos Ambientais</span>
+              </Link>
+              <Link to="/admin/blog" className="admin-action-tile group flex flex-col items-center p-5">
+                <span className="mb-3 text-3xl transition-transform group-hover:scale-110">📰</span>
+                <span className="text-center text-[9px] font-black uppercase leading-tight text-slate-600">Gerenciar Blog</span>
               </Link>
               <Link to="/admin/acervo" className="group flex flex-col items-center rounded-[1.5rem] bg-slate-900 p-5 shadow-xl transition-all hover:bg-slate-800">
                 <span className="mb-3 text-3xl transition-transform group-hover:scale-110">🔍</span>
