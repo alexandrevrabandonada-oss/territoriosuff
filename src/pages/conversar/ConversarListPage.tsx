@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useCallback } from "react";
 import { Link } from "react-router-dom";
 import { IconShell, SurfaceCard } from "../../components/BrandSystem";
 import { InstagramEmbed } from "../../components/InstagramEmbed";
@@ -184,6 +184,45 @@ const compressImage = (file: File): Promise<Blob> => {
     });
 };
 
+interface QueuedReport {
+    id: string;
+    reporter_name: string;
+    reporter_email: string | null;
+    reporter_phone: string | null;
+    category: string;
+    location: string;
+    description: string;
+    imageBase64: string | null;
+    imageName: string | null;
+    imageType: string | null;
+    created_at: string;
+}
+
+const blobToBase64 = (blob: Blob | File): Promise<string> => {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onloadend = () => {
+            if (typeof reader.result === "string") {
+                resolve(reader.result);
+            } else {
+                reject(new Error("FileReader did not return a string"));
+            }
+        };
+        reader.onerror = reject;
+        reader.readAsDataURL(blob);
+    });
+};
+
+const base64ToBlob = (base64: string, type: string): Blob => {
+    const byteString = atob(base64.split(',')[1]);
+    const ab = new ArrayBuffer(byteString.length);
+    const ia = new Uint8Array(ab);
+    for (let i = 0; i < byteString.length; i++) {
+        ia[i] = byteString.charCodeAt(i);
+    }
+    return new Blob([ab], { type });
+};
+
 function EnvironmentalReportSection() {
     const [isOpen, setIsOpen] = useState(false);
     const [reporterName, setReporterName] = useState("");
@@ -198,6 +237,148 @@ function EnvironmentalReportSection() {
     const [success, setSuccess] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const fileInputRef = useRef<HTMLInputElement>(null);
+
+    const [queuedCount, setQueuedCount] = useState(0);
+    const [syncing, setSyncing] = useState(false);
+    const [offlineFeedback, setOfflineFeedback] = useState<string | null>(null);
+    const [isOnline, setIsOnline] = useState(navigator.onLine);
+
+    const syncOfflineReports = useCallback(async () => {
+        if (!navigator.onLine || syncing) return;
+
+        const stored = localStorage.getItem("semear_pending_reports");
+        if (!stored) return;
+
+        let queue: QueuedReport[];
+        try {
+            queue = JSON.parse(stored);
+        } catch (err) {
+            console.error("Fila corrompida:", err);
+            localStorage.removeItem("semear_pending_reports");
+            setQueuedCount(0);
+            return;
+        }
+
+        if (queue.length === 0) return;
+
+        setSyncing(true);
+        setError(null);
+        setOfflineFeedback("Sincronizando relatos salvos offline...");
+
+        const remainingQueue: QueuedReport[] = [];
+        let successCount = 0;
+
+        for (const report of queue) {
+            try {
+                let imageUrl = null;
+                if (report.imageBase64 && report.imageType) {
+                    if (!supabase) {
+                        throw new Error("Conexão com o banco de dados não configurada.");
+                    }
+                    const imageBlob = base64ToBlob(report.imageBase64, report.imageType);
+                    const fileExt = report.imageName?.split(".").pop() || "jpg";
+                    const uniqueName = `relato_${Date.now()}_${Math.random().toString(36).substring(2, 7)}.${fileExt}`;
+
+                    const { error: uploadError } = await supabase.storage
+                        .from("environmental_reports")
+                        .upload(uniqueName, imageBlob, {
+                            cacheControl: "3600",
+                            contentType: report.imageType,
+                            upsert: false
+                        });
+
+                    if (uploadError) throw uploadError;
+
+                    const { data: { publicUrl } } = supabase.storage
+                        .from("environmental_reports")
+                        .getPublicUrl(uniqueName);
+
+                    imageUrl = publicUrl;
+                }
+
+                await createEnvironmentalReport({
+                    reporter_name: report.reporter_name,
+                    reporter_email: report.reporter_email,
+                    reporter_phone: report.reporter_phone,
+                    category: report.category,
+                    location: report.location,
+                    description: report.description,
+                    image_url: imageUrl,
+                    created_at: report.created_at
+                });
+
+                successCount++;
+            } catch (err) {
+                console.error(`Erro ao sincronizar relato ${report.id}:`, err);
+                const isNetworkError = !navigator.onLine ||
+                    (err instanceof Error && (
+                        err.message.includes("Failed to fetch") ||
+                        err.message.includes("NetworkError") ||
+                        err.message.includes("network")
+                    ));
+
+                if (isNetworkError) {
+                    remainingQueue.push(report);
+                    const currentIndex = queue.indexOf(report);
+                    remainingQueue.push(...queue.slice(currentIndex + 1));
+                    break;
+                } else {
+                    console.warn(`Descartando relato ${report.id} devido a falha permanente no servidor:`, err);
+                }
+            }
+        }
+
+        try {
+            if (remainingQueue.length > 0) {
+                localStorage.setItem("semear_pending_reports", JSON.stringify(remainingQueue));
+            } else {
+                localStorage.removeItem("semear_pending_reports");
+            }
+            setQueuedCount(remainingQueue.length);
+        } catch (err) {
+            console.error("Erro ao atualizar fila offline:", err);
+        }
+
+        setSyncing(false);
+        if (successCount > 0) {
+            setOfflineFeedback(`Sincronização concluída! ${successCount} relato(s) enviado(s) com sucesso.`);
+            setTimeout(() => setOfflineFeedback(null), 5000);
+        } else {
+            setOfflineFeedback(null);
+        }
+    }, [syncing]);
+
+    useEffect(() => {
+        const handleOnline = () => setIsOnline(true);
+        const handleOffline = () => setIsOnline(false);
+
+        window.addEventListener("online", handleOnline);
+        window.addEventListener("offline", handleOffline);
+
+        return () => {
+            window.removeEventListener("online", handleOnline);
+            window.removeEventListener("offline", handleOffline);
+        };
+    }, []);
+
+    useEffect(() => {
+        const checkQueue = () => {
+            try {
+                const stored = localStorage.getItem("semear_pending_reports");
+                if (stored) {
+                    const queue: QueuedReport[] = JSON.parse(stored);
+                    setQueuedCount(queue.length);
+                }
+            } catch (err) {
+                console.error("Erro ao ler fila offline:", err);
+            }
+        };
+        checkQueue();
+
+        if (isOnline) {
+            syncOfflineReports();
+        }
+    }, [isOnline, syncOfflineReports]);
 
     const categories = [
         { id: "ar_fumaca", label: "Ar / Fumaça", icon: "💨", desc: "Queimadas, fumaça industrial, fuligem, poeira intensa" },
@@ -261,6 +442,68 @@ function EnvironmentalReportSection() {
         setSubmitting(true);
         setError(null);
         setSuccess(false);
+
+        // Check if offline first
+        if (!navigator.onLine) {
+            try {
+                let imageBase64: string | null = null;
+                let imageName: string | null = null;
+                let imageType: string | null = null;
+
+                if (imageFile) {
+                    imageName = imageFile.name;
+                    imageType = "image/jpeg";
+                    try {
+                        const compressedBlob = await compressImage(imageFile);
+                        imageBase64 = await blobToBase64(compressedBlob);
+                    } catch (compressErr) {
+                        console.warn("Failed to compress image for offline storage, using original:", compressErr);
+                        imageBase64 = await blobToBase64(imageFile);
+                        imageType = imageFile.type;
+                    }
+                }
+
+                const newReport: QueuedReport = {
+                    id: `local_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`,
+                    reporter_name: reporterName,
+                    reporter_email: reporterEmail || null,
+                    reporter_phone: reporterPhone || null,
+                    category,
+                    location,
+                    description,
+                    imageBase64,
+                    imageName,
+                    imageType,
+                    created_at: new Date().toISOString()
+                };
+
+                const stored = localStorage.getItem("semear_pending_reports");
+                const queue: QueuedReport[] = stored ? JSON.parse(stored) : [];
+                queue.push(newReport);
+                localStorage.setItem("semear_pending_reports", JSON.stringify(queue));
+                setQueuedCount(queue.length);
+
+                setSuccess(true);
+                setOfflineFeedback("Você está offline. Seu relato foi salvo e será enviado automaticamente assim que a conexão retornar!");
+                setReporterName("");
+                setReporterEmail("");
+                setReporterPhone("");
+                setCategory("");
+                setLocation("");
+                setDescription("");
+                setImageFile(null);
+                setImagePreview(null);
+                if (fileInputRef.current) {
+                    fileInputRef.current.value = "";
+                }
+            } catch (err) {
+                console.error("Failed to save report offline:", err);
+                setError("Falha ao salvar relato offline: " + (err instanceof Error ? err.message : "Erro desconhecido"));
+            } finally {
+                setSubmitting(false);
+            }
+            return;
+        }
 
         try {
             let imageUrl = null;
@@ -326,7 +569,72 @@ function EnvironmentalReportSection() {
                 fileInputRef.current.value = "";
             }
         } catch (err) {
-            setError(err instanceof Error ? err.message : "Falha ao enviar relato.");
+            const isNetworkErr = err instanceof Error && (
+                err.message.includes("Failed to fetch") ||
+                err.message.includes("NetworkError") ||
+                err.message.includes("network")
+            );
+
+            if (isNetworkErr) {
+                console.warn("Erro de conexão detectado ao enviar relato online, salvando na fila offline:", err);
+                try {
+                    let imageBase64: string | null = null;
+                    let imageName: string | null = null;
+                    let imageType: string | null = null;
+
+                    if (imageFile) {
+                        imageName = imageFile.name;
+                        imageType = "image/jpeg";
+                        try {
+                            const compressedBlob = await compressImage(imageFile);
+                            imageBase64 = await blobToBase64(compressedBlob);
+                        } catch (compressErr) {
+                            console.warn("Failed to compress image before offline storage, using original:", compressErr);
+                            imageBase64 = await blobToBase64(imageFile);
+                            imageType = imageFile.type;
+                        }
+                    }
+
+                    const newReport: QueuedReport = {
+                        id: `local_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`,
+                        reporter_name: reporterName,
+                        reporter_email: reporterEmail || null,
+                        reporter_phone: reporterPhone || null,
+                        category,
+                        location,
+                        description,
+                        imageBase64,
+                        imageName,
+                        imageType,
+                        created_at: new Date().toISOString()
+                    };
+
+                    const stored = localStorage.getItem("semear_pending_reports");
+                    const queue: QueuedReport[] = stored ? JSON.parse(stored) : [];
+                    queue.push(newReport);
+                    localStorage.setItem("semear_pending_reports", JSON.stringify(queue));
+                    setQueuedCount(queue.length);
+
+                    setSuccess(true);
+                    setOfflineFeedback("Erro temporário de conexão. Seu relato foi salvo offline e será enviado automaticamente assim que a conexão estabilizar!");
+                    setReporterName("");
+                    setReporterEmail("");
+                    setReporterPhone("");
+                    setCategory("");
+                    setLocation("");
+                    setDescription("");
+                    setImageFile(null);
+                    setImagePreview(null);
+                    if (fileInputRef.current) {
+                        fileInputRef.current.value = "";
+                    }
+                } catch (saveErr) {
+                    console.error("Failed to save report offline after network error:", saveErr);
+                    setError("Erro ao enviar relato e falha ao salvar na fila offline.");
+                }
+            } else {
+                setError(err instanceof Error ? err.message : "Falha ao enviar relato.");
+            }
         } finally {
             setSubmitting(false);
         }
@@ -361,17 +669,58 @@ function EnvironmentalReportSection() {
                 </button>
             </div>
 
+            {/* Banner de Sincronização / Modo Offline */}
+            {(queuedCount > 0 || offlineFeedback) && (
+                <div className={`mt-4 p-4 rounded-xl border flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 text-sm font-semibold transition-all ${
+                    syncing 
+                        ? "bg-blue-50 border-blue-200 text-blue-800" 
+                        : !isOnline 
+                            ? "bg-amber-50 border-amber-200 text-amber-800" 
+                            : "bg-emerald-50 border-emerald-200 text-emerald-800"
+                }`}>
+                    <div className="flex items-center gap-2">
+                        {syncing ? (
+                            <span className="h-4 w-4 animate-spin rounded-full border-2 border-blue-600 border-t-transparent" />
+                        ) : !isOnline ? (
+                            <span>📡</span>
+                        ) : (
+                            <span>✅</span>
+                        )}
+                        <span>
+                            {offlineFeedback || (
+                                !isOnline 
+                                    ? `Você está offline. Há ${queuedCount} relato(s) salvos na fila aguardando conexão.`
+                                    : `Há ${queuedCount} relato(s) pendente(s) de envio.`
+                            )}
+                        </span>
+                    </div>
+                    {isOnline && queuedCount > 0 && !syncing && (
+                        <button
+                            onClick={syncOfflineReports}
+                            className="text-xs px-3 py-1 bg-white border border-border-subtle rounded-lg shadow-sm hover:bg-slate-50 transition-colors self-start sm:self-auto text-text-primary"
+                        >
+                            Enviar Agora ↗
+                        </button>
+                    )}
+                </div>
+            )}
+
             {isOpen && (
                 <div className="mt-8 pt-6 border-t border-border-subtle/80 space-y-6 motion-pop">
                     {success ? (
                         <div className="rounded-2xl border-2 border-emerald-500 bg-emerald-50 p-6 text-center space-y-3">
                             <span className="text-4xl">🎉</span>
-                            <h4 className="text-lg font-bold text-emerald-800">Relato Enviado com Sucesso!</h4>
+                            <h4 className="text-lg font-bold text-emerald-800">
+                                {offlineFeedback ? "Relato Salvo Offline!" : "Relato Enviado com Sucesso!"}
+                            </h4>
                             <p className="text-sm text-emerald-700 max-w-md mx-auto">
-                                Agradecemos a sua colaboração. Seu relato foi registrado na nossa caixa de entrada e será avaliado pela equipe do projeto SEMEAR.
+                                {offlineFeedback || "Agradecemos a sua colaboração. Seu relato foi registrado na nossa caixa de entrada e será avaliado pela equipe do projeto SEMEAR."}
                             </p>
                             <button
-                                onClick={() => setSuccess(false)}
+                                onClick={() => {
+                                    setSuccess(false);
+                                    setOfflineFeedback(null);
+                                }}
                                 className="ui-btn-secondary mt-2"
                             >
                                 Enviar Outro Relato

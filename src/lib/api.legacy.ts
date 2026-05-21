@@ -535,7 +535,7 @@ function rowToBlogPost(row: Record<string, unknown>): BlogPost {
 
 export async function listBlogPosts(params: ListBlogParams = {}): Promise<BlogPost[]> {
   try {
-    const { q, tag, limit = 50, offset = 0, includeScheduled = false } = params;
+    const { q, tag, limit = 50, offset = 0, includeScheduled: _includeScheduled = false } = params;
     const supabase = assertSupabase();
 
     let query = supabase
@@ -1631,6 +1631,7 @@ export type CreateEnvironmentalReportPayload = {
   description: string;
   location: string;
   image_url?: string | null;
+  created_at?: string;
 };
 
 export async function createEnvironmentalReport(payload: CreateEnvironmentalReportPayload): Promise<EnvironmentalReport> {
