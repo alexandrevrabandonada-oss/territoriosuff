@@ -155,6 +155,65 @@ export function AdminReportsInboxPage() {
     return matchesSearch && matchesCategory && matchesStatus;
   });
 
+  const handleExportCSV = () => {
+    try {
+      const headers = [
+        "ID",
+        "Data de Envio",
+        "Nome do Denunciante",
+        "E-mail",
+        "Telefone",
+        "Categoria",
+        "Localização",
+        "Descrição",
+        "Status",
+        "Notas do Administrador"
+      ];
+
+      const escapeCSVField = (val: any) => {
+        if (val === null || val === undefined) return "";
+        const strVal = String(val);
+        if (strVal.includes('"') || strVal.includes(',') || strVal.includes('\n') || strVal.includes('\r')) {
+          return `"${strVal.replace(/"/g, '""')}"`;
+        }
+        return strVal;
+      };
+
+      const rows = filteredReports.map((report) => [
+        report.id,
+        new Date(report.created_at).toLocaleString("pt-BR"),
+        report.reporter_name,
+        report.reporter_email || "",
+        report.reporter_phone || "",
+        CATEGORY_LABELS[report.category] || report.category,
+        report.location,
+        report.description,
+        STATUS_LABELS[report.status] || report.status,
+        report.admin_notes || ""
+      ]);
+
+      const csvContent = [
+        headers.map(escapeCSVField).join(","),
+        ...rows.map((row) => row.map(escapeCSVField).join(","))
+      ].join("\r\n");
+
+      // Adiciona o BOM UTF-8 (\ufeff) no início do arquivo para o Excel identificar acentos corretamente
+      const blob = new Blob(["\ufeff" + csvContent], { type: "text/csv;charset=utf-8;" });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.setAttribute("href", url);
+      link.setAttribute("download", `relatos_ambientais_${new Date().toISOString().slice(0, 10)}.csv`);
+      link.style.visibility = "hidden";
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      showToast("CSV exportado com sucesso!");
+    } catch (err) {
+      console.error("[AdminReports] Falha ao exportar CSV:", err);
+      showToast("Falha ao exportar CSV: " + (err instanceof Error ? err.message : "Erro desconhecido"), "error");
+    }
+  };
+
   return (
     <div className="admin-list-page space-y-8 animate-in fade-in duration-500">
       {/* Hero Header */}
@@ -210,6 +269,18 @@ export function AdminReportsInboxPage() {
             ))}
           </select>
         </div>
+
+        <button
+          onClick={handleExportCSV}
+          disabled={filteredReports.length === 0}
+          className="p-3 bg-slate-950 border border-slate-800 text-slate-400 hover:text-emerald-500 hover:border-emerald-500/20 rounded-xl transition-colors flex items-center gap-2 disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:text-slate-400 disabled:hover:border-slate-800"
+          title="Exportar relatos filtrados para CSV"
+        >
+          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+          </svg>
+          <span className="text-sm font-semibold hidden sm:inline">Exportar CSV</span>
+        </button>
 
         <button
           onClick={loadReports}
