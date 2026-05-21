@@ -2,7 +2,7 @@ import { defineConfig, devices } from '@playwright/test';
 
 const isCI = !!process.env.CI;
 const ciPort = process.env.PLAYWRIGHT_PORT || '4173';
-const localPort = process.env.PLAYWRIGHT_PORT || '5173';
+const localPort = process.env.PLAYWRIGHT_PORT || '5174';
 const externalServer = process.env.PLAYWRIGHT_EXTERNAL_SERVER === 'true';
 const baseURL = process.env.PLAYWRIGHT_BASE_URL || (isCI ? `http://127.0.0.1:${ciPort}` : `http://127.0.0.1:${localPort}`);
 
@@ -56,7 +56,7 @@ export default defineConfig({
           ? `npm run preview -- --host 127.0.0.1 --port ${ciPort}`
           : `npm run dev -- --host 127.0.0.1 --port ${localPort}`,
         url: baseURL,
-        reuseExistingServer: !isCI,
+        reuseExistingServer: false,
         timeout: 120000,
       },
 });

@@ -414,7 +414,7 @@ export function TransparenciaPage() {
                       <button
                         type="button"
                         onClick={() => setViewerExpense(exp)}
-                        className="inline-flex items-center gap-1 text-sm font-bold text-brand-primary hover:underline"
+                        className="inline-flex min-h-11 items-center gap-1 text-sm font-bold text-brand-primary hover:underline"
                       >
                         Abrir documento
                         <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

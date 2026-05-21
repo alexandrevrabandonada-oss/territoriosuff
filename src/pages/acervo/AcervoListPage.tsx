@@ -74,7 +74,7 @@ function isAcervoArea(value: string | undefined): value is AcervoArea {
 
 function highlightText(text: string, highlight: string) {
   if (!highlight.trim()) return <span>{text}</span>;
-  const parts = text.split(new RegExp(`(${highlight.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&')})`, 'gi'));
+  const parts = text.split(new RegExp(`(${highlight.replace(/[-\\^$*+?.()|[\]{}]/g, '\\$&')})`, 'gi'));
   return (
     <>
       {parts.map((part, i) =>

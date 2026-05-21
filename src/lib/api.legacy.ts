@@ -1604,6 +1604,101 @@ export async function getCorridorBySlug(slug: string): Promise<ClimateCorridorWi
   }
 }
 
+// ─────────────────────────────────────────
+// Relatos Ambientais (Environmental Reports)
+// ─────────────────────────────────────────
+
+export type EnvironmentalReport = {
+  id: string;
+  reporter_name: string;
+  reporter_email: string | null;
+  reporter_phone: string | null;
+  category: string;
+  description: string;
+  location: string;
+  image_url: string | null;
+  status: "new" | "reviewed" | "resolved" | "archived";
+  admin_notes: string | null;
+  created_at: string;
+  updated_at: string;
+};
+
+export type CreateEnvironmentalReportPayload = {
+  reporter_name: string;
+  reporter_email?: string | null;
+  reporter_phone?: string | null;
+  category: string;
+  description: string;
+  location: string;
+  image_url?: string | null;
+};
+
+export async function createEnvironmentalReport(payload: CreateEnvironmentalReportPayload): Promise<EnvironmentalReport> {
+  try {
+    const supabase = assertSupabase();
+    const { data, error } = await supabase
+      .from("environmental_reports")
+      .insert(payload)
+      .select("*")
+      .single();
+
+    if (error) throw error;
+    return data as EnvironmentalReport;
+  } catch (error) {
+    throw toAppError("Falha ao criar relato ambiental", error);
+  }
+}
+
+export async function listEnvironmentalReports(): Promise<EnvironmentalReport[]> {
+  try {
+    const supabase = assertSupabase();
+    const { data, error } = await supabase
+      .from("environmental_reports")
+      .select("*")
+      .order("created_at", { ascending: false });
+
+    if (error) throw error;
+    return (data || []) as EnvironmentalReport[];
+  } catch (error) {
+    throw toAppError("Falha ao listar relatos ambientais", error);
+  }
+}
+
+export async function updateEnvironmentalReport(
+  id: string,
+  payload: Partial<Pick<EnvironmentalReport, "status" | "admin_notes">>
+): Promise<EnvironmentalReport> {
+  try {
+    const supabase = assertSupabase();
+    const { data, error } = await supabase
+      .from("environmental_reports")
+      .update(payload)
+      .eq("id", id)
+      .select("*")
+      .single();
+
+    if (error) throw error;
+    return data as EnvironmentalReport;
+  } catch (error) {
+    throw toAppError("Falha ao atualizar relato ambiental", error);
+  }
+}
+
+export async function deleteEnvironmentalReport(id: string): Promise<void> {
+  try {
+    const supabase = assertSupabase();
+    const { error } = await supabase
+      .from("environmental_reports")
+      .delete()
+      .eq("id", id);
+
+    if (error) throw error;
+  } catch (error) {
+    throw toAppError("Falha ao excluir relato ambiental", error);
+  }
+}
+
+
 
 
 

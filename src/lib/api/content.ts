@@ -24,5 +24,10 @@ export {
   reportConversationComment,
   listCorridors,
   listFeaturedCorridors,
-  getCorridorBySlug
+  getCorridorBySlug,
+  createEnvironmentalReport,
+  listEnvironmentalReports,
+  updateEnvironmentalReport,
+  deleteEnvironmentalReport
 } from "../api.legacy";
+

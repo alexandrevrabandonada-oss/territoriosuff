@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 import { Chip, SurfaceCard } from "../../components/BrandSystem";
 import { BrandIllustratedEmptyState, BrandTextureSkeleton } from "../../components/BrandMicro";
-import { AxisSectionHeader, AxisEyebrow } from "../../components/AxisSystem";
+import { AxisEyebrow } from "../../components/AxisSystem";
 import { DocumentalCard } from "../../components/CardFamilies";
 import { getOptimizedCover } from "../../lib/imageOptimization";
 import { listReports, type ReportDocument, type ReportKind } from "../../lib/api";
@@ -254,4 +254,3 @@ export function ReportsListPage() {
     </section>
   );
 }
-

@@ -1,6 +1,5 @@
 import { createClient } from "@supabase/supabase-js";
 import fs from "node:fs";
-import path from "node:path";
 
 // Load environment variables manually
 if (fs.existsSync(".env.local")) {

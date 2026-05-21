@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { Navigate, useLocation } from "react-router-dom";
 
+import { isAdmin } from "../lib/supabase/auth";
+
 interface AdminGuardProps {
   children: React.ReactNode;
 }
@@ -19,7 +21,6 @@ export function AdminGuard({ children }: AdminGuardProps) {
 
     async function checkAccess() {
       try {
-        const { isAdmin } = await import("../lib/supabase/auth");
         const isUserAdmin = await isAdmin();
         if (active) {
           setAuthorized(isUserAdmin);

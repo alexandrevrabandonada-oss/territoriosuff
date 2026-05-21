@@ -43,6 +43,11 @@ const Icons = {
       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 10h8M8 14h5m6 5-4-4H7a4 4 0 01-4-4V7a4 4 0 014-4h10a4 4 0 014 4v4a4 4 0 01-4 4h-1l3 4z" />
     </svg>
   ),
+  Inbox: () => (
+    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0a2 2 0 01-2 2H6a2 2 0 01-2-2m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5M9 17h6" />
+    </svg>
+  ),
   Logout: () => (
     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
@@ -81,6 +86,7 @@ export function AdminLayout({ children }: AdminLayoutProps) {
     { name: "Relatórios", path: "/admin/relatorios", icon: Icons.Files },
     { name: "Blog", path: "/admin/blog", icon: Icons.Blog },
     { name: "Atividades", path: "/admin/atividades", icon: Icons.Conversation },
+    { name: "Relatos", path: "/admin/relatos", icon: Icons.Inbox },
     { name: "Agenda", path: "/admin/agenda", icon: Icons.Calendar },
   ];
 

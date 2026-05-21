@@ -98,7 +98,7 @@ export function ConversarDetailPage() {
             } else {
                 alert("Obrigado pela denúncia. Nossa equipe irá revisar.");
             }
-        } catch (err) {
+        } catch {
             alert("Falha ao processar denúncia.");
         }
     };

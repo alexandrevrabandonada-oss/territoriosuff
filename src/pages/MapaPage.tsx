@@ -1,6 +1,6 @@
 import { useEffect, useState, useMemo, Fragment } from "react";
 import { Link } from "react-router-dom";
-import { MapContainer, TileLayer, Marker, Popup, Polygon } from "react-leaflet";
+import { MapContainer, TileLayer, Marker, Polygon } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 
@@ -445,7 +445,7 @@ export function MapaPage() {
                   </div>
                   <button 
                     onClick={() => setShowPlume(false)} 
-                    className="p-1 rounded-full hover:bg-black/5 dark:hover:bg-white/10 text-xs opacity-60 hover:opacity-100 transition-opacity"
+                    className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-full hover:bg-black/5 dark:hover:bg-white/10 text-xs opacity-70 hover:opacity-100 transition-opacity"
                     aria-label="Fechar simulador"
                   >
                     <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -546,7 +546,7 @@ export function MapaPage() {
                   </div>
                   <button 
                     onClick={() => setSelectedStation(null)} 
-                    className="p-1 rounded-full hover:bg-black/5 dark:hover:bg-white/10 text-xs opacity-60 hover:opacity-100 transition-opacity"
+                    className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-full hover:bg-black/5 dark:hover:bg-white/10 text-xs opacity-70 hover:opacity-100 transition-opacity"
                     aria-label="Fechar painel de detalhes"
                   >
                     <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -601,7 +601,7 @@ export function MapaPage() {
 
                 <Link
                   to={`/dados?station=${selectedStation.code}`}
-                  className="w-full text-center py-2.5 px-4 text-xs font-bold text-white bg-brand-primary dark:bg-accent-lab hover:bg-brand-primary-dark hover:shadow-lg dark:text-brand-primary-dark dark:hover:bg-cyan-400 rounded-xl transition-all duration-200 block shadow-md"
+                  className="flex min-h-11 w-full items-center justify-center text-center py-2.5 px-4 text-xs font-bold text-white bg-brand-primary dark:bg-accent-lab hover:bg-brand-primary-dark hover:shadow-lg dark:text-brand-primary-dark dark:hover:bg-cyan-400 rounded-xl transition-all duration-200 shadow-md"
                 >
                   Ver histórico e gráficos completos
                 </Link>

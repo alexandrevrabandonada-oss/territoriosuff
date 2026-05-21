@@ -360,6 +360,21 @@ export type ClimateCorridorWithLinks = ClimateCorridor & {
   links: ClimateCorridorLink[];
 };
 
+export type EnvironmentalReport = {
+  id: string;
+  reporter_name: string;
+  reporter_email: string | null;
+  reporter_phone: string | null;
+  category: string;
+  description: string;
+  location: string;
+  image_url: string | null;
+  status: "new" | "reviewed" | "resolved" | "archived";
+  admin_notes: string | null;
+  created_at: string;
+  updated_at: string;
+};
+
 export function toAppError(scope: string, error: unknown): Error {
   const message =
     error && typeof error === "object" && "message" in error && typeof error.message === "string"

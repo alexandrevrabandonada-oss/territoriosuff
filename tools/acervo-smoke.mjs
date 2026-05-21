@@ -1,8 +1,4 @@
 import { chromium } from 'playwright';
-import { supabase } from '../src/lib/supabase/client.ts'; // This might not work in node without setup
-
-// Since I cannot easily use the app's supabase client in a simple node script without ESM/TS setup,
-// I will just use the browser to check the routes and presence of items.
 
 async function run() {
   const browser = await chromium.launch();
@@ -41,7 +37,7 @@ async function run() {
   await browser.close();
 }
 
-// Note: This script assumes the dev server is running. 
-// For a real smoke test in CI, we usually use the build output.
-// I will just use the browser subagent to perform this check instead.
-console.log('Smoke test script created. Use browser tool to verify.');
+run().catch((err) => {
+  console.error(err);
+  process.exit(1);
+});

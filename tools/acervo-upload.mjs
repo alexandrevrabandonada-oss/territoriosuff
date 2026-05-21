@@ -47,7 +47,7 @@ async function upload() {
         const fileBuffer = fs.readFileSync(file);
 
         console.log(`Enviando ${fileName} para storage: ${storagePath}...`);
-        const { data: uploadData, error: uploadError } = await supabase.storage
+        const { error: uploadError } = await supabase.storage
             .from("acervo")
             .upload(storagePath, fileBuffer, {
                 contentType: kind === "pdf" ? "application/pdf" : "image/jpeg",

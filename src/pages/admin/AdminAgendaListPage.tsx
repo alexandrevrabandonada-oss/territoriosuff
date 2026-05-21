@@ -57,7 +57,7 @@ export function AdminAgendaListPage() {
     loadEvents();
   }, [loadEvents]);
 
-  const copyLink = (id: string) => {
+  const copyLink = () => {
     const url = `${window.location.origin}/agenda`; // In reality, we might have a slug for events too
     navigator.clipboard.writeText(url);
     alert("Link da agenda copiado!");
@@ -143,7 +143,7 @@ export function AdminAgendaListPage() {
                       <td className="px-8 py-6 text-right">
                         <div className="flex items-center justify-end gap-2">
                           <button 
-                            onClick={() => copyLink(event.id)}
+                            onClick={copyLink}
                             className="p-2 text-slate-400 hover:text-emerald-600 transition-colors"
                             title="Copiar Link Público"
                           >

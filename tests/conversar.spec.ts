@@ -5,7 +5,7 @@ test.describe('Conversar Page @smoke', () => {
     await page.goto('/conversar');
     
     // Check main heading or title
-    await expect(page.getByRole('heading', { name: /conversar/i }).first()).toBeVisible();
+    await expect(page.getByRole('heading', { name: /conversas? e atividades/i }).first()).toBeVisible();
     
     // Verify main content area loads
     await expect(page.locator('main')).toBeVisible();

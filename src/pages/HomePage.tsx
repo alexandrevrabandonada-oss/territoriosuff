@@ -319,7 +319,7 @@ export function HomePage() {
             <h2>Destaques &amp; Novidades</h2>
             <Link to="/blog">Ver todas</Link>
           </div>
-          {(loading ? Array.from({ length: 3 }, (_, index) => null) : news).map((item, index) => {
+          {(loading ? Array.from({ length: 3 }, () => null) : news).map((item, index) => {
             if (!item) {
               return <div key={index} className="home-news-skeleton" role="status" aria-label="Carregando novidade" />;
             }

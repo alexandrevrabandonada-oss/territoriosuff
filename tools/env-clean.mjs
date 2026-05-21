@@ -1,5 +1,4 @@
 import fs from "node:fs";
-import path from "node:path";
 
 const ENV_FILES = [".env.local", ".env"];
 const TIMESTAMP = new Date().toISOString().replace(/[:.]/g, "-");

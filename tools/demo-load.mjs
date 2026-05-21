@@ -100,7 +100,7 @@ async function run() {
   if (collData) {
     console.log(`Inserting ${collData.length} Dossies Collections...`);
     const withoutItems = collData.map((c) => {
-      const { items, ...rest } = c;
+      const { items: _items, ...rest } = c;
       return rest;
     });
 
@@ -144,7 +144,7 @@ async function run() {
   if (corridorsData.length > 0) {
     console.log(`Upserting ${corridorsData.length} Corredores...`);
     const withoutLinks = corridorsData.map((c) => {
-      const { links, ...rest } = c;
+      const { links: _links, ...rest } = c;
       return rest;
     });
 

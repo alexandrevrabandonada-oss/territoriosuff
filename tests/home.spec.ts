@@ -8,7 +8,7 @@ test.describe('Home Page @smoke', () => {
     await expect(page).toHaveTitle(/SEMEAR/i);
     
     // Verify hero section with main heading
-    await expect(page.getByRole('heading', { name: /ciência aberta/i })).toBeVisible();
+    await expect(page.getByRole('heading', { name: /SEMEAR|Conhecimento que semeia/i }).first()).toBeVisible();
     
     // Check search input is present
     await expect(page.getByPlaceholder(/buscar/i)).toBeVisible();
@@ -19,7 +19,7 @@ test.describe('Home Page @smoke', () => {
     await expect(page.getByRole('link', { name: /blog/i }).first()).toBeVisible();
     
     // Check for data overview section (status/monitoring block)
-    await expect(page.getByText(/estações/i)).toBeVisible();
+    await expect(page.getByRole('heading', { name: /dados agora/i })).toBeVisible();
     
     // Verify footer is present
     await expect(page.locator('footer')).toBeVisible();

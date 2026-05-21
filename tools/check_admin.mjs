@@ -22,7 +22,7 @@ async function checkAdmin() {
     console.log('Users:', adminUsers);
   }
 
-  const { data: media, error: mediaError } = await supabase.from('media_assets').select('id').limit(1);
+  const { error: mediaError } = await supabase.from('media_assets').select('id').limit(1);
   console.log('media_assets table existence:', mediaError ? `FAILED: ${mediaError.message}` : 'OK');
 }
 

@@ -46,10 +46,6 @@ function normalizeAcervoType(value: string | null | undefined, asset?: Partial<M
   return value;
 }
 
-function isPdfLike(asset: Pick<MediaAssetRecord, "mime_type"> | null | undefined) {
-  return asset?.mime_type === "application/pdf";
-}
-
 function normalizeMediaAsset(asset: Partial<MediaAssetRecord> & { id: string; title: string; public_url?: string; url?: string; mime_type?: string; type?: string }): AcervoMediaAsset {
   return {
     id: asset.id,

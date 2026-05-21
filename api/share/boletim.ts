@@ -52,9 +52,9 @@ export default async function handler(req: any, res: any) {
 
   const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
-  let measurements = 0;
-  let alerts = 0;
-  let monthlyExpensesCents = 0;
+  let measurements: number;
+  let alerts: number;
+  let monthlyExpensesCents: number;
 
   try {
     const monthStart = `${year}-${String(month).padStart(2, "0")}-01`;

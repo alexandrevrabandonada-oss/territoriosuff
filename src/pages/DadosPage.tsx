@@ -1,13 +1,11 @@
 import { lazy, Suspense, useCallback, useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 
-import { Chip, IconShell, SectionHeader, SurfaceCard } from "../components/BrandSystem";
-import { AxisEyebrow, AxisDivider } from "../components/AxisSystem";
+import { IconShell, SectionHeader, SurfaceCard } from "../components/BrandSystem";
+import { AxisEyebrow } from "../components/AxisSystem";
 import { LoadingCard } from "../components/LoadingCard";
 import { OfflineBanner } from "../components/OfflineBanner";
 import { EmptyState } from "../components/EmptyState";
-import { ErrorState } from "../components/ErrorState";
-import { SkeletonCard } from "../components/SkeletonCard";
 import { TextToSpeechButton } from "../components/TextToSpeechButton";
 import type { DownsampledMeasurement, StationOverview, StationHealth } from "../lib/api";
 import { classifyOmsPollutant } from "../lib/airQuality";
@@ -89,7 +87,7 @@ export function DadosPage() {
   const [activeTab, setActiveTab] = useState<TabId>("24h");
   const [measurements24h, setMeasurements24h] = useState<DownsampledMeasurement[]>([]);
   const [measurements7d, setMeasurements7d] = useState<DownsampledMeasurement[]>([]);
-  const [loadingStations, setLoadingStations] = useState(true);
+  const [, setLoadingStations] = useState(true);
   const [loadingMeasurements, setLoadingMeasurements] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [showPM25, setShowPM25] = useState(true);
@@ -480,16 +478,13 @@ export function DadosPage() {
     for (let i = 1; i <= 24; i++) {
       const targetHour = (nowHour + i) % 24;
       // Representação do ciclo diário de partículas (picos no trânsito/frio matinal/noturno, dispersão à tarde)
-      let cycleFactor = 0;
-      if (targetHour >= 6 && targetHour <= 9) {
-        cycleFactor = 5;
-      } else if (targetHour >= 18 && targetHour <= 21) {
-        cycleFactor = 7;
-      } else if (targetHour >= 22 || targetHour <= 5) {
-        cycleFactor = 1.5;
-      } else {
-        cycleFactor = -3;
-      }
+      const cycleFactor = targetHour >= 6 && targetHour <= 9
+        ? 5
+        : targetHour >= 18 && targetHour <= 21
+          ? 7
+          : targetHour >= 22 || targetHour <= 5
+            ? 1.5
+            : -3;
       
       let value = currentPm + cycleFactor;
       
@@ -649,14 +644,14 @@ export function DadosPage() {
             <div className="flex rounded-2xl bg-surface-2 p-1 mb-4 border border-border-subtle/50">
               <button
                 type="button"
-                className={`flex-1 py-2 text-xs font-black uppercase tracking-wider rounded-xl transition-all ${!isComparing ? "bg-white text-brand-primary shadow-[0_4px_12px_rgba(0,93,170,0.08)]" : "text-text-secondary hover:text-text-primary"}`}
+                className={`min-h-11 flex-1 py-2 text-xs font-black uppercase tracking-wider rounded-xl transition-all ${!isComparing ? "bg-white text-brand-primary shadow-[0_4px_12px_rgba(0,93,170,0.08)]" : "text-text-secondary hover:text-text-primary"}`}
                 onClick={() => setIsComparing(false)}
               >
                 Individual
               </button>
               <button
                 type="button"
-                className={`flex-1 py-2 text-xs font-black uppercase tracking-wider rounded-xl transition-all ${isComparing ? "bg-white text-brand-primary shadow-[0_4px_12px_rgba(0,93,170,0.08)]" : "text-text-secondary hover:text-text-primary"}`}
+                className={`min-h-11 flex-1 py-2 text-xs font-black uppercase tracking-wider rounded-xl transition-all ${isComparing ? "bg-white text-brand-primary shadow-[0_4px_12px_rgba(0,93,170,0.08)]" : "text-text-secondary hover:text-text-primary"}`}
                 onClick={() => setIsComparing(true)}
               >
                 Comparar
@@ -1452,6 +1447,3 @@ export function DadosPage() {
     </section>
   );
 }
-
-
-

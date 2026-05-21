@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 import { IconShell, SurfaceCard } from "../components/BrandSystem";
 import { BrandRadialDivider, BrandWatermarkPanel } from "../components/BrandMicro";
-import { INSTITUTIONAL_CITATION, INSTITUTIONAL_COORDINATION, INSTITUTIONAL_FUNDING, INSTITUTIONAL_SUMMARY, INSTITUTIONAL_TAGLINE, INSTITUTIONAL_UNIVERSITY_FULL_NAME } from "../content/institucional";
+import { INSTITUTIONAL_CITATION, INSTITUTIONAL_COORDINATION, INSTITUTIONAL_FUNDING, INSTITUTIONAL_SUMMARY, INSTITUTIONAL_TAGLINE } from "../content/institucional";
 
 const quickLinks = [
   { href: "/dados", label: "Acessar painel publico de dados" },

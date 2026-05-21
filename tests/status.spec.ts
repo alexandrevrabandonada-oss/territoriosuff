@@ -4,14 +4,8 @@ test.describe('Status Page @smoke', () => {
   test('should load status page', async ({ page }) => {
     await page.goto('/status');
     
-    // Check page has status-related content
-    const hasStatusHeading = await page.getByRole('heading', { name: /status/i }).count() > 0;
-    const hasSystemInfo = await page.getByText(/sistema|serviço|operational|online/i).count() > 0;
-    
-    expect(hasStatusHeading || hasSystemInfo).toBeTruthy();
-    
-    // Verify main content area is present
-    await expect(page.locator('main, body')).toBeVisible();
+    await expect(page.locator('main')).toBeVisible();
+    await expect(page.locator('main')).toContainText(/status|sistema|serviço|operational|online|consultando sistemas/i);
   });
 
   test('should display system health information', async ({ page }) => {

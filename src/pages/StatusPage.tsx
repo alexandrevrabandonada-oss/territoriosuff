@@ -379,7 +379,7 @@ export function StatusPage() {
             <div className="flex flex-wrap gap-2 lg:justify-end">
               <Link
                 to={`/transparencia?month=${String(selectedMonth).padStart(2, "0")}&year=${selectedYear}`}
-                className="rounded-lg border border-primaria/20 bg-primaria/10 px-4 py-2 text-xs font-bold uppercase tracking-wide text-primaria hover:bg-primaria/20"
+                className="inline-flex min-h-11 items-center rounded-lg border border-primaria/20 bg-primaria/10 px-4 py-2 text-xs font-bold uppercase tracking-wide text-primaria hover:bg-primaria/20"
               >
                 Ver gastos do mes
               </Link>
@@ -387,7 +387,7 @@ export function StatusPage() {
                 type="button"
                 onClick={() => { void handleShareBulletin(); }}
                 disabled={monthlyLoading || Boolean(monthlyError)}
-                className="rounded-lg border border-success/20 bg-success/10 px-4 py-2 text-xs font-bold uppercase tracking-wide text-success hover:bg-success/20 disabled:cursor-not-allowed disabled:opacity-60"
+                className="inline-flex min-h-11 items-center rounded-lg border border-success/20 bg-success/10 px-4 py-2 text-xs font-bold uppercase tracking-wide text-success hover:bg-success/20 disabled:cursor-not-allowed disabled:opacity-60"
               >
                 Compartilhar boletim
               </button>
@@ -395,7 +395,7 @@ export function StatusPage() {
                 type="button"
                 onClick={handleDownloadMonthlyCsv}
                 disabled={monthlyLoading || Boolean(monthlyError)}
-                className="rounded-lg border border-ciano/20 bg-ciano/10 px-4 py-2 text-xs font-bold uppercase tracking-wide text-ciano hover:bg-ciano/20 disabled:cursor-not-allowed disabled:opacity-60"
+                className="inline-flex min-h-11 items-center rounded-lg border border-ciano/20 bg-ciano/10 px-4 py-2 text-xs font-bold uppercase tracking-wide text-ciano hover:bg-ciano/20 disabled:cursor-not-allowed disabled:opacity-60"
               >
                 Baixar CSV do período
               </button>
@@ -403,7 +403,7 @@ export function StatusPage() {
                 type="button"
                 onClick={() => { void handleCopySummary(); }}
                 disabled={monthlyLoading || Boolean(monthlyError)}
-                className="rounded-lg border border-base/30 bg-base/20 px-4 py-2 text-xs font-bold uppercase tracking-wide text-texto hover:bg-base/30 disabled:cursor-not-allowed disabled:opacity-60"
+                className="inline-flex min-h-11 items-center rounded-lg border border-base/30 bg-base/20 px-4 py-2 text-xs font-bold uppercase tracking-wide text-texto hover:bg-base/30 disabled:cursor-not-allowed disabled:opacity-60"
               >
                 Copiar resumo
               </button>

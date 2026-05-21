@@ -92,7 +92,7 @@ function EnhancedMarkdown({ text, fontSize }: { text: string; fontSize: number }
                     );
                 }
 
-                const listMatch = line.match(/^[\*\-]\s+(.*)$/);
+                const listMatch = line.match(/^[*-]\s+(.*)$/);
                 if (listMatch) {
                     return (
                         <ul key={index} className="list-disc pl-6 space-y-1 my-2">
