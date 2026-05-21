@@ -7,18 +7,24 @@ type MeasurementsChartPoint = {
   ts: string;
   pm25: number | null;
   pm10: number | null;
+  temp?: number | null;
+  humidity?: number | null;
 };
 
 type MeasurementsChartProps = {
   data: MeasurementsChartPoint[];
   showPM25: boolean;
   showPM10: boolean;
+  showTemp: boolean;
+  showHumidity: boolean;
 };
 
 const PM25_COLOR = "#10b981";
 const PM10_COLOR = "#f59e0b";
-const AXIS_COLOR = "#6b7280";
-const GRID_COLOR = "#e5e7eb";
+const TEMP_COLOR = "#ef4444";
+const HUMIDITY_COLOR = "#3b82f6";
+const AXIS_COLOR = "#64748b";
+const GRID_COLOR = "rgba(148, 163, 184, 0.1)";
 
 function parseTimestampSeconds(value: string): number | null {
   const ts = new Date(value).getTime();
@@ -48,7 +54,7 @@ function formatAxisValue(value: number) {
   return value.toFixed(0);
 }
 
-export function MeasurementsChart({ data, showPM25, showPM10 }: MeasurementsChartProps) {
+export function MeasurementsChart({ data, showPM25, showPM10, showTemp, showHumidity }: MeasurementsChartProps) {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const tooltipRef = useRef<HTMLDivElement | null>(null);
   const plotRef = useRef<uPlot | null>(null);
@@ -58,15 +64,17 @@ export function MeasurementsChart({ data, showPM25, showPM10 }: MeasurementsChar
       .map((row) => {
         const ts = parseTimestampSeconds(row.ts);
         if (ts === null) return null;
-        return [ts, row.pm25, row.pm10] as const;
+        return [ts, row.pm25, row.pm10, row.temp ?? null, row.humidity ?? null] as const;
       })
-      .filter((row): row is readonly [number, number | null, number | null] => row !== null)
+      .filter((row): row is readonly [number, number | null, number | null, number | null, number | null] => row !== null)
       .sort((a, b) => a[0] - b[0]);
 
     return [
       rows.map((row) => row[0]),
       rows.map((row) => row[1]),
-      rows.map((row) => row[2])
+      rows.map((row) => row[2]),
+      rows.map((row) => row[3]),
+      rows.map((row) => row[4])
     ];
   }, [data]);
 
@@ -85,8 +93,8 @@ export function MeasurementsChart({ data, showPM25, showPM10 }: MeasurementsChar
     }
 
     const showTooltip = (text: string, left: number, top: number) => {
-      const maxLeft = Math.max(0, container.clientWidth - 220);
-      const maxTop = Math.max(0, container.clientHeight - 100);
+      const maxLeft = Math.max(0, container.clientWidth - 240);
+      const maxTop = Math.max(0, container.clientHeight - 120);
       tooltip.textContent = text;
       tooltip.style.display = "block";
       tooltip.style.left = `${Math.min(left, maxLeft)}px`;
@@ -123,8 +131,7 @@ export function MeasurementsChart({ data, showPM25, showPM10 }: MeasurementsChar
             grid: { stroke: GRID_COLOR, width: 1 },
             values: (_, ticks) => ticks.map(formatAxisValue),
             size: 48,
-            space: 50,
-            label: "µg/m³"
+            space: 50
           }
         ],
         series: [
@@ -132,7 +139,7 @@ export function MeasurementsChart({ data, showPM25, showPM10 }: MeasurementsChar
           {
             label: "PM2.5",
             stroke: PM25_COLOR,
-            width: 2,
+            width: 2.2,
             show: showPM25,
             points: { show: false },
             spanGaps: true
@@ -140,8 +147,24 @@ export function MeasurementsChart({ data, showPM25, showPM10 }: MeasurementsChar
           {
             label: "PM10",
             stroke: PM10_COLOR,
-            width: 2,
+            width: 2.2,
             show: showPM10,
+            points: { show: false },
+            spanGaps: true
+          },
+          {
+            label: "Temp",
+            stroke: TEMP_COLOR,
+            width: 2.2,
+            show: showTemp,
+            points: { show: false },
+            spanGaps: true
+          },
+          {
+            label: "Umid",
+            stroke: HUMIDITY_COLOR,
+            width: 2.2,
+            show: showHumidity,
             points: { show: false },
             spanGaps: true
           }
@@ -172,6 +195,18 @@ export function MeasurementsChart({ data, showPM25, showPM10 }: MeasurementsChar
                 const value = u.data[2][idx];
                 if (typeof value === "number") {
                   lines.push(`PM10: ${value.toFixed(1)} µg/m³`);
+                }
+              }
+              if (showTemp) {
+                const value = u.data[3][idx];
+                if (typeof value === "number") {
+                  lines.push(`Temp: ${value.toFixed(1)} °C`);
+                }
+              }
+              if (showHumidity) {
+                const value = u.data[4][idx];
+                if (typeof value === "number") {
+                  lines.push(`Umid: ${value.toFixed(1)} %`);
                 }
               }
 
@@ -206,20 +241,20 @@ export function MeasurementsChart({ data, showPM25, showPM10 }: MeasurementsChar
       chart.destroy();
       plotRef.current = null;
     };
-  }, [alignedData, showPM10, showPM25]);
+  }, [alignedData, showPM10, showPM25, showTemp, showHumidity]);
 
   if (alignedData[0].length === 0) {
     return (
       <div className="rounded-xl border border-dashed border-border-subtle bg-bg-surface p-8 text-center text-sm text-text-secondary">
-        Sem dados de serie suficientes para desenhar o grafico.
+        Sem dados de série suficientes para desenhar o gráfico.
       </div>
     );
   }
 
-  if (!showPM25 && !showPM10) {
+  if (!showPM25 && !showPM10 && !showTemp && !showHumidity) {
     return (
       <div className="rounded-xl border border-dashed border-border-subtle bg-bg-surface p-8 text-center text-sm text-text-secondary">
-        Selecione ao menos uma serie para visualizar o grafico.
+        Selecione ao menos uma série para visualizar o gráfico.
       </div>
     );
   }
@@ -229,7 +264,7 @@ export function MeasurementsChart({ data, showPM25, showPM10 }: MeasurementsChar
       <div
         ref={tooltipRef}
         aria-hidden="true"
-        className="pointer-events-none absolute z-10 hidden max-w-[220px] rounded-md border border-border-subtle bg-white px-3 py-2 text-xs leading-5 text-text-primary shadow-lg whitespace-pre-line"
+        className="pointer-events-none absolute z-10 hidden max-w-[240px] rounded-xl border border-slate-200/50 bg-white/95 dark:bg-slate-950/95 dark:border-slate-800 px-3.5 py-2.5 text-[11px] leading-relaxed text-text-primary shadow-xl backdrop-blur-md whitespace-pre-line"
       />
     </div>
   );

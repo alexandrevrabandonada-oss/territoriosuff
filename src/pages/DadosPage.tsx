@@ -14,7 +14,7 @@ import { trackCsvDownload } from "../lib/observability";
 const ENV_HINT = " Verifique .env.local (VITE_SUPABASE_URL e VITE_SUPABASE_ANON_KEY).";
 const POLLING_INTERVAL_MS = 60_000;
 
-type TabId = "now" | "24h" | "7d";
+type TabId = "now" | "24h" | "7d" | "custom";
 
 const MeasurementsChart = lazy(() =>
   import("../components/MeasurementsChart").then((m) => ({ default: m.MeasurementsChart }))
@@ -77,6 +77,39 @@ function getOmsLevelStyle(level: string) {
   }
 }
 
+function getBucketMinutes(startStr: string, endStr: string): number {
+  const start = new Date(startStr);
+  const end = new Date(endStr);
+  const diffTime = Math.abs(end.getTime() - start.getTime());
+  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+  
+  if (diffDays <= 2) {
+    return 15;
+  } else if (diffDays <= 7) {
+    return 30;
+  } else if (diffDays <= 30) {
+    return 120;
+  } else {
+    return 1440;
+  }
+}
+
+function DashboardSkeleton() {
+  return (
+    <div className="animate-pulse space-y-6 mt-6">
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+        {[...Array(4)].map((_, i) => (
+          <div key={i} className="signature-surface h-24 rounded-2xl bg-slate-200/20 dark:bg-slate-800/20 border border-border-subtle" />
+        ))}
+      </div>
+      <div className="signature-surface h-[360px] rounded-2xl bg-slate-200/20 dark:bg-slate-800/20 border border-border-subtle p-5">
+        <div className="h-6 w-24 bg-slate-300/30 dark:bg-slate-700/30 rounded mb-4" />
+        <div className="h-[260px] w-full bg-slate-300/10 dark:bg-slate-700/10 rounded" />
+      </div>
+    </div>
+  );
+}
+
 export function DadosPage() {
   const [searchParams] = useSearchParams();
   const stationCodeFromQuery = searchParams.get("station");
@@ -87,11 +120,22 @@ export function DadosPage() {
   const [activeTab, setActiveTab] = useState<TabId>("24h");
   const [measurements24h, setMeasurements24h] = useState<DownsampledMeasurement[]>([]);
   const [measurements7d, setMeasurements7d] = useState<DownsampledMeasurement[]>([]);
+  const [measurementsCustom, setMeasurementsCustom] = useState<DownsampledMeasurement[]>([]);
+  const [customStartDate, setCustomStartDate] = useState(() => {
+    const d = new Date();
+    d.setDate(d.getDate() - 3);
+    return d.toISOString().split("T")[0];
+  });
+  const [customEndDate, setCustomEndDate] = useState(() => new Date().toISOString().split("T")[0]);
+  const [appliedStartDate, setAppliedStartDate] = useState(customStartDate);
+  const [appliedEndDate, setAppliedEndDate] = useState(customEndDate);
   const [, setLoadingStations] = useState(true);
   const [loadingMeasurements, setLoadingMeasurements] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [showPM25, setShowPM25] = useState(true);
   const [showPM10, setShowPM10] = useState(false);
+  const [showTemp, setShowTemp] = useState(false);
+  const [showHumidity, setShowHumidity] = useState(false);
   const [isPageVisible, setIsPageVisible] = useState(
     typeof document === "undefined" ? true : document.visibilityState === "visible"
   );
@@ -144,27 +188,43 @@ export function DadosPage() {
     void run();
   }, [stationCodeFromQuery]);
 
-  // Carrega medições 24h e 7d
+  // Carrega medições 24h, 7d e personalizado
   const loadMeasurements = useCallback(async (stationId: string, silent = false) => {
     try {
       if (!silent) setLoadingMeasurements(true);
       setError(null);
       
       const monitoringApi = await import("../lib/api/monitoring");
-      const [data24h, data7d] = await Promise.all([
+      const promises: [
+        Promise<DownsampledMeasurement[]>,
+        Promise<DownsampledMeasurement[]>,
+        Promise<DownsampledMeasurement[]>?
+      ] = [
         monitoringApi.getMeasurementsDownsampled(stationId, "24h"),
         monitoringApi.getMeasurementsDownsampled(stationId, "7d")
-      ]);
+      ];
+
+      if (activeTab === "custom") {
+        const bucketMinutes = getBucketMinutes(appliedStartDate, appliedEndDate);
+        const startTs = new Date(appliedStartDate + "T00:00:00Z").toISOString();
+        const endTs = new Date(appliedEndDate + "T23:59:59Z").toISOString();
+        promises.push(monitoringApi.getMeasurementsByRange(stationId, startTs, endTs, bucketMinutes));
+      }
+      
+      const [data24h, data7d, dataCustom] = await Promise.all(promises);
       
       setMeasurements24h(data24h);
       setMeasurements7d(data7d);
+      if (dataCustom) {
+        setMeasurementsCustom(dataCustom);
+      }
     } catch (err) {
       const message = err instanceof Error ? err.message : "Falha ao carregar medições.";
       setError(`${message}${ENV_HINT}`);
     } finally {
       if (!silent) setLoadingMeasurements(false);
     }
-  }, []);
+  }, [activeTab, appliedStartDate, appliedEndDate]);
 
   // Atualiza medições quando muda estação
   useEffect(() => {
@@ -228,7 +288,15 @@ export function DadosPage() {
         }
         
         const promises = selectedStationIds.map(async (id) => {
-          const data = await monitoringApi.getMeasurementsDownsampled(id, range);
+          let data: DownsampledMeasurement[];
+          if (activeTab === "custom") {
+            const bucketMinutes = getBucketMinutes(appliedStartDate, appliedEndDate);
+            const startTs = new Date(appliedStartDate + "T00:00:00Z").toISOString();
+            const endTs = new Date(appliedEndDate + "T23:59:59Z").toISOString();
+            data = await monitoringApi.getMeasurementsByRange(id, startTs, endTs, bucketMinutes);
+          } else {
+            data = await monitoringApi.getMeasurementsDownsampled(id, range as "24h" | "7d");
+          }
           return { id, data };
         });
 
@@ -255,7 +323,7 @@ export function DadosPage() {
 
     void run();
     return () => { cancelled = true; };
-  }, [isComparing, selectedStationIds, activeTab]);
+  }, [isComparing, selectedStationIds, activeTab, appliedStartDate, appliedEndDate]);
 
   // Seletor de unidade da métrica de comparação
   const compareMetricUnit = useMemo(() => {
@@ -404,13 +472,30 @@ export function DadosPage() {
     URL.revokeObjectURL(url);
   };
 
+  const handleApplyCustomFilter = () => {
+    if (customStartDate > customEndDate) {
+      setError("A data de início não pode ser posterior à data de fim.");
+      return;
+    }
+    setError(null);
+    setAppliedStartDate(customStartDate);
+    setAppliedEndDate(customEndDate);
+  };
+
   // Dados computados
   const selectedStation = useMemo(
     () => stations.find((station) => station.station_id === selectedStationId) ?? null,
     [selectedStationId, stations]
   );
 
-  const currentMeasurements = activeTab === "24h" ? measurements24h : measurements7d;
+  const currentMeasurements =
+    activeTab === "24h"
+      ? measurements24h
+      : activeTab === "7d"
+      ? measurements7d
+      : activeTab === "custom"
+      ? measurementsCustom
+      : [];
   const isOnline = selectedStation?.is_online ?? false;
 
   // Estatísticas
@@ -753,6 +838,42 @@ export function DadosPage() {
                 </div>
               </>
             )}
+
+            {activeTab === "custom" && (
+              <div className="mt-4 pt-4 border-t border-border-subtle/50 space-y-3">
+                <div className="grid grid-cols-2 gap-3">
+                  <label className="block">
+                    <span className="data-control-label">Data Início</span>
+                    <input
+                      type="date"
+                      value={customStartDate}
+                      onChange={(e) => setCustomStartDate(e.target.value)}
+                      max={customEndDate || new Date().toISOString().split("T")[0]}
+                      className="data-select w-full"
+                    />
+                  </label>
+                  <label className="block">
+                    <span className="data-control-label">Data Fim</span>
+                    <input
+                      type="date"
+                      value={customEndDate}
+                      onChange={(e) => setCustomEndDate(e.target.value)}
+                      min={customStartDate}
+                      max={new Date().toISOString().split("T")[0]}
+                      className="data-select w-full"
+                    />
+                  </label>
+                </div>
+                <button
+                  type="button"
+                  onClick={handleApplyCustomFilter}
+                  disabled={loadingMeasurements || loadingCompare || !customStartDate || !customEndDate}
+                  className="data-refresh w-full py-2.5 text-xs font-black uppercase tracking-wider rounded-xl transition-all"
+                >
+                  {loadingMeasurements || loadingCompare ? "Filtrando..." : "Filtrar Período"}
+                </button>
+              </div>
+            )}
           </div>
         </div>
       </SurfaceCard>
@@ -835,6 +956,17 @@ export function DadosPage() {
               >
                 7 dias
               </button>
+              <button
+                id="tab-custom"
+                role="tab"
+                aria-selected={activeTab === "custom"}
+                aria-controls="panel-custom"
+                className={activeTab === "custom" ? "ui-segment-tab ui-segment-tab-active" : "ui-segment-tab"}
+                onClick={() => setActiveTab("custom")}
+                type="button"
+              >
+                Personalizado
+              </button>
             </div>
 
             {activeTab === "now" && (
@@ -879,12 +1011,10 @@ export function DadosPage() {
               </div>
             )}
 
-            {(activeTab === "24h" || activeTab === "7d") && (
+            {(activeTab === "24h" || activeTab === "7d" || activeTab === "custom") && (
               <div role="tabpanel" id={`panel-${activeTab}`} aria-labelledby={`tab-${activeTab}`}>
                 {loadingMeasurements ? (
-                  <p aria-live="polite" className="mt-6 text-sm text-text-secondary" role="status">
-                    Carregando dados...
-                  </p>
+                  <DashboardSkeleton />
                 ) : currentMeasurements.length === 0 ? (
                   <EmptyState title="Sem dados neste intervalo" description="Troque de período ou aguarde a próxima coleta." />
                 ) : (
@@ -930,7 +1060,9 @@ export function DadosPage() {
                         <div className="mt-3 grid gap-3 sm:grid-cols-2">
                           <div className="rounded-2xl bg-surface-2 p-3.5">
                             <p className="text-xs font-semibold uppercase tracking-[0.18em] text-text-secondary">Período</p>
-                            <p className="mt-1.5 text-sm font-bold text-text-primary">{activeTab === "24h" ? "24 horas" : "7 dias"}</p>
+                            <p className="mt-1.5 text-sm font-bold text-text-primary">
+                              {activeTab === "24h" ? "24 horas" : activeTab === "7d" ? "7 dias" : "Personalizado"}
+                            </p>
                           </div>
                           <div className="rounded-2xl bg-surface-2 p-3.5">
                             <p className="text-xs font-semibold uppercase tracking-[0.18em] text-text-secondary">Exportação</p>
@@ -960,6 +1092,24 @@ export function DadosPage() {
                           />
                           <span className="text-sm font-semibold text-text-primary"><span style={{ color: "#f59e0b" }}>■</span> PM10</span>
                         </label>
+                        <label className="flex cursor-pointer items-center gap-2">
+                          <input
+                            type="checkbox"
+                            checked={showTemp}
+                            onChange={(e) => setShowTemp(e.target.checked)}
+                            className="h-4 w-4 rounded border-border-subtle text-brand-primary focus:ring-2 focus:ring-brand-primary/20"
+                          />
+                          <span className="text-sm font-semibold text-text-primary"><span style={{ color: "#ef4444" }}>■</span> Temperatura</span>
+                        </label>
+                        <label className="flex cursor-pointer items-center gap-2">
+                          <input
+                            type="checkbox"
+                            checked={showHumidity}
+                            onChange={(e) => setShowHumidity(e.target.checked)}
+                            className="h-4 w-4 rounded border-border-subtle text-brand-primary focus:ring-2 focus:ring-brand-primary/20"
+                          />
+                          <span className="text-sm font-semibold text-text-primary"><span style={{ color: "#3b82f6" }}>■</span> Umidade</span>
+                        </label>
                       </div>
                       <button
                         className="ui-btn-secondary px-4 text-xs font-black uppercase tracking-wide text-brand-primary disabled:opacity-60"
@@ -975,7 +1125,13 @@ export function DadosPage() {
                     <div className="signature-surface mt-5 p-4 md:p-5">
                       <h3 className="mb-3 text-sm font-bold text-brand-primary">Gráfico</h3>
                       <Suspense fallback={<LoadingCard message="Carregando gráfico histórico..." />}>
-                        <MeasurementsChart data={chartData} showPM25={showPM25} showPM10={showPM10} />
+                        <MeasurementsChart
+                          data={chartData}
+                          showPM25={showPM25}
+                          showPM10={showPM10}
+                          showTemp={showTemp}
+                          showHumidity={showHumidity}
+                        />
                       </Suspense>
                     </div>
 
@@ -1293,6 +1449,16 @@ export function DadosPage() {
               type="button"
             >
               7 dias
+            </button>
+            <button
+              id="tab-compare-custom"
+              role="tab"
+              aria-selected={activeTab === "custom"}
+              className={activeTab === "custom" ? "ui-segment-tab ui-segment-tab-active" : "ui-segment-tab"}
+              onClick={() => setActiveTab("custom")}
+              type="button"
+            >
+              Personalizado
             </button>
           </div>
 

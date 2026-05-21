@@ -86,6 +86,27 @@ export async function getMeasurementsDownsampled(
   }
 }
 
+export async function getMeasurementsByRange(
+  stationId: string,
+  startTs: string,
+  endTs: string,
+  bucketMinutes = 60
+): Promise<DownsampledMeasurement[]> {
+  try {
+    const supabase = assertSupabase();
+    const { data, error } = await supabase.rpc("get_measurements_by_range", {
+      p_station_id: stationId,
+      p_start_ts: startTs,
+      p_end_ts: endTs,
+      p_bucket_minutes: bucketMinutes
+    });
+    if (error) throw error;
+    return (data ?? []) as DownsampledMeasurement[];
+  } catch (error) {
+    throw toAppError("Falha ao listar medições por período", error);
+  }
+}
+
 export async function getOpsKpisMonth(year: number, month: number): Promise<OpsKPI> {
   try {
     const supabase = assertSupabase();

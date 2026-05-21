@@ -12,8 +12,8 @@ type ComparisonChartProps = {
   metricUnit: string;
 };
 
-const AXIS_COLOR = "#6b7280";
-const GRID_COLOR = "#e5e7eb";
+const AXIS_COLOR = "#64748b";
+const GRID_COLOR = "rgba(148, 163, 184, 0.1)";
 
 function formatTooltipDate(value: number) {
   return new Date(value * 1000).toLocaleString("pt-BR", {
