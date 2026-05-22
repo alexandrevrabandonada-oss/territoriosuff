@@ -7,6 +7,7 @@ import { OfflineBanner } from "../../components/OfflineBanner";
 import { TextToSpeechButton } from "../../components/TextToSpeechButton";
 import { getReportBySlug, type ReportDocument } from "../../lib/api";
 import { trackShare } from "../../lib/observability";
+import { usePageMetadata } from "../../hooks/usePageMetadata";
 
 function getReportOpenKey(slug: string): string {
   return `report_pdf_opened_${slug}`;
@@ -20,6 +21,14 @@ export function ReportDetailPage() {
   const [isViewerOpen, setIsViewerOpen] = useState(false);
   const [isOnline, setIsOnline] = useState(navigator.onLine);
   const [hasOpenedBefore, setHasOpenedBefore] = useState(false);
+
+  usePageMetadata({
+    title: report?.title,
+    description: report?.summary || undefined,
+    image: report?.cover_thumb_url || report?.cover_url || undefined,
+    url: report ? `${window.location.origin}/s/relatorios/${report.slug}` : undefined,
+    type: "article",
+  });
 
   const modalRef = useRef<HTMLDivElement>(null);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
@@ -144,7 +153,7 @@ export function ReportDetailPage() {
   };
 
   const handleShare = async () => {
-    const shareUrl = `${window.location.origin}/relatorios/${report.slug}`;
+    const shareUrl = `${window.location.origin}/s/relatorios/${report.slug}`;
     trackShare("relatorios", report.slug, "detail");
     if (navigator.share) {
       try {

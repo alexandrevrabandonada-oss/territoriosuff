@@ -1,10 +1,57 @@
 import { useEffect, useState, useCallback } from "react";
+import { MapContainer, TileLayer, Marker } from "react-leaflet";
+import L from "leaflet";
+import "leaflet/dist/leaflet.css";
+
 import {
   listEnvironmentalReports,
   updateEnvironmentalReport,
   deleteEnvironmentalReport,
   type EnvironmentalReport
 } from "../../lib/api";
+
+import markerIcon2x from "leaflet/dist/images/marker-icon-2x.png";
+import markerIcon from "leaflet/dist/images/marker-icon.png";
+import markerShadow from "leaflet/dist/images/marker-shadow.png";
+
+// Fix default marker icons in react-leaflet
+delete (L.Icon.Default.prototype as any)._getIconUrl;
+L.Icon.Default.mergeOptions({
+  iconUrl: markerIcon,
+  iconRetinaUrl: markerIcon2x,
+  shadowUrl: markerShadow,
+});
+
+function parseCoordinates(locationStr: string): [number, number] | null {
+  if (!locationStr) return null;
+  
+  // Try pattern: -22.5203, -44.1044
+  const basicRegex = /(-?\d+\.\d+)\s*[\s,]\s*(-?\d+\.\d+)/;
+  const basicMatch = locationStr.match(basicRegex);
+  if (basicMatch) {
+    const lat = parseFloat(basicMatch[1]);
+    const lng = parseFloat(basicMatch[2]);
+    if (lat >= -90 && lat <= 90 && lng >= -180 && lng <= 180) {
+      return [lat, lng];
+    }
+  }
+
+  // Try pattern with lat/lng labels (e.g. "lat: -22.5203, lng: -44.1044")
+  const latRegex = /(?:lat|latitude)\s*:\s*(-?\d+\.\d+)/i;
+  const lngRegex = /(?:lng|lon|longitude)\s*:\s*(-?\d+\.\d+)/i;
+  const latMatch = locationStr.match(latRegex);
+  const lngMatch = locationStr.match(lngRegex);
+  if (latMatch && lngMatch) {
+    const lat = parseFloat(latMatch[1]);
+    const lng = parseFloat(lngMatch[2]);
+    if (lat >= -90 && lat <= 90 && lng >= -180 && lng <= 180) {
+      return [lat, lng];
+    }
+  }
+
+  return null;
+}
+
 
 const STATUS_LABELS: Record<string, string> = {
   new: "Novo",
@@ -43,6 +90,8 @@ export function AdminReportsInboxPage() {
   const [searchTerm, setSearchTerm] = useState("");
   const [filterCategory, setFilterCategory] = useState("");
   const [filterStatus, setFilterStatus] = useState("");
+  const [filterStartDate, setFilterStartDate] = useState("");
+  const [filterEndDate, setFilterEndDate] = useState("");
   
   // Detalhes editáveis do admin
   const [adminNotes, setAdminNotes] = useState("");
@@ -142,6 +191,8 @@ export function AdminReportsInboxPage() {
     }
   };
 
+  const coordinates = selectedReport ? parseCoordinates(selectedReport.location) : null;
+
   // Estatísticas de triagem
   const totalCount = reports.length;
   const newCount = reports.filter((r) => r.status === "new").length;
@@ -159,7 +210,17 @@ export function AdminReportsInboxPage() {
     const matchesCategory = !filterCategory || report.category === filterCategory;
     const matchesStatus = !filterStatus || report.status === filterStatus;
 
-    return matchesSearch && matchesCategory && matchesStatus;
+    let matchesDate = true;
+    if (filterStartDate) {
+      const startLimit = new Date(filterStartDate + "T00:00:00");
+      matchesDate = matchesDate && new Date(report.created_at) >= startLimit;
+    }
+    if (filterEndDate) {
+      const endLimit = new Date(filterEndDate + "T23:59:59.999");
+      matchesDate = matchesDate && new Date(report.created_at) <= endLimit;
+    }
+
+    return matchesSearch && matchesCategory && matchesStatus && matchesDate;
   });
 
   const handleExportCSV = () => {
@@ -335,6 +396,26 @@ export function AdminReportsInboxPage() {
           </select>
         </div>
 
+        <div className="w-44">
+          <label className="block text-xs font-black text-slate-400 uppercase tracking-widest mb-2">Data Início</label>
+          <input
+            type="date"
+            value={filterStartDate}
+            onChange={(e) => setFilterStartDate(e.target.value)}
+            className="w-full px-5 py-3 bg-slate-950 border border-slate-800 text-white rounded-xl font-semibold focus:ring-4 focus:ring-emerald-500/10"
+          />
+        </div>
+
+        <div className="w-44">
+          <label className="block text-xs font-black text-slate-400 uppercase tracking-widest mb-2">Data Fim</label>
+          <input
+            type="date"
+            value={filterEndDate}
+            onChange={(e) => setFilterEndDate(e.target.value)}
+            className="w-full px-5 py-3 bg-slate-950 border border-slate-800 text-white rounded-xl font-semibold focus:ring-4 focus:ring-emerald-500/10"
+          />
+        </div>
+
         <button
           onClick={handleExportCSV}
           disabled={filteredReports.length === 0}
@@ -496,6 +577,22 @@ export function AdminReportsInboxPage() {
                   <p className="text-sm text-slate-200 font-medium bg-slate-950 p-3 rounded-lg border border-slate-800/80 mt-1">
                     {selectedReport.location}
                   </p>
+                  {coordinates && (
+                    <div className="mt-3 rounded-xl overflow-hidden border border-slate-800 h-[200px] relative z-10">
+                      <MapContainer
+                        center={coordinates}
+                        zoom={15}
+                        scrollWheelZoom={false}
+                        style={{ height: "100%", width: "100%" }}
+                      >
+                        <TileLayer
+                          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                        />
+                        <Marker position={coordinates} />
+                      </MapContainer>
+                    </div>
+                  )}
                 </div>
 
                 <div>

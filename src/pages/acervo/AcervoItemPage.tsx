@@ -7,6 +7,7 @@ import { trackShare } from "../../lib/observability";
 import { IconShell, SurfaceCard } from "../../components/BrandSystem";
 import { SafeMarkdown } from "../../components/SafeMarkdown";
 import { TextToSpeechButton } from "../../components/TextToSpeechButton";
+import { usePageMetadata } from "../../hooks/usePageMetadata";
 
 const SOURCE_TYPE_LABELS: Record<string, string> = {
     cientifico: "Científico",
@@ -128,6 +129,14 @@ export function AcervoItemPage() {
     const [related, setRelated] = useState<AcervoItem[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
+
+    usePageMetadata({
+        title: item?.title,
+        description: item?.excerpt || undefined,
+        image: item?.cover_thumb_url || item?.cover_url || undefined,
+        url: item ? `${window.location.origin}/s/acervo/${item.slug}` : undefined,
+        type: "article",
+    });
 
     // Modal State
     const [activeMedia, setActiveMedia] = useState<{ url: string; type: string; title?: string } | null>(null);

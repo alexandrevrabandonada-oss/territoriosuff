@@ -7,6 +7,7 @@ import { SafeMarkdown } from "../components/SafeMarkdown";
 import { TextToSpeechButton } from "../components/TextToSpeechButton";
 import { getBlogPostBySlug, type BlogPost } from "../lib/api";
 import { trackShare } from "../lib/observability";
+import { usePageMetadata } from "../hooks/usePageMetadata";
 
 function SimpleMarkdown({ text }: { text: string }) {
     return <SafeMarkdown text={text} className="space-y-4 text-[15px] leading-relaxed text-text-primary md:text-base" />;
@@ -17,6 +18,14 @@ export function BlogPostPage() {
     const [post, setPost] = useState<BlogPost | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
+
+    usePageMetadata({
+        title: post?.title,
+        description: post?.excerpt || undefined,
+        image: post?.cover_url || undefined,
+        url: post ? `${window.location.origin}/s/blog/${post.slug}` : undefined,
+        type: "article",
+    });
 
     useEffect(() => {
         if (!slug) return;

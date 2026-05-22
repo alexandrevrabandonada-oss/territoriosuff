@@ -108,6 +108,13 @@ export default defineConfig({
       : []),
     VitePWA({
       registerType: "autoUpdate",
+      strategies: "injectManifest",
+      srcDir: "src",
+      filename: "sw.ts",
+      devOptions: {
+        enabled: true,
+        type: "module"
+      },
       manifest: {
         name: "SEMEAR Portal",
         short_name: "SEMEAR",
@@ -131,9 +138,8 @@ export default defineConfig({
           }
         ]
       },
-      workbox: {
+      injectManifest: {
         globPatterns: ["**/*.{js,css,html,ico,png,svg}"],
-        navigateFallback: "index.html",
         additionalManifestEntries: [
           { url: "/", revision: null },
           { url: "/dados", revision: null },
@@ -147,79 +153,6 @@ export default defineConfig({
           { url: "/governanca", revision: null },
           { url: "/imprensa", revision: null },
           { url: "/apresentacao", revision: null }
-        ],
-        runtimeCaching: [
-          {
-            urlPattern: /^https?:\/\/.*\/api\/.*$/,
-            handler: "NetworkFirst",
-            options: {
-              cacheName: "api-runtime",
-              networkTimeoutSeconds: 3,
-              expiration: {
-                maxEntries: 80,
-                maxAgeSeconds: 24 * 60 * 60
-              },
-              cacheableResponse: {
-                statuses: [0, 200]
-              }
-            }
-          },
-          {
-            urlPattern: /^https:\/\/.*\.supabase\.co\/storage\/v1\/object\/public\/(?:reports|transparency)\/.*\.pdf$/,
-            handler: "CacheFirst",
-            options: {
-              cacheName: "pdf-runtime",
-              expiration: {
-                maxEntries: 40,
-                maxAgeSeconds: 30 * 24 * 60 * 60
-              },
-              cacheableResponse: {
-                statuses: [0, 200]
-              }
-            }
-          },
-          {
-            urlPattern: /^https:\/\/.*\.supabase\.co\/storage\/v1\/object\/public\/(?:acervo|reports|transparency)\/.*(?:thumb|cover).*\.(?:png|jpg|jpeg|webp|svg)$/,
-            handler: "StaleWhileRevalidate",
-            options: {
-              cacheName: "thumb-runtime",
-              expiration: {
-                maxEntries: 120,
-                maxAgeSeconds: 14 * 24 * 60 * 60
-              },
-              cacheableResponse: {
-                statuses: [0, 200]
-              }
-            }
-          },
-          {
-            urlPattern: /^https:\/\/.*\.supabase\.co\/storage\/v1\/object\/public\/acervo\/.*(?:\.png|\.jpg|\.jpeg|\.webp|\.svg)$/,
-            handler: "CacheFirst",
-            options: {
-              cacheName: "acervo-images",
-              expiration: {
-                maxEntries: 200,
-                maxAgeSeconds: 30 * 24 * 60 * 60
-              },
-              cacheableResponse: {
-                statuses: [0, 200]
-              }
-            }
-          },
-          {
-            urlPattern: /^https:\/\/.*\.supabase\.co\/storage\/v1\/object\/public\/acervo\/.*\.pdf$/,
-            handler: "NetworkFirst",
-            options: {
-              cacheName: "acervo-pdfs",
-              expiration: {
-                maxEntries: 50,
-                maxAgeSeconds: 14 * 24 * 60 * 60
-              },
-              cacheableResponse: {
-                statuses: [0, 200]
-              }
-            }
-          }
         ]
       }
     })
