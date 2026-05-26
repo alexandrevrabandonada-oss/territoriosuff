@@ -81,6 +81,7 @@ export function IneaRadarPage() {
   const [selectedStationChart, setSelectedStationChart] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const [retryTrigger, setRetryTrigger] = useState<number>(0);
 
   useEffect(() => {
     async function fetchData() {
@@ -88,11 +89,20 @@ export function IneaRadarPage() {
         setLoading(true);
         setError(null);
 
-        // Fetch API endpoints
+        // Fetch API endpoints with error throwing on non-ok status
         const [resSummary, resLatest, resRankings] = await Promise.all([
-          fetch("/api/air/inea/summary").then(r => r.json()),
-          fetch("/api/air/inea/latest").then(r => r.json()),
-          fetch("/api/air/inea/classification-days").then(r => r.json())
+          fetch("/api/air/inea/summary").then(r => {
+            if (!r.ok) throw new Error("HTTP " + r.status + " summary");
+            return r.json();
+          }),
+          fetch("/api/air/inea/latest").then(r => {
+            if (!r.ok) throw new Error("HTTP " + r.status + " latest");
+            return r.json();
+          }),
+          fetch("/api/air/inea/classification-days").then(r => {
+            if (!r.ok) throw new Error("HTTP " + r.status + " classification-days");
+            return r.json();
+          })
         ]);
 
         setSummary(resSummary);
@@ -107,13 +117,13 @@ export function IneaRadarPage() {
         }
       } catch (err: any) {
         console.error("Failed to load official INEA data:", err);
-        setError("Não foi possível carregar os dados oficiais do INEA. Tente novamente mais tarde.");
+        setError("Não foi possível carregar os dados oficiais do INEA.");
       } finally {
         setLoading(false);
       }
     }
     void fetchData();
-  }, []);
+  }, [retryTrigger]);
 
   // Fetch timeseries when selected chart station changes
   useEffect(() => {
@@ -124,7 +134,10 @@ export function IneaRadarPage() {
       try {
         const data = await fetch(
           `/api/air/inea/timeseries?stationId=${selectedStationChart}&metricType=GENERAL_AQI`
-        ).then(r => r.json());
+        ).then(r => {
+          if (!r.ok) throw new Error("HTTP " + r.status);
+          return r.json();
+        });
         
         if (!cancelled) {
           setTimeseries(data);
@@ -185,20 +198,122 @@ export function IneaRadarPage() {
 
   if (error) {
     return (
-      <div className="portal-stage p-12 text-center">
-        <div className="inline-flex h-16 w-16 items-center justify-center rounded-full bg-red-50 text-red-500 mb-4">
-          <svg className="h-8 w-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-          </svg>
+      <section className="portal-stage space-y-8 md:space-y-10">
+        {/* Title */}
+        <SurfaceCard className="portal-stage-hero portal-stage-hero-lab overflow-hidden p-0">
+          <div className="portal-stage-hero-inner">
+            <div className="portal-stage-copy">
+              <IconShell tone="lab" className="portal-stage-icon">
+                <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                </svg>
+              </IconShell>
+              <h1>Radar do Ar INEA — Volta Redonda</h1>
+              <p>
+                Organizamos a última base pública disponível do INEA/Dados Abertos RJ para facilitar a leitura cidadã da qualidade do ar.
+              </p>
+              <div className="flex flex-wrap items-center gap-2 mt-3">
+                <Link
+                  to="/qualidade-ar/inea/historia"
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-lg text-xs transition-colors"
+                >
+                  <span>Entender a série histórica</span>
+                  <svg className="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </svg>
+                </Link>
+              </div>
+            </div>
+            <div className="portal-stage-stat">
+              <span>4 Estações</span>
+              <small>Volta Redonda-RJ</small>
+            </div>
+          </div>
+        </SurfaceCard>
+
+        {/* Methodology & Freshness Notices */}
+        <MethodologyNotice />
+        <DataFreshnessNotice />
+
+        {/* Friendly error panel */}
+        <SurfaceCard className="border border-red-500/20 bg-red-50/30 p-6 rounded-2xl md:p-8">
+          <div className="flex flex-col items-center text-center max-w-xl mx-auto space-y-4">
+            <div className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-red-50 text-red-500">
+              <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+              </svg>
+            </div>
+            <h2 className="text-lg font-bold text-slate-800">Falha temporária no carregamento</h2>
+            <p className="text-sm text-slate-600 font-medium">
+              Os dados oficiais não carregaram agora, mas a página continua disponível. Isso pode indicar instabilidade da API, variável de ambiente ausente no deploy ou falha temporária de conexão.
+            </p>
+            <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
+              <button
+                onClick={() => setRetryTrigger(prev => prev + 1)}
+                className="px-4 py-2 bg-brand-primary text-white font-bold rounded-xl hover:bg-brand-primary-dark transition-colors text-xs"
+              >
+                Tentar novamente
+              </button>
+              <Link
+                to="/qualidade-ar/inea/analises"
+                className="px-4 py-2 border border-slate-200 bg-white text-slate-700 font-bold rounded-xl hover:bg-slate-50 transition-colors text-xs"
+              >
+                Ver análises do INEA
+              </Link>
+              <Link
+                to="/dados"
+                className="px-4 py-2 border border-slate-200 bg-white text-slate-700 font-bold rounded-xl hover:bg-slate-50 transition-colors text-xs"
+              >
+                Voltar para Dados
+              </Link>
+            </div>
+          </div>
+        </SurfaceCard>
+
+        {/* Static stations known list */}
+        <div className="space-y-4">
+          <h2 className="text-lg font-black text-slate-800">Estações Físicas da Rede Oficial</h2>
+          <p className="text-xs text-slate-400 mt-1">Estações que integram o monitoramento físico em Volta Redonda sob a coordenação do INEA:</p>
+          
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            <SurfaceCard className="p-4 bg-white border border-slate-100 rounded-2xl space-y-1">
+              <strong className="text-sm font-black text-slate-800 block">VR-Belmonte</strong>
+              <span className="text-[10px] text-slate-400 font-bold uppercase block">Estação Fixa Automática</span>
+              <p className="text-xs text-slate-500 pt-1">Localizada no bairro Belmonte. Monitoramento integrado da rede da CSN sob fiscalização do INEA.</p>
+            </SurfaceCard>
+
+            <SurfaceCard className="p-4 bg-white border border-slate-100 rounded-2xl space-y-1">
+              <strong className="text-sm font-black text-slate-800 block">VR-Retiro</strong>
+              <span className="text-[10px] text-slate-400 font-bold uppercase block">Estação Fixa Automática</span>
+              <p className="text-xs text-slate-500 pt-1">Localizada na Av. Jaraguá (bairro Retiro). Monitora dispersão de poluentes em área residencial densa.</p>
+            </SurfaceCard>
+
+            <SurfaceCard className="p-4 bg-white border border-slate-100 rounded-2xl space-y-1">
+              <strong className="text-sm font-black text-slate-800 block">VR-Santa Cecília</strong>
+              <span className="text-[10px] text-slate-400 font-bold uppercase block">Estação Fixa Automática</span>
+              <p className="text-xs text-slate-500 pt-1">Localizada na Vila Santa Cecília. Monitoramento contínuo em ponto central e comercial.</p>
+            </SurfaceCard>
+
+            <SurfaceCard className="p-4 bg-white border border-slate-100 rounded-2xl space-y-1">
+              <strong className="text-sm font-black text-slate-800 block">VR-Nossa Sra. das Graças (Van)</strong>
+              <span className="text-[10px] text-slate-400 font-bold uppercase block">Estação Móvel Automática</span>
+              <p className="text-xs text-slate-500 pt-1">Instalada no campus do IFRJ (Aterrado) em 27/10/2023. Focada no monitoramento do "pó preto".</p>
+            </SurfaceCard>
+          </div>
         </div>
-        <h2 className="text-xl font-bold text-slate-800">{error}</h2>
-        <button
-          onClick={() => window.location.reload()}
-          className="mt-4 px-6 py-2 bg-brand-primary text-white font-bold rounded-xl hover:bg-brand-primary-dark transition-colors"
-        >
-          Tentar Novamente
-        </button>
-      </div>
+
+        {/* "O que deveria aparecer aqui" panel */}
+        <SurfaceCard className="p-5 md:p-6 bg-slate-50 border border-slate-100 rounded-2xl space-y-3">
+          <h3 className="text-xs font-black text-slate-500 uppercase tracking-wider">O que deveria aparecer aqui:</h3>
+          <ul className="list-disc pl-5 text-xs text-slate-600 space-y-1.5">
+            <li><strong>Mapa georreferenciado das estações:</strong> Localização física interativa com marcador de status e qualidade do ar em tempo de leitura de cada estação.</li>
+            <li><strong>Última leitura disponível:</strong> Quadro completo dos subíndices IQA de cada poluente (PM10, PM2.5, SO2, NO2, O3, CO) e o poluente controlador.</li>
+            <li><strong>Série histórica do Índice IQAr:</strong> Gráficos de evolução temporal para acompanhamento de tendências da qualidade do ar por período.</li>
+            <li><strong>Ranking por dias registrados como MODERADA ou pior:</strong> Ranking comparativo demonstrando a distribuição dos dias classificados acima do limite de conforto.</li>
+            <li><strong>Lacunas de dados:</strong> Estatísticas de monitoramento efetivo e falhas temporárias de transmissão.</li>
+          </ul>
+        </SurfaceCard>
+      </section>
     );
   }
 
@@ -213,13 +328,24 @@ export function IneaRadarPage() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
               </svg>
             </IconShell>
-            <h1>Radar do Ar — Dados oficiais do INEA em Volta Redonda</h1>
+            <h1>Radar do Ar INEA — Volta Redonda</h1>
             <p>
-              Monitoramento baseado em relatórios consolidados do inventário oficial de qualidade do ar do INEA.
+              Organizamos a última base pública disponível do INEA/Dados Abertos RJ para facilitar a leitura cidadã da qualidade do ar.
             </p>
+            <div className="flex flex-wrap items-center gap-2 mt-3">
+              <Link
+                to="/qualidade-ar/inea/historia"
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-lg text-xs transition-colors"
+              >
+                <span>Entender a série histórica</span>
+                <svg className="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+              </Link>
+            </div>
           </div>
           <div className="portal-stage-stat">
-            <span>{summary?.totalStations} Estações</span>
+            <span>{summary?.totalStations || 4} Estações</span>
             <small>Volta Redonda-RJ</small>
           </div>
         </div>

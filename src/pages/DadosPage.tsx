@@ -1,5 +1,5 @@
 import { lazy, Suspense, useCallback, useEffect, useMemo, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams, Link } from "react-router-dom";
 
 import { IconShell, SectionHeader, SurfaceCard } from "../components/BrandSystem";
 import { AxisEyebrow } from "../components/AxisSystem";
@@ -671,6 +671,64 @@ export function DadosPage() {
           />
         </div>
       )}
+
+      {/* Abas de Navegação de Dados */}
+      <div className="grid gap-4 md:grid-cols-3">
+        <div className="p-5 bg-white border-2 border-brand-primary rounded-2xl shadow-sm transition-all">
+          <strong className="text-sm font-black text-brand-primary block">Dados ao vivo SEMEAR</strong>
+          <p className="text-xs text-slate-500 mt-1">Leituras da estação piloto e rede cidadã.</p>
+          <span className="inline-block mt-3 text-[10px] bg-brand-primary/10 text-brand-primary font-bold uppercase px-2 py-0.5 rounded-full">Ativo</span>
+        </div>
+
+        <Link to="/qualidade-ar/inea" className="p-5 bg-white border border-slate-100 rounded-2xl hover:border-slate-200 hover:shadow-sm transition-all block">
+          <strong className="text-sm font-black text-slate-800 block">Dados oficiais INEA</strong>
+          <p className="text-xs text-slate-500 mt-1">Estações oficiais de Volta Redonda na última base pública disponível.</p>
+          <span className="inline-block mt-3 text-[10px] text-slate-400 font-bold uppercase tracking-wider">Acessar painel &rarr;</span>
+        </Link>
+
+        <Link to="/qualidade-ar/inea/analises" className="p-5 bg-white border border-slate-100 rounded-2xl hover:border-slate-200 hover:shadow-sm transition-all block">
+          <strong className="text-sm font-black text-slate-800 block">Análises do INEA</strong>
+          <p className="text-xs text-slate-500 mt-1">Dias registrados como MODERADA ou pior, poluentes controladores e lacunas.</p>
+          <span className="inline-block mt-3 text-[10px] text-slate-400 font-bold uppercase tracking-wider">Ver análises &rarr;</span>
+        </Link>
+      </div>
+
+      {/* Card de Destaque do Radar do Ar INEA */}
+      <SurfaceCard className="border border-brand-primary/10 bg-slate-50/50 p-5 rounded-2xl md:p-6 transition-all hover:border-brand-primary/25">
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+          <div className="space-y-1.5 max-w-2xl">
+            <h3 className="text-sm font-black text-slate-800 uppercase tracking-wider">
+              Radar do Ar INEA
+            </h3>
+            <p className="text-sm text-slate-600 font-medium leading-relaxed">
+              Veja no mapa as estações oficiais de qualidade do ar em Volta Redonda, a série histórica disponível e as lacunas de transparência da base pública.
+            </p>
+            <p className="text-[10px] text-slate-400">
+              Fonte: INEA / Dados Abertos RJ — dados oficiais disponíveis em lote, não minuto a minuto.
+            </p>
+          </div>
+          <div className="flex flex-wrap gap-2 sm:self-center shrink-0">
+            <Link
+              to="/qualidade-ar/inea"
+              className="px-4 py-2 bg-brand-primary text-white font-bold rounded-xl hover:bg-brand-primary-dark transition-colors text-xs"
+            >
+              Abrir mapa do INEA
+            </Link>
+            <Link
+              to="/qualidade-ar/inea/historia"
+              className="px-4 py-2 border border-slate-200 bg-white text-slate-700 font-bold rounded-xl hover:bg-slate-50 transition-colors text-xs"
+            >
+              Ver história dos dados
+            </Link>
+            <Link
+              to="/qualidade-ar/inea/analises"
+              className="px-4 py-2 border border-slate-200 bg-white text-slate-700 font-bold rounded-xl hover:bg-slate-50 transition-colors text-xs"
+            >
+              Ver análises
+            </Link>
+          </div>
+        </div>
+      </SurfaceCard>
 
       <SurfaceCard className="data-hero overflow-hidden p-0">
         <div className="data-hero-grid">

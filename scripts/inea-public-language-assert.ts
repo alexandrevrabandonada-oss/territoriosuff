@@ -7,16 +7,28 @@ const visualFiles = [
   path.join(process.cwd(), 'src', 'pages', 'air', 'IneaRadarPage.tsx'),
   path.join(process.cwd(), 'src', 'pages', 'air', 'IneaStationPage.tsx'),
   path.join(process.cwd(), 'src', 'pages', 'air', 'IneaAnalyticsPage.tsx'),
+  path.join(process.cwd(), 'src', 'pages', 'air', 'IneaHistoryPage.tsx'),
   path.join(process.cwd(), 'src', 'components', 'air', 'MethodologyNotice.tsx'),
   path.join(process.cwd(), 'src', 'components', 'air', 'DataFreshnessNotice.tsx'),
-  path.join(process.cwd(), 'src', 'components', 'air', 'PublicInterpretationBox.tsx')
+  path.join(process.cwd(), 'src', 'components', 'air', 'PublicInterpretationBox.tsx'),
+  path.join(process.cwd(), 'src', 'components', 'air', 'IneaHistoricalTimeline.tsx'),
+  path.join(process.cwd(), 'src', 'components', 'air', 'AqiExplainer.tsx'),
+  path.join(process.cwd(), 'src', 'components', 'air', 'IneaStorySummaryCard.tsx')
 ];
 
-// 2. Specific and wildcard report files
 const reportFiles: string[] = [
   path.join(process.cwd(), 'reports', 'estado-da-nacao-inea-dashboard.md'),
   path.join(process.cwd(), 'reports', 'estado-da-nacao-inea-public-language.md'),
-  path.join(process.cwd(), 'reports', 'estado-da-nacao-inea-analytics.md')
+  path.join(process.cwd(), 'reports', 'estado-da-nacao-inea-analytics.md'),
+  path.join(process.cwd(), 'reports', 'estado-da-nacao-inea-visibilidade.md'),
+  path.join(process.cwd(), 'reports', 'estado-da-nacao-inea-historia.md'),
+  path.join(process.cwd(), 'reports', 'estado-da-nacao-inea-historia-editorial.md'),
+  path.join(process.cwd(), 'reports', 'post-instagram-historia-inea.md'),
+  path.join(process.cwd(), 'reports', 'thread-historia-inea.md'),
+  path.join(process.cwd(), 'reports', 'release-curto-historia-inea.md'),
+  path.join(process.cwd(), 'reports', 'cards-carrossel-historia-inea.md'),
+  path.join(process.cwd(), 'reports', 'estado-da-nacao-inea-divulgacao.md'),
+  path.join(process.cwd(), 'reports', 'estado-da-nacao-inea-divulgacao-final.md')
 ];
 
 const reportsDir = path.join(process.cwd(), 'reports');

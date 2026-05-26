@@ -128,12 +128,20 @@ export function IneaAnalyticsPage() {
               Camada analítica e diagnóstico das medições históricas de qualidade do ar em Volta Redonda.
             </p>
           </div>
-          <Link 
-            to="/qualidade-ar/inea"
-            className="inline-flex items-center gap-2 px-4 py-2 bg-emerald-600 text-white rounded-xl text-xs font-bold hover:bg-emerald-700 transition-all shadow-sm"
-          >
-            Voltar para o Painel Geral
-          </Link>
+          <div className="flex flex-wrap items-center gap-2">
+            <Link 
+              to="/qualidade-ar/inea/historia"
+              className="inline-flex items-center gap-2 px-4 py-2 border border-slate-200 bg-white text-slate-700 rounded-xl text-xs font-bold hover:bg-slate-50 transition-all shadow-sm"
+            >
+              Ver explicação didática
+            </Link>
+            <Link 
+              to="/qualidade-ar/inea"
+              className="inline-flex items-center gap-2 px-4 py-2 bg-emerald-600 text-white rounded-xl text-xs font-bold hover:bg-emerald-700 transition-all shadow-sm"
+            >
+              Voltar para o Painel Geral
+            </Link>
+          </div>
         </div>
       </div>
 

@@ -55,6 +55,7 @@ const RadarLandingPage = lazy(() => import("./pages/air/RadarLandingPage").then(
 const IneaRadarPage = lazy(() => import("./pages/air/IneaRadarPage").then((m) => ({ default: m.IneaRadarPage })));
 const IneaStationPage = lazy(() => import("./pages/air/IneaStationPage").then((m) => ({ default: m.IneaStationPage })));
 const IneaAnalyticsPage = lazy(() => import("./pages/air/IneaAnalyticsPage").then((m) => ({ default: m.IneaAnalyticsPage })));
+const IneaHistoryPage = lazy(() => import("./pages/air/IneaHistoryPage").then((m) => ({ default: m.IneaHistoryPage })));
 
 export default function App() {
   return (
@@ -76,6 +77,7 @@ export default function App() {
                   <Route path="/dados" element={<DadosPage />} />
                   <Route path="/qualidade-ar" element={<RadarLandingPage />} />
                   <Route path="/qualidade-ar/inea" element={<IneaRadarPage />} />
+                  <Route path="/qualidade-ar/inea/historia" element={<IneaHistoryPage />} />
                   <Route path="/qualidade-ar/inea/analises" element={<IneaAnalyticsPage />} />
                   <Route path="/qualidade-ar/inea/estacoes/:stationId" element={<IneaStationPage />} />
                   <Route path="/agenda" element={<AgendaPage />} />

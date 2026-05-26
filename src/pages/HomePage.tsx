@@ -283,6 +283,34 @@ export function HomePage() {
           <Link to="/dados" className="home-now-link">Ver todos os indicadores <span>+</span></Link>
         </section>
       </div>
+      {/* Banner de Destaque da História INEA */}
+      <div className="home-inea-history-banner my-8 p-6 md:p-8 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 border border-slate-700/50 rounded-[2rem] text-white shadow-xl relative overflow-hidden flex flex-col md:flex-row md:items-center gap-6 justify-between animate-fade-in">
+        <div className="absolute top-0 right-0 w-80 h-80 bg-brand-primary/10 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute bottom-0 left-0 w-60 h-60 bg-emerald-500/5 rounded-full blur-3xl pointer-events-none" />
+        
+        <div className="space-y-3 max-w-3xl relative z-10">
+          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest bg-emerald-500/10 text-emerald-400 border border-emerald-500/25">
+            Análise Especial
+          </span>
+          <h2 className="text-xl md:text-2xl font-black text-white leading-tight">
+            O que os dados oficiais revelam — e escondem — sobre o ar de Volta Redonda?
+          </h2>
+          <p className="text-sm text-slate-300 font-medium leading-relaxed">
+            Organizamos a base pública do INEA de 2022 a fevereiro de 2025. Ela mostra onde há leitura, onde há alerta e onde há silêncio.
+          </p>
+          <p className="text-[10px] text-slate-450">
+            * Base pública de índices e subíndices IQAr. Não representa leitura instantânea do ar e não é monitoramento minuto a minuto.
+          </p>
+        </div>
+        <div className="shrink-0 relative z-10">
+          <Link
+            to="/qualidade-ar/inea/historia"
+            className="inline-flex items-center justify-center min-h-[44px] px-6 py-3 bg-brand-primary hover:bg-brand-primary-dark text-white font-black uppercase tracking-[0.14em] text-xs rounded-xl shadow-lg shadow-brand-primary/20 transition-all hover:-translate-y-0.5"
+          >
+            Acessar história do ar &rarr;
+          </Link>
+        </div>
+      </div>
 
       <nav className="home-card-grid" aria-label="Principais áreas do portal">
         {navCards.map((card) => (
