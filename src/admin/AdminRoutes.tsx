@@ -21,6 +21,7 @@ const AdminAgendaInscriptionsPage = lazy(() => import("../pages/admin/AdminAgend
 const AdminReportsListPage = lazy(() => import("../pages/admin/AdminReportsListPage").then((m) => ({ default: m.AdminReportsListPage })));
 const AdminReportsEditPage = lazy(() => import("../pages/admin/AdminReportsEditPage").then((m) => ({ default: m.AdminReportsEditPage })));
 const AdminReportsInboxPage = lazy(() => import("../pages/admin/AdminReportsInboxPage").then((m) => ({ default: m.AdminReportsInboxPage })));
+const AdminIneaPage = lazy(() => import("../pages/admin/AdminIneaPage").then((m) => ({ default: m.AdminIneaPage })));
 
 function AdminShell() {
   return (
@@ -37,6 +38,7 @@ function AdminShell() {
           <Route path="relatorios/novo" element={<AdminReportsEditPage />} />
           <Route path="relatorios/:id" element={<AdminReportsEditPage />} />
           <Route path="relatos" element={<AdminReportsInboxPage />} />
+          <Route path="qualidade-ar/inea" element={<AdminIneaPage />} />
           <Route path="blog" element={<AdminBlogListPage />} />
           <Route path="blog/novo" element={<AdminBlogEditPage />} />
           <Route path="blog/:id" element={<AdminBlogEditPage />} />

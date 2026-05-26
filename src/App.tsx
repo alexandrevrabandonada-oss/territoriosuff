@@ -50,6 +50,12 @@ const ConversarDetailPage = lazy(() => import("./pages/conversar/ConversarDetail
 // Mapa lazy-loaded
 const MapaPage = lazy(() => import("./pages/MapaPage").then((m) => ({ default: m.MapaPage })));
 
+// Qualidade do Ar INEA lazy-loaded
+const RadarLandingPage = lazy(() => import("./pages/air/RadarLandingPage").then((m) => ({ default: m.RadarLandingPage })));
+const IneaRadarPage = lazy(() => import("./pages/air/IneaRadarPage").then((m) => ({ default: m.IneaRadarPage })));
+const IneaStationPage = lazy(() => import("./pages/air/IneaStationPage").then((m) => ({ default: m.IneaStationPage })));
+const IneaAnalyticsPage = lazy(() => import("./pages/air/IneaAnalyticsPage").then((m) => ({ default: m.IneaAnalyticsPage })));
+
 export default function App() {
   return (
     <>
@@ -68,6 +74,10 @@ export default function App() {
                   <Route path="/" element={<HomePage />} />
                   <Route path="/alertas" element={<AlertasPage />} />
                   <Route path="/dados" element={<DadosPage />} />
+                  <Route path="/qualidade-ar" element={<RadarLandingPage />} />
+                  <Route path="/qualidade-ar/inea" element={<IneaRadarPage />} />
+                  <Route path="/qualidade-ar/inea/analises" element={<IneaAnalyticsPage />} />
+                  <Route path="/qualidade-ar/inea/estacoes/:stationId" element={<IneaStationPage />} />
                   <Route path="/agenda" element={<AgendaPage />} />
                   <Route path="/conversar" element={<ConversarListPage />} />
                   <Route path="/conversar/:slug" element={<ConversarDetailPage />} />
