@@ -7,7 +7,6 @@ const links = [
   { href: "/", label: "Home" },
   { href: "/dados", label: "Dados" },
   { href: "/qualidade-ar/inea", label: "Radar INEA" },
-  { href: "/qualidade-ar/inea/historia", label: "História INEA" },
   { href: "/acervo", label: "Acervo" },
   { href: "/acervo/linha", label: "Linha do Tempo" },
   { href: "/relatorios", label: "Relatórios" },
@@ -23,7 +22,7 @@ const mobileGroups = [
       { href: "/", label: "Home" },
       { href: "/dados", label: "Dados" },
       { href: "/qualidade-ar/inea", label: "Radar INEA" },
-      { href: "/qualidade-ar/inea/historia", label: "História INEA" },
+      { href: "/qualidade-ar/inea#historia", label: "História INEA" },
       { href: "/qualidade-ar/inea/analises", label: "Análises INEA" },
       { href: "/agenda", label: "Agenda" },
       { href: "/conversar", label: "Conversas e atividades" }

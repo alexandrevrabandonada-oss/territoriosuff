@@ -304,7 +304,7 @@ export function HomePage() {
         </div>
         <div className="shrink-0 relative z-10">
           <Link
-            to="/qualidade-ar/inea/historia"
+            to="/qualidade-ar/inea"
             className="inline-flex items-center justify-center min-h-[44px] px-6 py-3 bg-brand-primary hover:bg-brand-primary-dark text-white font-black uppercase tracking-[0.14em] text-xs rounded-xl shadow-lg shadow-brand-primary/20 transition-all hover:-translate-y-0.5"
           >
             Acessar história do ar &rarr;

@@ -28,7 +28,8 @@ const reportFiles: string[] = [
   path.join(process.cwd(), 'reports', 'release-curto-historia-inea.md'),
   path.join(process.cwd(), 'reports', 'cards-carrossel-historia-inea.md'),
   path.join(process.cwd(), 'reports', 'estado-da-nacao-inea-divulgacao.md'),
-  path.join(process.cwd(), 'reports', 'estado-da-nacao-inea-divulgacao-final.md')
+  path.join(process.cwd(), 'reports', 'estado-da-nacao-inea-divulgacao-final.md'),
+  path.join(process.cwd(), 'reports', 'estado-da-nacao-inea-unificacao.md')
 ];
 
 const reportsDir = path.join(process.cwd(), 'reports');
