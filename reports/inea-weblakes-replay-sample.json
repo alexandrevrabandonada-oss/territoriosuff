@@ -1,0 +1,1177 @@
+[
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_TABULAR",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "18",
+    "pollutant": "PM10",
+    "datetime": "2024-07-17T00:00:00",
+    "value": 25.302303270234,
+    "unit": "µg/m³",
+    "qaqc": null,
+    "raw": {
+      "id": 1,
+      "cell": [
+        1,
+        "",
+        "<span data-value='2024-07-17T00:00:00'>17-jul-2024, 00:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000025,3023032702340000'>25,30</span>",
+        "<span data-value='0000000000000000,9138763855563270'>0,9</span>",
+        "<span data-value='0000000000000025,2011762194820000'>25</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_TABULAR",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "18",
+    "pollutant": "PM10",
+    "datetime": "2024-07-17T01:00:00",
+    "value": 26.7273532878028,
+    "unit": "µg/m³",
+    "qaqc": null,
+    "raw": {
+      "id": 2,
+      "cell": [
+        2,
+        "",
+        "<span data-value='2024-07-17T01:00:00'>17-jul-2024, 01:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000026,7273532878028000'>26,73</span>",
+        "<span data-value='0000000000000000,9622050982051430'>1,0</span>",
+        "<span data-value='0000000000000081,8526378049364000'>82</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_TABULAR",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "18",
+    "pollutant": "PM10",
+    "datetime": "2024-07-17T02:00:00",
+    "value": 25.2949852519565,
+    "unit": "µg/m³",
+    "qaqc": null,
+    "raw": {
+      "id": 3,
+      "cell": [
+        3,
+        "",
+        "<span data-value='2024-07-17T02:00:00'>17-jul-2024, 02:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000025,2949852519565000'>25,29</span>",
+        "<span data-value='0000000000000000,9065486638330750'>0,9</span>",
+        "<span data-value='0000000000000078,4034057000558000'>78</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_TABULAR",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "18",
+    "pollutant": "PM10",
+    "datetime": "2024-07-17T03:00:00",
+    "value": 29.9321401823892,
+    "unit": "µg/m³",
+    "qaqc": null,
+    "raw": {
+      "id": 4,
+      "cell": [
+        4,
+        "",
+        "<span data-value='2024-07-17T03:00:00'>17-jul-2024, 03:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000029,9321401823892000'>29,93</span>",
+        "<span data-value='0000000000000000,6515451897597970'>0,7</span>",
+        "<span data-value='0000000000000064,6830130986047000'>65</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_TABULAR",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "18",
+    "pollutant": "PM10",
+    "datetime": "2024-07-17T04:00:00",
+    "value": 31.8485580624474,
+    "unit": "µg/m³",
+    "qaqc": null,
+    "raw": {
+      "id": 5,
+      "cell": [
+        5,
+        "",
+        "<span data-value='2024-07-17T04:00:00'>17-jul-2024, 04:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000031,8485580624474000'>31,85</span>",
+        "<span data-value='0000000000000001,0572300211009100'>1,1</span>",
+        "<span data-value='0000000000000063,3227987869261000'>63</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_TABULAR",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "18",
+    "pollutant": "PM10",
+    "datetime": "2024-07-17T05:00:00",
+    "value": 31.0938516595629,
+    "unit": "µg/m³",
+    "qaqc": null,
+    "raw": {
+      "id": 6,
+      "cell": [
+        6,
+        "",
+        "<span data-value='2024-07-17T05:00:00'>17-jul-2024, 05:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000031,0938516595629000'>31,09</span>",
+        "<span data-value='0000000000000000,9651452151106460'>1,0</span>",
+        "<span data-value='0000000000000083,5613281763778000'>84</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_TABULAR",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "18",
+    "pollutant": "PM10",
+    "datetime": "2024-07-17T06:00:00",
+    "value": 37.8984881379869,
+    "unit": "µg/m³",
+    "qaqc": null,
+    "raw": {
+      "id": 7,
+      "cell": [
+        7,
+        "",
+        "<span data-value='2024-07-17T06:00:00'>17-jul-2024, 06:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000037,8984881379869000'>37,90</span>",
+        "<span data-value='0000000000000000,6603651143858830'>0,7</span>",
+        "<span data-value='0000000000000087,7871553250196000'>88</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_TABULAR",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "18",
+    "pollutant": "PM10",
+    "datetime": "2024-07-17T07:00:00",
+    "value": 38.5653986167908,
+    "unit": "µg/m³",
+    "qaqc": null,
+    "raw": {
+      "id": 8,
+      "cell": [
+        8,
+        "",
+        "<span data-value='2024-07-17T07:00:00'>17-jul-2024, 07:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000038,5653986167908000'>38,57</span>",
+        "<span data-value='0000000000000000,8129527906825140'>0,8</span>",
+        "<span data-value='0000000000000063,2684052503609000'>63</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_TABULAR",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "18",
+    "pollutant": "PM10",
+    "datetime": "2024-07-17T08:00:00",
+    "value": 39.217320210139,
+    "unit": "µg/m³",
+    "qaqc": null,
+    "raw": {
+      "id": 9,
+      "cell": [
+        9,
+        "",
+        "<span data-value='2024-07-17T08:00:00'>17-jul-2024, 08:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000039,2173202101390000'>39,22</span>",
+        "<span data-value='0000000000000000,6694927660955320'>0,7</span>",
+        "<span data-value='0000000000000054,4041667780979000'>54</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_TABULAR",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "18",
+    "pollutant": "PM10",
+    "datetime": "2024-07-17T09:00:00",
+    "value": 36.0225044775009,
+    "unit": "µg/m³",
+    "qaqc": null,
+    "raw": {
+      "id": 10,
+      "cell": [
+        10,
+        "",
+        "<span data-value='2024-07-17T09:00:00'>17-jul-2024, 09:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000036,0225044775009000'>36,02</span>",
+        "<span data-value='0000000000000000,8085251313034030'>0,8</span>",
+        "<span data-value='0000000000000072,6752993578655000'>73</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_TABULAR",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "18",
+    "pollutant": "PM10",
+    "datetime": "2024-07-17T10:00:00",
+    "value": 32.4931689495511,
+    "unit": "µg/m³",
+    "qaqc": null,
+    "raw": {
+      "id": 11,
+      "cell": [
+        11,
+        "",
+        "<span data-value='2024-07-17T10:00:00'>17-jul-2024, 10:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000032,4931689495511000'>32,49</span>",
+        "<span data-value='0000000000000001,3908536994540000'>1,4</span>",
+        "<span data-value='0000000000000066,2386654444743000'>66</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_TABULAR",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "18",
+    "pollutant": "PM10",
+    "datetime": "2024-07-17T11:00:00",
+    "value": 31.1689031860563,
+    "unit": "µg/m³",
+    "qaqc": null,
+    "raw": {
+      "id": 12,
+      "cell": [
+        12,
+        "",
+        "<span data-value='2024-07-17T11:00:00'>17-jul-2024, 11:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000031,1689031860563000'>31,17</span>",
+        "<span data-value='0000000000000001,5229925912121900'>1,5</span>",
+        "<span data-value='0000000000000317,0756870474220000'>317</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_TABULAR",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "18",
+    "pollutant": "PM10",
+    "datetime": "2024-07-17T12:00:00",
+    "value": 31.7044247266981,
+    "unit": "µg/m³",
+    "qaqc": null,
+    "raw": {
+      "id": 13,
+      "cell": [
+        13,
+        "",
+        "<span data-value='2024-07-17T12:00:00'>17-jul-2024, 12:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000031,7044247266981000'>31,70</span>",
+        "<span data-value='0000000000000001,4373564169721500'>1,4</span>",
+        "<span data-value='0000000000000223,0688479445690000'>223</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_TABULAR",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "18",
+    "pollutant": "PM10",
+    "datetime": "2024-07-17T13:00:00",
+    "value": 37.4108601082696,
+    "unit": "µg/m³",
+    "qaqc": null,
+    "raw": {
+      "id": 14,
+      "cell": [
+        14,
+        "",
+        "<span data-value='2024-07-17T13:00:00'>17-jul-2024, 13:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000037,4108601082696000'>37,41</span>",
+        "<span data-value='0000000000000001,5247783210294100'>1,5</span>",
+        "<span data-value='0000000000000191,3416370682480000'>191</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_TABULAR",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "18",
+    "pollutant": "PM10",
+    "datetime": "2024-07-17T14:00:00",
+    "value": 41.6934450827705,
+    "unit": "µg/m³",
+    "qaqc": null,
+    "raw": {
+      "id": 15,
+      "cell": [
+        15,
+        "",
+        "<span data-value='2024-07-17T14:00:00'>17-jul-2024, 14:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000041,6934450827705000'>41,69</span>",
+        "<span data-value='0000000000000001,4612037253462600'>1,5</span>",
+        "<span data-value='0000000000000270,8936108698010000'>271</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_TABULAR",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "18",
+    "pollutant": "PM10",
+    "datetime": "2024-07-17T15:00:00",
+    "value": 42.0459470717112,
+    "unit": "µg/m³",
+    "qaqc": null,
+    "raw": {
+      "id": 16,
+      "cell": [
+        16,
+        "",
+        "<span data-value='2024-07-17T15:00:00'>17-jul-2024, 15:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000042,0459470717112000'>42,05</span>",
+        "<span data-value='0000000000000001,1851419516570000'>1,2</span>",
+        "<span data-value='0000000000000056,7741706069363000'>57</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_TABULAR",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "18",
+    "pollutant": "PM10",
+    "datetime": "2024-07-17T16:00:00",
+    "value": 37.2774493291643,
+    "unit": "µg/m³",
+    "qaqc": null,
+    "raw": {
+      "id": 17,
+      "cell": [
+        17,
+        "",
+        "<span data-value='2024-07-17T16:00:00'>17-jul-2024, 16:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000037,2774493291643000'>37,28</span>",
+        "<span data-value='0000000000000001,0289200851569600'>1,0</span>",
+        "<span data-value='0000000000000355,0217396996160000'>355</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_TABULAR",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "18",
+    "pollutant": "PM10",
+    "datetime": "2024-07-17T17:00:00",
+    "value": 57.6781472333272,
+    "unit": "µg/m³",
+    "qaqc": null,
+    "raw": {
+      "id": 18,
+      "cell": [
+        18,
+        "",
+        "<span data-value='2024-07-17T17:00:00'>17-jul-2024, 17:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000057,6781472333272000'>57,68</span>",
+        "<span data-value='0000000000000001,3279526202711800'>1,3</span>",
+        "<span data-value='0000000000000354,3221191092430000'>354</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_TABULAR",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "18",
+    "pollutant": "PM10",
+    "datetime": "2024-07-17T18:00:00",
+    "value": 53.6939954598745,
+    "unit": "µg/m³",
+    "qaqc": null,
+    "raw": {
+      "id": 19,
+      "cell": [
+        19,
+        "",
+        "<span data-value='2024-07-17T18:00:00'>17-jul-2024, 18:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000053,6939954598745000'>53,69</span>",
+        "<span data-value='0000000000000000,9316535697794620'>0,9</span>",
+        "<span data-value='0000000000000059,0482281380003000'>59</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_TABULAR",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "18",
+    "pollutant": "PM10",
+    "datetime": "2024-07-17T19:00:00",
+    "value": 51.5246175204383,
+    "unit": "µg/m³",
+    "qaqc": null,
+    "raw": {
+      "id": 20,
+      "cell": [
+        20,
+        "",
+        "<span data-value='2024-07-17T19:00:00'>17-jul-2024, 19:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000051,5246175204383000'>51,52</span>",
+        "<span data-value='0000000000000001,2224150789363500'>1,2</span>",
+        "<span data-value='0000000000000071,9230812086487000'>72</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_TABULAR",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "18",
+    "pollutant": "PM10",
+    "datetime": "2024-07-17T20:00:00",
+    "value": 43.7677336258358,
+    "unit": "µg/m³",
+    "qaqc": null,
+    "raw": {
+      "id": 21,
+      "cell": [
+        21,
+        "",
+        "<span data-value='2024-07-17T20:00:00'>17-jul-2024, 20:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000043,7677336258358000'>43,77</span>",
+        "<span data-value='0000000000000001,2008642535160000'>1,2</span>",
+        "<span data-value='0000000000000089,3826103717330000'>89</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_TABULAR",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "18",
+    "pollutant": "PM10",
+    "datetime": "2024-07-17T21:00:00",
+    "value": 43.7285472986433,
+    "unit": "µg/m³",
+    "qaqc": null,
+    "raw": {
+      "id": 22,
+      "cell": [
+        22,
+        "",
+        "<span data-value='2024-07-17T21:00:00'>17-jul-2024, 21:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000043,7285472986433000'>43,73</span>",
+        "<span data-value='0000000000000001,2781626445882800'>1,3</span>",
+        "<span data-value='0000000000000086,0881409217892000'>86</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_TABULAR",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "18",
+    "pollutant": "PM10",
+    "datetime": "2024-07-17T22:00:00",
+    "value": 35.1311734400855,
+    "unit": "µg/m³",
+    "qaqc": null,
+    "raw": {
+      "id": 23,
+      "cell": [
+        23,
+        "",
+        "<span data-value='2024-07-17T22:00:00'>17-jul-2024, 22:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000035,1311734400855000'>35,13</span>",
+        "<span data-value='0000000000000001,3029526210824600'>1,3</span>",
+        "<span data-value='0000000000000097,3618317371873000'>97</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_TABULAR",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "18",
+    "pollutant": "PM10",
+    "datetime": "2024-07-17T23:00:00",
+    "value": 26.7531384907828,
+    "unit": "µg/m³",
+    "qaqc": null,
+    "raw": {
+      "id": 24,
+      "cell": [
+        24,
+        "",
+        "<span data-value='2024-07-17T23:00:00'>17-jul-2024, 23:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000026,7531384907828000'>26,75</span>",
+        "<span data-value='0000000000000001,1850107663952600'>1,2</span>",
+        "<span data-value='0000000000000097,2867721481030000'>97</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_TABULAR",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "18",
+    "pollutant": "PM10",
+    "datetime": "2024-07-18T00:00:00",
+    "value": 25.2023266564475,
+    "unit": "µg/m³",
+    "qaqc": null,
+    "raw": {
+      "id": 25,
+      "cell": [
+        25,
+        "",
+        "<span data-value='2024-07-18T00:00:00'>18-jul-2024, 00:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000025,2023266564475000'>25,20</span>",
+        "<span data-value='0000000000000001,3354435297929600'>1,3</span>",
+        "<span data-value='0000000000000097,8052128067122000'>98</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_TABULAR",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "18",
+    "pollutant": "PM10",
+    "datetime": "2024-07-18T01:00:00",
+    "value": 29.4136639738083,
+    "unit": "µg/m³",
+    "qaqc": null,
+    "raw": {
+      "id": 26,
+      "cell": [
+        26,
+        "",
+        "<span data-value='2024-07-18T01:00:00'>18-jul-2024, 01:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000029,4136639738083000'>29,41</span>",
+        "<span data-value='0000000000000001,1016441595306000'>1,1</span>",
+        "<span data-value='0000000000000099,1624129030361000'>99</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_TABULAR",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "18",
+    "pollutant": "PM10",
+    "datetime": "2024-07-18T02:00:00",
+    "value": 25.1236779822244,
+    "unit": "µg/m³",
+    "qaqc": null,
+    "raw": {
+      "id": 27,
+      "cell": [
+        27,
+        "",
+        "<span data-value='2024-07-18T02:00:00'>18-jul-2024, 02:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000025,1236779822244000'>25,12</span>",
+        "<span data-value='0000000000000000,9669714233030880'>1,0</span>",
+        "<span data-value='0000000000000105,7103532400800000'>106</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_TABULAR",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "18",
+    "pollutant": "PM10",
+    "datetime": "2024-07-18T03:00:00",
+    "value": 20.0714252010981,
+    "unit": "µg/m³",
+    "qaqc": null,
+    "raw": {
+      "id": 28,
+      "cell": [
+        28,
+        "",
+        "<span data-value='2024-07-18T03:00:00'>18-jul-2024, 03:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000020,0714252010981000'>20,07</span>",
+        "<span data-value='0000000000000001,0122190851552600'>1,0</span>",
+        "<span data-value='0000000000000105,3681837046060000'>105</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_TABULAR",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "18",
+    "pollutant": "PM10",
+    "datetime": "2024-07-18T04:00:00",
+    "value": 23.5076329480277,
+    "unit": "µg/m³",
+    "qaqc": null,
+    "raw": {
+      "id": 29,
+      "cell": [
+        29,
+        "",
+        "<span data-value='2024-07-18T04:00:00'>18-jul-2024, 04:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000023,5076329480277000'>23,51</span>",
+        "<span data-value='0000000000000001,1152064625587700'>1,1</span>",
+        "<span data-value='0000000000000095,3108401389089000'>95</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_TABULAR",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "18",
+    "pollutant": "PM10",
+    "datetime": "2024-07-18T05:00:00",
+    "value": 28.0415076700846,
+    "unit": "µg/m³",
+    "qaqc": null,
+    "raw": {
+      "id": 30,
+      "cell": [
+        30,
+        "",
+        "<span data-value='2024-07-18T05:00:00'>18-jul-2024, 05:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000028,0415076700846000'>28,04</span>",
+        "<span data-value='0000000000000000,9635095325195130'>1,0</span>",
+        "<span data-value='0000000000000102,9143066070950000'>103</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_TABULAR",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "18",
+    "pollutant": "PM10",
+    "datetime": "2024-07-18T06:00:00",
+    "value": 29.3501739252938,
+    "unit": "µg/m³",
+    "qaqc": null,
+    "raw": {
+      "id": 31,
+      "cell": [
+        31,
+        "",
+        "<span data-value='2024-07-18T06:00:00'>18-jul-2024, 06:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000029,3501739252938000'>29,35</span>",
+        "<span data-value='0000000000000001,2410967843565700'>1,2</span>",
+        "<span data-value='0000000000000103,3531404010170000'>103</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_TABULAR",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "18",
+    "pollutant": "PM10",
+    "datetime": "2024-07-18T07:00:00",
+    "value": 56.8628177690506,
+    "unit": "µg/m³",
+    "qaqc": null,
+    "raw": {
+      "id": 32,
+      "cell": [
+        32,
+        "",
+        "<span data-value='2024-07-18T07:00:00'>18-jul-2024, 07:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000056,8628177690506000'>56,86</span>",
+        "<span data-value='0000000000000000,5947987930311100'>0,6</span>",
+        "<span data-value='0000000000000094,1462619919955000'>94</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_TABULAR",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "18",
+    "pollutant": "PM10",
+    "datetime": "2024-07-18T08:00:00",
+    "value": 46.8612924893697,
+    "unit": "µg/m³",
+    "qaqc": null,
+    "raw": {
+      "id": 33,
+      "cell": [
+        33,
+        "",
+        "<span data-value='2024-07-18T08:00:00'>18-jul-2024, 08:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000046,8612924893697000'>46,86</span>",
+        "<span data-value='0000000000000000,8284108150998750'>0,8</span>",
+        "<span data-value='0000000000000218,6783062477320000'>219</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_TABULAR",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "18",
+    "pollutant": "PM10",
+    "datetime": "2024-07-18T09:00:00",
+    "value": 45.3647735214233,
+    "unit": "µg/m³",
+    "qaqc": null,
+    "raw": {
+      "id": 34,
+      "cell": [
+        34,
+        "",
+        "<span data-value='2024-07-18T09:00:00'>18-jul-2024, 09:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000045,3647735214233000'>45,36</span>",
+        "<span data-value='0000000000000001,1851682299706700'>1,2</span>",
+        "<span data-value='0000000000000174,3414636952150000'>174</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_TABULAR",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "18",
+    "pollutant": "PM10",
+    "datetime": "2024-07-18T10:00:00",
+    "value": 37.7231974983215,
+    "unit": "µg/m³",
+    "qaqc": null,
+    "raw": {
+      "id": 35,
+      "cell": [
+        35,
+        "",
+        "<span data-value='2024-07-18T10:00:00'>18-jul-2024, 10:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000037,7231974983215000'>37,72</span>",
+        "<span data-value='0000000000000001,1465412885116200'>1,1</span>",
+        "<span data-value='0000000000000203,2506306543030000'>203</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_TABULAR",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "18",
+    "pollutant": "PM10",
+    "datetime": "2024-07-18T11:00:00",
+    "value": 32.448558555709,
+    "unit": "µg/m³",
+    "qaqc": null,
+    "raw": {
+      "id": 36,
+      "cell": [
+        36,
+        "",
+        "<span data-value='2024-07-18T11:00:00'>18-jul-2024, 11:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000032,4485585557090000'>32,45</span>",
+        "<span data-value='0000000000000001,4017939953423200'>1,4</span>",
+        "<span data-value='0000000000000077,9044128859657000'>78</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_TABULAR",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "18",
+    "pollutant": "PM10",
+    "datetime": "2024-07-18T13:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "qaqc": null,
+    "raw": {
+      "id": 37,
+      "cell": [
+        37,
+        "",
+        "<span data-value='2024-07-18T13:00:00'>18-jul-2024, 13:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000001,6678435207572200'>1,7</span>",
+        "<span data-value='0000000000000168,2336133512440000'>168</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_TABULAR",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "18",
+    "pollutant": "PM10",
+    "datetime": "2024-07-18T14:00:00",
+    "value": 36.229653840065,
+    "unit": "µg/m³",
+    "qaqc": null,
+    "raw": {
+      "id": 38,
+      "cell": [
+        38,
+        "",
+        "<span data-value='2024-07-18T14:00:00'>18-jul-2024, 14:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000036,2296538400650000'>36,23</span>",
+        "<span data-value='0000000000000001,7777907070600300'>1,8</span>",
+        "<span data-value='0000000000000148,5679979894900000'>149</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_TABULAR",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "18",
+    "pollutant": "PM10",
+    "datetime": "2024-07-18T15:00:00",
+    "value": 145.846750077142,
+    "unit": "µg/m³",
+    "qaqc": null,
+    "raw": {
+      "id": 39,
+      "cell": [
+        39,
+        "",
+        "<span data-value='2024-07-18T15:00:00'>18-jul-2024, 15:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000145,8467500771420000'>145,85</span>",
+        "<span data-value='0000000000000002,9746541267799000'>3,0</span>",
+        "<span data-value='0000000000000116,6182606162070000'>117</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_TABULAR",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "18",
+    "pollutant": "PM10",
+    "datetime": "2024-07-18T16:00:00",
+    "value": 107.051063043806,
+    "unit": "µg/m³",
+    "qaqc": null,
+    "raw": {
+      "id": 40,
+      "cell": [
+        40,
+        "",
+        "<span data-value='2024-07-18T16:00:00'>18-jul-2024, 16:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000107,0510630438060000'>107,05</span>",
+        "<span data-value='0000000000000002,8916660290459800'>2,9</span>",
+        "<span data-value='0000000000000115,2638622915820000'>115</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_TABULAR",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "18",
+    "pollutant": "PM10",
+    "datetime": "2024-07-18T17:00:00",
+    "value": 64.9885025702582,
+    "unit": "µg/m³",
+    "qaqc": null,
+    "raw": {
+      "id": 41,
+      "cell": [
+        41,
+        "",
+        "<span data-value='2024-07-18T17:00:00'>18-jul-2024, 17:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000064,9885025702582000'>64,99</span>",
+        "<span data-value='0000000000000002,6467504652589600'>2,6</span>",
+        "<span data-value='0000000000000041,7846794146118000'>42</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_TABULAR",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "18",
+    "pollutant": "PM10",
+    "datetime": "2024-07-18T18:00:00",
+    "value": 42.5981793567869,
+    "unit": "µg/m³",
+    "qaqc": null,
+    "raw": {
+      "id": 42,
+      "cell": [
+        42,
+        "",
+        "<span data-value='2024-07-18T18:00:00'>18-jul-2024, 18:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000042,5981793567869000'>42,60</span>",
+        "<span data-value='0000000000000002,5528214347031400'>2,6</span>",
+        "<span data-value='0000000000000102,4575792144630000'>102</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_TABULAR",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "18",
+    "pollutant": "PM10",
+    "datetime": "2024-07-18T19:00:00",
+    "value": 25.6264821179708,
+    "unit": "µg/m³",
+    "qaqc": null,
+    "raw": {
+      "id": 43,
+      "cell": [
+        43,
+        "",
+        "<span data-value='2024-07-18T19:00:00'>18-jul-2024, 19:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000025,6264821179708000'>25,63</span>",
+        "<span data-value='0000000000000002,1819557835492800'>2,2</span>",
+        "<span data-value='0000000000000082,8572294728309000'>83</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_TABULAR",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "18",
+    "pollutant": "PM10",
+    "datetime": "2024-07-18T20:00:00",
+    "value": 22.9879522779253,
+    "unit": "µg/m³",
+    "qaqc": null,
+    "raw": {
+      "id": 44,
+      "cell": [
+        44,
+        "",
+        "<span data-value='2024-07-18T20:00:00'>18-jul-2024, 20:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000022,9879522779253000'>22,99</span>",
+        "<span data-value='0000000000000002,0295573612964800'>2,0</span>",
+        "<span data-value='0000000000000074,3218882651017000'>74</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_TABULAR",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "18",
+    "pollutant": "PM10",
+    "datetime": "2024-07-18T21:00:00",
+    "value": 25.0434331385295,
+    "unit": "µg/m³",
+    "qaqc": null,
+    "raw": {
+      "id": 45,
+      "cell": [
+        45,
+        "",
+        "<span data-value='2024-07-18T21:00:00'>18-jul-2024, 21:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000025,0434331385295000'>25,04</span>",
+        "<span data-value='0000000000000001,6839309773759700'>1,7</span>",
+        "<span data-value='0000000000000079,8684902740331000'>80</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_TABULAR",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "18",
+    "pollutant": "PM10",
+    "datetime": "2024-07-18T22:00:00",
+    "value": 22.2290939505895,
+    "unit": "µg/m³",
+    "qaqc": null,
+    "raw": {
+      "id": 46,
+      "cell": [
+        46,
+        "",
+        "<span data-value='2024-07-18T22:00:00'>18-jul-2024, 22:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000022,2290939505895000'>22,23</span>",
+        "<span data-value='0000000000000001,7778602181043900'>1,8</span>",
+        "<span data-value='0000000000000073,7157591266519000'>74</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_TABULAR",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "18",
+    "pollutant": "PM10",
+    "datetime": "2024-07-18T23:00:00",
+    "value": 19.0313690959083,
+    "unit": "µg/m³",
+    "qaqc": null,
+    "raw": {
+      "id": 47,
+      "cell": [
+        47,
+        "",
+        "<span data-value='2024-07-18T23:00:00'>18-jul-2024, 23:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000019,0313690959083000'>19,03</span>",
+        "<span data-value='0000000000000001,0247865850478400'>1,0</span>",
+        "<span data-value='0000000000000104,6533643483170000'>105</span>"
+      ]
+    }
+  }
+]
