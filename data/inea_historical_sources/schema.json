@@ -1,0 +1,96 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "IneaHistoricalRawSourceSchema",
+  "type": "object",
+  "properties": {
+    "source_id": {
+      "type": "string",
+      "description": "Unique identifier for the historical source"
+    },
+    "source_title": {
+      "type": "string",
+      "description": "Title of the source document"
+    },
+    "source_type": {
+      "type": "string",
+      "enum": ["INEA_REPORT", "IEMA_DIAGNOSTIC", "SCIENTIFIC_ARTICLE", "DISSERTATION"],
+      "description": "Category of the source document"
+    },
+    "source_url": {
+      "type": "string",
+      "format": "uri",
+      "description": "Public URL or DOI of the source document"
+    },
+    "station_name": {
+      "type": "string",
+      "description": "Name of the measuring station"
+    },
+    "pollutant": {
+      "type": "string",
+      "enum": ["PM10", "PM25", "PTS", "SO2", "NO2", "O3", "CO"],
+      "description": "Chemical/physical pollutant"
+    },
+    "metric": {
+      "type": "string",
+      "enum": ["ANNUAL_MEAN", "DAILY_MAX", "HOURLY_MAX", "DAILY_MEAN_SUMMARY", "OMS_EXCEEDANCE_COUNT"],
+      "description": "The statistical or physical aggregation metric"
+    },
+    "year": {
+      "type": ["integer", "null"],
+      "description": "Specific year of the measurement, if applicable"
+    },
+    "period_start": {
+      "type": ["string", "null"],
+      "format": "date",
+      "description": "Start date of the measurement period in YYYY-MM-DD format"
+    },
+    "period_end": {
+      "type": ["string", "null"],
+      "format": "date",
+      "description": "End date of the measurement period in YYYY-MM-DD format"
+    },
+    "value": {
+      "type": "number",
+      "description": "The numeric value of the concentration or count"
+    },
+    "unit": {
+      "type": "string",
+      "enum": ["µg/m³", "ppm", "count"],
+      "description": "Measurement unit"
+    },
+    "representativeness": {
+      "type": "string",
+      "enum": ["REPRESENTATIVE", "NON_REPRESENTATIVE", "UNKNOWN"],
+      "description": "Quality representativeness flag under regulatory standards"
+    },
+    "extraction_method": {
+      "type": "string",
+      "enum": ["MANUAL", "PDF_TABLE", "OCR", "ARTICLE_TEXT"],
+      "description": "How the data point was retrieved from the source"
+    },
+    "confidence": {
+      "type": "string",
+      "enum": ["HIGH", "MEDIUM", "LOW"],
+      "description": "Confidence level in the accuracy of the extraction"
+    },
+    "notes": {
+      "type": "string",
+      "description": "Explanatory notes"
+    }
+  },
+  "required": [
+    "source_id",
+    "source_title",
+    "source_type",
+    "source_url",
+    "station_name",
+    "pollutant",
+    "metric",
+    "value",
+    "unit",
+    "representativeness",
+    "extraction_method",
+    "confidence"
+  ],
+  "additionalProperties": false
+}

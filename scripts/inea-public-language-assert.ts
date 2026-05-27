@@ -13,7 +13,8 @@ const visualFiles = [
   path.join(process.cwd(), 'src', 'components', 'air', 'PublicInterpretationBox.tsx'),
   path.join(process.cwd(), 'src', 'components', 'air', 'IneaHistoricalTimeline.tsx'),
   path.join(process.cwd(), 'src', 'components', 'air', 'AqiExplainer.tsx'),
-  path.join(process.cwd(), 'src', 'components', 'air', 'IneaStorySummaryCard.tsx')
+  path.join(process.cwd(), 'src', 'components', 'air', 'IneaStorySummaryCard.tsx'),
+  path.join(process.cwd(), 'src', 'components', 'air', 'HistoricalRawEvidenceBox.tsx')
 ];
 
 const reportFiles: string[] = [
@@ -29,7 +30,9 @@ const reportFiles: string[] = [
   path.join(process.cwd(), 'reports', 'cards-carrossel-historia-inea.md'),
   path.join(process.cwd(), 'reports', 'estado-da-nacao-inea-divulgacao.md'),
   path.join(process.cwd(), 'reports', 'estado-da-nacao-inea-divulgacao-final.md'),
-  path.join(process.cwd(), 'reports', 'estado-da-nacao-inea-unificacao.md')
+  path.join(process.cwd(), 'reports', 'estado-da-nacao-inea-unificacao.md'),
+  path.join(process.cwd(), 'reports', 'inea-fontes-dados-brutos-publicos.md'),
+  path.join(process.cwd(), 'reports', 'estado-da-nacao-inea-dados-brutos-publicos.md')
 ];
 
 const reportsDir = path.join(process.cwd(), 'reports');
@@ -80,7 +83,11 @@ async function runLanguageScan() {
       const lowerLine = line.toLowerCase();
       
       for (const term of FORBIDDEN_TERMS) {
-        if (lowerLine.includes(term)) {
+        const matchesTerm = term === 'live'
+          ? (/\blive\b/i).test(line)
+          : lowerLine.includes(term);
+
+        if (matchesTerm) {
           // Check if it has an exception marker
           const hasException = EXCEPTION_MARKERS.some(marker => lowerLine.includes(marker));
           

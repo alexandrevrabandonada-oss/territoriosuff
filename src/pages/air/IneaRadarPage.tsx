@@ -10,6 +10,7 @@ import { DataFreshnessNotice } from "../../components/air/DataFreshnessNotice";
 import { AqiChart } from "../../components/air/AqiChart";
 import { IneaHistoricalTimeline } from "../../components/air/IneaHistoricalTimeline";
 import { AqiExplainer } from "../../components/air/AqiExplainer";
+import { HistoricalRawEvidenceBox } from "../../components/air/HistoricalRawEvidenceBox";
 
 // Fix default Leaflet marker icons in React
 import markerIcon2x from "leaflet/dist/images/marker-icon-2x.png";
@@ -676,6 +677,9 @@ export function IneaRadarPage() {
         <AqiExplainer />
       </section>
 
+      {/* Evidências históricas de dados brutos */}
+      <HistoricalRawEvidenceBox />
+
       {/* 7. Seção com âncora #alertas (Quando o alerta apareceu) */}
       <section id="alertas" className="space-y-6 pt-4">
         <div className="space-y-2">
@@ -858,7 +862,7 @@ export function IneaRadarPage() {
       {/* 11. Seção "O que ainda precisamos cobrar" */}
       <section className="space-y-4">
         <h2 className="text-lg font-black text-slate-800">O que ainda precisamos cobrar</h2>
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
+        <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6">
           <SurfaceCard className="p-4 border border-slate-100 bg-slate-50/50 rounded-xl space-y-2">
             <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Demanda 1</span>
             <p className="text-xs text-slate-700 font-bold leading-relaxed">
@@ -891,6 +895,13 @@ export function IneaRadarPage() {
             <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Demanda 5</span>
             <p className="text-xs text-slate-700 font-bold leading-relaxed">
               API pública documentada para consulta histórica.
+            </p>
+          </SurfaceCard>
+
+          <SurfaceCard className="p-4 border border-slate-100 bg-slate-50/50 rounded-xl space-y-2">
+            <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Demanda 6</span>
+            <p className="text-xs text-slate-700 font-bold leading-relaxed">
+              Publicação da série horária e diária completa que já foi usada em relatórios e pesquisas.
             </p>
           </SurfaceCard>
         </div>
