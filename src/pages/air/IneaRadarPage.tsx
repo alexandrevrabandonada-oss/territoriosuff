@@ -105,6 +105,8 @@ Especificamente, requerem-se as informações conforme as seguintes especificaç
      - Subíndices de qualidade do ar calculados para cada poluente e o Índice de Qualidade do Ar consolidado (IQAr) diário;
      - Sinalizações de validação técnica do registro (flags de qualidade) e identificação de dados ausentes ou inválidos por falha técnica.
 
+Solicito também os microdados que deram origem aos relatórios RQAr, ao diagnóstico de rede e aos estudos acadêmicos que utilizaram dados das estações de Volta Redonda.
+
 Solicito que os dados sejam enviados por meio de arquivos digitais anexos ou disponibilização de link de download direto, conforme preconiza o art. 8º, § 3º, inciso II da Lei nº 12.527/2011, evitando o envio de arquivos digitalizados em formato de imagem ou documentos PDF que impeçam o tratamento computacional dos dados.
 
 Agradeço a atenção e aguardo o retorno no prazo legal.`;

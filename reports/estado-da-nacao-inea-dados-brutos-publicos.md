@@ -10,7 +10,7 @@
 
 A base atualmente normalizada no Radar do Ar INEA (2022–2025) exibe índices e subíndices IQAr processados. Embora o órgão oficial alegue que a série histórica anterior não está disponível em lote aberto para download direto (motivo pelo qual criamos a modal de LAI), um garimpo em relatórios oficiais, diagnósticos setoriais e artigos acadêmicos permitiu identificar que as **concentrações físicas horárias e diárias brutas existem**, foram medidas pelas estações e circularam de forma restrita para fins de pesquisa.
 
-Este trabalho cria uma camada de dados separada e um componente didático para expor estas evidências de forma pública, provando que o Estado possui os microdados físicos de qualidade do ar.
+Este trabalho cria uma camada de dados separada e um componente didático para expor estas evidências de forma pública, apresentando uma evidência pública forte de que medições físicas foram realizadas, agregadas e utilizadas no monitoramento da qualidade do ar de Volta Redonda.
 
 ---
 
