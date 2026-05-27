@@ -45,7 +45,13 @@ Para garantir integridade técnica e extensibilidade futura da base de garimpo, 
 
 ---
 
-## 5. Validação de Testes e Linguagem
+## 5. Nova pista: endpoint tabular WebLakes/INEAPublico
+
+Identificamos um endpoint público usado por scripts acadêmicos para baixar séries horárias do INEA-RJ. Ainda estamos validando estações, parâmetros, limites e consistência antes de incorporar ao Radar.
+
+---
+
+## 6. Validação de Testes e Linguagem
 
 *   O script [inea-public-language-assert.ts](file:///C:/Projetos/SEMEAR%20PWA/scripts/inea-public-language-assert.ts) foi atualizado para monitorar os dois novos relatórios markdown e o novo componente React.
 *   Executamos a verificação de vocabulário e compilação, obtendo sucesso completo:
