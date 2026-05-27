@@ -47,7 +47,7 @@ Para garantir integridade técnica e extensibilidade futura da base de garimpo, 
 
 ## 5. Nova pista: endpoint tabular WebLakes/INEAPublico
 
-Identificamos um endpoint público usado por scripts acadêmicos para baixar séries horárias do INEA-RJ. Ainda estamos validando estações, parâmetros, limites e consistência antes de incorporar ao Radar.
+Endpoint WebLakes confirmado com amostra horária física de PM10 em VR-Retiro. Próximo passo: piloto controlado por mês, com cache, backoff e validação de lacunas.
 
 ---
 
