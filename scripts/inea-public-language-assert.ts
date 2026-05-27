@@ -33,7 +33,8 @@ const reportFiles: string[] = [
   path.join(process.cwd(), 'reports', 'estado-da-nacao-inea-unificacao.md'),
   path.join(process.cwd(), 'reports', 'inea-fontes-dados-brutos-publicos.md'),
   path.join(process.cwd(), 'reports', 'estado-da-nacao-inea-dados-brutos-publicos.md'),
-  path.join(process.cwd(), 'reports', 'estado-da-nacao-inea-evidencias-brutas.md')
+  path.join(process.cwd(), 'reports', 'estado-da-nacao-inea-evidencias-brutas.md'),
+  path.join(process.cwd(), 'reports', 'estado-da-nacao-inea-evidencias-export.md')
 ];
 
 const reportsDir = path.join(process.cwd(), 'reports');

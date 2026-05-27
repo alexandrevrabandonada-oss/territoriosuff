@@ -1,6 +1,6 @@
 # Inventário de Fontes Públicas: Concentrações Físicas de Qualidade do Ar em Volta Redonda
 
-Este documento cataloga as fontes públicas (estudos científicos, dissertações e relatórios oficiais) que contêm dados e estatísticas agregadas de concentrações físicas de poluentes atmosféricos em Volta Redonda entre 2000 e 2018. Estas fontes provam que as medições físicas brutas existem e já foram utilizadas, fundamentando a nossa demanda por transparência ativa completa das séries históricas pré-2022.
+Este documento cataloga as fontes públicas (estudos científicos, dissertações e relatórios oficiais) que contêm dados e estatísticas agregadas de concentrações físicas de poluentes atmosféricos em Volta Redonda entre 2000 e 2018. Estas fontes constituem evidência pública forte de que medições físicas foram realizadas, agregadas e utilizadas, fundamentando a nossa demanda por transparência ativa completa das séries históricas pré-2022.
 
 ---
 

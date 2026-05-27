@@ -24,6 +24,80 @@ interface RawFinding {
 export function HistoricalRawEvidenceBox() {
   // Filters State
   const [pollutantFilter, setPollutantFilter] = useState<string>("");
+  const [copiedLaiSummary, setCopiedLaiSummary] = useState<boolean>(false);
+
+  const downloadCsv = () => {
+    // Generate CSV headers
+    const headers = [
+      "ID",
+      "Titulo da Fonte",
+      "Tipo de Fonte",
+      "URL",
+      "Estacao",
+      "Poluente",
+      "Metrica",
+      "Ano",
+      "Inicio do Periodo",
+      "Fim do Periodo",
+      "Valor",
+      "Unidade",
+      "Representatividade",
+      "Metodo de Extracao",
+      "Confianca",
+      "Notas"
+    ];
+
+    const rows = filteredFindings.map(f => [
+      f.source_id,
+      `"${f.source_title.replace(/"/g, '""')}"`,
+      f.source_type,
+      f.source_url,
+      `"${f.station_name.replace(/"/g, '""')}"`,
+      f.pollutant,
+      f.metric,
+      f.year || "",
+      f.period_start || "",
+      f.period_end || "",
+      f.value,
+      f.unit,
+      f.representativeness,
+      f.extraction_method,
+      f.confidence,
+      `"${f.notes.replace(/"/g, '""')}"`
+    ]);
+
+    const csvContent = [
+      headers.join(","),
+      ...rows.map(e => e.join(","))
+    ].join("\n");
+
+    const blob = new Blob(["\uFEFF" + csvContent], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.setAttribute("href", url);
+    link.setAttribute("download", "inea-evidencias-fisicas.csv");
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
+  const copyLaiSummary = async () => {
+    const summaryHeader = "Resumo de Evidências de Medições Físicas em Volta Redonda (INEA):\n\n";
+    const summaryLines = filteredFindings.map(f => {
+      const period = f.year ? String(f.year) : `${f.period_start?.split("-")[0]}–${f.period_end?.split("-")[0]}`;
+      return `- ${f.source_title} (${period}): Medição de ${f.pollutant} (${formatMetric(f.metric)}) com valor ${f.value} ${f.unit} na estação ${f.station_name}.`;
+    }).join("\n");
+
+    const finalText = summaryHeader + summaryLines + "\n\nSolicito o fornecimento dos microdados físicos originais completos que subsidiaram estes registros.";
+
+    try {
+      await navigator.clipboard.writeText(finalText);
+      setCopiedLaiSummary(true);
+      setTimeout(() => setCopiedLaiSummary(false), 2000);
+    } catch (err) {
+      console.error("Failed to copy summary:", err);
+    }
+  };
   const [stationFilter, setStationFilter] = useState<string>("");
   const [sourceTypeFilter, setSourceTypeFilter] = useState<string>("");
   const [metricFilter, setMetricFilter] = useState<string>("");
@@ -387,13 +461,37 @@ export function HistoricalRawEvidenceBox() {
 
       {/* Interactive Table Panel */}
       <SurfaceCard className="p-5 md:p-6 bg-white border border-slate-100 rounded-2xl space-y-6">
-        <div className="space-y-1">
-          <h3 className="text-sm font-black text-slate-800 uppercase tracking-wider">
-            Tabela de Concentrações Físicas Garimpadas
-          </h3>
-          <p className="text-xs text-slate-400 font-semibold">
-            Filtre os registros agregados para conferir os valores medidos nas estações antes de 2022.
-          </p>
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between border-b pb-4 border-slate-50">
+          <div className="space-y-1">
+            <h3 className="text-sm font-black text-slate-800 uppercase tracking-wider">
+              Tabela de Concentrações Físicas Garimpadas
+            </h3>
+            <p className="text-xs text-slate-400 font-semibold">
+              Filtre os registros agregados para conferir os valores medidos nas estações antes de 2022.
+            </p>
+          </div>
+          <div className="flex flex-wrap items-center gap-2">
+            <button
+              onClick={downloadCsv}
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-white font-bold rounded-lg text-xs transition-all shadow-xs"
+              title="Baixar a tabela de evidências em formato CSV para uso em denúncia ou LAI"
+            >
+              <svg className="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+              </svg>
+              <span>Baixar evidências em CSV</span>
+            </button>
+            <button
+              onClick={copyLaiSummary}
+              className={`inline-flex items-center gap-1.5 px-3 py-1.5 text-white font-bold rounded-lg text-xs transition-all shadow-xs ${copiedLaiSummary ? "bg-emerald-600" : "bg-emerald-500 hover:bg-emerald-600"}`}
+              title="Copiar lista de dados filtrados para usar como justificativa em um pedido de LAI"
+            >
+              <svg className="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
+              </svg>
+              <span>{copiedLaiSummary ? "Copiado!" : "Copiar resumo para LAI"}</span>
+            </button>
+          </div>
         </div>
 
         {/* Filters Grid */}
