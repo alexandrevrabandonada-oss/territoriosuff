@@ -1,102 +1,92 @@
-# Estado da Nação — Publicação Controlada do Radar do Ar INEA (Final)
+# Relatório de Homologação e Publicação Final — Radar INEA Unificado
 
-**Data do Relatório:** 2026-05-26  
-**Status:** Aprovado para publicação pública — revisão editorial/jurídica concluída
-
----
-
-## 1. Objetivo
-
-Este relatório consolida a **revisão editorial e jurídica final** dos materiais públicos do Radar do Ar INEA (Tijolo 8.1), garantindo que nenhuma afirmação institucional não formalizada, nenhum termo tecnicamente impreciso e nenhuma promessa não comprovada subsista nos materiais de divulgação.
+**Data:** 26 de Maio de 2026  
+**Status:** Aprovado e Publicado  
+**Escopo:** Homologação final, testes de redirecionamento, resiliência do dev server local, correção de rotas e publicação da rota unificada `/qualidade-ar/inea`.
 
 ---
 
-## 2. Correções Aplicadas
+## 1. Homologação Visual e Responsividade
 
-### 2.1 Vocabulário técnico — "dias degradados" → "dias registrados como MODERADA ou pior"
+Realizamos testes de renderização visual e responsividade emulando visualizações tanto para desktop quanto para dispositivos móveis:
 
-| Arquivo | Localização corrigida |
-|---|---|
-| `release-radar-do-ar.md` | Ranking de estações (item da lista); achado nº 2 (Setembro) |
-| `estado-da-nacao-inea-publicacao.md` | Tabela de achados (linha "Mês com mais dias...") |
-| `thread-radar-do-ar.md` | Tweet 3 — frase sobre trimestre |
-
-O post do Instagram não continha a expressão "degradados" — já estava correto.
-
-### 2.2 Referência ao CONAMA removida
-
-| Arquivo | Antes | Depois |
-|---|---|---|
-| `release-radar-do-ar.md` | "classificado como RUIM pelo critério oficial do CONAMA" | "classificado como RUIM na própria base oficial de qualidade do ar" |
-
-**Justificativa:** O CONAMA estabelece a metodologia IQAr, mas a classificação "RUIM" no registro específico provém da planilha do INEA. Afirmar "critério oficial do CONAMA" sem citar o ato normativo específico é uma afirmação que pode ser contestada; a versão corrigida é igualmente forte e inteiramente defensável.
-
-### 2.3 Frase interpretativa sobre sazonalidade corrigida
-
-| Arquivo | Antes | Depois |
-|---|---|---|
-| `thread-radar-do-ar.md` | "consistente com o período seco do sudeste" | "Nos dados disponíveis, junho a setembro concentram os maiores percentuais de dias registrados como Moderada ou pior" |
-
-**Justificativa:** A correlação com o período seco é plausível, mas não é afirmação que os dados do INEA permitem concluir sozinhos — exigiria análise climatológica independente.
-
-### 2.4 Afirmações institucionais ajustadas
-
-| Expressão anterior | Expressão corrigida | Arquivo(s) |
-|---|---|---|
-| "em parceria com a Universidade Federal Fluminense (UFF)" | "articulado com pesquisadores e a comunidade local" | `release-radar-do-ar.md` |
-| "Todos os dados, metodologias e código-fonte são públicos e verificáveis" | "A metodologia de coleta, normalização e validação dos dados está documentada publicamente" | `release-radar-do-ar.md` |
-| "📧 semear@vr.org.br" | "canal oficial em implantação — acompanhe pelo endereço público do projeto" | `release-radar-do-ar.md` |
-| "📱 Instagram: @semear.vr" | "Instagram: canal em implantação" | `release-radar-do-ar.md` |
-| "Apoio à Rede Cidadã SEMEAR/UFF" | "Apoio à rede cidadã de monitoramento ambiental articulada pelo projeto SEMEAR" | `release-radar-do-ar.md`, `publicacao.md` |
-| "Feito pelo projeto SEMEAR com dados oficiais do INEA · Dados Abertos RJ" | acrescentado "· metodologia documentada" | `post-instagram-radar-do-ar.md` |
-| "@vrAbandonada" (handle de rede social) | "VR Abandonada" (nome sem pressupor handle ativo) | `thread-radar-do-ar.md` |
+* **Desktop (1280x800):**
+  * O Hero Narrativo carrega de forma limpa, com os três botões principais de atalho ("Ver no Mapa", "Ver Linha do Tempo", "Ver Lacunas") perfeitamente acessíveis na primeira dobra, sem rolagem excessiva.
+  * O bloco **"Em 30 segundos"** exibe de forma harmoniosa os 5 cards com as estatísticas consolidadas da base histórica.
+  * O mapa interativo Leaflet renderiza com as 4 estações oficiais, e o gráfico de série histórica uPlot exibe o comportamento sazonal do ar de forma rápida e responsiva.
+  * O modal interativo de cópia da minuta da LAI funciona de forma isolada e limpa.
+* **Celular (iPhone XS - 375x812, touch):**
+  * A navegação em colunas únicas do bloco "Em 30 segundos" empilha perfeitamente.
+  * O mapa do Leaflet e o gráfico de série histórica uPlot redimensionam-se corretamente de acordo com o viewport, mantendo as interações por toque totalmente fluidas e sem quebras de layout.
 
 ---
 
-## 3. Achados publicados — validação final
+## 2. Testes de Âncoras e Navegação Interna
 
-Todos os valores abaixo estão confirmados nos dados reais do banco (2.459 registros GENERAL_AQI, paginados sem truncamento):
-
-| Achado | Valor | Método de verificação |
-|---|---|---|
-| Maior Índice IQAr | VR-Retiro: **114** (RUIM) | `station-ranking` API + `check-zeros.ts` |
-| Mês com mais dias registrados como MODERADA ou pior | **Setembro: 20,7%** | `monthly-profile` API |
-| Poluentes controladores predominantes | **SO₂ (48,7%) e MP10 (30,6%)** | `controller-frequency` API |
-| Lacuna temporal nas estações fixas | **≈ 421 dias** (10.104h) | `data-gaps` API |
-| Natureza dos dados | Índices IQAr, **não µg/m³** | Metodologia Tijolo 3 |
-| Dias com DADO_INSUFICIENTE | **0** | `inea-analytics-assert.ts` |
+Validamos o comportamento de rolagem automática em todas as âncoras internas da página unificada (deep-linking), obtendo sucesso completo:
+* `#mapa`: Direciona o scroll para a seção *"Onde o ar foi medido"* (mapa Leaflet e tabela de leituras).
+* `#historia`: Direciona o scroll para *"A linha do tempo da base pública"* (gráfico uPlot e timeline).
+* `#iqar`: Direciona o scroll para *"Como o INEA classifica o ar"* (tabela explicativa do IQAr).
+* `#alertas`: Direciona o scroll para *"Quando o alerta apareceu"* (sazonalidade de dias MODERADA ou pior).
+* `#controladores`: Direciona o scroll para *"Quem puxou o índice"* (poluentes controladores).
+* `#lacunas`: Direciona o scroll para *"Onde a série fica em silêncio"* (estatísticas de dados faltantes).
 
 ---
 
-## 4. Resultado final dos testes
+## 3. Teste de Redirecionamento da Rota Antiga
 
-| Suíte | Resultado |
-|---|---|
-| `npm run inea:qa:analytics` | ✅ PASS |
-| `npm run inea:qa:language` | ✅ PASS |
-| `npm run inea:qa:methodology` | ✅ PASS |
-| `npm run verify` (lint + tsc + build) | ✅ PASS |
+Testamos o acesso à rota legada `/qualidade-ar/inea/historia`. O componente [IneaHistoryPage.tsx](file:///C:/Projetos/SEMEAR%20PWA/src/pages/air/IneaHistoryPage.tsx) intercepta a requisição e executa um redirecionamento client-side via `window.location.replace` para `/qualidade-ar/inea#historia`.
+* **Resultado:** O usuário é levado diretamente à seção de histórico na página unificada de forma transparente, com fallback visual adequado em caso de carregamento lento.
 
 ---
 
-## 5. Materiais revisados prontos para publicação
+## 4. Auditoria de Links de Integração do Portal
 
-| Material | Arquivo | Status |
-|---|---|---|
-| Post Instagram (3 slides) | [`post-instagram-radar-do-ar.md`](file:///C:/Projetos/SEMEAR%20PWA/reports/post-instagram-radar-do-ar.md) | ✅ Revisado |
-| Thread X/Twitter (6 tweets) | [`thread-radar-do-ar.md`](file:///C:/Projetos/SEMEAR%20PWA/reports/thread-radar-do-ar.md) | ✅ Revisado |
-| Release imprensa | [`release-radar-do-ar.md`](file:///C:/Projetos/SEMEAR%20PWA/reports/release-radar-do-ar.md) | ✅ Revisado |
-| Relatório de publicação (Tijolo 8) | [`estado-da-nacao-inea-publicacao.md`](file:///C:/Projetos/SEMEAR%20PWA/reports/estado-da-nacao-inea-publicacao.md) | ✅ Revisado |
+Mapeamos e testamos a origem de todos os links que direcionam para o painel INEA no portal:
+* **Página de Dados (`/dados`):**
+  * O botão do card principal aponta para `/qualidade-ar/inea`.
+  * Os links secundários de atalhos rápidos apontam perfeitamente para as âncoras `#mapa`, `#historia` e `#alertas`.
+* **Home Page (`/`):**
+  * O banner de lançamento editorial aponta para `/qualidade-ar/inea`.
+* **Navbar (Menu de Navegação):**
+  * O link principal desktop e o link mobile apontam corretamente para a rota unificada.
 
 ---
 
-## 6. Conclusão
+## 5. Nomes Oficiais das Estações e Vocabulário de Confiança
 
-Os materiais estão politicamente fortes e juridicamente seguros:
+Confirmamos que todos os textos e componentes públicos utilizam a nomenclatura correta das estações e respeitam a cartilha metodológica:
+1. **Estações Oficiais:**
+   * `VR-Belmonte`
+   * `VR-Retiro`
+   * `VR-Santa Cecília`
+   * `VR-Nossa Sra. das Graças (Van)`
+2. **Vocabulário Restrito:**
+   * Nenhum local exibe ou induz a "tempo real", "ao vivo", "leitura instantânea" ou "monitoramento minuto a minuto". O aviso de freshness é exibido na tela principal informando a natureza batch em lote da base do INEA/Dados Abertos RJ.
+   * Não são exibidos dados de concentração bruta, e sim índices e subíndices IQAr.
+   * Não há afirmações de "prova de crime" no material de divulgação nem na tela.
+   * A ausência de dados é explicitada com o lema: *"Ausência de dado não é ar bom"*.
 
-- **Nenhum achado** extrapola o que os dados oficiais do INEA permitem concluir.
-- **Nenhuma afirmação institucional** depende de vínculos não formalizados.
-- **Nenhuma promessa de canal** (e-mail, Instagram) é feita antes de estar operacional.
-- **Toda terminologia técnica** está alinhada com a metodologia IQAr documentada nos Tijolos 3, 5 e 7.
+---
 
-A publicação pode ser feita com confiança editorial, técnica e jurídica.
+## 6. Ajuste do Servidor Local e Proxies Vercel (`vercel.json`)
+
+Durante os testes locais com o Vercel Dev server (`npx vercel dev`), detectamos que a regra catch-all de SPA interceptava as requisições de desenvolvimento do Vite (como `@vite/client` e scripts em `/src/`), forçando-as a retornar o arquivo `index.html` e gerando erro de parse JS (`SyntaxError`).
+* **Correção aplicada:** Atualizamos o arquivo [vercel.json](file:///C:/Projetos/SEMEAR%20PWA/vercel.json) para restringir o redirecionamento catch-all do SPA. Agora ele ignora rotas internas e de desenvolvimento:
+  ```json
+  {
+    "source": "/((?!api/|@|src/|node_modules/|assets/|favicon\\.ico|manifest\\.webmanifest|registerSW\\.js).*)",
+    "destination": "/index.html"
+  }
+  ```
+* **Resultado:** O Vercel Dev local funciona perfeitamente, resolvendo de forma nativa a comunicação com as APIs e a renderização do frontend no mesmo host/porta.
+
+---
+
+## 7. Resultados dos Testes de QA e Compilação
+
+Todos os scripts de asserção automáticos e builds de produção rodaram de forma limpa:
+* `npm run inea:qa:language` ➔ **PASS**
+* `npm run inea:qa:methodology` ➔ **PASS**
+* `npm run inea:qa:analytics` ➔ **PASS**
+* `npm run verify` (lint + typecheck + build) ➔ **PASS** (zero erros/warnings).
