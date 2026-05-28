@@ -10,6 +10,7 @@ import { AqiExplainer } from "../../components/air/AqiExplainer";
 import { HistoricalRawEvidenceBox } from "../../components/air/HistoricalRawEvidenceBox";
 import { AirAtlasMap } from "../../components/air/AirAtlasMap";
 import { YearExplorer } from "../../components/air/YearExplorer";
+import { YearTimeline } from "../../components/air/YearTimeline";
 import { ThresholdComparisonPanel } from "../../components/air/ThresholdComparisonPanel";
 
 interface StationSummary {
@@ -611,6 +612,11 @@ export function IneaRadarPage() {
       {/* Seção com âncora #anos (Ver por ano) */}
       <section id="anos" className="space-y-6 pt-4">
         <YearExplorer />
+      </section>
+
+      {/* Seção com âncora #timeline-plurianual (Linha do Tempo Plurianual) */}
+      <section id="timeline-plurianual" className="space-y-6 pt-4">
+        <YearTimeline />
       </section>
 
       {/* Seção com âncora #comparar (Comparar com a OMS e com a lei brasileira) */}
