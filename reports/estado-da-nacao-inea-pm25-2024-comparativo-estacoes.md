@@ -29,7 +29,7 @@ Este relatório apresenta o cruzamento comparativo das três estações automát
 ## 2. Análise Crítica Comparativa
 
 1.  **Diferenciação de Concentrações:**
-    A análise comparativa revela que a estação **VR - Belmonte** registrou a maior média anual de PM2.5 entre as três estações analisadas em 2024, seguida de perto por **VR - Retiro**. Ambas apresentaram médias que ultrapassam os limites nacionais e da OMS, com Belmonte mostrando também o maior pico horário e a maior média geral. Por outro lado, a estação **VR - Santa Cecília** registrou a menor média anual registrada entre as três estações analisadas.
+    A análise comparativa revela que a estação **VR - Belmonte** registrou a maior média anual de PM2.5 entre as três estações analisadas em 2024, seguida de perto por **VR - Retiro**. Belmonte ultrapassa a média anual da OMS e da CONAMA 506; Retiro e Santa Cecília ficam abaixo da média anual da CONAMA 506, mas acima da diretriz anual da OMS. Além disso, Retiro registrou o maior pico horário pontual de PM2.5 no ano. Por outro lado, a estação **VR - Santa Cecília** registrou a menor média anual registrada entre as três estações analisadas.
 2.  **Representatividade Estatística:**
     As três estações contam com uma cobertura de dados excelente no ano de 2024 (todas acima de 90%), superando amplamente o requisito de 75% da suficiência metodológica. Isso garante que a série anual de PM2.5 é estatisticamente sólida para fins de avaliação ambiental experimental.
 3.  **Avaliação Regulatória (CONAMA 506/2024):**

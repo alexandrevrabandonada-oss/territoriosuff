@@ -66,6 +66,7 @@ const reportFiles: string[] = [
   path.join(process.cwd(), 'reports', 'release-observatorio-pm25-2024.md'),
   path.join(process.cwd(), 'reports', 'carrossel-observatorio-pm25-2024.md'),
   path.join(process.cwd(), 'reports', 'estado-da-nacao-observatorio-lancamento-pm25-final.md'),
+  path.join(process.cwd(), 'reports', 'estado-da-nacao-observatorio-pm25-2024-final-ajustado.md'),
   path.join(process.cwd(), 'reports', 'estado-da-nacao-inea-historico-2022-2023.md')
 ];
 
