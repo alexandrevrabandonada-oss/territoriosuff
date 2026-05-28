@@ -37,7 +37,11 @@ const reportFiles: string[] = [
   path.join(process.cwd(), 'reports', 'estado-da-nacao-inea-evidencias-export.md'),
   path.join(process.cwd(), 'reports', 'estado-da-nacao-inea-weblakes-discovery.md'),
   path.join(process.cwd(), 'reports', 'estado-da-nacao-inea-weblakes-replay.md'),
-  path.join(process.cwd(), 'reports', 'estado-da-nacao-inea-weblakes-pilot.md')
+  path.join(process.cwd(), 'reports', 'estado-da-nacao-inea-weblakes-pilot.md'),
+  path.join(process.cwd(), 'reports', 'inea-weblakes-pilot-audit.md'),
+  path.join(process.cwd(), 'reports', 'estado-da-nacao-inea-weblakes-pm10-estacoes.md'),
+  path.join(process.cwd(), 'reports', 'estado-da-nacao-inea-weblakes-poluentes.md'),
+  path.join(process.cwd(), 'reports', 'estado-da-nacao-inea-weblakes-expansao-controlada.md')
 ];
 
 const reportsDir = path.join(process.cwd(), 'reports');

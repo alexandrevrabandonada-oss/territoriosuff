@@ -214,6 +214,22 @@ export function parseJqGridRows(responseBody: string): RawCellRow[] {
   return data.rows;
 }
 
+export function isValidWebLakesConcentration(row: Partial<NormalizedRow>): boolean {
+  if (!row.datetime || isNaN(Date.parse(row.datetime))) {
+    return false;
+  }
+  if (!row.station_id || !row.parameter_id) {
+    return false;
+  }
+  if (row.value === null || row.value === undefined || typeof row.value !== 'number' || isNaN(row.value)) {
+    return false;
+  }
+  if (row.value < 0) {
+    return false;
+  }
+  return true;
+}
+
 export function normalizeConcentrationRow(
   row: RawCellRow,
   context: FetchParams
@@ -239,6 +255,20 @@ export function normalizeConcentrationRow(
   const wind_speed = parseNumber(cellWindSpeedHtml);
   const wind_direction = parseNumber(cellWindDirHtml);
 
+  let validation_status = "NO_EXPLICIT_QAQC_IN_TABLE";
+  const checkRow: Partial<NormalizedRow> = {
+    station_id: context.stationId,
+    parameter_id: context.parameterId,
+    datetime: datetime,
+    value: value
+  };
+
+  if (!isValidWebLakesConcentration(checkRow)) {
+    validation_status = "INVALID_VALUE";
+  } else if (value === 0) {
+    validation_status = "ZERO_VALUE_REVIEW";
+  }
+
   return {
     source: "INEA",
     source_system: "WEBLAKES_CONCENTRATION_WITH_WIND",
@@ -253,7 +283,8 @@ export function normalizeConcentrationRow(
     wind_direction: wind_direction,
     qaqc: null,
     is_public_platform_data: true,
-    validation_status: "NO_EXPLICIT_QAQC_IN_TABLE",
+    validation_status: validation_status,
     raw: row
   };
 }
+
