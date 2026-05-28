@@ -50,7 +50,8 @@
     "inea:backfill:methodology": "tsx scripts/inea-backfill-methodology.ts",
     "inea:qa:methodology": "tsx scripts/inea-methodology-assert.ts",
     "inea:qa:language": "tsx scripts/inea-public-language-assert.ts",
-    "inea:qa:analytics": "tsx scripts/inea-analytics-assert.ts"
+    "inea:qa:analytics": "tsx scripts/inea-analytics-assert.ts",
+    "inea:qa:recompute-2024": "tsx scripts/inea-weblakes-recompute-2024.ts"
   },
   "dependencies": {
     "@sentry/react": "^10.45.0",

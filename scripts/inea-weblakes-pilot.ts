@@ -55,12 +55,14 @@ async function runPilot() {
       try {
         apiCallsMade++;
         // Fetch parameters: startDate and endDate are the same day to get exactly 1 day
-        rawDataJson = await fetchConcentrationWithWindArrows("qualidadedoar.inea.rj.gov.br", cookies, {
+        const result = await fetchConcentrationWithWindArrows("qualidadedoar.inea.rj.gov.br", cookies, {
           stationId: STATION_ID,
           parameterId: PARAMETER_ID,
           startDate: currentDateStr,
           endDate: currentDateStr
         });
+        rawDataJson = result.body;
+        cookies = result.cookies;
 
         // Save raw response to cache
         fs.writeFileSync(cacheFilePath, rawDataJson, 'utf8');

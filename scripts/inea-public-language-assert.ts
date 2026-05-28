@@ -14,7 +14,10 @@ const visualFiles = [
   path.join(process.cwd(), 'src', 'components', 'air', 'IneaHistoricalTimeline.tsx'),
   path.join(process.cwd(), 'src', 'components', 'air', 'AqiExplainer.tsx'),
   path.join(process.cwd(), 'src', 'components', 'air', 'IneaStorySummaryCard.tsx'),
-  path.join(process.cwd(), 'src', 'components', 'air', 'HistoricalRawEvidenceBox.tsx')
+  path.join(process.cwd(), 'src', 'components', 'air', 'HistoricalRawEvidenceBox.tsx'),
+  path.join(process.cwd(), 'src', 'components', 'air', 'YearExplorer.tsx'),
+  path.join(process.cwd(), 'src', 'components', 'air', 'ThresholdComparisonPanel.tsx'),
+  path.join(process.cwd(), 'src', 'data', 'air', 'pm10-2024-station-summary.ts')
 ];
 
 const reportFiles: string[] = [
@@ -41,7 +44,29 @@ const reportFiles: string[] = [
   path.join(process.cwd(), 'reports', 'inea-weblakes-pilot-audit.md'),
   path.join(process.cwd(), 'reports', 'estado-da-nacao-inea-weblakes-pm10-estacoes.md'),
   path.join(process.cwd(), 'reports', 'estado-da-nacao-inea-weblakes-poluentes.md'),
-  path.join(process.cwd(), 'reports', 'estado-da-nacao-inea-weblakes-expansao-controlada.md')
+  path.join(process.cwd(), 'reports', 'estado-da-nacao-inea-weblakes-expansao-controlada.md'),
+  path.join(process.cwd(), 'reports', 'estado-da-nacao-observatorio-ar-arquitetura.md'),
+  path.join(process.cwd(), 'reports', 'estado-da-nacao-inea-weblakes-2024.md'),
+  path.join(process.cwd(), 'reports', 'estado-da-nacao-inea-thresholds.md'),
+  path.join(process.cwd(), 'reports', 'estado-da-nacao-observatorio-ar-ui.md'),
+  path.join(process.cwd(), 'reports', 'estado-da-nacao-inea-cache-audit-2024.md'),
+  path.join(process.cwd(), 'reports', 'estado-da-nacao-inea-recompute-pm10-2024-belmonte.md'),
+  path.join(process.cwd(), 'reports', 'estado-da-nacao-inea-recompute-pm10-2024-santa-cecilia.md'),
+  path.join(process.cwd(), 'reports', 'estado-da-nacao-inea-pm10-2024-comparativo-estacoes.md'),
+  path.join(process.cwd(), 'reports', 'estado-da-nacao-observatorio-pm10-2024-publicacao.md'),
+  path.join(process.cwd(), 'reports', 'estado-da-nacao-observatorio-pm10-2024-qa-publico.md'),
+  path.join(process.cwd(), 'reports', 'post-instagram-observatorio-pm10-2024.md'),
+  path.join(process.cwd(), 'reports', 'thread-observatorio-pm10-2024.md'),
+  path.join(process.cwd(), 'reports', 'release-observatorio-pm10-2024.md'),
+  path.join(process.cwd(), 'reports', 'carrossel-observatorio-pm10-2024.md'),
+  path.join(process.cwd(), 'reports', 'estado-da-nacao-observatorio-lancamento-pm10.md'),
+  path.join(process.cwd(), 'reports', 'estado-da-nacao-observatorio-lancamento-pm10-final.md'),
+  path.join(process.cwd(), 'reports', 'post-instagram-observatorio-pm25-2024.md'),
+  path.join(process.cwd(), 'reports', 'thread-observatorio-pm25-2024.md'),
+  path.join(process.cwd(), 'reports', 'release-observatorio-pm25-2024.md'),
+  path.join(process.cwd(), 'reports', 'carrossel-observatorio-pm25-2024.md'),
+  path.join(process.cwd(), 'reports', 'estado-da-nacao-observatorio-lancamento-pm25-final.md'),
+  path.join(process.cwd(), 'reports', 'estado-da-nacao-inea-historico-2022-2023.md')
 ];
 
 const reportsDir = path.join(process.cwd(), 'reports');

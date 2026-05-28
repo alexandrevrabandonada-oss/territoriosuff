@@ -1,0 +1,130 @@
+{
+  "station": "VR - Belmonte",
+  "stationId": "69",
+  "pollutant": "PM2.5",
+  "parameterId": "20",
+  "year": 2024,
+  "totalExpectedHours": 8784,
+  "totalFoundHours": 8401,
+  "annualCoveragePct": 95.63979963570127,
+  "totalValid": 8401,
+  "totalZero": 341,
+  "totalNull": 0,
+  "totalNegative": 0,
+  "totalDuplicate": 0,
+  "annualHourlyMean": 11.331063661690017,
+  "annualHourlyMax": 84.1857440747155,
+  "totalDaysWithSufficientData": 344,
+  "totalDaysExceedingWHO": 77,
+  "totalDaysExceedingBR506": 14,
+  "monthlyCoverage": [
+    {
+      "month": "2024-01",
+      "expectedHours": 744,
+      "foundHours": 740,
+      "coveragePct": 99.46236559139786,
+      "zeros": 56,
+      "nulls": 0,
+      "mean": 6.681066591788176
+    },
+    {
+      "month": "2024-02",
+      "expectedHours": 696,
+      "foundHours": 688,
+      "coveragePct": 98.85057471264368,
+      "zeros": 37,
+      "nulls": 0,
+      "mean": 8.626546615787277
+    },
+    {
+      "month": "2024-03",
+      "expectedHours": 744,
+      "foundHours": 729,
+      "coveragePct": 97.98387096774194,
+      "zeros": 26,
+      "nulls": 0,
+      "mean": 9.113850781811928
+    },
+    {
+      "month": "2024-04",
+      "expectedHours": 720,
+      "foundHours": 715,
+      "coveragePct": 99.30555555555556,
+      "zeros": 13,
+      "nulls": 0,
+      "mean": 13.361193774144862
+    },
+    {
+      "month": "2024-05",
+      "expectedHours": 744,
+      "foundHours": 736,
+      "coveragePct": 98.9247311827957,
+      "zeros": 16,
+      "nulls": 0,
+      "mean": 11.225097890255862
+    },
+    {
+      "month": "2024-06",
+      "expectedHours": 720,
+      "foundHours": 714,
+      "coveragePct": 99.16666666666667,
+      "zeros": 14,
+      "nulls": 0,
+      "mean": 12.85776475059341
+    },
+    {
+      "month": "2024-07",
+      "expectedHours": 744,
+      "foundHours": 737,
+      "coveragePct": 99.05913978494624,
+      "zeros": 13,
+      "nulls": 0,
+      "mean": 13.732804477008857
+    },
+    {
+      "month": "2024-08",
+      "expectedHours": 744,
+      "foundHours": 645,
+      "coveragePct": 86.69354838709677,
+      "zeros": 39,
+      "nulls": 0,
+      "mean": 15.646874747999147
+    },
+    {
+      "month": "2024-09",
+      "expectedHours": 720,
+      "foundHours": 641,
+      "coveragePct": 89.02777777777777,
+      "zeros": 17,
+      "nulls": 0,
+      "mean": 21.018163387573253
+    },
+    {
+      "month": "2024-10",
+      "expectedHours": 744,
+      "foundHours": 706,
+      "coveragePct": 94.89247311827957,
+      "zeros": 37,
+      "nulls": 0,
+      "mean": 9.88998489015273
+    },
+    {
+      "month": "2024-11",
+      "expectedHours": 720,
+      "foundHours": 715,
+      "coveragePct": 99.30555555555556,
+      "zeros": 18,
+      "nulls": 0,
+      "mean": 6.9524192495128805
+    },
+    {
+      "month": "2024-12",
+      "expectedHours": 744,
+      "foundHours": 635,
+      "coveragePct": 85.34946236559139,
+      "zeros": 55,
+      "nulls": 0,
+      "mean": 7.928476669869838
+    }
+  ]
+}

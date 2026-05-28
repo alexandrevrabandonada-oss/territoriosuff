@@ -148,30 +148,35 @@ export async function fetchConcentrationWithWindArrows(
   cookies: string,
   params: FetchParams,
   userAgent = DEFAULT_USER_AGENT
-): Promise<string> {
+): Promise<{ body: string; cookies: string }> {
   const pathPrefix = "/INEAPublico";
   const controller = "ConcentrationWithWindArrows";
   
+  let currentCookies = cookies;
+
   // 1. Align station
-  await fetchWithManualRedirects(
+  const r1 = await fetchWithManualRedirects(
     `https://${host}${pathPrefix}/AmbientAnalyticsReports/StoreSelectedFieldKey?aControllerName=${controller}&aFieldName=AmbientStationKeyGrouped&aSelectedKey=${params.stationId}&Context_Bootstrap_Flag=true`,
-    { "Cookie": cookies },
+    { "Cookie": currentCookies },
     userAgent
   );
+  currentCookies = r1.cookies;
   
   // 2. Align parameter
-  await fetchWithManualRedirects(
+  const r2 = await fetchWithManualRedirects(
     `https://${host}${pathPrefix}/AmbientAnalyticsReports/StoreSelectedFieldKey?aControllerName=${controller}&aFieldName=AmbientPollutantParameterKey&aSelectedKey=${params.parameterId}&Context_Bootstrap_Flag=true`,
-    { "Cookie": cookies },
+    { "Cookie": currentCookies },
     userAgent
   );
+  currentCookies = r2.cookies;
 
   // 3. Align date range
-  await fetchWithManualRedirects(
+  const r3 = await fetchWithManualRedirects(
     `https://${host}${pathPrefix}/AmbientAnalyticsReports/UpdateDateRange?aControllerName=${controller}&aDateLabel=&aDateLabelFieldName=HIVE_FLD_NAME_DATEOPTION&aStartFieldName=HIVE_FLD_NAME_STARTDATE&aEndFieldName=HIVE_FLD_NAME_ENDDATE&aStartDate=${params.startDate}&aEndDate=${params.endDate}&Context_Bootstrap_Flag=true`,
-    { "Cookie": cookies },
+    { "Cookie": currentCookies },
     userAgent
   );
+  currentCookies = r3.cookies;
 
   // 4. Retrieve JqGrid GridData
   const queryParams = new URLSearchParams({
@@ -197,14 +202,97 @@ export async function fetchConcentrationWithWindArrows(
     "Accept": "application/json, text/javascript, */*; q=0.01",
     "Referer": `https://${host}${pathPrefix}/${controller}?aSectionId=Analytics`,
     "X-Requested-With": "XMLHttpRequest",
-    "Cookie": cookies
+    "Cookie": currentCookies
   }, userAgent);
 
   if (gridResult.res.status !== 200) {
     throw new Error(`Failed to fetch GridData: HTTP ${gridResult.res.status}`);
   }
-  return gridResult.body;
+  return { body: gridResult.body, cookies: currentCookies };
 }
+
+function delay(ms: number) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+export async function fetchWebLakesDataSafe(
+  host = DEFAULT_HOST,
+  params: FetchParams,
+  userAgent = DEFAULT_USER_AGENT
+): Promise<RawCellRow[]> {
+  const mode = (process.env.WEBLAKES_COLLECTION_MODE || "daily_validated") as "daily_validated" | "monthly_fast";
+  console.log(`[Safe Client] Collection Mode: ${mode} for Station ${params.stationId}, Parameter ${params.parameterId}`);
+
+  if (mode === "monthly_fast") {
+    const cookies = await initPublicSession(host, userAgent);
+    const result = await fetchConcentrationWithWindArrows(host, cookies, params, userAgent);
+    return parseJqGridRows(result.body);
+  }
+
+  // daily_validated mode: break down to daily queries with fresh sessions
+  const start = new Date(params.startDate + "T00:00:00");
+  const end = new Date(params.endDate + "T00:00:00");
+  const days: string[] = [];
+  
+  for (const d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
+    const yyyy = d.getFullYear();
+    const mm = String(d.getMonth() + 1).padStart(2, '0');
+    const dd = String(d.getDate()).padStart(2, '0');
+    days.push(`${yyyy}-${mm}-${dd}`);
+  }
+
+  console.log(`[Safe Client] Splitting request into ${days.length} daily validated queries.`);
+  const allRows: RawCellRow[] = [];
+
+  for (let i = 0; i < days.length; i++) {
+    const dayStr = days[i];
+    console.log(`[Safe Client] [${i + 1}/${days.length}] Fetching ${dayStr}...`);
+    
+    // Always initialize a fresh session for each day to completely isolate state
+    const cookies = await initPublicSession(host, userAgent);
+    
+    let attempt = 0;
+    const maxAttempts = 3;
+    let success = false;
+    
+    while (attempt < maxAttempts && !success) {
+      try {
+        const result = await fetchConcentrationWithWindArrows(host, cookies, {
+          stationId: params.stationId,
+          parameterId: params.parameterId,
+          startDate: dayStr,
+          endDate: dayStr
+        }, userAgent);
+        
+        const dayRows = parseJqGridRows(result.body);
+        allRows.push(...dayRows);
+        success = true;
+        console.log(`[Safe Client] Successfully fetched ${dayRows.length} rows for ${dayStr}.`);
+      } catch (err: any) {
+        attempt++;
+        console.warn(`[Safe Client] Attempt ${attempt} failed for ${dayStr}: ${err.message || err}`);
+        if (attempt < maxAttempts) {
+          console.log(`[Safe Client] Backoff waiting 5s before retry...`);
+          await delay(5000);
+        }
+      }
+    }
+
+    if (!success) {
+      throw new Error(`[Safe Client] Failed to fetch data for date ${dayStr} after ${maxAttempts} attempts.`);
+    }
+
+    // Politeness pause between requests
+    if (i < days.length - 1) {
+      const pauseTime = 10000 + Math.floor(Math.random() * 10000);
+      console.log(`[Safe Client] Pausing for ${(pauseTime / 1000).toFixed(1)}s before next day query...`);
+      await delay(pauseTime);
+    }
+  }
+
+  return allRows;
+}
+
 
 export function parseJqGridRows(responseBody: string): RawCellRow[] {
   const data = JSON.parse(responseBody) as RawGridResponse;

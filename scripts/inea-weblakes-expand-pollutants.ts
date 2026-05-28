@@ -67,12 +67,14 @@ async function runPollutantsExpansion() {
 
         try {
           apiCallsMade++;
-          rawDataJson = await fetchConcentrationWithWindArrows("qualidadedoar.inea.rj.gov.br", cookies, {
+          const result = await fetchConcentrationWithWindArrows("qualidadedoar.inea.rj.gov.br", cookies, {
             stationId: STATION_ID,
             parameterId,
             startDate: currentDateStr,
             endDate: currentDateStr
           });
+          rawDataJson = result.body;
+          cookies = result.cookies;
 
           fs.writeFileSync(cacheFilePath, rawDataJson, 'utf8');
           console.log(`  Saved to cache: ${cacheFilePath}`);

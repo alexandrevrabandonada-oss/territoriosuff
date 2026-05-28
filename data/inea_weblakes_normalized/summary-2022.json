@@ -1,0 +1,1190 @@
+{
+  "69": {
+    "name": "VR - Belmonte",
+    "pollutants": {
+      "3": {
+        "pollutant": "CO",
+        "unit": "ppm",
+        "totalHours": 0,
+        "coveragePct": 0,
+        "mean": null,
+        "max": null,
+        "zeroHours": 0,
+        "exceedances": {
+          "WHO_24H": 0,
+          "BR_24H_FINAL": 0
+        }
+      },
+      "18": {
+        "pollutant": "PM10",
+        "unit": "µg/m³",
+        "totalHours": 8472,
+        "coveragePct": 96.7123287671233,
+        "mean": 30.74205386340659,
+        "max": 319.39112074958,
+        "zeroHours": 67,
+        "exceedances": {
+          "WHO_24H": 38,
+          "BR_24H_FINAL": 26
+        },
+        "months": {
+          "2022-01": {
+            "mean": 24.947170118982285,
+            "max": 137.317256132762,
+            "coveragePct": 92.06989247311827,
+            "zeroHours": 10,
+            "missingHours": 59,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2022-02": {
+            "mean": 21.4589476242105,
+            "max": 100.956622384389,
+            "coveragePct": 96.72619047619048,
+            "zeroHours": 6,
+            "missingHours": 22,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2022-03": {
+            "mean": 29.427981932739172,
+            "max": 147.521444905599,
+            "coveragePct": 96.10215053763442,
+            "zeroHours": 12,
+            "missingHours": 29,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2022-04": {
+            "mean": 24.180664806422918,
+            "max": 113.041102121141,
+            "coveragePct": 99.30555555555556,
+            "zeroHours": 3,
+            "missingHours": 5,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2022-05": {
+            "mean": 23.614181501299903,
+            "max": 101.514307339456,
+            "coveragePct": 98.9247311827957,
+            "zeroHours": 4,
+            "missingHours": 8,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2022-06": {
+            "mean": 24.511488574054017,
+            "max": 113.854504587385,
+            "coveragePct": 99.44444444444444,
+            "zeroHours": 0,
+            "missingHours": 4,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2022-07": {
+            "mean": 39.08664749536864,
+            "max": 201.586256097158,
+            "coveragePct": 99.05913978494624,
+            "zeroHours": 1,
+            "missingHours": 7,
+            "exceedances": {
+              "WHO_24H": 5,
+              "BR_24H_FINAL": 2
+            }
+          },
+          "2022-08": {
+            "mean": 42.39453930692539,
+            "max": 253.335616238912,
+            "coveragePct": 99.86559139784946,
+            "zeroHours": 6,
+            "missingHours": 1,
+            "exceedances": {
+              "WHO_24H": 13,
+              "BR_24H_FINAL": 10
+            }
+          },
+          "2022-09": {
+            "mean": 38.006308362318094,
+            "max": 240.45540719774,
+            "coveragePct": 99.44444444444444,
+            "zeroHours": 1,
+            "missingHours": 4,
+            "exceedances": {
+              "WHO_24H": 9,
+              "BR_24H_FINAL": 6
+            }
+          },
+          "2022-10": {
+            "mean": 39.94160996094907,
+            "max": 319.39112074958,
+            "coveragePct": 97.04301075268818,
+            "zeroHours": 3,
+            "missingHours": 22,
+            "exceedances": {
+              "WHO_24H": 7,
+              "BR_24H_FINAL": 6
+            }
+          },
+          "2022-11": {
+            "mean": 28.654245285553067,
+            "max": 131.870867873298,
+            "coveragePct": 93.61111111111111,
+            "zeroHours": 16,
+            "missingHours": 46,
+            "exceedances": {
+              "WHO_24H": 1,
+              "BR_24H_FINAL": 1
+            }
+          },
+          "2022-12": {
+            "mean": 30.889569547875087,
+            "max": 206.140789523655,
+            "coveragePct": 89.11290322580645,
+            "zeroHours": 5,
+            "missingHours": 81,
+            "exceedances": {
+              "WHO_24H": 3,
+              "BR_24H_FINAL": 1
+            }
+          }
+        }
+      },
+      "20": {
+        "pollutant": "PM2.5",
+        "unit": "µg/m³",
+        "totalHours": 8637,
+        "coveragePct": 98.5958904109589,
+        "mean": 10.70633158753166,
+        "max": 109.45,
+        "zeroHours": 304,
+        "exceedances": {
+          "WHO_24H": 64,
+          "BR_24H_FINAL": 6
+        },
+        "months": {
+          "2022-01": {
+            "mean": 7.807328003316654,
+            "max": 46.4354301479128,
+            "coveragePct": 93.41397849462365,
+            "zeroHours": 39,
+            "missingHours": 49,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2022-02": {
+            "mean": 8.456497483371704,
+            "max": 65.1052318276299,
+            "coveragePct": 96.57738095238095,
+            "zeroHours": 29,
+            "missingHours": 23,
+            "exceedances": {
+              "WHO_24H": 1,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2022-03": {
+            "mean": 10.620130778333891,
+            "max": 76.9010278495153,
+            "coveragePct": 97.98387096774194,
+            "zeroHours": 32,
+            "missingHours": 15,
+            "exceedances": {
+              "WHO_24H": 3,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2022-04": {
+            "mean": 8.763145499261485,
+            "max": 60.2944488366445,
+            "coveragePct": 99.58333333333333,
+            "zeroHours": 28,
+            "missingHours": 3,
+            "exceedances": {
+              "WHO_24H": 4,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2022-05": {
+            "mean": 10.417511451387218,
+            "max": 81.7974742934439,
+            "coveragePct": 99.86559139784946,
+            "zeroHours": 10,
+            "missingHours": 1,
+            "exceedances": {
+              "WHO_24H": 4,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2022-06": {
+            "mean": 10.646292770152613,
+            "max": 50.5778716203901,
+            "coveragePct": 100,
+            "zeroHours": 14,
+            "missingHours": 0,
+            "exceedances": {
+              "WHO_24H": 3,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2022-07": {
+            "mean": 15.324332261336528,
+            "max": 90.6289525731405,
+            "coveragePct": 99.19354838709677,
+            "zeroHours": 21,
+            "missingHours": 6,
+            "exceedances": {
+              "WHO_24H": 21,
+              "BR_24H_FINAL": 1
+            }
+          },
+          "2022-08": {
+            "mean": 14.51002400268214,
+            "max": 73.3511818599701,
+            "coveragePct": 100,
+            "zeroHours": 27,
+            "missingHours": 0,
+            "exceedances": {
+              "WHO_24H": 14,
+              "BR_24H_FINAL": 2
+            }
+          },
+          "2022-09": {
+            "mean": 13.027116106174438,
+            "max": 109.45,
+            "coveragePct": 100,
+            "zeroHours": 16,
+            "missingHours": 0,
+            "exceedances": {
+              "WHO_24H": 8,
+              "BR_24H_FINAL": 3
+            }
+          },
+          "2022-10": {
+            "mean": 11.74989347226024,
+            "max": 52.4251381746928,
+            "coveragePct": 97.84946236559139,
+            "zeroHours": 6,
+            "missingHours": 16,
+            "exceedances": {
+              "WHO_24H": 4,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2022-11": {
+            "mean": 8.839687636831634,
+            "max": 53.7676886643304,
+            "coveragePct": 98.61111111111111,
+            "zeroHours": 51,
+            "missingHours": 10,
+            "exceedances": {
+              "WHO_24H": 1,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2022-12": {
+            "mean": 7.810476204257073,
+            "max": 47.4568266079161,
+            "coveragePct": 100,
+            "zeroHours": 31,
+            "missingHours": 0,
+            "exceedances": {
+              "WHO_24H": 1,
+              "BR_24H_FINAL": 0
+            }
+          }
+        }
+      },
+      "23": {
+        "pollutant": "SO2",
+        "unit": "µg/m³",
+        "totalHours": 0,
+        "coveragePct": 0,
+        "mean": null,
+        "max": null,
+        "zeroHours": 0,
+        "exceedances": {
+          "WHO_24H": 0,
+          "BR_24H_FINAL": 0
+        }
+      },
+      "1465": {
+        "pollutant": "NO2",
+        "unit": "µg/m³",
+        "totalHours": 0,
+        "coveragePct": 0,
+        "mean": null,
+        "max": null,
+        "zeroHours": 0,
+        "exceedances": {
+          "WHO_24H": 0,
+          "BR_24H_FINAL": 0
+        }
+      },
+      "1955": {
+        "pollutant": "PTS",
+        "unit": "µg/m³",
+        "totalHours": 0,
+        "coveragePct": 0,
+        "mean": null,
+        "max": null,
+        "zeroHours": 0,
+        "exceedances": {
+          "WHO_24H": 0,
+          "BR_24H_FINAL": 0
+        }
+      },
+      "2130": {
+        "pollutant": "O3",
+        "unit": "µg/m³",
+        "totalHours": 0,
+        "coveragePct": 0,
+        "mean": null,
+        "max": null,
+        "zeroHours": 0,
+        "exceedances": {
+          "WHO_24H": 0,
+          "BR_24H_FINAL": 0
+        }
+      }
+    }
+  },
+  "70": {
+    "name": "VR - Retiro",
+    "pollutants": {
+      "3": {
+        "pollutant": "CO",
+        "unit": "ppm",
+        "totalHours": 0,
+        "coveragePct": 0,
+        "mean": null,
+        "max": null,
+        "zeroHours": 0,
+        "exceedances": {
+          "WHO_24H": 0,
+          "BR_24H_FINAL": 0
+        }
+      },
+      "18": {
+        "pollutant": "PM10",
+        "unit": "µg/m³",
+        "totalHours": 8536,
+        "coveragePct": 97.44292237442922,
+        "mean": 30.645285398129154,
+        "max": 284.441828782823,
+        "zeroHours": 46,
+        "exceedances": {
+          "WHO_24H": 37,
+          "BR_24H_FINAL": 24
+        },
+        "months": {
+          "2022-01": {
+            "mean": 21.201002666497242,
+            "max": 123.026730630663,
+            "coveragePct": 95.02688172043011,
+            "zeroHours": 4,
+            "missingHours": 37,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2022-02": {
+            "mean": 24.437150317041617,
+            "max": 108.054278464847,
+            "coveragePct": 97.76785714285714,
+            "zeroHours": 0,
+            "missingHours": 15,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2022-03": {
+            "mean": 24.666054775306076,
+            "max": 160.270541816288,
+            "coveragePct": 98.65591397849462,
+            "zeroHours": 18,
+            "missingHours": 10,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2022-04": {
+            "mean": 27.058728172836485,
+            "max": 103.666468540827,
+            "coveragePct": 99.58333333333333,
+            "zeroHours": 0,
+            "missingHours": 3,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2022-05": {
+            "mean": 28.374264349434416,
+            "max": 143.000212105645,
+            "coveragePct": 99.19354838709677,
+            "zeroHours": 3,
+            "missingHours": 6,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2022-06": {
+            "mean": 31.629436581148752,
+            "max": 271.522948320177,
+            "coveragePct": 94.86111111111111,
+            "zeroHours": 2,
+            "missingHours": 37,
+            "exceedances": {
+              "WHO_24H": 5,
+              "BR_24H_FINAL": 2
+            }
+          },
+          "2022-07": {
+            "mean": 40.17263898921693,
+            "max": 284.441828782823,
+            "coveragePct": 96.23655913978494,
+            "zeroHours": 1,
+            "missingHours": 28,
+            "exceedances": {
+              "WHO_24H": 7,
+              "BR_24H_FINAL": 5
+            }
+          },
+          "2022-08": {
+            "mean": 38.102436027727606,
+            "max": 191.168760214912,
+            "coveragePct": 99.73118279569893,
+            "zeroHours": 3,
+            "missingHours": 2,
+            "exceedances": {
+              "WHO_24H": 8,
+              "BR_24H_FINAL": 4
+            }
+          },
+          "2022-09": {
+            "mean": 37.05604021287335,
+            "max": 252.049768736098,
+            "coveragePct": 99.02777777777779,
+            "zeroHours": 4,
+            "missingHours": 7,
+            "exceedances": {
+              "WHO_24H": 6,
+              "BR_24H_FINAL": 6
+            }
+          },
+          "2022-10": {
+            "mean": 35.495907440094584,
+            "max": 225.038560451931,
+            "coveragePct": 97.58064516129032,
+            "zeroHours": 3,
+            "missingHours": 18,
+            "exceedances": {
+              "WHO_24H": 5,
+              "BR_24H_FINAL": 4
+            }
+          },
+          "2022-11": {
+            "mean": 29.736636587303423,
+            "max": 163.184220203824,
+            "coveragePct": 97.91666666666666,
+            "zeroHours": 4,
+            "missingHours": 15,
+            "exceedances": {
+              "WHO_24H": 2,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2022-12": {
+            "mean": 29.088543866654895,
+            "max": 209.559386291504,
+            "coveragePct": 93.81720430107528,
+            "zeroHours": 4,
+            "missingHours": 46,
+            "exceedances": {
+              "WHO_24H": 4,
+              "BR_24H_FINAL": 3
+            }
+          }
+        }
+      },
+      "20": {
+        "pollutant": "PM2.5",
+        "unit": "µg/m³",
+        "totalHours": 8671,
+        "coveragePct": 98.98401826484017,
+        "mean": 9.12227277010394,
+        "max": 97.5000750647651,
+        "zeroHours": 364,
+        "exceedances": {
+          "WHO_24H": 41,
+          "BR_24H_FINAL": 2
+        },
+        "months": {
+          "2022-01": {
+            "mean": 6.194986118955794,
+            "max": 39.9936222023434,
+            "coveragePct": 98.25268817204301,
+            "zeroHours": 48,
+            "missingHours": 13,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2022-02": {
+            "mean": 7.358376585432289,
+            "max": 35.8824014340507,
+            "coveragePct": 99.10714285714286,
+            "zeroHours": 37,
+            "missingHours": 6,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2022-03": {
+            "mean": 7.633824526076916,
+            "max": 90.6698436525133,
+            "coveragePct": 98.9247311827957,
+            "zeroHours": 46,
+            "missingHours": 8,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2022-04": {
+            "mean": 8.004411089713665,
+            "max": 75.8723038376702,
+            "coveragePct": 100,
+            "zeroHours": 19,
+            "missingHours": 0,
+            "exceedances": {
+              "WHO_24H": 3,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2022-05": {
+            "mean": 9.348821396207782,
+            "max": 54.6200747924381,
+            "coveragePct": 100,
+            "zeroHours": 14,
+            "missingHours": 0,
+            "exceedances": {
+              "WHO_24H": 4,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2022-06": {
+            "mean": 10.056850231371618,
+            "max": 50.7391717100143,
+            "coveragePct": 99.30555555555556,
+            "zeroHours": 24,
+            "missingHours": 5,
+            "exceedances": {
+              "WHO_24H": 5,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2022-07": {
+            "mean": 14.086077502875673,
+            "max": 97.5000750647651,
+            "coveragePct": 97.71505376344086,
+            "zeroHours": 20,
+            "missingHours": 17,
+            "exceedances": {
+              "WHO_24H": 12,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2022-08": {
+            "mean": 11.856933973989142,
+            "max": 57.1127129533556,
+            "coveragePct": 99.86559139784946,
+            "zeroHours": 24,
+            "missingHours": 1,
+            "exceedances": {
+              "WHO_24H": 9,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2022-09": {
+            "mean": 10.81680321209849,
+            "max": 78.4109452756246,
+            "coveragePct": 99.72222222222223,
+            "zeroHours": 32,
+            "missingHours": 2,
+            "exceedances": {
+              "WHO_24H": 5,
+              "BR_24H_FINAL": 1
+            }
+          },
+          "2022-10": {
+            "mean": 9.631421507214897,
+            "max": 56.6655447928111,
+            "coveragePct": 97.71505376344086,
+            "zeroHours": 15,
+            "missingHours": 17,
+            "exceedances": {
+              "WHO_24H": 2,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2022-11": {
+            "mean": 7.855339414701354,
+            "max": 76.2008778995938,
+            "coveragePct": 100,
+            "zeroHours": 30,
+            "missingHours": 0,
+            "exceedances": {
+              "WHO_24H": 1,
+              "BR_24H_FINAL": 1
+            }
+          },
+          "2022-12": {
+            "mean": 6.446876868562478,
+            "max": 41.2850995922089,
+            "coveragePct": 97.31182795698925,
+            "zeroHours": 55,
+            "missingHours": 20,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          }
+        }
+      },
+      "23": {
+        "pollutant": "SO2",
+        "unit": "µg/m³",
+        "totalHours": 0,
+        "coveragePct": 0,
+        "mean": null,
+        "max": null,
+        "zeroHours": 0,
+        "exceedances": {
+          "WHO_24H": 0,
+          "BR_24H_FINAL": 0
+        }
+      },
+      "1465": {
+        "pollutant": "NO2",
+        "unit": "µg/m³",
+        "totalHours": 0,
+        "coveragePct": 0,
+        "mean": null,
+        "max": null,
+        "zeroHours": 0,
+        "exceedances": {
+          "WHO_24H": 0,
+          "BR_24H_FINAL": 0
+        }
+      },
+      "1955": {
+        "pollutant": "PTS",
+        "unit": "µg/m³",
+        "totalHours": 0,
+        "coveragePct": 0,
+        "mean": null,
+        "max": null,
+        "zeroHours": 0,
+        "exceedances": {
+          "WHO_24H": 0,
+          "BR_24H_FINAL": 0
+        }
+      },
+      "2130": {
+        "pollutant": "O3",
+        "unit": "µg/m³",
+        "totalHours": 0,
+        "coveragePct": 0,
+        "mean": null,
+        "max": null,
+        "zeroHours": 0,
+        "exceedances": {
+          "WHO_24H": 0,
+          "BR_24H_FINAL": 0
+        }
+      }
+    }
+  },
+  "71": {
+    "name": "VR - Santa Cecília",
+    "pollutants": {
+      "3": {
+        "pollutant": "CO",
+        "unit": "ppm",
+        "totalHours": 0,
+        "coveragePct": 0,
+        "mean": null,
+        "max": null,
+        "zeroHours": 0,
+        "exceedances": {
+          "WHO_24H": 0,
+          "BR_24H_FINAL": 0
+        }
+      },
+      "18": {
+        "pollutant": "PM10",
+        "unit": "µg/m³",
+        "totalHours": 8050,
+        "coveragePct": 91.89497716894978,
+        "mean": 16.531227012066438,
+        "max": 410.8149372779,
+        "zeroHours": 189,
+        "exceedances": {
+          "WHO_24H": 10,
+          "BR_24H_FINAL": 8
+        },
+        "months": {
+          "2022-01": {
+            "mean": 13.321528530181784,
+            "max": 78.6840139728122,
+            "coveragePct": 73.25268817204301,
+            "zeroHours": 8,
+            "missingHours": 199,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2022-02": {
+            "mean": 11.598822672103896,
+            "max": 80.5597126579285,
+            "coveragePct": 87.64880952380952,
+            "zeroHours": 15,
+            "missingHours": 83,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2022-03": {
+            "mean": 12.725795793695992,
+            "max": 75.3702524375915,
+            "coveragePct": 97.71505376344086,
+            "zeroHours": 14,
+            "missingHours": 17,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2022-04": {
+            "mean": 11.99852315074981,
+            "max": 106.281429121229,
+            "coveragePct": 95.69444444444444,
+            "zeroHours": 26,
+            "missingHours": 31,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2022-05": {
+            "mean": 15.251939300735359,
+            "max": 120.844535340203,
+            "coveragePct": 99.05913978494624,
+            "zeroHours": 8,
+            "missingHours": 7,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2022-06": {
+            "mean": 17.53670992931693,
+            "max": 126.631868892246,
+            "coveragePct": 96.66666666666667,
+            "zeroHours": 36,
+            "missingHours": 24,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2022-07": {
+            "mean": 22.122739200915785,
+            "max": 410.8149372779,
+            "coveragePct": 96.50537634408603,
+            "zeroHours": 3,
+            "missingHours": 26,
+            "exceedances": {
+              "WHO_24H": 2,
+              "BR_24H_FINAL": 2
+            }
+          },
+          "2022-08": {
+            "mean": 24.252424919523165,
+            "max": 241.498382848104,
+            "coveragePct": 91.66666666666666,
+            "zeroHours": 22,
+            "missingHours": 62,
+            "exceedances": {
+              "WHO_24H": 5,
+              "BR_24H_FINAL": 4
+            }
+          },
+          "2022-09": {
+            "mean": 22.17964219444177,
+            "max": 152.561355701023,
+            "coveragePct": 84.16666666666667,
+            "zeroHours": 16,
+            "missingHours": 114,
+            "exceedances": {
+              "WHO_24H": 3,
+              "BR_24H_FINAL": 2
+            }
+          },
+          "2022-10": {
+            "mean": 18.39014202673236,
+            "max": 114.751100012461,
+            "coveragePct": 94.89247311827957,
+            "zeroHours": 4,
+            "missingHours": 38,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2022-11": {
+            "mean": 12.406006739188378,
+            "max": 116.691294023726,
+            "coveragePct": 86.11111111111111,
+            "zeroHours": 25,
+            "missingHours": 100,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2022-12": {
+            "mean": 15.618046687908715,
+            "max": 109.140091501872,
+            "coveragePct": 98.79032258064517,
+            "zeroHours": 12,
+            "missingHours": 9,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          }
+        }
+      },
+      "20": {
+        "pollutant": "PM2.5",
+        "unit": "µg/m³",
+        "totalHours": 8266,
+        "coveragePct": 94.3607305936073,
+        "mean": 8.022766870454715,
+        "max": 96.5322627793506,
+        "zeroHours": 523,
+        "exceedances": {
+          "WHO_24H": 35,
+          "BR_24H_FINAL": 3
+        },
+        "months": {
+          "2022-01": {
+            "mean": 6.536795080221811,
+            "max": 40.6418205695682,
+            "coveragePct": 77.01612903225806,
+            "zeroHours": 25,
+            "missingHours": 171,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2022-02": {
+            "mean": 6.451316549919452,
+            "max": 55.4391891482141,
+            "coveragePct": 98.36309523809523,
+            "zeroHours": 31,
+            "missingHours": 11,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2022-03": {
+            "mean": 7.595013424948511,
+            "max": 96.5322627793506,
+            "coveragePct": 97.84946236559139,
+            "zeroHours": 34,
+            "missingHours": 16,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2022-04": {
+            "mean": 7.091267816952269,
+            "max": 51.3939047643873,
+            "coveragePct": 99.72222222222223,
+            "zeroHours": 51,
+            "missingHours": 2,
+            "exceedances": {
+              "WHO_24H": 3,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2022-05": {
+            "mean": 8.465206930826247,
+            "max": 57.2007531907823,
+            "coveragePct": 99.59677419354838,
+            "zeroHours": 33,
+            "missingHours": 3,
+            "exceedances": {
+              "WHO_24H": 2,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2022-06": {
+            "mean": 9.929999042182667,
+            "max": 56.9564417997996,
+            "coveragePct": 96.94444444444444,
+            "zeroHours": 56,
+            "missingHours": 22,
+            "exceedances": {
+              "WHO_24H": 6,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2022-07": {
+            "mean": 12.904884865325942,
+            "max": 71.2194986110263,
+            "coveragePct": 96.63978494623656,
+            "zeroHours": 22,
+            "missingHours": 25,
+            "exceedances": {
+              "WHO_24H": 12,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2022-08": {
+            "mean": 9.523735588462522,
+            "max": 59.5015020815531,
+            "coveragePct": 91.93548387096774,
+            "zeroHours": 61,
+            "missingHours": 60,
+            "exceedances": {
+              "WHO_24H": 6,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2022-09": {
+            "mean": 9.648533826407938,
+            "max": 79.4424306191338,
+            "coveragePct": 84.30555555555556,
+            "zeroHours": 53,
+            "missingHours": 113,
+            "exceedances": {
+              "WHO_24H": 6,
+              "BR_24H_FINAL": 3
+            }
+          },
+          "2022-10": {
+            "mean": 7.612546692094369,
+            "max": 36.2663353988859,
+            "coveragePct": 97.58064516129032,
+            "zeroHours": 20,
+            "missingHours": 18,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2022-11": {
+            "mean": 4.74091704389355,
+            "max": 48.3162000899845,
+            "coveragePct": 93.19444444444444,
+            "zeroHours": 85,
+            "missingHours": 49,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2022-12": {
+            "mean": 5.5734564451000965,
+            "max": 44.7096357075373,
+            "coveragePct": 99.46236559139786,
+            "zeroHours": 52,
+            "missingHours": 4,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          }
+        }
+      },
+      "23": {
+        "pollutant": "SO2",
+        "unit": "µg/m³",
+        "totalHours": 0,
+        "coveragePct": 0,
+        "mean": null,
+        "max": null,
+        "zeroHours": 0,
+        "exceedances": {
+          "WHO_24H": 0,
+          "BR_24H_FINAL": 0
+        }
+      },
+      "1465": {
+        "pollutant": "NO2",
+        "unit": "µg/m³",
+        "totalHours": 0,
+        "coveragePct": 0,
+        "mean": null,
+        "max": null,
+        "zeroHours": 0,
+        "exceedances": {
+          "WHO_24H": 0,
+          "BR_24H_FINAL": 0
+        }
+      },
+      "1955": {
+        "pollutant": "PTS",
+        "unit": "µg/m³",
+        "totalHours": 0,
+        "coveragePct": 0,
+        "mean": null,
+        "max": null,
+        "zeroHours": 0,
+        "exceedances": {
+          "WHO_24H": 0,
+          "BR_24H_FINAL": 0
+        }
+      },
+      "2130": {
+        "pollutant": "O3",
+        "unit": "µg/m³",
+        "totalHours": 0,
+        "coveragePct": 0,
+        "mean": null,
+        "max": null,
+        "zeroHours": 0,
+        "exceedances": {
+          "WHO_24H": 0,
+          "BR_24H_FINAL": 0
+        }
+      }
+    }
+  },
+  "72": {
+    "name": "VR - Meteorológica Ilha das Águas Cruas",
+    "pollutants": {
+      "3": {
+        "pollutant": "CO",
+        "unit": "ppm",
+        "totalHours": 0,
+        "coveragePct": 0,
+        "mean": null,
+        "max": null,
+        "zeroHours": 0,
+        "exceedances": {
+          "WHO_24H": 0,
+          "BR_24H_FINAL": 0
+        }
+      },
+      "18": {
+        "pollutant": "PM10",
+        "unit": "µg/m³",
+        "totalHours": 0,
+        "coveragePct": 0,
+        "mean": null,
+        "max": null,
+        "zeroHours": 0,
+        "exceedances": {
+          "WHO_24H": 0,
+          "BR_24H_FINAL": 0
+        }
+      },
+      "20": {
+        "pollutant": "PM2.5",
+        "unit": "µg/m³",
+        "totalHours": 0,
+        "coveragePct": 0,
+        "mean": null,
+        "max": null,
+        "zeroHours": 0,
+        "exceedances": {
+          "WHO_24H": 0,
+          "BR_24H_FINAL": 0
+        }
+      },
+      "23": {
+        "pollutant": "SO2",
+        "unit": "µg/m³",
+        "totalHours": 0,
+        "coveragePct": 0,
+        "mean": null,
+        "max": null,
+        "zeroHours": 0,
+        "exceedances": {
+          "WHO_24H": 0,
+          "BR_24H_FINAL": 0
+        }
+      },
+      "1465": {
+        "pollutant": "NO2",
+        "unit": "µg/m³",
+        "totalHours": 0,
+        "coveragePct": 0,
+        "mean": null,
+        "max": null,
+        "zeroHours": 0,
+        "exceedances": {
+          "WHO_24H": 0,
+          "BR_24H_FINAL": 0
+        }
+      },
+      "1955": {
+        "pollutant": "PTS",
+        "unit": "µg/m³",
+        "totalHours": 0,
+        "coveragePct": 0,
+        "mean": null,
+        "max": null,
+        "zeroHours": 0,
+        "exceedances": {
+          "WHO_24H": 0,
+          "BR_24H_FINAL": 0
+        }
+      },
+      "2130": {
+        "pollutant": "O3",
+        "unit": "µg/m³",
+        "totalHours": 0,
+        "coveragePct": 0,
+        "mean": null,
+        "max": null,
+        "zeroHours": 0,
+        "exceedances": {
+          "WHO_24H": 0,
+          "BR_24H_FINAL": 0
+        }
+      }
+    }
+  }
+}

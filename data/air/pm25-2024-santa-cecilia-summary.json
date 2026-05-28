@@ -1,0 +1,130 @@
+{
+  "station": "VR - Santa Cecília",
+  "stationId": "71",
+  "pollutant": "PM2.5",
+  "parameterId": "20",
+  "year": 2024,
+  "totalExpectedHours": 8784,
+  "totalFoundHours": 8643,
+  "annualCoveragePct": 98.3948087431694,
+  "totalValid": 8643,
+  "totalZero": 740,
+  "totalNull": 0,
+  "totalNegative": 0,
+  "totalDuplicate": 0,
+  "annualHourlyMean": 8.879715056126566,
+  "annualHourlyMax": 132.252555896971,
+  "totalDaysWithSufficientData": 359,
+  "totalDaysExceedingWHO": 54,
+  "totalDaysExceedingBR506": 10,
+  "monthlyCoverage": [
+    {
+      "month": "2024-01",
+      "expectedHours": 744,
+      "foundHours": 710,
+      "coveragePct": 95.43010752688173,
+      "zeros": 99,
+      "nulls": 0,
+      "mean": 5.448239425957947
+    },
+    {
+      "month": "2024-02",
+      "expectedHours": 696,
+      "foundHours": 691,
+      "coveragePct": 99.2816091954023,
+      "zeros": 74,
+      "nulls": 0,
+      "mean": 5.573228351726234
+    },
+    {
+      "month": "2024-03",
+      "expectedHours": 744,
+      "foundHours": 741,
+      "coveragePct": 99.59677419354838,
+      "zeros": 103,
+      "nulls": 0,
+      "mean": 5.273531603550921
+    },
+    {
+      "month": "2024-04",
+      "expectedHours": 720,
+      "foundHours": 715,
+      "coveragePct": 99.30555555555556,
+      "zeros": 54,
+      "nulls": 0,
+      "mean": 8.652836169211946
+    },
+    {
+      "month": "2024-05",
+      "expectedHours": 744,
+      "foundHours": 742,
+      "coveragePct": 99.73118279569893,
+      "zeros": 48,
+      "nulls": 0,
+      "mean": 9.650413234126964
+    },
+    {
+      "month": "2024-06",
+      "expectedHours": 720,
+      "foundHours": 672,
+      "coveragePct": 93.33333333333333,
+      "zeros": 21,
+      "nulls": 0,
+      "mean": 11.223154769225316
+    },
+    {
+      "month": "2024-07",
+      "expectedHours": 744,
+      "foundHours": 744,
+      "coveragePct": 100,
+      "zeros": 22,
+      "nulls": 0,
+      "mean": 11.17349210263603
+    },
+    {
+      "month": "2024-08",
+      "expectedHours": 744,
+      "foundHours": 744,
+      "coveragePct": 100,
+      "zeros": 54,
+      "nulls": 0,
+      "mean": 13.206790138896533
+    },
+    {
+      "month": "2024-09",
+      "expectedHours": 720,
+      "foundHours": 697,
+      "coveragePct": 96.80555555555556,
+      "zeros": 30,
+      "nulls": 0,
+      "mean": 18.721871360605142
+    },
+    {
+      "month": "2024-10",
+      "expectedHours": 744,
+      "foundHours": 738,
+      "coveragePct": 99.19354838709677,
+      "zeros": 79,
+      "nulls": 0,
+      "mean": 6.991502321692024
+    },
+    {
+      "month": "2024-11",
+      "expectedHours": 720,
+      "foundHours": 717,
+      "coveragePct": 99.58333333333333,
+      "zeros": 87,
+      "nulls": 0,
+      "mean": 5.015903172016611
+    },
+    {
+      "month": "2024-12",
+      "expectedHours": 744,
+      "foundHours": 732,
+      "coveragePct": 98.38709677419355,
+      "zeros": 69,
+      "nulls": 0,
+      "mean": 5.856269711725557
+    }
+  ]
+}

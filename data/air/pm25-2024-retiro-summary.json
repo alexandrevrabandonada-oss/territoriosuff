@@ -1,0 +1,130 @@
+{
+  "station": "VR - Retiro",
+  "stationId": "70",
+  "pollutant": "PM2.5",
+  "parameterId": "20",
+  "year": 2024,
+  "totalExpectedHours": 8784,
+  "totalFoundHours": 8755,
+  "annualCoveragePct": 99.66985428051002,
+  "totalValid": 8755,
+  "totalZero": 521,
+  "totalNull": 0,
+  "totalNegative": 0,
+  "totalDuplicate": 0,
+  "annualHourlyMean": 9.335077070779697,
+  "annualHourlyMax": 208.582668300205,
+  "totalDaysWithSufficientData": 365,
+  "totalDaysExceedingWHO": 60,
+  "totalDaysExceedingBR506": 11,
+  "monthlyCoverage": [
+    {
+      "month": "2024-01",
+      "expectedHours": 744,
+      "foundHours": 742,
+      "coveragePct": 99.73118279569893,
+      "zeros": 99,
+      "nulls": 0,
+      "mean": 5.18008686751504
+    },
+    {
+      "month": "2024-02",
+      "expectedHours": 696,
+      "foundHours": 695,
+      "coveragePct": 99.85632183908046,
+      "zeros": 39,
+      "nulls": 0,
+      "mean": 6.739308906528941
+    },
+    {
+      "month": "2024-03",
+      "expectedHours": 744,
+      "foundHours": 744,
+      "coveragePct": 100,
+      "zeros": 42,
+      "nulls": 0,
+      "mean": 6.856938996713584
+    },
+    {
+      "month": "2024-04",
+      "expectedHours": 720,
+      "foundHours": 717,
+      "coveragePct": 99.58333333333333,
+      "zeros": 20,
+      "nulls": 0,
+      "mean": 10.385868655803902
+    },
+    {
+      "month": "2024-05",
+      "expectedHours": 744,
+      "foundHours": 743,
+      "coveragePct": 99.86559139784946,
+      "zeros": 29,
+      "nulls": 0,
+      "mean": 9.225347736499135
+    },
+    {
+      "month": "2024-06",
+      "expectedHours": 720,
+      "foundHours": 718,
+      "coveragePct": 99.72222222222223,
+      "zeros": 19,
+      "nulls": 0,
+      "mean": 10.807660444922522
+    },
+    {
+      "month": "2024-07",
+      "expectedHours": 744,
+      "foundHours": 742,
+      "coveragePct": 99.73118279569893,
+      "zeros": 13,
+      "nulls": 0,
+      "mean": 12.130353966507363
+    },
+    {
+      "month": "2024-08",
+      "expectedHours": 744,
+      "foundHours": 744,
+      "coveragePct": 100,
+      "zeros": 50,
+      "nulls": 0,
+      "mean": 12.156680357604339
+    },
+    {
+      "month": "2024-09",
+      "expectedHours": 720,
+      "foundHours": 709,
+      "coveragePct": 98.47222222222223,
+      "zeros": 16,
+      "nulls": 0,
+      "mean": 18.77731295532195
+    },
+    {
+      "month": "2024-10",
+      "expectedHours": 744,
+      "foundHours": 743,
+      "coveragePct": 99.86559139784946,
+      "zeros": 70,
+      "nulls": 0,
+      "mean": 9.399341965292564
+    },
+    {
+      "month": "2024-11",
+      "expectedHours": 720,
+      "foundHours": 719,
+      "coveragePct": 99.86111111111111,
+      "zeros": 59,
+      "nulls": 0,
+      "mean": 5.232307298057032
+    },
+    {
+      "month": "2024-12",
+      "expectedHours": 744,
+      "foundHours": 739,
+      "coveragePct": 99.32795698924731,
+      "zeros": 65,
+      "nulls": 0,
+      "mean": 5.324010635261281
+    }
+  ]
+}
