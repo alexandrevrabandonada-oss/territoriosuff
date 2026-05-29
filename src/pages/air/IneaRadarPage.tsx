@@ -925,7 +925,16 @@ export function IneaRadarPage() {
       {/* Seção com âncora #metodologia (Metodologia e confiança) */}
       <section id="metodologia" className="space-y-6 pt-4 border-t border-slate-200/60">
         <div className="space-y-2">
-          <h2 className="text-lg font-black text-slate-800">Metodologia e Nível de Confiança</h2>
+          <div className="flex flex-wrap items-center gap-3">
+            <h2 className="text-lg font-black text-slate-800">Metodologia e Nível de Confiança</h2>
+            <Link
+              to="/qualidade-ar/inea/metodologia"
+              className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-emerald-50 text-emerald-600 border border-emerald-500/20 hover:bg-emerald-100 transition-colors shadow-sm"
+            >
+              <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
+              Dados abertos v1.1.0 · Healthcheck saudável
+            </Link>
+          </div>
           <p className="text-xs text-slate-500 font-semibold leading-relaxed">
             Entenda a procedência dos dados, as réguas de validação e as limitações das plataformas públicas.
           </p>
