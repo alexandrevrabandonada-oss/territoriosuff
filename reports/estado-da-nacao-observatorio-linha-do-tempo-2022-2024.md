@@ -54,8 +54,8 @@ Abaixo estão dispostos os indicadores de média anual, pico horário máximo, e
     *   *Detalhe:* A estação apresenta consistentemente a maior média anual registrada entre as três estações analisadas nos três anos históricos (tanto para PM10 quanto para PM2.5). Ela também lidera a quantidade de excedências acumuladas em relação às réguas diárias nacionais (CONAMA 506) e internacionais (OMS), tornando-se o principal ponto de observação continuada.
 
 2.  **VR - Retiro:**  
-    *   *Diretriz:* `"Retiro aparece com episódios relevantes, especialmente em picos."`  
-    *   *Detalhe:* Embora registre médias de exposição anual levemente inferiores a Belmonte, o Retiro caracteriza-se por eventos agudos significativos. Em 2024, registrou o maior pico horário pontual de PM2.5 (208.58 µg/m³) e o maior número de excedências diárias da CONAMA 506 para PM10 (32 dias).
+    *   *Diretriz:* `"Retiro aparece com episódios relevantes, especially em picos."`  
+    *   *Detalhe:* Embora registre médias de exposição anual levemente inferiores a Belmonte, o Retiro caracteriza-se por picos horários pontuais de concentração significativos. Em 2024, registrou o maior pico horário pontual de PM2.5 (208.58 µg/m³) e o maior número de excedências diárias da CONAMA 506 para PM10 (32 dias).
 
 3.  **VR - Santa Cecília:**  
     *   *Diretriz:* `"Santa Cecília tem menores médias, mas não ausência de atenção."`  
@@ -63,7 +63,7 @@ Abaixo estão dispostos os indicadores de média anual, pico horário máximo, e
 
 4.  **Sazonalidade e Clima:**  
     *   *Diretriz:* `"Inverno e estiagem concentram parte importante das ultrapassagens experimentais."`  
-    *   *Detalhe:* A análise da série temporal detalhada por mês confirma que os meses do meio do ano (maio a setembro), marcados pelo inverno e por longos períodos de estiagem, geram condições adversas de dispersão de poluentes, acumulando a vasta maioria dos dias acima dos padrões de saúde.
+    *   *Detalhe:* A análise da série temporal detalhada por mês confirma que os meses do meio do ano (maio a setembro), marcados pelo inverno e por longos períodos de estiagem, geram condições adversas de dispersão de poluentes, acumulando parte importante dos dias acima dos padrões de saúde.
 
 ---
 
@@ -74,7 +74,7 @@ Toda a divulgação plurianual realizada na interface pública do portal SEMEAR 
 *   **Comparação Experimental:** Toda a exibição de limites e metas deve ser contextualizada explicitamente como uma comparação experimental de dados secundários.
 *   **Sem QA/QC Oficial de Origem:** É obrigatório alertar o usuário que as leituras públicas disponibilizadas em lote pelo INEA na plataforma WebLakes não possuem validação final oficial (QA/QC explícito) detalhada registro a registro no banco.
 *   **Integridade de Dados Gaps:** Fica blindada a regra de que "ausência de dado não representa ar bom", evitando conclusões de conformidade em períodos com lacunas ou falhas de transmissão instrumental.
-*   **Exclusão de Termos de Tempo Real:** Os textos não descrevem as análises como leitura instantânea do ar e deixam claro que não se trata de monitoramento ao vivo ou minuto a minuto (não representa tempo real / não implementado).
+*   **Exclusão de Termos de Tempo Real:** Os textos não descrevem as análises como leitura instantânea do ar e deixam claro que não se trata de monitoramento ao vivo ou leitura minuto a minuto.
 
 ---
 

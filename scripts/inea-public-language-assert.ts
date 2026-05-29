@@ -17,7 +17,7 @@ const visualFiles = [
   path.join(process.cwd(), 'src', 'components', 'air', 'HistoricalRawEvidenceBox.tsx'),
   path.join(process.cwd(), 'src', 'components', 'air', 'YearExplorer.tsx'),
   path.join(process.cwd(), 'src', 'components', 'air', 'ThresholdComparisonPanel.tsx'),
-  path.join(process.cwd(), 'src', 'components', 'air', 'YearTimeline.tsx'),
+  path.join(process.cwd(), 'src', 'components', 'air', 'ParticulateTimeline2022_2024.tsx'),
   path.join(process.cwd(), 'src', 'data', 'air', 'pm10-2024-station-summary.ts')
 ];
 
@@ -69,6 +69,7 @@ const reportFiles: string[] = [
   path.join(process.cwd(), 'reports', 'estado-da-nacao-observatorio-lancamento-pm25-final.md'),
   path.join(process.cwd(), 'reports', 'estado-da-nacao-observatorio-pm25-2024-final-ajustado.md'),
   path.join(process.cwd(), 'reports', 'estado-da-nacao-observatorio-linha-do-tempo-2022-2024.md'),
+  path.join(process.cwd(), 'reports', 'estado-da-nacao-observatorio-linha-do-tempo-publicacao.md'),
   path.join(process.cwd(), 'reports', 'estado-da-nacao-inea-historico-2022-2023.md')
 ];
 
@@ -100,7 +101,10 @@ const EXCEPTION_MARKERS = [
   'não implementado',
   'roadmap futuro',
   'futuro',
-  'roadmap'
+  'roadmap',
+  'não representa monitoramento ao vivo',
+  'não representam monitoramento ao vivo',
+  'não se trata de monitoramento ao vivo'
 ];
 
 async function runLanguageScan() {

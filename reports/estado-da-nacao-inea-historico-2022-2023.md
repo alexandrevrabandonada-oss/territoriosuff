@@ -42,7 +42,7 @@ Todos os cálculos e estatísticas consolidados abaixo utilizam como matéria-pr
 
 #### Principais Sinais de Atenção (2022):
 - **Belmonte** registrou a maior média anual de PM10 (30.74 µg/m³) e de PM2.5 (10.71 µg/m³) nesta camada analisada, concentrando a maior frequência de eventos de atenção (64 dias acima da recomendação sanitária diária da OMS para particulado fino).
-- **Santa Cecília** registrou a menor média anual registrada entre as três estações analisadas em 2022 tanto para PM10 (16.53 µg/m³) quanto para PM2.5 (8.02 µg/m³), embora picos pontuais como o de PM10 de 410.81 µg/m³ evidenciem ocorrências agudas de emissão.
+- **Santa Cecília** registrou a menor média anual registrada entre as três estações analisadas em 2022 tanto para PM10 (16.53 µg/m³) quanto para PM2.5 (8.02 µg/m³), embora picos pontuais como o de PM10 de 410.81 µg/m³ evidenciem picos horários pontuais de concentração.
 
 ---
 
