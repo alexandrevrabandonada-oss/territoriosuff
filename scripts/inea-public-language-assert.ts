@@ -84,7 +84,10 @@ const reportFiles: string[] = [
   path.join(process.cwd(), 'reports', 'estado-da-nacao-observatorio-lancamento-episodios-final.md'),
   path.join(process.cwd(), 'reports', 'dicionario-dados-observatorio-ar.md'),
   path.join(process.cwd(), 'reports', 'estado-da-nacao-observatorio-metodologia-dados-abertos.md'),
-  path.join(process.cwd(), 'reports', 'estado-da-nacao-observatorio-deploy-smoke-publico.md')
+  path.join(process.cwd(), 'reports', 'estado-da-nacao-observatorio-deploy-smoke-publico.md'),
+  path.join(process.cwd(), 'reports', 'checklist-observatorio-atualizacao-mensal.md'),
+  path.join(process.cwd(), 'reports', 'estado-da-nacao-observatorio-pos-lancamento.md'),
+  path.join(process.cwd(), 'reports', 'observatorio-healthcheck-latest.md')
 ];
 
 const reportsDir = path.join(process.cwd(), 'reports');

@@ -3,9 +3,36 @@ import { Link, useLocation } from "react-router-dom";
 import { SurfaceCard, IconShell } from "../../components/BrandSystem";
 import { DATA_DICTIONARY } from "../../data/air/data-dictionary.ts";
 
+function formatDate(dateStr: string | undefined): string {
+  if (!dateStr) return "N/A";
+  try {
+    const date = new Date(dateStr);
+    return date.toLocaleDateString("pt-BR", {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit"
+    });
+  } catch {
+    return dateStr;
+  }
+}
+
 export function IneaMethodologyPage() {
   const location = useLocation();
   const [activeSection, setActiveSection] = useState("origem");
+  const [manifest, setManifest] = useState<any>(null);
+
+  useEffect(() => {
+    fetch("/data/air/manifest.json")
+      .then((res) => {
+        if (!res.ok) throw new Error("Manifest not found");
+        return res.json();
+      })
+      .then((data) => setManifest(data))
+      .catch((err) => console.error("Error loading manifest:", err));
+  }, []);
 
   // Handle smooth scroll when navigating to hash anchors
   useEffect(() => {
@@ -64,6 +91,36 @@ export function IneaMethodologyPage() {
           Entenda de onde vêm os dados, como calculamos médias e episódios de atenção, quais são as limitações e como baixar os arquivos para auditoria cidadã.
         </p>
       </header>
+
+      {/* Dynamic Data Updates Info Banner */}
+      <div className="mb-8 p-4 bg-slate-50 border border-slate-200/65 rounded-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-4 text-xs font-semibold text-slate-600 shadow-sm animate-fade-in">
+        <div className="flex flex-wrap items-center gap-x-4 gap-y-1">
+          <div className="flex items-center gap-1.5">
+            <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
+            <span>
+              Última atualização dos dados:{" "}
+              <strong className="text-slate-800">
+                {manifest ? formatDate(manifest.generated_at) : "Carregando..."}
+              </strong>
+            </span>
+          </div>
+          <span className="hidden sm:inline text-slate-300">|</span>
+          <div className="flex items-center gap-1.5">
+            <span className="h-2 w-2 rounded-full bg-blue-500 animate-pulse" />
+            <span>
+              Último smoke test público:{" "}
+              <strong className="text-slate-800">
+                {manifest ? formatDate(manifest.last_smoke_test_at) : "Carregando..."}
+              </strong>
+            </span>
+          </div>
+        </div>
+        {manifest?.dataset_version && (
+          <div className="text-[10px] font-black uppercase tracking-wider bg-slate-200/50 px-2 py-0.5 rounded text-slate-500 self-start sm:self-center">
+            Versão do Dataset: {manifest.dataset_version}
+          </div>
+        )}
+      </div>
 
       {/* Main Layout Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-[250px_1fr] gap-8 items-start">

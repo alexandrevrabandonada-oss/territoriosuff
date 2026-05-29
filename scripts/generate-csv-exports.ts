@@ -1,5 +1,6 @@
 import * as fs from 'node:fs';
 import * as path from 'node:path';
+import { execSync } from 'node:child_process';
 import { DATA_DICTIONARY } from '../src/data/air/data-dictionary.ts';
 import { ATTENTION_EPISODES } from '../src/data/air/attention-episodes-2022-2024.ts';
 import { pm102024StationSummary } from '../src/data/air/pm10-2024-station-summary.ts';
@@ -200,6 +201,85 @@ async function main() {
   }
   fs.writeFileSync(path.join(publicDir, 'particulate-timeline-2022-2024.csv'), timelineRows.join("\n"), 'utf8');
   console.log("  - Generated particulate-timeline-2022-2024.csv");
+
+  // 6. Generate manifest.json dynamically with dataset versioning
+  let commitHash = 'unknown';
+  try {
+    commitHash = execSync('git rev-parse --short HEAD', { encoding: 'utf8' }).trim();
+  } catch (e) {
+    console.warn("Could not determine git commit hash:", e);
+  }
+
+  const generatedAt = new Date().toISOString();
+
+  const manifestData = {
+    dataset_version: "1.1.0",
+    generated_at: generatedAt,
+    source_system: "WEBLAKES_CONCENTRATION_WITH_WIND",
+    methodology_label: "Dado horário público WebLakes — comparação experimental — sem QA/QC oficial explícito.",
+    commit_hash: commitHash,
+    coverage_notes: "Série histórica abrangendo de 2022 a 2024 para Volta Redonda. Cobertura horária variável de acordo com a integridade do sinal público do INEA.",
+    last_smoke_test_at: generatedAt,
+    datasets: [
+      {
+        filename: "pm10-2024-station-summary.csv",
+        title: "Resumo de Estações PM10 (2024)",
+        description: "Estatísticas anuais consolidadas por estação para o poluente PM10 em Volta Redonda no ano de 2024.",
+        rows_count: pm102024StationSummary.length,
+        updated_at: generatedAt,
+        source_system: "WEBLAKES_CONCENTRATION_WITH_WIND",
+        methodological_label: "Dado horário público WebLakes — comparação experimental — sem QA/QC oficial explícito.",
+        public_url: "https://semear-pwa.vercel.app/data/air/pm10-2024-station-summary.csv"
+      },
+      {
+        filename: "pm25-2024-station-summary.csv",
+        title: "Resumo de Estações PM2.5 (2024)",
+        description: "Estatísticas anuais consolidadas por estação para o poluente PM2.5 em Volta Redonda no ano de 2024.",
+        rows_count: pm25Data.length,
+        updated_at: generatedAt,
+        source_system: "WEBLAKES_CONCENTRATION_WITH_WIND",
+        methodological_label: "Dado horário público WebLakes — comparação experimental — sem QA/QC oficial explícito.",
+        public_url: "https://semear-pwa.vercel.app/data/air/pm25-2024-station-summary.csv"
+      },
+      {
+        filename: "particulate-timeline-2022-2024.csv",
+        title: "Linha do Tempo de Particulados (2022-2024)",
+        description: "Médias, coberturas e contagem anual de excedências OMS/CONAMA para PM10 e PM2.5 (2022-2024).",
+        rows_count: timelineRows.length - 1,
+        updated_at: generatedAt,
+        source_system: "WEBLAKES_CONCENTRATION_WITH_WIND",
+        methodological_label: "Dado horário público WebLakes — comparação experimental — sem QA/QC oficial explícito.",
+        public_url: "https://semear-pwa.vercel.app/data/air/particulate-timeline-2022-2024.csv"
+      },
+      {
+        filename: "attention-episodes-2022-2024.csv",
+        title: "Episódios de Atenção Mensais (2022-2024)",
+        description: "Série histórica mensal contendo o número de dias com excedências da OMS e da CONAMA 506 (2022-2024).",
+        rows_count: ATTENTION_EPISODES.length,
+        updated_at: generatedAt,
+        source_system: "WEBLAKES_CONCENTRATION_WITH_WIND",
+        methodological_label: "Dado horário público WebLakes — comparação experimental — sem QA/QC oficial explícito.",
+        public_url: "https://semear-pwa.vercel.app/data/air/attention-episodes-2022-2024.csv"
+      },
+      {
+        filename: "data-dictionary.csv",
+        title: "Dicionário de Dados do Observatório do Ar",
+        description: "Metadados descrevendo os campos das planilhas de qualidade do ar exportadas pelo Observatório.",
+        rows_count: DATA_DICTIONARY.length,
+        updated_at: generatedAt,
+        source_system: "SEMEAR (Metadados)",
+        methodological_label: "Metadados descritivos da comparação experimental do Observatório do Ar.",
+        public_url: "https://semear-pwa.vercel.app/data/air/data-dictionary.csv"
+      }
+    ]
+  };
+
+  fs.writeFileSync(
+    path.join(publicDir, 'manifest.json'),
+    JSON.stringify(manifestData, null, 2),
+    'utf8'
+  );
+  console.log("  - Generated manifest.json");
 
   console.log("CSV generation completed successfully.");
 }
