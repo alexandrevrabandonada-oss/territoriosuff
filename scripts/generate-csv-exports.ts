@@ -213,7 +213,9 @@ async function main() {
   const generatedAt = new Date().toISOString();
 
   const manifestData = {
+    version: "1.1.0",
     dataset_version: "1.1.0",
+    status: "saudável",
     generated_at: generatedAt,
     source_system: "WEBLAKES_CONCENTRATION_WITH_WIND",
     methodology_label: "Dado horário público WebLakes — comparação experimental — sem QA/QC oficial explícito.",

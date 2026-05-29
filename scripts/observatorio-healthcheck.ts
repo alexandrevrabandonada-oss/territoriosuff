@@ -56,7 +56,7 @@ async function performCheck(
             ok = false;
             notes = 'Manifest JSON is missing "datasets" array';
           } else {
-            notes = `Manifest parsed. Version: ${parsed.dataset_version}, datasets: ${parsed.datasets.length}`;
+            notes = `Manifest parsed. Version: ${parsed.version || parsed.dataset_version || 'unknown'}, datasets: ${parsed.datasets.length}`;
           }
         } catch {
           ok = false;
@@ -101,7 +101,7 @@ async function performCheck(
 }
 
 async function main() {
-  const targetHost = process.env.HEALTHCHECK_TARGET_URL || process.argv[2] || 'https://semear-pwa.vercel.app';
+  const targetHost = process.env.OBSERVATORIO_BASE_URL || process.env.HEALTHCHECK_TARGET_URL || process.argv[2] || 'https://semear-pwa.vercel.app';
   console.log(`Starting Observatório do Ar Healthcheck against: ${targetHost}`);
   
   const results: CheckResult[] = [];
@@ -170,7 +170,7 @@ Este relatório apresenta o status operacional automatizado das rotas públicas,
 *   **Data e Hora UTC:** \`${timestampUtc}\`
 *   **Total de Testes:** ${totalChecks}
 *   **Aprovados:** ${passedChecks} ✅
-*   **Falhas:** ${failedChecks} ${failedChecks > 0 ? '❌' : 'none'}
+*   **Falhas:** ${failedChecks}${failedChecks > 0 ? ' ❌' : ''}
 *   **Status de Saúde Geral:** ${isHealthy ? '**PASS (SAUDÁVEL)** 🟢' : '**FAIL (INCONSISTENTE)** 🔴'}
 
 ---
@@ -213,6 +213,12 @@ Este relatório apresenta o status operacional automatizado das rotas públicas,
   fs.writeFileSync(path.join(reportsDir, 'observatorio-healthcheck-latest.md'), mdReport, 'utf8');
   console.log(`Healthcheck complete. Report written to: reports/observatorio-healthcheck-latest.md`);
   console.log(`Status: ${isHealthy ? 'PASS' : 'FAIL'} (${passedChecks}/${totalChecks} passed)`);
+
+  if (!isHealthy) {
+    process.exit(1);
+  } else {
+    process.exit(0);
+  }
 }
 
 void main();

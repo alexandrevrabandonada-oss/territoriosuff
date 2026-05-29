@@ -142,6 +142,39 @@ export function IneaMethodologyPage() {
               </button>
             ))}
           </nav>
+
+          <div className="pt-4 border-t border-slate-200/60 space-y-3">
+            <h4 className="text-[10px] font-black uppercase tracking-widest text-slate-400">Status Operacional</h4>
+            <div className="space-y-2 text-xs font-medium text-slate-655">
+              <div className="flex justify-between items-center">
+                <span className="text-slate-450">Status:</span>
+                <span className="inline-flex items-center gap-1 font-bold text-emerald-600">
+                  <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                  {manifest?.status || "Saudável"}
+                </span>
+              </div>
+              <div className="flex justify-between items-center col-span-2">
+                <span className="text-slate-450 text-[10px]">Último Teste:</span>
+                <span className="font-bold text-slate-800 text-[9px] truncate max-w-[120px]" title={manifest ? formatDate(manifest.last_smoke_test_at) : ""}>
+                  {manifest ? formatDate(manifest.last_smoke_test_at) : "Carregando..."}
+                </span>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="text-slate-450">Versão:</span>
+                <span className="font-bold text-slate-800">
+                  {manifest?.version || manifest?.dataset_version || "1.1.0"}
+                </span>
+              </div>
+              <a
+                href="/data/air/manifest.json"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block text-center mt-2 py-1.5 px-3 bg-slate-100 hover:bg-slate-200/70 rounded-xl text-[10px] font-black uppercase text-slate-600 tracking-wider transition-colors"
+              >
+                Ver manifest.json
+              </a>
+            </div>
+          </div>
         </aside>
 
         {/* Content Body */}
@@ -574,6 +607,40 @@ export function IneaMethodologyPage() {
               </div>
             </SurfaceCard>
           </section>
+
+          {/* Mobile Status Operacional (visible only on mobile viewports) */}
+          <div className="block lg:hidden mt-8 p-6 bg-slate-50 border border-slate-100 rounded-3xl space-y-4">
+            <h4 className="text-xs font-black uppercase tracking-wider text-slate-400">Status Operacional</h4>
+            <div className="grid grid-cols-2 gap-3 text-xs font-semibold text-slate-600">
+              <div className="p-3 bg-white rounded-2xl border border-slate-100/50 flex flex-col justify-between">
+                <span className="text-[10px] uppercase text-slate-450 tracking-wider">Status</span>
+                <span className="inline-flex items-center gap-1 font-bold text-emerald-600 mt-1">
+                  <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                  {manifest?.status || "Saudável"}
+                </span>
+              </div>
+              <div className="p-3 bg-white rounded-2xl border border-slate-100/50 flex flex-col justify-between">
+                <span className="text-[10px] uppercase text-slate-450 tracking-wider">Versão Dataset</span>
+                <span className="font-bold text-slate-800 mt-1">
+                  {manifest?.version || manifest?.dataset_version || "1.1.0"}
+                </span>
+              </div>
+              <div className="p-3 bg-white rounded-2xl border border-slate-100/50 flex flex-col justify-between col-span-2">
+                <span className="text-[10px] uppercase text-slate-450 tracking-wider">Último Healthcheck</span>
+                <span className="font-bold text-slate-800 mt-1 text-[10px]">
+                  {manifest ? formatDate(manifest.last_smoke_test_at) : "Carregando..."}
+                </span>
+              </div>
+            </div>
+            <a
+              href="/data/air/manifest.json"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block text-center mt-2 py-2.5 px-4 bg-slate-200/50 hover:bg-slate-200 rounded-xl text-[10px] font-black uppercase text-slate-600 tracking-wider transition-colors"
+            >
+              Ver manifest.json
+            </a>
+          </div>
         </div>
       </div>
     </div>

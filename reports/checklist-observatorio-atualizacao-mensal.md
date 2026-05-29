@@ -32,7 +32,7 @@ graph TD
 *   **Comandos:**
     ```bash
     # Coleta de PM10 e PM2.5 incremental
-    npx tsx scripts/inea-weblakes-pm25-collect-stations.ts
+    npx tsx scripts/inea-weblakes-collect-incremental.ts --pollutants PM10,PM25
     ```
 
 ### [ ] 3. Recalcular Médias e Episódios de Atenção

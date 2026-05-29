@@ -1,0 +1,36 @@
+name: Observatório do Ar - Weekly Healthcheck
+
+on:
+  schedule:
+    # Rodar toda segunda-feira às 12:00 UTC (09:00 Horário de Brasília)
+    - cron: '0 12 * * 1'
+  workflow_dispatch: # Permite execução manual a partir do painel do GitHub Actions
+
+jobs:
+  healthcheck:
+    name: Run Healthcheck and Validate Portal
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Run Healthcheck Script
+        env:
+          OBSERVATORIO_BASE_URL: https://semear-pwa.vercel.app
+        run: npx tsx scripts/observatorio-healthcheck.ts
+
+      - name: Upload Healthcheck Report Artifact
+        if: always() # Garante que o artefato seja enviado mesmo se o healthcheck falhar
+        uses: actions/upload-artifact@v4
+        with:
+          name: observatorio-healthcheck-latest
+          path: reports/observatorio-healthcheck-latest.md
