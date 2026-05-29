@@ -968,6 +968,28 @@ export function IneaRadarPage() {
             </p>
           </SurfaceCard>
         </div>
+
+        {/* Links adicionais para metodologia e open data */}
+        <div className="flex flex-wrap gap-3 pt-2">
+          <Link
+            to="/qualidade-ar/inea/metodologia"
+            className="inline-flex items-center gap-2 px-5 py-2.5 bg-brand-primary text-white font-black uppercase tracking-[0.1em] rounded-xl hover:bg-brand-primary-dark transition-all text-xs shadow-md shadow-brand-primary/10"
+          >
+            Entender metodologia &rarr;
+          </Link>
+          <Link
+            to="/qualidade-ar/inea/metodologia#baixar-dados"
+            className="inline-flex items-center gap-2 px-5 py-2.5 bg-white text-slate-700 border border-slate-200 font-black uppercase tracking-[0.1em] rounded-xl hover:bg-slate-50 transition-all text-xs"
+          >
+            Baixar dados
+          </Link>
+          <Link
+            to="/qualidade-ar/inea/metodologia#dicionario"
+            className="inline-flex items-center gap-2 px-5 py-2.5 bg-white text-slate-700 border border-slate-200 font-black uppercase tracking-[0.1em] rounded-xl hover:bg-slate-50 transition-all text-xs"
+          >
+            Ver dicionário de dados
+          </Link>
+        </div>
       </section>
 
       {/* 12. CTA Final ("Queremos a série completa") */}

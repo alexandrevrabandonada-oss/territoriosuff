@@ -20,7 +20,8 @@ const visualFiles = [
   path.join(process.cwd(), 'src', 'components', 'air', 'ParticulateTimeline2022_2024.tsx'),
   path.join(process.cwd(), 'src', 'components', 'air', 'SeasonalityHeatmap.tsx'),
   path.join(process.cwd(), 'src', 'components', 'air', 'AttentionEpisodesPanel.tsx'),
-  path.join(process.cwd(), 'src', 'data', 'air', 'pm10-2024-station-summary.ts')
+  path.join(process.cwd(), 'src', 'data', 'air', 'pm10-2024-station-summary.ts'),
+  path.join(process.cwd(), 'src', 'pages', 'air', 'IneaMethodologyPage.tsx')
 ];
 
 const reportFiles: string[] = [
@@ -74,7 +75,16 @@ const reportFiles: string[] = [
   path.join(process.cwd(), 'reports', 'estado-da-nacao-observatorio-linha-do-tempo-publicacao.md'),
   path.join(process.cwd(), 'reports', 'estado-da-nacao-observatorio-episodios-atencao.md'),
   path.join(process.cwd(), 'reports', 'estado-da-nacao-observatorio-episodios-auditoria-somas.md'),
-  path.join(process.cwd(), 'reports', 'estado-da-nacao-inea-historico-2022-2023.md')
+  path.join(process.cwd(), 'reports', 'estado-da-nacao-inea-historico-2022-2023.md'),
+  path.join(process.cwd(), 'reports', 'post-instagram-observatorio-episodios-2022-2024.md'),
+  path.join(process.cwd(), 'reports', 'thread-observatorio-episodios-2022-2024.md'),
+  path.join(process.cwd(), 'reports', 'carrossel-observatorio-episodios-2022-2024.md'),
+  path.join(process.cwd(), 'reports', 'release-observatorio-episodios-2022-2024.md'),
+  path.join(process.cwd(), 'reports', 'estado-da-nacao-observatorio-lancamento-episodios.md'),
+  path.join(process.cwd(), 'reports', 'estado-da-nacao-observatorio-lancamento-episodios-final.md'),
+  path.join(process.cwd(), 'reports', 'dicionario-dados-observatorio-ar.md'),
+  path.join(process.cwd(), 'reports', 'estado-da-nacao-observatorio-metodologia-dados-abertos.md'),
+  path.join(process.cwd(), 'reports', 'estado-da-nacao-observatorio-deploy-smoke-publico.md')
 ];
 
 const reportsDir = path.join(process.cwd(), 'reports');

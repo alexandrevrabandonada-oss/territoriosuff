@@ -1,0 +1,54 @@
+{
+  "datasets": [
+    {
+      "filename": "pm10-2024-station-summary.csv",
+      "title": "Resumo de Estações PM10 (2024)",
+      "description": "Estatísticas anuais consolidadas por estação para o poluente PM10 em Volta Redonda no ano de 2024.",
+      "rows_count": 3,
+      "updated_at": "2026-05-29T10:42:54-03:00",
+      "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+      "methodological_label": "Dado horário público WebLakes — comparação experimental — sem QA/QC oficial explícito.",
+      "public_url": "https://semear.org.br/data/air/pm10-2024-station-summary.csv"
+    },
+    {
+      "filename": "pm25-2024-station-summary.csv",
+      "title": "Resumo de Estações PM2.5 (2024)",
+      "description": "Estatísticas anuais consolidadas por estação para o poluente PM2.5 em Volta Redonda no ano de 2024.",
+      "rows_count": 3,
+      "updated_at": "2026-05-29T10:42:54-03:00",
+      "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+      "methodological_label": "Dado horário público WebLakes — comparação experimental — sem QA/QC oficial explícito.",
+      "public_url": "https://semear.org.br/data/air/pm25-2024-station-summary.csv"
+    },
+    {
+      "filename": "particulate-timeline-2022-2024.csv",
+      "title": "Linha do Tempo de Particulados (2022-2024)",
+      "description": "Médias, coberturas e contagem anual de excedências OMS/CONAMA para PM10 e PM2.5 (2022-2024).",
+      "rows_count": 18,
+      "updated_at": "2026-05-29T10:42:54-03:00",
+      "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+      "methodological_label": "Dado horário público WebLakes — comparação experimental — sem QA/QC oficial explícito.",
+      "public_url": "https://semear.org.br/data/air/particulate-timeline-2022-2024.csv"
+    },
+    {
+      "filename": "attention-episodes-2022-2024.csv",
+      "title": "Episódios de Atenção Mensais (2022-2024)",
+      "description": "Série histórica mensal contendo o número de dias com excedências da OMS e da CONAMA 506 (2022-2024).",
+      "rows_count": 216,
+      "updated_at": "2026-05-29T10:42:54-03:00",
+      "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+      "methodological_label": "Dado horário público WebLakes — comparação experimental — sem QA/QC oficial explícito.",
+      "public_url": "https://semear.org.br/data/air/attention-episodes-2022-2024.csv"
+    },
+    {
+      "filename": "data-dictionary.csv",
+      "title": "Dicionário de Dados do Observatório do Ar",
+      "description": "Metadados descrevendo os campos das planilhas de qualidade do ar exportadas pelo Observatório.",
+      "rows_count": 19,
+      "updated_at": "2026-05-29T10:42:54-03:00",
+      "source_system": "SEMEAR (Metadados)",
+      "methodological_label": "Metadados descritivos da comparação experimental do Observatório do Ar.",
+      "public_url": "https://semear.org.br/data/air/data-dictionary.csv"
+    }
+  ]
+}
