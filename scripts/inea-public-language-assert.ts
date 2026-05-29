@@ -73,6 +73,7 @@ const reportFiles: string[] = [
   path.join(process.cwd(), 'reports', 'estado-da-nacao-observatorio-linha-do-tempo-2022-2024.md'),
   path.join(process.cwd(), 'reports', 'estado-da-nacao-observatorio-linha-do-tempo-publicacao.md'),
   path.join(process.cwd(), 'reports', 'estado-da-nacao-observatorio-episodios-atencao.md'),
+  path.join(process.cwd(), 'reports', 'estado-da-nacao-observatorio-episodios-auditoria-somas.md'),
   path.join(process.cwd(), 'reports', 'estado-da-nacao-inea-historico-2022-2023.md')
 ];
 

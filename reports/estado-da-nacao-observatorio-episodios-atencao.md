@@ -36,8 +36,8 @@ O conjunto de dados mapeia 216 registros (3 estações × 2 poluentes × 3 anos 
 
 *   **Maior Pico Horário Pontual de Concentração:**  
     Registrado em **Julho de 2022** na estação **VR-Santa Cecília** com **410.81 µg/m³** de PM10 no dia 29/07/2022 às 09h. O segundo maior pico ocorreu em Junho de 2023 na mesma estação com 383.84 µg/m³ (dia 10/06/2023 às 11h).
-*   **Recorrência de Excedências Crônicas:**  
-    *   Para o PM2.5 em 2024, a estação **VR-Retiro** apresentou períodos de alta recorrência com múltiplos meses de 31 dias de excedências sobre a diretriz da OMS e limites da CONAMA 506 nos períodos de alta operabilidade, destacando-se como região sob atenção extrema.
+*   **Recorrência de eventos de atenção:**  
+    *   Em PM2.5/2024, VR-Retiro registrou 60 dias acima da diretriz diária da OMS e 11 dias acima da régua diária da CONAMA 506, com destaque para picos horários pontuais que exigem atenção metodológica.
     *   No PM10 em 2023 (ano de maior estiagem e criticidade geral), a estação **VR-Belmonte** acumulou 84 dias acima do limiar da OMS, com destaque para Agosto de 2023, que acumulou 22 dias acima do padrão de atenção.
 *   **Períodos Críticos (Sazonalidade):**  
     O cruzamento de dados demonstra um aumento severo das ultrapassagens experimentais entre **maio e setembro**, alinhando-se aos meses de estiagem e inverno no Médio Paraíba.
@@ -54,7 +54,17 @@ O painel de controle e a matriz de calor foram blindados com as salvaguardas reg
 
 ---
 
-## 5. Resultados de QA e Integração
+## 5. Auditoria de Consistência Mensal-Anual
+
+Para evitar a publicação de achados inconsistentes, a série de episódios de atenção passou por um processo rigoroso de auditoria cruzada:
+*   **Total de cruzamentos verificados:** 36 combinações (Anos 2022–2024 × Poluentes PM10/PM2.5 × Estações Belmonte, Retiro, Santa Cecília) confrontando as somas mensais contra os totais anuais de excedências.
+*   **Correção de Dados Normalizados:** Identificamos e corrigimos uma contaminação de dados simulados (mock) na série histórica mensal. Todos os arquivos mensais normalizados sob `data/inea_weblakes_normalized/` foram reconstruídos diretamente a partir do cache de dados brutos (`.cache/inea/weblakes/raw/`).
+*   **Garantia de Alinhamento:** Após a re-normalização e regeneração do dataset de episódios de atenção, a soma mensal de dias de atenção alinha-se 100% com os totais consolidados anuais para todas as estações e poluentes (por exemplo, VR-Retiro PM2.5 registrou exatamente 60 dias acima da diretriz OMS 24h e 11 dias acima da CONAMA 506 24h em 2024).
+*   **Linguagem Pública Ajustada:** Todos os termos que poderiam sugerir juízos de valor legais ou alarmismo foram limpos nos componentes visuais e relatórios (como a substituição de "excedências crônicas" por "eventos de atenção recorrentes" e "atenção extrema" por "atenção elevada").
+
+---
+
+## 6. Resultados de QA e Integração
 
 *   **Linter de Linguagem (`npm run inea:qa:language`):** **PASS**
     *   Validamos que todos os novos arquivos criados atendem às restrições vocabulares da freshness (não representa tempo real).
@@ -64,7 +74,7 @@ O painel de controle e a matriz de calor foram blindados com as salvaguardas reg
 
 ---
 
-## 6. Próximos Passos
+## 7. Próximos Passos
 
 *   Continuar a expansão plurianual à medida que novos dados periódicos oficiais em lote forem publicados pelo INEA nos Dados Abertos ou WebLakes.
 *   Incentivar pedidos de LAI para obter microdados históricos em períodos com dados ausentes.

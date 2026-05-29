@@ -222,7 +222,7 @@ export function AttentionEpisodesPanel() {
         {/* Card 2: Maior pico horário */}
         <SurfaceCard className="p-4.5 bg-white border border-slate-100 rounded-xl flex flex-col justify-between shadow-xs">
           <div className="space-y-1">
-            <span className="text-[9px] font-black text-indigo-500 uppercase tracking-widest block">Intensidade Extrema</span>
+            <span className="text-[9px] font-black text-indigo-500 uppercase tracking-widest block">Intensidade Elevada</span>
             <h5 className="font-bold text-slate-800 text-xs">Maior pico horário</h5>
           </div>
           <div className="mt-3.5 space-y-1">
@@ -327,7 +327,7 @@ export function AttentionEpisodesPanel() {
         <SurfaceCard className={`p-4 border rounded-xl transition-all ${selectedStation === "71" ? 'border-teal-300 bg-teal-50/10' : 'border-slate-100 bg-white'}`}>
           <h5 className="font-bold text-slate-800 text-sm mb-1.5">VR - Santa Cecília</h5>
           <p className="text-slate-600 text-xs leading-relaxed">
-            <strong>Santa Cecília tem médias menores, mas não ausência de episódios.</strong> A topografia local e ventos podem suavizar a exposição crônica, mas a estação ainda capta dias específicos de atenção acima das recomendações internacionais da OMS.
+            <strong>Santa Cecília tem médias menores, mas não ausência de episódios.</strong> A topografia local e ventos podem suavizar a exposição recorrente, mas a estação ainda capta dias específicos de atenção acima das recomendações internacionais da OMS.
           </p>
         </SurfaceCard>
 
