@@ -11,6 +11,7 @@ import { HistoricalRawEvidenceBox } from "../../components/air/HistoricalRawEvid
 import { AirAtlasMap } from "../../components/air/AirAtlasMap";
 import { YearExplorer } from "../../components/air/YearExplorer";
 import { ParticulateTimeline2022_2024 } from "../../components/air/ParticulateTimeline2022_2024";
+import { AttentionEpisodesPanel } from "../../components/air/AttentionEpisodesPanel";
 import { ThresholdComparisonPanel } from "../../components/air/ThresholdComparisonPanel";
 
 interface StationSummary {
@@ -623,6 +624,17 @@ export function IneaRadarPage() {
           </p>
         </div>
         <ParticulateTimeline2022_2024 />
+      </section>
+
+      {/* Seção com âncora #episodios (Episódios de atenção) */}
+      <section id="episodios" className="space-y-6 pt-4">
+        <div className="space-y-2">
+          <h2 className="text-lg font-black text-slate-800">Episódios de atenção</h2>
+          <p className="text-xs text-slate-500 font-semibold leading-relaxed">
+            Veja quando PM10 e PM2.5 mais se destacaram na série pública, por ano, mês, estação e régua de comparação.
+          </p>
+        </div>
+        <AttentionEpisodesPanel />
       </section>
 
       {/* Seção com âncora #comparar (Comparar com a OMS e com a lei brasileira) */}

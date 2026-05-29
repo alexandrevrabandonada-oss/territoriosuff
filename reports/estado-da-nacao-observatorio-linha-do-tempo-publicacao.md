@@ -28,7 +28,7 @@ No âmbito do **Tijolo 30.1**, as seguintes entregas técnicas foram finalizadas
 
 ## 2. Dados Utilizados
 
-A linha do tempo consolida os dados reais processados a partir das séries horárias do INEA obtidas na plataforma WebLakes:
+A linha do tempo consolida os dados horários públicos processados a partir das séries horárias do INEA obtidas na plataforma WebLakes:
 
 *   **2022:** Médias anuais de PM10 de ~30.7 µg/m³ (Belmonte e Retiro) e ~16.5 µg/m³ (Santa Cecília). Excedências diárias da OMS chegam a 64 dias para PM2.5 em Belmonte.
 *   **2023:** Ano de maior criticidade, com Belmonte alcançando média anual de PM10 de 36.11 µg/m³ e 84 dias acima do limiar diário da OMS.
