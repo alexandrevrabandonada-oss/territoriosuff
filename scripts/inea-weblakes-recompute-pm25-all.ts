@@ -101,7 +101,6 @@ function processStation(stationId: string, stationName: string, stationKey: stri
   let totalNulls = 0;
   let totalNegatives = 0;
   let totalZeros = 0;
-  let totalExtremeValues = 0;
   const allValidValues: number[] = [];
   
   const seenDatetimes = new Set<string>();
@@ -193,7 +192,6 @@ function processStation(stationId: string, stationName: string, stationKey: stri
       } else {
         if (value > 300) {
           extremeValues++;
-          totalExtremeValues++;
         }
         validValues.push(value);
         allValidValues.push(value);

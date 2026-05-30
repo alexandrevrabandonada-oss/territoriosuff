@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { SurfaceCard, IconShell } from "../../components/BrandSystem";
 import { DATA_DICTIONARY } from "../../data/air/data-dictionary.ts";
+import { DataAvailabilityMatrix } from "../../components/air/DataAvailabilityMatrix";
 
 function formatDate(dateStr: string | undefined): string {
   if (!dateStr) return "N/A";
@@ -56,7 +57,8 @@ export function IneaMethodologyPage() {
     { id: "camadas", label: "Camadas de Dados" },
     { id: "limitacoes", label: "Limitações" },
     { id: "baixar-dados", label: "Baixar Dados (CSV)" },
-    { id: "dicionario", label: "Dicionário de Dados" }
+    { id: "dicionario", label: "Dicionário de Dados" },
+    { id: "disponibilidade", label: "Disponibilidade dos Dados" }
   ];
 
   const handleScrollTo = (id: string) => {
@@ -630,6 +632,20 @@ export function IneaMethodologyPage() {
                 </table>
               </div>
             </SurfaceCard>
+          </section>
+
+          {/* Section 9: Disponibilidade dos dados */}
+          <section id="disponibilidade" className="space-y-4 scroll-mt-6">
+            <div className="flex items-center gap-3">
+              <IconShell tone="lab" className="shrink-0 h-9 w-9">
+                <svg className="h-4.5 w-4.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                </svg>
+              </IconShell>
+              <h2 className="text-xl font-black text-slate-800">Disponibilidade dos dados por estação</h2>
+            </div>
+            
+            <DataAvailabilityMatrix />
           </section>
 
           {/* Mobile Status Operacional (visible only on mobile viewports) */}

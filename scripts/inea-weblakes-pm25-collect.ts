@@ -1,7 +1,7 @@
 import * as fs from 'node:fs';
 import * as path from 'node:path';
 import { fetchWebLakesDataSafe, normalizeConcentrationRow, NormalizedRow } from '../src/lib/inea/weblakesClient';
-import { SITES, PARAMETERS } from '../src/lib/inea/weblakesDictionary';
+
 
 function delay(ms: number) {
   return new Promise(resolve => setTimeout(resolve, ms));

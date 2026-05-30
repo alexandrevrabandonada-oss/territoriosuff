@@ -88,7 +88,6 @@ async function runAuditAndRecompute() {
   let totalNulls = 0;
   let totalNegatives = 0;
   let totalZeros = 0;
-  let totalExtremeValues = 0;
   const allValidValues: number[] = [];
   
   // To track duplicate datetimes across the whole year
@@ -182,7 +181,6 @@ async function runAuditAndRecompute() {
       } else {
         if (value > 300) {
           extremeValues++;
-          totalExtremeValues++;
         }
         validValues.push(value);
         allValidValues.push(value);

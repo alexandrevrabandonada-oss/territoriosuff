@@ -85,7 +85,7 @@ export function computeAnnualMeans(dailySeries: { date: string; value: number | 
 }
 
 // 3. Média móvel de 8h (necessita >= 6 das 8 horas válidas em janela de 8h consecutivas)
-export function computeO3Moving8h(rawHourlySeries: NormalizedRow[]): Moving8hAverage[] {
+export function computeMoving8h(rawHourlySeries: NormalizedRow[]): Moving8hAverage[] {
   // Sort series by datetime
   const sorted = [...rawHourlySeries].sort((a, b) => a.datetime.localeCompare(b.datetime));
   const result: Moving8hAverage[] = [];
@@ -184,6 +184,25 @@ export function computeDataGaps(series: NormalizedRow[]): DataGap[] {
   return gaps;
 }
 
+export function getNormalizedValueForThreshold(
+  value: number,
+  valueUnit: string,
+  thresholdUnit: string,
+  pollutant: string
+): number {
+  if (!valueUnit || !thresholdUnit || valueUnit === thresholdUnit) return value;
+  if (pollutant === "CO") {
+    if (valueUnit === "ppm" && thresholdUnit === "mg/m³") {
+      // 1 ppm CO = 1.145 mg/m3 at 25C and 1 atm
+      return value * 1.145;
+    }
+    if (valueUnit === "mg/m³" && thresholdUnit === "ppm") {
+      return value / 1.145;
+    }
+  }
+  return value;
+}
+
 // 7. Sumarização por poluente
 export function summarizePollutantYear(
   series: NormalizedRow[],
@@ -211,23 +230,34 @@ export function summarizePollutantYear(
 
   // Exceedances calculation
   const dailyMeans = computeDailyMeans(filtered);
-  const o3Moving8h = pollutant === "O3" ? computeO3Moving8h(filtered) : [];
+  const moving8h = (pollutant === "O3" || pollutant === "CO") ? computeMoving8h(filtered) : [];
 
   // Filter thresholds for this pollutant
   const activeThresholds = THRESHOLDS.filter(t => t.pollutant === pollutant);
   const exceedanceStats = activeThresholds.map(t => {
     let count = 0;
     if (t.averaging_period === "DAY") {
-      count = detectThresholdExceedances(dailyMeans, t.threshold_value).length;
+      const mappedDailyMeans = dailyMeans.map(d => ({
+        ...d,
+        value: d.value !== null ? getNormalizedValueForThreshold(d.value, unit, t.unit, pollutant) : null
+      }));
+      count = detectThresholdExceedances(mappedDailyMeans, t.threshold_value).length;
     } else if (t.averaging_period === "MOVING_8H") {
-      if (pollutant === "O3") {
-        count = detectThresholdExceedances(o3Moving8h, t.threshold_value).length;
+      if (pollutant === "O3" || pollutant === "CO") {
+        const mappedMoving8h = moving8h.map(m => ({
+          ...m,
+          value: m.value !== null ? getNormalizedValueForThreshold(m.value, unit, t.unit, pollutant) : null
+        }));
+        count = detectThresholdExceedances(mappedMoving8h, t.threshold_value).length;
       } else {
-        // approximate moving 8h if other pollutants (e.g. CO)
-        count = 0; // standard fallback
+        count = 0; // fallback
       }
     } else if (t.averaging_period === "HOUR") {
-      count = detectThresholdExceedances(filtered, t.threshold_value).length;
+      const mappedFiltered = filtered.map(f => ({
+        ...f,
+        value: f.value !== null ? getNormalizedValueForThreshold(f.value, unit, t.unit, pollutant) : null
+      }));
+      count = detectThresholdExceedances(mappedFiltered, t.threshold_value).length;
     }
 
     return {
