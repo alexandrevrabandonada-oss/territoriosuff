@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { SurfaceCard } from '../BrandSystem';
-import { ATTENTION_EPISODES, AttentionEpisode } from '../../data/air/attention-episodes-2022-2026';
+import { ATTENTION_EPISODES, AttentionEpisode } from '../../data/air/attention-episodes-2020-2026';
 import { SeasonalityHeatmap } from './SeasonalityHeatmap';
 
 const STATIONS = [
@@ -123,7 +123,7 @@ export function AttentionEpisodesPanel() {
         <div className="flex flex-wrap gap-2.5">
           {/* Year buttons */}
           <div className="bg-slate-100 p-1 rounded-xl flex gap-1 border border-slate-200/40">
-            {[2022, 2023, 2024, 2025, 2026].map((yr) => (
+            {[2020, 2021, 2022, 2023, 2024, 2025, 2026].map((yr) => (
               <button
                 key={yr}
                 onClick={() => setSelectedYear(yr)}
@@ -189,6 +189,15 @@ export function AttentionEpisodesPanel() {
           <span className="text-amber-500 font-bold shrink-0 mt-0.5">⚠️</span>
           <div>
             <strong>Ano parcial/em andamento (acumulado até maio de 2026):</strong> Os indicadores de 2026 representam apenas os dados parciais disponíveis e não devem ser comparados com anos completos fechados.
+          </div>
+        </div>
+      )}
+
+      {selectedYear === 2020 && selectedPollutant === 'PM2.5' && (
+        <div className="bg-slate-50 border border-slate-200 text-slate-600 text-xs rounded-xl p-3.5 flex items-start gap-2.5">
+          <span className="text-slate-400 font-bold shrink-0 mt-0.5">ℹ️</span>
+          <div>
+            <strong>Sensor PM2.5 indisponível em 2020:</strong> A medição de PM2.5 não existia fisicamente na rede de monitoramento de Volta Redonda em 2020. Os rankings abaixo mostram ausência total de dados para este período.
           </div>
         </div>
       )}

@@ -4,6 +4,8 @@ import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 
 import { SITES, PARAMETERS } from '../../lib/inea/weblakesDictionary';
+import summary2020 from '../../../data/inea_weblakes_normalized/summary-2020.json';
+import summary2021 from '../../../data/inea_weblakes_normalized/summary-2021.json';
 import summary2022 from '../../../data/inea_weblakes_normalized/summary-2022.json';
 import summary2023 from '../../../data/inea_weblakes_normalized/summary-2023.json';
 import summary2024 from '../../../data/inea_weblakes_normalized/summary-2024.json';
@@ -11,6 +13,8 @@ import summary2025 from '../../../data/inea_weblakes_normalized/summary-2025.jso
 import summary2026 from '../../../data/inea_weblakes_normalized/summary-2026.json';
 
 const SUMMARIES: Record<string, any> = {
+  "2020": summary2020,
+  "2021": summary2021,
   "2022": summary2022,
   "2023": summary2023,
   "2024": summary2024,
@@ -63,10 +67,13 @@ export function AirAtlasMap() {
   const [compareStationA, setCompareStationA] = useState<string>("70");
   const [compareStationB, setCompareStationB] = useState<string>("71");
 
-  // Reset month when year changes
+  // Reset month when year changes, and redirect PM2.5 in 2020
   useEffect(() => {
     setSelectedMonth("ALL");
-  }, [selectedYear]);
+    if (selectedYear === "2020" && selectedPollutant === "20") {
+      setSelectedPollutant("18");
+    }
+  }, [selectedYear, selectedPollutant]);
 
   // Play timeline animation
   useEffect(() => {
@@ -238,7 +245,7 @@ export function AirAtlasMap() {
     }
 
     return result;
-  }, [selectedPollutant, selectedMonth, selectedMetric, selectedRegime, pollutantInfo.unit]);
+  }, [selectedYear, selectedPollutant, selectedMonth, selectedMetric, selectedRegime, pollutantInfo.unit]);
 
   const stationA = mapData[compareStationA];
   const stationB = mapData[compareStationB];
@@ -268,6 +275,8 @@ export function AirAtlasMap() {
             <option value="2024">Ano: 2024</option>
             <option value="2023">Ano: 2023 (Histórico)</option>
             <option value="2022">Ano: 2022 (Histórico)</option>
+            <option value="2021">Ano: 2021 (Histórico)</option>
+            <option value="2020">Ano: 2020 (Histórico)</option>
           </select>
           <select
             value={selectedPollutant}
@@ -275,7 +284,7 @@ export function AirAtlasMap() {
             className="bg-slate-800 text-slate-200 border border-slate-700 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-emerald-500"
           >
             <option value="18">PM10 (Material Particulado)</option>
-            <option value="20">PM2.5 (Material Particulado Fino)</option>
+            <option value="20" disabled={selectedYear === "2020"}>PM2.5 (Material Particulado Fino){selectedYear === "2020" ? " (Não disponível em 2020)" : ""}</option>
             <option value="3" disabled>CO (Em Auditoria)</option>
             <option value="23" disabled>SO2 (Em Auditoria)</option>
             <option value="1465" disabled>NO2 (Em Auditoria)</option>

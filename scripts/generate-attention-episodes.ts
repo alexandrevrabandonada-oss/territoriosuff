@@ -41,7 +41,7 @@ const POLLUTANTS = [
   { id: "20", name: "PM2.5" as const, whoLimit: 15, conamaLimit: 25 }
 ];
 
-const YEARS = [2022, 2023, 2024, 2025, 2026];
+const YEARS = [2020, 2021, 2022, 2023, 2024, 2025, 2026];
 
 function getDaysInMonth(year: number, month: number): number {
   return new Date(year, month, 0).getDate();
@@ -167,7 +167,7 @@ function generateEpisodes() {
   }
 
   // Write episodes file
-  const outputEpisodesPath = path.join(process.cwd(), 'src', 'data', 'air', 'attention-episodes-2022-2026.ts');
+  const outputEpisodesPath = path.join(process.cwd(), 'src', 'data', 'air', 'attention-episodes-2020-2026.ts');
   const episodesContent = `// Arquivo gerado automaticamente pelo script scripts/generate-attention-episodes.ts
 // Não modifique manualmente.
 
@@ -228,7 +228,7 @@ export const ATTENTION_EPISODES: AttentionEpisode[] = ${JSON.stringify(episodes,
   }
 
   // Write timeline file
-  const outputTimelinePath = path.join(process.cwd(), 'src', 'data', 'air', 'particulate-timeline-2022-2026.ts');
+  const outputTimelinePath = path.join(process.cwd(), 'src', 'data', 'air', 'particulate-timeline-2020-2026.ts');
   const timelineContent = `// Arquivo gerado automaticamente pelo script scripts/generate-attention-episodes.ts
 // Não modifique manualmente.
 

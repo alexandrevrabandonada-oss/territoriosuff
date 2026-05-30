@@ -3,6 +3,8 @@ import { SurfaceCard } from '../BrandSystem';
 import { SITES, PARAMETERS } from '../../lib/inea/weblakesDictionary';
 import { THRESHOLDS } from '../../lib/air/thresholds';
 import { AUDIT_MODE_2024 } from '../../lib/inea/auditFlags';
+import summary2020 from '../../../data/inea_weblakes_normalized/summary-2020.json';
+import summary2021 from '../../../data/inea_weblakes_normalized/summary-2021.json';
 import summary2022 from '../../../data/inea_weblakes_normalized/summary-2022.json';
 import summary2023 from '../../../data/inea_weblakes_normalized/summary-2023.json';
 import summary2024 from '../../../data/inea_weblakes_normalized/summary-2024.json';
@@ -11,6 +13,8 @@ import summary2026 from '../../../data/inea_weblakes_normalized/summary-2026.jso
 import seedFindings from '../../../data/inea_historical_sources/seed-public-findings.json';
 
 const SUMMARIES: Record<string, any> = {
+  "2020": summary2020,
+  "2021": summary2021,
   "2022": summary2022,
   "2023": summary2023,
   "2024": summary2024,
@@ -153,6 +157,8 @@ export function ThresholdComparisonPanel() {
               <option value="2024">2024 (Dado Bruto WebLakes)</option>
               <option value="2023">2023 (Histórico) (Dado Bruto WebLakes)</option>
               <option value="2022">2022 (Histórico) (Dado Bruto WebLakes)</option>
+              <option value="2021">2021 (Histórico) (Dado Bruto WebLakes)</option>
+              <option value="2020">2020 (Histórico) (Dado Bruto WebLakes)</option>
               <option value="2015">2015 (Dado Agregado INEA)</option>
               <option value="2013-2015">2013-2015 (Estudo Científico)</option>
             </select>
@@ -197,6 +203,11 @@ export function ThresholdComparisonPanel() {
                 <p className="text-slate-350 leading-relaxed font-medium">
                   Os dados de 2024 para esta estação estão passando por uma auditoria de consistência devido à detecção de divergência nos relatórios sequenciais e foram temporariamente suspensos de exibição pública.
                 </p>
+              </div>
+            ) : selectedYear === "2020" && selectedPollutantId === "20" ? (
+              <div className="mt-8 text-center py-6 bg-slate-950/20 border border-slate-850 rounded-xl">
+                <p className="text-xs text-amber-400 font-bold">Sensor PM2.5 indisponível em 2020</p>
+                <p className="text-[11px] text-slate-400 mt-1 max-w-xs mx-auto px-4">A medição de PM2.5 não existia na rede de monitoramento de Volta Redonda no ano de 2020.</p>
               </div>
             ) : observedData ? (
               <div className="mt-4 space-y-4">

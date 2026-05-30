@@ -1,0 +1,4 @@
+station_id,station_name,coverage_percent,hourly_records,annual_mean_available_hourly,hourly_peak,zero_values,valid_days,who_24h_exceedance_days,conama506_24h_exceedance_days,confidence_level,source_system,data_quality_tier,validation_note
+69,VR-Belmonte,92.57,8109,28.33,251.38,109,0,55,41,MEDIUM,WEBLAKES_CONCENTRATION_WITH_WIND,RAW_PUBLIC_PLATFORM,Sem QA/QC oficial explícito; comparação experimental.
+70,VR-Retiro,97.74,8562,27.45,264.77,73,0,26,14,MEDIUM,WEBLAKES_CONCENTRATION_WITH_WIND,RAW_PUBLIC_PLATFORM,Sem QA/QC oficial explícito; comparação experimental.
+71,VR-Santa Cecília,74.19,6499,16.79,234.27,148,0,8,4,MEDIUM,WEBLAKES_CONCENTRATION_WITH_WIND,RAW_PUBLIC_PLATFORM,Sem QA/QC oficial explícito; comparação experimental.

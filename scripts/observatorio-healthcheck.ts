@@ -123,10 +123,17 @@ async function main() {
 
   // 4. CSV Dataset Checks (dynamically extracted from Manifest if manifest succeeded, else fallback)
   let datasetsToTest = [
+    { file: 'pm10-2020-station-summary.csv', title: 'Resumo PM10 2020' },
+    { file: 'pm10-2021-station-summary.csv', title: 'Resumo PM10 2021' },
+    { file: 'pm25-2021-station-summary.csv', title: 'Resumo PM2.5 2021' },
     { file: 'pm10-2024-station-summary.csv', title: 'Resumo PM10 2024' },
     { file: 'pm25-2024-station-summary.csv', title: 'Resumo PM2.5 2024' },
-    { file: 'particulate-timeline-2022-2024.csv', title: 'Linha do Tempo 2022-2024' },
-    { file: 'attention-episodes-2022-2024.csv', title: 'Episódios de Atenção' },
+    { file: 'pm10-2025-station-summary.csv', title: 'Resumo PM10 2025' },
+    { file: 'pm25-2025-station-summary.csv', title: 'Resumo PM2.5 2025' },
+    { file: 'pm10-2026-partial-station-summary.csv', title: 'Resumo PM10 2026 Parcial' },
+    { file: 'pm25-2026-partial-station-summary.csv', title: 'Resumo PM2.5 2026 Parcial' },
+    { file: 'particulate-timeline-2020-2026.csv', title: 'Linha do Tempo 2020-2026' },
+    { file: 'attention-episodes-2020-2026.csv', title: 'Episódios de Atenção' },
     { file: 'data-dictionary.csv', title: 'Dicionário de Dados' }
   ];
 

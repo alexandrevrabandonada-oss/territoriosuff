@@ -403,7 +403,7 @@ export function IneaMethodologyPage() {
               <h2 className="text-xl font-black text-slate-800">Limitações do repositório</h2>
             </div>
             
-            <SurfaceCard className="p-6 bg-white border border-slate-100 rounded-3xl space-y-4">
+                        <SurfaceCard className="p-6 bg-white border border-slate-100 rounded-3xl space-y-4">
               <p className="text-sm text-slate-600 font-medium leading-relaxed">
                 Transparência ativa exige apontar os limites do nosso próprio escopo. Os usuários devem estar atentos aos seguintes fatores:
               </p>
@@ -411,6 +411,7 @@ export function IneaMethodologyPage() {
                 <li><strong>Dependência Técnica:</strong> O Observatório compila dados fornecidos por canais públicos. Avarias em sensores ou ausência de leituras no site original geram lacunas de dados que fogem ao nosso controle.</li>
                 <li><strong>Sem QA/QC explícito por registro:</strong> Os dados horários brutos são capturados como exibidos, sem tratamento regulatório por linha. Podem ocorrer leituras anômalas não auditadas.</li>
                 <li><strong>Acesso Pleno a Séries Completas:</strong> O resgate de microdados brutos históricos completos depende de requisições externas e minutas da Lei de Acesso à Informação (LAI) para períodos de silêncio do sinal público.</li>
+                <li><strong>Início do Monitoramento de PM2.5 (2021):</strong> A série histórica do material particulado fino (PM2.5) em Volta Redonda inicia-se em 2021. No ano de 2020, o monitoramento público do INEA limitou-se ao PM10 (particulado inalável). A ausência de PM2.5 em 2020 é uma limitação física de instrumentação da rede oficial da época, não devendo ser interpretada como conformidade de níveis de poluição.</li>
                 <li><strong>Mapeamento Experimental:</strong> Todos os cruzamentos de excedências servem como indicação didática de eventos de atenção, não devendo ser utilizados para fundamentar penalidades ou litígios de forma direta.</li>
               </ul>
             </SurfaceCard>
@@ -430,12 +431,12 @@ export function IneaMethodologyPage() {
             <div className="grid gap-4 sm:grid-cols-3">
               <SurfaceCard className="p-5 bg-white border border-slate-100 rounded-2xl flex flex-col justify-between space-y-4 shadow-sm">
                 <div>
-                  <h4 className="text-xs font-black uppercase text-slate-400">Linha do Tempo 2022–2026</h4>
+                  <h4 className="text-xs font-black uppercase text-slate-400">Linha do Tempo 2020–2026</h4>
                   <p className="text-[11px] text-slate-500 font-semibold mt-1">Série histórica plurianual consolidando médias, coberturas e excedências diárias.</p>
                 </div>
                 <a
-                  href="/data/air/particulate-timeline-2022-2026.csv"
-                  download="particulate-timeline-2022-2026.csv"
+                  href="/data/air/particulate-timeline-2020-2026.csv"
+                  download="particulate-timeline-2020-2026.csv"
                   className="inline-flex min-h-[38px] items-center justify-center rounded-xl bg-brand-primary text-white font-black text-xs uppercase hover:bg-brand-primary-dark transition-all w-full tracking-wider shadow-sm"
                 >
                   Download (CSV)
@@ -445,11 +446,11 @@ export function IneaMethodologyPage() {
               <SurfaceCard className="p-5 bg-white border border-slate-100 rounded-2xl flex flex-col justify-between space-y-4 shadow-sm">
                 <div>
                   <h4 className="text-xs font-black uppercase text-slate-400">Episódios de Atenção</h4>
-                  <p className="text-[11px] text-slate-500 font-semibold mt-1">Série mensal contendo as excedências OMS e CONAMA por mês (2022–2026).</p>
+                  <p className="text-[11px] text-slate-500 font-semibold mt-1">Série mensal contendo as excedências OMS e CONAMA por mês (2020–2026).</p>
                 </div>
                 <a
-                  href="/data/air/attention-episodes-2022-2026.csv"
-                  download="attention-episodes-2022-2026.csv"
+                  href="/data/air/attention-episodes-2020-2026.csv"
+                  download="attention-episodes-2020-2026.csv"
                   className="inline-flex min-h-[38px] items-center justify-center rounded-xl bg-brand-primary text-white font-black text-xs uppercase hover:bg-brand-primary-dark transition-all w-full tracking-wider shadow-sm"
                 >
                   Download (CSV)
@@ -488,6 +489,27 @@ export function IneaMethodologyPage() {
                     </thead>
                     <tbody className="divide-y divide-slate-100 text-xs font-medium text-slate-600">
                       {[
+                        {
+                          file: "pm10-2020-station-summary.csv",
+                          desc: "Estatísticas anuais consolidadas por estação para o PM10 em 2020.",
+                          format: "CSV",
+                          updated: "Maio de 2026",
+                          path: "/data/air/pm10-2020-station-summary.csv"
+                        },
+                        {
+                          file: "pm10-2021-station-summary.csv",
+                          desc: "Estatísticas anuais consolidadas por estação para o PM10 em 2021.",
+                          format: "CSV",
+                          updated: "Maio de 2026",
+                          path: "/data/air/pm10-2021-station-summary.csv"
+                        },
+                        {
+                          file: "pm25-2021-station-summary.csv",
+                          desc: "Estatísticas anuais consolidadas por estação para o PM2.5 em 2021.",
+                          format: "CSV",
+                          updated: "Maio de 2026",
+                          path: "/data/air/pm25-2021-station-summary.csv"
+                        },
                         {
                           file: "pm10-2024-station-summary.csv",
                           desc: "Estatísticas anuais consolidadas por estação para o PM10 em 2024.",
@@ -531,18 +553,18 @@ export function IneaMethodologyPage() {
                           path: "/data/air/pm25-2026-partial-station-summary.csv"
                         },
                         {
-                          file: "particulate-timeline-2022-2026.csv",
-                          desc: "Linha do tempo plurianual de médias, coberturas e excedências anuais.",
+                          file: "particulate-timeline-2020-2026.csv",
+                          desc: "Linha do tempo plurianual de médias, coberturas e excedências anuais (2020-2026).",
                           format: "CSV",
                           updated: "Maio de 2026",
-                          path: "/data/air/particulate-timeline-2022-2026.csv"
+                          path: "/data/air/particulate-timeline-2020-2026.csv"
                         },
                         {
-                          file: "attention-episodes-2022-2026.csv",
-                          desc: "Série mensal de excedências OMS/CONAMA e picos horários de concentração (2022–2026).",
+                          file: "attention-episodes-2020-2026.csv",
+                          desc: "Série mensal de excedências OMS/CONAMA e picos horários de concentração (2020–2026).",
                           format: "CSV",
                           updated: "Maio de 2026",
-                          path: "/data/air/attention-episodes-2022-2026.csv"
+                          path: "/data/air/attention-episodes-2020-2026.csv"
                         },
                         {
                           file: "data-dictionary.csv",
@@ -561,7 +583,7 @@ export function IneaMethodologyPage() {
                           </td>
                           <td className="px-3 py-4 text-center">
                             <span className="inline-block px-2 py-0.5 rounded-md bg-slate-100 font-mono text-[10px] text-slate-500">
-                              {row.format}
+                                {row.format}
                             </span>
                           </td>
                           <td className="px-5 py-4 text-slate-500">

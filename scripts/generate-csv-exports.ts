@@ -2,7 +2,7 @@ import * as fs from 'node:fs';
 import * as path from 'node:path';
 import { execSync } from 'node:child_process';
 import { DATA_DICTIONARY } from '../src/data/air/data-dictionary.ts';
-import { ATTENTION_EPISODES } from '../src/data/air/attention-episodes-2022-2026.ts';
+import { ATTENTION_EPISODES } from '../src/data/air/attention-episodes-2020-2026.ts';
 
 // Helper to escape CSV values
 function escapeCsv(val: any): string {
@@ -90,7 +90,7 @@ async function main() {
   fs.writeFileSync(path.join(publicDir, 'data-dictionary.csv'), dictionaryCsvRows.join("\n"), 'utf8');
   console.log("  - Generated data-dictionary.csv");
 
-  // 2. Attention Episodes CSV (2022-2026)
+  // 2. Attention Episodes CSV (2020-2026)
   const episodesHeaders = [
     "year", "pollutant", "station_id", "station_name", "month", "valid_days",
     "who_exceedance_days", "conama_exceedance_days", "max_hourly_value",
@@ -115,10 +115,19 @@ async function main() {
     ];
     episodesRows.push(row.join(","));
   }
-  fs.writeFileSync(path.join(publicDir, 'attention-episodes-2022-2026.csv'), episodesRows.join("\n"), 'utf8');
-  console.log("  - Generated attention-episodes-2022-2026.csv");
+  fs.writeFileSync(path.join(publicDir, 'attention-episodes-2020-2026.csv'), episodesRows.join("\n"), 'utf8');
+  console.log("  - Generated attention-episodes-2020-2026.csv");
 
-  // 3. Generate summaries for 2024, 2025, 2026
+  // 3. Generate summaries for 2020, 2021, 2024, 2025, 2026
+  generateStationSummaryCsv(2020, "18", "PM10", false, path.join(publicDir, 'pm10-2020-station-summary.csv'));
+  console.log("  - Generated pm10-2020-station-summary.csv");
+
+  generateStationSummaryCsv(2021, "18", "PM10", false, path.join(publicDir, 'pm10-2021-station-summary.csv'));
+  console.log("  - Generated pm10-2021-station-summary.csv");
+
+  generateStationSummaryCsv(2021, "20", "PM2.5", false, path.join(publicDir, 'pm25-2021-station-summary.csv'));
+  console.log("  - Generated pm25-2021-station-summary.csv");
+
   generateStationSummaryCsv(2024, "18", "PM10", false, path.join(publicDir, 'pm10-2024-station-summary.csv'));
   console.log("  - Generated pm10-2024-station-summary.csv");
   
@@ -137,14 +146,14 @@ async function main() {
   generateStationSummaryCsv(2026, "20", "PM2.5", true, path.join(publicDir, 'pm25-2026-partial-station-summary.csv'));
   console.log("  - Generated pm25-2026-partial-station-summary.csv");
 
-  // 4. Particulate Timeline (2022-2026) CSV
+  // 4. Particulate Timeline (2020-2026) CSV
   const timelineHeaders = [
     "year", "station_id", "station_name", "pollutant", "annual_mean",
     "max_hourly_peak", "coverage_percent", "exceedance_days_who", "exceedance_days_conama"
   ];
   const timelineRows = [timelineHeaders.join(",")];
 
-  const years = ["2022", "2023", "2024", "2025", "2026"];
+  const years = ["2020", "2021", "2022", "2023", "2024", "2025", "2026"];
   const stations = [
     { id: "69", name: "VR - Belmonte" },
     { id: "70", name: "VR - Retiro" },
@@ -179,8 +188,8 @@ async function main() {
       }
     }
   }
-  fs.writeFileSync(path.join(publicDir, 'particulate-timeline-2022-2026.csv'), timelineRows.join("\n"), 'utf8');
-  console.log("  - Generated particulate-timeline-2022-2026.csv");
+  fs.writeFileSync(path.join(publicDir, 'particulate-timeline-2020-2026.csv'), timelineRows.join("\n"), 'utf8');
+  console.log("  - Generated particulate-timeline-2020-2026.csv");
 
   // 5. Generate manifest.json dynamically with dataset versioning
   let commitHash = 'unknown';
@@ -193,16 +202,46 @@ async function main() {
   const generatedAt = new Date().toISOString();
 
   const manifestData = {
-    version: "1.2.0",
-    dataset_version: "1.2.0",
+    version: "1.3.0",
+    dataset_version: "1.3.0",
     status: "saudável",
     generated_at: generatedAt,
     source_system: "WEBLAKES_CONCENTRATION_WITH_WIND",
     methodology_label: "Dado horário público WebLakes — comparação experimental — sem QA/QC oficial explícito.",
     commit_hash: commitHash,
-    coverage_notes: "Série histórica abrangendo de 2022 a 2026 para Volta Redonda. O ano de 2026 é parcial. Cobertura horária variável de acordo com a integridade do sinal público do INEA.",
+    coverage_notes: "Série histórica abrangendo de 2020 a 2026 para Volta Redonda. O ano de 2026 é parcial. Cobertura horária variável de acordo com a integridade do sinal público do INEA.",
     last_smoke_test_at: generatedAt,
     datasets: [
+      {
+        filename: "pm10-2020-station-summary.csv",
+        title: "Resumo de Estações PM10 (2020)",
+        description: "Estatísticas anuais consolidadas por estação para o poluente PM10 em Volta Redonda no ano de 2020.",
+        rows_count: 3,
+        updated_at: generatedAt,
+        source_system: "WEBLAKES_CONCENTRATION_WITH_WIND",
+        methodological_label: "Dado horário público WebLakes — comparação experimental — sem QA/QC oficial explícito.",
+        public_url: "https://semear-pwa.vercel.app/data/air/pm10-2020-station-summary.csv"
+      },
+      {
+        filename: "pm10-2021-station-summary.csv",
+        title: "Resumo de Estações PM10 (2021)",
+        description: "Estatísticas anuais consolidadas por estação para o poluente PM10 em Volta Redonda no ano de 2021.",
+        rows_count: 3,
+        updated_at: generatedAt,
+        source_system: "WEBLAKES_CONCENTRATION_WITH_WIND",
+        methodological_label: "Dado horário público WebLakes — comparação experimental — sem QA/QC oficial explícito.",
+        public_url: "https://semear-pwa.vercel.app/data/air/pm10-2021-station-summary.csv"
+      },
+      {
+        filename: "pm25-2021-station-summary.csv",
+        title: "Resumo de Estações PM2.5 (2021)",
+        description: "Estatísticas anuais consolidadas por estação para o poluente PM2.5 em Volta Redonda no ano de 2021.",
+        rows_count: 3,
+        updated_at: generatedAt,
+        source_system: "WEBLAKES_CONCENTRATION_WITH_WIND",
+        methodological_label: "Dado horário público WebLakes — comparação experimental — sem QA/QC oficial explícito.",
+        public_url: "https://semear-pwa.vercel.app/data/air/pm25-2021-station-summary.csv"
+      },
       {
         filename: "pm10-2024-station-summary.csv",
         title: "Resumo de Estações PM10 (2024)",
@@ -264,24 +303,24 @@ async function main() {
         public_url: "https://semear-pwa.vercel.app/data/air/pm25-2026-partial-station-summary.csv"
       },
       {
-        filename: "particulate-timeline-2022-2026.csv",
-        title: "Linha do Tempo de Particulados (2022-2026)",
-        description: "Médias, coberturas e contagem anual de excedências OMS/CONAMA para PM10 e PM2.5 (2022-2026, com 2026 parcial).",
+        filename: "particulate-timeline-2020-2026.csv",
+        title: "Linha do Tempo de Particulados (2020-2026)",
+        description: "Médias, coberturas e contagem anual de excedências OMS/CONAMA para PM10 e PM2.5 (2020-2026, com 2026 parcial).",
         rows_count: timelineRows.length - 1,
         updated_at: generatedAt,
         source_system: "WEBLAKES_CONCENTRATION_WITH_WIND",
         methodological_label: "Dado horário público WebLakes — comparação experimental — sem QA/QC oficial explícito.",
-        public_url: "https://semear-pwa.vercel.app/data/air/particulate-timeline-2022-2026.csv"
+        public_url: "https://semear-pwa.vercel.app/data/air/particulate-timeline-2020-2026.csv"
       },
       {
-        filename: "attention-episodes-2022-2026.csv",
-        title: "Episódios de Atenção Mensais (2022-2026)",
-        description: "Série histórica mensal contendo o número de dias com excedências da OMS e da CONAMA 506 (2022-2026, com 2026 parcial).",
+        filename: "attention-episodes-2020-2026.csv",
+        title: "Episódios de Atenção Mensais (2020-2026)",
+        description: "Série histórica mensal contendo o número de dias com excedências da OMS e da CONAMA 506 (2020-2026, com 2026 parcial).",
         rows_count: ATTENTION_EPISODES.length,
         updated_at: generatedAt,
         source_system: "WEBLAKES_CONCENTRATION_WITH_WIND",
         methodological_label: "Dado horário público WebLakes — comparação experimental — sem QA/QC oficial explícito.",
-        public_url: "https://semear-pwa.vercel.app/data/air/attention-episodes-2022-2026.csv"
+        public_url: "https://semear-pwa.vercel.app/data/air/attention-episodes-2020-2026.csv"
       },
       {
         filename: "data-dictionary.csv",

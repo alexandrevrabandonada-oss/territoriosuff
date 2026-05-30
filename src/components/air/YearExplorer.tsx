@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { SurfaceCard, Chip } from '../BrandSystem';
 import { SITES } from '../../lib/inea/weblakesDictionary';
 import { AUDIT_MODE_2024 } from '../../lib/inea/auditFlags';
+import summary2020 from '../../../data/inea_weblakes_normalized/summary-2020.json';
+import summary2021 from '../../../data/inea_weblakes_normalized/summary-2021.json';
 import summary2022 from '../../../data/inea_weblakes_normalized/summary-2022.json';
 import summary2023 from '../../../data/inea_weblakes_normalized/summary-2023.json';
 import summary2024 from '../../../data/inea_weblakes_normalized/summary-2024.json';
@@ -41,6 +43,8 @@ interface StationData {
 }
 
 const SUMMARIES: Record<string, Record<string, StationData>> = {
+  "2020": summary2020 as any,
+  "2021": summary2021 as any,
   "2022": summary2022 as any,
   "2023": summary2023 as any,
   "2024": summary2024 as any,
@@ -299,78 +303,95 @@ export function YearExplorer() {
             })}
 
             {/* Consolidated PM2.5 Card */}
-            <SurfaceCard className="bg-slate-900 border border-slate-800 p-6 rounded-2xl md:col-span-2 space-y-6 shadow-lg">
-              <div className="flex justify-between items-start border-b border-slate-800 pb-3">
+            {year === "2020" ? (
+              <SurfaceCard className="bg-slate-900 border border-slate-800 p-6 rounded-2xl md:col-span-2 space-y-6 shadow-lg flex flex-col justify-center items-center text-center">
                 <div>
-                  <h4 className="text-base font-bold text-slate-100">Material Particulado Fino (PM2.5) — {year}</h4>
-                  <span className="text-[10px] text-emerald-450 font-bold uppercase tracking-wider block mt-0.5">
-                    Comparação Experimental Validada | Três Estações Operacionais
+                  <h4 className="text-base font-bold text-slate-100">Material Particulado Fino (PM2.5) — 2020</h4>
+                  <span className="text-[10px] text-amber-500 font-bold uppercase tracking-wider block mt-0.5">
+                    Sensor Não Operacional na Rede Oficial
                   </span>
                 </div>
-                <span className="text-[9px] bg-emerald-950 text-emerald-450 border border-emerald-900/25 px-2 py-0.5 rounded font-bold">
-                  PM2.5 Validado
-                </span>
-              </div>
-
-              <div className="grid gap-6 md:grid-cols-3">
-                {["69", "70", "71"].map((stationId) => {
-                  const stationData = SUMMARIES[year]?.[stationId];
-                  const pData = stationData?.pollutants["20"];
-                  const site = SITES[stationId];
-
-                  if (!pData) return null;
-
-                  const whoExceed = pData.exceedances?.WHO_24H || 0;
-                  const brExceed = pData.exceedances?.BR_24H_FINAL || 0;
-
-                  return (
-                    <div key={stationId} className="space-y-3 border-r border-slate-800 last:border-r-0 pr-4 last:pr-0">
-                      <div className="border-b border-slate-800/60 pb-1.5">
-                        <span className="text-xs font-bold text-slate-100 block">{site?.name || `Estação ${stationId}`}</span>
-                        <span className="text-[9px] text-slate-450 font-mono">Cobertura: {pData.coveragePct.toFixed(1)}%</span>
-                      </div>
-
-                      <div className="grid grid-cols-1 gap-1.5 bg-slate-950/40 p-2 rounded-lg border border-slate-850">
-                        <div className="flex justify-between items-center">
-                          <span className="text-[9px] text-slate-500 font-semibold">Média Anual:</span>
-                          <span className="text-xs font-mono font-bold text-slate-350">
-                            {pData.mean !== null ? `${pData.mean.toFixed(2)} ${pData.unit}` : "N/A"}
-                          </span>
-                        </div>
-                        <div className="flex justify-between items-center">
-                          <span className="text-[9px] text-slate-500 font-semibold">Pico Horário:</span>
-                          <span className="text-xs font-mono font-bold text-slate-350">
-                            {pData.max !== null ? `${pData.max.toFixed(2)} ${pData.unit}` : "N/A"}
-                          </span>
-                        </div>
-                        <div className="flex justify-between items-center border-t border-slate-800/40 pt-1 mt-0.5">
-                          <span className="text-[9px] text-slate-500 font-semibold">Exced. OMS:</span>
-                          <span className="text-[10px] font-bold text-rose-400">{whoExceed}d</span>
-                        </div>
-                        <div className="flex justify-between items-center">
-                          <span className="text-[9px] text-slate-500 font-semibold">Exced. CONAMA:</span>
-                          <span className="text-[10px] font-bold text-orange-400">{brExceed}d</span>
-                        </div>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-
-              <div className="bg-slate-950/60 p-4 rounded-xl border border-slate-850 text-xs space-y-2">
-                <span className="font-black text-[9px] text-slate-450 uppercase tracking-wider block">
-                  Nota Metodológica e de Exposição (PM2.5) — {year}
-                </span>
-                <div className="text-slate-350 leading-relaxed font-medium text-[11px] space-y-1.5">
-                  <p>
-                    O material particulado fino (PM2.5) representa as partículas mais finas em suspensão. Os dados foram recalculados a partir das leituras horárias públicas fornecidas pela plataforma INEA/WebLakes para o ano de {year}.
-                  </p>
-                  <p>
-                    Registrou-se a maior média anual de PM2.5 nesta camada analisada na estação <strong>Belmonte</strong>, enquanto a estação <strong>Santa Cecília</strong> registrou a menor média anual registrada entre as três estações analisadas em {year}. As comparações com as diretrizes da OMS e CONAMA 506/2024 são de caráter experimental e servem como indicativos de exposição por não possuírem flag de QA/QC oficial no banco original. Ausência de dado não representa ar de boa qualidade.
+                <div className="p-4 bg-slate-950/45 border border-slate-850 rounded-xl max-w-md">
+                  <p className="text-xs text-amber-400 font-bold">Medição de PM2.5 Inexistente em 2020</p>
+                  <p className="text-[11px] text-slate-400 mt-1.5 leading-relaxed">
+                    O sensor para monitoramento de PM2.5 não existia fisicamente na rede de Volta Redonda no ano de 2020. A série histórica deste parâmetro se inicia apenas a partir do ano de 2021.
                   </p>
                 </div>
-              </div>
-            </SurfaceCard>
+              </SurfaceCard>
+            ) : (
+              <SurfaceCard className="bg-slate-900 border border-slate-800 p-6 rounded-2xl md:col-span-2 space-y-6 shadow-lg">
+                <div className="flex justify-between items-start border-b border-slate-800 pb-3">
+                  <div>
+                    <h4 className="text-base font-bold text-slate-100">Material Particulado Fino (PM2.5) — {year}</h4>
+                    <span className="text-[10px] text-emerald-450 font-bold uppercase tracking-wider block mt-0.5">
+                      Comparação Experimental Validada | Três Estações Operacionais
+                    </span>
+                  </div>
+                  <span className="text-[9px] bg-emerald-950 text-emerald-450 border border-emerald-900/25 px-2 py-0.5 rounded font-bold">
+                    PM2.5 Validado
+                  </span>
+                </div>
+
+                <div className="grid gap-6 md:grid-cols-3">
+                  {["69", "70", "71"].map((stationId) => {
+                    const stationData = SUMMARIES[year]?.[stationId];
+                    const pData = stationData?.pollutants["20"];
+                    const site = SITES[stationId];
+
+                    if (!pData) return null;
+
+                    const whoExceed = pData.exceedances?.WHO_24H || 0;
+                    const brExceed = pData.exceedances?.BR_24H_FINAL || 0;
+
+                    return (
+                      <div key={stationId} className="space-y-3 border-r border-slate-800 last:border-r-0 pr-4 last:pr-0">
+                        <div className="border-b border-slate-800/60 pb-1.5">
+                          <span className="text-xs font-bold text-slate-100 block">{site?.name || `Estação ${stationId}`}</span>
+                          <span className="text-[9px] text-slate-450 font-mono">Cobertura: {pData.coveragePct.toFixed(1)}%</span>
+                        </div>
+
+                        <div className="grid grid-cols-1 gap-1.5 bg-slate-950/40 p-2 rounded-lg border border-slate-850">
+                          <div className="flex justify-between items-center">
+                            <span className="text-[9px] text-slate-500 font-semibold">Média Anual:</span>
+                            <span className="text-xs font-mono font-bold text-slate-350">
+                              {pData.mean !== null ? `${pData.mean.toFixed(2)} ${pData.unit}` : "N/A"}
+                            </span>
+                          </div>
+                          <div className="flex justify-between items-center">
+                            <span className="text-[9px] text-slate-500 font-semibold">Pico Horário:</span>
+                            <span className="text-xs font-mono font-bold text-slate-350">
+                              {pData.max !== null ? `${pData.max.toFixed(2)} ${pData.unit}` : "N/A"}
+                            </span>
+                          </div>
+                          <div className="flex justify-between items-center border-t border-slate-800/40 pt-1 mt-0.5">
+                            <span className="text-[9px] text-slate-500 font-semibold">Exced. OMS:</span>
+                            <span className="text-[10px] font-bold text-rose-400">{whoExceed}d</span>
+                          </div>
+                          <div className="flex justify-between items-center">
+                            <span className="text-[9px] text-slate-500 font-semibold">Exced. CONAMA:</span>
+                            <span className="text-[10px] font-bold text-orange-400">{brExceed}d</span>
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+
+                <div className="bg-slate-950/60 p-4 rounded-xl border border-slate-850 text-xs space-y-2">
+                  <span className="font-black text-[9px] text-slate-450 uppercase tracking-wider block">
+                    Nota Metodológica e de Exposição (PM2.5) — {year}
+                  </span>
+                  <div className="text-slate-350 leading-relaxed font-medium text-[11px] space-y-1.5">
+                    <p>
+                      O material particulado fino (PM2.5) representa as partículas mais finas em suspensão. Os dados foram recalculados a partir das leituras horárias públicas fornecidas pela plataforma INEA/WebLakes para o ano de {year}.
+                    </p>
+                    <p>
+                      Registrou-se a maior média anual de PM2.5 nesta camada analisada na estação <strong>Belmonte</strong>, enquanto a estação <strong>Santa Cecília</strong> registrou a menor média anual registrada entre as três estações analisadas em {year}. As comparações com as diretrizes da OMS e CONAMA 506/2024 são de caráter experimental e servem como indicativos de exposição por não possuírem flag de QA/QC oficial no banco original. Ausência de dado não representa ar de boa qualidade.
+                    </p>
+                  </div>
+                </div>
+              </SurfaceCard>
+            )}
           </div>
         </div>
       </div>
@@ -559,6 +580,18 @@ export function YearExplorer() {
             Ano 2022
           </button>
           <button
+            onClick={() => setSelectedYear("2021")}
+            className={`px-3 py-1.5 text-xs font-semibold rounded-lg transition-all ${selectedYear === "2021" ? 'bg-indigo-600 text-white shadow-sm' : 'text-slate-400 hover:text-slate-200'}`}
+          >
+            Ano 2021
+          </button>
+          <button
+            onClick={() => setSelectedYear("2020")}
+            className={`px-3 py-1.5 text-xs font-semibold rounded-lg transition-all ${selectedYear === "2020" ? 'bg-indigo-600 text-white shadow-sm' : 'text-slate-400 hover:text-slate-200'}`}
+          >
+            Ano 2020
+          </button>
+          <button
             onClick={() => setSelectedYear("2015")}
             className={`px-3 py-1.5 text-xs font-semibold rounded-lg transition-all ${selectedYear === "2015" ? 'bg-indigo-600 text-white shadow-sm' : 'text-slate-400 hover:text-slate-200'}`}
           >
@@ -578,6 +611,8 @@ export function YearExplorer() {
       {selectedYear === "2024" && renderYearData("2024")}
       {selectedYear === "2023" && renderYearData("2023")}
       {selectedYear === "2022" && renderYearData("2022")}
+      {selectedYear === "2021" && renderYearData("2021")}
+      {selectedYear === "2020" && renderYearData("2020")}
       {selectedYear === "2015" && renderPre2024("2015")}
       {selectedYear === "2013-2015" && renderPre2024("2013-2015")}
     </div>

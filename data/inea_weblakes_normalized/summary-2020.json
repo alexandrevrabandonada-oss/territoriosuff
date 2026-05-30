@@ -1,0 +1,3104 @@
+{
+  "69": {
+    "name": "VR - Belmonte",
+    "pollutants": {
+      "3": {
+        "pollutant": "CO",
+        "unit": "ppm",
+        "totalHours": 0,
+        "coveragePct": 0,
+        "mean": null,
+        "max": null,
+        "zeroHours": 0,
+        "exceedances": {
+          "WHO_24H": 0,
+          "BR_24H_FINAL": 0
+        },
+        "months": {
+          "2020-01": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 744,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-02": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 696,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-03": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 744,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-04": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 720,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-05": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 744,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-06": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 720,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-07": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 744,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-08": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 744,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-09": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 720,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-10": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 744,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-11": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 720,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-12": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 744,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          }
+        }
+      },
+      "18": {
+        "pollutant": "PM10",
+        "unit": "µg/m³",
+        "totalHours": 8160,
+        "coveragePct": 92.89617486338798,
+        "mean": 15.742477408798129,
+        "max": 188,
+        "zeroHours": 276,
+        "exceedances": {
+          "WHO_24H": 4,
+          "BR_24H_FINAL": 1
+        },
+        "months": {
+          "2020-01": {
+            "mean": 15.700973574408902,
+            "max": 77,
+            "coveragePct": 96.63978494623656,
+            "zeroHours": 33,
+            "missingHours": 25,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-02": {
+            "mean": 11.884875846501128,
+            "max": 74,
+            "coveragePct": 63.64942528735632,
+            "zeroHours": 45,
+            "missingHours": 253,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-03": {
+            "mean": 22.59104938271605,
+            "max": 130,
+            "coveragePct": 87.09677419354838,
+            "zeroHours": 41,
+            "missingHours": 96,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-04": {
+            "mean": 30.53116147308782,
+            "max": 188,
+            "coveragePct": 98.05555555555556,
+            "zeroHours": 9,
+            "missingHours": 14,
+            "exceedances": {
+              "WHO_24H": 3,
+              "BR_24H_FINAL": 1
+            }
+          },
+          "2020-05": {
+            "mean": 17.408974049862096,
+            "max": 154,
+            "coveragePct": 97.44623655913979,
+            "zeroHours": 10,
+            "missingHours": 19,
+            "exceedances": {
+              "WHO_24H": 1,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-06": {
+            "mean": 14.02026882208503,
+            "max": 67.555150680542,
+            "coveragePct": 98.75,
+            "zeroHours": 17,
+            "missingHours": 9,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-07": {
+            "mean": 15.09238526140231,
+            "max": 61.63054830975,
+            "coveragePct": 99.46236559139786,
+            "zeroHours": 5,
+            "missingHours": 4,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-08": {
+            "mean": 11.209911137276935,
+            "max": 52.9375665415658,
+            "coveragePct": 93.81720430107528,
+            "zeroHours": 23,
+            "missingHours": 46,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-09": {
+            "mean": 14.397602448024784,
+            "max": 84.585889734692,
+            "coveragePct": 90,
+            "zeroHours": 21,
+            "missingHours": 72,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-10": {
+            "mean": 13.928487825706817,
+            "max": 63.5483730231391,
+            "coveragePct": 95.96774193548387,
+            "zeroHours": 24,
+            "missingHours": 30,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-11": {
+            "mean": 11.578721721773505,
+            "max": 64.599094186359,
+            "coveragePct": 98.19444444444444,
+            "zeroHours": 26,
+            "missingHours": 13,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-12": {
+            "mean": 9.510802166497577,
+            "max": 62.3685826513502,
+            "coveragePct": 94.22043010752688,
+            "zeroHours": 22,
+            "missingHours": 43,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          }
+        }
+      },
+      "20": {
+        "pollutant": "PM2.5",
+        "unit": "µg/m³",
+        "totalHours": 0,
+        "coveragePct": 0,
+        "mean": null,
+        "max": null,
+        "zeroHours": 0,
+        "exceedances": {
+          "WHO_24H": 0,
+          "BR_24H_FINAL": 0
+        },
+        "months": {
+          "2020-01": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 744,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-02": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 696,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-03": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 744,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-04": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 720,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-05": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 744,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-06": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 720,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-07": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 744,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-08": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 744,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-09": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 720,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-10": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 744,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-11": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 720,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-12": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 744,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          }
+        }
+      },
+      "23": {
+        "pollutant": "SO2",
+        "unit": "µg/m³",
+        "totalHours": 0,
+        "coveragePct": 0,
+        "mean": null,
+        "max": null,
+        "zeroHours": 0,
+        "exceedances": {
+          "WHO_24H": 0,
+          "BR_24H_FINAL": 0
+        },
+        "months": {
+          "2020-01": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 744,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-02": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 696,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-03": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 744,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-04": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 720,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-05": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 744,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-06": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 720,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-07": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 744,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-08": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 744,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-09": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 720,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-10": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 744,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-11": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 720,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-12": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 744,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          }
+        }
+      },
+      "1465": {
+        "pollutant": "NO2",
+        "unit": "µg/m³",
+        "totalHours": 0,
+        "coveragePct": 0,
+        "mean": null,
+        "max": null,
+        "zeroHours": 0,
+        "exceedances": {
+          "WHO_24H": 0,
+          "BR_24H_FINAL": 0
+        },
+        "months": {
+          "2020-01": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 744,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-02": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 696,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-03": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 744,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-04": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 720,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-05": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 744,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-06": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 720,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-07": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 744,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-08": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 744,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-09": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 720,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-10": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 744,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-11": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 720,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-12": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 744,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          }
+        }
+      },
+      "1955": {
+        "pollutant": "PTS",
+        "unit": "µg/m³",
+        "totalHours": 0,
+        "coveragePct": 0,
+        "mean": null,
+        "max": null,
+        "zeroHours": 0,
+        "exceedances": {
+          "WHO_24H": 0,
+          "BR_24H_FINAL": 0
+        },
+        "months": {
+          "2020-01": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 744,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-02": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 696,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-03": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 744,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-04": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 720,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-05": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 744,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-06": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 720,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-07": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 744,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-08": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 744,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-09": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 720,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-10": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 744,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-11": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 720,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-12": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 744,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          }
+        }
+      },
+      "2130": {
+        "pollutant": "O3",
+        "unit": "µg/m³",
+        "totalHours": 0,
+        "coveragePct": 0,
+        "mean": null,
+        "max": null,
+        "zeroHours": 0,
+        "exceedances": {
+          "WHO_24H": 0,
+          "BR_24H_FINAL": 0
+        },
+        "months": {
+          "2020-01": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 744,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-02": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 696,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-03": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 744,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-04": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 720,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-05": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 744,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-06": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 720,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-07": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 744,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-08": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 744,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-09": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 720,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-10": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 744,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-11": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 720,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-12": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 744,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          }
+        }
+      }
+    }
+  },
+  "70": {
+    "name": "VR - Retiro",
+    "pollutants": {
+      "3": {
+        "pollutant": "CO",
+        "unit": "ppm",
+        "totalHours": 0,
+        "coveragePct": 0,
+        "mean": null,
+        "max": null,
+        "zeroHours": 0,
+        "exceedances": {
+          "WHO_24H": 0,
+          "BR_24H_FINAL": 0
+        },
+        "months": {
+          "2020-01": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 744,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-02": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 696,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-03": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 744,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-04": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 720,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-05": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 744,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-06": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 720,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-07": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 744,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-08": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 744,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-09": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 720,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-10": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 744,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-11": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 720,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-12": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 744,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          }
+        }
+      },
+      "18": {
+        "pollutant": "PM10",
+        "unit": "µg/m³",
+        "totalHours": 6843,
+        "coveragePct": 77.90300546448088,
+        "mean": 28.090363682645744,
+        "max": 303,
+        "zeroHours": 117,
+        "exceedances": {
+          "WHO_24H": 22,
+          "BR_24H_FINAL": 14
+        },
+        "months": {
+          "2020-01": {
+            "mean": 26.2,
+            "max": 71,
+            "coveragePct": 1.3440860215053763,
+            "zeroHours": 1,
+            "missingHours": 734,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-02": {
+            "mean": 25.049261083743843,
+            "max": 303,
+            "coveragePct": 87.5,
+            "zeroHours": 33,
+            "missingHours": 87,
+            "exceedances": {
+              "WHO_24H": 1,
+              "BR_24H_FINAL": 1
+            }
+          },
+          "2020-03": {
+            "mean": 33.20057306590258,
+            "max": 303,
+            "coveragePct": 93.81720430107528,
+            "zeroHours": 1,
+            "missingHours": 46,
+            "exceedances": {
+              "WHO_24H": 3,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-04": {
+            "mean": 32.88357256778309,
+            "max": 159,
+            "coveragePct": 87.08333333333333,
+            "zeroHours": 1,
+            "missingHours": 93,
+            "exceedances": {
+              "WHO_24H": 2,
+              "BR_24H_FINAL": 1
+            }
+          },
+          "2020-05": {
+            "mean": 27.41313559322034,
+            "max": 237,
+            "coveragePct": 63.44086021505376,
+            "zeroHours": 5,
+            "missingHours": 272,
+            "exceedances": {
+              "WHO_24H": 2,
+              "BR_24H_FINAL": 2
+            }
+          },
+          "2020-06": {
+            "mean": 28.571865443425075,
+            "max": 212,
+            "coveragePct": 90.83333333333333,
+            "zeroHours": 10,
+            "missingHours": 66,
+            "exceedances": {
+              "WHO_24H": 2,
+              "BR_24H_FINAL": 2
+            }
+          },
+          "2020-07": {
+            "mean": 30.775100401606426,
+            "max": 183,
+            "coveragePct": 66.93548387096774,
+            "zeroHours": 1,
+            "missingHours": 246,
+            "exceedances": {
+              "WHO_24H": 2,
+              "BR_24H_FINAL": 2
+            }
+          },
+          "2020-08": {
+            "mean": 25.775550121678624,
+            "max": 152.31174759335,
+            "coveragePct": 55.376344086021504,
+            "zeroHours": 12,
+            "missingHours": 332,
+            "exceedances": {
+              "WHO_24H": 1,
+              "BR_24H_FINAL": 1
+            }
+          },
+          "2020-09": {
+            "mean": 35.625504240004,
+            "max": 218.931572233836,
+            "coveragePct": 95.97222222222223,
+            "zeroHours": 15,
+            "missingHours": 29,
+            "exceedances": {
+              "WHO_24H": 7,
+              "BR_24H_FINAL": 4
+            }
+          },
+          "2020-10": {
+            "mean": 26.337032912007253,
+            "max": 189.87377307362,
+            "coveragePct": 99.46236559139786,
+            "zeroHours": 14,
+            "missingHours": 4,
+            "exceedances": {
+              "WHO_24H": 2,
+              "BR_24H_FINAL": 1
+            }
+          },
+          "2020-11": {
+            "mean": 23.505372412700908,
+            "max": 116.593164575365,
+            "coveragePct": 99.16666666666667,
+            "zeroHours": 9,
+            "missingHours": 6,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-12": {
+            "mean": 20.13003947467539,
+            "max": 127.1284303538,
+            "coveragePct": 96.50537634408603,
+            "zeroHours": 15,
+            "missingHours": 26,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          }
+        }
+      },
+      "20": {
+        "pollutant": "PM2.5",
+        "unit": "µg/m³",
+        "totalHours": 0,
+        "coveragePct": 0,
+        "mean": null,
+        "max": null,
+        "zeroHours": 0,
+        "exceedances": {
+          "WHO_24H": 0,
+          "BR_24H_FINAL": 0
+        },
+        "months": {
+          "2020-01": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 744,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-02": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 696,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-03": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 744,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-04": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 720,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-05": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 744,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-06": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 720,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-07": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 744,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-08": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 744,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-09": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 720,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-10": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 744,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-11": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 720,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-12": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 744,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          }
+        }
+      },
+      "23": {
+        "pollutant": "SO2",
+        "unit": "µg/m³",
+        "totalHours": 0,
+        "coveragePct": 0,
+        "mean": null,
+        "max": null,
+        "zeroHours": 0,
+        "exceedances": {
+          "WHO_24H": 0,
+          "BR_24H_FINAL": 0
+        },
+        "months": {
+          "2020-01": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 744,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-02": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 696,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-03": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 744,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-04": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 720,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-05": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 744,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-06": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 720,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-07": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 744,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-08": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 744,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-09": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 720,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-10": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 744,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-11": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 720,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-12": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 744,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          }
+        }
+      },
+      "1465": {
+        "pollutant": "NO2",
+        "unit": "µg/m³",
+        "totalHours": 0,
+        "coveragePct": 0,
+        "mean": null,
+        "max": null,
+        "zeroHours": 0,
+        "exceedances": {
+          "WHO_24H": 0,
+          "BR_24H_FINAL": 0
+        },
+        "months": {
+          "2020-01": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 744,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-02": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 696,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-03": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 744,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-04": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 720,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-05": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 744,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-06": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 720,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-07": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 744,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-08": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 744,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-09": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 720,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-10": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 744,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-11": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 720,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-12": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 744,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          }
+        }
+      },
+      "1955": {
+        "pollutant": "PTS",
+        "unit": "µg/m³",
+        "totalHours": 0,
+        "coveragePct": 0,
+        "mean": null,
+        "max": null,
+        "zeroHours": 0,
+        "exceedances": {
+          "WHO_24H": 0,
+          "BR_24H_FINAL": 0
+        },
+        "months": {
+          "2020-01": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 744,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-02": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 696,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-03": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 744,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-04": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 720,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-05": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 744,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-06": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 720,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-07": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 744,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-08": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 744,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-09": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 720,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-10": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 744,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-11": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 720,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-12": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 744,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          }
+        }
+      },
+      "2130": {
+        "pollutant": "O3",
+        "unit": "µg/m³",
+        "totalHours": 0,
+        "coveragePct": 0,
+        "mean": null,
+        "max": null,
+        "zeroHours": 0,
+        "exceedances": {
+          "WHO_24H": 0,
+          "BR_24H_FINAL": 0
+        },
+        "months": {
+          "2020-01": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 744,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-02": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 696,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-03": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 744,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-04": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 720,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-05": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 744,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-06": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 720,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-07": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 744,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-08": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 744,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-09": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 720,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-10": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 744,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-11": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 720,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-12": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 744,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          }
+        }
+      }
+    }
+  },
+  "71": {
+    "name": "VR - Santa Cecília",
+    "pollutants": {
+      "3": {
+        "pollutant": "CO",
+        "unit": "ppm",
+        "totalHours": 0,
+        "coveragePct": 0,
+        "mean": null,
+        "max": null,
+        "zeroHours": 0,
+        "exceedances": {
+          "WHO_24H": 0,
+          "BR_24H_FINAL": 0
+        },
+        "months": {
+          "2020-01": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 744,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-02": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 696,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-03": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 744,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-04": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 720,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-05": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 744,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-06": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 720,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-07": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 744,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-08": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 744,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-09": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 720,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-10": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 744,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-11": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 720,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-12": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 744,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          }
+        }
+      },
+      "18": {
+        "pollutant": "PM10",
+        "unit": "µg/m³",
+        "totalHours": 6939,
+        "coveragePct": 78.99590163934425,
+        "mean": 19.81498584820143,
+        "max": 258.783303265042,
+        "zeroHours": 175,
+        "exceedances": {
+          "WHO_24H": 3,
+          "BR_24H_FINAL": 1
+        },
+        "months": {
+          "2020-01": {
+            "mean": 22.11864406779661,
+            "max": 162,
+            "coveragePct": 71.37096774193549,
+            "zeroHours": 7,
+            "missingHours": 213,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-02": {
+            "mean": 25.31027253668763,
+            "max": 219,
+            "coveragePct": 68.53448275862068,
+            "zeroHours": 1,
+            "missingHours": 219,
+            "exceedances": {
+              "WHO_24H": 1,
+              "BR_24H_FINAL": 1
+            }
+          },
+          "2020-03": {
+            "mean": 21.982885085574573,
+            "max": 170,
+            "coveragePct": 54.97311827956989,
+            "zeroHours": 5,
+            "missingHours": 335,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-04": {
+            "mean": 31.07734806629834,
+            "max": 168,
+            "coveragePct": 25.13888888888889,
+            "zeroHours": 2,
+            "missingHours": 539,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-05": {
+            "mean": 19.72248367418453,
+            "max": 160,
+            "coveragePct": 74.86559139784946,
+            "zeroHours": 4,
+            "missingHours": 187,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-06": {
+            "mean": 23.744600508273464,
+            "max": 258.783303265042,
+            "coveragePct": 95.97222222222223,
+            "zeroHours": 18,
+            "missingHours": 29,
+            "exceedances": {
+              "WHO_24H": 1,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-07": {
+            "mean": 22.074980354365877,
+            "max": 190.12835398568,
+            "coveragePct": 95.83333333333334,
+            "zeroHours": 10,
+            "missingHours": 31,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-08": {
+            "mean": 16.031537865448342,
+            "max": 142.902866742876,
+            "coveragePct": 98.11827956989248,
+            "zeroHours": 21,
+            "missingHours": 14,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-09": {
+            "mean": 27.832980595748,
+            "max": 161.272607877519,
+            "coveragePct": 93.75,
+            "zeroHours": 16,
+            "missingHours": 45,
+            "exceedances": {
+              "WHO_24H": 1,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-10": {
+            "mean": 15.95127475690228,
+            "max": 106.902143903308,
+            "coveragePct": 84.54301075268818,
+            "zeroHours": 24,
+            "missingHours": 115,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-11": {
+            "mean": 10.872219360122095,
+            "max": 73.2617528194851,
+            "coveragePct": 92.63888888888889,
+            "zeroHours": 34,
+            "missingHours": 53,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-12": {
+            "mean": 12.009391415418179,
+            "max": 62.5142971060011,
+            "coveragePct": 91.26344086021506,
+            "zeroHours": 33,
+            "missingHours": 65,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          }
+        }
+      },
+      "20": {
+        "pollutant": "PM2.5",
+        "unit": "µg/m³",
+        "totalHours": 0,
+        "coveragePct": 0,
+        "mean": null,
+        "max": null,
+        "zeroHours": 0,
+        "exceedances": {
+          "WHO_24H": 0,
+          "BR_24H_FINAL": 0
+        },
+        "months": {
+          "2020-01": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 744,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-02": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 696,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-03": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 744,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-04": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 720,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-05": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 744,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-06": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 720,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-07": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 744,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-08": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 744,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-09": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 720,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-10": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 744,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-11": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 720,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-12": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 744,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          }
+        }
+      },
+      "23": {
+        "pollutant": "SO2",
+        "unit": "µg/m³",
+        "totalHours": 0,
+        "coveragePct": 0,
+        "mean": null,
+        "max": null,
+        "zeroHours": 0,
+        "exceedances": {
+          "WHO_24H": 0,
+          "BR_24H_FINAL": 0
+        },
+        "months": {
+          "2020-01": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 744,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-02": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 696,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-03": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 744,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-04": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 720,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-05": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 744,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-06": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 720,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-07": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 744,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-08": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 744,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-09": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 720,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-10": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 744,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-11": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 720,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-12": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 744,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          }
+        }
+      },
+      "1465": {
+        "pollutant": "NO2",
+        "unit": "µg/m³",
+        "totalHours": 0,
+        "coveragePct": 0,
+        "mean": null,
+        "max": null,
+        "zeroHours": 0,
+        "exceedances": {
+          "WHO_24H": 0,
+          "BR_24H_FINAL": 0
+        },
+        "months": {
+          "2020-01": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 744,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-02": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 696,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-03": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 744,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-04": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 720,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-05": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 744,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-06": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 720,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-07": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 744,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-08": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 744,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-09": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 720,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-10": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 744,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-11": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 720,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-12": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 744,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          }
+        }
+      },
+      "1955": {
+        "pollutant": "PTS",
+        "unit": "µg/m³",
+        "totalHours": 0,
+        "coveragePct": 0,
+        "mean": null,
+        "max": null,
+        "zeroHours": 0,
+        "exceedances": {
+          "WHO_24H": 0,
+          "BR_24H_FINAL": 0
+        },
+        "months": {
+          "2020-01": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 744,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-02": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 696,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-03": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 744,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-04": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 720,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-05": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 744,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-06": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 720,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-07": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 744,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-08": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 744,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-09": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 720,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-10": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 744,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-11": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 720,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-12": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 744,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          }
+        }
+      },
+      "2130": {
+        "pollutant": "O3",
+        "unit": "µg/m³",
+        "totalHours": 0,
+        "coveragePct": 0,
+        "mean": null,
+        "max": null,
+        "zeroHours": 0,
+        "exceedances": {
+          "WHO_24H": 0,
+          "BR_24H_FINAL": 0
+        },
+        "months": {
+          "2020-01": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 744,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-02": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 696,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-03": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 744,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-04": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 720,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-05": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 744,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-06": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 720,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-07": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 744,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-08": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 744,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-09": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 720,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-10": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 744,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-11": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 720,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          },
+          "2020-12": {
+            "mean": null,
+            "max": null,
+            "coveragePct": 0,
+            "zeroHours": 0,
+            "missingHours": 744,
+            "exceedances": {
+              "WHO_24H": 0,
+              "BR_24H_FINAL": 0
+            }
+          }
+        }
+      }
+    }
+  }
+}

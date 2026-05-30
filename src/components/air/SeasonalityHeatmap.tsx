@@ -1,4 +1,4 @@
-import { ATTENTION_EPISODES } from '../../data/air/attention-episodes-2022-2026';
+import { ATTENTION_EPISODES } from '../../data/air/attention-episodes-2020-2026';
 
 interface SeasonalityHeatmapProps {
   selectedPollutant: 'PM10' | 'PM2.5';

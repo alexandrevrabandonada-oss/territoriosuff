@@ -17,7 +17,7 @@ const visualFiles = [
   path.join(process.cwd(), 'src', 'components', 'air', 'HistoricalRawEvidenceBox.tsx'),
   path.join(process.cwd(), 'src', 'components', 'air', 'YearExplorer.tsx'),
   path.join(process.cwd(), 'src', 'components', 'air', 'ThresholdComparisonPanel.tsx'),
-  path.join(process.cwd(), 'src', 'components', 'air', 'ParticulateTimeline2022_2024.tsx'),
+  path.join(process.cwd(), 'src', 'components', 'air', 'ParticulateTimeline2020_2026.tsx'),
   path.join(process.cwd(), 'src', 'components', 'air', 'SeasonalityHeatmap.tsx'),
   path.join(process.cwd(), 'src', 'components', 'air', 'AttentionEpisodesPanel.tsx'),
   path.join(process.cwd(), 'src', 'data', 'air', 'pm10-2024-station-summary.ts'),
