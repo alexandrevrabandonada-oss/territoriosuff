@@ -2,8 +2,7 @@ import * as fs from 'node:fs';
 import * as path from 'node:path';
 import { execSync } from 'node:child_process';
 import { DATA_DICTIONARY } from '../src/data/air/data-dictionary.ts';
-import { ATTENTION_EPISODES } from '../src/data/air/attention-episodes-2022-2024.ts';
-import { pm102024StationSummary } from '../src/data/air/pm10-2024-station-summary.ts';
+import { ATTENTION_EPISODES } from '../src/data/air/attention-episodes-2022-2026.ts';
 
 // Helper to escape CSV values
 function escapeCsv(val: any): string {
@@ -13,6 +12,58 @@ function escapeCsv(val: any): string {
     return `"${str.replace(/"/g, '""')}"`;
   }
   return str;
+}
+
+const getValidDays = (year: number, pollutantName: 'PM10' | 'PM2.5', stationId: string): number => {
+  return ATTENTION_EPISODES
+    .filter(e => e.year === year && e.pollutant === pollutantName && e.station_id === stationId)
+    .reduce((sum, curr) => sum + curr.valid_days, 0);
+};
+
+function generateStationSummaryCsv(year: number, pollutantId: string, pollutantName: 'PM10' | 'PM2.5', isPartial: boolean, filepath: string) {
+  const summaryPath = path.join(process.cwd(), 'data', 'inea_weblakes_normalized', `summary-${year}.json`);
+  const summary = JSON.parse(fs.readFileSync(summaryPath, 'utf8'));
+
+  const headers = [
+    "station_id", "station_name", "coverage_percent", "hourly_records",
+    "annual_mean_available_hourly", "hourly_peak", "zero_values", "valid_days",
+    "who_24h_exceedance_days", "conama506_24h_exceedance_days", "confidence_level",
+    "source_system", "data_quality_tier", "validation_note"
+  ];
+  const rows = [headers.join(",")];
+
+  const stations = [
+    { id: "69", name: "VR-Belmonte" },
+    { id: "70", name: "VR-Retiro" },
+    { id: "71", name: "VR-Santa Cecília" }
+  ];
+
+  for (const st of stations) {
+    const rawData = summary[st.id]?.pollutants?.[pollutantId];
+    if (!rawData) continue;
+
+    const row = [
+      escapeCsv(Number(st.id)),
+      escapeCsv(st.name),
+      escapeCsv(Number(rawData.coveragePct).toFixed(2)),
+      escapeCsv(rawData.totalHours),
+      escapeCsv(rawData.mean !== null ? Number(rawData.mean).toFixed(2) : ''),
+      escapeCsv(rawData.max !== null ? Number(rawData.max).toFixed(2) : ''),
+      escapeCsv(rawData.zeroHours),
+      escapeCsv(getValidDays(year, pollutantName, st.id)),
+      escapeCsv(rawData.exceedances?.WHO_24H ?? 0),
+      escapeCsv(rawData.exceedances?.BR_24H_FINAL ?? 0),
+      escapeCsv(isPartial ? "LOW" : "MEDIUM"),
+      escapeCsv("WEBLAKES_CONCENTRATION_WITH_WIND"),
+      escapeCsv("RAW_PUBLIC_PLATFORM"),
+      escapeCsv(isPartial 
+        ? "Ano parcial/em andamento (Jan a Mai). Sem QA/QC oficial; experimental." 
+        : "Sem QA/QC oficial explícito; comparação experimental.")
+    ];
+    rows.push(row.join(","));
+  }
+
+  fs.writeFileSync(filepath, rows.join("\n"), 'utf8');
 }
 
 async function main() {
@@ -39,7 +90,7 @@ async function main() {
   fs.writeFileSync(path.join(publicDir, 'data-dictionary.csv'), dictionaryCsvRows.join("\n"), 'utf8');
   console.log("  - Generated data-dictionary.csv");
 
-  // 2. Attention Episodes CSV
+  // 2. Attention Episodes CSV (2022-2026)
   const episodesHeaders = [
     "year", "pollutant", "station_id", "station_name", "month", "valid_days",
     "who_exceedance_days", "conama_exceedance_days", "max_hourly_value",
@@ -64,107 +115,36 @@ async function main() {
     ];
     episodesRows.push(row.join(","));
   }
-  fs.writeFileSync(path.join(publicDir, 'attention-episodes-2022-2024.csv'), episodesRows.join("\n"), 'utf8');
-  console.log("  - Generated attention-episodes-2022-2024.csv");
+  fs.writeFileSync(path.join(publicDir, 'attention-episodes-2022-2026.csv'), episodesRows.join("\n"), 'utf8');
+  console.log("  - Generated attention-episodes-2022-2026.csv");
 
-  // 3. PM10 2024 Station Summary CSV
-  const pm10Headers = [
-    "station_id", "station_name", "coverage_percent", "hourly_records",
-    "annual_mean_available_hourly", "hourly_peak", "zero_values", "valid_days",
-    "who_24h_exceedance_days", "conama506_24h_exceedance_days", "confidence_level",
-    "source_system", "data_quality_tier", "validation_note"
-  ];
-  const pm10Rows = [pm10Headers.join(",")];
-  for (const st of pm102024StationSummary) {
-    const row = [
-      escapeCsv(st.station_id),
-      escapeCsv(st.station_name),
-      escapeCsv(Number(st.coverage_percent).toFixed(2)),
-      escapeCsv(st.hourly_records),
-      escapeCsv(Number(st.annual_mean_available_hourly).toFixed(2)),
-      escapeCsv(Number(st.hourly_peak).toFixed(2)),
-      escapeCsv(st.zero_values),
-      escapeCsv(st.valid_days),
-      escapeCsv(st.who_24h_exceedance_days),
-      escapeCsv(st.conama506_24h_exceedance_days),
-      escapeCsv(st.confidence_level),
-      escapeCsv(st.source_system),
-      escapeCsv(st.data_quality_tier),
-      escapeCsv(st.validation_note)
-    ];
-    pm10Rows.push(row.join(","));
-  }
-  fs.writeFileSync(path.join(publicDir, 'pm10-2024-station-summary.csv'), pm10Rows.join("\n"), 'utf8');
+  // 3. Generate summaries for 2024, 2025, 2026
+  generateStationSummaryCsv(2024, "18", "PM10", false, path.join(publicDir, 'pm10-2024-station-summary.csv'));
   console.log("  - Generated pm10-2024-station-summary.csv");
-
-  // Load summary-2024.json for PM2.5 summary generation
-  const summary2024 = JSON.parse(
-    fs.readFileSync(path.join(process.cwd(), 'data', 'inea_weblakes_normalized', 'summary-2024.json'), 'utf8')
-  );
-
-  // Compute PM2.5 2024 valid days sum from episodes
-  const getPm25ValidDays2024 = (stationId: string): number => {
-    return ATTENTION_EPISODES
-      .filter(e => e.year === 2024 && e.pollutant === 'PM2.5' && e.station_id === stationId)
-      .reduce((sum, curr) => sum + curr.valid_days, 0);
-  };
-
-  // 4. PM2.5 2024 Station Summary CSV
-  const pm25Data = [
-    { id: "69", name: "VR-Belmonte" },
-    { id: "70", name: "VR-Retiro" },
-    { id: "71", name: "VR-Santa Cecília" }
-  ].map(st => {
-    const rawData = summary2024[st.id]?.pollutants?.["20"];
-    return {
-      station_id: Number(st.id),
-      station_name: st.name,
-      coverage_percent: Number(rawData?.coveragePct ?? 0),
-      hourly_records: Number(rawData?.totalHours ?? 0),
-      annual_mean_available_hourly: Number(rawData?.mean ?? 0),
-      hourly_peak: Number(rawData?.max ?? 0),
-      zero_values: Number(rawData?.zeroHours ?? 0),
-      valid_days: getPm25ValidDays2024(st.id),
-      who_24h_exceedance_days: Number(rawData?.exceedances?.WHO_24H ?? 0),
-      conama506_24h_exceedance_days: Number(rawData?.exceedances?.BR_24H_FINAL ?? 0),
-      confidence_level: "MEDIUM",
-      source_system: "WEBLAKES_CONCENTRATION_WITH_WIND",
-      data_quality_tier: "RAW_PUBLIC_PLATFORM",
-      validation_note: "Sem QA/QC oficial explícito; comparação experimental."
-    };
-  });
-
-  const pm25Rows = [pm10Headers.join(",")];
-  for (const st of pm25Data) {
-    const row = [
-      escapeCsv(st.station_id),
-      escapeCsv(st.station_name),
-      escapeCsv(Number(st.coverage_percent).toFixed(2)),
-      escapeCsv(st.hourly_records),
-      escapeCsv(Number(st.annual_mean_available_hourly).toFixed(2)),
-      escapeCsv(Number(st.hourly_peak).toFixed(2)),
-      escapeCsv(st.zero_values),
-      escapeCsv(st.valid_days),
-      escapeCsv(st.who_24h_exceedance_days),
-      escapeCsv(st.conama506_24h_exceedance_days),
-      escapeCsv(st.confidence_level),
-      escapeCsv(st.source_system),
-      escapeCsv(st.data_quality_tier),
-      escapeCsv(st.validation_note)
-    ];
-    pm25Rows.push(row.join(","));
-  }
-  fs.writeFileSync(path.join(publicDir, 'pm25-2024-station-summary.csv'), pm25Rows.join("\n"), 'utf8');
+  
+  generateStationSummaryCsv(2024, "20", "PM2.5", false, path.join(publicDir, 'pm25-2024-station-summary.csv'));
   console.log("  - Generated pm25-2024-station-summary.csv");
 
-  // 5. Particulate Timeline (2022-2024) CSV
+  generateStationSummaryCsv(2025, "18", "PM10", false, path.join(publicDir, 'pm10-2025-station-summary.csv'));
+  console.log("  - Generated pm10-2025-station-summary.csv");
+
+  generateStationSummaryCsv(2025, "20", "PM2.5", false, path.join(publicDir, 'pm25-2025-station-summary.csv'));
+  console.log("  - Generated pm25-2025-station-summary.csv");
+
+  generateStationSummaryCsv(2026, "18", "PM10", true, path.join(publicDir, 'pm10-2026-partial-station-summary.csv'));
+  console.log("  - Generated pm10-2026-partial-station-summary.csv");
+
+  generateStationSummaryCsv(2026, "20", "PM2.5", true, path.join(publicDir, 'pm25-2026-partial-station-summary.csv'));
+  console.log("  - Generated pm25-2026-partial-station-summary.csv");
+
+  // 4. Particulate Timeline (2022-2026) CSV
   const timelineHeaders = [
     "year", "station_id", "station_name", "pollutant", "annual_mean",
     "max_hourly_peak", "coverage_percent", "exceedance_days_who", "exceedance_days_conama"
   ];
   const timelineRows = [timelineHeaders.join(",")];
 
-  const years = ["2022", "2023", "2024"];
+  const years = ["2022", "2023", "2024", "2025", "2026"];
   const stations = [
     { id: "69", name: "VR - Belmonte" },
     { id: "70", name: "VR - Retiro" },
@@ -176,9 +156,9 @@ async function main() {
   ];
 
   for (const yr of years) {
-    const yearSummary = JSON.parse(
-      fs.readFileSync(path.join(process.cwd(), 'data', 'inea_weblakes_normalized', `summary-${yr}.json`), 'utf8')
-    );
+    const summaryPath = path.join(process.cwd(), 'data', 'inea_weblakes_normalized', `summary-${yr}.json`);
+    if (!fs.existsSync(summaryPath)) continue;
+    const yearSummary = JSON.parse(fs.readFileSync(summaryPath, 'utf8'));
     for (const st of stations) {
       for (const pol of pollutants) {
         const raw = yearSummary[st.id]?.pollutants?.[pol.id];
@@ -199,10 +179,10 @@ async function main() {
       }
     }
   }
-  fs.writeFileSync(path.join(publicDir, 'particulate-timeline-2022-2024.csv'), timelineRows.join("\n"), 'utf8');
-  console.log("  - Generated particulate-timeline-2022-2024.csv");
+  fs.writeFileSync(path.join(publicDir, 'particulate-timeline-2022-2026.csv'), timelineRows.join("\n"), 'utf8');
+  console.log("  - Generated particulate-timeline-2022-2026.csv");
 
-  // 6. Generate manifest.json dynamically with dataset versioning
+  // 5. Generate manifest.json dynamically with dataset versioning
   let commitHash = 'unknown';
   try {
     commitHash = execSync('git rev-parse --short HEAD', { encoding: 'utf8' }).trim();
@@ -213,21 +193,21 @@ async function main() {
   const generatedAt = new Date().toISOString();
 
   const manifestData = {
-    version: "1.1.0",
-    dataset_version: "1.1.0",
+    version: "1.2.0",
+    dataset_version: "1.2.0",
     status: "saudável",
     generated_at: generatedAt,
     source_system: "WEBLAKES_CONCENTRATION_WITH_WIND",
     methodology_label: "Dado horário público WebLakes — comparação experimental — sem QA/QC oficial explícito.",
     commit_hash: commitHash,
-    coverage_notes: "Série histórica abrangendo de 2022 a 2024 para Volta Redonda. Cobertura horária variável de acordo com a integridade do sinal público do INEA.",
+    coverage_notes: "Série histórica abrangendo de 2022 a 2026 para Volta Redonda. O ano de 2026 é parcial. Cobertura horária variável de acordo com a integridade do sinal público do INEA.",
     last_smoke_test_at: generatedAt,
     datasets: [
       {
         filename: "pm10-2024-station-summary.csv",
         title: "Resumo de Estações PM10 (2024)",
         description: "Estatísticas anuais consolidadas por estação para o poluente PM10 em Volta Redonda no ano de 2024.",
-        rows_count: pm102024StationSummary.length,
+        rows_count: 3,
         updated_at: generatedAt,
         source_system: "WEBLAKES_CONCENTRATION_WITH_WIND",
         methodological_label: "Dado horário público WebLakes — comparação experimental — sem QA/QC oficial explícito.",
@@ -237,31 +217,71 @@ async function main() {
         filename: "pm25-2024-station-summary.csv",
         title: "Resumo de Estações PM2.5 (2024)",
         description: "Estatísticas anuais consolidadas por estação para o poluente PM2.5 em Volta Redonda no ano de 2024.",
-        rows_count: pm25Data.length,
+        rows_count: 3,
         updated_at: generatedAt,
         source_system: "WEBLAKES_CONCENTRATION_WITH_WIND",
         methodological_label: "Dado horário público WebLakes — comparação experimental — sem QA/QC oficial explícito.",
         public_url: "https://semear-pwa.vercel.app/data/air/pm25-2024-station-summary.csv"
       },
       {
-        filename: "particulate-timeline-2022-2024.csv",
-        title: "Linha do Tempo de Particulados (2022-2024)",
-        description: "Médias, coberturas e contagem anual de excedências OMS/CONAMA para PM10 e PM2.5 (2022-2024).",
+        filename: "pm10-2025-station-summary.csv",
+        title: "Resumo de Estações PM10 (2025)",
+        description: "Estatísticas anuais consolidadas por estação para o poluente PM10 em Volta Redonda no ano de 2025.",
+        rows_count: 3,
+        updated_at: generatedAt,
+        source_system: "WEBLAKES_CONCENTRATION_WITH_WIND",
+        methodological_label: "Dado horário público WebLakes — comparação experimental — sem QA/QC oficial explícito.",
+        public_url: "https://semear-pwa.vercel.app/data/air/pm10-2025-station-summary.csv"
+      },
+      {
+        filename: "pm25-2025-station-summary.csv",
+        title: "Resumo de Estações PM2.5 (2025)",
+        description: "Estatísticas anuais consolidadas por estação para o poluente PM2.5 em Volta Redonda no ano de 2025.",
+        rows_count: 3,
+        updated_at: generatedAt,
+        source_system: "WEBLAKES_CONCENTRATION_WITH_WIND",
+        methodological_label: "Dado horário público WebLakes — comparação experimental — sem QA/QC oficial explícito.",
+        public_url: "https://semear-pwa.vercel.app/data/air/pm25-2025-station-summary.csv"
+      },
+      {
+        filename: "pm10-2026-partial-station-summary.csv",
+        title: "Resumo de Estações PM10 (2026 Parcial)",
+        description: "Estatísticas parciais acumuladas (Jan a Mai) por estação para o poluente PM10 em Volta Redonda no ano de 2026.",
+        rows_count: 3,
+        updated_at: generatedAt,
+        source_system: "WEBLAKES_CONCENTRATION_WITH_WIND",
+        methodological_label: "Dado horário público WebLakes — comparação experimental — sem QA/QC oficial explícito. Ano Parcial.",
+        public_url: "https://semear-pwa.vercel.app/data/air/pm10-2026-partial-station-summary.csv"
+      },
+      {
+        filename: "pm25-2026-partial-station-summary.csv",
+        title: "Resumo de Estações PM2.5 (2026 Parcial)",
+        description: "Estatísticas parciais acumuladas (Jan a Mai) por estação para o poluente PM2.5 em Volta Redonda no ano de 2026.",
+        rows_count: 3,
+        updated_at: generatedAt,
+        source_system: "WEBLAKES_CONCENTRATION_WITH_WIND",
+        methodological_label: "Dado horário público WebLakes — comparação experimental — sem QA/QC oficial explícito. Ano Parcial.",
+        public_url: "https://semear-pwa.vercel.app/data/air/pm25-2026-partial-station-summary.csv"
+      },
+      {
+        filename: "particulate-timeline-2022-2026.csv",
+        title: "Linha do Tempo de Particulados (2022-2026)",
+        description: "Médias, coberturas e contagem anual de excedências OMS/CONAMA para PM10 e PM2.5 (2022-2026, com 2026 parcial).",
         rows_count: timelineRows.length - 1,
         updated_at: generatedAt,
         source_system: "WEBLAKES_CONCENTRATION_WITH_WIND",
         methodological_label: "Dado horário público WebLakes — comparação experimental — sem QA/QC oficial explícito.",
-        public_url: "https://semear-pwa.vercel.app/data/air/particulate-timeline-2022-2024.csv"
+        public_url: "https://semear-pwa.vercel.app/data/air/particulate-timeline-2022-2026.csv"
       },
       {
-        filename: "attention-episodes-2022-2024.csv",
-        title: "Episódios de Atenção Mensais (2022-2024)",
-        description: "Série histórica mensal contendo o número de dias com excedências da OMS e da CONAMA 506 (2022-2024).",
+        filename: "attention-episodes-2022-2026.csv",
+        title: "Episódios de Atenção Mensais (2022-2026)",
+        description: "Série histórica mensal contendo o número de dias com excedências da OMS e da CONAMA 506 (2022-2026, com 2026 parcial).",
         rows_count: ATTENTION_EPISODES.length,
         updated_at: generatedAt,
         source_system: "WEBLAKES_CONCENTRATION_WITH_WIND",
         methodological_label: "Dado horário público WebLakes — comparação experimental — sem QA/QC oficial explícito.",
-        public_url: "https://semear-pwa.vercel.app/data/air/attention-episodes-2022-2024.csv"
+        public_url: "https://semear-pwa.vercel.app/data/air/attention-episodes-2022-2026.csv"
       },
       {
         filename: "data-dictionary.csv",

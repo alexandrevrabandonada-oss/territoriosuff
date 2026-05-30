@@ -10,7 +10,7 @@ import { AqiExplainer } from "../../components/air/AqiExplainer";
 import { HistoricalRawEvidenceBox } from "../../components/air/HistoricalRawEvidenceBox";
 import { AirAtlasMap } from "../../components/air/AirAtlasMap";
 import { YearExplorer } from "../../components/air/YearExplorer";
-import { ParticulateTimeline2022_2024 } from "../../components/air/ParticulateTimeline2022_2024";
+import { ParticulateTimeline2022_2026 } from "../../components/air/ParticulateTimeline2022_2026";
 import { AttentionEpisodesPanel } from "../../components/air/AttentionEpisodesPanel";
 import { ThresholdComparisonPanel } from "../../components/air/ThresholdComparisonPanel";
 
@@ -618,12 +618,12 @@ export function IneaRadarPage() {
       {/* Seção com âncora #timeline-plurianual (Linha do tempo 2022–2024) */}
       <section id="timeline-plurianual" className="space-y-6 pt-4">
         <div className="space-y-2">
-          <h2 className="text-lg font-black text-slate-800">Linha do tempo 2022–2024</h2>
+          <h2 className="text-lg font-black text-slate-800">Linha do tempo 2022–2026</h2>
           <p className="text-xs text-slate-500 font-semibold leading-relaxed">
             Veja como PM10 e PM2.5 se comportaram nas estações de Volta Redonda, ano a ano, em comparação experimental com OMS e CONAMA 506.
           </p>
         </div>
-        <ParticulateTimeline2022_2024 />
+        <ParticulateTimeline2022_2026 />
       </section>
 
       {/* Seção com âncora #episodios (Episódios de atenção) */}

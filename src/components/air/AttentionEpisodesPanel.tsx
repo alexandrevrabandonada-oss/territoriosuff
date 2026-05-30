@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { SurfaceCard } from '../BrandSystem';
-import { ATTENTION_EPISODES, AttentionEpisode } from '../../data/air/attention-episodes-2022-2024';
+import { ATTENTION_EPISODES, AttentionEpisode } from '../../data/air/attention-episodes-2022-2026';
 import { SeasonalityHeatmap } from './SeasonalityHeatmap';
 
 const STATIONS = [
@@ -123,13 +123,13 @@ export function AttentionEpisodesPanel() {
         <div className="flex flex-wrap gap-2.5">
           {/* Year buttons */}
           <div className="bg-slate-100 p-1 rounded-xl flex gap-1 border border-slate-200/40">
-            {[2022, 2023, 2024].map((yr) => (
+            {[2022, 2023, 2024, 2025, 2026].map((yr) => (
               <button
                 key={yr}
                 onClick={() => setSelectedYear(yr)}
                 className={`px-3 py-1 text-xs font-bold rounded-lg transition-all ${selectedYear === yr ? 'bg-white text-slate-800 shadow-sm' : 'text-slate-500 hover:text-slate-800'}`}
               >
-                {yr}
+                {yr}{yr === 2026 ? "*" : ""}
               </button>
             ))}
           </div>
@@ -183,6 +183,15 @@ export function AttentionEpisodesPanel() {
           </div>
         </div>
       </div>
+
+      {selectedYear === 2026 && (
+        <div className="bg-amber-50 border border-amber-200 text-amber-800 text-xs rounded-xl p-3.5 flex items-start gap-2.5 animate-pulse">
+          <span className="text-amber-500 font-bold shrink-0 mt-0.5">⚠️</span>
+          <div>
+            <strong>Ano parcial/em andamento (acumulado até maio de 2026):</strong> Os indicadores de 2026 representam apenas os dados parciais disponíveis e não devem ser comparados com anos completos fechados.
+          </div>
+        </div>
+      )}
 
       {/* Narrative block header */}
       <div className="bg-gradient-to-r from-slate-800 to-slate-900 text-white p-6 rounded-2xl shadow-sm space-y-2">

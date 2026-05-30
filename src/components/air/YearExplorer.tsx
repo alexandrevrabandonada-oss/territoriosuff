@@ -5,6 +5,8 @@ import { AUDIT_MODE_2024 } from '../../lib/inea/auditFlags';
 import summary2022 from '../../../data/inea_weblakes_normalized/summary-2022.json';
 import summary2023 from '../../../data/inea_weblakes_normalized/summary-2023.json';
 import summary2024 from '../../../data/inea_weblakes_normalized/summary-2024.json';
+import summary2025 from '../../../data/inea_weblakes_normalized/summary-2025.json';
+import summary2026 from '../../../data/inea_weblakes_normalized/summary-2026.json';
 
 interface MonthStat {
   mean: number | null;
@@ -41,7 +43,9 @@ interface StationData {
 const SUMMARIES: Record<string, Record<string, StationData>> = {
   "2022": summary2022 as any,
   "2023": summary2023 as any,
-  "2024": summary2024 as any
+  "2024": summary2024 as any,
+  "2025": summary2025 as any,
+  "2026": summary2026 as any
 };
 
 export function YearExplorer() {
@@ -53,25 +57,28 @@ export function YearExplorer() {
     const mean = pData.mean !== null ? pData.mean.toFixed(2) : "N/A";
     const whoExceed = pData.exceedances?.WHO_24H || 0;
     const brExceed = pData.exceedances?.BR_24H_FINAL || 0;
+    const isPartial = year === "2026";
+    const coverageText = isPartial ? `cobertura parcial` : `cobertura anual`;
+    const periodText = isPartial ? `de janeiro a maio em` : `em`;
 
     if (stationId === "69") {
       return (
         <p>
-          A cobertura anual de PM10 de {coverage}% em {year} revelou média anual de {mean} µg/m³, com {whoExceed} dias com médias diárias superiores ao limite de saúde da OMS (45 µg/m³) e {brExceed} dias excedendo o padrão legal CONAMA 506/2024 (50 µg/m³), caracterizando eventos de atenção em comparação experimental com as réguas OMS e CONAMA.
+          A {coverageText} de PM10 de {coverage}% {periodText} {year} revelou média de {mean} µg/m³, com {whoExceed} dias com médias diárias superiores ao limite de saúde da OMS (45 µg/m³) e {brExceed} dias excedendo o padrão legal CONAMA 506/2024 (50 µg/m³), caracterizando eventos de atenção em comparação experimental com as réguas OMS e CONAMA.
         </p>
       );
     }
     if (stationId === "70") {
       return (
         <p>
-          Registrou cobertura anual de PM10 de {coverage}% em {year} com média anual de {mean} µg/m³. Identificaram-se {whoExceed} dias acima da referência OMS e {brExceed} dias de excedência CONAMA 506/2024, indicando múltiplos eventos de atenção em comparação experimental com as réguas OMS e CONAMA.
+          Registrou {coverageText} de PM10 de {coverage}% {periodText} {year} com média de {mean} µg/m³. Identificaram-se {whoExceed} dias acima da referência OMS e {brExceed} dias de excedência CONAMA 506/2024, indicando múltiplos eventos de atenção em comparação experimental com as réguas OMS e CONAMA.
         </p>
       );
     }
     if (stationId === "71") {
       return (
         <p>
-          Apresentou a menor média anual registrada entre as três estações analisadas em {year}, com cobertura de {coverage}%, média de {mean} µg/m³, registrando {whoExceed} excedências diárias da OMS e {brExceed} excedências diárias do padrão CONAMA nesta comparação experimental.
+          Apresentou a menor média registrada entre as três estações analisadas {periodText} {year}, com {coverageText} de {coverage}%, média de {mean} µg/m³, registrando {whoExceed} excedências diárias da OMS e {brExceed} excedências diárias do padrão CONAMA nesta comparação experimental.
         </p>
       );
     }
@@ -79,7 +86,6 @@ export function YearExplorer() {
   };
 
   const renderYearData = (year: string) => {
-    const summaryCast = SUMMARIES[year];
     if (year === "2024" && AUDIT_MODE_2024) {
       return (
         <div className="space-y-6">
@@ -164,8 +170,19 @@ export function YearExplorer() {
       );
     }
 
+    const isPartial2026 = year === "2026";
+
     return (
       <div className="space-y-8">
+        {isPartial2026 && (
+          <div className="bg-amber-500/10 border border-amber-500/25 text-amber-300 text-xs rounded-xl p-3.5 flex items-start gap-2.5 animate-pulse">
+            <span className="text-amber-400 font-bold shrink-0 mt-0.5">⚠️</span>
+            <div>
+              <strong>Ano parcial/em andamento (acumulado até maio de 2026):</strong> Os indicadores do ano de 2026 representam dados provisórios parciais e não devem ser diretamente comparados com séries anuais completas fechadas.
+            </div>
+          </div>
+        )}
+
         <div className="bg-slate-850/80 border border-slate-800 p-5 rounded-2xl text-xs text-slate-300 leading-relaxed space-y-3 shadow-md">
           <p className="font-bold text-slate-100 flex items-center gap-1.5 text-sm">
             <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
@@ -211,7 +228,7 @@ export function YearExplorer() {
                 );
               }
 
-              const stationData = summaryCast[stationId];
+              const stationData = SUMMARIES[year]?.[stationId];
               if (!stationData) return null;
               const pData = stationData.pollutants["18"]; // PM10 only
               if (!pData) return null;
@@ -297,7 +314,7 @@ export function YearExplorer() {
 
               <div className="grid gap-6 md:grid-cols-3">
                 {["69", "70", "71"].map((stationId) => {
-                  const stationData = summaryCast[stationId];
+                  const stationData = SUMMARIES[year]?.[stationId];
                   const pData = stationData?.pollutants["20"];
                   const site = SITES[stationId];
 
@@ -510,7 +527,19 @@ export function YearExplorer() {
         </div>
 
         {/* Year picker button group */}
-        <div className="bg-slate-900 border border-slate-800 p-1.5 rounded-xl flex gap-1">
+        <div className="bg-slate-900 border border-slate-800 p-1.5 rounded-xl flex flex-wrap gap-1">
+          <button
+            onClick={() => setSelectedYear("2026")}
+            className={`px-3 py-1.5 text-xs font-semibold rounded-lg transition-all ${selectedYear === "2026" ? 'bg-indigo-600 text-white shadow-sm' : 'text-slate-400 hover:text-slate-200'}`}
+          >
+            Ano 2026*
+          </button>
+          <button
+            onClick={() => setSelectedYear("2025")}
+            className={`px-3 py-1.5 text-xs font-semibold rounded-lg transition-all ${selectedYear === "2025" ? 'bg-indigo-600 text-white shadow-sm' : 'text-slate-400 hover:text-slate-200'}`}
+          >
+            Ano 2025
+          </button>
           <button
             onClick={() => setSelectedYear("2024")}
             className={`px-3 py-1.5 text-xs font-semibold rounded-lg transition-all ${selectedYear === "2024" ? 'bg-indigo-600 text-white shadow-sm' : 'text-slate-400 hover:text-slate-200'}`}
@@ -544,6 +573,8 @@ export function YearExplorer() {
         </div>
       </div>
 
+      {selectedYear === "2026" && renderYearData("2026")}
+      {selectedYear === "2025" && renderYearData("2025")}
       {selectedYear === "2024" && renderYearData("2024")}
       {selectedYear === "2023" && renderYearData("2023")}
       {selectedYear === "2022" && renderYearData("2022")}

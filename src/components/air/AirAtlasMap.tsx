@@ -7,11 +7,15 @@ import { SITES, PARAMETERS } from '../../lib/inea/weblakesDictionary';
 import summary2022 from '../../../data/inea_weblakes_normalized/summary-2022.json';
 import summary2023 from '../../../data/inea_weblakes_normalized/summary-2023.json';
 import summary2024 from '../../../data/inea_weblakes_normalized/summary-2024.json';
+import summary2025 from '../../../data/inea_weblakes_normalized/summary-2025.json';
+import summary2026 from '../../../data/inea_weblakes_normalized/summary-2026.json';
 
 const SUMMARIES: Record<string, any> = {
   "2022": summary2022,
   "2023": summary2023,
-  "2024": summary2024
+  "2024": summary2024,
+  "2025": summary2025,
+  "2026": summary2026
 };
 
 // Fix Leaflet icons
@@ -259,6 +263,8 @@ export function AirAtlasMap() {
             onChange={(e) => setSelectedYear(e.target.value)}
             className="bg-slate-800 text-slate-200 border border-slate-700 rounded-lg px-3 py-2 text-sm font-semibold focus:outline-none focus:border-emerald-500"
           >
+            <option value="2026">Ano: 2026 (Parcial)*</option>
+            <option value="2025">Ano: 2025</option>
             <option value="2024">Ano: 2024</option>
             <option value="2023">Ano: 2023 (Histórico)</option>
             <option value="2022">Ano: 2022 (Histórico)</option>
@@ -308,6 +314,16 @@ export function AirAtlasMap() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+        {/* Year notice warning if partial */}
+        {selectedYear === "2026" && (
+          <div className="bg-amber-500/10 border border-amber-500/25 text-amber-300 text-xs rounded-xl p-3.5 flex items-start gap-2.5 animate-pulse mb-4">
+            <span className="text-amber-400 font-bold shrink-0 mt-0.5">⚠️</span>
+            <div>
+              <strong>Ano parcial/em andamento (acumulado até maio de 2026):</strong> Os indicadores do ano de 2026 representam dados provisórios parciais e não devem ser diretamente comparados com séries anuais completas fechadas.
+            </div>
+          </div>
+        )}
+
         {/* The map */}
         <div className="lg:col-span-3 bg-slate-950 border border-slate-800 rounded-xl h-[450px] overflow-hidden relative">
           <MapContainer
@@ -496,7 +512,7 @@ export function AirAtlasMap() {
             <input
               type="range"
               min="0"
-              max="12"
+              max={selectedYear === "2026" ? 5 : 12}
               step="1"
               value={selectedMonth === "ALL" ? 0 : parseInt(selectedMonth.split("-")[1])}
               onChange={(e) => {
@@ -511,14 +527,17 @@ export function AirAtlasMap() {
           {/* Month labels */}
           <div className="flex justify-between text-[10px] text-slate-500 font-mono mt-2 px-1">
             <span>Ano</span>
-            {MONTH_NAMES.map((name, i) => (
-              <span
-                key={name}
-                className={selectedMonth !== "ALL" && parseInt(selectedMonth.split("-")[1]) === i + 1 ? "text-emerald-400 font-bold" : ""}
-              >
-                {name}
-              </span>
-            ))}
+            {MONTH_NAMES.map((name, i) => {
+              if (selectedYear === "2026" && i >= 5) return null;
+              return (
+                <span
+                  key={name}
+                  className={selectedMonth !== "ALL" && parseInt(selectedMonth.split("-")[1]) === i + 1 ? "text-emerald-400 font-bold" : ""}
+                >
+                  {name}
+                </span>
+              );
+            })}
           </div>
         </div>
       </div>

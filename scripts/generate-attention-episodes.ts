@@ -17,6 +17,19 @@ interface AttentionEpisode {
   validation_note: string;
 }
 
+interface ParticulateTimelineEntry {
+  year: number;
+  station_id: string;
+  station_name: string;
+  pollutant: 'PM10' | 'PM2.5';
+  mean: number | null;
+  max: number | null;
+  coveragePct: number;
+  exceedances_who: number;
+  exceedances_conama: number;
+  partial?: boolean;
+}
+
 const STATIONS = [
   { id: "69", name: "VR - Belmonte" },
   { id: "70", name: "VR - Retiro" },
@@ -28,7 +41,7 @@ const POLLUTANTS = [
   { id: "20", name: "PM2.5" as const, whoLimit: 15, conamaLimit: 25 }
 ];
 
-const YEARS = [2022, 2023, 2024];
+const YEARS = [2022, 2023, 2024, 2025, 2026];
 
 function getDaysInMonth(year: number, month: number): number {
   return new Date(year, month, 0).getDate();
@@ -38,9 +51,10 @@ function generateEpisodes() {
   const episodes: AttentionEpisode[] = [];
 
   for (const year of YEARS) {
+    const maxMonth = year === 2026 ? 5 : 12;
     for (const station of STATIONS) {
       for (const pollutant of POLLUTANTS) {
-        for (let m = 1; m <= 12; m++) {
+        for (let m = 1; m <= maxMonth; m++) {
           const monthStr = m.toString().padStart(2, '0');
           const monthLabel = `${year}-${monthStr}`;
           const daysInMonth = getDaysInMonth(year, m);
@@ -152,9 +166,9 @@ function generateEpisodes() {
     }
   }
 
-  // Write file
-  const outputPath = path.join(process.cwd(), 'src', 'data', 'air', 'attention-episodes-2022-2024.ts');
-  const fileContent = `// Arquivo gerado automaticamente pelo script scripts/generate-attention-episodes.ts
+  // Write episodes file
+  const outputEpisodesPath = path.join(process.cwd(), 'src', 'data', 'air', 'attention-episodes-2022-2026.ts');
+  const episodesContent = `// Arquivo gerado automaticamente pelo script scripts/generate-attention-episodes.ts
 // Não modifique manualmente.
 
 export interface AttentionEpisode {
@@ -176,8 +190,66 @@ export interface AttentionEpisode {
 export const ATTENTION_EPISODES: AttentionEpisode[] = ${JSON.stringify(episodes, null, 2)};
 `;
 
-  fs.writeFileSync(outputPath, fileContent, 'utf-8');
-  console.log(`Success: Generated attention episodes data at ${outputPath}`);
+  fs.writeFileSync(outputEpisodesPath, episodesContent, 'utf-8');
+  console.log(`Success: Generated attention episodes data at ${outputEpisodesPath}`);
+
+  // Generate Particulate Timeline data
+  const timelineEntries: ParticulateTimelineEntry[] = [];
+  for (const yr of YEARS) {
+    const summaryPath = path.join(
+      process.cwd(),
+      'data',
+      'inea_weblakes_normalized',
+      `summary-${yr}.json`
+    );
+    if (!fs.existsSync(summaryPath)) continue;
+    const summary = JSON.parse(fs.readFileSync(summaryPath, 'utf-8'));
+    for (const station of STATIONS) {
+      const stationData = summary[station.id];
+      if (!stationData) continue;
+      for (const pollutant of POLLUTANTS) {
+        const pollData = stationData.pollutants[pollutant.id];
+        if (pollData && pollData.totalHours > 0) {
+          timelineEntries.push({
+            year: yr,
+            station_id: station.id,
+            station_name: station.name,
+            pollutant: pollutant.name,
+            mean: pollData.mean,
+            max: pollData.max,
+            coveragePct: pollData.coveragePct,
+            exceedances_who: pollData.exceedances?.WHO_24H ?? 0,
+            exceedances_conama: pollData.exceedances?.BR_24H_FINAL ?? 0,
+            partial: yr === 2026
+          });
+        }
+      }
+    }
+  }
+
+  // Write timeline file
+  const outputTimelinePath = path.join(process.cwd(), 'src', 'data', 'air', 'particulate-timeline-2022-2026.ts');
+  const timelineContent = `// Arquivo gerado automaticamente pelo script scripts/generate-attention-episodes.ts
+// Não modifique manualmente.
+
+export interface ParticulateTimelineEntry {
+  year: number;
+  station_id: string;
+  station_name: string;
+  pollutant: 'PM10' | 'PM2.5';
+  mean: number | null;
+  max: number | null;
+  coveragePct: number;
+  exceedances_who: number;
+  exceedances_conama: number;
+  partial?: boolean;
+}
+
+export const PARTICULATE_TIMELINE: ParticulateTimelineEntry[] = ${JSON.stringify(timelineEntries, null, 2)};
+`;
+
+  fs.writeFileSync(outputTimelinePath, timelineContent, 'utf-8');
+  console.log(`Success: Generated particulate timeline data at ${outputTimelinePath}`);
 }
 
 generateEpisodes();

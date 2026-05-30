@@ -3,10 +3,20 @@ import { SurfaceCard } from '../BrandSystem';
 import { SITES, PARAMETERS } from '../../lib/inea/weblakesDictionary';
 import { THRESHOLDS } from '../../lib/air/thresholds';
 import { AUDIT_MODE_2024 } from '../../lib/inea/auditFlags';
+import summary2022 from '../../../data/inea_weblakes_normalized/summary-2022.json';
+import summary2023 from '../../../data/inea_weblakes_normalized/summary-2023.json';
 import summary2024 from '../../../data/inea_weblakes_normalized/summary-2024.json';
+import summary2025 from '../../../data/inea_weblakes_normalized/summary-2025.json';
+import summary2026 from '../../../data/inea_weblakes_normalized/summary-2026.json';
 import seedFindings from '../../../data/inea_historical_sources/seed-public-findings.json';
 
-const summaryCast = summary2024 as any;
+const SUMMARIES: Record<string, any> = {
+  "2022": summary2022,
+  "2023": summary2023,
+  "2024": summary2024,
+  "2025": summary2025,
+  "2026": summary2026
+};
 
 export function ThresholdComparisonPanel() {
   const [selectedPollutantId, setSelectedPollutantId] = useState<string>("18"); // Default PM10
@@ -25,9 +35,9 @@ export function ThresholdComparisonPanel() {
 
   // Extract observed data for selection
   const observedData = useMemo(() => {
-    if (selectedYear === "2024") {
-      if (selectedPollutantId !== "18") return null;
-      const stationData = summaryCast[selectedStationId];
+    if (SUMMARIES[selectedYear]) {
+      if (selectedPollutantId !== "18" && selectedPollutantId !== "20") return null;
+      const stationData = SUMMARIES[selectedYear][selectedStationId];
       const pData = stationData?.pollutants[selectedPollutantId];
       if (pData && pData.totalHours > 0) {
         return {
@@ -37,8 +47,10 @@ export function ThresholdComparisonPanel() {
           exceedancesBr: pData.exceedances?.BR_24H_FINAL ?? 0,
           unit: pData.unit,
           tier: "RAW_PUBLIC_PLATFORM",
-          confidence: "Média (Sem QA/QC oficial)",
-          notes: "Extraído via WebLakes/INEAPublico."
+          confidence: selectedYear === "2026" ? "Provisório (Parcial)" : "Média (Sem QA/QC)",
+          notes: selectedYear === "2026"
+            ? "Extraído via WebLakes. Acumulado parcial de Jan a Mai."
+            : "Extraído via WebLakes/INEAPublico."
         };
       }
     } else {
@@ -136,7 +148,11 @@ export function ThresholdComparisonPanel() {
               onChange={(e) => setSelectedYear(e.target.value)}
               className="w-full bg-slate-800 text-slate-200 border border-slate-700 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-emerald-500"
             >
+              <option value="2026">2026 (Parcial)* (Dado Bruto WebLakes)</option>
+              <option value="2025">2025 (Dado Bruto WebLakes)</option>
               <option value="2024">2024 (Dado Bruto WebLakes)</option>
+              <option value="2023">2023 (Histórico) (Dado Bruto WebLakes)</option>
+              <option value="2022">2022 (Histórico) (Dado Bruto WebLakes)</option>
               <option value="2015">2015 (Dado Agregado INEA)</option>
               <option value="2013-2015">2013-2015 (Estudo Científico)</option>
             </select>
@@ -152,6 +168,15 @@ export function ThresholdComparisonPanel() {
               Registro Observado em Volta Redonda
             </span>
             <h4 className="text-sm font-bold text-slate-300 mt-1">{activeStationName} ({selectedYear})</h4>
+
+            {selectedYear === "2026" && (
+              <div className="bg-amber-500/10 border border-amber-500/25 text-amber-300 text-xs rounded-xl p-3.5 flex items-start gap-2.5 animate-pulse mb-3 mt-3">
+                <span className="text-amber-400 font-bold shrink-0 mt-0.5">⚠️</span>
+                <div>
+                  <strong>Ano parcial/em andamento:</strong> Dado provisório acumulado até maio de 2026.
+                </div>
+              </div>
+            )}
 
             {selectedYear === "2024" && selectedPollutantId !== "18" ? (
               <div className="mt-4 p-4 bg-amber-950/20 border border-amber-900/40 rounded-xl space-y-2 text-xs">

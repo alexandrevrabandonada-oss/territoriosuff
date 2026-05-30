@@ -307,6 +307,12 @@ export function IneaMethodologyPage() {
                     Afirmamos categoricamente: <strong>ausência de dado não representa ar bom</strong>. Avarias em sensores ou falhas na transmissão pública geram lacunas de informação e nunca devem ser computadas ou interpretadas como indicação de ar livre de poluição.
                   </p>
                 </div>
+                <div className="p-4 bg-slate-50 rounded-2xl border border-slate-100">
+                  <strong className="text-xs text-slate-700 uppercase tracking-wider block mb-1">Anos parciais/em andamento</strong>
+                  <p className="text-xs text-slate-500 leading-relaxed">
+                    Para anos civis ainda em andamento (como 2026), os indicadores acumulados representam apenas o recorte temporal disponível (de janeiro a maio). Para evitar distorções metodológicas, esses dados são identificados com um selo explicativo ("*") e não devem ser diretamente comparados a séries históricas anuais completas fechadas.
+                  </p>
+                </div>
               </div>
             </SurfaceCard>
           </section>
@@ -421,67 +427,39 @@ export function IneaMethodologyPage() {
               <h2 className="text-xl font-black text-slate-800">Baixar dados consolidados (CSV)</h2>
             </div>
             
-            <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3">
-              <SurfaceCard className="p-5 bg-white border border-slate-100 rounded-2xl flex flex-col justify-between space-y-4">
+            <div className="grid gap-4 sm:grid-cols-3">
+              <SurfaceCard className="p-5 bg-white border border-slate-100 rounded-2xl flex flex-col justify-between space-y-4 shadow-sm">
                 <div>
-                  <h4 className="text-xs font-black uppercase text-slate-400">Resumo PM10 2024</h4>
-                  <p className="text-[11px] text-slate-500 font-semibold mt-1">Estatísticas anuais consolidadas por estação para o PM10 em 2024.</p>
+                  <h4 className="text-xs font-black uppercase text-slate-400">Linha do Tempo 2022–2026</h4>
+                  <p className="text-[11px] text-slate-500 font-semibold mt-1">Série histórica plurianual consolidando médias, coberturas e excedências diárias.</p>
                 </div>
                 <a
-                  href="/data/air/pm10-2024-station-summary.csv"
-                  download="pm10-2024-station-summary.csv"
+                  href="/data/air/particulate-timeline-2022-2026.csv"
+                  download="particulate-timeline-2022-2026.csv"
                   className="inline-flex min-h-[38px] items-center justify-center rounded-xl bg-brand-primary text-white font-black text-xs uppercase hover:bg-brand-primary-dark transition-all w-full tracking-wider shadow-sm"
                 >
                   Download (CSV)
                 </a>
               </SurfaceCard>
 
-              <SurfaceCard className="p-5 bg-white border border-slate-100 rounded-2xl flex flex-col justify-between space-y-4">
-                <div>
-                  <h4 className="text-xs font-black uppercase text-slate-400">Resumo PM2.5 2024</h4>
-                  <p className="text-[11px] text-slate-500 font-semibold mt-1">Estatísticas anuais consolidadas por estação para o PM2.5 em 2024.</p>
-                </div>
-                <a
-                  href="/data/air/pm25-2024-station-summary.csv"
-                  download="pm25-2024-station-summary.csv"
-                  className="inline-flex min-h-[38px] items-center justify-center rounded-xl bg-brand-primary text-white font-black text-xs uppercase hover:bg-brand-primary-dark transition-all w-full tracking-wider shadow-sm"
-                >
-                  Download (CSV)
-                </a>
-              </SurfaceCard>
-
-              <SurfaceCard className="p-5 bg-white border border-slate-100 rounded-2xl flex flex-col justify-between space-y-4">
-                <div>
-                  <h4 className="text-xs font-black uppercase text-slate-400">Linha do Tempo 2022–2024</h4>
-                  <p className="text-[11px] text-slate-500 font-semibold mt-1">Consolidado plurianual de médias, coberturas e excedências anuais.</p>
-                </div>
-                <a
-                  href="/data/air/particulate-timeline-2022-2024.csv"
-                  download="particulate-timeline-2022-2024.csv"
-                  className="inline-flex min-h-[38px] items-center justify-center rounded-xl bg-brand-primary text-white font-black text-xs uppercase hover:bg-brand-primary-dark transition-all w-full tracking-wider shadow-sm"
-                >
-                  Download (CSV)
-                </a>
-              </SurfaceCard>
-
-              <SurfaceCard className="p-5 bg-white border border-slate-100 rounded-2xl flex flex-col justify-between space-y-4">
+              <SurfaceCard className="p-5 bg-white border border-slate-100 rounded-2xl flex flex-col justify-between space-y-4 shadow-sm">
                 <div>
                   <h4 className="text-xs font-black uppercase text-slate-400">Episódios de Atenção</h4>
-                  <p className="text-[11px] text-slate-500 font-semibold mt-1">Série mensal contendo as excedências OMS e CONAMA por mês (2022–2024).</p>
+                  <p className="text-[11px] text-slate-500 font-semibold mt-1">Série mensal contendo as excedências OMS e CONAMA por mês (2022–2026).</p>
                 </div>
                 <a
-                  href="/data/air/attention-episodes-2022-2024.csv"
-                  download="attention-episodes-2022-2024.csv"
+                  href="/data/air/attention-episodes-2022-2026.csv"
+                  download="attention-episodes-2022-2026.csv"
                   className="inline-flex min-h-[38px] items-center justify-center rounded-xl bg-brand-primary text-white font-black text-xs uppercase hover:bg-brand-primary-dark transition-all w-full tracking-wider shadow-sm"
                 >
                   Download (CSV)
                 </a>
               </SurfaceCard>
 
-              <SurfaceCard className="p-5 bg-white border border-slate-100 rounded-2xl flex flex-col justify-between space-y-4">
+              <SurfaceCard className="p-5 bg-white border border-slate-100 rounded-2xl flex flex-col justify-between space-y-4 shadow-sm">
                 <div>
                   <h4 className="text-xs font-black uppercase text-slate-400">Dicionário de Dados</h4>
-                  <p className="text-[11px] text-slate-500 font-semibold mt-1">Metadados descrevendo os campos das tabelas exportadas.</p>
+                  <p className="text-[11px] text-slate-500 font-semibold mt-1">Metadados descrevendo os campos das planilhas de qualidade do ar exportadas.</p>
                 </div>
                 <a
                   href="/data/air/data-dictionary.csv"
@@ -525,18 +503,46 @@ export function IneaMethodologyPage() {
                           path: "/data/air/pm25-2024-station-summary.csv"
                         },
                         {
-                          file: "particulate-timeline-2022-2024.csv",
+                          file: "pm10-2025-station-summary.csv",
+                          desc: "Estatísticas anuais consolidadas por estação para o PM10 em 2025.",
+                          format: "CSV",
+                          updated: "Maio de 2026",
+                          path: "/data/air/pm10-2025-station-summary.csv"
+                        },
+                        {
+                          file: "pm25-2025-station-summary.csv",
+                          desc: "Estatísticas anuais consolidadas por estação para o PM2.5 em 2025.",
+                          format: "CSV",
+                          updated: "Maio de 2026",
+                          path: "/data/air/pm25-2025-station-summary.csv"
+                        },
+                        {
+                          file: "pm10-2026-partial-station-summary.csv",
+                          desc: "Estatísticas parciais acumuladas (Jan a Mai) por estação para o PM10 em 2026.",
+                          format: "CSV",
+                          updated: "Maio de 2026",
+                          path: "/data/air/pm10-2026-partial-station-summary.csv"
+                        },
+                        {
+                          file: "pm25-2026-partial-station-summary.csv",
+                          desc: "Estatísticas parciais acumuladas (Jan a Mai) por estação para o PM2.5 em 2026.",
+                          format: "CSV",
+                          updated: "Maio de 2026",
+                          path: "/data/air/pm25-2026-partial-station-summary.csv"
+                        },
+                        {
+                          file: "particulate-timeline-2022-2026.csv",
                           desc: "Linha do tempo plurianual de médias, coberturas e excedências anuais.",
                           format: "CSV",
                           updated: "Maio de 2026",
-                          path: "/data/air/particulate-timeline-2022-2024.csv"
+                          path: "/data/air/particulate-timeline-2022-2026.csv"
                         },
                         {
-                          file: "attention-episodes-2022-2024.csv",
-                          desc: "Série mensal de excedências OMS/CONAMA e picos horários de concentração (2022–2024).",
+                          file: "attention-episodes-2022-2026.csv",
+                          desc: "Série mensal de excedências OMS/CONAMA e picos horários de concentração (2022–2026).",
                           format: "CSV",
                           updated: "Maio de 2026",
-                          path: "/data/air/attention-episodes-2022-2024.csv"
+                          path: "/data/air/attention-episodes-2022-2026.csv"
                         },
                         {
                           file: "data-dictionary.csv",
