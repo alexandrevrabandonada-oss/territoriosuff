@@ -203,6 +203,10 @@ export function getNormalizedValueForThreshold(
   return value;
 }
 
+export function convertCoPpmToMgM3(ppmValue: number): number {
+  return ppmValue * 1.145;
+}
+
 // 7. Sumarização por poluente
 export function summarizePollutantYear(
   series: NormalizedRow[],

@@ -327,6 +327,12 @@ export function IneaRadarPage() {
                 Comparar com OMS
               </button>
               <button
+                onClick={() => scrollToId("novos-parametros")}
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-slate-850 hover:bg-slate-800 text-white border border-slate-700 font-bold rounded-lg text-xs transition-colors"
+              >
+                Novos Parâmetros (2024)
+              </button>
+              <button
                 onClick={() => scrollToId("metodologia")}
                 className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700/60 font-bold rounded-lg text-xs transition-colors"
               >
@@ -919,6 +925,110 @@ export function IneaRadarPage() {
               Publicação da série horária e diária completa que já foi usada em relatórios e pesquisas.
             </p>
           </SurfaceCard>
+        </div>
+      </section>
+
+      {/* 9.5. Seção com âncora #novos-parametros (Novos Parâmetros em Auditoria 2024) */}
+      <section id="novos-parametros" className="space-y-6 pt-4 border-t border-slate-200/60">
+        <div className="space-y-2">
+          <div className="flex flex-wrap items-center gap-3">
+            <h2 className="text-lg font-black text-slate-800">Novos Parâmetros em Auditoria (Ano-Laboratório 2024)</h2>
+            <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-amber-50 text-amber-700 border border-amber-500/20">
+              <span className="h-1.5 w-1.5 rounded-full bg-amber-500 animate-pulse" />
+              Fase Experimental · Sem publicação automática
+            </span>
+          </div>
+          <p className="text-xs text-slate-500 font-semibold leading-relaxed max-w-3xl">
+            Acompanhe o processo de homologação de dados e sensores para novos poluentes atmosféricos monitorados em Volta Redonda. O ano de 2024 é utilizado como laboratório experimental de homologação, não constando na linha do tempo principal ou mapas públicos para evitar confusão metodológica.
+          </p>
+        </div>
+
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
+          <SurfaceCard className="p-4 bg-white border border-slate-100 rounded-2xl flex flex-col justify-between space-y-3 transition-all duration-300 hover:shadow-md">
+            <div>
+              <div className="flex justify-between items-center">
+                <strong className="text-xs font-black text-slate-850">SO₂</strong>
+                <span className="text-[9px] font-black bg-emerald-50 text-emerald-750 border border-emerald-200/25 px-2 py-0.5 rounded uppercase">Publicável com Cautela</span>
+              </div>
+              <p className="text-[11px] text-slate-500 font-semibold mt-1">Dióxido de Enxofre: publicável com cautela, se QA final confirmar.</p>
+            </div>
+            <div className="pt-2 border-t border-slate-150 flex justify-between items-center text-[10px] font-bold">
+              <a href="/reports/estado-da-nacao-inea-so2-2024-publicacao-cautelosa.md" target="_blank" rel="noopener noreferrer" className="text-brand-primary hover:underline">Ver Relatório Analítico &rarr;</a>
+            </div>
+          </SurfaceCard>
+
+          <SurfaceCard className="p-4 bg-white border border-slate-100 rounded-2xl flex flex-col justify-between space-y-3 transition-all duration-300 hover:shadow-md">
+            <div>
+              <div className="flex justify-between items-center">
+                <strong className="text-xs font-black text-slate-850">NO₂</strong>
+                <span className="text-[9px] font-black bg-amber-50 text-amber-750 border border-amber-200/25 px-2 py-0.5 rounded uppercase">Em Auditoria Crítica</span>
+              </div>
+              <p className="text-[11px] text-slate-500 font-semibold mt-1">Dióxido de Nitrogênio: em auditoria crítica.</p>
+            </div>
+            <div className="pt-2 border-t border-slate-150 flex justify-between items-center text-[10px] font-bold">
+              <a href="/reports/estado-da-nacao-inea-no2-retiro-2024-auditoria-critica.md" target="_blank" rel="noopener noreferrer" className="text-brand-primary hover:underline">Ver Relatório Analítico &rarr;</a>
+            </div>
+          </SurfaceCard>
+
+          <SurfaceCard className="p-4 bg-white border border-slate-100 rounded-2xl flex flex-col justify-between space-y-3 transition-all duration-300 hover:shadow-md">
+            <div>
+              <div className="flex justify-between items-center">
+                <strong className="text-xs font-black text-slate-850">CO</strong>
+                <span className="text-[9px] font-black bg-emerald-50 text-emerald-750 border border-emerald-200/25 px-2 py-0.5 rounded uppercase">Publicável com Cautela</span>
+              </div>
+              <p className="text-[11px] text-slate-500 font-semibold mt-1">Monóxido de Carbono: publicável com cautela após validação de unidade e média móvel.</p>
+            </div>
+            <div className="pt-2 border-t border-slate-150 flex justify-between items-center text-[10px] font-bold">
+              <a href="/reports/estado-da-nacao-inea-co-2024-unidade-janela8h.md" target="_blank" rel="noopener noreferrer" className="text-brand-primary hover:underline">Ver Relatório Analítico &rarr;</a>
+            </div>
+          </SurfaceCard>
+
+          <SurfaceCard className="p-4 bg-white border border-slate-100 rounded-2xl flex flex-col justify-between space-y-3 transition-all duration-300 hover:shadow-md">
+            <div>
+              <div className="flex justify-between items-center">
+                <strong className="text-xs font-black text-slate-850">PTS</strong>
+                <span className="text-[9px] font-black bg-slate-100 text-slate-655 px-2 py-0.5 rounded uppercase">Histórico-Técnico</span>
+              </div>
+              <p className="text-[11px] text-slate-500 font-semibold mt-1">Partículas Totais em Suspensão: somente histórico-técnico em auditoria.</p>
+            </div>
+            <div className="pt-2 border-t border-slate-150 flex justify-between items-center text-[10px] font-bold">
+              <a href="/reports/estado-da-nacao-inea-pts-retiro-2024-auditoria-critica.md" target="_blank" rel="noopener noreferrer" className="text-brand-primary hover:underline">Ver Relatório Analítico &rarr;</a>
+            </div>
+          </SurfaceCard>
+
+          <SurfaceCard className="p-4 bg-white border border-slate-100 rounded-2xl flex flex-col justify-between space-y-3 transition-all duration-300 hover:shadow-md opacity-75">
+            <div>
+              <div className="flex justify-between items-center">
+                <strong className="text-xs font-black text-slate-850">O₃</strong>
+                <span className="text-[9px] font-black bg-red-50 text-red-755 border border-red-200/25 px-2 py-0.5 rounded uppercase">Indisponível</span>
+              </div>
+              <p className="text-[11px] text-slate-500 font-semibold mt-1">Ozônio: indisponível em 2024.</p>
+            </div>
+            <div className="pt-2 border-t border-slate-150 flex justify-between items-center text-[10px] font-bold">
+              <a href="/reports/estado-da-nacao-inea-o3-2024-indisponivel.md" target="_blank" rel="noopener noreferrer" className="text-brand-primary hover:underline">Ver Relatório Analítico &rarr;</a>
+            </div>
+          </SurfaceCard>
+        </div>
+
+        <div className="p-4 bg-gradient-to-r from-slate-50 to-slate-100/50 border border-slate-200/60 rounded-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-4 text-xs font-semibold text-slate-650 shadow-xs">
+          <div className="flex items-center gap-2">
+            <span className="text-emerald-600 shrink-0">
+              <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+              </svg>
+            </span>
+            <span>
+              Verifique o relatório final de garantia de qualidade e homologação do Lote C para o ano bissexto 2024.
+            </span>
+          </div>
+          <a
+            href="/reports/estado-da-nacao-observatorio-lote-c-qa-final.md"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex min-h-[32px] items-center justify-center rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-black text-[10px] uppercase transition-all px-4 tracking-wider"
+          >
+            Relatório de QA Final do Lote C &rarr;
+          </a>
         </div>
       </section>
 

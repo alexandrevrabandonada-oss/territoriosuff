@@ -1,0 +1,4 @@
+station_id,station_name,pollutant,parameter_id,expected_hours,found_records,valid_hours,coverage_pct,hourly_mean,hourly_max,days_sufficient,exceedances_who,exceedances_conama,status
+69,"VR - Belmonte",NO2,1465,8784,8450,8450,96.20,15.208,66.831,346,10,0,EM AUDITORIA
+70,"VR - Retiro",NO2,1465,8784,8749,8749,99.60,35.261,66.966,366,366,0,EM AUDITORIA
+71,"VR - Santa Cecília",NO2,1465,8784,8713,8713,99.19,15.675,90.233,362,32,0,EM AUDITORIA

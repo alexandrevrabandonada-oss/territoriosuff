@@ -58,7 +58,8 @@ export function IneaMethodologyPage() {
     { id: "limitacoes", label: "Limitações" },
     { id: "baixar-dados", label: "Baixar Dados (CSV)" },
     { id: "dicionario", label: "Dicionário de Dados" },
-    { id: "disponibilidade", label: "Disponibilidade dos Dados" }
+    { id: "disponibilidade", label: "Disponibilidade dos Dados" },
+    { id: "expansao", label: "Parâmetros em Expansão" }
   ];
 
   const handleScrollTo = (id: string) => {
@@ -674,6 +675,71 @@ export function IneaMethodologyPage() {
             </div>
             
             <DataAvailabilityMatrix />
+          </section>
+
+          {/* Section 10: Parâmetros em Expansão (Homologação) */}
+          <section id="expansao" className="space-y-4 scroll-mt-6 border-t border-slate-200/60 pt-6">
+            <div className="flex items-center gap-3">
+              <IconShell tone="warm" className="shrink-0 h-9 w-9">
+                <svg className="h-4.5 w-4.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 9.172V5L8 4z" />
+                </svg>
+              </IconShell>
+              <h2 className="text-xl font-black text-slate-800">Parâmetros em Expansão (Lote C)</h2>
+            </div>
+
+            <SurfaceCard className="p-6 bg-white border border-slate-100 rounded-3xl space-y-6">
+              <p className="text-sm text-slate-655 leading-relaxed font-semibold">
+                No ano de 2024, o Observatório do Ar iniciou a homologação de dados e sensores para 5 novos parâmetros atmosféricos monitorados em Volta Redonda (SO₂, NO₂, CO, PTS e O₃). Essas camadas encontram-se em fase de auditoria técnico-calibratória na interface, sem publicação regulatória automática na base principal para manter a integridade metodológica.
+              </p>
+
+              <div className="space-y-4">
+                <h3 className="text-sm font-black text-slate-800 uppercase tracking-wider">Novos parâmetros: como estamos validando</h3>
+                
+                <div className="p-4 bg-slate-50 border border-slate-100 rounded-2xl space-y-2">
+                  <strong className="text-xs text-slate-800 uppercase tracking-wider block">Dióxido de Nitrogênio (NO₂)</strong>
+                  <p className="text-xs text-slate-500 leading-relaxed font-medium">
+                    A validação do NO₂ cruza as leituras com duas réguas metodológicas distintas:
+                  </p>
+                  <ul className="list-disc list-inside text-[11px] text-slate-600 font-semibold space-y-1 pl-2">
+                    <li><strong>Média Diária da OMS (2021):</strong> Mapeia dias com média diária (24h) superior a <strong>25 µg/m³</strong> (exigindo representatividade mínima de 18 horas válidas no dia).</li>
+                    <li><strong>Pico Horário da CONAMA 506:</strong> Avalia ocorrências onde leituras horárias individuais excedem o limite de pico nacional de <strong>200 µg/m³</strong>.</li>
+                  </ul>
+                </div>
+
+                <div className="p-4 bg-slate-50 border border-slate-100 rounded-2xl space-y-2">
+                  <strong className="text-xs text-slate-800 uppercase tracking-wider block">Monóxido de Carbono (CO)</strong>
+                  <p className="text-xs text-slate-500 leading-relaxed font-medium">
+                    O CO exige tratamento matemático e de conversão física:
+                  </p>
+                  <ul className="list-disc list-inside text-[11px] text-slate-600 font-semibold space-y-1 pl-2">
+                    <li><strong>Conversão Física de Unidade:</strong> Os dados originais do INEA/WebLakes estão expressos em <strong>ppm</strong>. Para comparação com a diretriz diária da OMS de <strong>4 mg/m³</strong>, as concentrações diárias são convertidas multiplicando-se pelo fator físico <strong>1.145</strong> (calculado a 25°C e 1 atm).</li>
+                    <li><strong>Média Móvel de 8h:</strong> A comparação regulatória nacional adota o limite de <strong>9 ppm</strong> calculado sobre janelas deslizantes de 8 horas consecutivas (exigindo pelo menos <strong>6 horas válidas</strong> por janela para que a média móvel seja representativa).</li>
+                  </ul>
+                </div>
+
+                <div className="p-4 bg-slate-50 border border-slate-100 rounded-2xl space-y-2">
+                  <strong className="text-xs text-slate-800 uppercase tracking-wider block">Ozônio (O₃)</strong>
+                  <p className="text-xs text-slate-500 leading-relaxed font-medium">
+                    A verificação do O₃ exige o cálculo de médias móveis de 8h consecutivas (exigindo mínimo de 6/8h válidas) contra o teto de <strong>100 µg/m³</strong> (tanto para OMS quanto para CONAMA 506). No entanto, o diagnóstico de disponibilidade atesta que nenhuma leitura foi transmitida pelas estações de Volta Redonda em 2024 (0h coletadas), classificando este parâmetro oficialmente como <strong>indisponível</strong> na interface.
+                  </p>
+                </div>
+
+                <div className="p-4 bg-slate-50 border border-slate-100 rounded-2xl space-y-2">
+                  <strong className="text-xs text-slate-800 uppercase tracking-wider block">Partículas Totais em Suspensão (PTS)</strong>
+                  <p className="text-xs text-slate-500 leading-relaxed font-medium">
+                    O PTS é tratado estritamente como um parâmetro técnico-histórico regulado pela Resolução CONAMA 03/1990 (limite diário de <strong>240 µg/m³</strong> e padrão anual de <strong>80 µg/m³</strong>). Não há diretriz correspondente na diretriz de saúde de 2021 da OMS. Esclarecemos que o PTS **não é equivalente** ao Material Particulado inalável ou fino (PM10/PM2.5) e serve para fins puramente de engenharia e depuração de rede, sem alertas públicos.
+                  </p>
+                </div>
+
+                <div className="p-4 bg-slate-50 border border-slate-100 rounded-2xl space-y-2">
+                  <strong className="text-xs text-slate-800 uppercase tracking-wider block">Dióxido de Enxofre (SO₂)</strong>
+                  <p className="text-xs text-slate-500 leading-relaxed font-medium">
+                    O SO₂ segue em validação final de calibração instrumental. As concentrações diárias baseadas na representatividade temporal mínima de 18h são cruzadas com o limite diário nacional da CONAMA 506 (<strong>20 µg/m³</strong>) e a diretriz da OMS (<strong>40 µg/m³</strong>).
+                  </p>
+                </div>
+              </div>
+            </SurfaceCard>
           </section>
 
           {/* Mobile Status Operacional (visible only on mobile viewports) */}

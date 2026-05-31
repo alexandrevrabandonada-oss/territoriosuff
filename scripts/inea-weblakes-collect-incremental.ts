@@ -54,7 +54,12 @@ async function collectStationData(
       try {
         console.log(`  [Cache Hit] Loading raw data from cache: ${rawCacheFilePath}`);
         const cachedContent = JSON.parse(fs.readFileSync(rawCacheFilePath, 'utf8'));
-        rows = cachedContent.rows || [];
+        const foundRows = cachedContent.rows || [];
+        if (foundRows.length > 0) {
+          rows = foundRows;
+        } else {
+          console.log(`  [Cache Bypassed] Cache exists but contains 0 rows: ${rawCacheFilePath}. Re-fetching...`);
+        }
       } catch {
         console.warn(`  [Warning] Failed to parse cache file: ${rawCacheFilePath}. Fetching from network...`);
       }
@@ -179,8 +184,13 @@ async function run() {
         let paramId = '';
         if (poll === 'PM10') paramId = '18';
         else if (poll === 'PM2.5') paramId = '20';
+        else if (poll === 'SO2') paramId = '23';
+        else if (poll === 'NO2') paramId = '1465';
+        else if (poll === 'CO') paramId = '3';
+        else if (poll === 'PTS') paramId = '1955';
+        else if (poll === 'O3') paramId = '2130';
         else {
-          throw new Error(`Unsupported pollutant: ${poll}. Supported options are PM10 and PM2.5.`);
+          throw new Error(`Unsupported pollutant: ${poll}. Supported options: PM10, PM2.5, SO2, NO2, CO, PTS, O3.`);
         }
 
         for (let i = 0; i < stationsToCollect.length; i++) {

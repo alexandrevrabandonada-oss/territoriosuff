@@ -1,0 +1,4 @@
+station_id,station_name,pollutant,parameter_id,expected_hours,found_records,valid_hours,coverage_pct,hourly_mean,hourly_max,days_sufficient,exceedances_who,exceedances_conama,status
+69,"VR - Belmonte",O3,2130,8784,0,0,0.00,N/A,N/A,0,0,0,INDISPONÍVEL
+70,"VR - Retiro",O3,2130,8784,0,0,0.00,N/A,N/A,0,0,0,INDISPONÍVEL
+71,"VR - Santa Cecília",O3,2130,8784,0,0,0.00,N/A,N/A,0,0,0,INDISPONÍVEL
