@@ -694,7 +694,23 @@ export function IneaMethodologyPage() {
               </p>
 
               <div className="space-y-4">
-                <h3 className="text-sm font-black text-slate-800 uppercase tracking-wider">Novos parâmetros: como estamos validando</h3>
+                <h3 className="text-sm font-black text-slate-800 uppercase tracking-wider">Como lemos SO₂ e CO</h3>
+                
+                <div className="p-4 bg-emerald-50/40 border border-emerald-500/10 rounded-2xl space-y-2">
+                  <strong className="text-xs text-emerald-800 uppercase tracking-wider block">Regras de Leitura de SO₂ e CO (Parâmetros Experimentais)</strong>
+                  <p className="text-xs text-slate-500 leading-relaxed font-semibold">
+                    O Dióxido de Enxofre (SO₂) e o Monóxido de Carbono (CO) foram liberados experimentalmente na interface. A sua leitura e validação adotam as seguintes regras físicas:
+                  </p>
+                  <ul className="list-disc list-inside text-[11px] text-slate-600 font-semibold space-y-1.5 pl-2">
+                    <li><strong>Médias Diárias de SO₂:</strong> O cálculo das médias de 24h para o SO₂ exige um mínimo de <strong>18 horas válidas</strong> no dia (75% de representatividade), cruzando os dados com as réguas diárias CONAMA (20 µg/m³) e OMS (40 µg/m³).</li>
+                    <li><strong>Monóxido de Carbono (CO) — Unidade Nativa:</strong> O CO é monitorado em <strong>ppm</strong> na plataforma INEA/WebLakes, sendo esta a unidade nativa mantida para a conformidade regulatória nacional.</li>
+                    <li><strong>Monóxido de Carbono (CO) — Conversão OMS:</strong> A conversão de ppm para <strong>mg/m³</strong> é realizada utilizando o fator físico <strong>1.145</strong> (calculado a 25°C e 1 atm), aplicada apenas e exclusivamente na comparação diária com o limite de saúde de <strong>4 mg/m³</strong> da OMS.</li>
+                    <li><strong>Monóxido de Carbono (CO) — Média Móvel de 8h:</strong> A comparação regulatória com a CONAMA adota o limite de <strong>9 ppm</strong> calculado em médias móveis deslizantes de 8 horas consecutivas, exigindo representatividade mínima de <strong>6 horas válidas</strong> por janela.</li>
+                    <li><strong>Natureza Experimental:</strong> Todas as comparações realizadas para estes parâmetros são experimentais.</li>
+                  </ul>
+                </div>
+
+                <h3 className="text-sm font-black text-slate-800 uppercase tracking-wider">Demais Parâmetros em Quarentena</h3>
                 
                 <div className="p-4 bg-slate-50 border border-slate-100 rounded-2xl space-y-2">
                   <strong className="text-xs text-slate-800 uppercase tracking-wider block">Dióxido de Nitrogênio (NO₂)</strong>
@@ -704,17 +720,6 @@ export function IneaMethodologyPage() {
                   <ul className="list-disc list-inside text-[11px] text-slate-600 font-semibold space-y-1 pl-2">
                     <li><strong>Média Diária da OMS (2021):</strong> Mapeia dias com média diária (24h) superior a <strong>25 µg/m³</strong> (exigindo representatividade mínima de 18 horas válidas no dia).</li>
                     <li><strong>Pico Horário da CONAMA 506:</strong> Avalia ocorrências onde leituras horárias individuais excedem o limite de pico nacional de <strong>200 µg/m³</strong>.</li>
-                  </ul>
-                </div>
-
-                <div className="p-4 bg-slate-50 border border-slate-100 rounded-2xl space-y-2">
-                  <strong className="text-xs text-slate-800 uppercase tracking-wider block">Monóxido de Carbono (CO)</strong>
-                  <p className="text-xs text-slate-500 leading-relaxed font-medium">
-                    O CO exige tratamento matemático e de conversão física:
-                  </p>
-                  <ul className="list-disc list-inside text-[11px] text-slate-600 font-semibold space-y-1 pl-2">
-                    <li><strong>Conversão Física de Unidade:</strong> Os dados originais do INEA/WebLakes estão expressos em <strong>ppm</strong>. Para comparação com a diretriz diária da OMS de <strong>4 mg/m³</strong>, as concentrações diárias são convertidas multiplicando-se pelo fator físico <strong>1.145</strong> (calculado a 25°C e 1 atm).</li>
-                    <li><strong>Média Móvel de 8h:</strong> A comparação regulatória nacional adota o limite de <strong>9 ppm</strong> calculado sobre janelas deslizantes de 8 horas consecutivas (exigindo pelo menos <strong>6 horas válidas</strong> por janela para que a média móvel seja representativa).</li>
                   </ul>
                 </div>
 

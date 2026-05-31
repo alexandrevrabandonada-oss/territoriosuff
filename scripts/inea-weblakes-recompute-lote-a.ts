@@ -487,10 +487,10 @@ Todas as leituras foram inspecionadas localmente. O parser \`parseDataValueSpan\
 **Data de Geração:** ${new Date().toISOString().split('T')[0]}  
 **Fonte dos Dados:** Dados horários WebLakes normalizados compilados em lote  
 **Período:** 01/01/${year} a ${isPartial ? '29/05/' + year + ' (Ano Parcial/Em andamento)' : '31/12/' + year}  
-**Status Metodológico:** Comparação experimental — Sem QA/QC oficial de origem
+**Status Metodológico:** Comparação experimental — sem QA/QC oficial explícito
 
 > [!WARNING]
-> **Nota de Cautela:** Os resultados calculados são fruto de análise experimental baseada em dados públicos governamentais brutos. Como não há flag oficial de QA/QC de origem, os dados devem ser interpretados apenas como indicativos do perfil de qualidade de ar. Ausência de dado não representa ar de boa qualidade.
+> **Nota de Cautela:** Os resultados calculados são fruto de análise experimental baseada em dados horários públicos exibidos pela plataforma INEA/WebLakes. Como não há flag oficial de QA/QC de origem, os dados devem ser interpretados apenas como indicativos do perfil de qualidade de ar. Ausência de dado não representa ar de boa qualidade.
 
 ---
 

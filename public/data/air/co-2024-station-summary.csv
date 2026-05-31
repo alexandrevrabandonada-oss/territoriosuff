@@ -1,0 +1,4 @@
+station_id,station_name,pollutant,parameter_id,expected_hours,found_records,valid_hours,coverage_pct,hourly_mean,hourly_max,days_sufficient,exceedances_who,exceedances_conama,native_unit,who_conversion_factor,conama_averaging,moving_8h_max,status
+69,"VR - Belmonte",CO,3,8784,8448,8448,96.17,0.375,8.434,346,0,0,ppm,1.145,moving_8h,1.645,PUBLICÁVEL COM CAUTELA
+70,"VR - Retiro",CO,3,8784,8746,8746,99.57,1.007,1.927,366,0,0,ppm,1.145,moving_8h,1.420,PUBLICÁVEL COM CAUTELA
+71,"VR - Santa Cecília",CO,3,8784,8710,8710,99.16,0.362,10.561,361,0,0,ppm,1.145,moving_8h,2.467,PUBLICÁVEL COM CAUTELA

@@ -377,7 +377,7 @@ export function AttentionEpisodesPanel() {
             • <strong>Comparação Experimental:</strong> As comparações com OMS e CONAMA 506 são experimentais por natureza, servindo de indicação de episódios sob atenção em base de dados secundária.
           </div>
           <div>
-            • <strong>Sem QA/QC Oficial de Origem:</strong> Os dados públicos da plataforma WebLakes são disponibilizados sem flags técnicas explícitas detalhadas de controle de qualidade e calibração de sensores de monitoramento de origem.
+            • <strong>sem QA/QC oficial explícito:</strong> Os dados públicos da plataforma WebLakes são disponibilizados sem flags técnicas explícitas detalhadas de controle de qualidade e calibração de sensores de monitoramento de origem.
           </div>
           <div>
             • <strong>Ausência de Dado Não Representa Ar Bom:</strong> A integridade das medições varia mês a mês. Lacunas nas séries temporais impedem a avaliação em certos períodos (a ausência de dado não representa ar bom).

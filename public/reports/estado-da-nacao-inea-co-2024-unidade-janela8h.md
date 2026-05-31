@@ -56,4 +56,4 @@ Todos os cálculos e verificações analíticas fecharam com consistência absol
 *   Não foram identificadas anomalias nos dados brutos, que apresentam variação diurna realista correlacionada ao tráfego veicular e atividades industriais de Volta Redonda.
 
 ### Veredito Final
-A camada de **Monóxido de Carbono (CO) de 2024** está classificada como **PUBLICÁVEL COM CAUTELA**. Os dados são representativos e estão matematicamente consistentes, podendo ser integrados na seção experimental da interface pública, mantendo o aviso padrão de "comparação experimental — sem QA/QC oficial de origem".
+A camada de **Monóxido de Carbono (CO) de 2024** está classificada como **PUBLICÁVEL COM CAUTELA**. Os dados são representativos e estão matematicamente consistentes, podendo ser integrados na seção experimental da interface pública, mantendo o aviso padrão de "comparação experimental — sem QA/QC oficial explícito".

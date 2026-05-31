@@ -72,7 +72,7 @@ Abaixo estão dispostos os indicadores de média anual, pico horário máximo, e
 Toda a divulgação plurianual realizada na interface pública do portal SEMEAR obedece rigorosamente às seguintes diretrizes vocabulares e metodológicas:
 
 *   **Comparação Experimental:** Toda a exibição de limites e metas deve ser contextualizada explicitamente como uma comparação experimental de dados secundários.
-*   **Sem QA/QC Oficial de Origem:** É obrigatório alertar o usuário que as leituras públicas disponibilizadas em lote pelo INEA na plataforma WebLakes não possuem validação final oficial (QA/QC explícito) detalhada registro a registro no banco.
+*   **sem QA/QC oficial explícito:** É obrigatório alertar o usuário que as leituras públicas disponibilizadas em lote pelo INEA na plataforma WebLakes não possuem validação final oficial (QA/QC explícito) detalhada registro a registro no banco.
 *   **Integridade de Dados Gaps:** Fica blindada a regra de que "ausência de dado não representa ar bom", evitando conclusões de conformidade em períodos com lacunas ou falhas de transmissão instrumental.
 *   **Exclusão de Termos de Tempo Real:** Os textos não descrevem as análises como leitura instantânea do ar e deixam claro que não se trata de monitoramento ao vivo ou leitura minuto a minuto.
 

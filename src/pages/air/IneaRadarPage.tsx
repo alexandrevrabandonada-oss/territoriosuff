@@ -13,6 +13,7 @@ import { YearExplorer } from "../../components/air/YearExplorer";
 import { ParticulateTimeline2020_2026 } from "../../components/air/ParticulateTimeline2020_2026";
 import { AttentionEpisodesPanel } from "../../components/air/AttentionEpisodesPanel";
 import { ThresholdComparisonPanel } from "../../components/air/ThresholdComparisonPanel";
+import { gases2024StationSummary } from "../../data/air/gases-2024-station-summary";
 
 interface StationSummary {
   id: string;
@@ -330,7 +331,7 @@ export function IneaRadarPage() {
                 onClick={() => scrollToId("novos-parametros")}
                 className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-slate-850 hover:bg-slate-800 text-white border border-slate-700 font-bold rounded-lg text-xs transition-colors"
               >
-                Novos Parâmetros (2024)
+                SO₂ e CO Experimental (2024)
               </button>
               <button
                 onClick={() => scrollToId("metodologia")}
@@ -928,81 +929,161 @@ export function IneaRadarPage() {
         </div>
       </section>
 
-      {/* 9.5. Seção com âncora #novos-parametros (Novos Parâmetros em Auditoria 2024) */}
+      {/* 9.5. Seção com âncora #novos-parametros (SO₂ e CO — camada experimental 2024) */}
       <section id="novos-parametros" className="space-y-6 pt-4 border-t border-slate-200/60">
         <div className="space-y-2">
           <div className="flex flex-wrap items-center gap-3">
-            <h2 className="text-lg font-black text-slate-800">Novos Parâmetros em Auditoria (Ano-Laboratório 2024)</h2>
-            <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-amber-50 text-amber-700 border border-amber-500/20">
-              <span className="h-1.5 w-1.5 rounded-full bg-amber-500 animate-pulse" />
-              Fase Experimental · Sem publicação automática
+            <h2 className="text-lg font-black text-slate-800">SO₂ e CO — camada experimental 2024</h2>
+            <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-emerald-50 text-emerald-700 border border-emerald-500/20">
+              <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
+              Fase Experimental · Publicação Cautelosa
             </span>
           </div>
           <p className="text-xs text-slate-500 font-semibold leading-relaxed max-w-3xl">
-            Acompanhe o processo de homologação de dados e sensores para novos poluentes atmosféricos monitorados em Volta Redonda. O ano de 2024 é utilizado como laboratório experimental de homologação, não constando na linha do tempo principal ou mapas públicos para evitar confusão metodológica.
+            Publicação controlada de novos gases atmosféricos para o ano de 2024. As comparações com OMS e CONAMA 506 são experimentais. <span className="text-slate-700 font-black">Dado horário público WebLakes — comparação experimental — sem QA/QC oficial explícito.</span>
           </p>
         </div>
 
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
-          <SurfaceCard className="p-4 bg-white border border-slate-100 rounded-2xl flex flex-col justify-between space-y-3 transition-all duration-300 hover:shadow-md">
-            <div>
-              <div className="flex justify-between items-center">
-                <strong className="text-xs font-black text-slate-850">SO₂</strong>
-                <span className="text-[9px] font-black bg-emerald-50 text-emerald-750 border border-emerald-200/25 px-2 py-0.5 rounded uppercase">Publicável com Cautela</span>
-              </div>
-              <p className="text-[11px] text-slate-500 font-semibold mt-1">Dióxido de Enxofre: publicável com cautela, se QA final confirmar.</p>
-            </div>
-            <div className="pt-2 border-t border-slate-150 flex justify-between items-center text-[10px] font-bold">
-              <a href="/reports/estado-da-nacao-inea-so2-2024-publicacao-cautelosa.md" target="_blank" rel="noopener noreferrer" className="text-brand-primary hover:underline">Ver Relatório Analítico &rarr;</a>
-            </div>
-          </SurfaceCard>
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          {gases2024StationSummary.map((item, idx) => (
+            <SurfaceCard key={idx} className="p-5 bg-white border border-slate-100 rounded-3xl flex flex-col justify-between space-y-4 transition-all duration-300 hover:shadow-md">
+              <div className="space-y-3">
+                <div className="flex justify-between items-center">
+                  <div>
+                    <strong className="text-base font-black text-slate-800">{item.pollutant}</strong>
+                    <span className="text-[10px] font-bold text-slate-400 block">{item.station_name}</span>
+                  </div>
+                  <span className="text-[9px] font-black bg-emerald-50 text-emerald-750 border border-emerald-200/20 px-2.5 py-0.5 rounded-full uppercase shrink-0">
+                    {item.status}
+                  </span>
+                </div>
 
-          <SurfaceCard className="p-4 bg-white border border-slate-100 rounded-2xl flex flex-col justify-between space-y-3 transition-all duration-300 hover:shadow-md">
+                <div className="grid grid-cols-2 gap-3 pt-2 border-t border-slate-100 text-xs">
+                  <div className="space-y-0.5">
+                    <span className="text-[10px] text-slate-400 font-semibold uppercase tracking-wider">Média Período</span>
+                    <strong className="text-slate-800 font-black block">
+                      {item.period_mean.toFixed(3)} {item.pollutant === 'CO' ? 'ppm' : 'µg/m³'}
+                    </strong>
+                  </div>
+                  <div className="space-y-0.5">
+                    <span className="text-[10px] text-slate-400 font-semibold uppercase tracking-wider">Pico Horário</span>
+                    <strong className="text-slate-800 font-black block">
+                      {item.hourly_peak.toFixed(3)} {item.pollutant === 'CO' ? 'ppm' : 'µg/m³'}
+                    </strong>
+                  </div>
+                  <div className="space-y-0.5">
+                    <span className="text-[10px] text-slate-400 font-semibold uppercase tracking-wider">Cobertura</span>
+                    <strong className="text-slate-800 font-black block">
+                      {item.coverage_percent.toFixed(2)}%
+                    </strong>
+                  </div>
+                  <div className="space-y-0.5">
+                    <span className="text-[10px] text-slate-400 font-semibold uppercase tracking-wider">Dias Válidos</span>
+                    <strong className="text-slate-800 font-black block">
+                      {item.valid_days} dias
+                    </strong>
+                  </div>
+                  <div className="space-y-0.5">
+                    <span className="text-[10px] text-slate-400 font-semibold uppercase tracking-wider">Exced. OMS</span>
+                    <strong className="text-slate-800 font-black block">
+                      {item.who_exceedance_days} {item.who_exceedance_days === 1 ? 'dia' : 'dias'}
+                    </strong>
+                  </div>
+                  <div className="space-y-0.5">
+                    <span className="text-[10px] text-slate-400 font-semibold uppercase tracking-wider">Exced. CONAMA</span>
+                    <strong className="text-slate-800 font-black block">
+                      {item.conama_exceedance_events} {item.conama_exceedance_events === 1 ? 'evento' : 'eventos'}
+                    </strong>
+                  </div>
+                  {item.pollutant === 'CO' && (
+                    <div className="space-y-0.5 col-span-2 pt-1.5 border-t border-dashed border-slate-100">
+                      <span className="text-[10px] text-slate-400 font-semibold uppercase tracking-wider">Máxima Média Móvel 8h (CONAMA)</span>
+                      <strong className="text-slate-800 font-black block">
+                        {item.moving_8h_max?.toFixed(3)} ppm
+                      </strong>
+                    </div>
+                  )}
+                </div>
+
+                <div className="p-3 bg-slate-50 border border-slate-100 rounded-2xl text-[10px] text-slate-500 leading-normal font-medium">
+                  {item.methodology_note}
+                </div>
+              </div>
+
+              <div className="pt-3 border-t border-slate-100 flex justify-between items-center text-[10px] font-bold">
+                <span className="text-slate-400">Preview 2024</span>
+                <a
+                  href={
+                    item.pollutant === 'SO2'
+                      ? "/reports/estado-da-nacao-inea-so2-2024-publicacao-cautelosa.md"
+                      : "/reports/estado-da-nacao-inea-co-2024-unidade-janela8h.md"
+                  }
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-brand-primary hover:underline flex items-center gap-0.5"
+                >
+                  Ver Relatório Analítico &rarr;
+                </a>
+              </div>
+            </SurfaceCard>
+          ))}
+        </div>
+      </section>
+
+      {/* 9.6. Seção com âncora #parametros-bloqueados (Parâmetros ainda em auditoria) */}
+      <section id="parametros-bloqueados" className="space-y-6 pt-4 border-t border-slate-200/60">
+        <div className="space-y-2">
+          <div className="flex flex-wrap items-center gap-3">
+            <h2 className="text-lg font-black text-slate-800">Parâmetros ainda em auditoria</h2>
+            <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-slate-100 text-slate-600 border border-slate-200">
+              Quarentena de Homologação
+            </span>
+          </div>
+          <p className="text-xs text-slate-500 font-semibold leading-relaxed max-w-3xl">
+            Esses parâmetros não foram liberados como camada pública ativa. A decisão evita conclusões acima do que os dados sustentam.
+          </p>
+        </div>
+
+        <div className="grid gap-4 sm:grid-cols-3">
+          <SurfaceCard className="p-4 bg-white border border-slate-100 rounded-2xl flex flex-col justify-between space-y-3 transition-all duration-300 hover:shadow-xs opacity-75">
             <div>
               <div className="flex justify-between items-center">
                 <strong className="text-xs font-black text-slate-850">NO₂</strong>
                 <span className="text-[9px] font-black bg-amber-50 text-amber-750 border border-amber-200/25 px-2 py-0.5 rounded uppercase">Em Auditoria Crítica</span>
               </div>
-              <p className="text-[11px] text-slate-500 font-semibold mt-1">Dióxido de Nitrogênio: em auditoria crítica.</p>
+              <p className="text-[11px] text-slate-500 font-semibold mt-1">
+                Dióxido de Nitrogênio: em auditoria crítica por provável anomalia de linha de base no Retiro.
+              </p>
             </div>
             <div className="pt-2 border-t border-slate-150 flex justify-between items-center text-[10px] font-bold">
               <a href="/reports/estado-da-nacao-inea-no2-retiro-2024-auditoria-critica.md" target="_blank" rel="noopener noreferrer" className="text-brand-primary hover:underline">Ver Relatório Analítico &rarr;</a>
             </div>
           </SurfaceCard>
 
-          <SurfaceCard className="p-4 bg-white border border-slate-100 rounded-2xl flex flex-col justify-between space-y-3 transition-all duration-300 hover:shadow-md">
-            <div>
-              <div className="flex justify-between items-center">
-                <strong className="text-xs font-black text-slate-850">CO</strong>
-                <span className="text-[9px] font-black bg-emerald-50 text-emerald-750 border border-emerald-200/25 px-2 py-0.5 rounded uppercase">Publicável com Cautela</span>
-              </div>
-              <p className="text-[11px] text-slate-500 font-semibold mt-1">Monóxido de Carbono: publicável com cautela após validação de unidade e média móvel.</p>
-            </div>
-            <div className="pt-2 border-t border-slate-150 flex justify-between items-center text-[10px] font-bold">
-              <a href="/reports/estado-da-nacao-inea-co-2024-unidade-janela8h.md" target="_blank" rel="noopener noreferrer" className="text-brand-primary hover:underline">Ver Relatório Analítico &rarr;</a>
-            </div>
-          </SurfaceCard>
-
-          <SurfaceCard className="p-4 bg-white border border-slate-100 rounded-2xl flex flex-col justify-between space-y-3 transition-all duration-300 hover:shadow-md">
+          <SurfaceCard className="p-4 bg-white border border-slate-100 rounded-2xl flex flex-col justify-between space-y-3 transition-all duration-300 hover:shadow-xs opacity-75">
             <div>
               <div className="flex justify-between items-center">
                 <strong className="text-xs font-black text-slate-850">PTS</strong>
-                <span className="text-[9px] font-black bg-slate-100 text-slate-655 px-2 py-0.5 rounded uppercase">Histórico-Técnico</span>
+                <span className="text-[9px] font-black bg-slate-100 text-slate-655 px-2 py-0.5 rounded uppercase">Somente Histórico-Técnico</span>
               </div>
-              <p className="text-[11px] text-slate-500 font-semibold mt-1">Partículas Totais em Suspensão: somente histórico-técnico em auditoria.</p>
+              <p className="text-[11px] text-slate-500 font-semibold mt-1">
+                Partículas Totais em Suspensão: somente histórico-técnico em auditoria por provável anomalia de escala no Retiro.
+              </p>
             </div>
             <div className="pt-2 border-t border-slate-150 flex justify-between items-center text-[10px] font-bold">
               <a href="/reports/estado-da-nacao-inea-pts-retiro-2024-auditoria-critica.md" target="_blank" rel="noopener noreferrer" className="text-brand-primary hover:underline">Ver Relatório Analítico &rarr;</a>
             </div>
           </SurfaceCard>
 
-          <SurfaceCard className="p-4 bg-white border border-slate-100 rounded-2xl flex flex-col justify-between space-y-3 transition-all duration-300 hover:shadow-md opacity-75">
+          <SurfaceCard className="p-4 bg-white border border-slate-100 rounded-2xl flex flex-col justify-between space-y-3 transition-all duration-300 hover:shadow-xs opacity-75">
             <div>
               <div className="flex justify-between items-center">
                 <strong className="text-xs font-black text-slate-850">O₃</strong>
                 <span className="text-[9px] font-black bg-red-50 text-red-755 border border-red-200/25 px-2 py-0.5 rounded uppercase">Indisponível</span>
               </div>
-              <p className="text-[11px] text-slate-500 font-semibold mt-1">Ozônio: indisponível em 2024.</p>
+              <p className="text-[11px] text-slate-500 font-semibold mt-1">
+                Ozônio: indisponível em 2024 na plataforma pública WebLakes.
+              </p>
             </div>
             <div className="pt-2 border-t border-slate-150 flex justify-between items-center text-[10px] font-bold">
               <a href="/reports/estado-da-nacao-inea-o3-2024-indisponivel.md" target="_blank" rel="noopener noreferrer" className="text-brand-primary hover:underline">Ver Relatório Analítico &rarr;</a>

@@ -3,10 +3,10 @@
 
 **Data de Geração:** 2026-05-31  
 **Período:** 01/01/2024 a 31/12/2024  
-**Status Metodológico:** Comparação experimental — Sem QA/QC oficial de origem
+**Status Metodológico:** Comparação experimental — sem QA/QC oficial explícito
 
 > [!WARNING]
-> **Nota de Cautela:** Os resultados calculados são fruto de análise experimental baseada em dados públicos governamentais brutos. Como não há flag oficial de QA/QC de origem, os dados devem ser interpretados apenas como indicativos do perfil de qualidade de ar. Ausência de dado não representa ar de boa qualidade.
+> **Nota de Cautela:** Os resultados calculados são fruto de análise experimental baseada em dados horários públicos exibidos pela plataforma INEA/WebLakes. Como não há flag oficial de QA/QC de origem, os dados devem ser interpretados apenas como indicativos do perfil de qualidade de ar. Ausência de dado não representa ar de boa qualidade.
 
 ---
 

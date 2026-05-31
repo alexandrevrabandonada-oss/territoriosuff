@@ -1,20 +1,20 @@
 {
-  "version": "1.3.1",
-  "dataset_version": "1.3.1",
+  "version": "1.4.0",
+  "dataset_version": "1.4.0",
   "status": "saudável",
-  "generated_at": "2026-05-31T02:18:31.697Z",
+  "generated_at": "2026-05-31T18:47:00.000Z",
   "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
   "methodology_label": "Dado horário público WebLakes — comparação experimental — sem QA/QC oficial explícito.",
-  "commit_hash": "a4ef092",
-  "coverage_notes": "Série histórica abrangendo de 2020 a 2026 para Volta Redonda. O ano de 2026 é parcial. Cobertura horária variável de acordo com a integridade do sinal público do INEA.",
-  "last_smoke_test_at": "2026-05-31T02:18:31.697Z",
+  "commit_hash": "2eebda2",
+  "coverage_notes": "Série histórica abrangendo de 2020 a 2026 para Volta Redonda. O ano de 2026 é parcial. Novos gases SO2 e CO incluídos experimentalmente para 2024.",
+  "last_smoke_test_at": "2026-05-31T18:47:00.000Z",
   "datasets": [
     {
       "filename": "pm10-2020-station-summary.csv",
       "title": "Resumo de Estações PM10 (2020)",
       "description": "Estatísticas anuais consolidadas por estação para o poluente PM10 em Volta Redonda no ano de 2020.",
       "rows_count": 3,
-      "updated_at": "2026-05-31T02:18:31.697Z",
+      "updated_at": "2026-05-31T18:47:00.000Z",
       "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
       "methodological_label": "Dado horário público WebLakes — comparação experimental — sem QA/QC oficial explícito.",
       "public_url": "https://semear-pwa.vercel.app/data/air/pm10-2020-station-summary.csv"
@@ -24,7 +24,7 @@
       "title": "Resumo de Estações PM10 (2021)",
       "description": "Estatísticas anuais consolidadas por estação para o poluente PM10 em Volta Redonda no ano de 2021.",
       "rows_count": 3,
-      "updated_at": "2026-05-31T02:18:31.697Z",
+      "updated_at": "2026-05-31T18:47:00.000Z",
       "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
       "methodological_label": "Dado horário público WebLakes — comparação experimental — sem QA/QC oficial explícito.",
       "public_url": "https://semear-pwa.vercel.app/data/air/pm10-2021-station-summary.csv"
@@ -34,7 +34,7 @@
       "title": "Resumo de Estações PM2.5 (2021)",
       "description": "Estatísticas anuais consolidadas por estação para o poluente PM2.5 em Volta Redonda no ano de 2021.",
       "rows_count": 3,
-      "updated_at": "2026-05-31T02:18:31.697Z",
+      "updated_at": "2026-05-31T18:47:00.000Z",
       "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
       "methodological_label": "Dado horário público WebLakes — comparação experimental — sem QA/QC oficial explícito.",
       "public_url": "https://semear-pwa.vercel.app/data/air/pm25-2021-station-summary.csv"
@@ -44,7 +44,7 @@
       "title": "Resumo de Estações PM10 (2024)",
       "description": "Estatísticas anuais consolidadas por estação para o poluente PM10 em Volta Redonda no ano de 2024.",
       "rows_count": 3,
-      "updated_at": "2026-05-31T02:18:31.697Z",
+      "updated_at": "2026-05-31T18:47:00.000Z",
       "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
       "methodological_label": "Dado horário público WebLakes — comparação experimental — sem QA/QC oficial explícito.",
       "public_url": "https://semear-pwa.vercel.app/data/air/pm10-2024-station-summary.csv"
@@ -54,17 +54,37 @@
       "title": "Resumo de Estações PM2.5 (2024)",
       "description": "Estatísticas anuais consolidadas por estação para o poluente PM2.5 em Volta Redonda no ano de 2024.",
       "rows_count": 3,
-      "updated_at": "2026-05-31T02:18:31.697Z",
+      "updated_at": "2026-05-31T18:47:00.000Z",
       "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
       "methodological_label": "Dado horário público WebLakes — comparação experimental — sem QA/QC oficial explícito.",
       "public_url": "https://semear-pwa.vercel.app/data/air/pm25-2024-station-summary.csv"
+    },
+    {
+      "filename": "so2-2024-station-summary.csv",
+      "title": "Resumo de Estações SO2 (2024)",
+      "description": "Estatísticas anuais consolidadas por estação para o poluente experimental SO2 em Volta Redonda no ano de 2024.",
+      "rows_count": 3,
+      "updated_at": "2026-05-31T18:47:00.000Z",
+      "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+      "methodological_label": "Dado horário público WebLakes — comparação experimental — sem QA/QC oficial explícito.",
+      "public_url": "https://semear-pwa.vercel.app/data/air/so2-2024-station-summary.csv"
+    },
+    {
+      "filename": "co-2024-station-summary.csv",
+      "title": "Resumo de Estações CO (2024)",
+      "description": "Estatísticas anuais consolidadas por estação para o poluente experimental CO em Volta Redonda no ano de 2024.",
+      "rows_count": 3,
+      "updated_at": "2026-05-31T18:47:00.000Z",
+      "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+      "methodological_label": "Dado horário público WebLakes — comparação experimental — sem QA/QC oficial explícito.",
+      "public_url": "https://semear-pwa.vercel.app/data/air/co-2024-station-summary.csv"
     },
     {
       "filename": "pm10-2025-station-summary.csv",
       "title": "Resumo de Estações PM10 (2025)",
       "description": "Estatísticas anuais consolidadas por estação para o poluente PM10 em Volta Redonda no ano de 2025.",
       "rows_count": 3,
-      "updated_at": "2026-05-31T02:18:31.697Z",
+      "updated_at": "2026-05-31T18:47:00.000Z",
       "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
       "methodological_label": "Dado horário público WebLakes — comparação experimental — sem QA/QC oficial explícito.",
       "public_url": "https://semear-pwa.vercel.app/data/air/pm10-2025-station-summary.csv"
@@ -74,7 +94,7 @@
       "title": "Resumo de Estações PM2.5 (2025)",
       "description": "Estatísticas anuais consolidadas por estação para o poluente PM2.5 em Volta Redonda no ano de 2025.",
       "rows_count": 3,
-      "updated_at": "2026-05-31T02:18:31.697Z",
+      "updated_at": "2026-05-31T18:47:00.000Z",
       "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
       "methodological_label": "Dado horário público WebLakes — comparação experimental — sem QA/QC oficial explícito.",
       "public_url": "https://semear-pwa.vercel.app/data/air/pm25-2025-station-summary.csv"
@@ -84,7 +104,7 @@
       "title": "Resumo de Estações PM10 (2026 Parcial)",
       "description": "Estatísticas parciais acumuladas (Jan a Mai) por estação para o poluente PM10 em Volta Redonda no ano de 2026.",
       "rows_count": 3,
-      "updated_at": "2026-05-31T02:18:31.697Z",
+      "updated_at": "2026-05-31T18:47:00.000Z",
       "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
       "methodological_label": "Dado horário público WebLakes — comparação experimental — sem QA/QC oficial explícito. Ano Parcial.",
       "public_url": "https://semear-pwa.vercel.app/data/air/pm10-2026-partial-station-summary.csv"
@@ -94,7 +114,7 @@
       "title": "Resumo de Estações PM2.5 (2026 Parcial)",
       "description": "Estatísticas parciais acumuladas (Jan a Mai) por estação para o poluente PM2.5 em Volta Redonda no ano de 2026.",
       "rows_count": 3,
-      "updated_at": "2026-05-31T02:18:31.697Z",
+      "updated_at": "2026-05-31T18:47:00.000Z",
       "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
       "methodological_label": "Dado horário público WebLakes — comparação experimental — sem QA/QC oficial explícito. Ano Parcial.",
       "public_url": "https://semear-pwa.vercel.app/data/air/pm25-2026-partial-station-summary.csv"
@@ -104,7 +124,7 @@
       "title": "Linha do Tempo de Particulados (2020-2026)",
       "description": "Médias, coberturas e contagem anual de excedências OMS/CONAMA para PM10 e PM2.5 (2020-2026, com 2026 parcial).",
       "rows_count": 39,
-      "updated_at": "2026-05-31T02:18:31.697Z",
+      "updated_at": "2026-05-31T18:47:00.000Z",
       "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
       "methodological_label": "Dado horário público WebLakes — comparação experimental — sem QA/QC oficial explícito.",
       "public_url": "https://semear-pwa.vercel.app/data/air/particulate-timeline-2020-2026.csv"
@@ -114,7 +134,7 @@
       "title": "Episódios de Atenção Mensais (2020-2026)",
       "description": "Série histórica mensal contendo o número de dias com excedências da OMS e da CONAMA 506 (2020-2026, com 2026 parcial).",
       "rows_count": 462,
-      "updated_at": "2026-05-31T02:18:31.697Z",
+      "updated_at": "2026-05-31T18:47:00.000Z",
       "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
       "methodological_label": "Dado horário público WebLakes — comparação experimental — sem QA/QC oficial explícito.",
       "public_url": "https://semear-pwa.vercel.app/data/air/attention-episodes-2020-2026.csv"
@@ -124,7 +144,7 @@
       "title": "Dicionário de Dados do Observatório do Ar",
       "description": "Metadados descrevendo os campos das planilhas de qualidade do ar exportadas pelo Observatório.",
       "rows_count": 19,
-      "updated_at": "2026-05-31T02:18:31.697Z",
+      "updated_at": "2026-05-31T18:47:00.000Z",
       "source_system": "SEMEAR (Metadados)",
       "methodological_label": "Metadados descritivos da comparação experimental do Observatório do Ar.",
       "public_url": "https://semear-pwa.vercel.app/data/air/data-dictionary.csv"

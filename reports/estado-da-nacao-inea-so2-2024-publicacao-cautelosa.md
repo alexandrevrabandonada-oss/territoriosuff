@@ -59,4 +59,4 @@ A auditoria atesta que:
 *   O comportamento dos sensores é estável e não apresenta desvios sistemáticos de calibração ou lacunas graves na série temporal.
 
 ### Veredito Final
-A camada de **Dióxido de Enxofre (SO₂) de 2024** está classificada como **PUBLICÁVEL COM CAUTELA**. Ela está pronta para ser liberada na seção experimental da interface pública, mantendo o rótulo de "comparação experimental — sem QA/QC oficial de origem".
+A camada de **Dióxido de Enxofre (SO₂) de 2024** está classificada como **PUBLICÁVEL COM CAUTELA**. Ela está pronta para ser liberada na seção experimental da interface pública, mantendo o rótulo de "comparação experimental — sem QA/QC oficial explícito".
