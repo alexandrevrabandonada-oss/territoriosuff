@@ -526,6 +526,20 @@ export function IneaMethodologyPage() {
                           path: "/data/air/pm25-2024-station-summary.csv"
                         },
                         {
+                          file: "so2-2024-station-summary.csv",
+                          desc: "Estatísticas anuais consolidadas por estação para o SO2 experimental em 2024.",
+                          format: "CSV",
+                          updated: "Maio de 2026",
+                          path: "/data/air/so2-2024-station-summary.csv"
+                        },
+                        {
+                          file: "co-2024-station-summary.csv",
+                          desc: "Estatísticas anuais consolidadas por estação para o CO experimental em 2024.",
+                          format: "CSV",
+                          updated: "Maio de 2026",
+                          path: "/data/air/co-2024-station-summary.csv"
+                        },
+                        {
                           file: "pm10-2025-station-summary.csv",
                           desc: "Estatísticas anuais consolidadas por estação para o PM10 em 2025.",
                           format: "CSV",
@@ -559,6 +573,20 @@ export function IneaMethodologyPage() {
                           format: "CSV",
                           updated: "Maio de 2026",
                           path: "/data/air/particulate-timeline-2020-2026.csv"
+                        },
+                        {
+                          file: "so2-timeline-2020-2026.csv",
+                          desc: "Linha do tempo plurianual de médias, coberturas e excedências anuais para o SO2 (2020-2026).",
+                          format: "CSV",
+                          updated: "Maio de 2026",
+                          path: "/data/air/so2-timeline-2020-2026.csv"
+                        },
+                        {
+                          file: "co-timeline-2020-2026.csv",
+                          desc: "Linha do tempo plurianual de médias, coberturas e excedências anuais para o CO (2020-2026).",
+                          format: "CSV",
+                          updated: "Maio de 2026",
+                          path: "/data/air/co-timeline-2020-2026.csv"
                         },
                         {
                           file: "attention-episodes-2020-2026.csv",

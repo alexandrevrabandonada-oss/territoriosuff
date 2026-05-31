@@ -1,0 +1,22 @@
+year,station_id,station_name,pollutant,annual_mean,max_hourly_peak,coverage_percent,exceedance_days_who,exceedance_days_conama,coverage_status
+2020,69,"VR - Belmonte",CO,0.39,10.92,83.94,0,0,SUFFICIENT
+2020,70,"VR - Retiro",CO,0.33,10.62,96.40,0,0,SUFFICIENT
+2020,71,"VR - Santa Cecília",CO,0.35,4.73,99.50,0,0,SUFFICIENT
+2021,69,"VR - Belmonte",CO,0.29,4.59,99.81,0,0,SUFFICIENT
+2021,70,"VR - Retiro",CO,0.32,4.27,99.79,0,0,SUFFICIENT
+2021,71,"VR - Santa Cecília",CO,0.35,5.65,77.87,0,0,SUFFICIENT
+2022,69,"VR - Belmonte",CO,0.39,6.33,99.26,0,0,SUFFICIENT
+2022,70,"VR - Retiro",CO,0.45,9.80,99.57,0,0,SUFFICIENT
+2022,71,"VR - Santa Cecília",CO,0.46,9.24,99.14,0,0,SUFFICIENT
+2023,69,"VR - Belmonte",CO,0.45,4.85,99.29,0,0,SUFFICIENT
+2023,70,"VR - Retiro",CO,0.44,9.14,99.67,0,0,SUFFICIENT
+2023,71,"VR - Santa Cecília",CO,0.50,8.96,99.75,0,0,SUFFICIENT
+2024,69,"VR - Belmonte",CO,0.38,8.43,96.17,0,0,SUFFICIENT
+2024,70,"VR - Retiro",CO,1.01,1.93,99.57,0,0,SUFFICIENT
+2024,71,"VR - Santa Cecília",CO,0.36,10.56,99.16,0,0,SUFFICIENT
+2025,69,"VR - Belmonte",CO,0.37,7.33,97.00,0,0,SUFFICIENT
+2025,70,"VR - Retiro",CO,0.36,10.19,99.54,0,0,SUFFICIENT
+2025,71,"VR - Santa Cecília",CO,0.26,2.88,99.21,0,0,SUFFICIENT
+2026,69,"VR - Belmonte",CO,0.41,4.24,99.59,0,0,SUFFICIENT
+2026,70,"VR - Retiro",CO,0.44,4.73,98.18,0,0,SUFFICIENT
+2026,71,"VR - Santa Cecília",CO,0.34,7.36,99.03,0,0,SUFFICIENT

@@ -226,14 +226,14 @@ async function main() {
   const generatedAt = new Date().toISOString();
 
   const manifestData = {
-    version: "1.3.1",
-    dataset_version: "1.3.1",
+    version: "1.5.0",
+    dataset_version: "1.5.0",
     status: "saudável",
     generated_at: generatedAt,
     source_system: "WEBLAKES_CONCENTRATION_WITH_WIND",
     methodology_label: "Dado horário público WebLakes — comparação experimental — sem QA/QC oficial explícito.",
     commit_hash: commitHash,
-    coverage_notes: "Série histórica abrangendo de 2020 a 2026 para Volta Redonda. O ano de 2026 é parcial. Cobertura horária variável de acordo com a integridade do sinal público do INEA.",
+    coverage_notes: "Série histórica abrangendo de 2020 a 2026 para Volta Redonda. O ano de 2026 é parcial. Novos gases SO2 e CO incluídos experimentalmente para a série de 2020 a 2026.",
     last_smoke_test_at: generatedAt,
     datasets: [
       {
@@ -287,6 +287,26 @@ async function main() {
         public_url: "https://semear-pwa.vercel.app/data/air/pm25-2024-station-summary.csv"
       },
       {
+        filename: "so2-2024-station-summary.csv",
+        title: "Resumo de Estações SO2 (2024)",
+        description: "Estatísticas anuais consolidadas por estação para o poluente experimental SO2 em Volta Redonda no ano de 2024.",
+        rows_count: 3,
+        updated_at: generatedAt,
+        source_system: "WEBLAKES_CONCENTRATION_WITH_WIND",
+        methodological_label: "Dado horário público WebLakes — comparação experimental — sem QA/QC oficial explícito.",
+        public_url: "https://semear-pwa.vercel.app/data/air/so2-2024-station-summary.csv"
+      },
+      {
+        filename: "co-2024-station-summary.csv",
+        title: "Resumo de Estações CO (2024)",
+        description: "Estatísticas anuais consolidadas por estação para o poluente experimental CO em Volta Redonda no ano de 2024.",
+        rows_count: 3,
+        updated_at: generatedAt,
+        source_system: "WEBLAKES_CONCENTRATION_WITH_WIND",
+        methodological_label: "Dado horário público WebLakes — comparação experimental — sem QA/QC oficial explícito.",
+        public_url: "https://semear-pwa.vercel.app/data/air/co-2024-station-summary.csv"
+      },
+      {
         filename: "pm10-2025-station-summary.csv",
         title: "Resumo de Estações PM10 (2025)",
         description: "Estatísticas anuais consolidadas por estação para o poluente PM10 em Volta Redonda no ano de 2025.",
@@ -335,6 +355,26 @@ async function main() {
         source_system: "WEBLAKES_CONCENTRATION_WITH_WIND",
         methodological_label: "Dado horário público WebLakes — comparação experimental — sem QA/QC oficial explícito.",
         public_url: "https://semear-pwa.vercel.app/data/air/particulate-timeline-2020-2026.csv"
+      },
+      {
+        filename: "so2-timeline-2020-2026.csv",
+        title: "Linha do Tempo de SO2 (2020-2026)",
+        description: "Médias, coberturas e contagem anual de excedências OMS/CONAMA para SO2 (2020-2026, com 2026 parcial).",
+        rows_count: 21,
+        updated_at: generatedAt,
+        source_system: "WEBLAKES_CONCENTRATION_WITH_WIND",
+        methodological_label: "Dado horário público WebLakes — comparação experimental — sem QA/QC oficial explícito.",
+        public_url: "https://semear-pwa.vercel.app/data/air/so2-timeline-2020-2026.csv"
+      },
+      {
+        filename: "co-timeline-2020-2026.csv",
+        title: "Linha do Tempo de CO (2020-2026)",
+        description: "Médias, coberturas e contagem anual de excedências OMS/CONAMA para CO (2020-2026, com 2026 parcial).",
+        rows_count: 21,
+        updated_at: generatedAt,
+        source_system: "WEBLAKES_CONCENTRATION_WITH_WIND",
+        methodological_label: "Dado horário público WebLakes — comparação experimental — sem QA/QC oficial explícito.",
+        public_url: "https://semear-pwa.vercel.app/data/air/co-timeline-2020-2026.csv"
       },
       {
         filename: "attention-episodes-2020-2026.csv",

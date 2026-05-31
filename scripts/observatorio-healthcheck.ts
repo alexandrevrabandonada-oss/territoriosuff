@@ -135,6 +135,8 @@ async function main() {
     { file: 'pm10-2026-partial-station-summary.csv', title: 'Resumo PM10 2026 Parcial' },
     { file: 'pm25-2026-partial-station-summary.csv', title: 'Resumo PM2.5 2026 Parcial' },
     { file: 'particulate-timeline-2020-2026.csv', title: 'Linha do Tempo 2020-2026' },
+    { file: 'so2-timeline-2020-2026.csv', title: 'Linha do Tempo SO2 2020-2026' },
+    { file: 'co-timeline-2020-2026.csv', title: 'Linha do Tempo CO 2020-2026' },
     { file: 'attention-episodes-2020-2026.csv', title: 'Episódios de Atenção' },
     { file: 'data-dictionary.csv', title: 'Dicionário de Dados' }
   ];

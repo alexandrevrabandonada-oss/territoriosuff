@@ -67,32 +67,44 @@ async function collectStationData(
 
     // 2. Fetch from network if not in cache
     if (rows === null) {
-      try {
-        console.log(`  Fetching raw data for ${yearMonth} with clean isolated session...`);
-        rows = await fetchWebLakesDataSafe("qualidadedoar.inea.rj.gov.br", {
-          stationId,
-          parameterId,
-          startDate,
-          endDate
-        });
+      let attempts = 0;
+      const maxAttempts = 3;
+      while (attempts < maxAttempts) {
+        try {
+          console.log(`  Fetching raw data for ${yearMonth} with clean isolated session (Attempt ${attempts + 1}/${maxAttempts})...`);
+          rows = await fetchWebLakesDataSafe("qualidadedoar.inea.rj.gov.br", {
+            stationId,
+            parameterId,
+            startDate,
+            endDate
+          });
 
-        const responseData = {
-          total: 1,
-          page: 1,
-          records: rows.length,
-          rows: rows
-        };
+          const responseData = {
+            total: 1,
+            page: 1,
+            records: rows.length,
+            rows: rows
+          };
 
-        fs.writeFileSync(rawCacheFilePath, JSON.stringify(responseData, null, 2), 'utf8');
-        console.log(`  Saved raw response to cache: ${rawCacheFilePath} (${rows.length} records)`);
+          fs.writeFileSync(rawCacheFilePath, JSON.stringify(responseData, null, 2), 'utf8');
+          console.log(`  Saved raw response to cache: ${rawCacheFilePath} (${rows.length} records)`);
+          break; // Success! Exit retry loop
 
-      } catch (err: any) {
-        console.error(`  Failed to fetch data for ${yearMonth}:`, err.message || err);
-        if (year === currentYear) {
-          console.warn(`  Stopping ${currentYear} collection early at month ${month} due to fetch failure.`);
-          break;
+        } catch (err: any) {
+          attempts++;
+          console.error(`  Failed to fetch data for ${yearMonth} (Attempt ${attempts}/${maxAttempts}):`, err.message || err);
+          if (attempts < maxAttempts) {
+            const retryDelay = 10000 + attempts * 5000;
+            console.log(`  Waiting ${retryDelay / 1000}s before retrying...`);
+            await delay(retryDelay);
+          } else {
+            if (year === currentYear) {
+              console.warn(`  Stopping ${currentYear} collection early at month ${month} due to fetch failure.`);
+              break;
+            }
+            throw err;
+          }
         }
-        throw err;
       }
 
       // Rate-limiting delay between monthly requests (only for network calls)
