@@ -114,7 +114,17 @@ export function ParticulateTimeline2020_2026() {
         <div className="bg-slate-50 border border-slate-200 text-slate-600 text-xs rounded-xl p-3.5 flex items-start gap-2.5">
           <span className="text-slate-400 font-bold shrink-0 mt-0.5">ℹ️</span>
           <div>
-            <strong>Sensor PM2.5 indisponível em 2020:</strong> A medição de PM2.5 não existia fisicamente na rede de monitoramento de Volta Redonda em 2020. Os gráficos abaixo refletem a ausência de dados para esse poluente no período.
+            <strong>Sensor PM2.5 indisponível em 2020:</strong> Não há dados públicos disponíveis de PM2.5 para 2020 na plataforma INEA/WebLakes segundo a matriz de disponibilidade. Os gráficos abaixo refletem a ausência de dados para esse poluente no período.
+          </div>
+        </div>
+      )}
+
+      {/* 2021 Santa Cecília Warning */}
+      {selectedYear === "2021" && (selectedStation === "71" || selectedStation === "all") && (
+        <div className="bg-amber-50 border border-amber-200 text-amber-800 text-xs rounded-xl p-3.5 flex items-start gap-2.5">
+          <span className="text-amber-500 font-bold shrink-0 mt-0.5">⚠️</span>
+          <div>
+            <strong>Cobertura insuficiente para comparação anual plena (Santa Cecília - 2021):</strong> Este recorte possui leituras públicas disponíveis, mas a cobertura anual ficou abaixo do patamar metodológico de 75% ({isPM10 ? "PM10: 74.2%" : "PM2.5: 71.2%"}). Por isso, a média deve ser lida como média do período disponível, não como comparação anual plena.
           </div>
         </div>
       )}
@@ -135,12 +145,17 @@ export function ParticulateTimeline2020_2026() {
               const widthPct = Math.min((mean / maxMean) * 100, 100);
               const isHighlighted = selectedStation === st.id;
 
+              const isInsufficient = selectedYear === "2021" && st.id === "71";
+
               return (
                 <div key={st.id} className={`space-y-1.5 p-2 rounded-xl transition-all ${isHighlighted ? 'bg-slate-50/85 border border-slate-200/45' : ''}`}>
                   <div className="flex justify-between items-center text-xs">
-                    <span className={`font-bold ${isHighlighted ? 'text-slate-900 font-extrabold' : 'text-slate-700'}`}>{st.shortName}</span>
+                    <span className={`font-bold ${isHighlighted ? 'text-slate-900 font-extrabold' : 'text-slate-700'}`}>
+                      {st.shortName}
+                      {isInsufficient && <span className="ml-1.5 px-1.5 py-0.5 bg-amber-100 text-amber-800 rounded font-bold text-[9px] uppercase tracking-wider">Insuficiente</span>}
+                    </span>
                     <span className="font-mono font-bold text-slate-800">
-                      {pData?.mean !== null && pData?.mean !== undefined ? `${pData.mean.toFixed(2)} ${unit}` : "N/A"}
+                      {pData?.mean !== null && pData?.mean !== undefined ? `${pData.mean.toFixed(2)} ${unit}${isInsufficient ? " *" : ""}` : "N/A"}
                     </span>
                   </div>
                   <div className="h-3 w-full bg-slate-100 rounded-full overflow-hidden">
@@ -183,6 +198,12 @@ export function ParticulateTimeline2020_2026() {
               })}
             </div>
           </div>
+
+          {selectedYear === "2021" && (
+            <div className="text-[10px] text-amber-600 font-semibold mt-2.5 border-t border-slate-100 pt-2.5">
+              * Santa Cecília possui cobertura anual insuficiente (&lt;75%) em 2021. A média mostrada representa apenas o período disponível, não comparação anual plena.
+            </div>
+          )}
         </SurfaceCard>
 
         {/* Card: Excedências Diárias e Cobertura */}
@@ -204,11 +225,15 @@ export function ParticulateTimeline2020_2026() {
                   const whoExceed = pData?.exceedances?.WHO_24H ?? 0;
                   const widthPct = Math.min((whoExceed / maxExceedWHO) * 100, 100);
                   const isHighlighted = selectedStation === st.id;
+                  const isInsufficient = selectedYear === "2021" && st.id === "71";
 
                   return (
                     <div key={st.id} className="space-y-1">
                       <div className="flex justify-between items-center text-xs">
-                        <span className={`font-bold ${isHighlighted ? 'text-slate-900 font-extrabold' : 'text-slate-600'}`}>{st.shortName}</span>
+                        <span className={`font-bold ${isHighlighted ? 'text-slate-900 font-extrabold' : 'text-slate-600'}`}>
+                          {st.shortName}
+                          {isInsufficient && <span className="ml-1.5 text-amber-600 font-extrabold text-[10px]" title="Cobertura de dados insuficiente para o ano">*</span>}
+                        </span>
                         <span className="font-mono font-bold text-rose-500">
                           {pData ? `${whoExceed} dias` : "N/A"}
                         </span>
@@ -236,11 +261,15 @@ export function ParticulateTimeline2020_2026() {
                   const brExceed = pData?.exceedances?.BR_24H_FINAL ?? 0;
                   const widthPct = Math.min((brExceed / maxExceedConama) * 100, 100);
                   const isHighlighted = selectedStation === st.id;
+                  const isInsufficient = selectedYear === "2021" && st.id === "71";
 
                   return (
                     <div key={st.id} className="space-y-1">
                       <div className="flex justify-between items-center text-xs">
-                        <span className={`font-bold ${isHighlighted ? 'text-slate-900 font-extrabold' : 'text-slate-600'}`}>{st.shortName}</span>
+                        <span className={`font-bold ${isHighlighted ? 'text-slate-900 font-extrabold' : 'text-slate-600'}`}>
+                          {st.shortName}
+                          {isInsufficient && <span className="ml-1.5 text-amber-600 font-extrabold text-[10px]" title="Cobertura de dados insuficiente para o ano">*</span>}
+                        </span>
                         <span className="font-mono font-bold text-orange-500">
                           {pData ? `${brExceed} dias` : "N/A"}
                         </span>
@@ -284,6 +313,12 @@ export function ParticulateTimeline2020_2026() {
               </div>
             </div>
           </div>
+
+          {selectedYear === "2021" && (
+            <div className="text-[10px] text-amber-600 font-semibold mt-2.5 border-t border-slate-100 pt-2.5">
+              * Santa Cecília possui cobertura anual insuficiente (&lt;75%) em 2021. Picos e excedências válidas são mostrados, mas a comparação anual crônica da média está sob ressalva.
+            </div>
+          )}
         </SurfaceCard>
       </div>
 
@@ -320,7 +355,7 @@ export function ParticulateTimeline2020_2026() {
             ) : selectedYear === "2020" ? (
               <><strong>Registros de PM10 em Retiro em 2020 apontam padrão de tráfego.</strong> A exposição diária ao material particulado grosso manteve-se correlacionada com períodos secos e de fluxo viário intenso, com picos pontuais severos.</>
             ) : (
-              <><strong>Retiro aparece com episódios relevantes, especialmente em picos.</strong> A estação destaca-se por registrar picos horários pontuais de concentração significativos de material particulado no ano, acumulando múltiplos dias de atenção.</>
+              <><strong>Retiro aparece com episódios relevantes, especialmente em picos.</strong> A estação destaca-se por registrar picos horários pontuais de concentração de material particulado no ano, acumulando múltiplos dias de atenção.</>
             )}
           </p>
         </SurfaceCard>
@@ -331,7 +366,9 @@ export function ParticulateTimeline2020_2026() {
             <h5 className="font-bold text-slate-800 text-sm">VR - Santa Cecília</h5>
           </div>
           <p className="text-slate-600 text-xs leading-relaxed">
-            {selectedYear === "2025" ? (
+            {selectedYear === "2021" ? (
+              <><strong>Em 2021, Santa Cecília registrou cobertura insuficiente para comparação anual plena ({isPM10 ? "PM10: 74.2%" : "PM2.5: 71.2%"}).</strong> Este recorte possui leituras públicas disponíveis, mas a cobertura anual ficou abaixo do patamar metodológico de 75%. Por isso, a média deve ser lida como média do período disponível, não como comparação anual plena.</>
+            ) : selectedYear === "2025" ? (
               <><strong>Santa Cecília registrou menores índices em 2025, mas excede a OMS.</strong> A estação apresentou as menores médias do trio, contudo as diretrizes da OMS foram frequentemente ultrapassadas nos meses de seca.</>
             ) : selectedYear === "2026" ? (
               <><strong>Comportamento moderado em Santa Cecília no ano de 2026.</strong> A média parcial segue abaixo das demais estações, mas dias de ultrapassagem da OMS continuam a ser computados experimentalmente.</>

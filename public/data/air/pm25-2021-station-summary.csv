@@ -1,4 +1,4 @@
-station_id,station_name,coverage_percent,hourly_records,annual_mean_available_hourly,hourly_peak,zero_values,valid_days,who_24h_exceedance_days,conama506_24h_exceedance_days,confidence_level,source_system,data_quality_tier,validation_note
-69,VR-Belmonte,89.68,7856,10.93,94.00,292,0,69,9,MEDIUM,WEBLAKES_CONCENTRATION_WITH_WIND,RAW_PUBLIC_PLATFORM,Sem QA/QC oficial explícito; comparação experimental.
-70,VR-Retiro,97.81,8568,9.48,82.36,314,0,48,2,MEDIUM,WEBLAKES_CONCENTRATION_WITH_WIND,RAW_PUBLIC_PLATFORM,Sem QA/QC oficial explícito; comparação experimental.
-71,VR-Santa Cecília,71.23,6240,8.28,92.97,353,0,31,0,MEDIUM,WEBLAKES_CONCENTRATION_WITH_WIND,RAW_PUBLIC_PLATFORM,Sem QA/QC oficial explícito; comparação experimental.
+station_id,station_name,coverage_percent,hourly_records,annual_mean_available_hourly,hourly_peak,zero_values,valid_days,who_24h_exceedance_days,conama506_24h_exceedance_days,confidence_level,source_system,data_quality_tier,validation_note,coverage_status
+69,VR-Belmonte,89.68,7856,10.93,94.00,292,0,69,9,MEDIUM,WEBLAKES_CONCENTRATION_WITH_WIND,RAW_PUBLIC_PLATFORM,Sem QA/QC oficial explícito; comparação experimental.,SUFFICIENT
+70,VR-Retiro,97.81,8568,9.48,82.36,314,0,48,2,MEDIUM,WEBLAKES_CONCENTRATION_WITH_WIND,RAW_PUBLIC_PLATFORM,Sem QA/QC oficial explícito; comparação experimental.,SUFFICIENT
+71,VR-Santa Cecília,71.23,6240,8.28,92.97,353,0,31,0,MEDIUM,WEBLAKES_CONCENTRATION_WITH_WIND,RAW_PUBLIC_PLATFORM,Sem QA/QC oficial explícito; comparação experimental.,INSUFFICIENT_ANNUAL_COVERAGE

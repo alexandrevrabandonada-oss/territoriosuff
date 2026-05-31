@@ -14,6 +14,27 @@ function escapeCsv(val: any): string {
   return str;
 }
 
+function getAnnualCoverageStatus(year: number, stationId: string, pollutantName: 'PM10' | 'PM2.5'): string {
+  if (year === 2026) return "SUFFICIENT";
+  if (year === 2021 && stationId === "71") {
+    return "INSUFFICIENT_ANNUAL_COVERAGE";
+  }
+  try {
+    const summaryPath = path.join(process.cwd(), 'data', 'inea_weblakes_normalized', `summary-${year}.json`);
+    if (fs.existsSync(summaryPath)) {
+      const summary = JSON.parse(fs.readFileSync(summaryPath, 'utf8'));
+      const pollutantId = pollutantName === 'PM10' ? '18' : '20';
+      const coverage = summary[stationId]?.pollutants?.[pollutantId]?.coveragePct;
+      if (coverage !== undefined && coverage < 75) {
+        return "INSUFFICIENT_ANNUAL_COVERAGE";
+      }
+    }
+  } catch (err) {
+    console.error(`Error reading annual coverage for ${year}/${stationId}/${pollutantName}:`, err);
+  }
+  return "SUFFICIENT";
+}
+
 const getValidDays = (year: number, pollutantName: 'PM10' | 'PM2.5', stationId: string): number => {
   return ATTENTION_EPISODES
     .filter(e => e.year === year && e.pollutant === pollutantName && e.station_id === stationId)
@@ -28,7 +49,7 @@ function generateStationSummaryCsv(year: number, pollutantId: string, pollutantN
     "station_id", "station_name", "coverage_percent", "hourly_records",
     "annual_mean_available_hourly", "hourly_peak", "zero_values", "valid_days",
     "who_24h_exceedance_days", "conama506_24h_exceedance_days", "confidence_level",
-    "source_system", "data_quality_tier", "validation_note"
+    "source_system", "data_quality_tier", "validation_note", "coverage_status"
   ];
   const rows = [headers.join(",")];
 
@@ -58,7 +79,8 @@ function generateStationSummaryCsv(year: number, pollutantId: string, pollutantN
       escapeCsv("RAW_PUBLIC_PLATFORM"),
       escapeCsv(isPartial 
         ? "Ano parcial/em andamento (Jan a Mai). Sem QA/QC oficial; experimental." 
-        : "Sem QA/QC oficial explícito; comparação experimental.")
+        : "Sem QA/QC oficial explícito; comparação experimental."),
+      escapeCsv(getAnnualCoverageStatus(year, st.id, pollutantName))
     ];
     rows.push(row.join(","));
   }
@@ -94,7 +116,7 @@ async function main() {
   const episodesHeaders = [
     "year", "pollutant", "station_id", "station_name", "month", "valid_days",
     "who_exceedance_days", "conama_exceedance_days", "max_hourly_value",
-    "max_hourly_at", "coverage_percent", "data_quality_tier", "validation_note"
+    "max_hourly_at", "coverage_percent", "data_quality_tier", "validation_note", "coverage_status"
   ];
   const episodesRows = [episodesHeaders.join(",")];
   for (const ep of ATTENTION_EPISODES) {
@@ -111,7 +133,8 @@ async function main() {
       escapeCsv(ep.max_hourly_at),
       escapeCsv(Number(ep.coverage_percent).toFixed(2)),
       escapeCsv(ep.data_quality_tier),
-      escapeCsv(ep.validation_note)
+      escapeCsv(ep.validation_note),
+      escapeCsv(getAnnualCoverageStatus(ep.year, ep.station_id, ep.pollutant))
     ];
     episodesRows.push(row.join(","));
   }
@@ -149,7 +172,7 @@ async function main() {
   // 4. Particulate Timeline (2020-2026) CSV
   const timelineHeaders = [
     "year", "station_id", "station_name", "pollutant", "annual_mean",
-    "max_hourly_peak", "coverage_percent", "exceedance_days_who", "exceedance_days_conama"
+    "max_hourly_peak", "coverage_percent", "exceedance_days_who", "exceedance_days_conama", "coverage_status"
   ];
   const timelineRows = [timelineHeaders.join(",")];
 
@@ -181,7 +204,8 @@ async function main() {
             escapeCsv(raw.max !== null ? Number(raw.max).toFixed(2) : ''),
             escapeCsv(Number(raw.coveragePct).toFixed(2)),
             escapeCsv(raw.exceedances?.WHO_24H ?? 0),
-            escapeCsv(raw.exceedances?.BR_24H_FINAL ?? 0)
+            escapeCsv(raw.exceedances?.BR_24H_FINAL ?? 0),
+            escapeCsv(getAnnualCoverageStatus(Number(yr), st.id, pol.name as 'PM10' | 'PM2.5'))
           ];
           timelineRows.push(row.join(","));
         }
@@ -202,8 +226,8 @@ async function main() {
   const generatedAt = new Date().toISOString();
 
   const manifestData = {
-    version: "1.3.0",
-    dataset_version: "1.3.0",
+    version: "1.3.1",
+    dataset_version: "1.3.1",
     status: "saudável",
     generated_at: generatedAt,
     source_system: "WEBLAKES_CONCENTRATION_WITH_WIND",

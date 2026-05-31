@@ -27,6 +27,8 @@ export function ThresholdComparisonPanel() {
   const [selectedStationId, setSelectedStationId] = useState<string>("70"); // Default Retiro
   const [selectedYear, setSelectedYear] = useState<string>("2024"); // Default 2024
 
+  const isInsufficient = selectedYear === "2021" && selectedStationId === "71";
+
 
   // Get active pollutant and station info
   const activePollutant = PARAMETERS[selectedPollutantId];
@@ -206,20 +208,33 @@ export function ThresholdComparisonPanel() {
               </div>
             ) : selectedYear === "2020" && selectedPollutantId === "20" ? (
               <div className="mt-8 text-center py-6 bg-slate-950/20 border border-slate-850 rounded-xl">
-                <p className="text-xs text-amber-400 font-bold">Sensor PM2.5 indisponível em 2020</p>
-                <p className="text-[11px] text-slate-400 mt-1 max-w-xs mx-auto px-4">A medição de PM2.5 não existia na rede de monitoramento de Volta Redonda no ano de 2020.</p>
+                <p className="text-xs text-amber-400 font-bold">Dados de PM2.5 indisponíveis em 2020</p>
+                <p className="text-[11px] text-slate-400 mt-1.5 max-w-xs mx-auto px-4">
+                  O sensor para monitoramento de PM2.5 não retornou dados públicos na plataforma INEA/WebLakes no recorte analisado no ano de 2020.
+                </p>
               </div>
             ) : observedData ? (
               <div className="mt-4 space-y-4">
+                {isInsufficient && (
+                  <div className="bg-amber-950/40 border border-amber-900/40 text-amber-450 text-xs rounded-xl p-3.5 flex items-start gap-2.5">
+                    <span className="text-amber-500 font-bold shrink-0 mt-0.5">⚠️</span>
+                    <div>
+                      <strong>Cobertura insuficiente para comparação anual:</strong> Este recorte possui leituras públicas disponíveis, mas a cobertura anual ficou abaixo do patamar metodológico de 75%. Por isso, a média deve ser lida como média do período disponível, não como comparação anual plena.
+                    </div>
+                  </div>
+                )}
+
                 <div className="bg-slate-950/60 p-4 rounded-xl border border-slate-850">
-                  <span className="text-[10px] text-slate-500 block font-semibold">Média do Período:</span>
+                  <span className="text-[10px] text-slate-500 block font-semibold">
+                    Média do Período {isInsufficient && "*(Sob ressalva)"}:
+                  </span>
                   <div className="text-2xl font-black text-slate-100 font-mono mt-0.5">
                     {observedData.mean !== null ? `${observedData.mean.toFixed(2)} ${observedData.unit}` : 'N/A'}
                   </div>
                 </div>
 
                 <div className="bg-slate-950/60 p-4 rounded-xl border border-slate-850">
-                  <span className="text-[10px] text-slate-500 block font-semibold">Valor Máximo Registrado:</span>
+                  <span className="text-[10px] text-slate-500 block font-semibold">Pico Horário Pontual de Concentração:</span>
                   <div className="text-xl font-black text-slate-200 font-mono mt-0.5">
                     {observedData.max !== null ? `${observedData.max.toFixed(2)} ${observedData.unit}` : 'N/A'}
                   </div>
@@ -293,7 +308,7 @@ export function ThresholdComparisonPanel() {
                       <p className="text-[10px] text-slate-400 leading-normal">{t.notes}</p>
                       {isExceeded && (
                         <span className="inline-block text-[9px] font-bold bg-rose-900/30 text-rose-400 px-2 py-0.5 rounded border border-rose-800/40">
-                          Exposição Anual Excedeu Diretriz Crônica
+                          {isInsufficient ? "Média Excedeu Diretriz (Ressalva de Cobertura)" : "Exposição Anual Excedeu Diretriz Crônica"}
                         </span>
                       )}
                     </div>

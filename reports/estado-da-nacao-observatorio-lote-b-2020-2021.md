@@ -14,11 +14,11 @@ A coleta histórica e normalização dos microdados brutos públicos das estaç�
 | Ano | Estação | Poluente | Leituras Registradas | Cobertura % | Média do Período | Pico Máximo Registrado |
 | :--- | :--- | :--- | :---: | :---: | :---: | :---: |
 | **2020** | VR - Belmonte | PM10 | 8.160h / 8.784h | 92.90% | 15.74 µg/m³ | 188.00 µg/m³ |
-| **2020** | VR - Belmonte | PM2.5 | 0h / 8.784h | 0.00% | N/D (Não existia) | N/D |
+| **2020** | VR - Belmonte | PM2.5 | 0h / 8.784h | 0.00% | N/D (Sem dados públicos) | N/D |
 | **2020** | VR - Retiro | PM10 | 6.843h / 8.784h | 77.90% | 28.09 µg/m³ | 303.00 µg/m³ |
-| **2020** | VR - Retiro | PM2.5 | 0h / 8.784h | 0.00% | N/D (Não existia) | N/D |
+| **2020** | VR - Retiro | PM2.5 | 0h / 8.784h | 0.00% | N/D (Sem dados públicos) | N/D |
 | **2020** | VR - Santa Cecília | PM10 | 6.939h / 8.784h | 79.00% | 19.81 µg/m³ | 258.78 µg/m³ |
-| **2020** | VR - Santa Cecília | PM2.5 | 0h / 8.784h | 0.00% | N/D (Não existia) | N/D |
+| **2020** | VR - Santa Cecília | PM2.5 | 0h / 8.784h | 0.00% | N/D (Sem dados públicos) | N/D |
 | **2021** | VR - Belmonte | PM10 | 8.109h / 8.760h | 92.57% | 28.33 µg/m³ | 251.38 µg/m³ |
 | **2021** | VR - Belmonte | PM2.5 | 7.856h / 8.760h | 89.68% | 10.93 µg/m³ | 94.00 µg/m³ |
 | **2021** | VR - Retiro | PM10 | 8.562h / 8.760h | 97.74% | 27.45 µg/m³ | 264.77 µg/m³ |
@@ -26,15 +26,15 @@ A coleta histórica e normalização dos microdados brutos públicos das estaç�
 | **2021** | VR - Santa Cecília | PM10 | 6.499h / 8.760h | 74.19% | 16.79 µg/m³ | 234.27 µg/m³ |
 | **2021** | VR - Santa Cecília | PM2.5 | 6.240h / 8.760h | 71.23% | 8.28 µg/m³ | 92.97 µg/m³ |
 
-*\*Nota: O monitoramento de PM2.5 não existia fisicamente em Volta Redonda em 2020, iniciando-se somente em 2021.*
+*\*Nota: O sensor para monitoramento de PM2.5 não retornou dados públicos na plataforma INEA/WebLakes no recorte analisado no ano de 2020, iniciando-se a série histórica desse parâmetro somente em 2021.*
 
 ---
 
 ## 2. Principais Achados e Tendências de Qualidade do Ar (Histórico)
 
-- **Limitação de PM2.5 em 2020:** Confirmou-se fisicamente que o monitoramento em Volta Redonda foi restrito ao PM10 em 2020. A rede oficial começou a coletar PM2.5 apenas em 2021.
+- **Limitação de PM2.5 em 2020:** O monitoramento de PM2.5 não retornou dados públicos na plataforma INEA/WebLakes no recorte analisado para o ano de 2020, com a série histórica desse parâmetro iniciando-se em 2021.
 - **Distorções Sazonais de Inverno:** O ano de 2021 exibiu altos níveis de poluição concentrados no inverno (maio a setembro), com a estação Belmonte liderando as excedências de PM10 (55 dias de ultrapassagens OMS) e PM2.5 (69 dias de ultrapassagens OMS).
-- **Picos no Retiro em 2020:** A estação Retiro apresentou picos de poluição significativos já em 2020, com a maior média anual observada no ano (**28.09 µg/m³** para PM10) e 22 dias acima das diretrizes da OMS.
+- **Picos no Retiro em 2020:** A estação Retiro apresentou picos horários pontuais de concentração elevados já em 2020, com a maior média anual observada no ano (**28.09 µg/m³** para PM10) e 22 dias acima das diretrizes da OMS.
 
 ---
 

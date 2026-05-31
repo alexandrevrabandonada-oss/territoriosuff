@@ -197,7 +197,16 @@ export function AttentionEpisodesPanel() {
         <div className="bg-slate-50 border border-slate-200 text-slate-600 text-xs rounded-xl p-3.5 flex items-start gap-2.5">
           <span className="text-slate-400 font-bold shrink-0 mt-0.5">ℹ️</span>
           <div>
-            <strong>Sensor PM2.5 indisponível em 2020:</strong> A medição de PM2.5 não existia fisicamente na rede de monitoramento de Volta Redonda em 2020. Os rankings abaixo mostram ausência total de dados para este período.
+            <strong>Dados de PM2.5 indisponíveis em 2020:</strong> O sensor para monitoramento de PM2.5 não retornou dados públicos na plataforma INEA/WebLakes no recorte analisado no ano de 2020. Os rankings abaixo mostram ausência total de dados para este período.
+          </div>
+        </div>
+      )}
+
+      {selectedYear === 2021 && (selectedStation === '71' || selectedStation === 'all') && (
+        <div className="bg-amber-50 border border-amber-200 text-amber-800 text-xs rounded-xl p-3.5 flex items-start gap-2.5">
+          <span className="text-amber-500 font-bold shrink-0 mt-0.5">⚠️</span>
+          <div>
+            <strong>Cobertura insuficiente para comparação anual plena (Santa Cecília - 2021):</strong> Este recorte possui leituras públicas disponíveis, mas a cobertura anual ficou abaixo do patamar metodológico de 75% ({selectedPollutant === 'PM10' ? "PM10: 74.2%" : "PM2.5: 71.2%"}). Por isso, a média deve ser lida como média do período disponível, não como comparação anual plena.
           </div>
         </div>
       )}

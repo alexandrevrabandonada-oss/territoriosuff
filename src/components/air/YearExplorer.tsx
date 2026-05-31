@@ -80,10 +80,18 @@ export function YearExplorer() {
       );
     }
     if (stationId === "71") {
+      const isInsufficient = year === "2021";
       return (
-        <p>
-          Apresentou a menor média registrada entre as três estações analisadas {periodText} {year}, com {coverageText} de {coverage}%, média de {mean} µg/m³, registrando {whoExceed} excedências diárias da OMS e {brExceed} excedências diárias do padrão CONAMA nesta comparação experimental.
-        </p>
+        <div className="space-y-1.5">
+          <p>
+            Apresentou a menor média registrada entre as três estações analisadas {periodText} {year}, com {coverageText} de {coverage}%, média de {mean} µg/m³, registrando {whoExceed} excedências diárias da OMS e {brExceed} excedências diárias do padrão CONAMA nesta comparação experimental.
+          </p>
+          {isInsufficient && (
+            <p className="text-amber-500 font-bold border-t border-slate-800/40 pt-1.5 mt-1.5">
+              ⚠️ Este recorte possui leituras públicas disponíveis, mas a cobertura anual ficou abaixo do patamar metodológico de 75%. Por isso, a média deve ser lida como média do período disponível, não como comparação anual plena.
+            </p>
+          )}
+        </div>
       );
     }
     return null;
@@ -251,9 +259,14 @@ export function YearExplorer() {
                     </div>
                     <div className="text-right">
                       <span className="text-[10px] text-slate-450 block">Cobertura:</span>
-                      <span className="text-sm font-mono font-bold text-emerald-450">
+                      <span className={`text-sm font-mono font-bold ${year === "2021" && stationId === "71" ? 'text-amber-500' : 'text-emerald-450'}`}>
                         {pData.coveragePct.toFixed(1)}%
                       </span>
+                      {year === "2021" && stationId === "71" && (
+                        <span className="block text-[9px] bg-amber-950 text-amber-500 border border-amber-900/30 px-1 py-0.5 rounded font-bold mt-0.5">
+                          Insuficiente
+                        </span>
+                      )}
                     </div>
                   </div>
 
@@ -312,9 +325,9 @@ export function YearExplorer() {
                   </span>
                 </div>
                 <div className="p-4 bg-slate-950/45 border border-slate-850 rounded-xl max-w-md">
-                  <p className="text-xs text-amber-400 font-bold">Medição de PM2.5 Inexistente em 2020</p>
+                  <p className="text-xs text-amber-400 font-bold">Dados de PM2.5 indisponíveis em 2020</p>
                   <p className="text-[11px] text-slate-400 mt-1.5 leading-relaxed">
-                    O sensor para monitoramento de PM2.5 não existia fisicamente na rede de Volta Redonda no ano de 2020. A série histórica deste parâmetro se inicia apenas a partir do ano de 2021.
+                    O sensor para monitoramento de PM2.5 não retornou dados públicos na plataforma INEA/WebLakes no recorte analisado no ano de 2020. A série histórica deste parâmetro se inicia apenas a partir do ano de 2021.
                   </p>
                 </div>
               </SurfaceCard>
@@ -345,9 +358,18 @@ export function YearExplorer() {
 
                     return (
                       <div key={stationId} className="space-y-3 border-r border-slate-800 last:border-r-0 pr-4 last:pr-0">
-                        <div className="border-b border-slate-800/60 pb-1.5">
-                          <span className="text-xs font-bold text-slate-100 block">{site?.name || `Estação ${stationId}`}</span>
-                          <span className="text-[9px] text-slate-450 font-mono">Cobertura: {pData.coveragePct.toFixed(1)}%</span>
+                        <div className="border-b border-slate-800/60 pb-1.5 flex justify-between items-end">
+                          <div>
+                            <span className="text-xs font-bold text-slate-100 block">{site?.name || `Estação ${stationId}`}</span>
+                            <span className={`text-[9px] font-mono ${year === "2021" && stationId === "71" ? 'text-amber-500 font-bold' : 'text-slate-450'}`}>
+                              Cobertura: {pData.coveragePct.toFixed(1)}%
+                            </span>
+                          </div>
+                          {year === "2021" && stationId === "71" && (
+                            <span className="text-[8px] bg-amber-950 text-amber-500 border border-amber-900/30 px-1 py-0.5 rounded font-bold uppercase tracking-wider">
+                              Insuficiente
+                            </span>
+                          )}
                         </div>
 
                         <div className="grid grid-cols-1 gap-1.5 bg-slate-950/40 p-2 rounded-lg border border-slate-850">
@@ -388,6 +410,11 @@ export function YearExplorer() {
                     <p>
                       Registrou-se a maior média anual de PM2.5 nesta camada analisada na estação <strong>Belmonte</strong>, enquanto a estação <strong>Santa Cecília</strong> registrou a menor média anual registrada entre as três estações analisadas em {year}. As comparações com as diretrizes da OMS e CONAMA 506/2024 são de caráter experimental e servem como indicativos de exposição por não possuírem flag de QA/QC oficial no banco original. Ausência de dado não representa ar de boa qualidade.
                     </p>
+                    {year === "2021" && (
+                      <p className="text-amber-500 font-bold border-t border-slate-800/40 pt-1.5">
+                        ⚠️ **Nota sobre Santa Cecília em 2021:** Este recorte possui leituras públicas disponíveis, mas a cobertura anual ficou abaixo do patamar metodológico de 75%. Por isso, a média deve ser lida como média do período disponível, não como comparação anual plena.
+                      </p>
+                    )}
                   </div>
                 </div>
               </SurfaceCard>
