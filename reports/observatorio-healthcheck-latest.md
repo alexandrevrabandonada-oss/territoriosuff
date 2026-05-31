@@ -7,10 +7,10 @@ Este relatório apresenta o status operacional automatizado das rotas públicas,
 ## 1. Resumo do Diagnóstico
 
 *   **Host Alvo:** [https://semear-pwa.vercel.app](https://semear-pwa.vercel.app)
-*   **Data e Hora Local:** 31/05/2026, 15:49:39 (Horário de Brasília)
-*   **Data e Hora UTC:** `2026-05-31T18:49:39.540Z`
-*   **Total de Testes:** 20
-*   **Aprovados:** 20 ✅
+*   **Data e Hora Local:** 31/05/2026, 16:06:46 (Horário de Brasília)
+*   **Data e Hora UTC:** `2026-05-31T19:06:46.969Z`
+*   **Total de Testes:** 22
+*   **Aprovados:** 22 ✅
 *   **Falhas:** 0
 *   **Status de Saúde Geral:** **PASS (SAUDÁVEL)** 🟢
 
@@ -20,26 +20,28 @@ Este relatório apresenta o status operacional automatizado das rotas públicas,
 
 | Recurso | Tipo | URL Testada | Status HTTP | Tempo de Resp. | Status | Notas |
 | :--- | :---: | :--- | :---: | :---: | :---: | :--- |
-| **Portal - Radar INEA** | `page` | [Link](https://semear-pwa.vercel.app/qualidade-ar/inea) | 200 | 147 ms | ✅ PASS |  |
-| **Portal - Metodologia** | `page` | [Link](https://semear-pwa.vercel.app/qualidade-ar/inea/metodologia) | 200 | 14 ms | ✅ PASS |  |
-| **Portal - Dados Gerais** | `page` | [Link](https://semear-pwa.vercel.app/dados) | 200 | 13 ms | ✅ PASS |  |
-| **Dataset Manifest** | `manifest` | [Link](https://semear-pwa.vercel.app/data/air/manifest.json) | 200 | 22 ms | ✅ PASS | Manifest parsed. Version: 1.3.1, datasets: 12 |
-| **API: Resumo Geral** | `api` | [Link](https://semear-pwa.vercel.app/api/air/inea/summary) | 200 | 1786 ms | ✅ PASS | API JSON parsed successfully |
-| **API: Últimas Leituras** | `api` | [Link](https://semear-pwa.vercel.app/api/air/inea/latest) | 200 | 619 ms | ✅ PASS | API JSON parsed successfully |
-| **API: Classificação IQAr** | `api` | [Link](https://semear-pwa.vercel.app/api/air/inea/classification-days) | 200 | 335 ms | ✅ PASS | API JSON parsed successfully |
-| **API: Lacunas (Gaps)** | `api` | [Link](https://semear-pwa.vercel.app/api/air/inea/analytics/data-gaps) | 200 | 681 ms | ✅ PASS | API JSON parsed successfully |
-| **CSV: Resumo de Estações PM10 (2020)** | `csv` | [Link](https://semear-pwa.vercel.app/data/air/pm10-2020-station-summary.csv) | 200 | 15 ms | ✅ PASS | CSV content valid. Row count parsed: 3 (excluding headers) |
-| **CSV: Resumo de Estações PM10 (2021)** | `csv` | [Link](https://semear-pwa.vercel.app/data/air/pm10-2021-station-summary.csv) | 200 | 15 ms | ✅ PASS | CSV content valid. Row count parsed: 3 (excluding headers) |
-| **CSV: Resumo de Estações PM2.5 (2021)** | `csv` | [Link](https://semear-pwa.vercel.app/data/air/pm25-2021-station-summary.csv) | 200 | 15 ms | ✅ PASS | CSV content valid. Row count parsed: 3 (excluding headers) |
-| **CSV: Resumo de Estações PM10 (2024)** | `csv` | [Link](https://semear-pwa.vercel.app/data/air/pm10-2024-station-summary.csv) | 200 | 15 ms | ✅ PASS | CSV content valid. Row count parsed: 3 (excluding headers) |
-| **CSV: Resumo de Estações PM2.5 (2024)** | `csv` | [Link](https://semear-pwa.vercel.app/data/air/pm25-2024-station-summary.csv) | 200 | 15 ms | ✅ PASS | CSV content valid. Row count parsed: 3 (excluding headers) |
-| **CSV: Resumo de Estações PM10 (2025)** | `csv` | [Link](https://semear-pwa.vercel.app/data/air/pm10-2025-station-summary.csv) | 200 | 17 ms | ✅ PASS | CSV content valid. Row count parsed: 3 (excluding headers) |
-| **CSV: Resumo de Estações PM2.5 (2025)** | `csv` | [Link](https://semear-pwa.vercel.app/data/air/pm25-2025-station-summary.csv) | 200 | 15 ms | ✅ PASS | CSV content valid. Row count parsed: 3 (excluding headers) |
-| **CSV: Resumo de Estações PM10 (2026 Parcial)** | `csv` | [Link](https://semear-pwa.vercel.app/data/air/pm10-2026-partial-station-summary.csv) | 200 | 14 ms | ✅ PASS | CSV content valid. Row count parsed: 3 (excluding headers) |
-| **CSV: Resumo de Estações PM2.5 (2026 Parcial)** | `csv` | [Link](https://semear-pwa.vercel.app/data/air/pm25-2026-partial-station-summary.csv) | 200 | 13 ms | ✅ PASS | CSV content valid. Row count parsed: 3 (excluding headers) |
-| **CSV: Linha do Tempo de Particulados (2020-2026)** | `csv` | [Link](https://semear-pwa.vercel.app/data/air/particulate-timeline-2020-2026.csv) | 200 | 13 ms | ✅ PASS | CSV content valid. Row count parsed: 39 (excluding headers) |
-| **CSV: Episódios de Atenção Mensais (2020-2026)** | `csv` | [Link](https://semear-pwa.vercel.app/data/air/attention-episodes-2020-2026.csv) | 200 | 19 ms | ✅ PASS | CSV content valid. Row count parsed: 462 (excluding headers) |
-| **CSV: Dicionário de Dados do Observatório do Ar** | `csv` | [Link](https://semear-pwa.vercel.app/data/air/data-dictionary.csv) | 200 | 18 ms | ✅ PASS | CSV content valid. Row count parsed: 19 (excluding headers) |
+| **Portal - Radar INEA** | `page` | [Link](https://semear-pwa.vercel.app/qualidade-ar/inea) | 200 | 414 ms | ✅ PASS |  |
+| **Portal - Metodologia** | `page` | [Link](https://semear-pwa.vercel.app/qualidade-ar/inea/metodologia) | 200 | 20 ms | ✅ PASS |  |
+| **Portal - Dados Gerais** | `page` | [Link](https://semear-pwa.vercel.app/dados) | 200 | 14 ms | ✅ PASS |  |
+| **Dataset Manifest** | `manifest` | [Link](https://semear-pwa.vercel.app/data/air/manifest.json) | 200 | 164 ms | ✅ PASS | Manifest parsed. Version: 1.4.0, datasets: 14 |
+| **API: Resumo Geral** | `api` | [Link](https://semear-pwa.vercel.app/api/air/inea/summary) | 200 | 1239 ms | ✅ PASS | API JSON parsed successfully |
+| **API: Últimas Leituras** | `api` | [Link](https://semear-pwa.vercel.app/api/air/inea/latest) | 200 | 998 ms | ✅ PASS | API JSON parsed successfully |
+| **API: Classificação IQAr** | `api` | [Link](https://semear-pwa.vercel.app/api/air/inea/classification-days) | 200 | 476 ms | ✅ PASS | API JSON parsed successfully |
+| **API: Lacunas (Gaps)** | `api` | [Link](https://semear-pwa.vercel.app/api/air/inea/analytics/data-gaps) | 200 | 895 ms | ✅ PASS | API JSON parsed successfully |
+| **CSV: Resumo de Estações PM10 (2020)** | `csv` | [Link](https://semear-pwa.vercel.app/data/air/pm10-2020-station-summary.csv) | 200 | 172 ms | ✅ PASS | CSV content valid. Row count parsed: 3 (excluding headers) |
+| **CSV: Resumo de Estações PM10 (2021)** | `csv` | [Link](https://semear-pwa.vercel.app/data/air/pm10-2021-station-summary.csv) | 200 | 194 ms | ✅ PASS | CSV content valid. Row count parsed: 3 (excluding headers) |
+| **CSV: Resumo de Estações PM2.5 (2021)** | `csv` | [Link](https://semear-pwa.vercel.app/data/air/pm25-2021-station-summary.csv) | 200 | 193 ms | ✅ PASS | CSV content valid. Row count parsed: 3 (excluding headers) |
+| **CSV: Resumo de Estações PM10 (2024)** | `csv` | [Link](https://semear-pwa.vercel.app/data/air/pm10-2024-station-summary.csv) | 200 | 170 ms | ✅ PASS | CSV content valid. Row count parsed: 3 (excluding headers) |
+| **CSV: Resumo de Estações PM2.5 (2024)** | `csv` | [Link](https://semear-pwa.vercel.app/data/air/pm25-2024-station-summary.csv) | 200 | 201 ms | ✅ PASS | CSV content valid. Row count parsed: 3 (excluding headers) |
+| **CSV: Resumo de Estações SO2 (2024)** | `csv` | [Link](https://semear-pwa.vercel.app/data/air/so2-2024-station-summary.csv) | 200 | 168 ms | ✅ PASS | CSV content valid. Row count parsed: 3 (excluding headers) |
+| **CSV: Resumo de Estações CO (2024)** | `csv` | [Link](https://semear-pwa.vercel.app/data/air/co-2024-station-summary.csv) | 200 | 163 ms | ✅ PASS | CSV content valid. Row count parsed: 3 (excluding headers) |
+| **CSV: Resumo de Estações PM10 (2025)** | `csv` | [Link](https://semear-pwa.vercel.app/data/air/pm10-2025-station-summary.csv) | 200 | 219 ms | ✅ PASS | CSV content valid. Row count parsed: 3 (excluding headers) |
+| **CSV: Resumo de Estações PM2.5 (2025)** | `csv` | [Link](https://semear-pwa.vercel.app/data/air/pm25-2025-station-summary.csv) | 200 | 413 ms | ✅ PASS | CSV content valid. Row count parsed: 3 (excluding headers) |
+| **CSV: Resumo de Estações PM10 (2026 Parcial)** | `csv` | [Link](https://semear-pwa.vercel.app/data/air/pm10-2026-partial-station-summary.csv) | 200 | 175 ms | ✅ PASS | CSV content valid. Row count parsed: 3 (excluding headers) |
+| **CSV: Resumo de Estações PM2.5 (2026 Parcial)** | `csv` | [Link](https://semear-pwa.vercel.app/data/air/pm25-2026-partial-station-summary.csv) | 200 | 181 ms | ✅ PASS | CSV content valid. Row count parsed: 3 (excluding headers) |
+| **CSV: Linha do Tempo de Particulados (2020-2026)** | `csv` | [Link](https://semear-pwa.vercel.app/data/air/particulate-timeline-2020-2026.csv) | 200 | 165 ms | ✅ PASS | CSV content valid. Row count parsed: 39 (excluding headers) |
+| **CSV: Episódios de Atenção Mensais (2020-2026)** | `csv` | [Link](https://semear-pwa.vercel.app/data/air/attention-episodes-2020-2026.csv) | 200 | 176 ms | ✅ PASS | CSV content valid. Row count parsed: 462 (excluding headers) |
+| **CSV: Dicionário de Dados do Observatório do Ar** | `csv` | [Link](https://semear-pwa.vercel.app/data/air/data-dictionary.csv) | 200 | 157 ms | ✅ PASS | CSV content valid. Row count parsed: 19 (excluding headers) |
 
 ---
 

@@ -128,6 +128,8 @@ async function main() {
     { file: 'pm25-2021-station-summary.csv', title: 'Resumo PM2.5 2021' },
     { file: 'pm10-2024-station-summary.csv', title: 'Resumo PM10 2024' },
     { file: 'pm25-2024-station-summary.csv', title: 'Resumo PM2.5 2024' },
+    { file: 'so2-2024-station-summary.csv', title: 'Resumo SO2 2024' },
+    { file: 'co-2024-station-summary.csv', title: 'Resumo CO 2024' },
     { file: 'pm10-2025-station-summary.csv', title: 'Resumo PM10 2025' },
     { file: 'pm25-2025-station-summary.csv', title: 'Resumo PM2.5 2025' },
     { file: 'pm10-2026-partial-station-summary.csv', title: 'Resumo PM10 2026 Parcial' },
