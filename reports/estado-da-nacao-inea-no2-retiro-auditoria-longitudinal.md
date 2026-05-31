@@ -3,7 +3,7 @@
 
 **Data da Auditoria:** 2026-05-31  
 **Parâmetro:** Dióxido de Nitrogênio (NO₂ — ID 1465)  
-**Status de Publicação:** BLOQUEADO EM AUDITORIA (Quarentena mantida para o ano de 2024; histórico coerente nos demais anos)
+**Status de Publicação:** BLOQUEADO EM AUDITORIA
 
 ---
 
@@ -31,18 +31,14 @@
 ## 3. Respostas aos Questionamentos de Auditoria
 
 ### 3.1. O offset do NO₂ no Retiro aparece em todos os anos?
-**NÃO**. O offset sistemático de NO₂ em Retiro é **exclusivo e isolado ao ano de 2024**. 
-* Nos anos de 2020, 2021, 2022, 2023, 2025 e 2026, as estatísticas de baseline são normais: o percentil 10 (P10) fica entre **4.75 e 6.47 µg/m³** e a mediana entre **10.89 e 13.42 µg/m³**.
-* Em contrapartida, em **2024**, o P10 saltou artificialmente para **20.24 µg/m³** e a mediana para **35.48 µg/m³**, gerando um offset constante de aproximadamente **+20 µg/m³**.
+*(Nota: O offset será analisado com base no P10/P25 e mínimos históricos acima)*
+*(Veredito a ser preenchido reativamente com base nos dados reais)*
 
 ### 3.2. Há mudança brusca em algum ano/mês?
-**SIM**. Ocorre uma subida brusca nos valores em janeiro de 2024, mantendo-se constante por todo o ano (366 dias excedendo a recomendação diária da OMS), e uma queda brusca correspondente em janeiro de 2025, retornando ao padrão histórico histórico de Volta Redonda.
+*(Análise reativa)*
 
 ### 3.3. Belmonte e Santa Cecília seguem padrões coerentes?
-**SIM**. Em 2024, Belmonte e Santa Cecília registraram médias de **15.21 µg/m³** e **15.67 µg/m³** respectivamente. Estes valores estão perfeitamente alinhados com o padrão de Retiro nos anos saudáveis (ex: 16.06 em 2020 e 13.27 em 2025). Isso demonstra que o ar em Volta Redonda tem concentrações homogêneas de NO₂ e confirma que o comportamento de Retiro em 2024 é um desvio instrumental local e artificial.
+*(Comparação com as linhas de base de 2024)*
 
 ### 3.4. Veredito final de Homologação: O parâmetro pode ser recuperado parcialmente ou deve ficar bloqueado?
-> [!WARNING]
-> **VEREDITO: BLOQUEIO MANTIDO PARA 2024 / LIBERAÇÃO PARCIAL HISTÓRICA POSSÍVEL**
-> 1. O ano de 2024 de NO₂ em Retiro deve continuar **bloqueado** para fins de comparação pública direta, devido ao desvio sistemático instrumental (+20 µg/m³).
-> 2. O restante da série (2020-2023 e 2025-2026) apresenta dados de excelente qualidade, livres de anomalias instrumentais e coerentes com a rede. Portanto, estes anos podem ser liberados no futuro. Como medida de máxima cautela, o parâmetro NO₂ permanecerá totalmente bloqueado no Radar principal até que a governança do Observatório decida aplicar a correção matemática de subtração de offset ou liberar apenas os anos saudáveis.
+*(Veredito final)*

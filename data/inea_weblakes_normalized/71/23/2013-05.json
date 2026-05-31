@@ -1,0 +1,2467 @@
+[
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "71",
+    "station_name": "VR - Santa Cecília",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-28T11:00:00",
+    "value": 2.81310783480981,
+    "unit": "µg/m³",
+    "wind_speed": 1.97381949424744,
+    "wind_direction": 141.550964355469,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 1,
+      "cell": [
+        1,
+        "",
+        "<span data-value='2013-05-28T11:00:00'>28-mai-2013, 11:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Santa Cecília",
+        "<span data-value='0000000000000002,8131078348098100'>2,81</span>",
+        "<span data-value='0000000000000001,9738194942474400'>2,0</span>",
+        "<span data-value='0000000000000141,5509643554690000'>142</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "71",
+    "station_name": "VR - Santa Cecília",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-28T12:00:00",
+    "value": 2.29786508483416,
+    "unit": "µg/m³",
+    "wind_speed": 1.2633273601532,
+    "wind_direction": 118.59204864502,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 2,
+      "cell": [
+        2,
+        "",
+        "<span data-value='2013-05-28T12:00:00'>28-mai-2013, 12:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Santa Cecília",
+        "<span data-value='0000000000000002,2978650848341600'>2,30</span>",
+        "<span data-value='0000000000000001,2633273601532000'>1,3</span>",
+        "<span data-value='0000000000000118,5920486450200000'>119</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "71",
+    "station_name": "VR - Santa Cecília",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-28T13:00:00",
+    "value": 1.78666080959971,
+    "unit": "µg/m³",
+    "wind_speed": 1.77988147735596,
+    "wind_direction": 171.577011108398,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 3,
+      "cell": [
+        3,
+        "",
+        "<span data-value='2013-05-28T13:00:00'>28-mai-2013, 13:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Santa Cecília",
+        "<span data-value='0000000000000001,7866608095997100'>1,79</span>",
+        "<span data-value='0000000000000001,7798814773559600'>1,8</span>",
+        "<span data-value='0000000000000171,5770111083980000'>172</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "71",
+    "station_name": "VR - Santa Cecília",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-28T14:00:00",
+    "value": 2.2404241082376,
+    "unit": "µg/m³",
+    "wind_speed": 1.56046271324158,
+    "wind_direction": 180.792510986328,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 4,
+      "cell": [
+        4,
+        "",
+        "<span data-value='2013-05-28T14:00:00'>28-mai-2013, 14:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Santa Cecília",
+        "<span data-value='0000000000000002,2404241082376000'>2,24</span>",
+        "<span data-value='0000000000000001,5604627132415800'>1,6</span>",
+        "<span data-value='0000000000000180,7925109863280000'>181</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "71",
+    "station_name": "VR - Santa Cecília",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-28T15:00:00",
+    "value": 1.71978383391992,
+    "unit": "µg/m³",
+    "wind_speed": 1.29454028606415,
+    "wind_direction": 203.149124145508,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 5,
+      "cell": [
+        5,
+        "",
+        "<span data-value='2013-05-28T15:00:00'>28-mai-2013, 15:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Santa Cecília",
+        "<span data-value='0000000000000001,7197838339199200'>1,72</span>",
+        "<span data-value='0000000000000001,2945402860641500'>1,3</span>",
+        "<span data-value='0000000000000203,1491241455080000'>203</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "71",
+    "station_name": "VR - Santa Cecília",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-28T16:00:00",
+    "value": 0.871319475079493,
+    "unit": "µg/m³",
+    "wind_speed": 1.503049492836,
+    "wind_direction": 176.210662841797,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 6,
+      "cell": [
+        6,
+        "",
+        "<span data-value='2013-05-28T16:00:00'>28-mai-2013, 16:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Santa Cecília",
+        "<span data-value='0000000000000000,8713194750794930'>0,87</span>",
+        "<span data-value='0000000000000001,5030494928360000'>1,5</span>",
+        "<span data-value='0000000000000176,2106628417970000'>176</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "71",
+    "station_name": "VR - Santa Cecília",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-28T17:00:00",
+    "value": 0.161902954683868,
+    "unit": "µg/m³",
+    "wind_speed": 1.16012513637543,
+    "wind_direction": 227.837387084961,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 7,
+      "cell": [
+        7,
+        "",
+        "<span data-value='2013-05-28T17:00:00'>28-mai-2013, 17:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Santa Cecília",
+        "<span data-value='0000000000000000,1619029546838680'>0,16</span>",
+        "<span data-value='0000000000000001,1601251363754300'>1,2</span>",
+        "<span data-value='0000000000000227,8373870849610000'>228</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "71",
+    "station_name": "VR - Santa Cecília",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-28T18:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 1.43122720718384,
+    "wind_direction": 135.052810668945,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 8,
+      "cell": [
+        8,
+        "",
+        "<span data-value='2013-05-28T18:00:00'>28-mai-2013, 18:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Santa Cecília",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000001,4312272071838400'>1,4</span>",
+        "<span data-value='0000000000000135,0528106689450000'>135</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "71",
+    "station_name": "VR - Santa Cecília",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-28T19:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 2.26263380050659,
+    "wind_direction": 161.162780761719,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 9,
+      "cell": [
+        9,
+        "",
+        "<span data-value='2013-05-28T19:00:00'>28-mai-2013, 19:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Santa Cecília",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000002,2626338005065900'>2,3</span>",
+        "<span data-value='0000000000000161,1627807617190000'>161</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "71",
+    "station_name": "VR - Santa Cecília",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-28T20:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 1.45165359973907,
+    "wind_direction": 163.565460205078,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 10,
+      "cell": [
+        10,
+        "",
+        "<span data-value='2013-05-28T20:00:00'>28-mai-2013, 20:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Santa Cecília",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000001,4516535997390700'>1,5</span>",
+        "<span data-value='0000000000000163,5654602050780000'>164</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "71",
+    "station_name": "VR - Santa Cecília",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-28T21:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 1.57565867900848,
+    "wind_direction": 196.937561035156,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 11,
+      "cell": [
+        11,
+        "",
+        "<span data-value='2013-05-28T21:00:00'>28-mai-2013, 21:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Santa Cecília",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000001,5756586790084800'>1,6</span>",
+        "<span data-value='0000000000000196,9375610351560000'>197</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "71",
+    "station_name": "VR - Santa Cecília",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-28T22:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 1.52750945091248,
+    "wind_direction": 192.63948059082,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 12,
+      "cell": [
+        12,
+        "",
+        "<span data-value='2013-05-28T22:00:00'>28-mai-2013, 22:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Santa Cecília",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000001,5275094509124800'>1,5</span>",
+        "<span data-value='0000000000000192,6394805908200000'>193</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "71",
+    "station_name": "VR - Santa Cecília",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-28T23:00:00",
+    "value": 0.0707923900846178,
+    "unit": "µg/m³",
+    "wind_speed": 1.41850423812866,
+    "wind_direction": 200.996490478516,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 13,
+      "cell": [
+        13,
+        "",
+        "<span data-value='2013-05-28T23:00:00'>28-mai-2013, 23:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Santa Cecília",
+        "<span data-value='0000000000000000,0707923900846178'>0,07</span>",
+        "<span data-value='0000000000000001,4185042381286600'>1,4</span>",
+        "<span data-value='0000000000000200,9964904785160000'>201</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "71",
+    "station_name": "VR - Santa Cecília",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-29T00:00:00",
+    "value": 0.0855421296170225,
+    "unit": "µg/m³",
+    "wind_speed": 1.04863595962524,
+    "wind_direction": 352.072448730469,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 14,
+      "cell": [
+        14,
+        "",
+        "<span data-value='2013-05-29T00:00:00'>29-mai-2013, 00:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Santa Cecília",
+        "<span data-value='0000000000000000,0855421296170225'>0,09</span>",
+        "<span data-value='0000000000000001,0486359596252400'>1,0</span>",
+        "<span data-value='0000000000000352,0724487304690000'>352</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "71",
+    "station_name": "VR - Santa Cecília",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-29T01:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 2.16806721687317,
+    "wind_direction": 337.830291748047,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 15,
+      "cell": [
+        15,
+        "",
+        "<span data-value='2013-05-29T01:00:00'>29-mai-2013, 01:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Santa Cecília",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000002,1680672168731700'>2,2</span>",
+        "<span data-value='0000000000000337,8302917480470000'>338</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "71",
+    "station_name": "VR - Santa Cecília",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-29T02:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 1.6218923330307,
+    "wind_direction": 180.866363525391,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 16,
+      "cell": [
+        16,
+        "",
+        "<span data-value='2013-05-29T02:00:00'>29-mai-2013, 02:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Santa Cecília",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000001,6218923330307000'>1,6</span>",
+        "<span data-value='0000000000000180,8663635253910000'>181</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "71",
+    "station_name": "VR - Santa Cecília",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-29T03:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 0.539527118206024,
+    "wind_direction": 124.489967346191,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 17,
+      "cell": [
+        17,
+        "",
+        "<span data-value='2013-05-29T03:00:00'>29-mai-2013, 03:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Santa Cecília",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000000,5395271182060240'>0,5</span>",
+        "<span data-value='0000000000000124,4899673461910000'>124</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "71",
+    "station_name": "VR - Santa Cecília",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-29T04:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 1.32055580615997,
+    "wind_direction": 194.792724609375,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 18,
+      "cell": [
+        18,
+        "",
+        "<span data-value='2013-05-29T04:00:00'>29-mai-2013, 04:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Santa Cecília",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000001,3205558061599700'>1,3</span>",
+        "<span data-value='0000000000000194,7927246093750000'>195</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "71",
+    "station_name": "VR - Santa Cecília",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-29T05:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 1.17382252216339,
+    "wind_direction": 170.102325439453,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 19,
+      "cell": [
+        19,
+        "",
+        "<span data-value='2013-05-29T05:00:00'>29-mai-2013, 05:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Santa Cecília",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000001,1738225221633900'>1,2</span>",
+        "<span data-value='0000000000000170,1023254394530000'>170</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "71",
+    "station_name": "VR - Santa Cecília",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-29T06:00:00",
+    "value": 0.123374865001924,
+    "unit": "µg/m³",
+    "wind_speed": 1.26752614974976,
+    "wind_direction": 184.699859619141,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 20,
+      "cell": [
+        20,
+        "",
+        "<span data-value='2013-05-29T06:00:00'>29-mai-2013, 06:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Santa Cecília",
+        "<span data-value='0000000000000000,1233748650019240'>0,12</span>",
+        "<span data-value='0000000000000001,2675261497497600'>1,3</span>",
+        "<span data-value='0000000000000184,6998596191410000'>185</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "71",
+    "station_name": "VR - Santa Cecília",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-29T07:00:00",
+    "value": 1.70378169276143,
+    "unit": "µg/m³",
+    "wind_speed": 1.47046005725861,
+    "wind_direction": 186.683364868164,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 21,
+      "cell": [
+        21,
+        "",
+        "<span data-value='2013-05-29T07:00:00'>29-mai-2013, 07:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Santa Cecília",
+        "<span data-value='0000000000000001,7037816927614300'>1,70</span>",
+        "<span data-value='0000000000000001,4704600572586100'>1,5</span>",
+        "<span data-value='0000000000000186,6833648681640000'>187</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "71",
+    "station_name": "VR - Santa Cecília",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-29T08:00:00",
+    "value": 0.785805335743601,
+    "unit": "µg/m³",
+    "wind_speed": 1.4484680891037,
+    "wind_direction": 177.402450561523,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 22,
+      "cell": [
+        22,
+        "",
+        "<span data-value='2013-05-29T08:00:00'>29-mai-2013, 08:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Santa Cecília",
+        "<span data-value='0000000000000000,7858053357436010'>0,79</span>",
+        "<span data-value='0000000000000001,4484680891037000'>1,4</span>",
+        "<span data-value='0000000000000177,4024505615230000'>177</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "71",
+    "station_name": "VR - Santa Cecília",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-29T09:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 2.00423240661621,
+    "wind_direction": 181.580429077148,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 23,
+      "cell": [
+        23,
+        "",
+        "<span data-value='2013-05-29T09:00:00'>29-mai-2013, 09:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Santa Cecília",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000002,0042324066162100'>2,0</span>",
+        "<span data-value='0000000000000181,5804290771480000'>182</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "71",
+    "station_name": "VR - Santa Cecília",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-29T10:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 1.80954778194427,
+    "wind_direction": 185.510772705078,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 24,
+      "cell": [
+        24,
+        "",
+        "<span data-value='2013-05-29T10:00:00'>29-mai-2013, 10:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Santa Cecília",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000001,8095477819442700'>1,8</span>",
+        "<span data-value='0000000000000185,5107727050780000'>186</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "71",
+    "station_name": "VR - Santa Cecília",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-29T11:00:00",
+    "value": 0.0036721134572841,
+    "unit": "µg/m³",
+    "wind_speed": 1.53000688552856,
+    "wind_direction": 169.401718139648,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 25,
+      "cell": [
+        25,
+        "",
+        "<span data-value='2013-05-29T11:00:00'>29-mai-2013, 11:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Santa Cecília",
+        "<span data-value='0000000000000000,0036721134572841'>0,00</span>",
+        "<span data-value='0000000000000001,5300068855285600'>1,5</span>",
+        "<span data-value='0000000000000169,4017181396480000'>169</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "71",
+    "station_name": "VR - Santa Cecília",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-29T12:00:00",
+    "value": 0.991050553848336,
+    "unit": "µg/m³",
+    "wind_speed": 1.2877721786499,
+    "wind_direction": 193.072311401367,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 26,
+      "cell": [
+        26,
+        "",
+        "<span data-value='2013-05-29T12:00:00'>29-mai-2013, 12:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Santa Cecília",
+        "<span data-value='0000000000000000,9910505538483360'>0,99</span>",
+        "<span data-value='0000000000000001,2877721786499000'>1,3</span>",
+        "<span data-value='0000000000000193,0723114013670000'>193</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "71",
+    "station_name": "VR - Santa Cecília",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-29T13:00:00",
+    "value": 0.339297513787434,
+    "unit": "µg/m³",
+    "wind_speed": 2.058349609375,
+    "wind_direction": 189.076538085938,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 27,
+      "cell": [
+        27,
+        "",
+        "<span data-value='2013-05-29T13:00:00'>29-mai-2013, 13:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Santa Cecília",
+        "<span data-value='0000000000000000,3392975137874340'>0,34</span>",
+        "<span data-value='0000000000000002,0583496093750000'>2,1</span>",
+        "<span data-value='0000000000000189,0765380859380000'>189</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "71",
+    "station_name": "VR - Santa Cecília",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-29T14:00:00",
+    "value": 0.843548413685021,
+    "unit": "µg/m³",
+    "wind_speed": 1.72982978820801,
+    "wind_direction": 183.567108154297,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 28,
+      "cell": [
+        28,
+        "",
+        "<span data-value='2013-05-29T14:00:00'>29-mai-2013, 14:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Santa Cecília",
+        "<span data-value='0000000000000000,8435484136850210'>0,84</span>",
+        "<span data-value='0000000000000001,7298297882080100'>1,7</span>",
+        "<span data-value='0000000000000183,5671081542970000'>184</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "71",
+    "station_name": "VR - Santa Cecília",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-29T15:00:00",
+    "value": 0.459921066821933,
+    "unit": "µg/m³",
+    "wind_speed": 1.12683749198914,
+    "wind_direction": 180.835250854492,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 29,
+      "cell": [
+        29,
+        "",
+        "<span data-value='2013-05-29T15:00:00'>29-mai-2013, 15:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Santa Cecília",
+        "<span data-value='0000000000000000,4599210668219330'>0,46</span>",
+        "<span data-value='0000000000000001,1268374919891400'>1,1</span>",
+        "<span data-value='0000000000000180,8352508544920000'>181</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "71",
+    "station_name": "VR - Santa Cecília",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-29T16:00:00",
+    "value": 2.19166542489468,
+    "unit": "µg/m³",
+    "wind_speed": 1.42918539047241,
+    "wind_direction": 199.326080322266,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 30,
+      "cell": [
+        30,
+        "",
+        "<span data-value='2013-05-29T16:00:00'>29-mai-2013, 16:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Santa Cecília",
+        "<span data-value='0000000000000002,1916654248946800'>2,19</span>",
+        "<span data-value='0000000000000001,4291853904724100'>1,4</span>",
+        "<span data-value='0000000000000199,3260803222660000'>199</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "71",
+    "station_name": "VR - Santa Cecília",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-29T17:00:00",
+    "value": 2.63009879759696,
+    "unit": "µg/m³",
+    "wind_speed": 1.51335680484772,
+    "wind_direction": 325.959655761719,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 31,
+      "cell": [
+        31,
+        "",
+        "<span data-value='2013-05-29T17:00:00'>29-mai-2013, 17:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Santa Cecília",
+        "<span data-value='0000000000000002,6300987975969600'>2,63</span>",
+        "<span data-value='0000000000000001,5133568048477200'>1,5</span>",
+        "<span data-value='0000000000000325,9596557617190000'>326</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "71",
+    "station_name": "VR - Santa Cecília",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-29T18:00:00",
+    "value": 2.64977519518665,
+    "unit": "µg/m³",
+    "wind_speed": 0.881673038005829,
+    "wind_direction": 263.877502441406,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 32,
+      "cell": [
+        32,
+        "",
+        "<span data-value='2013-05-29T18:00:00'>29-mai-2013, 18:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Santa Cecília",
+        "<span data-value='0000000000000002,6497751951866500'>2,65</span>",
+        "<span data-value='0000000000000000,8816730380058290'>0,9</span>",
+        "<span data-value='0000000000000263,8775024414060000'>264</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "71",
+    "station_name": "VR - Santa Cecília",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-29T19:00:00",
+    "value": 2.666425805956,
+    "unit": "µg/m³",
+    "wind_speed": 2.03486752510071,
+    "wind_direction": 183.153533935547,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 33,
+      "cell": [
+        33,
+        "",
+        "<span data-value='2013-05-29T19:00:00'>29-mai-2013, 19:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Santa Cecília",
+        "<span data-value='0000000000000002,6664258059560000'>2,67</span>",
+        "<span data-value='0000000000000002,0348675251007100'>2,0</span>",
+        "<span data-value='0000000000000183,1535339355470000'>183</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "71",
+    "station_name": "VR - Santa Cecília",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-29T20:00:00",
+    "value": 2.27378667891456,
+    "unit": "µg/m³",
+    "wind_speed": 1.6191428899765,
+    "wind_direction": 175.939529418945,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 34,
+      "cell": [
+        34,
+        "",
+        "<span data-value='2013-05-29T20:00:00'>29-mai-2013, 20:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Santa Cecília",
+        "<span data-value='0000000000000002,2737866789145600'>2,27</span>",
+        "<span data-value='0000000000000001,6191428899765000'>1,6</span>",
+        "<span data-value='0000000000000175,9395294189450000'>176</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "71",
+    "station_name": "VR - Santa Cecília",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-29T21:00:00",
+    "value": 1.97677314850863,
+    "unit": "µg/m³",
+    "wind_speed": 1.42587876319885,
+    "wind_direction": 184.886764526367,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 35,
+      "cell": [
+        35,
+        "",
+        "<span data-value='2013-05-29T21:00:00'>29-mai-2013, 21:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Santa Cecília",
+        "<span data-value='0000000000000001,9767731485086300'>1,98</span>",
+        "<span data-value='0000000000000001,4258787631988500'>1,4</span>",
+        "<span data-value='0000000000000184,8867645263670000'>185</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "71",
+    "station_name": "VR - Santa Cecília",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-29T22:00:00",
+    "value": 2.53981495790896,
+    "unit": "µg/m³",
+    "wind_speed": 1.65544235706329,
+    "wind_direction": 170.817672729492,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 36,
+      "cell": [
+        36,
+        "",
+        "<span data-value='2013-05-29T22:00:00'>29-mai-2013, 22:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Santa Cecília",
+        "<span data-value='0000000000000002,5398149579089600'>2,54</span>",
+        "<span data-value='0000000000000001,6554423570632900'>1,7</span>",
+        "<span data-value='0000000000000170,8176727294920000'>171</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "71",
+    "station_name": "VR - Santa Cecília",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-29T23:00:00",
+    "value": 0.395508201773754,
+    "unit": "µg/m³",
+    "wind_speed": 1.74849104881287,
+    "wind_direction": 183.489105224609,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 37,
+      "cell": [
+        37,
+        "",
+        "<span data-value='2013-05-29T23:00:00'>29-mai-2013, 23:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Santa Cecília",
+        "<span data-value='0000000000000000,3955082017737540'>0,40</span>",
+        "<span data-value='0000000000000001,7484910488128700'>1,7</span>",
+        "<span data-value='0000000000000183,4891052246090000'>183</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "71",
+    "station_name": "VR - Santa Cecília",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-30T00:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 1.50119388103485,
+    "wind_direction": 177.942794799805,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 38,
+      "cell": [
+        38,
+        "",
+        "<span data-value='2013-05-30T00:00:00'>30-mai-2013, 00:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Santa Cecília",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000001,5011938810348500'>1,5</span>",
+        "<span data-value='0000000000000177,9427947998050000'>178</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "71",
+    "station_name": "VR - Santa Cecília",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-30T01:00:00",
+    "value": 0.0037368486710812,
+    "unit": "µg/m³",
+    "wind_speed": 1.72681403160095,
+    "wind_direction": 179.207489013672,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 39,
+      "cell": [
+        39,
+        "",
+        "<span data-value='2013-05-30T01:00:00'>30-mai-2013, 01:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Santa Cecília",
+        "<span data-value='0000000000000000,0037368486710812'>0,00</span>",
+        "<span data-value='0000000000000001,7268140316009500'>1,7</span>",
+        "<span data-value='0000000000000179,2074890136720000'>179</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "71",
+    "station_name": "VR - Santa Cecília",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-30T02:00:00",
+    "value": 0.16053355598191,
+    "unit": "µg/m³",
+    "wind_speed": 1.64793086051941,
+    "wind_direction": 189.353424072266,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 40,
+      "cell": [
+        40,
+        "",
+        "<span data-value='2013-05-30T02:00:00'>30-mai-2013, 02:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Santa Cecília",
+        "<span data-value='0000000000000000,1605335559819100'>0,16</span>",
+        "<span data-value='0000000000000001,6479308605194100'>1,6</span>",
+        "<span data-value='0000000000000189,3534240722660000'>189</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "71",
+    "station_name": "VR - Santa Cecília",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-30T03:00:00",
+    "value": 0.137809605666175,
+    "unit": "µg/m³",
+    "wind_speed": 0.811757206916809,
+    "wind_direction": 253.683944702148,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 41,
+      "cell": [
+        41,
+        "",
+        "<span data-value='2013-05-30T03:00:00'>30-mai-2013, 03:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Santa Cecília",
+        "<span data-value='0000000000000000,1378096056661750'>0,14</span>",
+        "<span data-value='0000000000000000,8117572069168090'>0,8</span>",
+        "<span data-value='0000000000000253,6839447021480000'>254</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "71",
+    "station_name": "VR - Santa Cecília",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-30T04:00:00",
+    "value": 0.0485230600072285,
+    "unit": "µg/m³",
+    "wind_speed": 1.49416351318359,
+    "wind_direction": 164.256622314453,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 42,
+      "cell": [
+        42,
+        "",
+        "<span data-value='2013-05-30T04:00:00'>30-mai-2013, 04:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Santa Cecília",
+        "<span data-value='0000000000000000,0485230600072285'>0,05</span>",
+        "<span data-value='0000000000000001,4941635131835900'>1,5</span>",
+        "<span data-value='0000000000000164,2566223144530000'>164</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "71",
+    "station_name": "VR - Santa Cecília",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-30T05:00:00",
+    "value": 0.186702392787666,
+    "unit": "µg/m³",
+    "wind_speed": 1.46648466587067,
+    "wind_direction": 168.018295288086,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 43,
+      "cell": [
+        43,
+        "",
+        "<span data-value='2013-05-30T05:00:00'>30-mai-2013, 05:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Santa Cecília",
+        "<span data-value='0000000000000000,1867023927876660'>0,19</span>",
+        "<span data-value='0000000000000001,4664846658706700'>1,5</span>",
+        "<span data-value='0000000000000168,0182952880860000'>168</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "71",
+    "station_name": "VR - Santa Cecília",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-30T06:00:00",
+    "value": 0.0634757442351545,
+    "unit": "µg/m³",
+    "wind_speed": 1.90283691883087,
+    "wind_direction": 176.084777832031,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 44,
+      "cell": [
+        44,
+        "",
+        "<span data-value='2013-05-30T06:00:00'>30-mai-2013, 06:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Santa Cecília",
+        "<span data-value='0000000000000000,0634757442351545'>0,06</span>",
+        "<span data-value='0000000000000001,9028369188308700'>1,9</span>",
+        "<span data-value='0000000000000176,0847778320310000'>176</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "71",
+    "station_name": "VR - Santa Cecília",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-30T07:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 1.71480560302734,
+    "wind_direction": 174.846160888672,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 45,
+      "cell": [
+        45,
+        "",
+        "<span data-value='2013-05-30T07:00:00'>30-mai-2013, 07:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Santa Cecília",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000001,7148056030273400'>1,7</span>",
+        "<span data-value='0000000000000174,8461608886720000'>175</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "71",
+    "station_name": "VR - Santa Cecília",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-30T08:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 1.54254829883575,
+    "wind_direction": 154.864074707031,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 46,
+      "cell": [
+        46,
+        "",
+        "<span data-value='2013-05-30T08:00:00'>30-mai-2013, 08:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Santa Cecília",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000001,5425482988357500'>1,5</span>",
+        "<span data-value='0000000000000154,8640747070310000'>155</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "71",
+    "station_name": "VR - Santa Cecília",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-30T09:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 1.17748582363129,
+    "wind_direction": 124.327514648438,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 47,
+      "cell": [
+        47,
+        "",
+        "<span data-value='2013-05-30T09:00:00'>30-mai-2013, 09:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Santa Cecília",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000001,1774858236312900'>1,2</span>",
+        "<span data-value='0000000000000124,3275146484380000'>124</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "71",
+    "station_name": "VR - Santa Cecília",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-30T10:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 1.17953681945801,
+    "wind_direction": 179.283920288086,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 48,
+      "cell": [
+        48,
+        "",
+        "<span data-value='2013-05-30T10:00:00'>30-mai-2013, 10:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Santa Cecília",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000001,1795368194580100'>1,2</span>",
+        "<span data-value='0000000000000179,2839202880860000'>179</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "71",
+    "station_name": "VR - Santa Cecília",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-30T11:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 1.78365206718445,
+    "wind_direction": 184.907089233398,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 49,
+      "cell": [
+        49,
+        "",
+        "<span data-value='2013-05-30T11:00:00'>30-mai-2013, 11:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Santa Cecília",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000001,7836520671844500'>1,8</span>",
+        "<span data-value='0000000000000184,9070892333980000'>185</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "71",
+    "station_name": "VR - Santa Cecília",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-30T12:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 1.58510100841522,
+    "wind_direction": 169.875305175781,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 50,
+      "cell": [
+        50,
+        "",
+        "<span data-value='2013-05-30T12:00:00'>30-mai-2013, 12:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Santa Cecília",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000001,5851010084152200'>1,6</span>",
+        "<span data-value='0000000000000169,8753051757810000'>170</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "71",
+    "station_name": "VR - Santa Cecília",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-30T13:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 1.84850978851318,
+    "wind_direction": 160.705108642578,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 51,
+      "cell": [
+        51,
+        "",
+        "<span data-value='2013-05-30T13:00:00'>30-mai-2013, 13:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Santa Cecília",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000001,8485097885131800'>1,8</span>",
+        "<span data-value='0000000000000160,7051086425780000'>161</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "71",
+    "station_name": "VR - Santa Cecília",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-30T14:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 1.24806416034698,
+    "wind_direction": 169.743881225586,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 52,
+      "cell": [
+        52,
+        "",
+        "<span data-value='2013-05-30T14:00:00'>30-mai-2013, 14:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Santa Cecília",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000001,2480641603469800'>1,2</span>",
+        "<span data-value='0000000000000169,7438812255860000'>170</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "71",
+    "station_name": "VR - Santa Cecília",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-30T15:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 1.58565318584442,
+    "wind_direction": 191.997787475586,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 53,
+      "cell": [
+        53,
+        "",
+        "<span data-value='2013-05-30T15:00:00'>30-mai-2013, 15:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Santa Cecília",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000001,5856531858444200'>1,6</span>",
+        "<span data-value='0000000000000191,9977874755860000'>192</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "71",
+    "station_name": "VR - Santa Cecília",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-30T16:00:00",
+    "value": 0.35102086402355,
+    "unit": "µg/m³",
+    "wind_speed": 1.03062915802002,
+    "wind_direction": 198.148147583008,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 54,
+      "cell": [
+        54,
+        "",
+        "<span data-value='2013-05-30T16:00:00'>30-mai-2013, 16:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Santa Cecília",
+        "<span data-value='0000000000000000,3510208640235500'>0,35</span>",
+        "<span data-value='0000000000000001,0306291580200200'>1,0</span>",
+        "<span data-value='0000000000000198,1481475830080000'>198</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "71",
+    "station_name": "VR - Santa Cecília",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-30T17:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 1.69181942939758,
+    "wind_direction": 163.215377807617,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 55,
+      "cell": [
+        55,
+        "",
+        "<span data-value='2013-05-30T17:00:00'>30-mai-2013, 17:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Santa Cecília",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000001,6918194293975800'>1,7</span>",
+        "<span data-value='0000000000000163,2153778076170000'>163</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "71",
+    "station_name": "VR - Santa Cecília",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-30T18:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 2.18728232383728,
+    "wind_direction": 158.528411865234,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 56,
+      "cell": [
+        56,
+        "",
+        "<span data-value='2013-05-30T18:00:00'>30-mai-2013, 18:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Santa Cecília",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000002,1872823238372800'>2,2</span>",
+        "<span data-value='0000000000000158,5284118652340000'>159</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "71",
+    "station_name": "VR - Santa Cecília",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-30T19:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 1.96620273590088,
+    "wind_direction": 123.687591552734,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 57,
+      "cell": [
+        57,
+        "",
+        "<span data-value='2013-05-30T19:00:00'>30-mai-2013, 19:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Santa Cecília",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000001,9662027359008800'>2,0</span>",
+        "<span data-value='0000000000000123,6875915527340000'>124</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "71",
+    "station_name": "VR - Santa Cecília",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-30T20:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 2.27299499511719,
+    "wind_direction": 120.674049377441,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 58,
+      "cell": [
+        58,
+        "",
+        "<span data-value='2013-05-30T20:00:00'>30-mai-2013, 20:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Santa Cecília",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000002,2729949951171900'>2,3</span>",
+        "<span data-value='0000000000000120,6740493774410000'>121</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "71",
+    "station_name": "VR - Santa Cecília",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-30T21:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 2.02015209197998,
+    "wind_direction": 113.286064147949,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 59,
+      "cell": [
+        59,
+        "",
+        "<span data-value='2013-05-30T21:00:00'>30-mai-2013, 21:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Santa Cecília",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000002,0201520919799800'>2,0</span>",
+        "<span data-value='0000000000000113,2860641479490000'>113</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "71",
+    "station_name": "VR - Santa Cecília",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-30T22:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 1.59823787212372,
+    "wind_direction": 98.3109283447266,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 60,
+      "cell": [
+        60,
+        "",
+        "<span data-value='2013-05-30T22:00:00'>30-mai-2013, 22:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Santa Cecília",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000001,5982378721237200'>1,6</span>",
+        "<span data-value='0000000000000098,3109283447266000'>98</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "71",
+    "station_name": "VR - Santa Cecília",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-30T23:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 1.4357442855835,
+    "wind_direction": 112.652702331543,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 61,
+      "cell": [
+        61,
+        "",
+        "<span data-value='2013-05-30T23:00:00'>30-mai-2013, 23:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Santa Cecília",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000001,4357442855835000'>1,4</span>",
+        "<span data-value='0000000000000112,6527023315430000'>113</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "71",
+    "station_name": "VR - Santa Cecília",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-31T00:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 1.53941762447357,
+    "wind_direction": 104.424507141113,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 62,
+      "cell": [
+        62,
+        "",
+        "<span data-value='2013-05-31T00:00:00'>31-mai-2013, 00:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Santa Cecília",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000001,5394176244735700'>1,5</span>",
+        "<span data-value='0000000000000104,4245071411130000'>104</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "71",
+    "station_name": "VR - Santa Cecília",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-31T01:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 2.055743932724,
+    "wind_direction": 119.30770111084,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 63,
+      "cell": [
+        63,
+        "",
+        "<span data-value='2013-05-31T01:00:00'>31-mai-2013, 01:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Santa Cecília",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000002,0557439327240000'>2,1</span>",
+        "<span data-value='0000000000000119,3077011108400000'>119</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "71",
+    "station_name": "VR - Santa Cecília",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-31T02:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 1.64323592185974,
+    "wind_direction": 114.300369262695,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 64,
+      "cell": [
+        64,
+        "",
+        "<span data-value='2013-05-31T02:00:00'>31-mai-2013, 02:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Santa Cecília",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000001,6432359218597400'>1,6</span>",
+        "<span data-value='0000000000000114,3003692626950000'>114</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "71",
+    "station_name": "VR - Santa Cecília",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-31T03:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 1.89467597007751,
+    "wind_direction": 151.231262207031,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 65,
+      "cell": [
+        65,
+        "",
+        "<span data-value='2013-05-31T03:00:00'>31-mai-2013, 03:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Santa Cecília",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000001,8946759700775100'>1,9</span>",
+        "<span data-value='0000000000000151,2312622070310000'>151</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "71",
+    "station_name": "VR - Santa Cecília",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-31T04:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 1.19106340408325,
+    "wind_direction": 124.999687194824,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 66,
+      "cell": [
+        66,
+        "",
+        "<span data-value='2013-05-31T04:00:00'>31-mai-2013, 04:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Santa Cecília",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000001,1910634040832500'>1,2</span>",
+        "<span data-value='0000000000000124,9996871948240000'>125</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "71",
+    "station_name": "VR - Santa Cecília",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-31T05:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 1.5664267539978,
+    "wind_direction": 168.194152832031,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 67,
+      "cell": [
+        67,
+        "",
+        "<span data-value='2013-05-31T05:00:00'>31-mai-2013, 05:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Santa Cecília",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000001,5664267539978000'>1,6</span>",
+        "<span data-value='0000000000000168,1941528320310000'>168</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "71",
+    "station_name": "VR - Santa Cecília",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-31T06:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 1.60190737247467,
+    "wind_direction": 170.112396240234,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 68,
+      "cell": [
+        68,
+        "",
+        "<span data-value='2013-05-31T06:00:00'>31-mai-2013, 06:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Santa Cecília",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000001,6019073724746700'>1,6</span>",
+        "<span data-value='0000000000000170,1123962402340000'>170</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "71",
+    "station_name": "VR - Santa Cecília",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-31T07:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 1.78461420536041,
+    "wind_direction": 151.672241210938,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 69,
+      "cell": [
+        69,
+        "",
+        "<span data-value='2013-05-31T07:00:00'>31-mai-2013, 07:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Santa Cecília",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000001,7846142053604100'>1,8</span>",
+        "<span data-value='0000000000000151,6722412109380000'>152</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "71",
+    "station_name": "VR - Santa Cecília",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-31T08:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 2.06707406044006,
+    "wind_direction": 112.788719177246,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 70,
+      "cell": [
+        70,
+        "",
+        "<span data-value='2013-05-31T08:00:00'>31-mai-2013, 08:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Santa Cecília",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000002,0670740604400600'>2,1</span>",
+        "<span data-value='0000000000000112,7887191772460000'>113</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "71",
+    "station_name": "VR - Santa Cecília",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-31T09:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 2.16620111465454,
+    "wind_direction": 123.473197937012,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 71,
+      "cell": [
+        71,
+        "",
+        "<span data-value='2013-05-31T09:00:00'>31-mai-2013, 09:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Santa Cecília",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000002,1662011146545400'>2,2</span>",
+        "<span data-value='0000000000000123,4731979370120000'>123</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "71",
+    "station_name": "VR - Santa Cecília",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-31T10:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 1.87227272987366,
+    "wind_direction": 91.1203460693359,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 72,
+      "cell": [
+        72,
+        "",
+        "<span data-value='2013-05-31T10:00:00'>31-mai-2013, 10:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Santa Cecília",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000001,8722727298736600'>1,9</span>",
+        "<span data-value='0000000000000091,1203460693359000'>91</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "71",
+    "station_name": "VR - Santa Cecília",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-31T11:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 2.52805256843567,
+    "wind_direction": 126.983779907227,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 73,
+      "cell": [
+        73,
+        "",
+        "<span data-value='2013-05-31T11:00:00'>31-mai-2013, 11:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Santa Cecília",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000002,5280525684356700'>2,5</span>",
+        "<span data-value='0000000000000126,9837799072270000'>127</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "71",
+    "station_name": "VR - Santa Cecília",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-31T12:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 2.83411717414856,
+    "wind_direction": 138.033294677734,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 74,
+      "cell": [
+        74,
+        "",
+        "<span data-value='2013-05-31T12:00:00'>31-mai-2013, 12:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Santa Cecília",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000002,8341171741485600'>2,8</span>",
+        "<span data-value='0000000000000138,0332946777340000'>138</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "71",
+    "station_name": "VR - Santa Cecília",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-31T13:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 2.3234441280365,
+    "wind_direction": 111.744659423828,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 75,
+      "cell": [
+        75,
+        "",
+        "<span data-value='2013-05-31T13:00:00'>31-mai-2013, 13:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Santa Cecília",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000002,3234441280365000'>2,3</span>",
+        "<span data-value='0000000000000111,7446594238280000'>112</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "71",
+    "station_name": "VR - Santa Cecília",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-31T14:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 2.48041415214539,
+    "wind_direction": 116.595664978027,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 76,
+      "cell": [
+        76,
+        "",
+        "<span data-value='2013-05-31T14:00:00'>31-mai-2013, 14:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Santa Cecília",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000002,4804141521453900'>2,5</span>",
+        "<span data-value='0000000000000116,5956649780270000'>117</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "71",
+    "station_name": "VR - Santa Cecília",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-31T15:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 3.42438530921936,
+    "wind_direction": 124.906158447266,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 77,
+      "cell": [
+        77,
+        "",
+        "<span data-value='2013-05-31T15:00:00'>31-mai-2013, 15:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Santa Cecília",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000003,4243853092193600'>3,4</span>",
+        "<span data-value='0000000000000124,9061584472660000'>125</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "71",
+    "station_name": "VR - Santa Cecília",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-31T16:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 3.1853404045105,
+    "wind_direction": 130.838226318359,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 78,
+      "cell": [
+        78,
+        "",
+        "<span data-value='2013-05-31T16:00:00'>31-mai-2013, 16:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Santa Cecília",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000003,1853404045105000'>3,2</span>",
+        "<span data-value='0000000000000130,8382263183590000'>131</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "71",
+    "station_name": "VR - Santa Cecília",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-31T17:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 3.32287693023682,
+    "wind_direction": 166.178939819336,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 79,
+      "cell": [
+        79,
+        "",
+        "<span data-value='2013-05-31T17:00:00'>31-mai-2013, 17:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Santa Cecília",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000003,3228769302368200'>3,3</span>",
+        "<span data-value='0000000000000166,1789398193360000'>166</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "71",
+    "station_name": "VR - Santa Cecília",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-31T18:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 2.82912683486938,
+    "wind_direction": 141.024871826172,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 80,
+      "cell": [
+        80,
+        "",
+        "<span data-value='2013-05-31T18:00:00'>31-mai-2013, 18:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Santa Cecília",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000002,8291268348693800'>2,8</span>",
+        "<span data-value='0000000000000141,0248718261720000'>141</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "71",
+    "station_name": "VR - Santa Cecília",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-31T19:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 2.50994467735291,
+    "wind_direction": 142.411193847656,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 81,
+      "cell": [
+        81,
+        "",
+        "<span data-value='2013-05-31T19:00:00'>31-mai-2013, 19:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Santa Cecília",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000002,5099446773529100'>2,5</span>",
+        "<span data-value='0000000000000142,4111938476560000'>142</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "71",
+    "station_name": "VR - Santa Cecília",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-31T20:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 2.18144154548645,
+    "wind_direction": 156.868423461914,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 82,
+      "cell": [
+        82,
+        "",
+        "<span data-value='2013-05-31T20:00:00'>31-mai-2013, 20:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Santa Cecília",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000002,1814415454864500'>2,2</span>",
+        "<span data-value='0000000000000156,8684234619140000'>157</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "71",
+    "station_name": "VR - Santa Cecília",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-31T21:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 2.51396799087524,
+    "wind_direction": 177.863815307617,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 83,
+      "cell": [
+        83,
+        "",
+        "<span data-value='2013-05-31T21:00:00'>31-mai-2013, 21:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Santa Cecília",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000002,5139679908752400'>2,5</span>",
+        "<span data-value='0000000000000177,8638153076170000'>178</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "71",
+    "station_name": "VR - Santa Cecília",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-31T22:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 1.83838641643524,
+    "wind_direction": 179.3837890625,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 84,
+      "cell": [
+        84,
+        "",
+        "<span data-value='2013-05-31T22:00:00'>31-mai-2013, 22:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Santa Cecília",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000001,8383864164352400'>1,8</span>",
+        "<span data-value='0000000000000179,3837890625000000'>179</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "71",
+    "station_name": "VR - Santa Cecília",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-31T23:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 1.6539124250412,
+    "wind_direction": 178.201370239258,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 85,
+      "cell": [
+        85,
+        "",
+        "<span data-value='2013-05-31T23:00:00'>31-mai-2013, 23:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Santa Cecília",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000001,6539124250412000'>1,7</span>",
+        "<span data-value='0000000000000178,2013702392580000'>178</span>"
+      ]
+    }
+  }
+]

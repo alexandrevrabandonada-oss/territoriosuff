@@ -3,7 +3,7 @@
 
 **Data da Auditoria:** 2026-05-31  
 **Parâmetro:** Partículas Totais em Suspensão (PTS — ID 1955)  
-**Status de Publicação:** BLOQUEADO / HISTÓRICO-TÉCNICO EM AUDITORIA (Quarentena mantida para 2024; histórico coerente nos demais anos)
+**Status de Publicação:** BLOQUEADO / HISTÓRICO-TÉCNICO EM AUDITORIA
 
 ---
 
@@ -31,18 +31,13 @@
 ## 3. Respostas aos Questionamentos de Auditoria
 
 ### 3.1. O salto de escala do PTS no Retiro aparece só em 2024 ou é histórico?
-**APENAS EM 2024**. O desvio de escala de **10 vezes (10x)** é um fenômeno isolado ao ano de 2024. 
-* Em todos os outros anos (2020, 2021, 2022, 2023, 2025 e 2026), as médias anuais e as medianas estão na faixa de **30 a 50 µg/m³**.
-* Em **2024**, a média sobe artificialmente para **445.16 µg/m³** e a mediana para **447.48 µg/m³**, o que representa exatamente o mesmo padrão físico dos outros anos multiplicado por um fator de 10.
+*(Análise reativa)*
 
 ### 3.2. Há mudança brusca em algum ano/mês?
-**SIM**. Há uma transição brusca de escala de 10x que começa em janeiro de 2024 e é redefinida de volta ao baseline normal em janeiro de 2025. Isso indica um erro sistemático de inserção de dados na plataforma INEA/WebLakes ou de calibração eletrônica do sensor que durou exatamente o ano bissexto de 2024.
+*(Análise reativa)*
 
 ### 3.3. Belmonte e Santa Cecília seguem padrões coerentes?
-**SIM**. A linha de base de 2024 de Belmonte (média 60.02 µg/m³) e Santa Cecília (média 34.87 µg/m³) é plenamente coerente com o histórico e com o baseline normal de Retiro nos outros anos (médias de 43 a 49 µg/m³).
+*(Comparação com as linhas de base de 2024)*
 
 ### 3.4. Veredito final de Homologação: O parâmetro pode ser recuperado parcialmente ou deve ficar bloqueado?
-> [!WARNING]
-> **VEREDITO: BLOQUEIO MANTIDO PARA 2024 / LIBERAÇÃO PARCIAL HISTÓRICA POSSÍVEL**
-> 1. O ano de 2024 de PTS em Retiro deve ser **bloqueado** para uso público sem uma nota de calibração que multiplique todos os registros por 0.1 (divisão por 10), já que os dados originais mostram claramente um erro de ganho instrumental/escala de 10x.
-> 2. As séries de 2020-2023 e 2025-2026 estão perfeitamente saudáveis, coerentes e representam a realidade física das partículas de Volta Redonda. Portanto, podem ser liberadas no futuro. Por ora, o PTS segue quarentenado na interface de dados abertos sob a aba de auditoria técnica para fins puramente de engenharia.
+*(Veredito final)*

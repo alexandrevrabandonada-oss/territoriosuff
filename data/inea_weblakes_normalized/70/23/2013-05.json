@@ -1,0 +1,6150 @@
+[
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-22T18:00:00",
+    "value": 2.92685650233458,
+    "unit": "µg/m³",
+    "wind_speed": 0.971156120300293,
+    "wind_direction": 65.1412887573242,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 1,
+      "cell": [
+        1,
+        "",
+        "<span data-value='2013-05-22T18:00:00'>22-mai-2013, 18:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000002,9268565023345800'>2,93</span>",
+        "<span data-value='0000000000000000,9711561203002930'>1,0</span>",
+        "<span data-value='0000000000000065,1412887573242000'>65</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-22T19:00:00",
+    "value": 1.72999774495687,
+    "unit": "µg/m³",
+    "wind_speed": 0.996778428554535,
+    "wind_direction": 60.3315887451172,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 2,
+      "cell": [
+        2,
+        "",
+        "<span data-value='2013-05-22T19:00:00'>22-mai-2013, 19:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000001,7299977449568700'>1,73</span>",
+        "<span data-value='0000000000000000,9967784285545350'>1,0</span>",
+        "<span data-value='0000000000000060,3315887451172000'>60</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-22T20:00:00",
+    "value": 0.0037127853879739,
+    "unit": "µg/m³",
+    "wind_speed": 1.05672693252563,
+    "wind_direction": 61.7460289001465,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 3,
+      "cell": [
+        3,
+        "",
+        "<span data-value='2013-05-22T20:00:00'>22-mai-2013, 20:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,0037127853879739'>0,00</span>",
+        "<span data-value='0000000000000001,0567269325256300'>1,1</span>",
+        "<span data-value='0000000000000061,7460289001465000'>62</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-22T21:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 0.62418794631958,
+    "wind_direction": 57.8592491149902,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 4,
+      "cell": [
+        4,
+        "",
+        "<span data-value='2013-05-22T21:00:00'>22-mai-2013, 21:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000000,6241879463195800'>0,6</span>",
+        "<span data-value='0000000000000057,8592491149902000'>58</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-22T22:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 0.786503076553345,
+    "wind_direction": 61.9087600708008,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 5,
+      "cell": [
+        5,
+        "",
+        "<span data-value='2013-05-22T22:00:00'>22-mai-2013, 22:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000000,7865030765533450'>0,8</span>",
+        "<span data-value='0000000000000061,9087600708008000'>62</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-22T23:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 0.470392256975174,
+    "wind_direction": 62.3492240905762,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 6,
+      "cell": [
+        6,
+        "",
+        "<span data-value='2013-05-22T23:00:00'>22-mai-2013, 23:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000000,4703922569751740'>0,5</span>",
+        "<span data-value='0000000000000062,3492240905762000'>62</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-23T00:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 0.338888108730316,
+    "wind_direction": 50.5671691894531,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 7,
+      "cell": [
+        7,
+        "",
+        "<span data-value='2013-05-23T00:00:00'>23-mai-2013, 00:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000000,3388881087303160'>0,3</span>",
+        "<span data-value='0000000000000050,5671691894531000'>51</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-23T01:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 0.419934242963791,
+    "wind_direction": 41.5725898742676,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 8,
+      "cell": [
+        8,
+        "",
+        "<span data-value='2013-05-23T01:00:00'>23-mai-2013, 01:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000000,4199342429637910'>0,4</span>",
+        "<span data-value='0000000000000041,5725898742676000'>42</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-23T02:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 0.458289623260498,
+    "wind_direction": 34.7260055541992,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 9,
+      "cell": [
+        9,
+        "",
+        "<span data-value='2013-05-23T02:00:00'>23-mai-2013, 02:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000000,4582896232604980'>0,5</span>",
+        "<span data-value='0000000000000034,7260055541992000'>35</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-23T03:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 0.432636350393295,
+    "wind_direction": 38.8265266418457,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 10,
+      "cell": [
+        10,
+        "",
+        "<span data-value='2013-05-23T03:00:00'>23-mai-2013, 03:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000000,4326363503932950'>0,4</span>",
+        "<span data-value='0000000000000038,8265266418457000'>39</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-23T04:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 0.301974982023239,
+    "wind_direction": 49.7896995544434,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 11,
+      "cell": [
+        11,
+        "",
+        "<span data-value='2013-05-23T04:00:00'>23-mai-2013, 04:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000000,3019749820232390'>0,3</span>",
+        "<span data-value='0000000000000049,7896995544434000'>50</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-23T05:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 0.348973035812378,
+    "wind_direction": 40.1394386291504,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 12,
+      "cell": [
+        12,
+        "",
+        "<span data-value='2013-05-23T05:00:00'>23-mai-2013, 05:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000000,3489730358123780'>0,3</span>",
+        "<span data-value='0000000000000040,1394386291504000'>40</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-23T06:00:00",
+    "value": 0.130667741163926,
+    "unit": "µg/m³",
+    "wind_speed": 0.311828106641769,
+    "wind_direction": 49.4367141723633,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 13,
+      "cell": [
+        13,
+        "",
+        "<span data-value='2013-05-23T06:00:00'>23-mai-2013, 06:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,1306677411639260'>0,13</span>",
+        "<span data-value='0000000000000000,3118281066417690'>0,3</span>",
+        "<span data-value='0000000000000049,4367141723633000'>49</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-23T07:00:00",
+    "value": 0.126664736121712,
+    "unit": "µg/m³",
+    "wind_speed": 0.339191019535065,
+    "wind_direction": 26.0862464904785,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 14,
+      "cell": [
+        14,
+        "",
+        "<span data-value='2013-05-23T07:00:00'>23-mai-2013, 07:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,1266647361217120'>0,13</span>",
+        "<span data-value='0000000000000000,3391910195350650'>0,3</span>",
+        "<span data-value='0000000000000026,0862464904785000'>26</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-23T08:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 0.390451401472092,
+    "wind_direction": 64.7562561035156,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 15,
+      "cell": [
+        15,
+        "",
+        "<span data-value='2013-05-23T08:00:00'>23-mai-2013, 08:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000000,3904514014720920'>0,4</span>",
+        "<span data-value='0000000000000064,7562561035156000'>65</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-23T09:00:00",
+    "value": 5.81414321944325,
+    "unit": "µg/m³",
+    "wind_speed": 0.701861381530762,
+    "wind_direction": 64.3173904418945,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 16,
+      "cell": [
+        16,
+        "",
+        "<span data-value='2013-05-23T09:00:00'>23-mai-2013, 09:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000005,8141432194432500'>5,81</span>",
+        "<span data-value='0000000000000000,7018613815307620'>0,7</span>",
+        "<span data-value='0000000000000064,3173904418945000'>64</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-23T10:00:00",
+    "value": 4.96094862889614,
+    "unit": "µg/m³",
+    "wind_speed": 0.475117444992065,
+    "wind_direction": 54.4805068969727,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 17,
+      "cell": [
+        17,
+        "",
+        "<span data-value='2013-05-23T10:00:00'>23-mai-2013, 10:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000004,9609486288961400'>4,96</span>",
+        "<span data-value='0000000000000000,4751174449920650'>0,5</span>",
+        "<span data-value='0000000000000054,4805068969727000'>54</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-23T11:00:00",
+    "value": 6.51668612681325,
+    "unit": "µg/m³",
+    "wind_speed": 0.787109315395355,
+    "wind_direction": 64.6883544921875,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 18,
+      "cell": [
+        18,
+        "",
+        "<span data-value='2013-05-23T11:00:00'>23-mai-2013, 11:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000006,5166861268132500'>6,52</span>",
+        "<span data-value='0000000000000000,7871093153953550'>0,8</span>",
+        "<span data-value='0000000000000064,6883544921875000'>65</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-23T12:00:00",
+    "value": 6.80086936905826,
+    "unit": "µg/m³",
+    "wind_speed": 1.0035594701767,
+    "wind_direction": 83.7951965332031,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 19,
+      "cell": [
+        19,
+        "",
+        "<span data-value='2013-05-23T12:00:00'>23-mai-2013, 12:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000006,8008693690582600'>6,80</span>",
+        "<span data-value='0000000000000001,0035594701767000'>1,0</span>",
+        "<span data-value='0000000000000083,7951965332031000'>84</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-23T13:00:00",
+    "value": 21.7010789534006,
+    "unit": "µg/m³",
+    "wind_speed": 0.849759101867676,
+    "wind_direction": 72.5288162231445,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 20,
+      "cell": [
+        20,
+        "",
+        "<span data-value='2013-05-23T13:00:00'>23-mai-2013, 13:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000021,7010789534006000'>21,70</span>",
+        "<span data-value='0000000000000000,8497591018676760'>0,8</span>",
+        "<span data-value='0000000000000072,5288162231445000'>73</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-23T15:00:00",
+    "value": 13.7311044007711,
+    "unit": "µg/m³",
+    "wind_speed": 1.60205221176147,
+    "wind_direction": 80.6915435791016,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 21,
+      "cell": [
+        21,
+        "",
+        "<span data-value='2013-05-23T15:00:00'>23-mai-2013, 15:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000013,7311044007711000'>13,73</span>",
+        "<span data-value='0000000000000001,6020522117614700'>1,6</span>",
+        "<span data-value='0000000000000080,6915435791016000'>81</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-23T16:00:00",
+    "value": 2.34745417869395,
+    "unit": "µg/m³",
+    "wind_speed": 0.85115659236908,
+    "wind_direction": 70.8728637695313,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 22,
+      "cell": [
+        22,
+        "",
+        "<span data-value='2013-05-23T16:00:00'>23-mai-2013, 16:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000002,3474541786939500'>2,35</span>",
+        "<span data-value='0000000000000000,8511565923690800'>0,9</span>",
+        "<span data-value='0000000000000070,8728637695313000'>71</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-23T17:00:00",
+    "value": 0.287865505349268,
+    "unit": "µg/m³",
+    "wind_speed": 1.09473514556885,
+    "wind_direction": 75.0618591308594,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 23,
+      "cell": [
+        23,
+        "",
+        "<span data-value='2013-05-23T17:00:00'>23-mai-2013, 17:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,2878655053492680'>0,29</span>",
+        "<span data-value='0000000000000001,0947351455688500'>1,1</span>",
+        "<span data-value='0000000000000075,0618591308594000'>75</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-23T18:00:00",
+    "value": 0.344073552806576,
+    "unit": "µg/m³",
+    "wind_speed": 1.14145588874817,
+    "wind_direction": 78.6565475463867,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 24,
+      "cell": [
+        24,
+        "",
+        "<span data-value='2013-05-23T18:00:00'>23-mai-2013, 18:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,3440735528065760'>0,34</span>",
+        "<span data-value='0000000000000001,1414558887481700'>1,1</span>",
+        "<span data-value='0000000000000078,6565475463867000'>79</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-23T19:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 1.21725559234619,
+    "wind_direction": 77.0565719604492,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 25,
+      "cell": [
+        25,
+        "",
+        "<span data-value='2013-05-23T19:00:00'>23-mai-2013, 19:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000001,2172555923461900'>1,2</span>",
+        "<span data-value='0000000000000077,0565719604492000'>77</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-23T20:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 1.25000321865082,
+    "wind_direction": 65.1415176391602,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 26,
+      "cell": [
+        26,
+        "",
+        "<span data-value='2013-05-23T20:00:00'>23-mai-2013, 20:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000001,2500032186508200'>1,3</span>",
+        "<span data-value='0000000000000065,1415176391602000'>65</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-23T21:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 1.17372822761536,
+    "wind_direction": 64.6666641235352,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 27,
+      "cell": [
+        27,
+        "",
+        "<span data-value='2013-05-23T21:00:00'>23-mai-2013, 21:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000001,1737282276153600'>1,2</span>",
+        "<span data-value='0000000000000064,6666641235352000'>65</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-23T22:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 0.883343398571014,
+    "wind_direction": 62.7232131958008,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 28,
+      "cell": [
+        28,
+        "",
+        "<span data-value='2013-05-23T22:00:00'>23-mai-2013, 22:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000000,8833433985710140'>0,9</span>",
+        "<span data-value='0000000000000062,7232131958008000'>63</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-23T23:00:00",
+    "value": 1.27429200914727,
+    "unit": "µg/m³",
+    "wind_speed": 0.569738447666168,
+    "wind_direction": 61.0453987121582,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 29,
+      "cell": [
+        29,
+        "",
+        "<span data-value='2013-05-23T23:00:00'>23-mai-2013, 23:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000001,2742920091472700'>1,27</span>",
+        "<span data-value='0000000000000000,5697384476661680'>0,6</span>",
+        "<span data-value='0000000000000061,0453987121582000'>61</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-24T00:00:00",
+    "value": 0.34676240019926,
+    "unit": "µg/m³",
+    "wind_speed": 0.497535526752472,
+    "wind_direction": 53.8702125549316,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 30,
+      "cell": [
+        30,
+        "",
+        "<span data-value='2013-05-24T00:00:00'>24-mai-2013, 00:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,3467624001992600'>0,35</span>",
+        "<span data-value='0000000000000000,4975355267524720'>0,5</span>",
+        "<span data-value='0000000000000053,8702125549316000'>54</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-24T01:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 0.335502982139587,
+    "wind_direction": 35.6185569763184,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 31,
+      "cell": [
+        31,
+        "",
+        "<span data-value='2013-05-24T01:00:00'>24-mai-2013, 01:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000000,3355029821395870'>0,3</span>",
+        "<span data-value='0000000000000035,6185569763184000'>36</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-24T02:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 0.358487039804459,
+    "wind_direction": 29.6764907836914,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 32,
+      "cell": [
+        32,
+        "",
+        "<span data-value='2013-05-24T02:00:00'>24-mai-2013, 02:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000000,3584870398044590'>0,4</span>",
+        "<span data-value='0000000000000029,6764907836914000'>30</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-24T03:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 0.353503704071045,
+    "wind_direction": 37.4777030944824,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 33,
+      "cell": [
+        33,
+        "",
+        "<span data-value='2013-05-24T03:00:00'>24-mai-2013, 03:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000000,3535037040710450'>0,4</span>",
+        "<span data-value='0000000000000037,4777030944824000'>37</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-24T04:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 0.326722592115402,
+    "wind_direction": 40.5244102478027,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 34,
+      "cell": [
+        34,
+        "",
+        "<span data-value='2013-05-24T04:00:00'>24-mai-2013, 04:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000000,3267225921154020'>0,3</span>",
+        "<span data-value='0000000000000040,5244102478027000'>41</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-24T05:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 0.350626558065414,
+    "wind_direction": 45.1351089477539,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 35,
+      "cell": [
+        35,
+        "",
+        "<span data-value='2013-05-24T05:00:00'>24-mai-2013, 05:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000000,3506265580654140'>0,4</span>",
+        "<span data-value='0000000000000045,1351089477539000'>45</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-24T06:00:00",
+    "value": 0.317485897560422,
+    "unit": "µg/m³",
+    "wind_speed": 0.302347004413605,
+    "wind_direction": 43.2005920410156,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 36,
+      "cell": [
+        36,
+        "",
+        "<span data-value='2013-05-24T06:00:00'>24-mai-2013, 06:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,3174858975604220'>0,32</span>",
+        "<span data-value='0000000000000000,3023470044136050'>0,3</span>",
+        "<span data-value='0000000000000043,2005920410156000'>43</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-24T07:00:00",
+    "value": 0.246470856233143,
+    "unit": "µg/m³",
+    "wind_speed": 0.348378598690033,
+    "wind_direction": 43.7724342346191,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 37,
+      "cell": [
+        37,
+        "",
+        "<span data-value='2013-05-24T07:00:00'>24-mai-2013, 07:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,2464708562331430'>0,25</span>",
+        "<span data-value='0000000000000000,3483785986900330'>0,3</span>",
+        "<span data-value='0000000000000043,7724342346191000'>44</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-24T08:00:00",
+    "value": 0.126928940172425,
+    "unit": "µg/m³",
+    "wind_speed": 0.339178949594498,
+    "wind_direction": 31.9019927978516,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 38,
+      "cell": [
+        38,
+        "",
+        "<span data-value='2013-05-24T08:00:00'>24-mai-2013, 08:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,1269289401724250'>0,13</span>",
+        "<span data-value='0000000000000000,3391789495944980'>0,3</span>",
+        "<span data-value='0000000000000031,9019927978516000'>32</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-24T09:00:00",
+    "value": 2.2490567029467,
+    "unit": "µg/m³",
+    "wind_speed": 0.35004511475563,
+    "wind_direction": 49.418285369873,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 39,
+      "cell": [
+        39,
+        "",
+        "<span data-value='2013-05-24T09:00:00'>24-mai-2013, 09:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000002,2490567029467000'>2,25</span>",
+        "<span data-value='0000000000000000,3500451147556300'>0,4</span>",
+        "<span data-value='0000000000000049,4182853698730000'>49</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-24T10:00:00",
+    "value": 5.61936885646594,
+    "unit": "µg/m³",
+    "wind_speed": 0.557847082614899,
+    "wind_direction": 65.8159484863281,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 40,
+      "cell": [
+        40,
+        "",
+        "<span data-value='2013-05-24T10:00:00'>24-mai-2013, 10:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000005,6193688564659400'>5,62</span>",
+        "<span data-value='0000000000000000,5578470826148990'>0,6</span>",
+        "<span data-value='0000000000000065,8159484863281000'>66</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-24T11:00:00",
+    "value": 0.704453372768401,
+    "unit": "µg/m³",
+    "wind_speed": 0.953044772148132,
+    "wind_direction": 62.2781562805176,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 41,
+      "cell": [
+        41,
+        "",
+        "<span data-value='2013-05-24T11:00:00'>24-mai-2013, 11:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,7044533727684010'>0,70</span>",
+        "<span data-value='0000000000000000,9530447721481320'>1,0</span>",
+        "<span data-value='0000000000000062,2781562805176000'>62</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-24T12:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 0.908322334289551,
+    "wind_direction": 54.327392578125,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 42,
+      "cell": [
+        42,
+        "",
+        "<span data-value='2013-05-24T12:00:00'>24-mai-2013, 12:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000000,9083223342895510'>0,9</span>",
+        "<span data-value='0000000000000054,3273925781250000'>54</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-24T13:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 0.582134544849396,
+    "wind_direction": 39.570125579834,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 43,
+      "cell": [
+        43,
+        "",
+        "<span data-value='2013-05-24T13:00:00'>24-mai-2013, 13:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000000,5821345448493960'>0,6</span>",
+        "<span data-value='0000000000000039,5701255798340000'>40</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-24T15:00:00",
+    "value": 0.159897213654533,
+    "unit": "µg/m³",
+    "wind_speed": 0.577422380447388,
+    "wind_direction": 42.2761840820313,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 44,
+      "cell": [
+        44,
+        "",
+        "<span data-value='2013-05-24T15:00:00'>24-mai-2013, 15:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,1598972136545330'>0,16</span>",
+        "<span data-value='0000000000000000,5774223804473880'>0,6</span>",
+        "<span data-value='0000000000000042,2761840820313000'>42</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-24T16:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 0.338583678007126,
+    "wind_direction": 38.259838104248,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 45,
+      "cell": [
+        45,
+        "",
+        "<span data-value='2013-05-24T16:00:00'>24-mai-2013, 16:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000000,3385836780071260'>0,3</span>",
+        "<span data-value='0000000000000038,2598381042480000'>38</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-24T17:00:00",
+    "value": 0.771169353478892,
+    "unit": "µg/m³",
+    "wind_speed": 0.319212079048157,
+    "wind_direction": 49.9388084411621,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 46,
+      "cell": [
+        46,
+        "",
+        "<span data-value='2013-05-24T17:00:00'>24-mai-2013, 17:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,7711693534788920'>0,77</span>",
+        "<span data-value='0000000000000000,3192120790481570'>0,3</span>",
+        "<span data-value='0000000000000049,9388084411621000'>50</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-24T18:00:00",
+    "value": 0.425806461948801,
+    "unit": "µg/m³",
+    "wind_speed": 0.347322076559067,
+    "wind_direction": 31.2419204711914,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 47,
+      "cell": [
+        47,
+        "",
+        "<span data-value='2013-05-24T18:00:00'>24-mai-2013, 18:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,4258064619488010'>0,43</span>",
+        "<span data-value='0000000000000000,3473220765590670'>0,3</span>",
+        "<span data-value='0000000000000031,2419204711914000'>31</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-24T19:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 0.41879940032959,
+    "wind_direction": 45.6724052429199,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 48,
+      "cell": [
+        48,
+        "",
+        "<span data-value='2013-05-24T19:00:00'>24-mai-2013, 19:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000000,4187994003295900'>0,4</span>",
+        "<span data-value='0000000000000045,6724052429199000'>46</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-24T20:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 0.354194164276123,
+    "wind_direction": 45.9842338562012,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 49,
+      "cell": [
+        49,
+        "",
+        "<span data-value='2013-05-24T20:00:00'>24-mai-2013, 20:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000000,3541941642761230'>0,4</span>",
+        "<span data-value='0000000000000045,9842338562012000'>46</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-24T21:00:00",
+    "value": 0.160772126162678,
+    "unit": "µg/m³",
+    "wind_speed": 0.347929179668426,
+    "wind_direction": 30.276294708252,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 50,
+      "cell": [
+        50,
+        "",
+        "<span data-value='2013-05-24T21:00:00'>24-mai-2013, 21:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,1607721261626780'>0,16</span>",
+        "<span data-value='0000000000000000,3479291796684260'>0,3</span>",
+        "<span data-value='0000000000000030,2762947082520000'>30</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-24T22:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 0.366270363330841,
+    "wind_direction": 34.6622314453125,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 51,
+      "cell": [
+        51,
+        "",
+        "<span data-value='2013-05-24T22:00:00'>24-mai-2013, 22:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000000,3662703633308410'>0,4</span>",
+        "<span data-value='0000000000000034,6622314453125000'>35</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-24T23:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 0.424534171819687,
+    "wind_direction": 43.5137100219727,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 52,
+      "cell": [
+        52,
+        "",
+        "<span data-value='2013-05-24T23:00:00'>24-mai-2013, 23:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000000,4245341718196870'>0,4</span>",
+        "<span data-value='0000000000000043,5137100219727000'>44</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-25T00:00:00",
+    "value": 3.25488241428922,
+    "unit": "µg/m³",
+    "wind_speed": 0.494774669408798,
+    "wind_direction": 51.3750686645508,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 53,
+      "cell": [
+        53,
+        "",
+        "<span data-value='2013-05-25T00:00:00'>25-mai-2013, 00:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000003,2548824142892200'>3,25</span>",
+        "<span data-value='0000000000000000,4947746694087980'>0,5</span>",
+        "<span data-value='0000000000000051,3750686645508000'>51</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-25T01:00:00",
+    "value": 0.955365639899774,
+    "unit": "µg/m³",
+    "wind_speed": 0.334441930055618,
+    "wind_direction": 28.0842323303223,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 54,
+      "cell": [
+        54,
+        "",
+        "<span data-value='2013-05-25T01:00:00'>25-mai-2013, 01:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,9553656398997740'>0,96</span>",
+        "<span data-value='0000000000000000,3344419300556180'>0,3</span>",
+        "<span data-value='0000000000000028,0842323303223000'>28</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-25T02:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 0.355330318212509,
+    "wind_direction": 24.6495666503906,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 55,
+      "cell": [
+        55,
+        "",
+        "<span data-value='2013-05-25T02:00:00'>25-mai-2013, 02:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000000,3553303182125090'>0,4</span>",
+        "<span data-value='0000000000000024,6495666503906000'>25</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-25T03:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 0.368429213762283,
+    "wind_direction": 28.4881610870361,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 56,
+      "cell": [
+        56,
+        "",
+        "<span data-value='2013-05-25T03:00:00'>25-mai-2013, 03:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000000,3684292137622830'>0,4</span>",
+        "<span data-value='0000000000000028,4881610870361000'>28</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-25T04:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 0.354795306921005,
+    "wind_direction": 28.817554473877,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 57,
+      "cell": [
+        57,
+        "",
+        "<span data-value='2013-05-25T04:00:00'>25-mai-2013, 04:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000000,3547953069210050'>0,4</span>",
+        "<span data-value='0000000000000028,8175544738770000'>29</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-25T05:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 0.370910108089447,
+    "wind_direction": 27.2377300262451,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 58,
+      "cell": [
+        58,
+        "",
+        "<span data-value='2013-05-25T05:00:00'>25-mai-2013, 05:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000000,3709101080894470'>0,4</span>",
+        "<span data-value='0000000000000027,2377300262451000'>27</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-25T06:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 0.338618546724319,
+    "wind_direction": 20.4410247802734,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 59,
+      "cell": [
+        59,
+        "",
+        "<span data-value='2013-05-25T06:00:00'>25-mai-2013, 06:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000000,3386185467243190'>0,3</span>",
+        "<span data-value='0000000000000020,4410247802734000'>20</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-25T07:00:00",
+    "value": 0.231708306732207,
+    "unit": "µg/m³",
+    "wind_speed": 0.363930970430374,
+    "wind_direction": 34.2906074523926,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 60,
+      "cell": [
+        60,
+        "",
+        "<span data-value='2013-05-25T07:00:00'>25-mai-2013, 07:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,2317083067322070'>0,23</span>",
+        "<span data-value='0000000000000000,3639309704303740'>0,4</span>",
+        "<span data-value='0000000000000034,2906074523926000'>34</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-25T08:00:00",
+    "value": 0.112051379877921,
+    "unit": "µg/m³",
+    "wind_speed": 0.340594381093979,
+    "wind_direction": 46.5220756530762,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 61,
+      "cell": [
+        61,
+        "",
+        "<span data-value='2013-05-25T08:00:00'>25-mai-2013, 08:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,1120513798779210'>0,11</span>",
+        "<span data-value='0000000000000000,3405943810939790'>0,3</span>",
+        "<span data-value='0000000000000046,5220756530762000'>47</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-25T09:00:00",
+    "value": 4.00935721669359,
+    "unit": "µg/m³",
+    "wind_speed": 0.33940190076828,
+    "wind_direction": 36.3921165466309,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 62,
+      "cell": [
+        62,
+        "",
+        "<span data-value='2013-05-25T09:00:00'>25-mai-2013, 09:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000004,0093572166935900'>4,01</span>",
+        "<span data-value='0000000000000000,3394019007682800'>0,3</span>",
+        "<span data-value='0000000000000036,3921165466309000'>36</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-25T10:00:00",
+    "value": 1.38675045509532,
+    "unit": "µg/m³",
+    "wind_speed": 0.415107101202011,
+    "wind_direction": 45.0096015930176,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 63,
+      "cell": [
+        63,
+        "",
+        "<span data-value='2013-05-25T10:00:00'>25-mai-2013, 10:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000001,3867504550953200'>1,39</span>",
+        "<span data-value='0000000000000000,4151071012020110'>0,4</span>",
+        "<span data-value='0000000000000045,0096015930176000'>45</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-25T11:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 0.988718867301941,
+    "wind_direction": 51.7969017028809,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 64,
+      "cell": [
+        64,
+        "",
+        "<span data-value='2013-05-25T11:00:00'>25-mai-2013, 11:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000000,9887188673019410'>1,0</span>",
+        "<span data-value='0000000000000051,7969017028809000'>52</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-25T12:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 1.01788949966431,
+    "wind_direction": 48.3177070617676,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 65,
+      "cell": [
+        65,
+        "",
+        "<span data-value='2013-05-25T12:00:00'>25-mai-2013, 12:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000001,0178894996643100'>1,0</span>",
+        "<span data-value='0000000000000048,3177070617676000'>48</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-25T13:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 1.04140198230743,
+    "wind_direction": 55.7403907775879,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 66,
+      "cell": [
+        66,
+        "",
+        "<span data-value='2013-05-25T13:00:00'>25-mai-2013, 13:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000001,0414019823074300'>1,0</span>",
+        "<span data-value='0000000000000055,7403907775879000'>56</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-25T15:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 0.924813747406006,
+    "wind_direction": 51.7917633056641,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 67,
+      "cell": [
+        67,
+        "",
+        "<span data-value='2013-05-25T15:00:00'>25-mai-2013, 15:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000000,9248137474060060'>0,9</span>",
+        "<span data-value='0000000000000051,7917633056641000'>52</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-25T16:00:00",
+    "value": 4.472371903544,
+    "unit": "µg/m³",
+    "wind_speed": 1.33052754402161,
+    "wind_direction": 64.1516189575195,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 68,
+      "cell": [
+        68,
+        "",
+        "<span data-value='2013-05-25T16:00:00'>25-mai-2013, 16:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000004,4723719035440000'>4,47</span>",
+        "<span data-value='0000000000000001,3305275440216100'>1,3</span>",
+        "<span data-value='0000000000000064,1516189575195000'>64</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-25T17:00:00",
+    "value": 16.4342379139407,
+    "unit": "µg/m³",
+    "wind_speed": 1.22995471954346,
+    "wind_direction": 62.7180480957031,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 69,
+      "cell": [
+        69,
+        "",
+        "<span data-value='2013-05-25T17:00:00'>25-mai-2013, 17:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000016,4342379139407000'>16,43</span>",
+        "<span data-value='0000000000000001,2299547195434600'>1,2</span>",
+        "<span data-value='0000000000000062,7180480957031000'>63</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-25T18:00:00",
+    "value": 3.95784344348926,
+    "unit": "µg/m³",
+    "wind_speed": 0.680855572223663,
+    "wind_direction": 61.5255393981934,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 70,
+      "cell": [
+        70,
+        "",
+        "<span data-value='2013-05-25T18:00:00'>25-mai-2013, 18:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000003,9578434434892600'>3,96</span>",
+        "<span data-value='0000000000000000,6808555722236630'>0,7</span>",
+        "<span data-value='0000000000000061,5255393981934000'>62</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-25T19:00:00",
+    "value": 2.68014296656773,
+    "unit": "µg/m³",
+    "wind_speed": 0.413637578487396,
+    "wind_direction": 59.0730285644531,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 71,
+      "cell": [
+        71,
+        "",
+        "<span data-value='2013-05-25T19:00:00'>25-mai-2013, 19:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000002,6801429665677300'>2,68</span>",
+        "<span data-value='0000000000000000,4136375784873960'>0,4</span>",
+        "<span data-value='0000000000000059,0730285644531000'>59</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-25T20:00:00",
+    "value": 2.59854426006853,
+    "unit": "µg/m³",
+    "wind_speed": 0.631084084510803,
+    "wind_direction": 52.4196815490723,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 72,
+      "cell": [
+        72,
+        "",
+        "<span data-value='2013-05-25T20:00:00'>25-mai-2013, 20:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000002,5985442600685300'>2,60</span>",
+        "<span data-value='0000000000000000,6310840845108030'>0,6</span>",
+        "<span data-value='0000000000000052,4196815490723000'>52</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-25T21:00:00",
+    "value": 0.537295282299142,
+    "unit": "µg/m³",
+    "wind_speed": 0.44019490480423,
+    "wind_direction": 47.2359275817871,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 73,
+      "cell": [
+        73,
+        "",
+        "<span data-value='2013-05-25T21:00:00'>25-mai-2013, 21:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,5372952822991420'>0,54</span>",
+        "<span data-value='0000000000000000,4401949048042300'>0,4</span>",
+        "<span data-value='0000000000000047,2359275817871000'>47</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-25T22:00:00",
+    "value": 1.94226186140336,
+    "unit": "µg/m³",
+    "wind_speed": 0.449902772903442,
+    "wind_direction": 59.7586708068848,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 74,
+      "cell": [
+        74,
+        "",
+        "<span data-value='2013-05-25T22:00:00'>25-mai-2013, 22:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000001,9422618614033600'>1,94</span>",
+        "<span data-value='0000000000000000,4499027729034420'>0,4</span>",
+        "<span data-value='0000000000000059,7586708068848000'>60</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-25T23:00:00",
+    "value": 0.123152631691035,
+    "unit": "µg/m³",
+    "wind_speed": 0.368987202644348,
+    "wind_direction": 46.8819236755371,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 75,
+      "cell": [
+        75,
+        "",
+        "<span data-value='2013-05-25T23:00:00'>25-mai-2013, 23:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,1231526316910350'>0,12</span>",
+        "<span data-value='0000000000000000,3689872026443480'>0,4</span>",
+        "<span data-value='0000000000000046,8819236755371000'>47</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-26T00:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 0.512937843799591,
+    "wind_direction": 27.3585662841797,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 76,
+      "cell": [
+        76,
+        "",
+        "<span data-value='2013-05-26T00:00:00'>26-mai-2013, 00:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000000,5129378437995910'>0,5</span>",
+        "<span data-value='0000000000000027,3585662841797000'>27</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-26T01:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 0.468817740678787,
+    "wind_direction": 29.1665992736816,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 77,
+      "cell": [
+        77,
+        "",
+        "<span data-value='2013-05-26T01:00:00'>26-mai-2013, 01:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000000,4688177406787870'>0,5</span>",
+        "<span data-value='0000000000000029,1665992736816000'>29</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-26T02:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 0.357636123895645,
+    "wind_direction": 36.522575378418,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 78,
+      "cell": [
+        78,
+        "",
+        "<span data-value='2013-05-26T02:00:00'>26-mai-2013, 02:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000000,3576361238956450'>0,4</span>",
+        "<span data-value='0000000000000036,5225753784180000'>37</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-26T03:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 0.34301832318306,
+    "wind_direction": 32.1949501037598,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 79,
+      "cell": [
+        79,
+        "",
+        "<span data-value='2013-05-26T03:00:00'>26-mai-2013, 03:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000000,3430183231830600'>0,3</span>",
+        "<span data-value='0000000000000032,1949501037598000'>32</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-26T04:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 0.461457550525665,
+    "wind_direction": 32.722339630127,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 80,
+      "cell": [
+        80,
+        "",
+        "<span data-value='2013-05-26T04:00:00'>26-mai-2013, 04:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000000,4614575505256650'>0,5</span>",
+        "<span data-value='0000000000000032,7223396301270000'>33</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-26T05:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 0.37537208199501,
+    "wind_direction": 31.678882598877,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 81,
+      "cell": [
+        81,
+        "",
+        "<span data-value='2013-05-26T05:00:00'>26-mai-2013, 05:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000000,3753720819950100'>0,4</span>",
+        "<span data-value='0000000000000031,6788825988770000'>32</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-26T06:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 0.386585146188736,
+    "wind_direction": 33.1614189147949,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 82,
+      "cell": [
+        82,
+        "",
+        "<span data-value='2013-05-26T06:00:00'>26-mai-2013, 06:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000000,3865851461887360'>0,4</span>",
+        "<span data-value='0000000000000033,1614189147949000'>33</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-26T07:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 0.452733159065247,
+    "wind_direction": 32.0485649108887,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 83,
+      "cell": [
+        83,
+        "",
+        "<span data-value='2013-05-26T07:00:00'>26-mai-2013, 07:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000000,4527331590652470'>0,5</span>",
+        "<span data-value='0000000000000032,0485649108887000'>32</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-26T08:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 0.385559350252151,
+    "wind_direction": 50.7441024780273,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 84,
+      "cell": [
+        84,
+        "",
+        "<span data-value='2013-05-26T08:00:00'>26-mai-2013, 08:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000000,3855593502521510'>0,4</span>",
+        "<span data-value='0000000000000050,7441024780273000'>51</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-26T09:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 0.797541499137878,
+    "wind_direction": 59.6681442260742,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 85,
+      "cell": [
+        85,
+        "",
+        "<span data-value='2013-05-26T09:00:00'>26-mai-2013, 09:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000000,7975414991378780'>0,8</span>",
+        "<span data-value='0000000000000059,6681442260742000'>60</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-26T10:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 0.732382655143738,
+    "wind_direction": 64.9923706054687,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 86,
+      "cell": [
+        86,
+        "",
+        "<span data-value='2013-05-26T10:00:00'>26-mai-2013, 10:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000000,7323826551437380'>0,7</span>",
+        "<span data-value='0000000000000064,9923706054687000'>65</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-26T11:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 0.97771418094635,
+    "wind_direction": 71.6040878295898,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 87,
+      "cell": [
+        87,
+        "",
+        "<span data-value='2013-05-26T11:00:00'>26-mai-2013, 11:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000000,9777141809463500'>1,0</span>",
+        "<span data-value='0000000000000071,6040878295898000'>72</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-26T12:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 1.27082669734955,
+    "wind_direction": 75.4444885253906,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 88,
+      "cell": [
+        88,
+        "",
+        "<span data-value='2013-05-26T12:00:00'>26-mai-2013, 12:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000001,2708266973495500'>1,3</span>",
+        "<span data-value='0000000000000075,4444885253906000'>75</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-26T13:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 1.32875454425812,
+    "wind_direction": 67.3154144287109,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 89,
+      "cell": [
+        89,
+        "",
+        "<span data-value='2013-05-26T13:00:00'>26-mai-2013, 13:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000001,3287545442581200'>1,3</span>",
+        "<span data-value='0000000000000067,3154144287109000'>67</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-26T15:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 1.20821559429169,
+    "wind_direction": 64.3926010131836,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 90,
+      "cell": [
+        90,
+        "",
+        "<span data-value='2013-05-26T15:00:00'>26-mai-2013, 15:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000001,2082155942916900'>1,2</span>",
+        "<span data-value='0000000000000064,3926010131836000'>64</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-26T16:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 1.1713924407959,
+    "wind_direction": 73.4343948364258,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 91,
+      "cell": [
+        91,
+        "",
+        "<span data-value='2013-05-26T16:00:00'>26-mai-2013, 16:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000001,1713924407959000'>1,2</span>",
+        "<span data-value='0000000000000073,4343948364258000'>73</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-26T17:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 0.58870667219162,
+    "wind_direction": 68.7991485595703,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 92,
+      "cell": [
+        92,
+        "",
+        "<span data-value='2013-05-26T17:00:00'>26-mai-2013, 17:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000000,5887066721916200'>0,6</span>",
+        "<span data-value='0000000000000068,7991485595703000'>69</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-26T18:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 0.410392493009567,
+    "wind_direction": 61.5612602233887,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 93,
+      "cell": [
+        93,
+        "",
+        "<span data-value='2013-05-26T18:00:00'>26-mai-2013, 18:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000000,4103924930095670'>0,4</span>",
+        "<span data-value='0000000000000061,5612602233887000'>62</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-26T19:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 0.35549259185791,
+    "wind_direction": 34.2828826904297,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 94,
+      "cell": [
+        94,
+        "",
+        "<span data-value='2013-05-26T19:00:00'>26-mai-2013, 19:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000000,3554925918579100'>0,4</span>",
+        "<span data-value='0000000000000034,2828826904297000'>34</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-26T20:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 0.377318650484085,
+    "wind_direction": 35.6982002258301,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 95,
+      "cell": [
+        95,
+        "",
+        "<span data-value='2013-05-26T20:00:00'>26-mai-2013, 20:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000000,3773186504840850'>0,4</span>",
+        "<span data-value='0000000000000035,6982002258301000'>36</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-26T21:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 0.42008712887764,
+    "wind_direction": 41.1893730163574,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 96,
+      "cell": [
+        96,
+        "",
+        "<span data-value='2013-05-26T21:00:00'>26-mai-2013, 21:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000000,4200871288776400'>0,4</span>",
+        "<span data-value='0000000000000041,1893730163574000'>41</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-26T22:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 0.354612648487091,
+    "wind_direction": 38.5365333557129,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 97,
+      "cell": [
+        97,
+        "",
+        "<span data-value='2013-05-26T22:00:00'>26-mai-2013, 22:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000000,3546126484870910'>0,4</span>",
+        "<span data-value='0000000000000038,5365333557129000'>39</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-26T23:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 0.553511083126068,
+    "wind_direction": 39.5068321228027,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 98,
+      "cell": [
+        98,
+        "",
+        "<span data-value='2013-05-26T23:00:00'>26-mai-2013, 23:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000000,5535110831260680'>0,6</span>",
+        "<span data-value='0000000000000039,5068321228027000'>40</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-27T00:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 0.521900057792664,
+    "wind_direction": 38.7866096496582,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 99,
+      "cell": [
+        99,
+        "",
+        "<span data-value='2013-05-27T00:00:00'>27-mai-2013, 00:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000000,5219000577926640'>0,5</span>",
+        "<span data-value='0000000000000038,7866096496582000'>39</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-27T01:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 0.371944487094879,
+    "wind_direction": 36.5923614501953,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 100,
+      "cell": [
+        100,
+        "",
+        "<span data-value='2013-05-27T01:00:00'>27-mai-2013, 01:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000000,3719444870948790'>0,4</span>",
+        "<span data-value='0000000000000036,5923614501953000'>37</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-27T02:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 0.380969107151031,
+    "wind_direction": 34.2842063903809,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 101,
+      "cell": [
+        101,
+        "",
+        "<span data-value='2013-05-27T02:00:00'>27-mai-2013, 02:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000000,3809691071510310'>0,4</span>",
+        "<span data-value='0000000000000034,2842063903809000'>34</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-27T03:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 0.338322103023529,
+    "wind_direction": 46.8997650146484,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 102,
+      "cell": [
+        102,
+        "",
+        "<span data-value='2013-05-27T03:00:00'>27-mai-2013, 03:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000000,3383221030235290'>0,3</span>",
+        "<span data-value='0000000000000046,8997650146484000'>47</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-27T04:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 0.379864871501923,
+    "wind_direction": 38.4013214111328,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 103,
+      "cell": [
+        103,
+        "",
+        "<span data-value='2013-05-27T04:00:00'>27-mai-2013, 04:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000000,3798648715019230'>0,4</span>",
+        "<span data-value='0000000000000038,4013214111328000'>38</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-27T05:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 0.349608987569809,
+    "wind_direction": 33.5422477722168,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 104,
+      "cell": [
+        104,
+        "",
+        "<span data-value='2013-05-27T05:00:00'>27-mai-2013, 05:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000000,3496089875698090'>0,3</span>",
+        "<span data-value='0000000000000033,5422477722168000'>34</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-27T06:00:00",
+    "value": 0.58907053929993,
+    "unit": "µg/m³",
+    "wind_speed": 0.363439738750458,
+    "wind_direction": 34.7069435119629,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 105,
+      "cell": [
+        105,
+        "",
+        "<span data-value='2013-05-27T06:00:00'>27-mai-2013, 06:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,5890705392999300'>0,59</span>",
+        "<span data-value='0000000000000000,3634397387504580'>0,4</span>",
+        "<span data-value='0000000000000034,7069435119629000'>35</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-27T07:00:00",
+    "value": 0.761519832701916,
+    "unit": "µg/m³",
+    "wind_speed": 0.367395997047424,
+    "wind_direction": 41.0803527832031,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 106,
+      "cell": [
+        106,
+        "",
+        "<span data-value='2013-05-27T07:00:00'>27-mai-2013, 07:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,7615198327019160'>0,76</span>",
+        "<span data-value='0000000000000000,3673959970474240'>0,4</span>",
+        "<span data-value='0000000000000041,0803527832031000'>41</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-27T08:00:00",
+    "value": 0.044374961525614,
+    "unit": "µg/m³",
+    "wind_speed": 0.31872421503067,
+    "wind_direction": 64.3662872314453,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 107,
+      "cell": [
+        107,
+        "",
+        "<span data-value='2013-05-27T08:00:00'>27-mai-2013, 08:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,0443749615256140'>0,04</span>",
+        "<span data-value='0000000000000000,3187242150306700'>0,3</span>",
+        "<span data-value='0000000000000064,3662872314453000'>64</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-27T09:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 0.868422150611878,
+    "wind_direction": 74.5703125,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 108,
+      "cell": [
+        108,
+        "",
+        "<span data-value='2013-05-27T09:00:00'>27-mai-2013, 09:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000000,8684221506118780'>0,9</span>",
+        "<span data-value='0000000000000074,5703125000000000'>75</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-27T10:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 0.970485925674439,
+    "wind_direction": 72.0114898681641,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 109,
+      "cell": [
+        109,
+        "",
+        "<span data-value='2013-05-27T10:00:00'>27-mai-2013, 10:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000000,9704859256744390'>1,0</span>",
+        "<span data-value='0000000000000072,0114898681641000'>72</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-27T11:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 0.945095837116241,
+    "wind_direction": 69.72412109375,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 110,
+      "cell": [
+        110,
+        "",
+        "<span data-value='2013-05-27T11:00:00'>27-mai-2013, 11:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000000,9450958371162410'>0,9</span>",
+        "<span data-value='0000000000000069,7241210937500000'>70</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-27T12:00:00",
+    "value": 0.188371907755506,
+    "unit": "µg/m³",
+    "wind_speed": 0.636813998222351,
+    "wind_direction": 50.6950035095215,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 111,
+      "cell": [
+        111,
+        "",
+        "<span data-value='2013-05-27T12:00:00'>27-mai-2013, 12:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,1883719077555060'>0,19</span>",
+        "<span data-value='0000000000000000,6368139982223510'>0,6</span>",
+        "<span data-value='0000000000000050,6950035095215000'>51</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-27T13:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 1.03723871707916,
+    "wind_direction": 39.7767677307129,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 112,
+      "cell": [
+        112,
+        "",
+        "<span data-value='2013-05-27T13:00:00'>27-mai-2013, 13:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000001,0372387170791600'>1,0</span>",
+        "<span data-value='0000000000000039,7767677307129000'>40</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-27T15:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 0.769436359405518,
+    "wind_direction": 18.6869010925293,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 113,
+      "cell": [
+        113,
+        "",
+        "<span data-value='2013-05-27T15:00:00'>27-mai-2013, 15:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000000,7694363594055180'>0,8</span>",
+        "<span data-value='0000000000000018,6869010925293000'>19</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-27T16:00:00",
+    "value": 0.110191045138917,
+    "unit": "µg/m³",
+    "wind_speed": 1.04851651191711,
+    "wind_direction": 21.726131439209,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 114,
+      "cell": [
+        114,
+        "",
+        "<span data-value='2013-05-27T16:00:00'>27-mai-2013, 16:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,1101910451389170'>0,11</span>",
+        "<span data-value='0000000000000001,0485165119171100'>1,0</span>",
+        "<span data-value='0000000000000021,7261314392090000'>22</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-27T17:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 2.01969909667969,
+    "wind_direction": 32.7286758422852,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 115,
+      "cell": [
+        115,
+        "",
+        "<span data-value='2013-05-27T17:00:00'>27-mai-2013, 17:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000002,0196990966796900'>2,0</span>",
+        "<span data-value='0000000000000032,7286758422852000'>33</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-27T18:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 1.07868313789368,
+    "wind_direction": 32.9973678588867,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 116,
+      "cell": [
+        116,
+        "",
+        "<span data-value='2013-05-27T18:00:00'>27-mai-2013, 18:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000001,0786831378936800'>1,1</span>",
+        "<span data-value='0000000000000032,9973678588867000'>33</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-27T19:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 0.503599107265472,
+    "wind_direction": 32.2714500427246,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 117,
+      "cell": [
+        117,
+        "",
+        "<span data-value='2013-05-27T19:00:00'>27-mai-2013, 19:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000000,5035991072654720'>0,5</span>",
+        "<span data-value='0000000000000032,2714500427246000'>32</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-27T20:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 0.450416922569275,
+    "wind_direction": 32.7277488708496,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 118,
+      "cell": [
+        118,
+        "",
+        "<span data-value='2013-05-27T20:00:00'>27-mai-2013, 20:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000000,4504169225692750'>0,5</span>",
+        "<span data-value='0000000000000032,7277488708496000'>33</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-27T21:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 0.350279897451401,
+    "wind_direction": 29.3440952301025,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 119,
+      "cell": [
+        119,
+        "",
+        "<span data-value='2013-05-27T21:00:00'>27-mai-2013, 21:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000000,3502798974514010'>0,4</span>",
+        "<span data-value='0000000000000029,3440952301025000'>29</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-27T22:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 0.418337285518646,
+    "wind_direction": 27.6513996124268,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 120,
+      "cell": [
+        120,
+        "",
+        "<span data-value='2013-05-27T22:00:00'>27-mai-2013, 22:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000000,4183372855186460'>0,4</span>",
+        "<span data-value='0000000000000027,6513996124268000'>28</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-27T23:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 0.360887229442596,
+    "wind_direction": 29.6075191497803,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 121,
+      "cell": [
+        121,
+        "",
+        "<span data-value='2013-05-27T23:00:00'>27-mai-2013, 23:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000000,3608872294425960'>0,4</span>",
+        "<span data-value='0000000000000029,6075191497803000'>30</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-28T00:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 0.499237447977066,
+    "wind_direction": 29.5008983612061,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 122,
+      "cell": [
+        122,
+        "",
+        "<span data-value='2013-05-28T00:00:00'>28-mai-2013, 00:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000000,4992374479770660'>0,5</span>",
+        "<span data-value='0000000000000029,5008983612061000'>30</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-28T01:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 0.354688763618469,
+    "wind_direction": 31.7974700927734,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 123,
+      "cell": [
+        123,
+        "",
+        "<span data-value='2013-05-28T01:00:00'>28-mai-2013, 01:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000000,3546887636184690'>0,4</span>",
+        "<span data-value='0000000000000031,7974700927734000'>32</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-28T02:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 0.361175775527954,
+    "wind_direction": 29.3989772796631,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 124,
+      "cell": [
+        124,
+        "",
+        "<span data-value='2013-05-28T02:00:00'>28-mai-2013, 02:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000000,3611757755279540'>0,4</span>",
+        "<span data-value='0000000000000029,3989772796631000'>29</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-28T03:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 0.354088515043259,
+    "wind_direction": 28.7876491546631,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 125,
+      "cell": [
+        125,
+        "",
+        "<span data-value='2013-05-28T03:00:00'>28-mai-2013, 03:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000000,3540885150432590'>0,4</span>",
+        "<span data-value='0000000000000028,7876491546631000'>29</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-28T04:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 0.400057911872864,
+    "wind_direction": 24.7768802642822,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 126,
+      "cell": [
+        126,
+        "",
+        "<span data-value='2013-05-28T04:00:00'>28-mai-2013, 04:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000000,4000579118728640'>0,4</span>",
+        "<span data-value='0000000000000024,7768802642822000'>25</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-28T05:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 0.439703434705734,
+    "wind_direction": 28.8402500152588,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 127,
+      "cell": [
+        127,
+        "",
+        "<span data-value='2013-05-28T05:00:00'>28-mai-2013, 05:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000000,4397034347057340'>0,4</span>",
+        "<span data-value='0000000000000028,8402500152588000'>29</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-28T06:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 0.349533528089523,
+    "wind_direction": 24.1557483673096,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 128,
+      "cell": [
+        128,
+        "",
+        "<span data-value='2013-05-28T06:00:00'>28-mai-2013, 06:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000000,3495335280895230'>0,3</span>",
+        "<span data-value='0000000000000024,1557483673096000'>24</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-28T07:00:00",
+    "value": 0.211368785733954,
+    "unit": "µg/m³",
+    "wind_speed": 0.395916521549225,
+    "wind_direction": 30.460973739624,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 129,
+      "cell": [
+        129,
+        "",
+        "<span data-value='2013-05-28T07:00:00'>28-mai-2013, 07:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,2113687857339540'>0,21</span>",
+        "<span data-value='0000000000000000,3959165215492250'>0,4</span>",
+        "<span data-value='0000000000000030,4609737396240000'>30</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-28T08:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 0.383398681879044,
+    "wind_direction": 47.5348663330078,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 130,
+      "cell": [
+        130,
+        "",
+        "<span data-value='2013-05-28T08:00:00'>28-mai-2013, 08:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000000,3833986818790440'>0,4</span>",
+        "<span data-value='0000000000000047,5348663330078000'>48</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-28T09:00:00",
+    "value": 0.0185473585287236,
+    "unit": "µg/m³",
+    "wind_speed": 0.418870329856873,
+    "wind_direction": 56.9274482727051,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 131,
+      "cell": [
+        131,
+        "",
+        "<span data-value='2013-05-28T09:00:00'>28-mai-2013, 09:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,0185473585287236'>0,02</span>",
+        "<span data-value='0000000000000000,4188703298568730'>0,4</span>",
+        "<span data-value='0000000000000056,9274482727051000'>57</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-28T10:00:00",
+    "value": 0.655497951287139,
+    "unit": "µg/m³",
+    "wind_speed": 0.57263720035553,
+    "wind_direction": 61.3708076477051,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 132,
+      "cell": [
+        132,
+        "",
+        "<span data-value='2013-05-28T10:00:00'>28-mai-2013, 10:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,6554979512871390'>0,66</span>",
+        "<span data-value='0000000000000000,5726372003555300'>0,6</span>",
+        "<span data-value='0000000000000061,3708076477051000'>61</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-28T11:00:00",
+    "value": 2.6799301320829,
+    "unit": "µg/m³",
+    "wind_speed": 0.429446995258331,
+    "wind_direction": 66.6619415283203,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 133,
+      "cell": [
+        133,
+        "",
+        "<span data-value='2013-05-28T11:00:00'>28-mai-2013, 11:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000002,6799301320829000'>2,68</span>",
+        "<span data-value='0000000000000000,4294469952583310'>0,4</span>",
+        "<span data-value='0000000000000066,6619415283203000'>67</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-28T12:00:00",
+    "value": 4.32037343569633,
+    "unit": "µg/m³",
+    "wind_speed": 0.65873509645462,
+    "wind_direction": 63.7107009887695,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 134,
+      "cell": [
+        134,
+        "",
+        "<span data-value='2013-05-28T12:00:00'>28-mai-2013, 12:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000004,3203734356963300'>4,32</span>",
+        "<span data-value='0000000000000000,6587350964546200'>0,7</span>",
+        "<span data-value='0000000000000063,7107009887695000'>64</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-28T13:00:00",
+    "value": 9.72425584902204,
+    "unit": "µg/m³",
+    "wind_speed": 0.495565533638001,
+    "wind_direction": 64.0575408935547,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 135,
+      "cell": [
+        135,
+        "",
+        "<span data-value='2013-05-28T13:00:00'>28-mai-2013, 13:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000009,7242558490220400'>9,72</span>",
+        "<span data-value='0000000000000000,4955655336380010'>0,5</span>",
+        "<span data-value='0000000000000064,0575408935547000'>64</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-28T15:00:00",
+    "value": 7.0369557699097,
+    "unit": "µg/m³",
+    "wind_speed": 0.437745362520218,
+    "wind_direction": 34.6597213745117,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 136,
+      "cell": [
+        136,
+        "",
+        "<span data-value='2013-05-28T15:00:00'>28-mai-2013, 15:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000007,0369557699097000'>7,04</span>",
+        "<span data-value='0000000000000000,4377453625202180'>0,4</span>",
+        "<span data-value='0000000000000034,6597213745117000'>35</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-28T16:00:00",
+    "value": 2.69415066116015,
+    "unit": "µg/m³",
+    "wind_speed": 0.420378535985947,
+    "wind_direction": 33.7299041748047,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 137,
+      "cell": [
+        137,
+        "",
+        "<span data-value='2013-05-28T16:00:00'>28-mai-2013, 16:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000002,6941506611601500'>2,69</span>",
+        "<span data-value='0000000000000000,4203785359859470'>0,4</span>",
+        "<span data-value='0000000000000033,7299041748047000'>34</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-28T17:00:00",
+    "value": 0.055201994268493,
+    "unit": "µg/m³",
+    "wind_speed": 1.48796224594116,
+    "wind_direction": 27.7857990264893,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 138,
+      "cell": [
+        138,
+        "",
+        "<span data-value='2013-05-28T17:00:00'>28-mai-2013, 17:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,0552019942684930'>0,06</span>",
+        "<span data-value='0000000000000001,4879622459411600'>1,5</span>",
+        "<span data-value='0000000000000027,7857990264893000'>28</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-28T18:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 0.469942986965179,
+    "wind_direction": 71.9394989013672,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 139,
+      "cell": [
+        139,
+        "",
+        "<span data-value='2013-05-28T18:00:00'>28-mai-2013, 18:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000000,4699429869651790'>0,5</span>",
+        "<span data-value='0000000000000071,9394989013672000'>72</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-28T19:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 0.753323495388031,
+    "wind_direction": 87.7120056152344,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 140,
+      "cell": [
+        140,
+        "",
+        "<span data-value='2013-05-28T19:00:00'>28-mai-2013, 19:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000000,7533234953880310'>0,8</span>",
+        "<span data-value='0000000000000087,7120056152344000'>88</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-28T20:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 0.524369299411774,
+    "wind_direction": 87.3484191894531,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 141,
+      "cell": [
+        141,
+        "",
+        "<span data-value='2013-05-28T20:00:00'>28-mai-2013, 20:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000000,5243692994117740'>0,5</span>",
+        "<span data-value='0000000000000087,3484191894531000'>87</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-28T21:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 0.436398297548294,
+    "wind_direction": 30.6151237487793,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 142,
+      "cell": [
+        142,
+        "",
+        "<span data-value='2013-05-28T21:00:00'>28-mai-2013, 21:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000000,4363982975482940'>0,4</span>",
+        "<span data-value='0000000000000030,6151237487793000'>31</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-28T22:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 0.431089103221893,
+    "wind_direction": 36.3607978820801,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 143,
+      "cell": [
+        143,
+        "",
+        "<span data-value='2013-05-28T22:00:00'>28-mai-2013, 22:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000000,4310891032218930'>0,4</span>",
+        "<span data-value='0000000000000036,3607978820801000'>36</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-28T23:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 0.31503427028656,
+    "wind_direction": 28.3781394958496,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 144,
+      "cell": [
+        144,
+        "",
+        "<span data-value='2013-05-28T23:00:00'>28-mai-2013, 23:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000000,3150342702865600'>0,3</span>",
+        "<span data-value='0000000000000028,3781394958496000'>28</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-29T00:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 0.846919775009155,
+    "wind_direction": 40.8249816894531,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 145,
+      "cell": [
+        145,
+        "",
+        "<span data-value='2013-05-29T00:00:00'>29-mai-2013, 00:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000000,8469197750091550'>0,8</span>",
+        "<span data-value='0000000000000040,8249816894531000'>41</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-29T01:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 0.897492825984955,
+    "wind_direction": 31.3043975830078,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 146,
+      "cell": [
+        146,
+        "",
+        "<span data-value='2013-05-29T01:00:00'>29-mai-2013, 01:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000000,8974928259849550'>0,9</span>",
+        "<span data-value='0000000000000031,3043975830078000'>31</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-29T02:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 0.487941086292267,
+    "wind_direction": 35.5597801208496,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 147,
+      "cell": [
+        147,
+        "",
+        "<span data-value='2013-05-29T02:00:00'>29-mai-2013, 02:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000000,4879410862922670'>0,5</span>",
+        "<span data-value='0000000000000035,5597801208496000'>36</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-29T03:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 0.500848591327667,
+    "wind_direction": 31.117733001709,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 148,
+      "cell": [
+        148,
+        "",
+        "<span data-value='2013-05-29T03:00:00'>29-mai-2013, 03:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000000,5008485913276670'>0,5</span>",
+        "<span data-value='0000000000000031,1177330017090000'>31</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-29T04:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 0.31476017832756,
+    "wind_direction": 38.2392692565918,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 149,
+      "cell": [
+        149,
+        "",
+        "<span data-value='2013-05-29T04:00:00'>29-mai-2013, 04:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000000,3147601783275600'>0,3</span>",
+        "<span data-value='0000000000000038,2392692565918000'>38</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-29T05:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 0.333667665719986,
+    "wind_direction": 38.8579177856445,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 150,
+      "cell": [
+        150,
+        "",
+        "<span data-value='2013-05-29T05:00:00'>29-mai-2013, 05:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000000,3336676657199860'>0,3</span>",
+        "<span data-value='0000000000000038,8579177856445000'>39</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-29T06:00:00",
+    "value": 0.661110170462357,
+    "unit": "µg/m³",
+    "wind_speed": 0.308592557907105,
+    "wind_direction": 43.1702308654785,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 151,
+      "cell": [
+        151,
+        "",
+        "<span data-value='2013-05-29T06:00:00'>29-mai-2013, 06:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,6611101704623570'>0,66</span>",
+        "<span data-value='0000000000000000,3085925579071050'>0,3</span>",
+        "<span data-value='0000000000000043,1702308654785000'>43</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-29T07:00:00",
+    "value": 0.432962443630991,
+    "unit": "µg/m³",
+    "wind_speed": 0.339785188436508,
+    "wind_direction": 41.1321105957031,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 152,
+      "cell": [
+        152,
+        "",
+        "<span data-value='2013-05-29T07:00:00'>29-mai-2013, 07:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,4329624436309910'>0,43</span>",
+        "<span data-value='0000000000000000,3397851884365080'>0,3</span>",
+        "<span data-value='0000000000000041,1321105957031000'>41</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-29T09:00:00",
+    "value": 0.856198029195973,
+    "unit": "µg/m³",
+    "wind_speed": 0.287586748600006,
+    "wind_direction": 34.3784599304199,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 153,
+      "cell": [
+        153,
+        "",
+        "<span data-value='2013-05-29T09:00:00'>29-mai-2013, 09:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,8561980291959730'>0,86</span>",
+        "<span data-value='0000000000000000,2875867486000060'>0,3</span>",
+        "<span data-value='0000000000000034,3784599304199000'>34</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-29T10:00:00",
+    "value": 2.63764665318425,
+    "unit": "µg/m³",
+    "wind_speed": 0.281495571136475,
+    "wind_direction": 32.4458923339844,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 154,
+      "cell": [
+        154,
+        "",
+        "<span data-value='2013-05-29T10:00:00'>29-mai-2013, 10:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000002,6376466531842500'>2,64</span>",
+        "<span data-value='0000000000000000,2814955711364750'>0,3</span>",
+        "<span data-value='0000000000000032,4458923339844000'>32</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-29T11:00:00",
+    "value": 5.80785537198003,
+    "unit": "µg/m³",
+    "wind_speed": 0.288505554199219,
+    "wind_direction": 41.751522064209,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 155,
+      "cell": [
+        155,
+        "",
+        "<span data-value='2013-05-29T11:00:00'>29-mai-2013, 11:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000005,8078553719800300'>5,81</span>",
+        "<span data-value='0000000000000000,2885055541992190'>0,3</span>",
+        "<span data-value='0000000000000041,7515220642090000'>42</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-29T12:00:00",
+    "value": 6.1643571915666,
+    "unit": "µg/m³",
+    "wind_speed": 0.297767460346222,
+    "wind_direction": 44.0666732788086,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 156,
+      "cell": [
+        156,
+        "",
+        "<span data-value='2013-05-29T12:00:00'>29-mai-2013, 12:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000006,1643571915666000'>6,16</span>",
+        "<span data-value='0000000000000000,2977674603462220'>0,3</span>",
+        "<span data-value='0000000000000044,0666732788086000'>44</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-29T13:00:00",
+    "value": 3.17739933413227,
+    "unit": "µg/m³",
+    "wind_speed": 0.389263302087784,
+    "wind_direction": 34.8046112060547,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 157,
+      "cell": [
+        157,
+        "",
+        "<span data-value='2013-05-29T13:00:00'>29-mai-2013, 13:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000003,1773993341322700'>3,18</span>",
+        "<span data-value='0000000000000000,3892633020877840'>0,4</span>",
+        "<span data-value='0000000000000034,8046112060547000'>35</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-29T15:00:00",
+    "value": 0.149367057898715,
+    "unit": "µg/m³",
+    "wind_speed": 0.322925180196762,
+    "wind_direction": 34.170654296875,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 158,
+      "cell": [
+        158,
+        "",
+        "<span data-value='2013-05-29T15:00:00'>29-mai-2013, 15:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,1493670578987150'>0,15</span>",
+        "<span data-value='0000000000000000,3229251801967620'>0,3</span>",
+        "<span data-value='0000000000000034,1706542968750000'>34</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-29T16:00:00",
+    "value": 0.0585609754882082,
+    "unit": "µg/m³",
+    "wind_speed": 0.362950146198273,
+    "wind_direction": 33.4896545410156,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 159,
+      "cell": [
+        159,
+        "",
+        "<span data-value='2013-05-29T16:00:00'>29-mai-2013, 16:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,0585609754882082'>0,06</span>",
+        "<span data-value='0000000000000000,3629501461982730'>0,4</span>",
+        "<span data-value='0000000000000033,4896545410156000'>33</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-29T17:00:00",
+    "value": 0.383140122639244,
+    "unit": "µg/m³",
+    "wind_speed": 0.411221891641617,
+    "wind_direction": 37.7025451660156,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 160,
+      "cell": [
+        160,
+        "",
+        "<span data-value='2013-05-29T17:00:00'>29-mai-2013, 17:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,3831401226392440'>0,38</span>",
+        "<span data-value='0000000000000000,4112218916416170'>0,4</span>",
+        "<span data-value='0000000000000037,7025451660156000'>38</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-29T18:00:00",
+    "value": 0.159047644189258,
+    "unit": "µg/m³",
+    "wind_speed": 0.491683095693588,
+    "wind_direction": 36.1013221740723,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 161,
+      "cell": [
+        161,
+        "",
+        "<span data-value='2013-05-29T18:00:00'>29-mai-2013, 18:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,1590476441892580'>0,16</span>",
+        "<span data-value='0000000000000000,4916830956935880'>0,5</span>",
+        "<span data-value='0000000000000036,1013221740723000'>36</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-29T19:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 0.658728897571564,
+    "wind_direction": 33.7142219543457,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 162,
+      "cell": [
+        162,
+        "",
+        "<span data-value='2013-05-29T19:00:00'>29-mai-2013, 19:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000000,6587288975715640'>0,7</span>",
+        "<span data-value='0000000000000033,7142219543457000'>34</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-29T20:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 0.351999759674072,
+    "wind_direction": 34.7561073303223,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 163,
+      "cell": [
+        163,
+        "",
+        "<span data-value='2013-05-29T20:00:00'>29-mai-2013, 20:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000000,3519997596740720'>0,4</span>",
+        "<span data-value='0000000000000034,7561073303223000'>35</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-29T21:00:00",
+    "value": 0.230453882621946,
+    "unit": "µg/m³",
+    "wind_speed": 0.342186868190765,
+    "wind_direction": 46.0877151489258,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 164,
+      "cell": [
+        164,
+        "",
+        "<span data-value='2013-05-29T21:00:00'>29-mai-2013, 21:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,2304538826219460'>0,23</span>",
+        "<span data-value='0000000000000000,3421868681907650'>0,3</span>",
+        "<span data-value='0000000000000046,0877151489258000'>46</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-29T22:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 0.694658935070038,
+    "wind_direction": 42.8164253234863,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 165,
+      "cell": [
+        165,
+        "",
+        "<span data-value='2013-05-29T22:00:00'>29-mai-2013, 22:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000000,6946589350700380'>0,7</span>",
+        "<span data-value='0000000000000042,8164253234863000'>43</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-29T23:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 0.346218585968018,
+    "wind_direction": 41.0192108154297,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 166,
+      "cell": [
+        166,
+        "",
+        "<span data-value='2013-05-29T23:00:00'>29-mai-2013, 23:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000000,3462185859680180'>0,3</span>",
+        "<span data-value='0000000000000041,0192108154297000'>41</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-30T00:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 0.626914083957672,
+    "wind_direction": 40.6238670349121,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 167,
+      "cell": [
+        167,
+        "",
+        "<span data-value='2013-05-30T00:00:00'>30-mai-2013, 00:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000000,6269140839576720'>0,6</span>",
+        "<span data-value='0000000000000040,6238670349121000'>41</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-30T01:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 0.349744528532028,
+    "wind_direction": 34.5628128051758,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 168,
+      "cell": [
+        168,
+        "",
+        "<span data-value='2013-05-30T01:00:00'>30-mai-2013, 01:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000000,3497445285320280'>0,3</span>",
+        "<span data-value='0000000000000034,5628128051758000'>35</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-30T02:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 0.320933759212494,
+    "wind_direction": 46.7449417114258,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 169,
+      "cell": [
+        169,
+        "",
+        "<span data-value='2013-05-30T02:00:00'>30-mai-2013, 02:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000000,3209337592124940'>0,3</span>",
+        "<span data-value='0000000000000046,7449417114258000'>47</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-30T03:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 0.506182730197906,
+    "wind_direction": 40.8501243591309,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 170,
+      "cell": [
+        170,
+        "",
+        "<span data-value='2013-05-30T03:00:00'>30-mai-2013, 03:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000000,5061827301979060'>0,5</span>",
+        "<span data-value='0000000000000040,8501243591309000'>41</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-30T04:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 0.332028448581696,
+    "wind_direction": 33.1255760192871,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 171,
+      "cell": [
+        171,
+        "",
+        "<span data-value='2013-05-30T04:00:00'>30-mai-2013, 04:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000000,3320284485816960'>0,3</span>",
+        "<span data-value='0000000000000033,1255760192871000'>33</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-30T05:00:00",
+    "value": 0.0633493874132536,
+    "unit": "µg/m³",
+    "wind_speed": 0.377134263515472,
+    "wind_direction": 33.8204498291016,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 172,
+      "cell": [
+        172,
+        "",
+        "<span data-value='2013-05-30T05:00:00'>30-mai-2013, 05:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,0633493874132536'>0,06</span>",
+        "<span data-value='0000000000000000,3771342635154720'>0,4</span>",
+        "<span data-value='0000000000000033,8204498291016000'>34</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-30T06:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 0.344589084386826,
+    "wind_direction": 59.2315368652344,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 173,
+      "cell": [
+        173,
+        "",
+        "<span data-value='2013-05-30T06:00:00'>30-mai-2013, 06:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000000,3445890843868260'>0,3</span>",
+        "<span data-value='0000000000000059,2315368652344000'>59</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-30T07:00:00",
+    "value": 0.0558418283237587,
+    "unit": "µg/m³",
+    "wind_speed": 0.517784953117371,
+    "wind_direction": 33.7225112915039,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 174,
+      "cell": [
+        174,
+        "",
+        "<span data-value='2013-05-30T07:00:00'>30-mai-2013, 07:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,0558418283237587'>0,06</span>",
+        "<span data-value='0000000000000000,5177849531173710'>0,5</span>",
+        "<span data-value='0000000000000033,7225112915039000'>34</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-30T08:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 0.657495737075806,
+    "wind_direction": 66.6306838989258,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 175,
+      "cell": [
+        175,
+        "",
+        "<span data-value='2013-05-30T08:00:00'>30-mai-2013, 08:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000000,6574957370758060'>0,7</span>",
+        "<span data-value='0000000000000066,6306838989258000'>67</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-30T09:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 0.590569257736206,
+    "wind_direction": 57.3179359436035,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 176,
+      "cell": [
+        176,
+        "",
+        "<span data-value='2013-05-30T09:00:00'>30-mai-2013, 09:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000000,5905692577362060'>0,6</span>",
+        "<span data-value='0000000000000057,3179359436035000'>57</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-30T10:00:00",
+    "value": 10.1683799817048,
+    "unit": "µg/m³",
+    "wind_speed": 0.639105439186096,
+    "wind_direction": 23.5150279998779,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 177,
+      "cell": [
+        177,
+        "",
+        "<span data-value='2013-05-30T10:00:00'>30-mai-2013, 10:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000010,1683799817048000'>10,17</span>",
+        "<span data-value='0000000000000000,6391054391860960'>0,6</span>",
+        "<span data-value='0000000000000023,5150279998779000'>24</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-30T11:00:00",
+    "value": 9.23997675879988,
+    "unit": "µg/m³",
+    "wind_speed": 0.633936703205109,
+    "wind_direction": 30.1161613464355,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 178,
+      "cell": [
+        178,
+        "",
+        "<span data-value='2013-05-30T11:00:00'>30-mai-2013, 11:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000009,2399767587998800'>9,24</span>",
+        "<span data-value='0000000000000000,6339367032051090'>0,6</span>",
+        "<span data-value='0000000000000030,1161613464355000'>30</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-30T12:00:00",
+    "value": 4.25503034496937,
+    "unit": "µg/m³",
+    "wind_speed": 0.659925282001495,
+    "wind_direction": 30.6303062438965,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 179,
+      "cell": [
+        179,
+        "",
+        "<span data-value='2013-05-30T12:00:00'>30-mai-2013, 12:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000004,2550303449693700'>4,26</span>",
+        "<span data-value='0000000000000000,6599252820014950'>0,7</span>",
+        "<span data-value='0000000000000030,6303062438965000'>31</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-30T13:00:00",
+    "value": 2.61591839493398,
+    "unit": "µg/m³",
+    "wind_speed": 0.663864672183991,
+    "wind_direction": 34.5258712768555,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 180,
+      "cell": [
+        180,
+        "",
+        "<span data-value='2013-05-30T13:00:00'>30-mai-2013, 13:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000002,6159183949339800'>2,62</span>",
+        "<span data-value='0000000000000000,6638646721839910'>0,7</span>",
+        "<span data-value='0000000000000034,5258712768555000'>35</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-30T15:00:00",
+    "value": 2.41160701937828,
+    "unit": "µg/m³",
+    "wind_speed": 0.57254558801651,
+    "wind_direction": 18.6829853057861,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 181,
+      "cell": [
+        181,
+        "",
+        "<span data-value='2013-05-30T15:00:00'>30-mai-2013, 15:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000002,4116070193782800'>2,41</span>",
+        "<span data-value='0000000000000000,5725455880165100'>0,6</span>",
+        "<span data-value='0000000000000018,6829853057861000'>19</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-30T16:00:00",
+    "value": 2.03910548550683,
+    "unit": "µg/m³",
+    "wind_speed": 0.377760201692581,
+    "wind_direction": 30.6911735534668,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 182,
+      "cell": [
+        182,
+        "",
+        "<span data-value='2013-05-30T16:00:00'>30-mai-2013, 16:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000002,0391054855068300'>2,04</span>",
+        "<span data-value='0000000000000000,3777602016925810'>0,4</span>",
+        "<span data-value='0000000000000030,6911735534668000'>31</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-30T17:00:00",
+    "value": 0.905018163888894,
+    "unit": "µg/m³",
+    "wind_speed": 0.458944946527481,
+    "wind_direction": 64.2064208984375,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 183,
+      "cell": [
+        183,
+        "",
+        "<span data-value='2013-05-30T17:00:00'>30-mai-2013, 17:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,9050181638888940'>0,91</span>",
+        "<span data-value='0000000000000000,4589449465274810'>0,5</span>",
+        "<span data-value='0000000000000064,2064208984375000'>64</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-30T18:00:00",
+    "value": 1.82241198674151,
+    "unit": "µg/m³",
+    "wind_speed": 0.962482571601868,
+    "wind_direction": 76.1661071777344,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 184,
+      "cell": [
+        184,
+        "",
+        "<span data-value='2013-05-30T18:00:00'>30-mai-2013, 18:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000001,8224119867415100'>1,82</span>",
+        "<span data-value='0000000000000000,9624825716018680'>1,0</span>",
+        "<span data-value='0000000000000076,1661071777344000'>76</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-30T19:00:00",
+    "value": 4.78691833253982,
+    "unit": "µg/m³",
+    "wind_speed": 1.19461297988892,
+    "wind_direction": 75.1558074951172,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 185,
+      "cell": [
+        185,
+        "",
+        "<span data-value='2013-05-30T19:00:00'>30-mai-2013, 19:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000004,7869183325398200'>4,79</span>",
+        "<span data-value='0000000000000001,1946129798889200'>1,2</span>",
+        "<span data-value='0000000000000075,1558074951172000'>75</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-30T20:00:00",
+    "value": 0.018463334886011,
+    "unit": "µg/m³",
+    "wind_speed": 1.17566633224487,
+    "wind_direction": 72.8706741333008,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 186,
+      "cell": [
+        186,
+        "",
+        "<span data-value='2013-05-30T20:00:00'>30-mai-2013, 20:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,0184633348860110'>0,02</span>",
+        "<span data-value='0000000000000001,1756663322448700'>1,2</span>",
+        "<span data-value='0000000000000072,8706741333008000'>73</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-30T21:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 1.23413980007172,
+    "wind_direction": 75.5714340209961,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 187,
+      "cell": [
+        187,
+        "",
+        "<span data-value='2013-05-30T21:00:00'>30-mai-2013, 21:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000001,2341398000717200'>1,2</span>",
+        "<span data-value='0000000000000075,5714340209961000'>76</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-30T22:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 0.920005679130554,
+    "wind_direction": 67.408447265625,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 188,
+      "cell": [
+        188,
+        "",
+        "<span data-value='2013-05-30T22:00:00'>30-mai-2013, 22:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000000,9200056791305540'>0,9</span>",
+        "<span data-value='0000000000000067,4084472656250000'>67</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-30T23:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 0.647646129131317,
+    "wind_direction": 67.0675201416016,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 189,
+      "cell": [
+        189,
+        "",
+        "<span data-value='2013-05-30T23:00:00'>30-mai-2013, 23:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000000,6476461291313170'>0,6</span>",
+        "<span data-value='0000000000000067,0675201416016000'>67</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-31T00:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 0.769604980945587,
+    "wind_direction": 59.1852531433105,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 190,
+      "cell": [
+        190,
+        "",
+        "<span data-value='2013-05-31T00:00:00'>31-mai-2013, 00:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000000,7696049809455870'>0,8</span>",
+        "<span data-value='0000000000000059,1852531433105000'>59</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-31T01:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 0.954375267028809,
+    "wind_direction": 57.5376243591309,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 191,
+      "cell": [
+        191,
+        "",
+        "<span data-value='2013-05-31T01:00:00'>31-mai-2013, 01:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000000,9543752670288090'>1,0</span>",
+        "<span data-value='0000000000000057,5376243591309000'>58</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-31T02:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 1.05469977855682,
+    "wind_direction": 54.8826675415039,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 192,
+      "cell": [
+        192,
+        "",
+        "<span data-value='2013-05-31T02:00:00'>31-mai-2013, 02:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000001,0546997785568200'>1,1</span>",
+        "<span data-value='0000000000000054,8826675415039000'>55</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-31T03:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 0.779697358608246,
+    "wind_direction": 57.0356216430664,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 193,
+      "cell": [
+        193,
+        "",
+        "<span data-value='2013-05-31T03:00:00'>31-mai-2013, 03:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000000,7796973586082460'>0,8</span>",
+        "<span data-value='0000000000000057,0356216430664000'>57</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-31T04:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 0.647787690162659,
+    "wind_direction": 57.6604423522949,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 194,
+      "cell": [
+        194,
+        "",
+        "<span data-value='2013-05-31T04:00:00'>31-mai-2013, 04:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000000,6477876901626590'>0,6</span>",
+        "<span data-value='0000000000000057,6604423522949000'>58</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-31T05:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 0.795815944671631,
+    "wind_direction": 56.3100662231445,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 195,
+      "cell": [
+        195,
+        "",
+        "<span data-value='2013-05-31T05:00:00'>31-mai-2013, 05:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000000,7958159446716310'>0,8</span>",
+        "<span data-value='0000000000000056,3100662231445000'>56</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-31T06:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 0.829109191894531,
+    "wind_direction": 57.4225769042969,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 196,
+      "cell": [
+        196,
+        "",
+        "<span data-value='2013-05-31T06:00:00'>31-mai-2013, 06:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000000,8291091918945310'>0,8</span>",
+        "<span data-value='0000000000000057,4225769042969000'>57</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-31T07:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 0.752521455287933,
+    "wind_direction": 60.6015396118164,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 197,
+      "cell": [
+        197,
+        "",
+        "<span data-value='2013-05-31T07:00:00'>31-mai-2013, 07:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000000,7525214552879330'>0,8</span>",
+        "<span data-value='0000000000000060,6015396118164000'>61</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-31T08:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 0.965923190116882,
+    "wind_direction": 57.8993949890137,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 198,
+      "cell": [
+        198,
+        "",
+        "<span data-value='2013-05-31T08:00:00'>31-mai-2013, 08:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000000,9659231901168820'>1,0</span>",
+        "<span data-value='0000000000000057,8993949890137000'>58</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-31T09:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 1.00596487522125,
+    "wind_direction": 58.5649452209473,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 199,
+      "cell": [
+        199,
+        "",
+        "<span data-value='2013-05-31T09:00:00'>31-mai-2013, 09:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000001,0059648752212500'>1,0</span>",
+        "<span data-value='0000000000000058,5649452209473000'>59</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-31T10:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 0.958392679691315,
+    "wind_direction": 56.7628288269043,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 200,
+      "cell": [
+        200,
+        "",
+        "<span data-value='2013-05-31T10:00:00'>31-mai-2013, 10:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000000,9583926796913150'>1,0</span>",
+        "<span data-value='0000000000000056,7628288269043000'>57</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-31T11:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 1.04629278182983,
+    "wind_direction": 58.6275405883789,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 201,
+      "cell": [
+        201,
+        "",
+        "<span data-value='2013-05-31T11:00:00'>31-mai-2013, 11:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000001,0462927818298300'>1,0</span>",
+        "<span data-value='0000000000000058,6275405883789000'>59</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-31T12:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 1.14766800403595,
+    "wind_direction": 62.0911636352539,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 202,
+      "cell": [
+        202,
+        "",
+        "<span data-value='2013-05-31T12:00:00'>31-mai-2013, 12:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000001,1476680040359500'>1,1</span>",
+        "<span data-value='0000000000000062,0911636352539000'>62</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-31T13:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 1.02924692630768,
+    "wind_direction": 57.2656669616699,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 203,
+      "cell": [
+        203,
+        "",
+        "<span data-value='2013-05-31T13:00:00'>31-mai-2013, 13:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000001,0292469263076800'>1,0</span>",
+        "<span data-value='0000000000000057,2656669616699000'>57</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-31T15:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 1.71671593189239,
+    "wind_direction": 66.8515090942383,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 204,
+      "cell": [
+        204,
+        "",
+        "<span data-value='2013-05-31T15:00:00'>31-mai-2013, 15:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000001,7167159318923900'>1,7</span>",
+        "<span data-value='0000000000000066,8515090942383000'>67</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-31T16:00:00",
+    "value": 1.94935532391094,
+    "unit": "µg/m³",
+    "wind_speed": 1.62719297409058,
+    "wind_direction": 64.9311981201172,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 205,
+      "cell": [
+        205,
+        "",
+        "<span data-value='2013-05-31T16:00:00'>31-mai-2013, 16:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000001,9493553239109400'>1,95</span>",
+        "<span data-value='0000000000000001,6271929740905800'>1,6</span>",
+        "<span data-value='0000000000000064,9311981201172000'>65</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-31T17:00:00",
+    "value": 28.0545932089542,
+    "unit": "µg/m³",
+    "wind_speed": 1.74115836620331,
+    "wind_direction": 74.0070495605469,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 206,
+      "cell": [
+        206,
+        "",
+        "<span data-value='2013-05-31T17:00:00'>31-mai-2013, 17:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000028,0545932089542000'>28,05</span>",
+        "<span data-value='0000000000000001,7411583662033100'>1,7</span>",
+        "<span data-value='0000000000000074,0070495605469000'>74</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-31T18:00:00",
+    "value": 12.4062314744619,
+    "unit": "µg/m³",
+    "wind_speed": 1.40268969535828,
+    "wind_direction": 70.4178466796875,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 207,
+      "cell": [
+        207,
+        "",
+        "<span data-value='2013-05-31T18:00:00'>31-mai-2013, 18:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000012,4062314744619000'>12,41</span>",
+        "<span data-value='0000000000000001,4026896953582800'>1,4</span>",
+        "<span data-value='0000000000000070,4178466796875000'>70</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-31T19:00:00",
+    "value": 3.85210677407844,
+    "unit": "µg/m³",
+    "wind_speed": 1.21004855632782,
+    "wind_direction": 68.3696212768555,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 208,
+      "cell": [
+        208,
+        "",
+        "<span data-value='2013-05-31T19:00:00'>31-mai-2013, 19:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000003,8521067740784400'>3,85</span>",
+        "<span data-value='0000000000000001,2100485563278200'>1,2</span>",
+        "<span data-value='0000000000000068,3696212768555000'>68</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-31T20:00:00",
+    "value": 1.61755911042549,
+    "unit": "µg/m³",
+    "wind_speed": 0.713893532752991,
+    "wind_direction": 70.6418991088867,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 209,
+      "cell": [
+        209,
+        "",
+        "<span data-value='2013-05-31T20:00:00'>31-mai-2013, 20:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000001,6175591104254900'>1,62</span>",
+        "<span data-value='0000000000000000,7138935327529910'>0,7</span>",
+        "<span data-value='0000000000000070,6418991088867000'>71</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-31T21:00:00",
+    "value": 2.70693102159552,
+    "unit": "µg/m³",
+    "wind_speed": 0.45953294634819,
+    "wind_direction": 61.9848976135254,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 210,
+      "cell": [
+        210,
+        "",
+        "<span data-value='2013-05-31T21:00:00'>31-mai-2013, 21:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000002,7069310215955200'>2,71</span>",
+        "<span data-value='0000000000000000,4595329463481900'>0,5</span>",
+        "<span data-value='0000000000000061,9848976135254000'>62</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-31T22:00:00",
+    "value": 2.73755417156211,
+    "unit": "µg/m³",
+    "wind_speed": 0.314973443746567,
+    "wind_direction": 32.3624420166016,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 211,
+      "cell": [
+        211,
+        "",
+        "<span data-value='2013-05-31T22:00:00'>31-mai-2013, 22:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000002,7375541715621100'>2,74</span>",
+        "<span data-value='0000000000000000,3149734437465670'>0,3</span>",
+        "<span data-value='0000000000000032,3624420166016000'>32</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "23",
+    "pollutant": "SO2",
+    "datetime": "2013-05-31T23:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 0.328565865755081,
+    "wind_direction": 29.0902671813965,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 212,
+      "cell": [
+        212,
+        "",
+        "<span data-value='2013-05-31T23:00:00'>31-mai-2013, 23:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000000,3285658657550810'>0,3</span>",
+        "<span data-value='0000000000000029,0902671813965000'>29</span>"
+      ]
+    }
+  }
+]

@@ -1,0 +1,3105 @@
+[
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "69",
+    "station_name": "VR - Belmonte",
+    "parameter_id": "18",
+    "pollutant": "PM10",
+    "datetime": "2019-07-01T00:00:00",
+    "value": 12.8547222444746,
+    "unit": "µg/m³",
+    "wind_speed": 0.642592663400703,
+    "wind_direction": 346.822934527252,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 1,
+      "cell": [
+        1,
+        "",
+        "<span data-value='2019-07-01T00:00:00'>01-jul-2019, 00:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Belmonte",
+        "<span data-value='0000000000000012,8547222444746000'>12,85</span>",
+        "<span data-value='0000000000000000,6425926634007030'>0,6</span>",
+        "<span data-value='0000000000000346,8229345272520000'>347</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "69",
+    "station_name": "VR - Belmonte",
+    "parameter_id": "18",
+    "pollutant": "PM10",
+    "datetime": "2019-07-01T01:00:00",
+    "value": 10.6416666483879,
+    "unit": "µg/m³",
+    "wind_speed": 0.5738476447016,
+    "wind_direction": 344.790744787258,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 2,
+      "cell": [
+        2,
+        "",
+        "<span data-value='2019-07-01T01:00:00'>01-jul-2019, 01:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Belmonte",
+        "<span data-value='0000000000000010,6416666483879000'>10,64</span>",
+        "<span data-value='0000000000000000,5738476447016000'>0,6</span>",
+        "<span data-value='0000000000000344,7907447872580000'>345</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "69",
+    "station_name": "VR - Belmonte",
+    "parameter_id": "18",
+    "pollutant": "PM10",
+    "datetime": "2019-07-01T02:00:00",
+    "value": 9.5862500055631,
+    "unit": "µg/m³",
+    "wind_speed": 0.724707301747468,
+    "wind_direction": 278.942876351402,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 3,
+      "cell": [
+        3,
+        "",
+        "<span data-value='2019-07-01T02:00:00'>01-jul-2019, 02:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Belmonte",
+        "<span data-value='0000000000000009,5862500055631000'>9,59</span>",
+        "<span data-value='0000000000000000,7247073017474680'>0,7</span>",
+        "<span data-value='0000000000000278,9428763514020000'>279</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "69",
+    "station_name": "VR - Belmonte",
+    "parameter_id": "18",
+    "pollutant": "PM10",
+    "datetime": "2019-07-01T03:00:00",
+    "value": 6.74366667787234,
+    "unit": "µg/m³",
+    "wind_speed": 0.529550715378589,
+    "wind_direction": 334.7305509929,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 4,
+      "cell": [
+        4,
+        "",
+        "<span data-value='2019-07-01T03:00:00'>01-jul-2019, 03:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Belmonte",
+        "<span data-value='0000000000000006,7436666778723400'>6,74</span>",
+        "<span data-value='0000000000000000,5295507153785890'>0,5</span>",
+        "<span data-value='0000000000000334,7305509929000000'>335</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "69",
+    "station_name": "VR - Belmonte",
+    "parameter_id": "18",
+    "pollutant": "PM10",
+    "datetime": "2019-07-01T04:00:00",
+    "value": 6.77441667464044,
+    "unit": "µg/m³",
+    "wind_speed": 0.476892475717598,
+    "wind_direction": 274.878625273059,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 5,
+      "cell": [
+        5,
+        "",
+        "<span data-value='2019-07-01T04:00:00'>01-jul-2019, 04:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Belmonte",
+        "<span data-value='0000000000000006,7744166746404400'>6,77</span>",
+        "<span data-value='0000000000000000,4768924757175980'>0,5</span>",
+        "<span data-value='0000000000000274,8786252730590000'>275</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "69",
+    "station_name": "VR - Belmonte",
+    "parameter_id": "18",
+    "pollutant": "PM10",
+    "datetime": "2019-07-01T05:00:00",
+    "value": 8.75913889275657,
+    "unit": "µg/m³",
+    "wind_speed": 0.477597199603915,
+    "wind_direction": 230.500614429892,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 6,
+      "cell": [
+        6,
+        "",
+        "<span data-value='2019-07-01T05:00:00'>01-jul-2019, 05:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Belmonte",
+        "<span data-value='0000000000000008,7591388927565700'>8,76</span>",
+        "<span data-value='0000000000000000,4775971996039150'>0,5</span>",
+        "<span data-value='0000000000000230,5006144298920000'>231</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "69",
+    "station_name": "VR - Belmonte",
+    "parameter_id": "18",
+    "pollutant": "PM10",
+    "datetime": "2019-07-01T06:00:00",
+    "value": 9.35616666078568,
+    "unit": "µg/m³",
+    "wind_speed": 0.47808891678022,
+    "wind_direction": 232.085510427552,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 7,
+      "cell": [
+        7,
+        "",
+        "<span data-value='2019-07-01T06:00:00'>01-jul-2019, 06:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Belmonte",
+        "<span data-value='0000000000000009,3561666607856800'>9,36</span>",
+        "<span data-value='0000000000000000,4780889167802200'>0,5</span>",
+        "<span data-value='0000000000000232,0855104275520000'>232</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "69",
+    "station_name": "VR - Belmonte",
+    "parameter_id": "18",
+    "pollutant": "PM10",
+    "datetime": "2019-07-01T07:00:00",
+    "value": 14.5417777702543,
+    "unit": "µg/m³",
+    "wind_speed": 0.478299804048406,
+    "wind_direction": 230.511406560827,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 8,
+      "cell": [
+        8,
+        "",
+        "<span data-value='2019-07-01T07:00:00'>01-jul-2019, 07:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Belmonte",
+        "<span data-value='0000000000000014,5417777702543000'>14,54</span>",
+        "<span data-value='0000000000000000,4782998040484060'>0,5</span>",
+        "<span data-value='0000000000000230,5114065608270000'>231</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "69",
+    "station_name": "VR - Belmonte",
+    "parameter_id": "18",
+    "pollutant": "PM10",
+    "datetime": "2019-07-01T08:00:00",
+    "value": 33.5460556013634,
+    "unit": "µg/m³",
+    "wind_speed": 0.479003468139304,
+    "wind_direction": 223.734598119892,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 9,
+      "cell": [
+        9,
+        "",
+        "<span data-value='2019-07-01T08:00:00'>01-jul-2019, 08:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Belmonte",
+        "<span data-value='0000000000000033,5460556013634000'>33,55</span>",
+        "<span data-value='0000000000000000,4790034681393040'>0,5</span>",
+        "<span data-value='0000000000000223,7345981198920000'>224</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "69",
+    "station_name": "VR - Belmonte",
+    "parameter_id": "18",
+    "pollutant": "PM10",
+    "datetime": "2019-07-01T09:00:00",
+    "value": 8.09199998777774,
+    "unit": "µg/m³",
+    "wind_speed": 0.479478229524361,
+    "wind_direction": 200.64501707925,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 10,
+      "cell": [
+        10,
+        "",
+        "<span data-value='2019-07-01T09:00:00'>01-jul-2019, 09:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Belmonte",
+        "<span data-value='0000000000000008,0919999877777400'>8,09</span>",
+        "<span data-value='0000000000000000,4794782295243610'>0,5</span>",
+        "<span data-value='0000000000000200,6450170792500000'>201</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "69",
+    "station_name": "VR - Belmonte",
+    "parameter_id": "18",
+    "pollutant": "PM10",
+    "datetime": "2019-07-01T10:00:00",
+    "value": 14.4886666859521,
+    "unit": "µg/m³",
+    "wind_speed": 0.487672102277478,
+    "wind_direction": 189.485599398505,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 11,
+      "cell": [
+        11,
+        "",
+        "<span data-value='2019-07-01T10:00:00'>01-jul-2019, 10:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Belmonte",
+        "<span data-value='0000000000000014,4886666859521000'>14,49</span>",
+        "<span data-value='0000000000000000,4876721022774780'>0,5</span>",
+        "<span data-value='0000000000000189,4855993985050000'>189</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "69",
+    "station_name": "VR - Belmonte",
+    "parameter_id": "18",
+    "pollutant": "PM10",
+    "datetime": "2019-07-01T11:00:00",
+    "value": 14.6172777864668,
+    "unit": "µg/m³",
+    "wind_speed": 0.491019805255863,
+    "wind_direction": 195.049493414798,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 12,
+      "cell": [
+        12,
+        "",
+        "<span data-value='2019-07-01T11:00:00'>01-jul-2019, 11:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Belmonte",
+        "<span data-value='0000000000000014,6172777864668000'>14,62</span>",
+        "<span data-value='0000000000000000,4910198052558630'>0,5</span>",
+        "<span data-value='0000000000000195,0494934147980000'>195</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "69",
+    "station_name": "VR - Belmonte",
+    "parameter_id": "18",
+    "pollutant": "PM10",
+    "datetime": "2019-07-01T12:00:00",
+    "value": 0,
+    "unit": "µg/m³",
+    "wind_speed": 0.49278214464585,
+    "wind_direction": 227.384056194707,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "ZERO_VALUE_REVIEW",
+    "raw": {
+      "id": 13,
+      "cell": [
+        13,
+        "",
+        "<span data-value='2019-07-01T12:00:00'>01-jul-2019, 12:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Belmonte",
+        "<span data-value='0000000000000000,0000000000000000'>0,00</span>",
+        "<span data-value='0000000000000000,4927821446458500'>0,5</span>",
+        "<span data-value='0000000000000227,3840561947070000'>227</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "69",
+    "station_name": "VR - Belmonte",
+    "parameter_id": "18",
+    "pollutant": "PM10",
+    "datetime": "2019-07-01T13:00:00",
+    "value": 2.87638888472898,
+    "unit": "µg/m³",
+    "wind_speed": 1.47937331503464,
+    "wind_direction": 277.171925743351,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 14,
+      "cell": [
+        14,
+        "",
+        "<span data-value='2019-07-01T13:00:00'>01-jul-2019, 13:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Belmonte",
+        "<span data-value='0000000000000002,8763888847289800'>2,88</span>",
+        "<span data-value='0000000000000001,4793733150346400'>1,5</span>",
+        "<span data-value='0000000000000277,1719257433510000'>277</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "69",
+    "station_name": "VR - Belmonte",
+    "parameter_id": "18",
+    "pollutant": "PM10",
+    "datetime": "2019-07-01T14:00:00",
+    "value": 12.6260555619333,
+    "unit": "µg/m³",
+    "wind_speed": 1.3386076350924,
+    "wind_direction": 264.434769089248,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 15,
+      "cell": [
+        15,
+        "",
+        "<span data-value='2019-07-01T14:00:00'>01-jul-2019, 14:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Belmonte",
+        "<span data-value='0000000000000012,6260555619333000'>12,63</span>",
+        "<span data-value='0000000000000001,3386076350924000'>1,3</span>",
+        "<span data-value='0000000000000264,4347690892480000'>264</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "69",
+    "station_name": "VR - Belmonte",
+    "parameter_id": "18",
+    "pollutant": "PM10",
+    "datetime": "2019-07-01T15:00:00",
+    "value": 11.8189444557329,
+    "unit": "µg/m³",
+    "wind_speed": 0.904870754968789,
+    "wind_direction": 258.912195790133,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 16,
+      "cell": [
+        16,
+        "",
+        "<span data-value='2019-07-01T15:00:00'>01-jul-2019, 15:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Belmonte",
+        "<span data-value='0000000000000011,8189444557329000'>11,82</span>",
+        "<span data-value='0000000000000000,9048707549687890'>0,9</span>",
+        "<span data-value='0000000000000258,9121957901330000'>259</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "69",
+    "station_name": "VR - Belmonte",
+    "parameter_id": "18",
+    "pollutant": "PM10",
+    "datetime": "2019-07-01T16:00:00",
+    "value": 27.9925555776225,
+    "unit": "µg/m³",
+    "wind_speed": 0.671916594910953,
+    "wind_direction": 333.101374971803,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 17,
+      "cell": [
+        17,
+        "",
+        "<span data-value='2019-07-01T16:00:00'>01-jul-2019, 16:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Belmonte",
+        "<span data-value='0000000000000027,9925555776225000'>27,99</span>",
+        "<span data-value='0000000000000000,6719165949109530'>0,7</span>",
+        "<span data-value='0000000000000333,1013749718030000'>333</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "69",
+    "station_name": "VR - Belmonte",
+    "parameter_id": "18",
+    "pollutant": "PM10",
+    "datetime": "2019-07-01T17:00:00",
+    "value": 37.8509444522858,
+    "unit": "µg/m³",
+    "wind_speed": 0.917105397126741,
+    "wind_direction": 344.079374162738,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 18,
+      "cell": [
+        18,
+        "",
+        "<span data-value='2019-07-01T17:00:00'>01-jul-2019, 17:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Belmonte",
+        "<span data-value='0000000000000037,8509444522858000'>37,85</span>",
+        "<span data-value='0000000000000000,9171053971267410'>0,9</span>",
+        "<span data-value='0000000000000344,0793741627380000'>344</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "69",
+    "station_name": "VR - Belmonte",
+    "parameter_id": "18",
+    "pollutant": "PM10",
+    "datetime": "2019-07-01T18:00:00",
+    "value": 33.6428888956706,
+    "unit": "µg/m³",
+    "wind_speed": 0.616666243291563,
+    "wind_direction": 128.17414799715,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 19,
+      "cell": [
+        19,
+        "",
+        "<span data-value='2019-07-01T18:00:00'>01-jul-2019, 18:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Belmonte",
+        "<span data-value='0000000000000033,6428888956706000'>33,64</span>",
+        "<span data-value='0000000000000000,6166662432915630'>0,6</span>",
+        "<span data-value='0000000000000128,1741479971500000'>128</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "69",
+    "station_name": "VR - Belmonte",
+    "parameter_id": "18",
+    "pollutant": "PM10",
+    "datetime": "2019-07-01T19:00:00",
+    "value": 32.2183333555857,
+    "unit": "µg/m³",
+    "wind_speed": 0.838122276357479,
+    "wind_direction": 196.536538890087,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 20,
+      "cell": [
+        20,
+        "",
+        "<span data-value='2019-07-01T19:00:00'>01-jul-2019, 19:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Belmonte",
+        "<span data-value='0000000000000032,2183333555857000'>32,22</span>",
+        "<span data-value='0000000000000000,8381222763574790'>0,8</span>",
+        "<span data-value='0000000000000196,5365388900870000'>197</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "69",
+    "station_name": "VR - Belmonte",
+    "parameter_id": "18",
+    "pollutant": "PM10",
+    "datetime": "2019-07-01T20:00:00",
+    "value": 24.4292778237661,
+    "unit": "µg/m³",
+    "wind_speed": 1.07094608931906,
+    "wind_direction": 348.150217928498,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 21,
+      "cell": [
+        21,
+        "",
+        "<span data-value='2019-07-01T20:00:00'>01-jul-2019, 20:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Belmonte",
+        "<span data-value='0000000000000024,4292778237661000'>24,43</span>",
+        "<span data-value='0000000000000001,0709460893190600'>1,1</span>",
+        "<span data-value='0000000000000348,1502179284980000'>348</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "69",
+    "station_name": "VR - Belmonte",
+    "parameter_id": "18",
+    "pollutant": "PM10",
+    "datetime": "2019-07-01T21:00:00",
+    "value": 26.7403333091736,
+    "unit": "µg/m³",
+    "wind_speed": 0.683772911388013,
+    "wind_direction": 341.81459494622,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 22,
+      "cell": [
+        22,
+        "",
+        "<span data-value='2019-07-01T21:00:00'>01-jul-2019, 21:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Belmonte",
+        "<span data-value='0000000000000026,7403333091736000'>26,74</span>",
+        "<span data-value='0000000000000000,6837729113880130'>0,7</span>",
+        "<span data-value='0000000000000341,8145949462200000'>342</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "69",
+    "station_name": "VR - Belmonte",
+    "parameter_id": "18",
+    "pollutant": "PM10",
+    "datetime": "2019-07-01T22:00:00",
+    "value": 18.9202222220103,
+    "unit": "µg/m³",
+    "wind_speed": 0.770319361438354,
+    "wind_direction": 353.014826168471,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 23,
+      "cell": [
+        23,
+        "",
+        "<span data-value='2019-07-01T22:00:00'>01-jul-2019, 22:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Belmonte",
+        "<span data-value='0000000000000018,9202222220103000'>18,92</span>",
+        "<span data-value='0000000000000000,7703193614383540'>0,8</span>",
+        "<span data-value='0000000000000353,0148261684710000'>353</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "69",
+    "station_name": "VR - Belmonte",
+    "parameter_id": "18",
+    "pollutant": "PM10",
+    "datetime": "2019-07-01T23:00:00",
+    "value": 17.8557222451104,
+    "unit": "µg/m³",
+    "wind_speed": 1.04695792481303,
+    "wind_direction": 7.77364899292298,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 24,
+      "cell": [
+        24,
+        "",
+        "<span data-value='2019-07-01T23:00:00'>01-jul-2019, 23:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Belmonte",
+        "<span data-value='0000000000000017,8557222451104000'>17,86</span>",
+        "<span data-value='0000000000000001,0469579248130300'>1,0</span>",
+        "<span data-value='0000000000000007,7736489929229800'>8</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "69",
+    "station_name": "VR - Belmonte",
+    "parameter_id": "18",
+    "pollutant": "PM10",
+    "datetime": "2019-07-02T00:00:00",
+    "value": 12.1610000091129,
+    "unit": "µg/m³",
+    "wind_speed": 0.54603277604613,
+    "wind_direction": 4.83017732999866,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 25,
+      "cell": [
+        25,
+        "",
+        "<span data-value='2019-07-02T00:00:00'>02-jul-2019, 00:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Belmonte",
+        "<span data-value='0000000000000012,1610000091129000'>12,16</span>",
+        "<span data-value='0000000000000000,5460327760461300'>0,5</span>",
+        "<span data-value='0000000000000004,8301773299986600'>5</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "69",
+    "station_name": "VR - Belmonte",
+    "parameter_id": "18",
+    "pollutant": "PM10",
+    "datetime": "2019-07-02T01:00:00",
+    "value": 14.1644444319937,
+    "unit": "µg/m³",
+    "wind_speed": 0.792486902086271,
+    "wind_direction": 287.458005975423,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 26,
+      "cell": [
+        26,
+        "",
+        "<span data-value='2019-07-02T01:00:00'>02-jul-2019, 01:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Belmonte",
+        "<span data-value='0000000000000014,1644444319937000'>14,16</span>",
+        "<span data-value='0000000000000000,7924869020862710'>0,8</span>",
+        "<span data-value='0000000000000287,4580059754230000'>287</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "69",
+    "station_name": "VR - Belmonte",
+    "parameter_id": "18",
+    "pollutant": "PM10",
+    "datetime": "2019-07-02T02:00:00",
+    "value": 24.1254444228278,
+    "unit": "µg/m³",
+    "wind_speed": 0.732497415161795,
+    "wind_direction": 225.890802014262,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 27,
+      "cell": [
+        27,
+        "",
+        "<span data-value='2019-07-02T02:00:00'>02-jul-2019, 02:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Belmonte",
+        "<span data-value='0000000000000024,1254444228278000'>24,13</span>",
+        "<span data-value='0000000000000000,7324974151617950'>0,7</span>",
+        "<span data-value='0000000000000225,8908020142620000'>226</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "69",
+    "station_name": "VR - Belmonte",
+    "parameter_id": "18",
+    "pollutant": "PM10",
+    "datetime": "2019-07-02T03:00:00",
+    "value": 17.7219444523917,
+    "unit": "µg/m³",
+    "wind_speed": 0.517513183794088,
+    "wind_direction": 223.265160222656,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 28,
+      "cell": [
+        28,
+        "",
+        "<span data-value='2019-07-02T03:00:00'>02-jul-2019, 03:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Belmonte",
+        "<span data-value='0000000000000017,7219444523917000'>17,72</span>",
+        "<span data-value='0000000000000000,5175131837940880'>0,5</span>",
+        "<span data-value='0000000000000223,2651602226560000'>223</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "69",
+    "station_name": "VR - Belmonte",
+    "parameter_id": "18",
+    "pollutant": "PM10",
+    "datetime": "2019-07-02T04:00:00",
+    "value": 11.8653333404329,
+    "unit": "µg/m³",
+    "wind_speed": 0.49133666590684,
+    "wind_direction": 209.86104581403,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 29,
+      "cell": [
+        29,
+        "",
+        "<span data-value='2019-07-02T04:00:00'>02-jul-2019, 04:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Belmonte",
+        "<span data-value='0000000000000011,8653333404329000'>11,87</span>",
+        "<span data-value='0000000000000000,4913366659068400'>0,5</span>",
+        "<span data-value='0000000000000209,8610458140300000'>210</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "69",
+    "station_name": "VR - Belmonte",
+    "parameter_id": "18",
+    "pollutant": "PM10",
+    "datetime": "2019-07-02T05:00:00",
+    "value": 12.5771110961172,
+    "unit": "µg/m³",
+    "wind_speed": 0.479960408997205,
+    "wind_direction": 225.588109826471,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 30,
+      "cell": [
+        30,
+        "",
+        "<span data-value='2019-07-02T05:00:00'>02-jul-2019, 05:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Belmonte",
+        "<span data-value='0000000000000012,5771110961172000'>12,58</span>",
+        "<span data-value='0000000000000000,4799604089972050'>0,5</span>",
+        "<span data-value='0000000000000225,5881098264710000'>226</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "69",
+    "station_name": "VR - Belmonte",
+    "parameter_id": "18",
+    "pollutant": "PM10",
+    "datetime": "2019-07-02T06:00:00",
+    "value": 27.2148333337572,
+    "unit": "µg/m³",
+    "wind_speed": 0.477131975880927,
+    "wind_direction": 266.927447291882,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 31,
+      "cell": [
+        31,
+        "",
+        "<span data-value='2019-07-02T06:00:00'>02-jul-2019, 06:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Belmonte",
+        "<span data-value='0000000000000027,2148333337572000'>27,21</span>",
+        "<span data-value='0000000000000000,4771319758809270'>0,5</span>",
+        "<span data-value='0000000000000266,9274472918820000'>267</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "69",
+    "station_name": "VR - Belmonte",
+    "parameter_id": "18",
+    "pollutant": "PM10",
+    "datetime": "2019-07-02T07:00:00",
+    "value": 38.7562777762943,
+    "unit": "µg/m³",
+    "wind_speed": 0.477821863426103,
+    "wind_direction": 276.819097159583,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 32,
+      "cell": [
+        32,
+        "",
+        "<span data-value='2019-07-02T07:00:00'>02-jul-2019, 07:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Belmonte",
+        "<span data-value='0000000000000038,7562777762943000'>38,76</span>",
+        "<span data-value='0000000000000000,4778218634261030'>0,5</span>",
+        "<span data-value='0000000000000276,8190971595830000'>277</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "69",
+    "station_name": "VR - Belmonte",
+    "parameter_id": "18",
+    "pollutant": "PM10",
+    "datetime": "2019-07-02T08:00:00",
+    "value": 46.3765555286408,
+    "unit": "µg/m³",
+    "wind_speed": 0.482515430508388,
+    "wind_direction": 229.244604455692,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 33,
+      "cell": [
+        33,
+        "",
+        "<span data-value='2019-07-02T08:00:00'>02-jul-2019, 08:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Belmonte",
+        "<span data-value='0000000000000046,3765555286408000'>46,38</span>",
+        "<span data-value='0000000000000000,4825154305083880'>0,5</span>",
+        "<span data-value='0000000000000229,2446044556920000'>229</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "69",
+    "station_name": "VR - Belmonte",
+    "parameter_id": "18",
+    "pollutant": "PM10",
+    "datetime": "2019-07-02T09:00:00",
+    "value": 61.6141110875871,
+    "unit": "µg/m³",
+    "wind_speed": 0.536684852441152,
+    "wind_direction": 209.639155551947,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 34,
+      "cell": [
+        34,
+        "",
+        "<span data-value='2019-07-02T09:00:00'>02-jul-2019, 09:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Belmonte",
+        "<span data-value='0000000000000061,6141110875871000'>61,61</span>",
+        "<span data-value='0000000000000000,5366848524411520'>0,5</span>",
+        "<span data-value='0000000000000209,6391555519470000'>210</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "69",
+    "station_name": "VR - Belmonte",
+    "parameter_id": "18",
+    "pollutant": "PM10",
+    "datetime": "2019-07-02T10:00:00",
+    "value": 61.3795555623372,
+    "unit": "µg/m³",
+    "wind_speed": 1.62716927740309,
+    "wind_direction": 200.319025467369,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 35,
+      "cell": [
+        35,
+        "",
+        "<span data-value='2019-07-02T10:00:00'>02-jul-2019, 10:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Belmonte",
+        "<span data-value='0000000000000061,3795555623372000'>61,38</span>",
+        "<span data-value='0000000000000001,6271692774030900'>1,6</span>",
+        "<span data-value='0000000000000200,3190254673690000'>200</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "69",
+    "station_name": "VR - Belmonte",
+    "parameter_id": "18",
+    "pollutant": "PM10",
+    "datetime": "2019-07-02T11:00:00",
+    "value": 44.4266110992432,
+    "unit": "µg/m³",
+    "wind_speed": 1.53857012128664,
+    "wind_direction": 208.889475413798,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 36,
+      "cell": [
+        36,
+        "",
+        "<span data-value='2019-07-02T11:00:00'>02-jul-2019, 11:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Belmonte",
+        "<span data-value='0000000000000044,4266110992432000'>44,43</span>",
+        "<span data-value='0000000000000001,5385701212866400'>1,5</span>",
+        "<span data-value='0000000000000208,8894754137980000'>209</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "69",
+    "station_name": "VR - Belmonte",
+    "parameter_id": "18",
+    "pollutant": "PM10",
+    "datetime": "2019-07-02T12:00:00",
+    "value": 35.8802778016196,
+    "unit": "µg/m³",
+    "wind_speed": 1.74504149961803,
+    "wind_direction": 197.805132564745,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 37,
+      "cell": [
+        37,
+        "",
+        "<span data-value='2019-07-02T12:00:00'>02-jul-2019, 12:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Belmonte",
+        "<span data-value='0000000000000035,8802778016196000'>35,88</span>",
+        "<span data-value='0000000000000001,7450414996180300'>1,7</span>",
+        "<span data-value='0000000000000197,8051325647450000'>198</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "69",
+    "station_name": "VR - Belmonte",
+    "parameter_id": "18",
+    "pollutant": "PM10",
+    "datetime": "2019-07-02T13:00:00",
+    "value": 22.1895555546549,
+    "unit": "µg/m³",
+    "wind_speed": 1.75019605030616,
+    "wind_direction": 200.139840852477,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 38,
+      "cell": [
+        38,
+        "",
+        "<span data-value='2019-07-02T13:00:00'>02-jul-2019, 13:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Belmonte",
+        "<span data-value='0000000000000022,1895555546549000'>22,19</span>",
+        "<span data-value='0000000000000001,7501960503061600'>1,8</span>",
+        "<span data-value='0000000000000200,1398408524770000'>200</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "69",
+    "station_name": "VR - Belmonte",
+    "parameter_id": "18",
+    "pollutant": "PM10",
+    "datetime": "2019-07-02T14:00:00",
+    "value": 9.64038887016061,
+    "unit": "µg/m³",
+    "wind_speed": 1.50335512085093,
+    "wind_direction": 216.732684612649,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 39,
+      "cell": [
+        39,
+        "",
+        "<span data-value='2019-07-02T14:00:00'>02-jul-2019, 14:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Belmonte",
+        "<span data-value='0000000000000009,6403888701606100'>9,64</span>",
+        "<span data-value='0000000000000001,5033551208509300'>1,5</span>",
+        "<span data-value='0000000000000216,7326846126490000'>217</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "69",
+    "station_name": "VR - Belmonte",
+    "parameter_id": "18",
+    "pollutant": "PM10",
+    "datetime": "2019-07-02T15:00:00",
+    "value": 26.7494722334544,
+    "unit": "µg/m³",
+    "wind_speed": 1.53445940767725,
+    "wind_direction": 221.176258062811,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 40,
+      "cell": [
+        40,
+        "",
+        "<span data-value='2019-07-02T15:00:00'>02-jul-2019, 15:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Belmonte",
+        "<span data-value='0000000000000026,7494722334544000'>26,75</span>",
+        "<span data-value='0000000000000001,5344594076772500'>1,5</span>",
+        "<span data-value='0000000000000221,1762580628110000'>221</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "69",
+    "station_name": "VR - Belmonte",
+    "parameter_id": "18",
+    "pollutant": "PM10",
+    "datetime": "2019-07-02T16:00:00",
+    "value": 25.7232222329246,
+    "unit": "µg/m³",
+    "wind_speed": 0.720385702012314,
+    "wind_direction": 306.145232546627,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 41,
+      "cell": [
+        41,
+        "",
+        "<span data-value='2019-07-02T16:00:00'>02-jul-2019, 16:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Belmonte",
+        "<span data-value='0000000000000025,7232222329246000'>25,72</span>",
+        "<span data-value='0000000000000000,7203857020123140'>0,7</span>",
+        "<span data-value='0000000000000306,1452325466270000'>306</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "69",
+    "station_name": "VR - Belmonte",
+    "parameter_id": "18",
+    "pollutant": "PM10",
+    "datetime": "2019-07-02T17:00:00",
+    "value": 31.9521666696337,
+    "unit": "µg/m³",
+    "wind_speed": 1.0628327563405,
+    "wind_direction": 0.863495495644497,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 42,
+      "cell": [
+        42,
+        "",
+        "<span data-value='2019-07-02T17:00:00'>02-jul-2019, 17:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Belmonte",
+        "<span data-value='0000000000000031,9521666696337000'>31,95</span>",
+        "<span data-value='0000000000000001,0628327563405000'>1,1</span>",
+        "<span data-value='0000000000000000,8634954956444970'>1</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "69",
+    "station_name": "VR - Belmonte",
+    "parameter_id": "18",
+    "pollutant": "PM10",
+    "datetime": "2019-07-02T18:00:00",
+    "value": 27.7310833247503,
+    "unit": "µg/m³",
+    "wind_speed": 0.704813952793678,
+    "wind_direction": 18.055521440034,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 43,
+      "cell": [
+        43,
+        "",
+        "<span data-value='2019-07-02T18:00:00'>02-jul-2019, 18:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Belmonte",
+        "<span data-value='0000000000000027,7310833247503000'>27,73</span>",
+        "<span data-value='0000000000000000,7048139527936780'>0,7</span>",
+        "<span data-value='0000000000000018,0555214400340000'>18</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "69",
+    "station_name": "VR - Belmonte",
+    "parameter_id": "18",
+    "pollutant": "PM10",
+    "datetime": "2019-07-02T19:00:00",
+    "value": 29.6313054800034,
+    "unit": "µg/m³",
+    "wind_speed": 0.848517218654354,
+    "wind_direction": 344.80426876146,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 44,
+      "cell": [
+        44,
+        "",
+        "<span data-value='2019-07-02T19:00:00'>02-jul-2019, 19:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Belmonte",
+        "<span data-value='0000000000000029,6313054800034000'>29,63</span>",
+        "<span data-value='0000000000000000,8485172186543540'>0,8</span>",
+        "<span data-value='0000000000000344,8042687614600000'>345</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "69",
+    "station_name": "VR - Belmonte",
+    "parameter_id": "18",
+    "pollutant": "PM10",
+    "datetime": "2019-07-02T20:00:00",
+    "value": 26.8898333115048,
+    "unit": "µg/m³",
+    "wind_speed": 0.826476847661866,
+    "wind_direction": 326.270622791559,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 45,
+      "cell": [
+        45,
+        "",
+        "<span data-value='2019-07-02T20:00:00'>02-jul-2019, 20:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Belmonte",
+        "<span data-value='0000000000000026,8898333115048000'>26,89</span>",
+        "<span data-value='0000000000000000,8264768476618660'>0,8</span>",
+        "<span data-value='0000000000000326,2706227915590000'>326</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "69",
+    "station_name": "VR - Belmonte",
+    "parameter_id": "18",
+    "pollutant": "PM10",
+    "datetime": "2019-07-02T21:00:00",
+    "value": 22.3699722284741,
+    "unit": "µg/m³",
+    "wind_speed": 0.781444461180104,
+    "wind_direction": 335.083286101268,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 46,
+      "cell": [
+        46,
+        "",
+        "<span data-value='2019-07-02T21:00:00'>02-jul-2019, 21:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Belmonte",
+        "<span data-value='0000000000000022,3699722284741000'>22,37</span>",
+        "<span data-value='0000000000000000,7814444611801040'>0,8</span>",
+        "<span data-value='0000000000000335,0832861012680000'>335</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "69",
+    "station_name": "VR - Belmonte",
+    "parameter_id": "18",
+    "pollutant": "PM10",
+    "datetime": "2019-07-02T22:00:00",
+    "value": 20.5310833088557,
+    "unit": "µg/m³",
+    "wind_speed": 0.765503925134738,
+    "wind_direction": 355.953968171391,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 47,
+      "cell": [
+        47,
+        "",
+        "<span data-value='2019-07-02T22:00:00'>02-jul-2019, 22:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Belmonte",
+        "<span data-value='0000000000000020,5310833088557000'>20,53</span>",
+        "<span data-value='0000000000000000,7655039251347380'>0,8</span>",
+        "<span data-value='0000000000000355,9539681713910000'>356</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "69",
+    "station_name": "VR - Belmonte",
+    "parameter_id": "18",
+    "pollutant": "PM10",
+    "datetime": "2019-07-02T23:00:00",
+    "value": 15.301138909128,
+    "unit": "µg/m³",
+    "wind_speed": 0.574033098113206,
+    "wind_direction": 349.281044182465,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 48,
+      "cell": [
+        48,
+        "",
+        "<span data-value='2019-07-02T23:00:00'>02-jul-2019, 23:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Belmonte",
+        "<span data-value='0000000000000015,3011389091280000'>15,30</span>",
+        "<span data-value='0000000000000000,5740330981132060'>0,6</span>",
+        "<span data-value='0000000000000349,2810441824650000'>349</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "69",
+    "station_name": "VR - Belmonte",
+    "parameter_id": "18",
+    "pollutant": "PM10",
+    "datetime": "2019-07-03T00:00:00",
+    "value": 14.1372777578566,
+    "unit": "µg/m³",
+    "wind_speed": 0.65550341712104,
+    "wind_direction": 333.570355952239,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 49,
+      "cell": [
+        49,
+        "",
+        "<span data-value='2019-07-03T00:00:00'>03-jul-2019, 00:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Belmonte",
+        "<span data-value='0000000000000014,1372777578566000'>14,14</span>",
+        "<span data-value='0000000000000000,6555034171210400'>0,7</span>",
+        "<span data-value='0000000000000333,5703559522390000'>334</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "69",
+    "station_name": "VR - Belmonte",
+    "parameter_id": "18",
+    "pollutant": "PM10",
+    "datetime": "2019-07-03T01:00:00",
+    "value": 13.437972240448,
+    "unit": "µg/m³",
+    "wind_speed": 0.572379911426041,
+    "wind_direction": 345.745122752181,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 50,
+      "cell": [
+        50,
+        "",
+        "<span data-value='2019-07-03T01:00:00'>03-jul-2019, 01:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Belmonte",
+        "<span data-value='0000000000000013,4379722404480000'>13,44</span>",
+        "<span data-value='0000000000000000,5723799114260410'>0,6</span>",
+        "<span data-value='0000000000000345,7451227521810000'>346</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "69",
+    "station_name": "VR - Belmonte",
+    "parameter_id": "18",
+    "pollutant": "PM10",
+    "datetime": "2019-07-03T02:00:00",
+    "value": 13.6918610962232,
+    "unit": "µg/m³",
+    "wind_speed": 0.575232718578643,
+    "wind_direction": 299.843009718074,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 51,
+      "cell": [
+        51,
+        "",
+        "<span data-value='2019-07-03T02:00:00'>03-jul-2019, 02:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Belmonte",
+        "<span data-value='0000000000000013,6918610962232000'>13,69</span>",
+        "<span data-value='0000000000000000,5752327185786430'>0,6</span>",
+        "<span data-value='0000000000000299,8430097180740000'>300</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "69",
+    "station_name": "VR - Belmonte",
+    "parameter_id": "18",
+    "pollutant": "PM10",
+    "datetime": "2019-07-03T03:00:00",
+    "value": 11.2738333593474,
+    "unit": "µg/m³",
+    "wind_speed": 0.495302194721169,
+    "wind_direction": 290.922563389652,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 52,
+      "cell": [
+        52,
+        "",
+        "<span data-value='2019-07-03T03:00:00'>03-jul-2019, 03:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Belmonte",
+        "<span data-value='0000000000000011,2738333593474000'>11,27</span>",
+        "<span data-value='0000000000000000,4953021947211690'>0,5</span>",
+        "<span data-value='0000000000000290,9225633896520000'>291</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "69",
+    "station_name": "VR - Belmonte",
+    "parameter_id": "18",
+    "pollutant": "PM10",
+    "datetime": "2019-07-03T04:00:00",
+    "value": 12.1751944467756,
+    "unit": "µg/m³",
+    "wind_speed": 0.476892475717598,
+    "wind_direction": 262.4559907784,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 53,
+      "cell": [
+        53,
+        "",
+        "<span data-value='2019-07-03T04:00:00'>03-jul-2019, 04:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Belmonte",
+        "<span data-value='0000000000000012,1751944467756000'>12,18</span>",
+        "<span data-value='0000000000000000,4768924757175980'>0,5</span>",
+        "<span data-value='0000000000000262,4559907784000000'>262</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "69",
+    "station_name": "VR - Belmonte",
+    "parameter_id": "18",
+    "pollutant": "PM10",
+    "datetime": "2019-07-03T05:00:00",
+    "value": 11.9678333457311,
+    "unit": "µg/m³",
+    "wind_speed": 0.476896714667479,
+    "wind_direction": 269.770352094951,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 54,
+      "cell": [
+        54,
+        "",
+        "<span data-value='2019-07-03T05:00:00'>03-jul-2019, 05:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Belmonte",
+        "<span data-value='0000000000000011,9678333457311000'>11,97</span>",
+        "<span data-value='0000000000000000,4768967146674790'>0,5</span>",
+        "<span data-value='0000000000000269,7703520949510000'>270</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "69",
+    "station_name": "VR - Belmonte",
+    "parameter_id": "18",
+    "pollutant": "PM10",
+    "datetime": "2019-07-03T06:00:00",
+    "value": 14.9918888754315,
+    "unit": "µg/m³",
+    "wind_speed": 0.476890356242657,
+    "wind_direction": 222.025276202601,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 55,
+      "cell": [
+        55,
+        "",
+        "<span data-value='2019-07-03T06:00:00'>03-jul-2019, 06:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Belmonte",
+        "<span data-value='0000000000000014,9918888754315000'>14,99</span>",
+        "<span data-value='0000000000000000,4768903562426570'>0,5</span>",
+        "<span data-value='0000000000000222,0252762026010000'>222</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "69",
+    "station_name": "VR - Belmonte",
+    "parameter_id": "18",
+    "pollutant": "PM10",
+    "datetime": "2019-07-03T07:00:00",
+    "value": 24.952083351877,
+    "unit": "µg/m³",
+    "wind_speed": 0.476886117292775,
+    "wind_direction": 228.687348073631,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 56,
+      "cell": [
+        56,
+        "",
+        "<span data-value='2019-07-03T07:00:00'>03-jul-2019, 07:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Belmonte",
+        "<span data-value='0000000000000024,9520833518770000'>24,95</span>",
+        "<span data-value='0000000000000000,4768861172927750'>0,5</span>",
+        "<span data-value='0000000000000228,6873480736310000'>229</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "69",
+    "station_name": "VR - Belmonte",
+    "parameter_id": "18",
+    "pollutant": "PM10",
+    "datetime": "2019-07-03T08:00:00",
+    "value": 23.3061388993098,
+    "unit": "µg/m³",
+    "wind_speed": 0.476886117292775,
+    "wind_direction": 204.877787325116,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 57,
+      "cell": [
+        57,
+        "",
+        "<span data-value='2019-07-03T08:00:00'>03-jul-2019, 08:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Belmonte",
+        "<span data-value='0000000000000023,3061388993098000'>23,31</span>",
+        "<span data-value='0000000000000000,4768861172927750'>0,5</span>",
+        "<span data-value='0000000000000204,8777873251160000'>205</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "69",
+    "station_name": "VR - Belmonte",
+    "parameter_id": "18",
+    "pollutant": "PM10",
+    "datetime": "2019-07-03T09:00:00",
+    "value": 17.4229444437557,
+    "unit": "µg/m³",
+    "wind_speed": 0.477606737232871,
+    "wind_direction": 187.413757022493,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 58,
+      "cell": [
+        58,
+        "",
+        "<span data-value='2019-07-03T09:00:00'>03-jul-2019, 09:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Belmonte",
+        "<span data-value='0000000000000017,4229444437557000'>17,42</span>",
+        "<span data-value='0000000000000000,4776067372328710'>0,5</span>",
+        "<span data-value='0000000000000187,4137570224930000'>187</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "69",
+    "station_name": "VR - Belmonte",
+    "parameter_id": "18",
+    "pollutant": "PM10",
+    "datetime": "2019-07-03T10:00:00",
+    "value": 19.5038610953755,
+    "unit": "µg/m³",
+    "wind_speed": 0.476886117292775,
+    "wind_direction": 134.842451238285,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 59,
+      "cell": [
+        59,
+        "",
+        "<span data-value='2019-07-03T10:00:00'>03-jul-2019, 10:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Belmonte",
+        "<span data-value='0000000000000019,5038610953755000'>19,50</span>",
+        "<span data-value='0000000000000000,4768861172927750'>0,5</span>",
+        "<span data-value='0000000000000134,8424512382850000'>135</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "69",
+    "station_name": "VR - Belmonte",
+    "parameter_id": "18",
+    "pollutant": "PM10",
+    "datetime": "2019-07-03T11:00:00",
+    "value": 17.0114166561762,
+    "unit": "µg/m³",
+    "wind_speed": 0.476885057555305,
+    "wind_direction": 87.6346903035701,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 60,
+      "cell": [
+        60,
+        "",
+        "<span data-value='2019-07-03T11:00:00'>03-jul-2019, 11:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Belmonte",
+        "<span data-value='0000000000000017,0114166561762000'>17,01</span>",
+        "<span data-value='0000000000000000,4768850575553050'>0,5</span>",
+        "<span data-value='0000000000000087,6346903035701000'>88</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "69",
+    "station_name": "VR - Belmonte",
+    "parameter_id": "18",
+    "pollutant": "PM10",
+    "datetime": "2019-07-03T12:00:00",
+    "value": 18.4862777659628,
+    "unit": "µg/m³",
+    "wind_speed": 1.15702519643638,
+    "wind_direction": 221.511791092499,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 61,
+      "cell": [
+        61,
+        "",
+        "<span data-value='2019-07-03T12:00:00'>03-jul-2019, 12:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Belmonte",
+        "<span data-value='0000000000000018,4862777659628000'>18,49</span>",
+        "<span data-value='0000000000000001,1570251964363800'>1,2</span>",
+        "<span data-value='0000000000000221,5117910924990000'>222</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "69",
+    "station_name": "VR - Belmonte",
+    "parameter_id": "18",
+    "pollutant": "PM10",
+    "datetime": "2019-07-03T13:00:00",
+    "value": 12.4013055682286,
+    "unit": "µg/m³",
+    "wind_speed": 1.60261733337409,
+    "wind_direction": 275.206198173774,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 62,
+      "cell": [
+        62,
+        "",
+        "<span data-value='2019-07-03T13:00:00'>03-jul-2019, 13:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Belmonte",
+        "<span data-value='0000000000000012,4013055682286000'>12,40</span>",
+        "<span data-value='0000000000000001,6026173333740900'>1,6</span>",
+        "<span data-value='0000000000000275,2061981737740000'>275</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "69",
+    "station_name": "VR - Belmonte",
+    "parameter_id": "18",
+    "pollutant": "PM10",
+    "datetime": "2019-07-03T14:00:00",
+    "value": 8.26994443346643,
+    "unit": "µg/m³",
+    "wind_speed": 1.45022211994562,
+    "wind_direction": 309.439205549186,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 63,
+      "cell": [
+        63,
+        "",
+        "<span data-value='2019-07-03T14:00:00'>03-jul-2019, 14:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Belmonte",
+        "<span data-value='0000000000000008,2699444334664300'>8,27</span>",
+        "<span data-value='0000000000000001,4502221199456200'>1,5</span>",
+        "<span data-value='0000000000000309,4392055491860000'>309</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "69",
+    "station_name": "VR - Belmonte",
+    "parameter_id": "18",
+    "pollutant": "PM10",
+    "datetime": "2019-07-03T15:00:00",
+    "value": 11.3176110931196,
+    "unit": "µg/m³",
+    "wind_speed": 1.09286671065622,
+    "wind_direction": 274.710991622616,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 64,
+      "cell": [
+        64,
+        "",
+        "<span data-value='2019-07-03T15:00:00'>03-jul-2019, 15:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Belmonte",
+        "<span data-value='0000000000000011,3176110931196000'>11,32</span>",
+        "<span data-value='0000000000000001,0928667106562200'>1,1</span>",
+        "<span data-value='0000000000000274,7109916226160000'>275</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "69",
+    "station_name": "VR - Belmonte",
+    "parameter_id": "18",
+    "pollutant": "PM10",
+    "datetime": "2019-07-03T16:00:00",
+    "value": 29.0511111362113,
+    "unit": "µg/m³",
+    "wind_speed": 0.61575487109522,
+    "wind_direction": 271.643671300779,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 65,
+      "cell": [
+        65,
+        "",
+        "<span data-value='2019-07-03T16:00:00'>03-jul-2019, 16:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Belmonte",
+        "<span data-value='0000000000000029,0511111362113000'>29,05</span>",
+        "<span data-value='0000000000000000,6157548710952200'>0,6</span>",
+        "<span data-value='0000000000000271,6436713007790000'>272</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "69",
+    "station_name": "VR - Belmonte",
+    "parameter_id": "18",
+    "pollutant": "PM10",
+    "datetime": "2019-07-03T17:00:00",
+    "value": 52.0596110290951,
+    "unit": "µg/m³",
+    "wind_speed": 0.740265273013049,
+    "wind_direction": 3.78510237633431,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 66,
+      "cell": [
+        66,
+        "",
+        "<span data-value='2019-07-03T17:00:00'>03-jul-2019, 17:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Belmonte",
+        "<span data-value='0000000000000052,0596110290951000'>52,06</span>",
+        "<span data-value='0000000000000000,7402652730130490'>0,7</span>",
+        "<span data-value='0000000000000003,7851023763343100'>4</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "69",
+    "station_name": "VR - Belmonte",
+    "parameter_id": "18",
+    "pollutant": "PM10",
+    "datetime": "2019-07-03T18:00:00",
+    "value": 34.6597222095066,
+    "unit": "µg/m³",
+    "wind_speed": 0.725740543024407,
+    "wind_direction": 337.799854011876,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 67,
+      "cell": [
+        67,
+        "",
+        "<span data-value='2019-07-03T18:00:00'>03-jul-2019, 18:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Belmonte",
+        "<span data-value='0000000000000034,6597222095066000'>34,66</span>",
+        "<span data-value='0000000000000000,7257405430244070'>0,7</span>",
+        "<span data-value='0000000000000337,7998540118760000'>338</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "69",
+    "station_name": "VR - Belmonte",
+    "parameter_id": "18",
+    "pollutant": "PM10",
+    "datetime": "2019-07-03T19:00:00",
+    "value": 30.7663888984256,
+    "unit": "µg/m³",
+    "wind_speed": 0.896593163518442,
+    "wind_direction": 0.51843052695644,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 68,
+      "cell": [
+        68,
+        "",
+        "<span data-value='2019-07-03T19:00:00'>03-jul-2019, 19:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Belmonte",
+        "<span data-value='0000000000000030,7663888984256000'>30,77</span>",
+        "<span data-value='0000000000000000,8965931635184420'>0,9</span>",
+        "<span data-value='0000000000000000,5184305269564400'>1</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "69",
+    "station_name": "VR - Belmonte",
+    "parameter_id": "18",
+    "pollutant": "PM10",
+    "datetime": "2019-07-03T20:00:00",
+    "value": 24.5718889183468,
+    "unit": "µg/m³",
+    "wind_speed": 0.698405734722813,
+    "wind_direction": 348.364938795932,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 69,
+      "cell": [
+        69,
+        "",
+        "<span data-value='2019-07-03T20:00:00'>03-jul-2019, 20:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Belmonte",
+        "<span data-value='0000000000000024,5718889183468000'>24,57</span>",
+        "<span data-value='0000000000000000,6984057347228130'>0,7</span>",
+        "<span data-value='0000000000000348,3649387959320000'>348</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "69",
+    "station_name": "VR - Belmonte",
+    "parameter_id": "18",
+    "pollutant": "PM10",
+    "datetime": "2019-07-03T21:00:00",
+    "value": 21.8514444425371,
+    "unit": "µg/m³",
+    "wind_speed": 0.729313969554173,
+    "wind_direction": 357.347880159314,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 70,
+      "cell": [
+        70,
+        "",
+        "<span data-value='2019-07-03T21:00:00'>03-jul-2019, 21:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Belmonte",
+        "<span data-value='0000000000000021,8514444425371000'>21,85</span>",
+        "<span data-value='0000000000000000,7293139695541730'>0,7</span>",
+        "<span data-value='0000000000000357,3478801593140000'>357</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "69",
+    "station_name": "VR - Belmonte",
+    "parameter_id": "18",
+    "pollutant": "PM10",
+    "datetime": "2019-07-03T22:00:00",
+    "value": 21.5965556049347,
+    "unit": "µg/m³",
+    "wind_speed": 0.751870432893435,
+    "wind_direction": 315.842441460872,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 71,
+      "cell": [
+        71,
+        "",
+        "<span data-value='2019-07-03T22:00:00'>03-jul-2019, 22:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Belmonte",
+        "<span data-value='0000000000000021,5965556049347000'>21,60</span>",
+        "<span data-value='0000000000000000,7518704328934350'>0,8</span>",
+        "<span data-value='0000000000000315,8424414608720000'>316</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "69",
+    "station_name": "VR - Belmonte",
+    "parameter_id": "18",
+    "pollutant": "PM10",
+    "datetime": "2019-07-03T23:00:00",
+    "value": 13.4289444475704,
+    "unit": "µg/m³",
+    "wind_speed": 0.640259126573801,
+    "wind_direction": 338.214931817791,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 72,
+      "cell": [
+        72,
+        "",
+        "<span data-value='2019-07-03T23:00:00'>03-jul-2019, 23:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Belmonte",
+        "<span data-value='0000000000000013,4289444475704000'>13,43</span>",
+        "<span data-value='0000000000000000,6402591265738010'>0,6</span>",
+        "<span data-value='0000000000000338,2149318177910000'>338</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "69",
+    "station_name": "VR - Belmonte",
+    "parameter_id": "18",
+    "pollutant": "PM10",
+    "datetime": "2019-07-04T00:00:00",
+    "value": 13.114111102687,
+    "unit": "µg/m³",
+    "wind_speed": 0.828339861631393,
+    "wind_direction": 319.631559924767,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 73,
+      "cell": [
+        73,
+        "",
+        "<span data-value='2019-07-04T00:00:00'>04-jul-2019, 00:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Belmonte",
+        "<span data-value='0000000000000013,1141111026870000'>13,11</span>",
+        "<span data-value='0000000000000000,8283398616313930'>0,8</span>",
+        "<span data-value='0000000000000319,6315599247670000'>320</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "69",
+    "station_name": "VR - Belmonte",
+    "parameter_id": "18",
+    "pollutant": "PM10",
+    "datetime": "2019-07-04T01:00:00",
+    "value": 12.7476666439904,
+    "unit": "µg/m³",
+    "wind_speed": 0.831467139737474,
+    "wind_direction": 322.991177852923,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 74,
+      "cell": [
+        74,
+        "",
+        "<span data-value='2019-07-04T01:00:00'>04-jul-2019, 01:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Belmonte",
+        "<span data-value='0000000000000012,7476666439904000'>12,75</span>",
+        "<span data-value='0000000000000000,8314671397374740'>0,8</span>",
+        "<span data-value='0000000000000322,9911778529230000'>323</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "69",
+    "station_name": "VR - Belmonte",
+    "parameter_id": "18",
+    "pollutant": "PM10",
+    "datetime": "2019-07-04T02:00:00",
+    "value": 10.9476666633288,
+    "unit": "µg/m³",
+    "wind_speed": 0.825810273728437,
+    "wind_direction": 1.7742818858321,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 75,
+      "cell": [
+        75,
+        "",
+        "<span data-value='2019-07-04T02:00:00'>04-jul-2019, 02:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Belmonte",
+        "<span data-value='0000000000000010,9476666633288000'>10,95</span>",
+        "<span data-value='0000000000000000,8258102737284370'>0,8</span>",
+        "<span data-value='0000000000000001,7742818858321000'>2</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "69",
+    "station_name": "VR - Belmonte",
+    "parameter_id": "18",
+    "pollutant": "PM10",
+    "datetime": "2019-07-04T03:00:00",
+    "value": 13.6011111076673,
+    "unit": "µg/m³",
+    "wind_speed": 0.682631577062938,
+    "wind_direction": 9.89761956379958,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 76,
+      "cell": [
+        76,
+        "",
+        "<span data-value='2019-07-04T03:00:00'>04-jul-2019, 03:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Belmonte",
+        "<span data-value='0000000000000013,6011111076673000'>13,60</span>",
+        "<span data-value='0000000000000000,6826315770629380'>0,7</span>",
+        "<span data-value='0000000000000009,8976195637995800'>10</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "69",
+    "station_name": "VR - Belmonte",
+    "parameter_id": "18",
+    "pollutant": "PM10",
+    "datetime": "2019-07-04T04:00:00",
+    "value": 16.5102777518166,
+    "unit": "µg/m³",
+    "wind_speed": 0.532548706125882,
+    "wind_direction": 345.880148490952,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 77,
+      "cell": [
+        77,
+        "",
+        "<span data-value='2019-07-04T04:00:00'>04-jul-2019, 04:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Belmonte",
+        "<span data-value='0000000000000016,5102777518166000'>16,51</span>",
+        "<span data-value='0000000000000000,5325487061258820'>0,5</span>",
+        "<span data-value='0000000000000345,8801484909520000'>346</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "69",
+    "station_name": "VR - Belmonte",
+    "parameter_id": "18",
+    "pollutant": "PM10",
+    "datetime": "2019-07-04T05:00:00",
+    "value": 16.3263889122009,
+    "unit": "µg/m³",
+    "wind_speed": 0.478935645106766,
+    "wind_direction": 7.8406546895603,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 78,
+      "cell": [
+        78,
+        "",
+        "<span data-value='2019-07-04T05:00:00'>04-jul-2019, 05:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Belmonte",
+        "<span data-value='0000000000000016,3263889122009000'>16,33</span>",
+        "<span data-value='0000000000000000,4789356451067660'>0,5</span>",
+        "<span data-value='0000000000000007,8406546895603000'>8</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "69",
+    "station_name": "VR - Belmonte",
+    "parameter_id": "18",
+    "pollutant": "PM10",
+    "datetime": "2019-07-04T06:00:00",
+    "value": 21.6881666490767,
+    "unit": "µg/m³",
+    "wind_speed": 0.476903073092302,
+    "wind_direction": 330.65895668779,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 79,
+      "cell": [
+        79,
+        "",
+        "<span data-value='2019-07-04T06:00:00'>04-jul-2019, 06:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Belmonte",
+        "<span data-value='0000000000000021,6881666490767000'>21,69</span>",
+        "<span data-value='0000000000000000,4769030730923020'>0,5</span>",
+        "<span data-value='0000000000000330,6589566877900000'>331</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "69",
+    "station_name": "VR - Belmonte",
+    "parameter_id": "18",
+    "pollutant": "PM10",
+    "datetime": "2019-07-04T07:00:00",
+    "value": 38.2718888579475,
+    "unit": "µg/m³",
+    "wind_speed": 0.651203011613753,
+    "wind_direction": 244.071992034907,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 80,
+      "cell": [
+        80,
+        "",
+        "<span data-value='2019-07-04T07:00:00'>04-jul-2019, 07:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Belmonte",
+        "<span data-value='0000000000000038,2718888579475000'>38,27</span>",
+        "<span data-value='0000000000000000,6512030116137530'>0,7</span>",
+        "<span data-value='0000000000000244,0719920349070000'>244</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "69",
+    "station_name": "VR - Belmonte",
+    "parameter_id": "18",
+    "pollutant": "PM10",
+    "datetime": "2019-07-04T08:00:00",
+    "value": 30.8726666760445,
+    "unit": "µg/m³",
+    "wind_speed": 1.34871962712871,
+    "wind_direction": 213.313700258438,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 81,
+      "cell": [
+        81,
+        "",
+        "<span data-value='2019-07-04T08:00:00'>04-jul-2019, 08:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Belmonte",
+        "<span data-value='0000000000000030,8726666760445000'>30,87</span>",
+        "<span data-value='0000000000000001,3487196271287100'>1,3</span>",
+        "<span data-value='0000000000000213,3137002584380000'>213</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "69",
+    "station_name": "VR - Belmonte",
+    "parameter_id": "18",
+    "pollutant": "PM10",
+    "datetime": "2019-07-04T09:00:00",
+    "value": 37.4122222359975,
+    "unit": "µg/m³",
+    "wind_speed": 1.36048480783072,
+    "wind_direction": 210.155080594625,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 82,
+      "cell": [
+        82,
+        "",
+        "<span data-value='2019-07-04T09:00:00'>04-jul-2019, 09:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Belmonte",
+        "<span data-value='0000000000000037,4122222359975000'>37,41</span>",
+        "<span data-value='0000000000000001,3604848078307200'>1,4</span>",
+        "<span data-value='0000000000000210,1550805946250000'>210</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "69",
+    "station_name": "VR - Belmonte",
+    "parameter_id": "18",
+    "pollutant": "PM10",
+    "datetime": "2019-07-04T10:00:00",
+    "value": 24.9579444434908,
+    "unit": "µg/m³",
+    "wind_speed": 1.80175640443961,
+    "wind_direction": 219.97820235616,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 83,
+      "cell": [
+        83,
+        "",
+        "<span data-value='2019-07-04T10:00:00'>04-jul-2019, 10:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Belmonte",
+        "<span data-value='0000000000000024,9579444434908000'>24,96</span>",
+        "<span data-value='0000000000000001,8017564044396100'>1,8</span>",
+        "<span data-value='0000000000000219,9782023561600000'>220</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "69",
+    "station_name": "VR - Belmonte",
+    "parameter_id": "18",
+    "pollutant": "PM10",
+    "datetime": "2019-07-04T11:00:00",
+    "value": 17.5198333168692,
+    "unit": "µg/m³",
+    "wind_speed": 1.38892173967428,
+    "wind_direction": 187.949389535544,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 84,
+      "cell": [
+        84,
+        "",
+        "<span data-value='2019-07-04T11:00:00'>04-jul-2019, 11:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Belmonte",
+        "<span data-value='0000000000000017,5198333168692000'>17,52</span>",
+        "<span data-value='0000000000000001,3889217396742800'>1,4</span>",
+        "<span data-value='0000000000000187,9493895355440000'>188</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "69",
+    "station_name": "VR - Belmonte",
+    "parameter_id": "18",
+    "pollutant": "PM10",
+    "datetime": "2019-07-04T12:00:00",
+    "value": 19.3592777803209,
+    "unit": "µg/m³",
+    "wind_speed": 2.75771063095993,
+    "wind_direction": 138.412972258582,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 85,
+      "cell": [
+        85,
+        "",
+        "<span data-value='2019-07-04T12:00:00'>04-jul-2019, 12:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Belmonte",
+        "<span data-value='0000000000000019,3592777803209000'>19,36</span>",
+        "<span data-value='0000000000000002,7577106309599300'>2,8</span>",
+        "<span data-value='0000000000000138,4129722585820000'>138</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "69",
+    "station_name": "VR - Belmonte",
+    "parameter_id": "18",
+    "pollutant": "PM10",
+    "datetime": "2019-07-04T13:00:00",
+    "value": 16.2827777597846,
+    "unit": "µg/m³",
+    "wind_speed": 2.72808255652587,
+    "wind_direction": 144.424285307672,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 86,
+      "cell": [
+        86,
+        "",
+        "<span data-value='2019-07-04T13:00:00'>04-jul-2019, 13:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Belmonte",
+        "<span data-value='0000000000000016,2827777597846000'>16,28</span>",
+        "<span data-value='0000000000000002,7280825565258700'>2,7</span>",
+        "<span data-value='0000000000000144,4242853076720000'>144</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "69",
+    "station_name": "VR - Belmonte",
+    "parameter_id": "18",
+    "pollutant": "PM10",
+    "datetime": "2019-07-04T14:00:00",
+    "value": 13.1836666492083,
+    "unit": "µg/m³",
+    "wind_speed": 2.595596590009,
+    "wind_direction": 143.287972733454,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 87,
+      "cell": [
+        87,
+        "",
+        "<span data-value='2019-07-04T14:00:00'>04-jul-2019, 14:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Belmonte",
+        "<span data-value='0000000000000013,1836666492083000'>13,18</span>",
+        "<span data-value='0000000000000002,5955965900090000'>2,6</span>",
+        "<span data-value='0000000000000143,2879727334540000'>143</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "69",
+    "station_name": "VR - Belmonte",
+    "parameter_id": "18",
+    "pollutant": "PM10",
+    "datetime": "2019-07-04T15:00:00",
+    "value": 13.9258889094989,
+    "unit": "µg/m³",
+    "wind_speed": 2.76686356474956,
+    "wind_direction": 118.582152494892,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 88,
+      "cell": [
+        88,
+        "",
+        "<span data-value='2019-07-04T15:00:00'>04-jul-2019, 15:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Belmonte",
+        "<span data-value='0000000000000013,9258889094989000'>13,93</span>",
+        "<span data-value='0000000000000002,7668635647495600'>2,8</span>",
+        "<span data-value='0000000000000118,5821524948920000'>119</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "69",
+    "station_name": "VR - Belmonte",
+    "parameter_id": "18",
+    "pollutant": "PM10",
+    "datetime": "2019-07-04T16:00:00",
+    "value": 14.5620555464427,
+    "unit": "µg/m³",
+    "wind_speed": 2.80592752052678,
+    "wind_direction": 118.297630959672,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 89,
+      "cell": [
+        89,
+        "",
+        "<span data-value='2019-07-04T16:00:00'>04-jul-2019, 16:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Belmonte",
+        "<span data-value='0000000000000014,5620555464427000'>14,56</span>",
+        "<span data-value='0000000000000002,8059275205267800'>2,8</span>",
+        "<span data-value='0000000000000118,2976309596720000'>118</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "69",
+    "station_name": "VR - Belmonte",
+    "parameter_id": "18",
+    "pollutant": "PM10",
+    "datetime": "2019-07-04T17:00:00",
+    "value": 16.8200555637148,
+    "unit": "µg/m³",
+    "wind_speed": 2.18513890872399,
+    "wind_direction": 118.068180919275,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 90,
+      "cell": [
+        90,
+        "",
+        "<span data-value='2019-07-04T17:00:00'>04-jul-2019, 17:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Belmonte",
+        "<span data-value='0000000000000016,8200555637148000'>16,82</span>",
+        "<span data-value='0000000000000002,1851389087239900'>2,2</span>",
+        "<span data-value='0000000000000118,0681809192750000'>118</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "69",
+    "station_name": "VR - Belmonte",
+    "parameter_id": "18",
+    "pollutant": "PM10",
+    "datetime": "2019-07-04T18:00:00",
+    "value": 70.3350833855735,
+    "unit": "µg/m³",
+    "wind_speed": 1.74585855406192,
+    "wind_direction": 151.762896218319,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 91,
+      "cell": [
+        91,
+        "",
+        "<span data-value='2019-07-04T18:00:00'>04-jul-2019, 18:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Belmonte",
+        "<span data-value='0000000000000070,3350833855735000'>70,34</span>",
+        "<span data-value='0000000000000001,7458585540619200'>1,7</span>",
+        "<span data-value='0000000000000151,7628962183190000'>152</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "69",
+    "station_name": "VR - Belmonte",
+    "parameter_id": "18",
+    "pollutant": "PM10",
+    "datetime": "2019-07-04T19:00:00",
+    "value": 109.937222305934,
+    "unit": "µg/m³",
+    "wind_speed": 1.53367308371597,
+    "wind_direction": 166.592289674995,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 92,
+      "cell": [
+        92,
+        "",
+        "<span data-value='2019-07-04T19:00:00'>04-jul-2019, 19:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Belmonte",
+        "<span data-value='0000000000000109,9372223059340000'>109,94</span>",
+        "<span data-value='0000000000000001,5336730837159700'>1,5</span>",
+        "<span data-value='0000000000000166,5922896749950000'>167</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "69",
+    "station_name": "VR - Belmonte",
+    "parameter_id": "18",
+    "pollutant": "PM10",
+    "datetime": "2019-07-04T20:00:00",
+    "value": 22.7020555644565,
+    "unit": "µg/m³",
+    "wind_speed": 1.51604015229477,
+    "wind_direction": 203.858578310242,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 93,
+      "cell": [
+        93,
+        "",
+        "<span data-value='2019-07-04T20:00:00'>04-jul-2019, 20:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Belmonte",
+        "<span data-value='0000000000000022,7020555644565000'>22,70</span>",
+        "<span data-value='0000000000000001,5160401522947700'>1,5</span>",
+        "<span data-value='0000000000000203,8585783102420000'>204</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "69",
+    "station_name": "VR - Belmonte",
+    "parameter_id": "18",
+    "pollutant": "PM10",
+    "datetime": "2019-07-04T21:00:00",
+    "value": 15.0202499993642,
+    "unit": "µg/m³",
+    "wind_speed": 0.899749055347509,
+    "wind_direction": 250.939024275652,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 94,
+      "cell": [
+        94,
+        "",
+        "<span data-value='2019-07-04T21:00:00'>04-jul-2019, 21:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Belmonte",
+        "<span data-value='0000000000000015,0202499993642000'>15,02</span>",
+        "<span data-value='0000000000000000,8997490553475090'>0,9</span>",
+        "<span data-value='0000000000000250,9390242756520000'>251</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "69",
+    "station_name": "VR - Belmonte",
+    "parameter_id": "18",
+    "pollutant": "PM10",
+    "datetime": "2019-07-04T22:00:00",
+    "value": 18.7010000279215,
+    "unit": "µg/m³",
+    "wind_speed": 0.709737482551071,
+    "wind_direction": 346.743073226242,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 95,
+      "cell": [
+        95,
+        "",
+        "<span data-value='2019-07-04T22:00:00'>04-jul-2019, 22:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Belmonte",
+        "<span data-value='0000000000000018,7010000279215000'>18,70</span>",
+        "<span data-value='0000000000000000,7097374825510710'>0,7</span>",
+        "<span data-value='0000000000000346,7430732262420000'>347</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "69",
+    "station_name": "VR - Belmonte",
+    "parameter_id": "18",
+    "pollutant": "PM10",
+    "datetime": "2019-07-04T23:00:00",
+    "value": 17.5523888911141,
+    "unit": "µg/m³",
+    "wind_speed": 0.670090670908491,
+    "wind_direction": 306.428301109456,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 96,
+      "cell": [
+        96,
+        "",
+        "<span data-value='2019-07-04T23:00:00'>04-jul-2019, 23:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Belmonte",
+        "<span data-value='0000000000000017,5523888911141000'>17,55</span>",
+        "<span data-value='0000000000000000,6700906709084910'>0,7</span>",
+        "<span data-value='0000000000000306,4283011094560000'>306</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "69",
+    "station_name": "VR - Belmonte",
+    "parameter_id": "18",
+    "pollutant": "PM10",
+    "datetime": "2019-07-05T00:00:00",
+    "value": 13.7448611344232,
+    "unit": "µg/m³",
+    "wind_speed": 0.686179570282499,
+    "wind_direction": 261.136796856516,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 97,
+      "cell": [
+        97,
+        "",
+        "<span data-value='2019-07-05T00:00:00'>05-jul-2019, 00:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Belmonte",
+        "<span data-value='0000000000000013,7448611344232000'>13,74</span>",
+        "<span data-value='0000000000000000,6861795702824990'>0,7</span>",
+        "<span data-value='0000000000000261,1367968565160000'>261</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "69",
+    "station_name": "VR - Belmonte",
+    "parameter_id": "18",
+    "pollutant": "PM10",
+    "datetime": "2019-07-05T01:00:00",
+    "value": 12.0867500072055,
+    "unit": "µg/m³",
+    "wind_speed": 0.784355554489626,
+    "wind_direction": 225.363987974892,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 98,
+      "cell": [
+        98,
+        "",
+        "<span data-value='2019-07-05T01:00:00'>05-jul-2019, 01:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Belmonte",
+        "<span data-value='0000000000000012,0867500072055000'>12,09</span>",
+        "<span data-value='0000000000000000,7843555544896260'>0,8</span>",
+        "<span data-value='0000000000000225,3639879748920000'>225</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "69",
+    "station_name": "VR - Belmonte",
+    "parameter_id": "18",
+    "pollutant": "PM10",
+    "datetime": "2019-07-05T02:00:00",
+    "value": 11.4443055666818,
+    "unit": "µg/m³",
+    "wind_speed": 0.57372577485111,
+    "wind_direction": 334.589351163828,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 99,
+      "cell": [
+        99,
+        "",
+        "<span data-value='2019-07-05T02:00:00'>05-jul-2019, 02:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Belmonte",
+        "<span data-value='0000000000000011,4443055666818000'>11,44</span>",
+        "<span data-value='0000000000000000,5737257748511100'>0,6</span>",
+        "<span data-value='0000000000000334,5893511638280000'>335</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "69",
+    "station_name": "VR - Belmonte",
+    "parameter_id": "18",
+    "pollutant": "PM10",
+    "datetime": "2019-07-05T03:00:00",
+    "value": 6.75961112380028,
+    "unit": "µg/m³",
+    "wind_speed": 0.546718425071902,
+    "wind_direction": 154.861634272565,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 100,
+      "cell": [
+        100,
+        "",
+        "<span data-value='2019-07-05T03:00:00'>05-jul-2019, 03:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Belmonte",
+        "<span data-value='0000000000000006,7596111238002800'>6,76</span>",
+        "<span data-value='0000000000000000,5467184250719020'>0,5</span>",
+        "<span data-value='0000000000000154,8616342725650000'>155</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "69",
+    "station_name": "VR - Belmonte",
+    "parameter_id": "18",
+    "pollutant": "PM10",
+    "datetime": "2019-07-05T04:00:00",
+    "value": 6.67069446298811,
+    "unit": "µg/m³",
+    "wind_speed": 0.551754286272658,
+    "wind_direction": 246.266397971663,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 101,
+      "cell": [
+        101,
+        "",
+        "<span data-value='2019-07-05T04:00:00'>05-jul-2019, 04:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Belmonte",
+        "<span data-value='0000000000000006,6706944629881100'>6,67</span>",
+        "<span data-value='0000000000000000,5517542862726580'>0,6</span>",
+        "<span data-value='0000000000000246,2663979716630000'>246</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "69",
+    "station_name": "VR - Belmonte",
+    "parameter_id": "18",
+    "pollutant": "PM10",
+    "datetime": "2019-07-05T05:00:00",
+    "value": 8.29111112064786,
+    "unit": "µg/m³",
+    "wind_speed": 0.480888737051023,
+    "wind_direction": 259.060744923094,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 102,
+      "cell": [
+        102,
+        "",
+        "<span data-value='2019-07-05T05:00:00'>05-jul-2019, 05:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Belmonte",
+        "<span data-value='0000000000000008,2911111206478600'>8,29</span>",
+        "<span data-value='0000000000000000,4808887370510230'>0,5</span>",
+        "<span data-value='0000000000000259,0607449230940000'>259</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "69",
+    "station_name": "VR - Belmonte",
+    "parameter_id": "18",
+    "pollutant": "PM10",
+    "datetime": "2019-07-05T06:00:00",
+    "value": 12.2551666969723,
+    "unit": "µg/m³",
+    "wind_speed": 0.477131975856092,
+    "wind_direction": 291.746719518664,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 103,
+      "cell": [
+        103,
+        "",
+        "<span data-value='2019-07-05T06:00:00'>05-jul-2019, 06:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Belmonte",
+        "<span data-value='0000000000000012,2551666969723000'>12,26</span>",
+        "<span data-value='0000000000000000,4771319758560920'>0,5</span>",
+        "<span data-value='0000000000000291,7467195186640000'>292</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "69",
+    "station_name": "VR - Belmonte",
+    "parameter_id": "18",
+    "pollutant": "PM10",
+    "datetime": "2019-07-05T07:00:00",
+    "value": 18.5469166729185,
+    "unit": "µg/m³",
+    "wind_speed": 0.496228403482172,
+    "wind_direction": 243.982887714753,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 104,
+      "cell": [
+        104,
+        "",
+        "<span data-value='2019-07-05T07:00:00'>05-jul-2019, 07:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Belmonte",
+        "<span data-value='0000000000000018,5469166729185000'>18,55</span>",
+        "<span data-value='0000000000000000,4962284034821720'>0,5</span>",
+        "<span data-value='0000000000000243,9828877147530000'>244</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "69",
+    "station_name": "VR - Belmonte",
+    "parameter_id": "18",
+    "pollutant": "PM10",
+    "datetime": "2019-07-05T08:00:00",
+    "value": 19.0405833623144,
+    "unit": "µg/m³",
+    "wind_speed": 0.481299914196134,
+    "wind_direction": 144.555474169895,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 105,
+      "cell": [
+        105,
+        "",
+        "<span data-value='2019-07-05T08:00:00'>05-jul-2019, 08:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Belmonte",
+        "<span data-value='0000000000000019,0405833623144000'>19,04</span>",
+        "<span data-value='0000000000000000,4812999141961340'>0,5</span>",
+        "<span data-value='0000000000000144,5554741698950000'>145</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "69",
+    "station_name": "VR - Belmonte",
+    "parameter_id": "18",
+    "pollutant": "PM10",
+    "datetime": "2019-07-05T09:00:00",
+    "value": 19.2484999577204,
+    "unit": "µg/m³",
+    "wind_speed": 0.481037100023693,
+    "wind_direction": 146.702398164205,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 106,
+      "cell": [
+        106,
+        "",
+        "<span data-value='2019-07-05T09:00:00'>05-jul-2019, 09:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Belmonte",
+        "<span data-value='0000000000000019,2484999577204000'>19,25</span>",
+        "<span data-value='0000000000000000,4810371000236930'>0,5</span>",
+        "<span data-value='0000000000000146,7023981642050000'>147</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "69",
+    "station_name": "VR - Belmonte",
+    "parameter_id": "18",
+    "pollutant": "PM10",
+    "datetime": "2019-07-05T10:00:00",
+    "value": 6.10946815679517,
+    "unit": "µg/m³",
+    "wind_speed": 0.479683818154865,
+    "wind_direction": 105.78424406389,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 107,
+      "cell": [
+        107,
+        "",
+        "<span data-value='2019-07-05T10:00:00'>05-jul-2019, 10:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Belmonte",
+        "<span data-value='0000000000000006,1094681567951700'>6,11</span>",
+        "<span data-value='0000000000000000,4796838181548650'>0,5</span>",
+        "<span data-value='0000000000000105,7842440638900000'>106</span>"
+      ]
+    }
+  }
+]

@@ -14,16 +14,21 @@ function escapeCsv(val: any): string {
   return str;
 }
 
-function getAnnualCoverageStatus(year: number, stationId: string, pollutantName: 'PM10' | 'PM2.5'): string {
+function getAnnualCoverageStatus(year: number, stationId: string, pollutantName: string): string {
   if (year === 2026) return "SUFFICIENT";
-  if (year === 2021 && stationId === "71") {
+  if (year === 2021 && stationId === "71" && pollutantName === "PM2.5") {
     return "INSUFFICIENT_ANNUAL_COVERAGE";
   }
+  let pollutantId = "";
+  if (pollutantName === "PM10") pollutantId = "18";
+  else if (pollutantName === "PM2.5") pollutantId = "20";
+  else if (pollutantName === "SO2") pollutantId = "23";
+  else if (pollutantName === "CO") pollutantId = "3";
+
   try {
     const summaryPath = path.join(process.cwd(), 'data', 'inea_weblakes_normalized', `summary-${year}.json`);
     if (fs.existsSync(summaryPath)) {
       const summary = JSON.parse(fs.readFileSync(summaryPath, 'utf8'));
-      const pollutantId = pollutantName === 'PM10' ? '18' : '20';
       const coverage = summary[stationId]?.pollutants?.[pollutantId]?.coveragePct;
       if (coverage !== undefined && coverage < 75) {
         return "INSUFFICIENT_ANNUAL_COVERAGE";
@@ -41,7 +46,7 @@ const getValidDays = (year: number, pollutantName: 'PM10' | 'PM2.5', stationId: 
     .reduce((sum, curr) => sum + curr.valid_days, 0);
 };
 
-function generateStationSummaryCsv(year: number, pollutantId: string, pollutantName: 'PM10' | 'PM2.5', isPartial: boolean, filepath: string) {
+function generateStationSummaryCsv(year: number, pollutantId: string, pollutantName: 'PM10' | 'PM2.5' | 'SO2' | 'CO', isPartial: boolean, filepath: string) {
   const summaryPath = path.join(process.cwd(), 'data', 'inea_weblakes_normalized', `summary-${year}.json`);
   const summary = JSON.parse(fs.readFileSync(summaryPath, 'utf8'));
 
@@ -71,7 +76,7 @@ function generateStationSummaryCsv(year: number, pollutantId: string, pollutantN
       escapeCsv(rawData.mean !== null ? Number(rawData.mean).toFixed(2) : ''),
       escapeCsv(rawData.max !== null ? Number(rawData.max).toFixed(2) : ''),
       escapeCsv(rawData.zeroHours),
-      escapeCsv(getValidDays(year, pollutantName, st.id)),
+      escapeCsv(pollutantName === 'PM10' || pollutantName === 'PM2.5' ? getValidDays(year, pollutantName, st.id) : 0),
       escapeCsv(rawData.exceedances?.WHO_24H ?? 0),
       escapeCsv(rawData.exceedances?.BR_24H_FINAL ?? 0),
       escapeCsv(isPartial ? "LOW" : "MEDIUM"),
@@ -141,7 +146,7 @@ async function main() {
   fs.writeFileSync(path.join(publicDir, 'attention-episodes-2020-2026.csv'), episodesRows.join("\n"), 'utf8');
   console.log("  - Generated attention-episodes-2020-2026.csv");
 
-  // 3. Generate summaries for 2020, 2021, 2024, 2025, 2026
+  // 3. Generate summaries for 2020, 2021, 2022, 2023, 2024, 2025, 2026
   generateStationSummaryCsv(2020, "18", "PM10", false, path.join(publicDir, 'pm10-2020-station-summary.csv'));
   console.log("  - Generated pm10-2020-station-summary.csv");
 
@@ -151,11 +156,23 @@ async function main() {
   generateStationSummaryCsv(2021, "20", "PM2.5", false, path.join(publicDir, 'pm25-2021-station-summary.csv'));
   console.log("  - Generated pm25-2021-station-summary.csv");
 
+  generateStationSummaryCsv(2022, "20", "PM2.5", false, path.join(publicDir, 'pm25-2022-station-summary.csv'));
+  console.log("  - Generated pm25-2022-station-summary.csv");
+
+  generateStationSummaryCsv(2023, "20", "PM2.5", false, path.join(publicDir, 'pm25-2023-station-summary.csv'));
+  console.log("  - Generated pm25-2023-station-summary.csv");
+
   generateStationSummaryCsv(2024, "18", "PM10", false, path.join(publicDir, 'pm10-2024-station-summary.csv'));
   console.log("  - Generated pm10-2024-station-summary.csv");
   
   generateStationSummaryCsv(2024, "20", "PM2.5", false, path.join(publicDir, 'pm25-2024-station-summary.csv'));
   console.log("  - Generated pm25-2024-station-summary.csv");
+
+  generateStationSummaryCsv(2024, "23", "SO2", false, path.join(publicDir, 'so2-2024-station-summary.csv'));
+  console.log("  - Generated so2-2024-station-summary.csv");
+
+  generateStationSummaryCsv(2024, "3", "CO", false, path.join(publicDir, 'co-2024-station-summary.csv'));
+  console.log("  - Generated co-2024-station-summary.csv");
 
   generateStationSummaryCsv(2025, "18", "PM10", false, path.join(publicDir, 'pm10-2025-station-summary.csv'));
   console.log("  - Generated pm10-2025-station-summary.csv");
@@ -170,52 +187,196 @@ async function main() {
   console.log("  - Generated pm25-2026-partial-station-summary.csv");
 
   // 4. Particulate Timeline (2020-2026) CSV
-  const timelineHeaders = [
-    "year", "station_id", "station_name", "pollutant", "annual_mean",
-    "max_hourly_peak", "coverage_percent", "exceedance_days_who", "exceedance_days_conama", "coverage_status"
-  ];
-  const timelineRows = [timelineHeaders.join(",")];
-
-  const years = ["2020", "2021", "2022", "2023", "2024", "2025", "2026"];
   const stations = [
     { id: "69", name: "VR - Belmonte" },
     { id: "70", name: "VR - Retiro" },
     { id: "71", name: "VR - Santa Cecília" }
   ];
-  const pollutants = [
+
+  const timelineHeaders = [
+    "year", "station_id", "station_name", "pollutant", "annual_mean",
+    "max_hourly_peak", "coverage_percent", "exceedance_days_who", "exceedance_days_conama", "coverage_status"
+  ];
+
+  const particulateTimelineRows = [timelineHeaders.join(",")];
+  const particulateYears = ["2020", "2021", "2022", "2023", "2024", "2025", "2026"];
+  const particulatePollutants = [
     { id: "18", name: "PM10" },
     { id: "20", name: "PM2.5" }
   ];
 
-  for (const yr of years) {
+  for (const yr of particulateYears) {
     const summaryPath = path.join(process.cwd(), 'data', 'inea_weblakes_normalized', `summary-${yr}.json`);
     if (!fs.existsSync(summaryPath)) continue;
     const yearSummary = JSON.parse(fs.readFileSync(summaryPath, 'utf8'));
     for (const st of stations) {
-      for (const pol of pollutants) {
-        const raw = yearSummary[st.id]?.pollutants?.[pol.id];
-        if (raw && raw.totalHours > 0) {
+      for (const pol of particulatePollutants) {
+        const rawData = yearSummary[st.id]?.pollutants?.[pol.id];
+        if (rawData && rawData.totalHours > 0) {
           const row = [
             escapeCsv(Number(yr)),
             escapeCsv(Number(st.id)),
             escapeCsv(st.name),
             escapeCsv(pol.name),
-            escapeCsv(raw.mean !== null ? Number(raw.mean).toFixed(2) : ''),
-            escapeCsv(raw.max !== null ? Number(raw.max).toFixed(2) : ''),
-            escapeCsv(Number(raw.coveragePct).toFixed(2)),
-            escapeCsv(raw.exceedances?.WHO_24H ?? 0),
-            escapeCsv(raw.exceedances?.BR_24H_FINAL ?? 0),
-            escapeCsv(getAnnualCoverageStatus(Number(yr), st.id, pol.name as 'PM10' | 'PM2.5'))
+            escapeCsv(rawData.mean !== null ? Number(rawData.mean).toFixed(2) : ''),
+            escapeCsv(rawData.max !== null ? Number(rawData.max).toFixed(2) : ''),
+            escapeCsv(Number(rawData.coveragePct).toFixed(2)),
+            escapeCsv(rawData.exceedances?.WHO_24H ?? 0),
+            escapeCsv(rawData.exceedances?.BR_24H_FINAL ?? 0),
+            escapeCsv(getAnnualCoverageStatus(Number(yr), st.id, pol.name))
           ];
-          timelineRows.push(row.join(","));
+          particulateTimelineRows.push(row.join(","));
         }
       }
     }
   }
-  fs.writeFileSync(path.join(publicDir, 'particulate-timeline-2020-2026.csv'), timelineRows.join("\n"), 'utf8');
+  fs.writeFileSync(path.join(publicDir, 'particulate-timeline-2020-2026.csv'), particulateTimelineRows.join("\n"), 'utf8');
   console.log("  - Generated particulate-timeline-2020-2026.csv");
 
-  // 5. Generate manifest.json dynamically with dataset versioning
+  // SO2 Timeline (2020-2026) CSV
+  const so2Timeline2020Rows = [timelineHeaders.join(",")];
+  for (const yr of particulateYears) {
+    const summaryPath = path.join(process.cwd(), 'data', 'inea_weblakes_normalized', `summary-${yr}.json`);
+    if (!fs.existsSync(summaryPath)) continue;
+    const yearSummary = JSON.parse(fs.readFileSync(summaryPath, 'utf8'));
+    for (const st of stations) {
+      const rawData = yearSummary[st.id]?.pollutants?.["23"];
+      if (rawData && rawData.totalHours > 0) {
+        const row = [
+          escapeCsv(Number(yr)),
+          escapeCsv(Number(st.id)),
+          escapeCsv(st.name),
+          escapeCsv("SO2"),
+          escapeCsv(rawData.mean !== null ? Number(rawData.mean).toFixed(2) : ''),
+          escapeCsv(rawData.max !== null ? Number(rawData.max).toFixed(2) : ''),
+          escapeCsv(Number(rawData.coveragePct).toFixed(2)),
+          escapeCsv(rawData.exceedances?.WHO_24H ?? 0),
+          escapeCsv(rawData.exceedances?.BR_24H_FINAL ?? 0),
+          escapeCsv(getAnnualCoverageStatus(Number(yr), st.id, "SO2"))
+        ];
+        so2Timeline2020Rows.push(row.join(","));
+      }
+    }
+  }
+  fs.writeFileSync(path.join(publicDir, 'so2-timeline-2020-2026.csv'), so2Timeline2020Rows.join("\n"), 'utf8');
+  console.log("  - Generated so2-timeline-2020-2026.csv");
+
+  // CO Timeline (2020-2026) CSV
+  const coTimeline2020Rows = [timelineHeaders.join(",")];
+  for (const yr of particulateYears) {
+    const summaryPath = path.join(process.cwd(), 'data', 'inea_weblakes_normalized', `summary-${yr}.json`);
+    if (!fs.existsSync(summaryPath)) continue;
+    const yearSummary = JSON.parse(fs.readFileSync(summaryPath, 'utf8'));
+    for (const st of stations) {
+      const rawData = yearSummary[st.id]?.pollutants?.["3"];
+      if (rawData && rawData.totalHours > 0) {
+        const row = [
+          escapeCsv(Number(yr)),
+          escapeCsv(Number(st.id)),
+          escapeCsv(st.name),
+          escapeCsv("CO"),
+          escapeCsv(rawData.mean !== null ? Number(rawData.mean).toFixed(2) : ''),
+          escapeCsv(rawData.max !== null ? Number(rawData.max).toFixed(2) : ''),
+          escapeCsv(Number(rawData.coveragePct).toFixed(2)),
+          escapeCsv(rawData.exceedances?.WHO_24H ?? 0),
+          escapeCsv(rawData.exceedances?.BR_24H_FINAL ?? 0),
+          escapeCsv(getAnnualCoverageStatus(Number(yr), st.id, "CO"))
+        ];
+        coTimeline2020Rows.push(row.join(","));
+      }
+    }
+  }
+  fs.writeFileSync(path.join(publicDir, 'co-timeline-2020-2026.csv'), coTimeline2020Rows.join("\n"), 'utf8');
+  console.log("  - Generated co-timeline-2020-2026.csv");
+
+  // 5. Generate extended timelines (2013-2026)
+  const fullYears = Array.from({ length: 14 }, (_, i) => String(2013 + i)); // 2013 to 2026
+
+  // PM10 2013-2026 Timeline
+  const pm10TimelineRows = [timelineHeaders.join(",")];
+  for (const yr of fullYears) {
+    const summaryPath = path.join(process.cwd(), 'data', 'inea_weblakes_normalized', `summary-${yr}.json`);
+    if (!fs.existsSync(summaryPath)) continue;
+    const yearSummary = JSON.parse(fs.readFileSync(summaryPath, 'utf8'));
+    for (const st of stations) {
+      const rawData = yearSummary[st.id]?.pollutants?.["18"];
+      if (rawData && rawData.totalHours > 0) {
+        const row = [
+          escapeCsv(Number(yr)),
+          escapeCsv(Number(st.id)),
+          escapeCsv(st.name),
+          escapeCsv("PM10"),
+          escapeCsv(rawData.mean !== null ? Number(rawData.mean).toFixed(2) : ''),
+          escapeCsv(rawData.max !== null ? Number(rawData.max).toFixed(2) : ''),
+          escapeCsv(Number(rawData.coveragePct).toFixed(2)),
+          escapeCsv(rawData.exceedances?.WHO_24H ?? 0),
+          escapeCsv(rawData.exceedances?.BR_24H_FINAL ?? 0),
+          escapeCsv(getAnnualCoverageStatus(Number(yr), st.id, "PM10"))
+        ];
+        pm10TimelineRows.push(row.join(","));
+      }
+    }
+  }
+  fs.writeFileSync(path.join(publicDir, 'pm10-timeline-2013-2026.csv'), pm10TimelineRows.join("\n"), 'utf8');
+  console.log("  - Generated pm10-timeline-2013-2026.csv");
+
+  // SO2 2013-2026 Timeline
+  const so2TimelineRows = [timelineHeaders.join(",")];
+  for (const yr of fullYears) {
+    const summaryPath = path.join(process.cwd(), 'data', 'inea_weblakes_normalized', `summary-${yr}.json`);
+    if (!fs.existsSync(summaryPath)) continue;
+    const yearSummary = JSON.parse(fs.readFileSync(summaryPath, 'utf8'));
+    for (const st of stations) {
+      const rawData = yearSummary[st.id]?.pollutants?.["23"];
+      if (rawData && rawData.totalHours > 0) {
+        const row = [
+          escapeCsv(Number(yr)),
+          escapeCsv(Number(st.id)),
+          escapeCsv(st.name),
+          escapeCsv("SO2"),
+          escapeCsv(rawData.mean !== null ? Number(rawData.mean).toFixed(2) : ''),
+          escapeCsv(rawData.max !== null ? Number(rawData.max).toFixed(2) : ''),
+          escapeCsv(Number(rawData.coveragePct).toFixed(2)),
+          escapeCsv(rawData.exceedances?.WHO_24H ?? 0),
+          escapeCsv(rawData.exceedances?.BR_24H_FINAL ?? 0),
+          escapeCsv(getAnnualCoverageStatus(Number(yr), st.id, "SO2"))
+        ];
+        so2TimelineRows.push(row.join(","));
+      }
+    }
+  }
+  fs.writeFileSync(path.join(publicDir, 'so2-timeline-2013-2026.csv'), so2TimelineRows.join("\n"), 'utf8');
+  console.log("  - Generated so2-timeline-2013-2026.csv");
+
+  // CO 2013-2026 Timeline
+  const coTimelineRows = [timelineHeaders.join(",")];
+  for (const yr of fullYears) {
+    const summaryPath = path.join(process.cwd(), 'data', 'inea_weblakes_normalized', `summary-${yr}.json`);
+    if (!fs.existsSync(summaryPath)) continue;
+    const yearSummary = JSON.parse(fs.readFileSync(summaryPath, 'utf8'));
+    for (const st of stations) {
+      const rawData = yearSummary[st.id]?.pollutants?.["3"];
+      if (rawData && rawData.totalHours > 0) {
+        const row = [
+          escapeCsv(Number(yr)),
+          escapeCsv(Number(st.id)),
+          escapeCsv(st.name),
+          escapeCsv("CO"),
+          escapeCsv(rawData.mean !== null ? Number(rawData.mean).toFixed(2) : ''),
+          escapeCsv(rawData.max !== null ? Number(rawData.max).toFixed(2) : ''),
+          escapeCsv(Number(rawData.coveragePct).toFixed(2)),
+          escapeCsv(rawData.exceedances?.WHO_24H ?? 0),
+          escapeCsv(rawData.exceedances?.BR_24H_FINAL ?? 0),
+          escapeCsv(getAnnualCoverageStatus(Number(yr), st.id, "CO"))
+        ];
+        coTimelineRows.push(row.join(","));
+      }
+    }
+  }
+  fs.writeFileSync(path.join(publicDir, 'co-timeline-2013-2026.csv'), coTimelineRows.join("\n"), 'utf8');
+  console.log("  - Generated co-timeline-2013-2026.csv");
+
+  // 6. Generate manifest.json dynamically with dataset versioning v1.6.0
   let commitHash = 'unknown';
   try {
     commitHash = execSync('git rev-parse --short HEAD', { encoding: 'utf8' }).trim();
@@ -225,15 +386,23 @@ async function main() {
 
   const generatedAt = new Date().toISOString();
 
+  // Load timelines row counts for manifest
+  const pm10TimelineLines = fs.readFileSync(path.join(publicDir, 'pm10-timeline-2013-2026.csv'), 'utf8').trim().split('\n').length - 1;
+  const so2TimelineLines = fs.readFileSync(path.join(publicDir, 'so2-timeline-2013-2026.csv'), 'utf8').trim().split('\n').length - 1;
+  const coTimelineLines = fs.readFileSync(path.join(publicDir, 'co-timeline-2013-2026.csv'), 'utf8').trim().split('\n').length - 1;
+  const particulateTimelineLines = fs.readFileSync(path.join(publicDir, 'particulate-timeline-2020-2026.csv'), 'utf8').trim().split('\n').length - 1;
+  const so2Timeline2020Lines = fs.readFileSync(path.join(publicDir, 'so2-timeline-2020-2026.csv'), 'utf8').trim().split('\n').length - 1;
+  const coTimeline2020Lines = fs.readFileSync(path.join(publicDir, 'co-timeline-2020-2026.csv'), 'utf8').trim().split('\n').length - 1;
+
   const manifestData = {
-    version: "1.5.0",
-    dataset_version: "1.5.0",
+    version: "1.6.0",
+    dataset_version: "1.6.0",
     status: "saudável",
     generated_at: generatedAt,
     source_system: "WEBLAKES_CONCENTRATION_WITH_WIND",
     methodology_label: "Dado horário público WebLakes — comparação experimental — sem QA/QC oficial explícito.",
     commit_hash: commitHash,
-    coverage_notes: "Série histórica abrangendo de 2020 a 2026 para Volta Redonda. O ano de 2026 é parcial. Novos gases SO2 e CO incluídos experimentalmente para a série de 2020 a 2026.",
+    coverage_notes: "Série histórica abrangendo de 2013 a 2026 para Volta Redonda. O ano de 2026 é parcial. Novos poluentes e dados históricos expandidos para PM10, SO2 e CO.",
     last_smoke_test_at: generatedAt,
     datasets: [
       {
@@ -265,6 +434,26 @@ async function main() {
         source_system: "WEBLAKES_CONCENTRATION_WITH_WIND",
         methodological_label: "Dado horário público WebLakes — comparação experimental — sem QA/QC oficial explícito.",
         public_url: "https://semear-pwa.vercel.app/data/air/pm25-2021-station-summary.csv"
+      },
+      {
+        filename: "pm25-2022-station-summary.csv",
+        title: "Resumo de Estações PM2.5 (2022)",
+        description: "Estatísticas anuais consolidadas por estação para o poluente PM2.5 em Volta Redonda no ano de 2022.",
+        rows_count: 3,
+        updated_at: generatedAt,
+        source_system: "WEBLAKES_CONCENTRATION_WITH_WIND",
+        methodological_label: "Dado horário público WebLakes — comparação experimental — sem QA/QC oficial explícito.",
+        public_url: "https://semear-pwa.vercel.app/data/air/pm25-2022-station-summary.csv"
+      },
+      {
+        filename: "pm25-2023-station-summary.csv",
+        title: "Resumo de Estações PM2.5 (2023)",
+        description: "Estatísticas anuais consolidadas por estação para o poluente PM2.5 em Volta Redonda no ano de 2023.",
+        rows_count: 3,
+        updated_at: generatedAt,
+        source_system: "WEBLAKES_CONCENTRATION_WITH_WIND",
+        methodological_label: "Dado horário público WebLakes — comparação experimental — sem QA/QC oficial explícito.",
+        public_url: "https://semear-pwa.vercel.app/data/air/pm25-2023-station-summary.csv"
       },
       {
         filename: "pm10-2024-station-summary.csv",
@@ -350,7 +539,7 @@ async function main() {
         filename: "particulate-timeline-2020-2026.csv",
         title: "Linha do Tempo de Particulados (2020-2026)",
         description: "Médias, coberturas e contagem anual de excedências OMS/CONAMA para PM10 e PM2.5 (2020-2026, com 2026 parcial).",
-        rows_count: timelineRows.length - 1,
+        rows_count: particulateTimelineLines,
         updated_at: generatedAt,
         source_system: "WEBLAKES_CONCENTRATION_WITH_WIND",
         methodological_label: "Dado horário público WebLakes — comparação experimental — sem QA/QC oficial explícito.",
@@ -360,7 +549,7 @@ async function main() {
         filename: "so2-timeline-2020-2026.csv",
         title: "Linha do Tempo de SO2 (2020-2026)",
         description: "Médias, coberturas e contagem anual de excedências OMS/CONAMA para SO2 (2020-2026, com 2026 parcial).",
-        rows_count: 21,
+        rows_count: so2Timeline2020Lines,
         updated_at: generatedAt,
         source_system: "WEBLAKES_CONCENTRATION_WITH_WIND",
         methodological_label: "Dado horário público WebLakes — comparação experimental — sem QA/QC oficial explícito.",
@@ -370,11 +559,41 @@ async function main() {
         filename: "co-timeline-2020-2026.csv",
         title: "Linha do Tempo de CO (2020-2026)",
         description: "Médias, coberturas e contagem anual de excedências OMS/CONAMA para CO (2020-2026, com 2026 parcial).",
-        rows_count: 21,
+        rows_count: coTimeline2020Lines,
         updated_at: generatedAt,
         source_system: "WEBLAKES_CONCENTRATION_WITH_WIND",
         methodological_label: "Dado horário público WebLakes — comparação experimental — sem QA/QC oficial explícito.",
         public_url: "https://semear-pwa.vercel.app/data/air/co-timeline-2020-2026.csv"
+      },
+      {
+        filename: "pm10-timeline-2013-2026.csv",
+        title: "Linha do Tempo de PM10 (2013-2026)",
+        description: "Médias, coberturas e contagem anual de excedências OMS/CONAMA para PM10 (2013-2026, com 2026 parcial).",
+        rows_count: pm10TimelineLines,
+        updated_at: generatedAt,
+        source_system: "WEBLAKES_CONCENTRATION_WITH_WIND",
+        methodological_label: "Dado horário público WebLakes — comparação experimental — sem QA/QC oficial explícito.",
+        public_url: "https://semear-pwa.vercel.app/data/air/pm10-timeline-2013-2026.csv"
+      },
+      {
+        filename: "so2-timeline-2013-2026.csv",
+        title: "Linha do Tempo de SO2 (2013-2026)",
+        description: "Médias, coberturas e contagem anual de excedências OMS/CONAMA para SO2 (2013-2026, com 2026 parcial).",
+        rows_count: so2TimelineLines,
+        updated_at: generatedAt,
+        source_system: "WEBLAKES_CONCENTRATION_WITH_WIND",
+        methodological_label: "Dado horário público WebLakes — comparação experimental — sem QA/QC oficial explícito.",
+        public_url: "https://semear-pwa.vercel.app/data/air/so2-timeline-2013-2026.csv"
+      },
+      {
+        filename: "co-timeline-2013-2026.csv",
+        title: "Linha do Tempo de CO (2013-2026)",
+        description: "Médias, coberturas e contagem anual de excedências OMS/CONAMA para CO (2013-2026, com 2026 parcial).",
+        rows_count: coTimelineLines,
+        updated_at: generatedAt,
+        source_system: "WEBLAKES_CONCENTRATION_WITH_WIND",
+        methodological_label: "Dado horário público WebLakes — comparação experimental — sem QA/QC oficial explícito.",
+        public_url: "https://semear-pwa.vercel.app/data/air/co-timeline-2013-2026.csv"
       },
       {
         filename: "attention-episodes-2020-2026.csv",

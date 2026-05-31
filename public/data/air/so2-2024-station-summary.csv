@@ -1,4 +1,4 @@
-station_id,station_name,pollutant,parameter_id,expected_hours,found_records,valid_hours,coverage_pct,hourly_mean,hourly_max,days_sufficient,exceedances_who,exceedances_conama,status
-69,"VR - Belmonte",SO2,23,8784,7847,7847,89.33,4.059,14.179,321,0,0,PUBLICÁVEL COM CAUTELA
-70,"VR - Retiro",SO2,23,8784,8750,8750,99.61,4.672,7.754,366,0,0,PUBLICÁVEL COM CAUTELA
-71,"VR - Santa Cecília",SO2,23,8784,7041,7041,80.16,5.868,12.452,290,0,0,PUBLICÁVEL COM CAUTELA
+station_id,station_name,coverage_percent,hourly_records,annual_mean_available_hourly,hourly_peak,zero_values,valid_days,who_24h_exceedance_days,conama506_24h_exceedance_days,confidence_level,source_system,data_quality_tier,validation_note,coverage_status
+69,VR-Belmonte,0.00,0,,,0,0,0,0,MEDIUM,WEBLAKES_CONCENTRATION_WITH_WIND,RAW_PUBLIC_PLATFORM,Sem QA/QC oficial explícito; comparação experimental.,INSUFFICIENT_ANNUAL_COVERAGE
+70,VR-Retiro,99.61,8750,4.67,7.75,147,0,0,0,MEDIUM,WEBLAKES_CONCENTRATION_WITH_WIND,RAW_PUBLIC_PLATFORM,Sem QA/QC oficial explícito; comparação experimental.,SUFFICIENT
+71,VR-Santa Cecília,0.00,0,,,0,0,0,0,MEDIUM,WEBLAKES_CONCENTRATION_WITH_WIND,RAW_PUBLIC_PLATFORM,Sem QA/QC oficial explícito; comparação experimental.,INSUFFICIENT_ANNUAL_COVERAGE

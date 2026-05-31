@@ -105,15 +105,16 @@ export const THRESHOLDS: Threshold[] = [
     regime: "WHO",
     averaging_period: "DAY",
     threshold_value: 4,
-    unit: "mg/m³", // equivalent to ~3.5 ppm
+    unit: "mg/m³", // equivalent to ~3.49 ppm (fator 1.145 a 25°C, 1 atm)
     label: "Diretriz de 24h da OMS (2021)",
     legal_status: "Recomendação Internacional de Saúde",
     source_url: "https://www.who.int/publications/i/item/9789240034228",
-    notes: "Monóxido de Carbono (4 mg/m³ ou ~3.5 ppm)."
+    notes: "Monóxido de Carbono (4 mg/m³ equivale a ~3.49 ppm usando fator de conversão 1.145 a 25°C e 1 atm)."
   },
 
   // --- Brasil / CONAMA 506/2024 (vigente) — substitui CONAMA 491/2018 ---
   // Os valores numéricos finais são idênticos à 491/2018, mas a referência legal correta é a 506/2024.
+  // URL oficial: https://www.in.gov.br/web/dou/-/resolucao-conama-n-506-de-4-de-julho-de-2024
   // A CONAMA 491/2018 é mantida como referência histórica/legado nos dados de 2018-2023.
   // PM10
   {
@@ -212,10 +213,10 @@ export const THRESHOLDS: Threshold[] = [
     averaging_period: "DAY",
     threshold_value: 20,
     unit: "µg/m³",
-    label: "CONAMA Padrão Final (24h)",
-    legal_status: "Padrão de Qualidade do Ar Nacional",
-    source_url: "https://www.in.gov.br/materia/-/asset_publisher/KujY0DBegcZ3/content/id/51528654",
-    notes: "Padrão de 24h definitivo para SO2."
+    label: "CONAMA 506/2024 Padrão Final (24h)",
+    legal_status: "Padrão de Qualidade do Ar Nacional — Vigente",
+    source_url: "https://www.in.gov.br/web/dou/-/resolucao-conama-n-506-de-4-de-julho-de-2024",
+    notes: "Padrão de 24h definitivo para SO2. Resolução CONAMA 506/2024."
   },
   {
     pollutant: "SO2",
@@ -223,10 +224,10 @@ export const THRESHOLDS: Threshold[] = [
     averaging_period: "DAY",
     threshold_value: 125,
     unit: "µg/m³",
-    label: "CONAMA Padrão Intermediário PI-1 (24h)",
+    label: "CONAMA 506/2024 Padrão Intermediário PI-1 (24h)",
     legal_status: "Padrão Vigente Transitório",
-    source_url: "https://www.in.gov.br/materia/-/asset_publisher/KujY0DBegcZ3/content/id/51528654",
-    notes: "PI-1 diário para SO2."
+    source_url: "https://www.in.gov.br/web/dou/-/resolucao-conama-n-506-de-4-de-julho-de-2024",
+    notes: "PI-1 diário para SO2. Resolução CONAMA 506/2024."
   },
   // NO2
   {
@@ -235,10 +236,10 @@ export const THRESHOLDS: Threshold[] = [
     averaging_period: "HOUR",
     threshold_value: 200,
     unit: "µg/m³",
-    label: "CONAMA Padrão Final (1h)",
-    legal_status: "Padrão de Qualidade do Ar Nacional",
-    source_url: "https://www.in.gov.br/materia/-/asset_publisher/KujY0DBegcZ3/content/id/51528654",
-    notes: "Padrão horária definitivo para NO2."
+    label: "CONAMA 506/2024 Padrão Final (1h)",
+    legal_status: "Padrão de Qualidade do Ar Nacional — Vigente",
+    source_url: "https://www.in.gov.br/web/dou/-/resolucao-conama-n-506-de-4-de-julho-de-2024",
+    notes: "Padrão horário definitivo para NO2. Resolução CONAMA 506/2024."
   },
   {
     pollutant: "NO2",
@@ -246,10 +247,10 @@ export const THRESHOLDS: Threshold[] = [
     averaging_period: "HOUR",
     threshold_value: 260,
     unit: "µg/m³",
-    label: "CONAMA Padrão Intermediário PI-1 (1h)",
+    label: "CONAMA 506/2024 Padrão Intermediário PI-1 (1h)",
     legal_status: "Padrão Vigente Transitório",
-    source_url: "https://www.in.gov.br/materia/-/asset_publisher/KujY0DBegcZ3/content/id/51528654",
-    notes: "PI-1 de 1 hora para NO2."
+    source_url: "https://www.in.gov.br/web/dou/-/resolucao-conama-n-506-de-4-de-julho-de-2024",
+    notes: "PI-1 de 1 hora para NO2. Resolução CONAMA 506/2024."
   },
   // O3
   {
@@ -258,10 +259,10 @@ export const THRESHOLDS: Threshold[] = [
     averaging_period: "MOVING_8H",
     threshold_value: 100,
     unit: "µg/m³",
-    label: "CONAMA Padrão Final (8h)",
-    legal_status: "Padrão de Qualidade do Ar Nacional",
-    source_url: "https://www.in.gov.br/materia/-/asset_publisher/KujY0DBegcZ3/content/id/51528654",
-    notes: "Limite de média móvel de 8h diária máxima definitivo."
+    label: "CONAMA 506/2024 Padrão Final (8h)",
+    legal_status: "Padrão de Qualidade do Ar Nacional — Vigente",
+    source_url: "https://www.in.gov.br/web/dou/-/resolucao-conama-n-506-de-4-de-julho-de-2024",
+    notes: "Limite de média móvel de 8h diária máxima definitivo para Ozônio. Resolução CONAMA 506/2024."
   },
   {
     pollutant: "O3",
@@ -269,10 +270,10 @@ export const THRESHOLDS: Threshold[] = [
     averaging_period: "MOVING_8H",
     threshold_value: 140,
     unit: "µg/m³",
-    label: "CONAMA Padrão Intermediário PI-1 (8h)",
+    label: "CONAMA 506/2024 Padrão Intermediário PI-1 (8h)",
     legal_status: "Padrão Vigente Transitório",
-    source_url: "https://www.in.gov.br/materia/-/asset_publisher/KujY0DBegcZ3/content/id/51528654",
-    notes: "PI-1 de 8h para Ozônio."
+    source_url: "https://www.in.gov.br/web/dou/-/resolucao-conama-n-506-de-4-de-julho-de-2024",
+    notes: "PI-1 de 8h para Ozônio. Resolução CONAMA 506/2024."
   },
   // CO
   {
@@ -294,9 +295,9 @@ export const THRESHOLDS: Threshold[] = [
     threshold_value: 240,
     unit: "µg/m³",
     label: "Histórico CONAMA 03/1990 (24h)",
-    legal_status: "Padrão Histórico Revogado",
-    source_url: "http://apnea.com.br/wp-content/uploads/2018/11/Resolucao-Conama-491-18.pdf",
-    notes: "Partículas Totais em Suspensão (limite diário histórico anterior a 2018)."
+    legal_status: "Padrão Histórico — Revogado pela CONAMA 491/2018",
+    source_url: "https://www.ibama.gov.br/sophia/cnia/legislacao/MMA/RE0003-300690.PDF",
+    notes: "Partículas Totais em Suspensão (limite diário histórico estabelecido pela CONAMA 03/1990, revogado pela 491/2018 e substituído por PM10/PM2.5). Utilizado apenas para fins de referência histórica de engenharia."
   },
   {
     pollutant: "PTS",
@@ -305,8 +306,8 @@ export const THRESHOLDS: Threshold[] = [
     threshold_value: 80,
     unit: "µg/m³",
     label: "Histórico CONAMA 03/1990 (Anual)",
-    legal_status: "Padrão Histórico Revogado",
-    source_url: "http://apnea.com.br/wp-content/uploads/2018/11/Resolucao-Conama-491-18.pdf",
-    notes: "Partículas Totais em Suspensão (limite anual histórico anterior a 2018)."
+    legal_status: "Padrão Histórico — Revogado pela CONAMA 491/2018",
+    source_url: "https://www.ibama.gov.br/sophia/cnia/legislacao/MMA/RE0003-300690.PDF",
+    notes: "Partículas Totais em Suspensão (limite anual histórico estabelecido pela CONAMA 03/1990). Utilizado apenas para fins de referência histórica de engenharia."
   }
 ];

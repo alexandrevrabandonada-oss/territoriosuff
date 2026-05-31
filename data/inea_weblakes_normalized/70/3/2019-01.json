@@ -1,0 +1,3163 @@
+[
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "3",
+    "pollutant": "CO",
+    "datetime": "2019-01-01T00:00:00",
+    "value": 0.229070797562599,
+    "unit": "ppm",
+    "wind_speed": 0.496188879013062,
+    "wind_direction": 46.8454399108887,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 1,
+      "cell": [
+        1,
+        "",
+        "<span data-value='2019-01-01T00:00:00'>01-jan-2019, 00:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,2290707975625990'>0,23</span>",
+        "<span data-value='0000000000000000,4961888790130620'>0,5</span>",
+        "<span data-value='0000000000000046,8454399108887000'>47</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "3",
+    "pollutant": "CO",
+    "datetime": "2019-01-01T01:00:00",
+    "value": 0.295437514781952,
+    "unit": "ppm",
+    "wind_speed": 0.422062516212463,
+    "wind_direction": 59.5709609985352,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 2,
+      "cell": [
+        2,
+        "",
+        "<span data-value='2019-01-01T01:00:00'>01-jan-2019, 01:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,2954375147819520'>0,30</span>",
+        "<span data-value='0000000000000000,4220625162124630'>0,4</span>",
+        "<span data-value='0000000000000059,5709609985352000'>60</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "3",
+    "pollutant": "CO",
+    "datetime": "2019-01-02T10:00:00",
+    "value": 0.882099568843842,
+    "unit": "ppm",
+    "wind_speed": 0.522420704364777,
+    "wind_direction": 285.259887695313,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 3,
+      "cell": [
+        3,
+        "",
+        "<span data-value='2019-01-02T10:00:00'>02-jan-2019, 10:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,8820995688438420'>0,88</span>",
+        "<span data-value='0000000000000000,5224207043647770'>0,5</span>",
+        "<span data-value='0000000000000285,2598876953130000'>285</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "3",
+    "pollutant": "CO",
+    "datetime": "2019-01-02T11:00:00",
+    "value": 0.175420999526978,
+    "unit": "ppm",
+    "wind_speed": 0.272054105997086,
+    "wind_direction": 117.039741516113,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 4,
+      "cell": [
+        4,
+        "",
+        "<span data-value='2019-01-02T11:00:00'>02-jan-2019, 11:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,1754209995269780'>0,18</span>",
+        "<span data-value='0000000000000000,2720541059970860'>0,3</span>",
+        "<span data-value='0000000000000117,0397415161130000'>117</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "3",
+    "pollutant": "CO",
+    "datetime": "2019-01-02T12:00:00",
+    "value": 0.119155488908291,
+    "unit": "ppm",
+    "wind_speed": 0.144628211855888,
+    "wind_direction": 157.496170043945,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 5,
+      "cell": [
+        5,
+        "",
+        "<span data-value='2019-01-02T12:00:00'>02-jan-2019, 12:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,1191554889082910'>0,12</span>",
+        "<span data-value='0000000000000000,1446282118558880'>0,1</span>",
+        "<span data-value='0000000000000157,4961700439450000'>157</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "3",
+    "pollutant": "CO",
+    "datetime": "2019-01-02T13:00:00",
+    "value": 0.140677765011787,
+    "unit": "ppm",
+    "wind_speed": 0.398603737354279,
+    "wind_direction": 101.378868103027,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 6,
+      "cell": [
+        6,
+        "",
+        "<span data-value='2019-01-02T13:00:00'>02-jan-2019, 13:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,1406777650117870'>0,14</span>",
+        "<span data-value='0000000000000000,3986037373542790'>0,4</span>",
+        "<span data-value='0000000000000101,3788681030270000'>101</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "3",
+    "pollutant": "CO",
+    "datetime": "2019-01-02T14:00:00",
+    "value": 0.125954002141953,
+    "unit": "ppm",
+    "wind_speed": 0.460007578134537,
+    "wind_direction": 237.417465209961,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 7,
+      "cell": [
+        7,
+        "",
+        "<span data-value='2019-01-02T14:00:00'>02-jan-2019, 14:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,1259540021419530'>0,13</span>",
+        "<span data-value='0000000000000000,4600075781345370'>0,5</span>",
+        "<span data-value='0000000000000237,4174652099610000'>237</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "3",
+    "pollutant": "CO",
+    "datetime": "2019-01-02T15:00:00",
+    "value": 0.232067808508873,
+    "unit": "ppm",
+    "wind_speed": 0.684912383556366,
+    "wind_direction": 118.463302612305,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 8,
+      "cell": [
+        8,
+        "",
+        "<span data-value='2019-01-02T15:00:00'>02-jan-2019, 15:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,2320678085088730'>0,23</span>",
+        "<span data-value='0000000000000000,6849123835563660'>0,7</span>",
+        "<span data-value='0000000000000118,4633026123050000'>118</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "3",
+    "pollutant": "CO",
+    "datetime": "2019-01-02T16:00:00",
+    "value": 0.217283755540848,
+    "unit": "ppm",
+    "wind_speed": 1.46774423122406,
+    "wind_direction": 316.972229003906,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 9,
+      "cell": [
+        9,
+        "",
+        "<span data-value='2019-01-02T16:00:00'>02-jan-2019, 16:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,2172837555408480'>0,22</span>",
+        "<span data-value='0000000000000001,4677442312240600'>1,5</span>",
+        "<span data-value='0000000000000316,9722290039060000'>317</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "3",
+    "pollutant": "CO",
+    "datetime": "2019-01-02T17:00:00",
+    "value": 0.513542652130127,
+    "unit": "ppm",
+    "wind_speed": 0.314392298460007,
+    "wind_direction": 41.9359703063965,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 10,
+      "cell": [
+        10,
+        "",
+        "<span data-value='2019-01-02T17:00:00'>02-jan-2019, 17:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,5135426521301270'>0,51</span>",
+        "<span data-value='0000000000000000,3143922984600070'>0,3</span>",
+        "<span data-value='0000000000000041,9359703063965000'>42</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "3",
+    "pollutant": "CO",
+    "datetime": "2019-01-02T18:00:00",
+    "value": 0.231395781040192,
+    "unit": "ppm",
+    "wind_speed": 0.233065247535706,
+    "wind_direction": 116.088256835938,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 11,
+      "cell": [
+        11,
+        "",
+        "<span data-value='2019-01-02T18:00:00'>02-jan-2019, 18:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,2313957810401920'>0,23</span>",
+        "<span data-value='0000000000000000,2330652475357060'>0,2</span>",
+        "<span data-value='0000000000000116,0882568359380000'>116</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "3",
+    "pollutant": "CO",
+    "datetime": "2019-01-02T19:00:00",
+    "value": 0.648362457752228,
+    "unit": "ppm",
+    "wind_speed": 0.391412973403931,
+    "wind_direction": 324.998931884766,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 12,
+      "cell": [
+        12,
+        "",
+        "<span data-value='2019-01-02T19:00:00'>02-jan-2019, 19:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,6483624577522280'>0,65</span>",
+        "<span data-value='0000000000000000,3914129734039310'>0,4</span>",
+        "<span data-value='0000000000000324,9989318847660000'>325</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "3",
+    "pollutant": "CO",
+    "datetime": "2019-01-02T20:00:00",
+    "value": 0.35358390212059,
+    "unit": "ppm",
+    "wind_speed": 0.3145612180233,
+    "wind_direction": 339.566101074219,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 13,
+      "cell": [
+        13,
+        "",
+        "<span data-value='2019-01-02T20:00:00'>02-jan-2019, 20:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,3535839021205900'>0,35</span>",
+        "<span data-value='0000000000000000,3145612180233000'>0,3</span>",
+        "<span data-value='0000000000000339,5661010742190000'>340</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "3",
+    "pollutant": "CO",
+    "datetime": "2019-01-02T21:00:00",
+    "value": 0.348886013031006,
+    "unit": "ppm",
+    "wind_speed": 0.31051042675972,
+    "wind_direction": 311.320495605469,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 14,
+      "cell": [
+        14,
+        "",
+        "<span data-value='2019-01-02T21:00:00'>02-jan-2019, 21:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,3488860130310060'>0,35</span>",
+        "<span data-value='0000000000000000,3105104267597200'>0,3</span>",
+        "<span data-value='0000000000000311,3204956054690000'>311</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "3",
+    "pollutant": "CO",
+    "datetime": "2019-01-02T22:00:00",
+    "value": 0.332377910614014,
+    "unit": "ppm",
+    "wind_speed": 0.354413866996765,
+    "wind_direction": 334.783416748047,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 15,
+      "cell": [
+        15,
+        "",
+        "<span data-value='2019-01-02T22:00:00'>02-jan-2019, 22:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,3323779106140140'>0,33</span>",
+        "<span data-value='0000000000000000,3544138669967650'>0,4</span>",
+        "<span data-value='0000000000000334,7834167480470000'>335</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "3",
+    "pollutant": "CO",
+    "datetime": "2019-01-02T23:00:00",
+    "value": 0.230041772127151,
+    "unit": "ppm",
+    "wind_speed": 0.294279456138611,
+    "wind_direction": 338.511413574219,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 16,
+      "cell": [
+        16,
+        "",
+        "<span data-value='2019-01-02T23:00:00'>02-jan-2019, 23:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,2300417721271510'>0,23</span>",
+        "<span data-value='0000000000000000,2942794561386110'>0,3</span>",
+        "<span data-value='0000000000000338,5114135742190000'>339</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "3",
+    "pollutant": "CO",
+    "datetime": "2019-01-03T00:00:00",
+    "value": 0.162197053432465,
+    "unit": "ppm",
+    "wind_speed": 0.306794345378876,
+    "wind_direction": 325.286895751953,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 17,
+      "cell": [
+        17,
+        "",
+        "<span data-value='2019-01-03T00:00:00'>03-jan-2019, 00:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,1621970534324650'>0,16</span>",
+        "<span data-value='0000000000000000,3067943453788760'>0,3</span>",
+        "<span data-value='0000000000000325,2868957519530000'>325</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "3",
+    "pollutant": "CO",
+    "datetime": "2019-01-03T01:00:00",
+    "value": 0.144510880112648,
+    "unit": "ppm",
+    "wind_speed": 0.40768113732338,
+    "wind_direction": 328.656799316406,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 18,
+      "cell": [
+        18,
+        "",
+        "<span data-value='2019-01-03T01:00:00'>03-jan-2019, 01:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,1445108801126480'>0,14</span>",
+        "<span data-value='0000000000000000,4076811373233800'>0,4</span>",
+        "<span data-value='0000000000000328,6567993164060000'>329</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "3",
+    "pollutant": "CO",
+    "datetime": "2019-01-03T02:00:00",
+    "value": 0.118312425911427,
+    "unit": "ppm",
+    "wind_speed": 0.556721568107605,
+    "wind_direction": 337.832672119141,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 19,
+      "cell": [
+        19,
+        "",
+        "<span data-value='2019-01-03T02:00:00'>03-jan-2019, 02:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,1183124259114270'>0,12</span>",
+        "<span data-value='0000000000000000,5567215681076050'>0,6</span>",
+        "<span data-value='0000000000000337,8326721191410000'>338</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "3",
+    "pollutant": "CO",
+    "datetime": "2019-01-03T03:00:00",
+    "value": 0.113079190254211,
+    "unit": "ppm",
+    "wind_speed": 0.434422016143799,
+    "wind_direction": 333.769866943359,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 20,
+      "cell": [
+        20,
+        "",
+        "<span data-value='2019-01-03T03:00:00'>03-jan-2019, 03:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,1130791902542110'>0,11</span>",
+        "<span data-value='0000000000000000,4344220161437990'>0,4</span>",
+        "<span data-value='0000000000000333,7698669433590000'>334</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "3",
+    "pollutant": "CO",
+    "datetime": "2019-01-03T04:00:00",
+    "value": 0.104588903486729,
+    "unit": "ppm",
+    "wind_speed": 0.473465621471405,
+    "wind_direction": 335.435791015625,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 21,
+      "cell": [
+        21,
+        "",
+        "<span data-value='2019-01-03T04:00:00'>03-jan-2019, 04:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,1045889034867290'>0,10</span>",
+        "<span data-value='0000000000000000,4734656214714050'>0,5</span>",
+        "<span data-value='0000000000000335,4357910156250000'>335</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "3",
+    "pollutant": "CO",
+    "datetime": "2019-01-03T05:00:00",
+    "value": 0.120419435203075,
+    "unit": "ppm",
+    "wind_speed": 0.27148100733757,
+    "wind_direction": 326.075408935547,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 22,
+      "cell": [
+        22,
+        "",
+        "<span data-value='2019-01-03T05:00:00'>03-jan-2019, 05:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,1204194352030750'>0,12</span>",
+        "<span data-value='0000000000000000,2714810073375700'>0,3</span>",
+        "<span data-value='0000000000000326,0754089355470000'>326</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "3",
+    "pollutant": "CO",
+    "datetime": "2019-01-03T06:00:00",
+    "value": 0.159191697835922,
+    "unit": "ppm",
+    "wind_speed": 0.471106916666031,
+    "wind_direction": 336.302856445313,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 23,
+      "cell": [
+        23,
+        "",
+        "<span data-value='2019-01-03T06:00:00'>03-jan-2019, 06:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,1591916978359220'>0,16</span>",
+        "<span data-value='0000000000000000,4711069166660310'>0,5</span>",
+        "<span data-value='0000000000000336,3028564453130000'>336</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "3",
+    "pollutant": "CO",
+    "datetime": "2019-01-03T07:00:00",
+    "value": 0.213240370154381,
+    "unit": "ppm",
+    "wind_speed": 0.0846370309591293,
+    "wind_direction": 214.45246887207,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 24,
+      "cell": [
+        24,
+        "",
+        "<span data-value='2019-01-03T07:00:00'>03-jan-2019, 07:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,2132403701543810'>0,21</span>",
+        "<span data-value='0000000000000000,0846370309591293'>0,1</span>",
+        "<span data-value='0000000000000214,4524688720700000'>214</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "3",
+    "pollutant": "CO",
+    "datetime": "2019-01-03T08:00:00",
+    "value": 0.212440192699432,
+    "unit": "ppm",
+    "wind_speed": 0.0344254709780216,
+    "wind_direction": 81.3865966796875,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 25,
+      "cell": [
+        25,
+        "",
+        "<span data-value='2019-01-03T08:00:00'>03-jan-2019, 08:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,2124401926994320'>0,21</span>",
+        "<span data-value='0000000000000000,0344254709780216'>0,0</span>",
+        "<span data-value='0000000000000081,3865966796875000'>81</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "3",
+    "pollutant": "CO",
+    "datetime": "2019-01-03T09:00:00",
+    "value": 0.157791540026665,
+    "unit": "ppm",
+    "wind_speed": 0.140554115176201,
+    "wind_direction": 353.861480712891,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 26,
+      "cell": [
+        26,
+        "",
+        "<span data-value='2019-01-03T09:00:00'>03-jan-2019, 09:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,1577915400266650'>0,16</span>",
+        "<span data-value='0000000000000000,1405541151762010'>0,1</span>",
+        "<span data-value='0000000000000353,8614807128910000'>354</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "3",
+    "pollutant": "CO",
+    "datetime": "2019-01-03T10:00:00",
+    "value": 0.350888520479202,
+    "unit": "ppm",
+    "wind_speed": 0.307474553585052,
+    "wind_direction": 349.432312011719,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 27,
+      "cell": [
+        27,
+        "",
+        "<span data-value='2019-01-03T10:00:00'>03-jan-2019, 10:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,3508885204792020'>0,35</span>",
+        "<span data-value='0000000000000000,3074745535850520'>0,3</span>",
+        "<span data-value='0000000000000349,4323120117190000'>349</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "3",
+    "pollutant": "CO",
+    "datetime": "2019-01-03T11:00:00",
+    "value": 0.140851184725761,
+    "unit": "ppm",
+    "wind_speed": 0.261269629001617,
+    "wind_direction": 350.819641113281,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 28,
+      "cell": [
+        28,
+        "",
+        "<span data-value='2019-01-03T11:00:00'>03-jan-2019, 11:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,1408511847257610'>0,14</span>",
+        "<span data-value='0000000000000000,2612696290016170'>0,3</span>",
+        "<span data-value='0000000000000350,8196411132810000'>351</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "3",
+    "pollutant": "CO",
+    "datetime": "2019-01-03T12:00:00",
+    "value": 0.103536032140255,
+    "unit": "ppm",
+    "wind_speed": 0.413833230733871,
+    "wind_direction": 265.322631835938,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 29,
+      "cell": [
+        29,
+        "",
+        "<span data-value='2019-01-03T12:00:00'>03-jan-2019, 12:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,1035360321402550'>0,10</span>",
+        "<span data-value='0000000000000000,4138332307338710'>0,4</span>",
+        "<span data-value='0000000000000265,3226318359380000'>265</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "3",
+    "pollutant": "CO",
+    "datetime": "2019-01-03T13:00:00",
+    "value": 0.0994125232100487,
+    "unit": "ppm",
+    "wind_speed": 0.396249562501907,
+    "wind_direction": 290.937164306641,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 30,
+      "cell": [
+        30,
+        "",
+        "<span data-value='2019-01-03T13:00:00'>03-jan-2019, 13:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,0994125232100487'>0,10</span>",
+        "<span data-value='0000000000000000,3962495625019070'>0,4</span>",
+        "<span data-value='0000000000000290,9371643066410000'>291</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "3",
+    "pollutant": "CO",
+    "datetime": "2019-01-03T14:00:00",
+    "value": 0.0905777588486671,
+    "unit": "ppm",
+    "wind_speed": 0.883984088897705,
+    "wind_direction": 216.874114990234,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 31,
+      "cell": [
+        31,
+        "",
+        "<span data-value='2019-01-03T14:00:00'>03-jan-2019, 14:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,0905777588486671'>0,09</span>",
+        "<span data-value='0000000000000000,8839840888977050'>0,9</span>",
+        "<span data-value='0000000000000216,8741149902340000'>217</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "3",
+    "pollutant": "CO",
+    "datetime": "2019-01-03T15:00:00",
+    "value": 0.114331766963005,
+    "unit": "ppm",
+    "wind_speed": 1.10856556892395,
+    "wind_direction": 339.106964111328,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 32,
+      "cell": [
+        32,
+        "",
+        "<span data-value='2019-01-03T15:00:00'>03-jan-2019, 15:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,1143317669630050'>0,11</span>",
+        "<span data-value='0000000000000001,1085655689239500'>1,1</span>",
+        "<span data-value='0000000000000339,1069641113280000'>339</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "3",
+    "pollutant": "CO",
+    "datetime": "2019-01-03T16:00:00",
+    "value": 0.130637511610985,
+    "unit": "ppm",
+    "wind_speed": 0.797630965709686,
+    "wind_direction": 344.91162109375,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 33,
+      "cell": [
+        33,
+        "",
+        "<span data-value='2019-01-03T16:00:00'>03-jan-2019, 16:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,1306375116109850'>0,13</span>",
+        "<span data-value='0000000000000000,7976309657096860'>0,8</span>",
+        "<span data-value='0000000000000344,9116210937500000'>345</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "3",
+    "pollutant": "CO",
+    "datetime": "2019-01-03T17:00:00",
+    "value": 0.123943008482456,
+    "unit": "ppm",
+    "wind_speed": 0.963348209857941,
+    "wind_direction": 91.8830642700195,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 34,
+      "cell": [
+        34,
+        "",
+        "<span data-value='2019-01-03T17:00:00'>03-jan-2019, 17:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,1239430084824560'>0,12</span>",
+        "<span data-value='0000000000000000,9633482098579410'>1,0</span>",
+        "<span data-value='0000000000000091,8830642700195000'>92</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "3",
+    "pollutant": "CO",
+    "datetime": "2019-01-03T18:00:00",
+    "value": 0.3559190928936,
+    "unit": "ppm",
+    "wind_speed": 0.30440017580986,
+    "wind_direction": 116.28547668457,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 35,
+      "cell": [
+        35,
+        "",
+        "<span data-value='2019-01-03T18:00:00'>03-jan-2019, 18:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,3559190928936000'>0,36</span>",
+        "<span data-value='0000000000000000,3044001758098600'>0,3</span>",
+        "<span data-value='0000000000000116,2854766845700000'>116</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "3",
+    "pollutant": "CO",
+    "datetime": "2019-01-03T19:00:00",
+    "value": 0.402112424373627,
+    "unit": "ppm",
+    "wind_speed": 0.606121242046356,
+    "wind_direction": 225.929992675781,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 36,
+      "cell": [
+        36,
+        "",
+        "<span data-value='2019-01-03T19:00:00'>03-jan-2019, 19:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,4021124243736270'>0,40</span>",
+        "<span data-value='0000000000000000,6061212420463560'>0,6</span>",
+        "<span data-value='0000000000000225,9299926757810000'>226</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "3",
+    "pollutant": "CO",
+    "datetime": "2019-01-03T20:00:00",
+    "value": 0.367530733346939,
+    "unit": "ppm",
+    "wind_speed": 0.211357682943344,
+    "wind_direction": 107.648811340332,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 37,
+      "cell": [
+        37,
+        "",
+        "<span data-value='2019-01-03T20:00:00'>03-jan-2019, 20:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,3675307333469390'>0,37</span>",
+        "<span data-value='0000000000000000,2113576829433440'>0,2</span>",
+        "<span data-value='0000000000000107,6488113403320000'>108</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "3",
+    "pollutant": "CO",
+    "datetime": "2019-01-03T21:00:00",
+    "value": 0.613997519016266,
+    "unit": "ppm",
+    "wind_speed": 0.225696623325348,
+    "wind_direction": 332.434234619141,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 38,
+      "cell": [
+        38,
+        "",
+        "<span data-value='2019-01-03T21:00:00'>03-jan-2019, 21:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,6139975190162660'>0,61</span>",
+        "<span data-value='0000000000000000,2256966233253480'>0,2</span>",
+        "<span data-value='0000000000000332,4342346191410000'>332</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "3",
+    "pollutant": "CO",
+    "datetime": "2019-01-03T22:00:00",
+    "value": 0.276858568191528,
+    "unit": "ppm",
+    "wind_speed": 0.606659948825836,
+    "wind_direction": 238.521453857422,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 39,
+      "cell": [
+        39,
+        "",
+        "<span data-value='2019-01-03T22:00:00'>03-jan-2019, 22:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,2768585681915280'>0,28</span>",
+        "<span data-value='0000000000000000,6066599488258360'>0,6</span>",
+        "<span data-value='0000000000000238,5214538574220000'>239</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "3",
+    "pollutant": "CO",
+    "datetime": "2019-01-03T23:00:00",
+    "value": 0.135606855154037,
+    "unit": "ppm",
+    "wind_speed": 0.472891926765442,
+    "wind_direction": 259.096893310547,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 40,
+      "cell": [
+        40,
+        "",
+        "<span data-value='2019-01-03T23:00:00'>03-jan-2019, 23:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,1356068551540370'>0,14</span>",
+        "<span data-value='0000000000000000,4728919267654420'>0,5</span>",
+        "<span data-value='0000000000000259,0968933105470000'>259</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "3",
+    "pollutant": "CO",
+    "datetime": "2019-01-04T00:00:00",
+    "value": 0.111038938164711,
+    "unit": "ppm",
+    "wind_speed": 0.331866443157196,
+    "wind_direction": 224.832489013672,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 41,
+      "cell": [
+        41,
+        "",
+        "<span data-value='2019-01-04T00:00:00'>04-jan-2019, 00:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,1110389381647110'>0,11</span>",
+        "<span data-value='0000000000000000,3318664431571960'>0,3</span>",
+        "<span data-value='0000000000000224,8324890136720000'>225</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "3",
+    "pollutant": "CO",
+    "datetime": "2019-01-04T01:00:00",
+    "value": 0.102112486958504,
+    "unit": "ppm",
+    "wind_speed": 0.213132753968239,
+    "wind_direction": 321.227325439453,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 42,
+      "cell": [
+        42,
+        "",
+        "<span data-value='2019-01-04T01:00:00'>04-jan-2019, 01:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,1021124869585040'>0,10</span>",
+        "<span data-value='0000000000000000,2131327539682390'>0,2</span>",
+        "<span data-value='0000000000000321,2273254394530000'>321</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "3",
+    "pollutant": "CO",
+    "datetime": "2019-01-04T02:00:00",
+    "value": 0.120101377367973,
+    "unit": "ppm",
+    "wind_speed": 0.0273527130484581,
+    "wind_direction": 28.6045227050781,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 43,
+      "cell": [
+        43,
+        "",
+        "<span data-value='2019-01-04T02:00:00'>04-jan-2019, 02:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,1201013773679730'>0,12</span>",
+        "<span data-value='0000000000000000,0273527130484581'>0,0</span>",
+        "<span data-value='0000000000000028,6045227050781000'>29</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "3",
+    "pollutant": "CO",
+    "datetime": "2019-01-04T03:00:00",
+    "value": 0.133604094386101,
+    "unit": "ppm",
+    "wind_speed": 0.305654168128967,
+    "wind_direction": 322.392517089844,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 44,
+      "cell": [
+        44,
+        "",
+        "<span data-value='2019-01-04T03:00:00'>04-jan-2019, 03:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,1336040943861010'>0,13</span>",
+        "<span data-value='0000000000000000,3056541681289670'>0,3</span>",
+        "<span data-value='0000000000000322,3925170898440000'>322</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "3",
+    "pollutant": "CO",
+    "datetime": "2019-01-04T04:00:00",
+    "value": 0.110798582434654,
+    "unit": "ppm",
+    "wind_speed": 0.75878244638443,
+    "wind_direction": 321.489440917969,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 45,
+      "cell": [
+        45,
+        "",
+        "<span data-value='2019-01-04T04:00:00'>04-jan-2019, 04:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,1107985824346540'>0,11</span>",
+        "<span data-value='0000000000000000,7587824463844300'>0,8</span>",
+        "<span data-value='0000000000000321,4894409179690000'>321</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "3",
+    "pollutant": "CO",
+    "datetime": "2019-01-04T05:00:00",
+    "value": 0.109175078570843,
+    "unit": "ppm",
+    "wind_speed": 0.0404566749930382,
+    "wind_direction": 207.643692016602,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 46,
+      "cell": [
+        46,
+        "",
+        "<span data-value='2019-01-04T05:00:00'>04-jan-2019, 05:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,1091750785708430'>0,11</span>",
+        "<span data-value='0000000000000000,0404566749930382'>0,0</span>",
+        "<span data-value='0000000000000207,6436920166020000'>208</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "3",
+    "pollutant": "CO",
+    "datetime": "2019-01-04T06:00:00",
+    "value": 0.226584702730179,
+    "unit": "ppm",
+    "wind_speed": 0.209313899278641,
+    "wind_direction": 311.086700439453,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 47,
+      "cell": [
+        47,
+        "",
+        "<span data-value='2019-01-04T06:00:00'>04-jan-2019, 06:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,2265847027301790'>0,23</span>",
+        "<span data-value='0000000000000000,2093138992786410'>0,2</span>",
+        "<span data-value='0000000000000311,0867004394530000'>311</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "3",
+    "pollutant": "CO",
+    "datetime": "2019-01-04T07:00:00",
+    "value": 0.263423949480057,
+    "unit": "ppm",
+    "wind_speed": 0.51738440990448,
+    "wind_direction": 335.312805175781,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 48,
+      "cell": [
+        48,
+        "",
+        "<span data-value='2019-01-04T07:00:00'>04-jan-2019, 07:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,2634239494800570'>0,26</span>",
+        "<span data-value='0000000000000000,5173844099044800'>0,5</span>",
+        "<span data-value='0000000000000335,3128051757810000'>335</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "3",
+    "pollutant": "CO",
+    "datetime": "2019-01-04T08:00:00",
+    "value": 0.162416383624077,
+    "unit": "ppm",
+    "wind_speed": 0.167084008455276,
+    "wind_direction": 311.618286132812,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 49,
+      "cell": [
+        49,
+        "",
+        "<span data-value='2019-01-04T08:00:00'>04-jan-2019, 08:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,1624163836240770'>0,16</span>",
+        "<span data-value='0000000000000000,1670840084552760'>0,2</span>",
+        "<span data-value='0000000000000311,6182861328120000'>312</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "3",
+    "pollutant": "CO",
+    "datetime": "2019-01-04T09:00:00",
+    "value": 0.113331995904446,
+    "unit": "ppm",
+    "wind_speed": 0.31771057844162,
+    "wind_direction": 112.496391296387,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 50,
+      "cell": [
+        50,
+        "",
+        "<span data-value='2019-01-04T09:00:00'>04-jan-2019, 09:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,1133319959044460'>0,11</span>",
+        "<span data-value='0000000000000000,3177105784416200'>0,3</span>",
+        "<span data-value='0000000000000112,4963912963870000'>112</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "3",
+    "pollutant": "CO",
+    "datetime": "2019-01-04T10:00:00",
+    "value": 0.0996624827384949,
+    "unit": "ppm",
+    "wind_speed": 0.325495153665543,
+    "wind_direction": 197.36833190918,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 51,
+      "cell": [
+        51,
+        "",
+        "<span data-value='2019-01-04T10:00:00'>04-jan-2019, 10:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,0996624827384949'>0,10</span>",
+        "<span data-value='0000000000000000,3254951536655430'>0,3</span>",
+        "<span data-value='0000000000000197,3683319091800000'>197</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "3",
+    "pollutant": "CO",
+    "datetime": "2019-01-04T11:00:00",
+    "value": 0.104202829301357,
+    "unit": "ppm",
+    "wind_speed": 0.202963963150978,
+    "wind_direction": 254.282180786133,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 52,
+      "cell": [
+        52,
+        "",
+        "<span data-value='2019-01-04T11:00:00'>04-jan-2019, 11:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,1042028293013570'>0,10</span>",
+        "<span data-value='0000000000000000,2029639631509780'>0,2</span>",
+        "<span data-value='0000000000000254,2821807861330000'>254</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "3",
+    "pollutant": "CO",
+    "datetime": "2019-01-04T12:00:00",
+    "value": 0.0953680649399757,
+    "unit": "ppm",
+    "wind_speed": 0.25940865278244,
+    "wind_direction": 295.130828857422,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 53,
+      "cell": [
+        53,
+        "",
+        "<span data-value='2019-01-04T12:00:00'>04-jan-2019, 12:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,0953680649399757'>0,10</span>",
+        "<span data-value='0000000000000000,2594086527824400'>0,3</span>",
+        "<span data-value='0000000000000295,1308288574220000'>295</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "3",
+    "pollutant": "CO",
+    "datetime": "2019-01-04T13:00:00",
+    "value": 0.0993847027420998,
+    "unit": "ppm",
+    "wind_speed": 0.548055648803711,
+    "wind_direction": 303.062377929687,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 54,
+      "cell": [
+        54,
+        "",
+        "<span data-value='2019-01-04T13:00:00'>04-jan-2019, 13:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,0993847027420998'>0,10</span>",
+        "<span data-value='0000000000000000,5480556488037110'>0,5</span>",
+        "<span data-value='0000000000000303,0623779296870000'>303</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "3",
+    "pollutant": "CO",
+    "datetime": "2019-01-04T14:00:00",
+    "value": 0.0939527302980423,
+    "unit": "ppm",
+    "wind_speed": 1.04186570644379,
+    "wind_direction": 248.549987792969,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 55,
+      "cell": [
+        55,
+        "",
+        "<span data-value='2019-01-04T14:00:00'>04-jan-2019, 14:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,0939527302980423'>0,09</span>",
+        "<span data-value='0000000000000001,0418657064437900'>1,0</span>",
+        "<span data-value='0000000000000248,5499877929690000'>249</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "3",
+    "pollutant": "CO",
+    "datetime": "2019-01-04T15:00:00",
+    "value": 0.82560533285141,
+    "unit": "ppm",
+    "wind_speed": 0.444131731986999,
+    "wind_direction": 178.2724609375,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 56,
+      "cell": [
+        56,
+        "",
+        "<span data-value='2019-01-04T15:00:00'>04-jan-2019, 15:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,8256053328514100'>0,83</span>",
+        "<span data-value='0000000000000000,4441317319869990'>0,4</span>",
+        "<span data-value='0000000000000178,2724609375000000'>178</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "3",
+    "pollutant": "CO",
+    "datetime": "2019-01-07T12:00:00",
+    "value": 0.244942873716354,
+    "unit": "ppm",
+    "wind_speed": 0.180127277970314,
+    "wind_direction": 57.2250328063965,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 57,
+      "cell": [
+        57,
+        "",
+        "<span data-value='2019-01-07T12:00:00'>07-jan-2019, 12:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,2449428737163540'>0,24</span>",
+        "<span data-value='0000000000000000,1801272779703140'>0,2</span>",
+        "<span data-value='0000000000000057,2250328063965000'>57</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "3",
+    "pollutant": "CO",
+    "datetime": "2019-01-07T13:00:00",
+    "value": 0.346331477165222,
+    "unit": "ppm",
+    "wind_speed": 0.298890113830566,
+    "wind_direction": 15.7869606018066,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 58,
+      "cell": [
+        58,
+        "",
+        "<span data-value='2019-01-07T13:00:00'>07-jan-2019, 13:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,3463314771652220'>0,35</span>",
+        "<span data-value='0000000000000000,2988901138305660'>0,3</span>",
+        "<span data-value='0000000000000015,7869606018066000'>16</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "3",
+    "pollutant": "CO",
+    "datetime": "2019-01-07T14:00:00",
+    "value": 0.370985001325607,
+    "unit": "ppm",
+    "wind_speed": 0.23390556871891,
+    "wind_direction": 22.5174770355225,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 59,
+      "cell": [
+        59,
+        "",
+        "<span data-value='2019-01-07T14:00:00'>07-jan-2019, 14:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,3709850013256070'>0,37</span>",
+        "<span data-value='0000000000000000,2339055687189100'>0,2</span>",
+        "<span data-value='0000000000000022,5174770355225000'>23</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "3",
+    "pollutant": "CO",
+    "datetime": "2019-01-07T15:00:00",
+    "value": 0.386656999588013,
+    "unit": "ppm",
+    "wind_speed": 0.251618295907974,
+    "wind_direction": 53.0481986999512,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 60,
+      "cell": [
+        60,
+        "",
+        "<span data-value='2019-01-07T15:00:00'>07-jan-2019, 15:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,3866569995880130'>0,39</span>",
+        "<span data-value='0000000000000000,2516182959079740'>0,3</span>",
+        "<span data-value='0000000000000053,0481986999512000'>53</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "3",
+    "pollutant": "CO",
+    "datetime": "2019-01-07T16:00:00",
+    "value": 0.35638239979744,
+    "unit": "ppm",
+    "wind_speed": 0.496166735887527,
+    "wind_direction": 90.526481628418,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 61,
+      "cell": [
+        61,
+        "",
+        "<span data-value='2019-01-07T16:00:00'>07-jan-2019, 16:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,3563823997974400'>0,36</span>",
+        "<span data-value='0000000000000000,4961667358875270'>0,5</span>",
+        "<span data-value='0000000000000090,5264816284180000'>91</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "3",
+    "pollutant": "CO",
+    "datetime": "2019-01-07T17:00:00",
+    "value": 0.322707146406174,
+    "unit": "ppm",
+    "wind_speed": 0.511985123157501,
+    "wind_direction": 50.5913543701172,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 62,
+      "cell": [
+        62,
+        "",
+        "<span data-value='2019-01-07T17:00:00'>07-jan-2019, 17:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,3227071464061740'>0,32</span>",
+        "<span data-value='0000000000000000,5119851231575010'>0,5</span>",
+        "<span data-value='0000000000000050,5913543701172000'>51</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "3",
+    "pollutant": "CO",
+    "datetime": "2019-01-07T18:00:00",
+    "value": 0.298656791448593,
+    "unit": "ppm",
+    "wind_speed": 0.787614345550537,
+    "wind_direction": 95.6706466674805,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 63,
+      "cell": [
+        63,
+        "",
+        "<span data-value='2019-01-07T18:00:00'>07-jan-2019, 18:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,2986567914485930'>0,30</span>",
+        "<span data-value='0000000000000000,7876143455505370'>0,8</span>",
+        "<span data-value='0000000000000095,6706466674805000'>96</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "3",
+    "pollutant": "CO",
+    "datetime": "2019-01-07T19:00:00",
+    "value": 0.267298609018326,
+    "unit": "ppm",
+    "wind_speed": 0.906454622745514,
+    "wind_direction": 306.980560302734,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 64,
+      "cell": [
+        64,
+        "",
+        "<span data-value='2019-01-07T19:00:00'>07-jan-2019, 19:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,2672986090183260'>0,27</span>",
+        "<span data-value='0000000000000000,9064546227455140'>0,9</span>",
+        "<span data-value='0000000000000306,9805603027340000'>307</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "3",
+    "pollutant": "CO",
+    "datetime": "2019-01-07T20:00:00",
+    "value": 0.261781424283981,
+    "unit": "ppm",
+    "wind_speed": 0.324608147144318,
+    "wind_direction": 348.517120361328,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 65,
+      "cell": [
+        65,
+        "",
+        "<span data-value='2019-01-07T20:00:00'>07-jan-2019, 20:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,2617814242839810'>0,26</span>",
+        "<span data-value='0000000000000000,3246081471443180'>0,3</span>",
+        "<span data-value='0000000000000348,5171203613280000'>349</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "3",
+    "pollutant": "CO",
+    "datetime": "2019-01-07T21:00:00",
+    "value": 0.264427661895752,
+    "unit": "ppm",
+    "wind_speed": 0.439223229885101,
+    "wind_direction": 310.897247314453,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 66,
+      "cell": [
+        66,
+        "",
+        "<span data-value='2019-01-07T21:00:00'>07-jan-2019, 21:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,2644276618957520'>0,26</span>",
+        "<span data-value='0000000000000000,4392232298851010'>0,4</span>",
+        "<span data-value='0000000000000310,8972473144530000'>311</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "3",
+    "pollutant": "CO",
+    "datetime": "2019-01-07T22:00:00",
+    "value": 0.265902549028397,
+    "unit": "ppm",
+    "wind_speed": 0.505793869495392,
+    "wind_direction": 331.272399902344,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 67,
+      "cell": [
+        67,
+        "",
+        "<span data-value='2019-01-07T22:00:00'>07-jan-2019, 22:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,2659025490283970'>0,27</span>",
+        "<span data-value='0000000000000000,5057938694953920'>0,5</span>",
+        "<span data-value='0000000000000331,2723999023440000'>331</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "3",
+    "pollutant": "CO",
+    "datetime": "2019-01-07T23:00:00",
+    "value": 0.265174835920334,
+    "unit": "ppm",
+    "wind_speed": 0.348669201135635,
+    "wind_direction": 313.604827880859,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 68,
+      "cell": [
+        68,
+        "",
+        "<span data-value='2019-01-07T23:00:00'>07-jan-2019, 23:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,2651748359203340'>0,27</span>",
+        "<span data-value='0000000000000000,3486692011356350'>0,3</span>",
+        "<span data-value='0000000000000313,6048278808590000'>314</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "3",
+    "pollutant": "CO",
+    "datetime": "2019-01-08T00:00:00",
+    "value": 0.265451699495316,
+    "unit": "ppm",
+    "wind_speed": 0.391810774803162,
+    "wind_direction": 318.536041259766,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 69,
+      "cell": [
+        69,
+        "",
+        "<span data-value='2019-01-08T00:00:00'>08-jan-2019, 00:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,2654516994953160'>0,27</span>",
+        "<span data-value='0000000000000000,3918107748031620'>0,4</span>",
+        "<span data-value='0000000000000318,5360412597660000'>319</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "3",
+    "pollutant": "CO",
+    "datetime": "2019-01-08T01:00:00",
+    "value": 0.262742906808853,
+    "unit": "ppm",
+    "wind_speed": 0.289569079875946,
+    "wind_direction": 312.642395019531,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 70,
+      "cell": [
+        70,
+        "",
+        "<span data-value='2019-01-08T01:00:00'>08-jan-2019, 01:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,2627429068088530'>0,26</span>",
+        "<span data-value='0000000000000000,2895690798759460'>0,3</span>",
+        "<span data-value='0000000000000312,6423950195310000'>313</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "3",
+    "pollutant": "CO",
+    "datetime": "2019-01-08T02:00:00",
+    "value": 0.263297408819199,
+    "unit": "ppm",
+    "wind_speed": 0.536578476428986,
+    "wind_direction": 330.329010009766,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 71,
+      "cell": [
+        71,
+        "",
+        "<span data-value='2019-01-08T02:00:00'>08-jan-2019, 02:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,2632974088191990'>0,26</span>",
+        "<span data-value='0000000000000000,5365784764289860'>0,5</span>",
+        "<span data-value='0000000000000330,3290100097660000'>330</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "3",
+    "pollutant": "CO",
+    "datetime": "2019-01-08T03:00:00",
+    "value": 0.268044173717499,
+    "unit": "ppm",
+    "wind_speed": 0.680866777896881,
+    "wind_direction": 332.037200927734,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 72,
+      "cell": [
+        72,
+        "",
+        "<span data-value='2019-01-08T03:00:00'>08-jan-2019, 03:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,2680441737174990'>0,27</span>",
+        "<span data-value='0000000000000000,6808667778968810'>0,7</span>",
+        "<span data-value='0000000000000332,0372009277340000'>332</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "3",
+    "pollutant": "CO",
+    "datetime": "2019-01-08T04:00:00",
+    "value": 0.265012800693512,
+    "unit": "ppm",
+    "wind_speed": 0.264685124158859,
+    "wind_direction": 321.182312011719,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 73,
+      "cell": [
+        73,
+        "",
+        "<span data-value='2019-01-08T04:00:00'>08-jan-2019, 04:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,2650128006935120'>0,27</span>",
+        "<span data-value='0000000000000000,2646851241588590'>0,3</span>",
+        "<span data-value='0000000000000321,1823120117190000'>321</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "3",
+    "pollutant": "CO",
+    "datetime": "2019-01-08T05:00:00",
+    "value": 0.26345294713974,
+    "unit": "ppm",
+    "wind_speed": 0.395159691572189,
+    "wind_direction": 326.140930175781,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 74,
+      "cell": [
+        74,
+        "",
+        "<span data-value='2019-01-08T05:00:00'>08-jan-2019, 05:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,2634529471397400'>0,26</span>",
+        "<span data-value='0000000000000000,3951596915721890'>0,4</span>",
+        "<span data-value='0000000000000326,1409301757810000'>326</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "3",
+    "pollutant": "CO",
+    "datetime": "2019-01-08T06:00:00",
+    "value": 0.263284772634506,
+    "unit": "ppm",
+    "wind_speed": 0.704317450523377,
+    "wind_direction": 335.794403076172,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 75,
+      "cell": [
+        75,
+        "",
+        "<span data-value='2019-01-08T06:00:00'>08-jan-2019, 06:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,2632847726345060'>0,26</span>",
+        "<span data-value='0000000000000000,7043174505233770'>0,7</span>",
+        "<span data-value='0000000000000335,7944030761720000'>336</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "3",
+    "pollutant": "CO",
+    "datetime": "2019-01-08T07:00:00",
+    "value": 0.263227343559265,
+    "unit": "ppm",
+    "wind_speed": 0.266583055257797,
+    "wind_direction": 318.133758544922,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 76,
+      "cell": [
+        76,
+        "",
+        "<span data-value='2019-01-08T07:00:00'>08-jan-2019, 07:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,2632273435592650'>0,26</span>",
+        "<span data-value='0000000000000000,2665830552577970'>0,3</span>",
+        "<span data-value='0000000000000318,1337585449220000'>318</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "3",
+    "pollutant": "CO",
+    "datetime": "2019-01-08T08:00:00",
+    "value": 0.259813696146011,
+    "unit": "ppm",
+    "wind_speed": 0.22868387401104,
+    "wind_direction": 207.486145019531,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 77,
+      "cell": [
+        77,
+        "",
+        "<span data-value='2019-01-08T08:00:00'>08-jan-2019, 08:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,2598136961460110'>0,26</span>",
+        "<span data-value='0000000000000000,2286838740110400'>0,2</span>",
+        "<span data-value='0000000000000207,4861450195310000'>207</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "3",
+    "pollutant": "CO",
+    "datetime": "2019-01-08T09:00:00",
+    "value": 0.258050143718719,
+    "unit": "ppm",
+    "wind_speed": 0.138710007071495,
+    "wind_direction": 60.978157043457,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 78,
+      "cell": [
+        78,
+        "",
+        "<span data-value='2019-01-08T09:00:00'>08-jan-2019, 09:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,2580501437187190'>0,26</span>",
+        "<span data-value='0000000000000000,1387100070714950'>0,1</span>",
+        "<span data-value='0000000000000060,9781570434570000'>61</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "3",
+    "pollutant": "CO",
+    "datetime": "2019-01-08T10:00:00",
+    "value": 0.252350389957428,
+    "unit": "ppm",
+    "wind_speed": 0.0647639557719231,
+    "wind_direction": 98.894905090332,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 79,
+      "cell": [
+        79,
+        "",
+        "<span data-value='2019-01-08T10:00:00'>08-jan-2019, 10:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,2523503899574280'>0,25</span>",
+        "<span data-value='0000000000000000,0647639557719231'>0,1</span>",
+        "<span data-value='0000000000000098,8949050903320000'>99</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "3",
+    "pollutant": "CO",
+    "datetime": "2019-01-08T11:00:00",
+    "value": 0.252304345369339,
+    "unit": "ppm",
+    "wind_speed": 0.256911933422089,
+    "wind_direction": 304.753265380859,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 80,
+      "cell": [
+        80,
+        "",
+        "<span data-value='2019-01-08T11:00:00'>08-jan-2019, 11:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,2523043453693390'>0,25</span>",
+        "<span data-value='0000000000000000,2569119334220890'>0,3</span>",
+        "<span data-value='0000000000000304,7532653808590000'>305</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "3",
+    "pollutant": "CO",
+    "datetime": "2019-01-08T12:00:00",
+    "value": 0.251633495092392,
+    "unit": "ppm",
+    "wind_speed": 0.0552431493997574,
+    "wind_direction": 161.868408203125,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 81,
+      "cell": [
+        81,
+        "",
+        "<span data-value='2019-01-08T12:00:00'>08-jan-2019, 12:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,2516334950923920'>0,25</span>",
+        "<span data-value='0000000000000000,0552431493997574'>0,1</span>",
+        "<span data-value='0000000000000161,8684082031250000'>162</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "3",
+    "pollutant": "CO",
+    "datetime": "2019-01-08T13:00:00",
+    "value": 0.253951698541641,
+    "unit": "ppm",
+    "wind_speed": 0.665453374385834,
+    "wind_direction": 92.2606658935547,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 82,
+      "cell": [
+        82,
+        "",
+        "<span data-value='2019-01-08T13:00:00'>08-jan-2019, 13:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,2539516985416410'>0,25</span>",
+        "<span data-value='0000000000000000,6654533743858340'>0,7</span>",
+        "<span data-value='0000000000000092,2606658935547000'>92</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "3",
+    "pollutant": "CO",
+    "datetime": "2019-01-08T14:00:00",
+    "value": 0.254497557878494,
+    "unit": "ppm",
+    "wind_speed": 0.875846743583679,
+    "wind_direction": 137.826202392578,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 83,
+      "cell": [
+        83,
+        "",
+        "<span data-value='2019-01-08T14:00:00'>08-jan-2019, 14:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,2544975578784940'>0,25</span>",
+        "<span data-value='0000000000000000,8758467435836790'>0,9</span>",
+        "<span data-value='0000000000000137,8262023925780000'>138</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "3",
+    "pollutant": "CO",
+    "datetime": "2019-01-08T15:00:00",
+    "value": 0.245909854769707,
+    "unit": "ppm",
+    "wind_speed": 0.838015019893646,
+    "wind_direction": 225.230361938477,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 84,
+      "cell": [
+        84,
+        "",
+        "<span data-value='2019-01-08T15:00:00'>08-jan-2019, 15:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,2459098547697070'>0,25</span>",
+        "<span data-value='0000000000000000,8380150198936460'>0,8</span>",
+        "<span data-value='0000000000000225,2303619384770000'>225</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "3",
+    "pollutant": "CO",
+    "datetime": "2019-01-08T16:00:00",
+    "value": 0.24530291557312,
+    "unit": "ppm",
+    "wind_speed": 0.631111085414887,
+    "wind_direction": 286.187683105469,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 85,
+      "cell": [
+        85,
+        "",
+        "<span data-value='2019-01-08T16:00:00'>08-jan-2019, 16:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,2453029155731200'>0,25</span>",
+        "<span data-value='0000000000000000,6311110854148870'>0,6</span>",
+        "<span data-value='0000000000000286,1876831054690000'>286</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "3",
+    "pollutant": "CO",
+    "datetime": "2019-01-08T17:00:00",
+    "value": 0.239098995923996,
+    "unit": "ppm",
+    "wind_speed": 0.430830895900726,
+    "wind_direction": 331.787536621094,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 86,
+      "cell": [
+        86,
+        "",
+        "<span data-value='2019-01-08T17:00:00'>08-jan-2019, 17:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,2390989959239960'>0,24</span>",
+        "<span data-value='0000000000000000,4308308959007260'>0,4</span>",
+        "<span data-value='0000000000000331,7875366210940000'>332</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "3",
+    "pollutant": "CO",
+    "datetime": "2019-01-08T18:00:00",
+    "value": 0.226290509104729,
+    "unit": "ppm",
+    "wind_speed": 0.445927500724793,
+    "wind_direction": 16.9135055541992,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 87,
+      "cell": [
+        87,
+        "",
+        "<span data-value='2019-01-08T18:00:00'>08-jan-2019, 18:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,2262905091047290'>0,23</span>",
+        "<span data-value='0000000000000000,4459275007247930'>0,4</span>",
+        "<span data-value='0000000000000016,9135055541992000'>17</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "3",
+    "pollutant": "CO",
+    "datetime": "2019-01-08T19:00:00",
+    "value": 0.230666726827621,
+    "unit": "ppm",
+    "wind_speed": 0.39499294757843,
+    "wind_direction": 332.197052001953,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 88,
+      "cell": [
+        88,
+        "",
+        "<span data-value='2019-01-08T19:00:00'>08-jan-2019, 19:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,2306667268276210'>0,23</span>",
+        "<span data-value='0000000000000000,3949929475784300'>0,4</span>",
+        "<span data-value='0000000000000332,1970520019530000'>332</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "3",
+    "pollutant": "CO",
+    "datetime": "2019-01-08T20:00:00",
+    "value": 0.223122403025627,
+    "unit": "ppm",
+    "wind_speed": 0.649781942367554,
+    "wind_direction": 330.252746582031,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 89,
+      "cell": [
+        89,
+        "",
+        "<span data-value='2019-01-08T20:00:00'>08-jan-2019, 20:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,2231224030256270'>0,22</span>",
+        "<span data-value='0000000000000000,6497819423675540'>0,6</span>",
+        "<span data-value='0000000000000330,2527465820310000'>330</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "3",
+    "pollutant": "CO",
+    "datetime": "2019-01-08T21:00:00",
+    "value": 0.222279191017151,
+    "unit": "ppm",
+    "wind_speed": 0.715938210487366,
+    "wind_direction": 332.448364257812,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 90,
+      "cell": [
+        90,
+        "",
+        "<span data-value='2019-01-08T21:00:00'>08-jan-2019, 21:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,2222791910171510'>0,22</span>",
+        "<span data-value='0000000000000000,7159382104873660'>0,7</span>",
+        "<span data-value='0000000000000332,4483642578120000'>332</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "3",
+    "pollutant": "CO",
+    "datetime": "2019-01-08T22:00:00",
+    "value": 0.23140561580658,
+    "unit": "ppm",
+    "wind_speed": 0.777374982833862,
+    "wind_direction": 329.548675537109,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 91,
+      "cell": [
+        91,
+        "",
+        "<span data-value='2019-01-08T22:00:00'>08-jan-2019, 22:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,2314056158065800'>0,23</span>",
+        "<span data-value='0000000000000000,7773749828338620'>0,8</span>",
+        "<span data-value='0000000000000329,5486755371090000'>330</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "3",
+    "pollutant": "CO",
+    "datetime": "2019-01-08T23:00:00",
+    "value": 0.227965414524078,
+    "unit": "ppm",
+    "wind_speed": 0.744739174842834,
+    "wind_direction": 332.110107421875,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 92,
+      "cell": [
+        92,
+        "",
+        "<span data-value='2019-01-08T23:00:00'>08-jan-2019, 23:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,2279654145240780'>0,23</span>",
+        "<span data-value='0000000000000000,7447391748428340'>0,7</span>",
+        "<span data-value='0000000000000332,1101074218750000'>332</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "3",
+    "pollutant": "CO",
+    "datetime": "2019-01-09T00:00:00",
+    "value": 0.227861389517784,
+    "unit": "ppm",
+    "wind_speed": 0.441465020179749,
+    "wind_direction": 341.877288818359,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 93,
+      "cell": [
+        93,
+        "",
+        "<span data-value='2019-01-09T00:00:00'>09-jan-2019, 00:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,2278613895177840'>0,23</span>",
+        "<span data-value='0000000000000000,4414650201797490'>0,4</span>",
+        "<span data-value='0000000000000341,8772888183590000'>342</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "3",
+    "pollutant": "CO",
+    "datetime": "2019-01-09T01:00:00",
+    "value": 0.236461400985718,
+    "unit": "ppm",
+    "wind_speed": 0.565138339996338,
+    "wind_direction": 332.047485351562,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 94,
+      "cell": [
+        94,
+        "",
+        "<span data-value='2019-01-09T01:00:00'>09-jan-2019, 01:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,2364614009857180'>0,24</span>",
+        "<span data-value='0000000000000000,5651383399963380'>0,6</span>",
+        "<span data-value='0000000000000332,0474853515620000'>332</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "3",
+    "pollutant": "CO",
+    "datetime": "2019-01-09T02:00:00",
+    "value": 0.235686093568802,
+    "unit": "ppm",
+    "wind_speed": 0.691045463085175,
+    "wind_direction": 328.118347167969,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 95,
+      "cell": [
+        95,
+        "",
+        "<span data-value='2019-01-09T02:00:00'>09-jan-2019, 02:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,2356860935688020'>0,24</span>",
+        "<span data-value='0000000000000000,6910454630851750'>0,7</span>",
+        "<span data-value='0000000000000328,1183471679690000'>328</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "3",
+    "pollutant": "CO",
+    "datetime": "2019-01-09T03:00:00",
+    "value": 0.23445300757885,
+    "unit": "ppm",
+    "wind_speed": 0.536322295665741,
+    "wind_direction": 330.110717773438,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 96,
+      "cell": [
+        96,
+        "",
+        "<span data-value='2019-01-09T03:00:00'>09-jan-2019, 03:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,2344530075788500'>0,23</span>",
+        "<span data-value='0000000000000000,5363222956657410'>0,5</span>",
+        "<span data-value='0000000000000330,1107177734380000'>330</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "3",
+    "pollutant": "CO",
+    "datetime": "2019-01-09T04:00:00",
+    "value": 0.23896835744381,
+    "unit": "ppm",
+    "wind_speed": 0.364956825971603,
+    "wind_direction": 328.785339355469,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 97,
+      "cell": [
+        97,
+        "",
+        "<span data-value='2019-01-09T04:00:00'>09-jan-2019, 04:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,2389683574438100'>0,24</span>",
+        "<span data-value='0000000000000000,3649568259716030'>0,4</span>",
+        "<span data-value='0000000000000328,7853393554690000'>329</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "3",
+    "pollutant": "CO",
+    "datetime": "2019-01-09T05:00:00",
+    "value": 0.233126372098923,
+    "unit": "ppm",
+    "wind_speed": 0.228762373328209,
+    "wind_direction": 329.645446777344,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 98,
+      "cell": [
+        98,
+        "",
+        "<span data-value='2019-01-09T05:00:00'>09-jan-2019, 05:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,2331263720989230'>0,23</span>",
+        "<span data-value='0000000000000000,2287623733282090'>0,2</span>",
+        "<span data-value='0000000000000329,6454467773440000'>330</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "3",
+    "pollutant": "CO",
+    "datetime": "2019-01-09T06:00:00",
+    "value": 0.231196865439415,
+    "unit": "ppm",
+    "wind_speed": 0.460661977529526,
+    "wind_direction": 337.612762451172,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 99,
+      "cell": [
+        99,
+        "",
+        "<span data-value='2019-01-09T06:00:00'>09-jan-2019, 06:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,2311968654394150'>0,23</span>",
+        "<span data-value='0000000000000000,4606619775295260'>0,5</span>",
+        "<span data-value='0000000000000337,6127624511720000'>338</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "3",
+    "pollutant": "CO",
+    "datetime": "2019-01-09T07:00:00",
+    "value": 0.233033373951912,
+    "unit": "ppm",
+    "wind_speed": 0.347285032272339,
+    "wind_direction": 323.298889160156,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 100,
+      "cell": [
+        100,
+        "",
+        "<span data-value='2019-01-09T07:00:00'>09-jan-2019, 07:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,2330333739519120'>0,23</span>",
+        "<span data-value='0000000000000000,3472850322723390'>0,3</span>",
+        "<span data-value='0000000000000323,2988891601560000'>323</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "3",
+    "pollutant": "CO",
+    "datetime": "2019-01-09T08:00:00",
+    "value": 0.234428003430367,
+    "unit": "ppm",
+    "wind_speed": 0.306534469127655,
+    "wind_direction": 315.981079101562,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 101,
+      "cell": [
+        101,
+        "",
+        "<span data-value='2019-01-09T08:00:00'>09-jan-2019, 08:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,2344280034303670'>0,23</span>",
+        "<span data-value='0000000000000000,3065344691276550'>0,3</span>",
+        "<span data-value='0000000000000315,9810791015620000'>316</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "3",
+    "pollutant": "CO",
+    "datetime": "2019-01-09T09:00:00",
+    "value": 0.219054371118546,
+    "unit": "ppm",
+    "wind_speed": 0.100415125489235,
+    "wind_direction": 333.564300537109,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 102,
+      "cell": [
+        102,
+        "",
+        "<span data-value='2019-01-09T09:00:00'>09-jan-2019, 09:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,2190543711185460'>0,22</span>",
+        "<span data-value='0000000000000000,1004151254892350'>0,1</span>",
+        "<span data-value='0000000000000333,5643005371090000'>334</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "3",
+    "pollutant": "CO",
+    "datetime": "2019-01-09T10:00:00",
+    "value": 0.223056882619858,
+    "unit": "ppm",
+    "wind_speed": 0.361783117055893,
+    "wind_direction": 125.29029083252,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 103,
+      "cell": [
+        103,
+        "",
+        "<span data-value='2019-01-09T10:00:00'>09-jan-2019, 10:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,2230568826198580'>0,22</span>",
+        "<span data-value='0000000000000000,3617831170558930'>0,4</span>",
+        "<span data-value='0000000000000125,2902908325200000'>125</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "3",
+    "pollutant": "CO",
+    "datetime": "2019-01-09T11:00:00",
+    "value": 0.226984426379204,
+    "unit": "ppm",
+    "wind_speed": 0.543597519397736,
+    "wind_direction": 89.3280868530273,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 104,
+      "cell": [
+        104,
+        "",
+        "<span data-value='2019-01-09T11:00:00'>09-jan-2019, 11:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,2269844263792040'>0,23</span>",
+        "<span data-value='0000000000000000,5435975193977360'>0,5</span>",
+        "<span data-value='0000000000000089,3280868530273000'>89</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "3",
+    "pollutant": "CO",
+    "datetime": "2019-01-09T12:00:00",
+    "value": 0.223751172423363,
+    "unit": "ppm",
+    "wind_speed": 0.626917362213135,
+    "wind_direction": 44.2646293640137,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 105,
+      "cell": [
+        105,
+        "",
+        "<span data-value='2019-01-09T12:00:00'>09-jan-2019, 12:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,2237511724233630'>0,22</span>",
+        "<span data-value='0000000000000000,6269173622131350'>0,6</span>",
+        "<span data-value='0000000000000044,2646293640137000'>44</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "3",
+    "pollutant": "CO",
+    "datetime": "2019-01-09T13:00:00",
+    "value": 0.225716322660446,
+    "unit": "ppm",
+    "wind_speed": 0.441538274288177,
+    "wind_direction": 53.3274269104004,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 106,
+      "cell": [
+        106,
+        "",
+        "<span data-value='2019-01-09T13:00:00'>09-jan-2019, 13:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,2257163226604460'>0,23</span>",
+        "<span data-value='0000000000000000,4415382742881770'>0,4</span>",
+        "<span data-value='0000000000000053,3274269104004000'>53</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "3",
+    "pollutant": "CO",
+    "datetime": "2019-01-09T14:00:00",
+    "value": 0.225567951798439,
+    "unit": "ppm",
+    "wind_speed": 0.260639369487762,
+    "wind_direction": 65.8369674682617,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 107,
+      "cell": [
+        107,
+        "",
+        "<span data-value='2019-01-09T14:00:00'>09-jan-2019, 14:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,2255679517984390'>0,23</span>",
+        "<span data-value='0000000000000000,2606393694877620'>0,3</span>",
+        "<span data-value='0000000000000065,8369674682617000'>66</span>"
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "3",
+    "pollutant": "CO",
+    "datetime": "2019-01-09T15:00:00",
+    "value": 0.22426925599575,
+    "unit": "ppm",
+    "wind_speed": 0,
+    "wind_direction": null,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 108,
+      "cell": [
+        108,
+        "",
+        "<span data-value='2019-01-09T15:00:00'>09-jan-2019, 15:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,2242692559957500'>0,22</span>",
+        "<span data-value='0000000000000000,0000000000000000'>0,0</span>",
+        ""
+      ]
+    }
+  },
+  {
+    "source": "INEA",
+    "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
+    "station_id": "70",
+    "station_name": "VR - Retiro",
+    "parameter_id": "3",
+    "pollutant": "CO",
+    "datetime": "2019-01-09T16:00:00",
+    "value": 0.228389665484428,
+    "unit": "ppm",
+    "wind_speed": 0,
+    "wind_direction": null,
+    "qaqc": null,
+    "is_public_platform_data": true,
+    "validation_status": "NO_EXPLICIT_QAQC_IN_TABLE",
+    "raw": {
+      "id": 109,
+      "cell": [
+        109,
+        "",
+        "<span data-value='2019-01-09T16:00:00'>09-jan-2019, 16:00:00</span>",
+        "Região do Médio Paraíba (RMP)",
+        "VR - Retiro",
+        "<span data-value='0000000000000000,2283896654844280'>0,23</span>",
+        "<span data-value='0000000000000000,0000000000000000'>0,0</span>",
+        ""
+      ]
+    }
+  }
+]

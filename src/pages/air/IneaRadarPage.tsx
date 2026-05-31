@@ -622,12 +622,17 @@ export function IneaRadarPage() {
         <YearExplorer />
       </section>
 
-      {/* Seção com âncora #timeline-plurianual (Linha do tempo 2022–2024) */}
+      {/* Seção com âncora #timeline-plurianual (Série histórica ampliada 2013–2026) */}
       <section id="timeline-plurianual" className="space-y-6 pt-4">
         <div className="space-y-2">
-          <h2 className="text-lg font-black text-slate-800">Linha do tempo 2020–2026</h2>
+          <div className="flex flex-wrap items-center gap-3">
+            <h2 className="text-lg font-black text-slate-800">Série histórica ampliada 2013–2026</h2>
+            <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-amber-50 text-amber-850 border border-amber-500/20 shadow-xs">
+              Alguns anos possuem cobertura insuficiente para comparação anual plena.
+            </span>
+          </div>
           <p className="text-xs text-slate-500 font-semibold leading-relaxed">
-            Veja como PM10 e PM2.5 se comportaram nas estações de Volta Redonda, ano a ano, em comparação experimental com OMS e CONAMA 506.
+            Veja como PM10, SO₂ e CO (2013–2026) e PM2.5 (2021–2026) se comportaram nas estações de Volta Redonda, ano a ano, em comparação experimental com as diretrizes da OMS e padrões da CONAMA 506.
           </p>
         </div>
         <ParticulateTimeline2020_2026 />

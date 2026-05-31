@@ -56,10 +56,11 @@ export function IneaMethodologyPage() {
     { id: "reguas", label: "Réguas de Comparação" },
     { id: "camadas", label: "Camadas de Dados" },
     { id: "limitacoes", label: "Limitações" },
+    { id: "exclusoes-governanca", label: "Bloqueios e Exclusões" },
     { id: "baixar-dados", label: "Baixar Dados (CSV)" },
     { id: "dicionario", label: "Dicionário de Dados" },
     { id: "disponibilidade", label: "Disponibilidade dos Dados" },
-    { id: "expansao", label: "Parâmetros em Expansão" }
+    { id: "expansao", label: "Decisões de Governança" }
   ];
 
   const handleScrollTo = (id: string) => {
@@ -170,13 +171,13 @@ export function IneaMethodologyPage() {
               <div className="flex justify-between items-center">
                 <span className="text-slate-450 font-bold">Versão do dataset:</span>
                 <span className="font-bold text-slate-800">
-                  {manifest?.version || manifest?.dataset_version || "1.1.0"}
+                  {manifest?.version || manifest?.dataset_version || "1.6.0"}
                 </span>
               </div>
               <div className="flex justify-between items-center">
                 <span className="text-slate-450 font-bold">Datasets públicos:</span>
                 <span className="font-bold text-slate-800">
-                  {manifest?.datasets ? manifest.datasets.length : 5}
+                  {manifest?.datasets ? manifest.datasets.length : 21}
                 </span>
               </div>
               
@@ -292,26 +293,32 @@ export function IneaMethodologyPage() {
               <div className="space-y-3">
                 <div className="p-4 bg-slate-50 rounded-2xl border border-slate-100">
                   <strong className="text-xs text-slate-700 uppercase tracking-wider block mb-1">Média Diária (Regra das 18h)</strong>
-                  <p className="text-xs text-slate-500 leading-relaxed">
+                  <p className="text-xs text-slate-500 leading-relaxed font-semibold">
                     Um dia civil só é validado para cálculo da média diária se contiver, no mínimo, 18 leituras horárias físicas válidas (75% de representatividade). Dias com menos de 18 horas de dados são integralmente descartados do cômputo de excedências.
                   </p>
                 </div>
                 <div className="p-4 bg-slate-50 rounded-2xl border border-slate-100">
                   <strong className="text-xs text-slate-700 uppercase tracking-wider block mb-1">Filtro de Cobertura e Zeros (ZERO_VALUE_REVIEW)</strong>
-                  <p className="text-xs text-slate-500 leading-relaxed">
+                  <p className="text-xs text-slate-500 leading-relaxed font-semibold">
                     Leituras com valor de concentração exatamente igual a zero são preservadas no banco para manter a integridade da extração, mas recebem uma marcação interna de auditoria técnico-calibratória para diferenciar baixos níveis reais de eventuais falhas instrumentais.
                   </p>
                 </div>
                 <div className="p-4 bg-slate-50 rounded-2xl border border-slate-100">
                   <strong className="text-xs text-slate-700 uppercase tracking-wider block mb-1">Transparência sobre lacunas</strong>
-                  <p className="text-xs text-slate-500 leading-relaxed">
+                  <p className="text-xs text-slate-500 leading-relaxed font-semibold">
                     Afirmamos categoricamente: <strong>ausência de dado não representa ar bom</strong>. Avarias em sensores ou falhas na transmissão pública geram lacunas de informação e nunca devem ser computadas ou interpretadas como indicação de ar livre de poluição.
                   </p>
                 </div>
                 <div className="p-4 bg-slate-50 rounded-2xl border border-slate-100">
                   <strong className="text-xs text-slate-700 uppercase tracking-wider block mb-1">Anos parciais/em andamento</strong>
-                  <p className="text-xs text-slate-500 leading-relaxed">
+                  <p className="text-xs text-slate-500 leading-relaxed font-semibold">
                     Para anos civis ainda em andamento (como 2026), os indicadores acumulados representam apenas o recorte temporal disponível (de janeiro a maio). Para evitar distorções metodológicas, esses dados são identificados com um selo explicativo ("*") e não devem ser diretamente comparados a séries históricas anuais completas fechadas.
+                  </p>
+                </div>
+                <div className="p-4 bg-slate-50 rounded-2xl border border-slate-100">
+                  <strong className="text-xs text-slate-700 uppercase tracking-wider block mb-1">Cobertura Insuficiente em Séries Antigas</strong>
+                  <p className="text-xs text-slate-500 leading-relaxed font-semibold">
+                    Para séries históricas antigas (especialmente entre 2013 e 2019), alguns poluentes e estações apresentam taxa de cobertura anual inferior a 75%. Nesses casos, a média anual calculada deve ser lida estritamente como a média do período disponível com dados e não como uma representação da comparação anual plena ou conformidade definitiva. Esse status é sinalizado nas interfaces e no manifesto com a tag <code>INSUFFICIENT_ANNUAL_COVERAGE</code>.
                   </p>
                 </div>
               </div>
@@ -336,22 +343,26 @@ export function IneaMethodologyPage() {
               <div className="grid gap-4 md:grid-cols-2">
                 <div className="p-4 border border-emerald-500/10 bg-emerald-50/20 rounded-2xl space-y-1">
                   <strong className="text-sm font-bold text-slate-800 block">Régua de Saúde (Diretriz OMS 2021)</strong>
-                  <p className="text-xs text-slate-500 leading-relaxed">
+                  <p className="text-xs text-slate-500 leading-relaxed font-semibold">
                     Valores máximos recomendados pela Organização Mundial da Saúde para proteção do sistema respiratório em exposições diárias de 24 horas:
                   </p>
                   <ul className="text-xs text-slate-600 font-bold mt-2 space-y-0.5">
                     <li>PM10: 45 µg/m³</li>
                     <li>PM2.5: 15 µg/m³</li>
+                    <li>SO₂: 40 µg/m³</li>
+                    <li>CO: 4 mg/m³</li>
                   </ul>
                 </div>
                 <div className="p-4 border border-brand-primary/10 bg-brand-primary/5 rounded-2xl space-y-1">
                   <strong className="text-sm font-bold text-slate-800 block">Régua Legal Nacional (CONAMA 506)</strong>
-                  <p className="text-xs text-slate-500 leading-relaxed">
-                    Limites diários estabelecidos pela Resolução CONAMA 506/2024 como padrões regulamentares nacionais de qualidade do ar (vigentes no Brasil):
+                  <p className="text-xs text-slate-500 leading-relaxed font-semibold">
+                    Limites diários estabelecidos pela Resolução CONAMA 506/2018 como padrões regulamentares nacionais de qualidade do ar (vigentes no Brasil):
                   </p>
                   <ul className="text-xs text-slate-600 font-bold mt-2 space-y-0.5">
                     <li>PM10: 50 µg/m³</li>
                     <li>PM2.5: 25 µg/m³</li>
+                    <li>SO₂: 20 µg/m³</li>
+                    <li>CO: 9 ppm (média móvel de 8 horas)</li>
                   </ul>
                 </div>
               </div>
@@ -404,7 +415,7 @@ export function IneaMethodologyPage() {
               <h2 className="text-xl font-black text-slate-800">Limitações do repositório</h2>
             </div>
             
-                        <SurfaceCard className="p-6 bg-white border border-slate-100 rounded-3xl space-y-4">
+            <SurfaceCard className="p-6 bg-white border border-slate-100 rounded-3xl space-y-4">
               <p className="text-sm text-slate-600 font-medium leading-relaxed">
                 Transparência ativa exige apontar os limites do nosso próprio escopo. Os usuários devem estar atentos aos seguintes fatores:
               </p>
@@ -412,9 +423,47 @@ export function IneaMethodologyPage() {
                 <li><strong>Dependência Técnica:</strong> O Observatório compila dados fornecidos por canais públicos. Avarias em sensores ou ausência de leituras no site original geram lacunas de dados que fogem ao nosso controle.</li>
                 <li><strong>Sem QA/QC explícito por registro:</strong> Os dados horários brutos são capturados como exibidos, sem tratamento regulatório por linha. Podem ocorrer leituras anômalas não auditadas.</li>
                 <li><strong>Acesso Pleno a Séries Completas:</strong> O resgate de microdados brutos históricos completos depende de requisições externas e minutas da Lei de Acesso à Informação (LAI) para períodos de silêncio do sinal público.</li>
-                <li><strong>Início do Monitoramento de PM2.5 (2021):</strong> A série histórica do material particulado fino (PM2.5) em Volta Redonda inicia-se em 2021. No ano de 2020, o monitoramento público do INEA limitou-se ao PM10 (particulado inalável). A ausência de PM2.5 em 2020 é uma limitação física de instrumentação da rede oficial da época, não devendo ser interpretada como conformidade de níveis de poluição.</li>
+                <li><strong>Início do Monitoramento de PM2.5 (2021):</strong> A série histórica do material particulado fino (PM2.5) em Volta Redonda inicia-se em 2021. No ano de 2020, o monitoramento público do INEA limitou-se ao PM10 (particulado inalável). Como não há dados públicos disponíveis na plataforma INEA/WebLakes antes de 2021 no recorte validado, a ausência de PM2.5 em 2020 não deve ser interpretada como conformidade de níveis de poluição.</li>
                 <li><strong>Mapeamento Experimental:</strong> Todos os cruzamentos de excedências servem como indicação didática de eventos de atenção, não devendo ser utilizados para fundamentar penalidades ou litígios de forma direta.</li>
               </ul>
+            </SurfaceCard>
+          </section>
+
+          {/* Section 6.5: Por que alguns parâmetros não são publicados mesmo quando existem dados? */}
+          <section id="exclusoes-governanca" className="space-y-4 scroll-mt-6">
+            <div className="flex items-center gap-3">
+              <IconShell tone="warm" className="shrink-0 h-9 w-9">
+                <svg className="h-4.5 w-4.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                </svg>
+              </IconShell>
+              <h2 className="text-xl font-black text-slate-800">Por que alguns parâmetros não são publicados?</h2>
+            </div>
+
+            <SurfaceCard className="p-6 bg-white border border-slate-100 rounded-3xl space-y-4">
+              <p className="text-sm text-slate-600 font-medium leading-relaxed">
+                O fato de uma leitura de poluição constar na plataforma pública original não significa que ela esteja qualificada para publicação. Sensores físicos podem apresentar descalibrações ou anomalias eletrônicas severas. O Observatório prefere bloquear a expor dados duvidosos.
+              </p>
+              <div className="space-y-3.5 text-xs text-slate-500 font-semibold leading-relaxed">
+                <div className="p-3.5 bg-slate-50 rounded-2xl">
+                  <strong>1. Erros de Offset (Deslocamento de Zero):</strong>
+                  <p className="mt-1 font-medium text-slate-500">
+                    Ocorrem quando o sensor registra um valor mínimo basal deslocado para cima. Em 2024, a estação Retiro para NO₂ registrou um offset sistemático de aproximadamente +20 µg/m³, distorcendo a exposição crônica anual.
+                  </p>
+                </div>
+                <div className="p-3.5 bg-slate-50 rounded-2xl">
+                  <strong>2. Erros de Ganho (Multiplicadores Anômalos):</strong>
+                  <p className="mt-1 font-medium text-slate-500">
+                    Ocorrem quando o sinal elétrico é multiplicado eletronicamente por um multiplicador de escala incorreto. No PTS de Retiro em 2024, constatou-se um erro de escala de exatamente 10x (multiplicador artificial), inflando todas as leituras.
+                  </p>
+                </div>
+                <div className="p-3.5 bg-slate-50 rounded-2xl">
+                  <strong>3. Rigor Editorial e Cautela Cidadã:</strong>
+                  <p className="mt-1 font-medium text-slate-500">
+                    Expor dados calibrados incorretamente pode induzir o pânico público ou ocultar a realidade ambiental. O Observatório mantém parâmetros sob quarentena ou bloqueio preventivo enquanto durarem as anomalias técnicas detectadas.
+                  </p>
+                </div>
+              </div>
             </SurfaceCard>
           </section>
 
@@ -432,12 +481,12 @@ export function IneaMethodologyPage() {
             <div className="grid gap-4 sm:grid-cols-3">
               <SurfaceCard className="p-5 bg-white border border-slate-100 rounded-2xl flex flex-col justify-between space-y-4 shadow-sm">
                 <div>
-                  <h4 className="text-xs font-black uppercase text-slate-400">Linha do Tempo 2020–2026</h4>
-                  <p className="text-[11px] text-slate-500 font-semibold mt-1">Série histórica plurianual consolidando médias, coberturas e excedências diárias.</p>
+                  <h4 className="text-xs font-black uppercase text-slate-400">Linha do Tempo de PM10 (2013-2026)</h4>
+                  <p className="text-[11px] text-slate-500 font-semibold mt-1">Série histórica plurianual consolidando médias, coberturas e excedências diárias de PM10.</p>
                 </div>
                 <a
-                  href="/data/air/particulate-timeline-2020-2026.csv"
-                  download="particulate-timeline-2020-2026.csv"
+                  href="/data/air/pm10-timeline-2013-2026.csv"
+                  download="pm10-timeline-2013-2026.csv"
                   className="inline-flex min-h-[38px] items-center justify-center rounded-xl bg-brand-primary text-white font-black text-xs uppercase hover:bg-brand-primary-dark transition-all w-full tracking-wider shadow-sm"
                 >
                   Download (CSV)
@@ -446,12 +495,12 @@ export function IneaMethodologyPage() {
 
               <SurfaceCard className="p-5 bg-white border border-slate-100 rounded-2xl flex flex-col justify-between space-y-4 shadow-sm">
                 <div>
-                  <h4 className="text-xs font-black uppercase text-slate-400">Episódios de Atenção</h4>
-                  <p className="text-[11px] text-slate-500 font-semibold mt-1">Série mensal contendo as excedências OMS e CONAMA por mês (2020–2026).</p>
+                  <h4 className="text-xs font-black uppercase text-slate-400">Linha do Tempo de SO2 (2013-2026)</h4>
+                  <p className="text-[11px] text-slate-500 font-semibold mt-1">Série histórica plurianual consolidando médias, coberturas e excedências diárias de SO₂.</p>
                 </div>
                 <a
-                  href="/data/air/attention-episodes-2020-2026.csv"
-                  download="attention-episodes-2020-2026.csv"
+                  href="/data/air/so2-timeline-2013-2026.csv"
+                  download="so2-timeline-2013-2026.csv"
                   className="inline-flex min-h-[38px] items-center justify-center rounded-xl bg-brand-primary text-white font-black text-xs uppercase hover:bg-brand-primary-dark transition-all w-full tracking-wider shadow-sm"
                 >
                   Download (CSV)
@@ -460,13 +509,13 @@ export function IneaMethodologyPage() {
 
               <SurfaceCard className="p-5 bg-white border border-slate-100 rounded-2xl flex flex-col justify-between space-y-4 shadow-sm">
                 <div>
-                  <h4 className="text-xs font-black uppercase text-slate-400">Dicionário de Dados</h4>
-                  <p className="text-[11px] text-slate-500 font-semibold mt-1">Metadados descrevendo os campos das planilhas de qualidade do ar exportadas.</p>
+                  <h4 className="text-xs font-black uppercase text-slate-400">Linha do Tempo de CO (2013-2026)</h4>
+                  <p className="text-[11px] text-slate-500 font-semibold mt-1">Série histórica plurianual consolidando médias, coberturas e excedências diárias de CO.</p>
                 </div>
                 <a
-                  href="/data/air/data-dictionary.csv"
-                  download="data-dictionary.csv"
-                  className="inline-flex min-h-[38px] items-center justify-center rounded-xl bg-slate-800 text-white font-black text-xs uppercase hover:bg-slate-700 transition-all w-full tracking-wider shadow-sm"
+                  href="/data/air/co-timeline-2013-2026.csv"
+                  download="co-timeline-2013-2026.csv"
+                  className="inline-flex min-h-[38px] items-center justify-center rounded-xl bg-brand-primary text-white font-black text-xs uppercase hover:bg-brand-primary-dark transition-all w-full tracking-wider shadow-sm"
                 >
                   Download (CSV)
                 </a>
@@ -491,6 +540,27 @@ export function IneaMethodologyPage() {
                     <tbody className="divide-y divide-slate-100 text-xs font-medium text-slate-600">
                       {[
                         {
+                          file: "pm10-timeline-2013-2026.csv",
+                          desc: "Série histórica estendida e consolidada de PM10 de 2013 a 2026.",
+                          format: "CSV",
+                          updated: "Maio de 2026",
+                          path: "/data/air/pm10-timeline-2013-2026.csv"
+                        },
+                        {
+                          file: "so2-timeline-2013-2026.csv",
+                          desc: "Série histórica estendida e consolidada de SO₂ de 2013 a 2026.",
+                          format: "CSV",
+                          updated: "Maio de 2026",
+                          path: "/data/air/so2-timeline-2013-2026.csv"
+                        },
+                        {
+                          file: "co-timeline-2013-2026.csv",
+                          desc: "Série histórica estendida e consolidada de CO de 2013 a 2026.",
+                          format: "CSV",
+                          updated: "Maio de 2026",
+                          path: "/data/air/co-timeline-2013-2026.csv"
+                        },
+                        {
                           file: "pm10-2020-station-summary.csv",
                           desc: "Estatísticas anuais consolidadas por estação para o PM10 em 2020.",
                           format: "CSV",
@@ -510,6 +580,20 @@ export function IneaMethodologyPage() {
                           format: "CSV",
                           updated: "Maio de 2026",
                           path: "/data/air/pm25-2021-station-summary.csv"
+                        },
+                        {
+                          file: "pm25-2022-station-summary.csv",
+                          desc: "Estatísticas anuais consolidadas por estação para o PM2.5 em 2022.",
+                          format: "CSV",
+                          updated: "Maio de 2026",
+                          path: "/data/air/pm25-2022-station-summary.csv"
+                        },
+                        {
+                          file: "pm25-2023-station-summary.csv",
+                          desc: "Estatísticas anuais consolidadas por estação para o PM2.5 em 2023.",
+                          format: "CSV",
+                          updated: "Maio de 2026",
+                          path: "/data/air/pm25-2023-station-summary.csv"
                         },
                         {
                           file: "pm10-2024-station-summary.csv",
@@ -569,7 +653,7 @@ export function IneaMethodologyPage() {
                         },
                         {
                           file: "particulate-timeline-2020-2026.csv",
-                          desc: "Linha do tempo plurianual de médias, coberturas e excedências anuais (2020-2026).",
+                          desc: "Linha do tempo plurianual de médias, coberturas e excedências anuais de particulados (2020-2026).",
                           format: "CSV",
                           updated: "Maio de 2026",
                           path: "/data/air/particulate-timeline-2020-2026.csv"
@@ -713,62 +797,67 @@ export function IneaMethodologyPage() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 9.172V5L8 4z" />
                 </svg>
               </IconShell>
-              <h2 className="text-xl font-black text-slate-800">Parâmetros em Expansão (Lote C)</h2>
+              <h2 className="text-xl font-black text-slate-800">Parâmetros em decisão de governança</h2>
             </div>
 
             <SurfaceCard className="p-6 bg-white border border-slate-100 rounded-3xl space-y-6">
               <p className="text-sm text-slate-655 leading-relaxed font-semibold">
-                No ano de 2024, o Observatório do Ar iniciou a homologação de dados e sensores para 5 novos parâmetros atmosféricos monitorados em Volta Redonda (SO₂, NO₂, CO, PTS e O₃). Essas camadas encontram-se em fase de auditoria técnico-calibratória na interface, sem publicação regulatória automática na base principal para manter a integridade metodológica.
+                O Observatório do Ar expandiu o monitoramento para incluir parâmetros gasosos atmosféricos. SO₂ e CO possuem série histórica publicada de 2013 a 2026. NO₂ e PTS permanecem em quarentena por anomalias instrumentais confirmadas em 2024. O₃ está indisponível no recorte validado.
               </p>
 
               <div className="space-y-4">
-                <h3 className="text-sm font-black text-slate-800 uppercase tracking-wider">Como lemos SO₂ e CO</h3>
-                
+                <h3 className="text-sm font-black text-slate-800 uppercase tracking-wider">SO₂ e CO — Série Histórica 2013–2026 ✅</h3>
+
                 <div className="p-4 bg-emerald-50/40 border border-emerald-500/10 rounded-2xl space-y-2">
-                  <strong className="text-xs text-emerald-800 uppercase tracking-wider block">Regras de Leitura de SO₂ e CO (Parâmetros Experimentais)</strong>
+                  <strong className="text-xs text-emerald-800 uppercase tracking-wider block">SO₂ (Dióxido de Enxofre) — Publicável com Cautela</strong>
                   <p className="text-xs text-slate-500 leading-relaxed font-semibold">
-                    O Dióxido de Enxofre (SO₂) e o Monóxido de Carbono (CO) foram liberados experimentalmente na interface. A sua leitura e validação adotam as seguintes regras físicas:
+                    SO₂ está disponível em série histórica para 2013–2026 (2026 parcial) nas estações Belmonte, Retiro e Santa Cecília. A série não apresenta anomalias instrumentais sistemáticas.
                   </p>
                   <ul className="list-disc list-inside text-[11px] text-slate-600 font-semibold space-y-1.5 pl-2">
-                    <li><strong>Médias Diárias de SO₂:</strong> O cálculo das médias de 24h para o SO₂ exige um mínimo de <strong>18 horas válidas</strong> no dia (75% de representatividade), cruzando os dados com as réguas diárias CONAMA (20 µg/m³) e OMS (40 µg/m³).</li>
-                    <li><strong>Monóxido de Carbono (CO) — Unidade Nativa:</strong> O CO é monitorado em <strong>ppm</strong> na plataforma INEA/WebLakes, sendo esta a unidade nativa mantida para a conformidade regulatória nacional.</li>
-                    <li><strong>Monóxido de Carbono (CO) — Conversão OMS:</strong> A conversão de ppm para <strong>mg/m³</strong> é realizada utilizando o fator físico <strong>1.145</strong> (calculado a 25°C e 1 atm), aplicada apenas e exclusivamente na comparação diária com o limite de saúde de <strong>4 mg/m³</strong> da OMS.</li>
-                    <li><strong>Monóxido de Carbono (CO) — Média Móvel de 8h:</strong> A comparação regulatória com a CONAMA adota o limite de <strong>9 ppm</strong> calculado em médias móveis deslizantes de 8 horas consecutivas, exigindo representatividade mínima de <strong>6 horas válidas</strong> por janela.</li>
-                    <li><strong>Natureza Experimental:</strong> Todas as comparações realizadas para estes parâmetros são experimentais.</li>
+                    <li><strong>Médias Diárias:</strong> Calculadas com mínimo de <strong>18 horas válidas</strong> por dia.</li>
+                    <li><strong>Régua OMS:</strong> 40 µg/m³ (média diária). Excedências registradas apenas em Santa Cecília 2020 (3 dias).</li>
+                    <li><strong>Régua CONAMA 506:</strong> 20 µg/m³ (média diária). Excedências em 2020 e 2021; tendência decrescente até 2024–2026.</li>
+                    <li><strong>Atenção:</strong> Santa Cecília 2025 apresenta cobertura insuficiente (45%) — dado sinalizado nos arquivos CSV.</li>
                   </ul>
                 </div>
 
-                <h3 className="text-sm font-black text-slate-800 uppercase tracking-wider">Demais Parâmetros em Quarentena</h3>
-                
-                <div className="p-4 bg-slate-50 border border-slate-100 rounded-2xl space-y-2">
-                  <strong className="text-xs text-slate-800 uppercase tracking-wider block">Dióxido de Nitrogênio (NO₂)</strong>
+                <div className="p-4 bg-emerald-50/40 border border-emerald-500/10 rounded-2xl space-y-2">
+                  <strong className="text-xs text-emerald-800 uppercase tracking-wider block">CO (Monóxido de Carbono) — Publicável com Cautela</strong>
+                  <p className="text-xs text-slate-500 leading-relaxed font-semibold">
+                    CO está disponível em série histórica para 2013–2026 (2026 parcial) nas três estações, com cobertura suficiente em todas as combinações ano × estação.
+                  </p>
+                  <ul className="list-disc list-inside text-[11px] text-slate-600 font-semibold space-y-1.5 pl-2">
+                    <li><strong>Unidade Nativa:</strong> O CO é monitorado e exibido em <strong>ppm</strong> (partes por milhão) — unidade nativa da plataforma INEA/WebLakes.</li>
+                    <li><strong>Conversão para OMS:</strong> A conversão de ppm para <strong>mg/m³</strong> usa o fator <strong>1,145</strong> (25°C, 1 atm) e é aplicada exclusivamente para comparação com o limite diário da OMS (4 mg/m³).</li>
+                    <li><strong>Régua CONAMA 506:</strong> 9 ppm em média móvel de 8h (mínimo 6 horas válidas por janela). <strong>Zero excedências em toda a série 2013–2026.</strong></li>
+                    <li><strong>Régua OMS:</strong> Zero excedências em toda a série 2013–2026.</li>
+                  </ul>
+                </div>
+
+                <h3 className="text-sm font-black text-slate-800 uppercase tracking-wider">Parâmetros Bloqueados e Indisponíveis 🚫</h3>
+
+                <div className="p-4 bg-amber-50/40 border border-amber-500/10 rounded-2xl space-y-2">
+                  <strong className="text-xs text-amber-800 uppercase tracking-wider block">NO₂ (Dióxido de Nitrogênio) — Em Auditoria Crítica (Bloqueado)</strong>
                   <p className="text-xs text-slate-500 leading-relaxed font-medium">
-                    A validação do NO₂ cruza as leituras com duas réguas metodológicas distintas:
+                    NO₂ permanece bloqueado na interface de dados abertos. Em 2024, a estação Retiro registrou um deslocamento constante de <strong>+20 µg/m³</strong> (offset de zero instrumental), enquanto Belmonte e Santa Cecília permaneceram normais (~15 µg/m³). A anomalia foi confirmada como exclusiva de 2024. A governança identificou que os demais anos (2020-2023, 2025-2026) são saudáveis, mas o parâmetro NO₂ permanece bloqueado por decisão de salvaguarda editorial.
                   </p>
                   <ul className="list-disc list-inside text-[11px] text-slate-600 font-semibold space-y-1 pl-2">
-                    <li><strong>Média Diária da OMS (2021):</strong> Mapeia dias com média diária (24h) superior a <strong>25 µg/m³</strong> (exigindo representatividade mínima de 18 horas válidas no dia).</li>
-                    <li><strong>Pico Horário da CONAMA 506:</strong> Avalia ocorrências onde leituras horárias individuais excedem o limite de pico nacional de <strong>200 µg/m³</strong>.</li>
+                    <li><strong>Régua OMS:</strong> 25 µg/m³ (média diária com ≥ 18h válidas).</li>
+                    <li><strong>Régua CONAMA 506:</strong> 200 µg/m³ (pico horário).</li>
                   </ul>
                 </div>
 
                 <div className="p-4 bg-slate-50 border border-slate-100 rounded-2xl space-y-2">
-                  <strong className="text-xs text-slate-800 uppercase tracking-wider block">Ozônio (O₃)</strong>
+                  <strong className="text-xs text-slate-800 uppercase tracking-wider block">PTS (Partículas Totais em Suspensão) — Histórico-Técnico em Quarentena</strong>
                   <p className="text-xs text-slate-500 leading-relaxed font-medium">
-                    A verificação do O₃ exige o cálculo de médias móveis de 8h consecutivas (exigindo mínimo de 6/8h válidas) contra o teto de <strong>100 µg/m³</strong> (tanto para OMS quanto para CONAMA 506). No entanto, o diagnóstico de disponibilidade atesta que nenhuma leitura foi transmitida pelas estações de Volta Redonda em 2024 (0h coletadas), classificando este parâmetro oficialmente como <strong>indisponível</strong> na interface.
+                    PTS permanece restrito a relatórios técnicos internos (quarentena técnica). Em 2024, a estação Retiro apresentou erro de ganho instrumental de <strong>fator 10x</strong> confirmado, enquanto Belmonte e Santa Cecília permaneceram normais. A anomalia é isolada a 2024. O PTS <strong>não é equivalente</strong> ao PM10 ou PM2.5 e é regulado pela antiga portaria CONAMA 03/1990 (limite diário: 240 µg/m³).
                   </p>
                 </div>
 
                 <div className="p-4 bg-slate-50 border border-slate-100 rounded-2xl space-y-2">
-                  <strong className="text-xs text-slate-800 uppercase tracking-wider block">Partículas Totais em Suspensão (PTS)</strong>
+                  <strong className="text-xs text-slate-800 uppercase tracking-wider block">O₃ (Ozônio) — Indisponível</strong>
                   <p className="text-xs text-slate-500 leading-relaxed font-medium">
-                    O PTS é tratado estritamente como um parâmetro técnico-histórico regulado pela Resolução CONAMA 03/1990 (limite diário de <strong>240 µg/m³</strong> e padrão anual de <strong>80 µg/m³</strong>). Não há diretriz correspondente na diretriz de saúde de 2021 da OMS. Esclarecemos que o PTS **não é equivalente** ao Material Particulado inalável ou fino (PM10/PM2.5) e serve para fins puramente de engenharia e depuração de rede, sem alertas públicos.
-                  </p>
-                </div>
-
-                <div className="p-4 bg-slate-50 border border-slate-100 rounded-2xl space-y-2">
-                  <strong className="text-xs text-slate-800 uppercase tracking-wider block">Dióxido de Enxofre (SO₂)</strong>
-                  <p className="text-xs text-slate-500 leading-relaxed font-medium">
-                    O SO₂ segue em validação final de calibração instrumental. As concentrações diárias baseadas na representatividade temporal mínima de 18h são cruzadas com o limite diário nacional da CONAMA 506 (<strong>20 µg/m³</strong>) e a diretriz da OMS (<strong>40 µg/m³</strong>).
+                    O diagnóstico de disponibilidade confirma que nenhuma leitura de O₃ foi transmitida pelas estações de Volta Redonda no recorte validado (0 horas coletadas em 2024). Classificado como <strong>indisponível</strong> no recorte atual devido à ausência crônica de dados das estações.
                   </p>
                 </div>
               </div>
@@ -794,7 +883,7 @@ export function IneaMethodologyPage() {
               <div className="p-3 bg-white rounded-2xl border border-slate-100/50 flex flex-col justify-between">
                 <span className="text-[10px] uppercase text-slate-450 tracking-wider">Versão Dataset</span>
                 <span className="font-bold text-slate-800 mt-1">
-                  {manifest?.version || manifest?.dataset_version || "1.1.0"}
+                  {manifest?.version || manifest?.dataset_version || "1.6.0"}
                 </span>
               </div>
               <div className="p-3 bg-white rounded-2xl border border-slate-100/50 flex flex-col justify-between col-span-2">
@@ -810,7 +899,7 @@ export function IneaMethodologyPage() {
                 href="/data/air/manifest.json"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="block text-center py-2.5 px-4 bg-slate-200/50 hover:bg-slate-200 rounded-xl text-[10px] font-black uppercase text-slate-650 tracking-wider transition-colors"
+                className="block text-center py-2.5 px-4 bg-slate-200/50 hover:bg-slate-200 rounded-xl text-[10px] font-black uppercase text-slate-655 tracking-wider transition-colors"
               >
                 Ver manifest.json
               </a>
@@ -831,4 +920,5 @@ export function IneaMethodologyPage() {
     </div>
   );
 }
+
 export default IneaMethodologyPage;
