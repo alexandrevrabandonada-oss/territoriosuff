@@ -1,7 +1,7 @@
 import { useEffect, useState, useCallback } from "react";
 import { useNavigate, useParams, useLocation, Link } from "react-router-dom";
 import { supabase } from "../../lib/supabase/client";
-import { adminUploadMedia, formatAssetSize, getMediaAssetById, isImageAsset, type MediaAssetRecord } from "../../lib/admin/media";
+import { adminUploadMedia, formatAssetSize, getMediaAssetById, isImageAsset, validateAdminUploadFile, type MediaAssetRecord } from "../../lib/admin/media";
 
 const TYPES = [
   { value: "relatorio", label: "Relatório" },
@@ -110,6 +110,12 @@ export function AdminReportsEditPage() {
 
         setSelectedPdfAsset(pdfAsset);
         setSelectedCoverAsset(coverAsset);
+        if (pdfAsset?.public_url) {
+          setPdfUrl(pdfAsset.public_url);
+        }
+        if (coverAsset?.public_url) {
+          setCoverUrl(coverAsset.public_url);
+        }
       }
     }
     setLoading(false);
@@ -166,6 +172,11 @@ export function AdminReportsEditPage() {
 
     setIsUploading(true);
     try {
+      validateAdminUploadFile(file, {
+        allowedMimeTypes: isCover
+          ? ["image/jpeg", "image/png", "image/webp"]
+          : ["application/pdf"],
+      });
       const asset = await adminUploadMedia({
         bucket: isCover ? "media" : "reports",
         file,
@@ -192,6 +203,15 @@ export function AdminReportsEditPage() {
     if (!supabase) return;
     setSaving(true);
 
+    const resolvedPdfAsset = pdfAssetId
+      ? (selectedPdfAsset?.id === pdfAssetId ? selectedPdfAsset : await getMediaAssetById(pdfAssetId))
+      : null;
+    const resolvedCoverAsset = coverAssetId
+      ? (selectedCoverAsset?.id === coverAssetId ? selectedCoverAsset : await getMediaAssetById(coverAssetId))
+      : null;
+    const effectivePdfUrl = resolvedPdfAsset?.public_url || pdfUrl;
+    const effectiveCoverUrl = resolvedCoverAsset?.public_url || coverUrl;
+
     // Validações
     if (!title.trim()) {
       alert("⚠️ O título é obrigatório.");
@@ -205,7 +225,7 @@ export function AdminReportsEditPage() {
         setSaving(false);
         return;
       }
-      if (!pdfUrl) {
+      if (!effectivePdfUrl) {
         alert("⚠️ Um documento PDF é obrigatório para publicação oficial.");
         setSaving(false);
         return;
@@ -223,9 +243,9 @@ export function AdminReportsEditPage() {
       published_at: publishedAt || null,
       tags: tags.split(",").map(t => t.trim()).filter(Boolean),
       featured,
-      pdf_url: pdfUrl,
+      pdf_url: effectivePdfUrl,
       pdf_asset_id: pdfAssetId || null,
-      cover_url: coverUrl,
+      cover_url: effectiveCoverUrl,
       cover_asset_id: coverAssetId || null,
     };
 

@@ -1,6 +1,7 @@
 import { useEffect, useState, useCallback } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { supabase } from "../../lib/supabase/client";
+import { getLinkedMediaAssetIdsForContent } from "../../lib/admin/media";
 
 interface AcervoItem {
   id: string;
@@ -80,7 +81,15 @@ export function AdminAcervoListPage() {
   }, [loadItems]);
 
   const handleDelete = async (id: string) => {
-    if (!supabase || !confirm("Tem certeza que deseja excluir este item?")) return;
+    if (!supabase) return;
+
+    const linkedAssetIds = await getLinkedMediaAssetIdsForContent("acervo", id);
+    if (linkedAssetIds.length > 0) {
+      alert(`Exclusão bloqueada: este item do acervo possui ${linkedAssetIds.length} asset(s) vinculado(s). Revise os arquivos no editor do item ou em /admin/uploads antes de excluir.`);
+      return;
+    }
+
+    if (!confirm("Tem certeza que deseja excluir este item?")) return;
     
     const { error } = await supabase.from("acervo_items").delete().eq("id", id);
     if (error) {

@@ -2,7 +2,7 @@ import { useEffect, useState, useCallback } from "react";
 import { useNavigate, useParams, Link, useLocation } from "react-router-dom";
 import { SafeMarkdown } from "../../components/SafeMarkdown";
 import { supabase } from "../../lib/supabase/client";
-import { adminUploadMedia, formatAssetSize, getMediaAssetById, isImageAsset, isPdfAsset, type MediaAssetRecord } from "../../lib/admin/media";
+import { adminUploadMedia, formatAssetSize, getMediaAssetById, isImageAsset, isPdfAsset, validateAdminUploadFile, type MediaAssetRecord } from "../../lib/admin/media";
 
 const CATEGORIES = [
   "Notícias",
@@ -142,6 +142,7 @@ export function AdminBlogEditPage() {
 
     setIsUploading(true);
     try {
+      validateAdminUploadFile(file);
       const asset = await adminUploadMedia({
         bucket: file.type === "application/pdf" ? "blog" : "media",
         file,

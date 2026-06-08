@@ -1,6 +1,7 @@
 import { useEffect, useState, useCallback } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { supabase } from "../../lib/supabase/client";
+import { getLinkedMediaAssetIdsForContent } from "../../lib/admin/media";
 
 interface BlogPost {
   id: string;
@@ -65,7 +66,15 @@ export function AdminBlogListPage() {
   }, [loadPosts]);
 
   const handleDelete = async (id: string) => {
-    if (!supabase || !confirm("Tem certeza que deseja excluir esta matéria?")) return;
+    if (!supabase) return;
+
+    const linkedAssetIds = await getLinkedMediaAssetIdsForContent("blog", id);
+    if (linkedAssetIds.length > 0) {
+      alert(`Exclusão bloqueada: esta matéria possui ${linkedAssetIds.length} asset(s) vinculado(s). Remova ou revise a capa antes de excluir o conteúdo.`);
+      return;
+    }
+
+    if (!confirm("Tem certeza que deseja excluir esta matéria?")) return;
     
     const { error } = await supabase.from("blog_posts").delete().eq("id", id);
     if (error) {

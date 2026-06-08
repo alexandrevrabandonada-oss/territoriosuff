@@ -40,6 +40,38 @@ export interface UploadOptions {
   status?: "draft" | "published" | "archived";
 }
 
+export interface UpdateMediaAssetOptions {
+  assetId: string;
+  title: string;
+  description?: string;
+  altText?: string;
+  credit?: string;
+  source?: string;
+  acervoContentType?: string | null;
+  contentCategory?: string | null;
+  sourceDate?: string | null;
+  sourceName?: string | null;
+  sourceUrl?: string | null;
+  tags?: string[];
+  status?: "draft" | "published" | "archived";
+}
+
+type ContentKind = "acervo" | "blog" | "reports";
+
+export const ADMIN_ALLOWED_BUCKETS = ["acervo", "media", "blog", "reports", "transparency"] as const;
+export const ADMIN_ALLOWED_MIME_TYPES = [
+  "application/pdf",
+  "image/jpeg",
+  "image/png",
+  "image/webp",
+] as const;
+export const ADMIN_MAX_FILE_SIZE = 15 * 1024 * 1024; // 15MB
+
+type UploadValidationOptions = {
+  allowedMimeTypes?: readonly string[];
+  maxFileSize?: number;
+};
+
 export function isImageAsset(asset: Pick<MediaAssetRecord, "mime_type"> | null | undefined) {
   return Boolean(asset?.mime_type?.startsWith("image/"));
 }
@@ -62,6 +94,21 @@ export function formatAssetSize(sizeBytes: number | null | undefined) {
   }
 
   return `${size.toFixed(2)} ${units[unitIndex]}`;
+}
+
+export function validateAdminUploadFile(file: File, options: UploadValidationOptions = {}) {
+  const {
+    allowedMimeTypes = ADMIN_ALLOWED_MIME_TYPES,
+    maxFileSize = ADMIN_MAX_FILE_SIZE,
+  } = options;
+
+  if (!allowedMimeTypes.includes(file.type)) {
+    throw new Error("Tipo de arquivo não permitido. Use PDF, JPG, PNG ou WEBP.");
+  }
+
+  if (file.size > maxFileSize) {
+    throw new Error(`Arquivo muito grande. Limite de ${Math.round(maxFileSize / 1024 / 1024)}MB.`);
+  }
 }
 
 export async function getMediaAssetById(assetId: string): Promise<MediaAssetRecord | null> {
@@ -100,6 +147,12 @@ export async function adminUploadMedia(options: UploadOptions) {
     tags = [],
     status = "draft"
   } = options;
+
+  if (!ADMIN_ALLOWED_BUCKETS.includes(bucket as (typeof ADMIN_ALLOWED_BUCKETS)[number])) {
+    throw new Error("Bucket de upload não permitido.");
+  }
+
+  validateAdminUploadFile(file);
 
   // 1. Validar usuário administrador
   const { data: { user } } = await supabase.auth.getUser();
@@ -166,4 +219,114 @@ export async function adminUploadMedia(options: UploadOptions) {
   }
 
   return asset as MediaAssetRecord;
+}
+
+export async function updateMediaAssetMetadata(options: UpdateMediaAssetOptions) {
+  if (!supabase) throw new Error("Supabase não configurado.");
+
+  const {
+    assetId,
+    title,
+    description = "",
+    altText = "",
+    credit = "",
+    source = "",
+    acervoContentType = null,
+    contentCategory = null,
+    sourceDate = null,
+    sourceName = null,
+    sourceUrl = null,
+    tags = [],
+    status = "draft",
+  } = options;
+
+  const existingAsset = await getMediaAssetById(assetId);
+  if (!existingAsset) {
+    throw new Error("Asset não encontrado.");
+  }
+
+  if (status === "published" && isImageAsset(existingAsset) && !altText.trim()) {
+    throw new Error("Texto alternativo é obrigatório para imagens publicadas.");
+  }
+
+  const { data, error } = await supabase
+    .from("media_assets")
+    .update({
+      title,
+      description,
+      alt_text: altText,
+      credit,
+      source,
+      acervo_content_type: acervoContentType,
+      content_category: contentCategory,
+      source_date: sourceDate,
+      source_name: sourceName,
+      source_url: sourceUrl,
+      tags,
+      status,
+    })
+    .eq("id", assetId)
+    .select("id, bucket, path, public_url, file_name, mime_type, size_bytes, title, description, alt_text, credit, source, acervo_content_type, content_category, source_date, source_name, source_url, tags, status, created_at")
+    .single();
+
+  if (error) throw error;
+  return data as MediaAssetRecord;
+}
+
+export async function getLinkedMediaAssetIdsForContent(contentKind: ContentKind, contentId: string) {
+  if (!supabase) throw new Error("Supabase não configurado.");
+
+  if (contentKind === "acervo") {
+    const { data, error } = await supabase
+      .from("acervo_items")
+      .select("cover_asset_id, media")
+      .eq("id", contentId)
+      .maybeSingle();
+
+    if (error) throw error;
+    if (!data) return [];
+
+    const ids = new Set<string>();
+    if (typeof data.cover_asset_id === "string" && data.cover_asset_id) {
+      ids.add(data.cover_asset_id);
+    }
+    if (Array.isArray(data.media)) {
+      data.media.forEach((item: any) => {
+        if (typeof item?.id === "string" && item.id) {
+          ids.add(item.id);
+        }
+      });
+    }
+    return Array.from(ids);
+  }
+
+  if (contentKind === "blog") {
+    const { data, error } = await supabase
+      .from("blog_posts")
+      .select("cover_asset_id")
+      .eq("id", contentId)
+      .maybeSingle();
+
+    if (error) throw error;
+    if (!data?.cover_asset_id) return [];
+    return [data.cover_asset_id];
+  }
+
+  const { data, error } = await supabase
+    .from("reports")
+    .select("cover_asset_id, pdf_asset_id")
+    .eq("id", contentId)
+    .maybeSingle();
+
+  if (error) throw error;
+  if (!data) return [];
+
+  const ids = new Set<string>();
+  if (typeof data.cover_asset_id === "string" && data.cover_asset_id) {
+    ids.add(data.cover_asset_id);
+  }
+  if (typeof data.pdf_asset_id === "string" && data.pdf_asset_id) {
+    ids.add(data.pdf_asset_id);
+  }
+  return Array.from(ids);
 }

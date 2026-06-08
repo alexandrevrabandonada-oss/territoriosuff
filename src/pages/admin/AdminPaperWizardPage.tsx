@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "../../lib/supabase/client";
-import { adminUploadMedia } from "../../lib/admin/media";
+import { adminUploadMedia, validateAdminUploadFile } from "../../lib/admin/media";
 
 const RELEVANCE_LEVELS = [
   { value: "referencia central", label: "Referência Central" },
@@ -79,6 +79,9 @@ export function AdminPaperWizardPage() {
 
     setIsUploading(true);
     try {
+      validateAdminUploadFile(file, {
+        allowedMimeTypes: ["application/pdf"],
+      });
       const asset = await adminUploadMedia({
         bucket: "acervo",
         file,

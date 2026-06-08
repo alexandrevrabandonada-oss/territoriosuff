@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { Link } from "react-router-dom";
 import { supabase } from "../../lib/supabase/client";
-import { adminUploadMedia, formatAssetSize, isImageAsset, type MediaAssetRecord } from "../../lib/admin/media";
+import { ADMIN_MAX_FILE_SIZE, adminUploadMedia, formatAssetSize, isImageAsset, updateMediaAssetMetadata, validateAdminUploadFile, type MediaAssetRecord } from "../../lib/admin/media";
 
 const ACERVO_EDITORIAL_TYPES = [
   {
@@ -51,15 +51,6 @@ function getAcervoTypeLabel(type: string | null | undefined) {
   return ACERVO_EDITORIAL_TYPES.find((option) => option.value === type)?.label ?? "Outro";
 }
 
-const ALLOWED_MIME_TYPES = [
-  "application/pdf",
-  "image/jpeg",
-  "image/png",
-  "image/webp",
-];
-
-const MAX_FILE_SIZE = 15 * 1024 * 1024; // 15MB
-
 const BUCKETS = [
   { id: "acervo", label: "Acervo" },
   { id: "media", label: "Mídia Geral (fora do Acervo)" },
@@ -68,6 +59,15 @@ const BUCKETS = [
   { id: "transparency", label: "Transparência" },
 ];
 
+type AssetReference = {
+  area: "acervo" | "blog" | "relatorios" | "agenda";
+  label: string;
+  href: string;
+  role: string;
+};
+
+type AssetReferenceMap = Record<string, AssetReference[]>;
+
 export function AdminUploadsPage() {
   const [recentAssets, setRecentAssets] = useState<MediaAssetRecord[]>([]);
   const [loading, setLoading] = useState(true);
@@ -75,6 +75,9 @@ export function AdminUploadsPage() {
   const [uploadProgress, setUploadProgress] = useState(0);
   const [error, setError] = useState<string | null>(null);
   const [successAsset, setSuccessAsset] = useState<MediaAssetRecord | null>(null);
+  const [editingAssetId, setEditingAssetId] = useState<string | null>(null);
+  const [isSavingAsset, setIsSavingAsset] = useState(false);
+  const [assetReferences, setAssetReferences] = useState<AssetReferenceMap>({});
 
   // Form State
   const [file, setFile] = useState<File | null>(null);
@@ -87,6 +90,14 @@ export function AdminUploadsPage() {
   const [bucket, setBucket] = useState("acervo");
   const [acervoContentType, setAcervoContentType] = useState("artigo_cientifico");
   const [status, setStatus] = useState("draft");
+  const [assetTitle, setAssetTitle] = useState("");
+  const [assetDescription, setAssetDescription] = useState("");
+  const [assetAltText, setAssetAltText] = useState("");
+  const [assetCredit, setAssetCredit] = useState("");
+  const [assetSource, setAssetSource] = useState("");
+  const [assetTags, setAssetTags] = useState("");
+  const [assetStatus, setAssetStatus] = useState("draft");
+  const [assetAcervoType, setAssetAcervoType] = useState("artigo_cientifico");
 
   const loadRecentAssets = useCallback(async () => {
     if (!supabase) return;
@@ -105,19 +116,113 @@ export function AdminUploadsPage() {
     setLoading(false);
   }, []);
 
+  const loadAssetReferences = useCallback(async (assetIds: string[]) => {
+    if (!supabase || assetIds.length === 0) {
+      setAssetReferences({});
+      return;
+    }
+
+    const references: AssetReferenceMap = {};
+    assetIds.forEach((assetId) => {
+      references[assetId] = [];
+    });
+
+    const [{ data: acervoRows }, { data: blogRows }, { data: reportRows }, { data: eventRows }] = await Promise.all([
+      supabase.from("acervo_items").select("id, title, slug, cover_asset_id, media"),
+      supabase.from("blog_posts").select("id, title, slug, cover_asset_id"),
+      supabase.from("reports").select("id, title, slug, cover_asset_id, pdf_asset_id"),
+      supabase.from("events").select("id, title, cover_asset_id"),
+    ]);
+
+    (acervoRows || []).forEach((row: any) => {
+      if (row.cover_asset_id && references[row.cover_asset_id]) {
+        references[row.cover_asset_id].push({
+          area: "acervo",
+          label: row.title || "Item de acervo",
+          href: `/admin/acervo/${row.id}`,
+          role: "capa",
+        });
+      }
+
+      if (Array.isArray(row.media)) {
+        row.media.forEach((item: any) => {
+          const assetId = typeof item?.id === "string" ? item.id : null;
+          if (assetId && references[assetId]) {
+            references[assetId].push({
+              area: "acervo",
+              label: row.title || "Item de acervo",
+              href: `/admin/acervo/${row.id}`,
+              role: "anexo",
+            });
+          }
+        });
+      }
+    });
+
+    (blogRows || []).forEach((row: any) => {
+      if (row.cover_asset_id && references[row.cover_asset_id]) {
+        references[row.cover_asset_id].push({
+          area: "blog",
+          label: row.title || "Post do blog",
+          href: `/admin/blog/${row.id}`,
+          role: "capa",
+        });
+      }
+    });
+
+    (reportRows || []).forEach((row: any) => {
+      if (row.cover_asset_id && references[row.cover_asset_id]) {
+        references[row.cover_asset_id].push({
+          area: "relatorios",
+          label: row.title || "Relatório",
+          href: `/admin/relatorios/${row.id}`,
+          role: "capa",
+        });
+      }
+      if (row.pdf_asset_id && references[row.pdf_asset_id]) {
+        references[row.pdf_asset_id].push({
+          area: "relatorios",
+          label: row.title || "Relatório",
+          href: `/admin/relatorios/${row.id}`,
+          role: "pdf",
+        });
+      }
+    });
+
+    (eventRows || []).forEach((row: any) => {
+      if (row.cover_asset_id && references[row.cover_asset_id]) {
+        references[row.cover_asset_id].push({
+          area: "agenda",
+          label: row.title || "Evento",
+          href: `/admin/agenda/${row.id}`,
+          role: "capa",
+        });
+      }
+    });
+
+    setAssetReferences(references);
+  }, []);
+
   useEffect(() => {
     loadRecentAssets();
   }, [loadRecentAssets]);
 
+  useEffect(() => {
+    if (recentAssets.length === 0) {
+      setAssetReferences({});
+      return;
+    }
+
+    void loadAssetReferences(recentAssets.map((asset) => asset.id));
+  }, [recentAssets, loadAssetReferences]);
+
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files?.[0];
     if (selectedFile) {
-      if (!ALLOWED_MIME_TYPES.includes(selectedFile.type)) {
-        setError("Tipo de arquivo não permitido. Use PDF, JPG, PNG ou WEBP.");
-        return;
-      }
-      if (selectedFile.size > MAX_FILE_SIZE) {
-        setError("Arquivo muito grande. Limite de 15MB.");
+      try {
+        validateAdminUploadFile(selectedFile);
+      } catch (err: any) {
+        setError(err.message || "Arquivo inválido para upload.");
         return;
       }
       setFile(selectedFile);
@@ -130,6 +235,67 @@ export function AdminUploadsPage() {
   const copyToClipboard = (text: string) => {
     navigator.clipboard.writeText(text);
     alert("URL copiada!");
+  };
+
+  const startEditingAsset = (asset: MediaAssetRecord) => {
+    setEditingAssetId(asset.id);
+    setAssetTitle(asset.title || "");
+    setAssetDescription(asset.description || "");
+    setAssetAltText(asset.alt_text || "");
+    setAssetCredit(asset.credit || "");
+    setAssetSource(asset.source || "");
+    setAssetTags((asset.tags || []).join(", "));
+    setAssetStatus(asset.status || "draft");
+    setAssetAcervoType(asset.acervo_content_type || "artigo_cientifico");
+    setError(null);
+  };
+
+  const cancelEditingAsset = () => {
+    setEditingAssetId(null);
+    setAssetTitle("");
+    setAssetDescription("");
+    setAssetAltText("");
+    setAssetCredit("");
+    setAssetSource("");
+    setAssetTags("");
+    setAssetStatus("draft");
+    setAssetAcervoType("artigo_cientifico");
+  };
+
+  const handleSaveAssetMetadata = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!editingAssetId) return;
+
+    const asset = recentAssets.find((item) => item.id === editingAssetId);
+    if (!asset) return;
+
+    setIsSavingAsset(true);
+    setError(null);
+
+    try {
+      const updatedAsset = await updateMediaAssetMetadata({
+        assetId: editingAssetId,
+        title: assetTitle,
+        description: assetDescription,
+        altText: assetAltText,
+        credit: assetCredit,
+        source: assetSource,
+        acervoContentType: asset.bucket === "acervo" ? assetAcervoType : null,
+        contentCategory: asset.content_category || (asset.bucket === "acervo" ? "acervo" : asset.bucket),
+        tags: assetTags.split(",").map((tag) => tag.trim()).filter(Boolean),
+        status: assetStatus as "draft" | "published" | "archived",
+      });
+
+      setRecentAssets((current) => current.map((item) => item.id === updatedAsset.id ? updatedAsset : item));
+      if (successAsset?.id === updatedAsset.id) {
+        setSuccessAsset(updatedAsset);
+      }
+      cancelEditingAsset();
+    } catch (err: any) {
+      setError(err.message || "Falha ao salvar metadados do asset.");
+    } finally {
+      setIsSavingAsset(false);
+    }
   };
 
   const handleUpload = async (e: React.FormEvent) => {
@@ -230,7 +396,9 @@ export function AdminUploadsPage() {
                     </svg>
                   </div>
                   <p className="text-base font-bold text-slate-900">Clique ou arraste o arquivo aqui</p>
-                  <p className="text-xs text-slate-500 mt-1 uppercase font-bold tracking-widest">PDF, JPG, PNG ou WEBP • Máx 15MB</p>
+                  <p className="text-xs text-slate-500 mt-1 uppercase font-bold tracking-widest">
+                    PDF, JPG, PNG ou WEBP • Máx {Math.round(ADMIN_MAX_FILE_SIZE / 1024 / 1024)}MB
+                  </p>
                 </>
               ) : (
                 <div className="flex items-center gap-6 text-left w-full">
@@ -521,6 +689,132 @@ export function AdminUploadsPage() {
 
         {/* Recent Uploads Sidebar */}
         <div className="admin-upload-sidebar space-y-6 p-6">
+          {editingAssetId && (
+            <form onSubmit={handleSaveAssetMetadata} className="rounded-[1.75rem] border border-emerald-100 bg-white p-5 shadow-sm space-y-4">
+              <div className="flex items-start justify-between gap-3">
+                <div>
+                  <span className="admin-eyebrow">Metadados</span>
+                  <h2 className="mt-2 text-lg font-black text-slate-950">Editar asset</h2>
+                </div>
+                <button
+                  type="button"
+                  onClick={cancelEditingAsset}
+                  className="text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-slate-700"
+                >
+                  Fechar
+                </button>
+              </div>
+
+              <div>
+                <label className="block text-[10px] font-black uppercase tracking-[0.22em] text-slate-400 mb-2">Título</label>
+                <input
+                  type="text"
+                  value={assetTitle}
+                  onChange={(e) => setAssetTitle(e.target.value)}
+                  required
+                  className="w-full rounded-xl border border-slate-100 bg-slate-50 px-4 py-3 text-sm font-bold"
+                />
+              </div>
+
+              <div>
+                <label className="block text-[10px] font-black uppercase tracking-[0.22em] text-slate-400 mb-2">Descrição</label>
+                <textarea
+                  value={assetDescription}
+                  onChange={(e) => setAssetDescription(e.target.value)}
+                  className="w-full rounded-xl border border-slate-100 bg-slate-50 px-4 py-3 text-sm font-medium h-24"
+                />
+              </div>
+
+              <div>
+                <label className="block text-[10px] font-black uppercase tracking-[0.22em] text-slate-400 mb-2">Texto alternativo</label>
+                <input
+                  type="text"
+                  value={assetAltText}
+                  onChange={(e) => setAssetAltText(e.target.value)}
+                  className="w-full rounded-xl border border-slate-100 bg-slate-50 px-4 py-3 text-sm font-medium"
+                />
+              </div>
+
+              <div className="grid grid-cols-1 gap-3">
+                <div>
+                  <label className="block text-[10px] font-black uppercase tracking-[0.22em] text-slate-400 mb-2">Créditos</label>
+                  <input
+                    type="text"
+                    value={assetCredit}
+                    onChange={(e) => setAssetCredit(e.target.value)}
+                    className="w-full rounded-xl border border-slate-100 bg-slate-50 px-4 py-3 text-sm font-medium"
+                  />
+                </div>
+                <div>
+                  <label className="block text-[10px] font-black uppercase tracking-[0.22em] text-slate-400 mb-2">Fonte</label>
+                  <input
+                    type="text"
+                    value={assetSource}
+                    onChange={(e) => setAssetSource(e.target.value)}
+                    className="w-full rounded-xl border border-slate-100 bg-slate-50 px-4 py-3 text-sm font-medium"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 gap-3">
+                <div>
+                  <label className="block text-[10px] font-black uppercase tracking-[0.22em] text-slate-400 mb-2">Status</label>
+                  <select
+                    value={assetStatus}
+                    onChange={(e) => setAssetStatus(e.target.value)}
+                    className="w-full rounded-xl border border-slate-100 bg-slate-50 px-4 py-3 text-sm font-bold"
+                  >
+                    <option value="draft">Rascunho</option>
+                    <option value="published">Publicado</option>
+                    <option value="archived">Arquivado</option>
+                  </select>
+                </div>
+                {recentAssets.find((asset) => asset.id === editingAssetId)?.bucket === "acervo" && (
+                  <div>
+                    <label className="block text-[10px] font-black uppercase tracking-[0.22em] text-slate-400 mb-2">Tipo no acervo</label>
+                    <select
+                      value={assetAcervoType}
+                      onChange={(e) => setAssetAcervoType(e.target.value)}
+                      className="w-full rounded-xl border border-slate-100 bg-slate-50 px-4 py-3 text-sm font-bold"
+                    >
+                      {ACERVO_EDITORIAL_TYPES.map((option) => (
+                        <option key={option.value} value={option.value}>{option.label}</option>
+                      ))}
+                    </select>
+                  </div>
+                )}
+              </div>
+
+              <div>
+                <label className="block text-[10px] font-black uppercase tracking-[0.22em] text-slate-400 mb-2">Tags</label>
+                <input
+                  type="text"
+                  value={assetTags}
+                  onChange={(e) => setAssetTags(e.target.value)}
+                  className="w-full rounded-xl border border-slate-100 bg-slate-50 px-4 py-3 text-sm font-medium"
+                  placeholder="saude, arquivo, acervo"
+                />
+              </div>
+
+              <div className="flex gap-2">
+                <button
+                  type="submit"
+                  disabled={isSavingAsset}
+                  className="flex-1 rounded-xl bg-emerald-600 px-4 py-3 text-[10px] font-black uppercase tracking-widest text-white disabled:opacity-50"
+                >
+                  {isSavingAsset ? "Salvando..." : "Salvar metadados"}
+                </button>
+                <button
+                  type="button"
+                  onClick={cancelEditingAsset}
+                  className="rounded-xl border border-slate-200 px-4 py-3 text-[10px] font-black uppercase tracking-widest text-slate-600"
+                >
+                  Cancelar
+                </button>
+              </div>
+            </form>
+          )}
+
           <div className="flex items-center justify-between">
             <div>
               <span className="admin-eyebrow">Fila recente</span>
@@ -558,23 +852,39 @@ export function AdminUploadsPage() {
                       )}
                       <div className={`absolute bottom-1 right-1 w-3 h-3 border-2 border-white rounded-full ${asset.status === 'published' ? 'bg-emerald-500' : 'bg-amber-400'}`} title={asset.status} />
                     </div>
-                    <div className="flex-1 min-w-0">
-                      <p className="text-sm font-black text-slate-900 truncate">{asset.title}</p>
-                      <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">
-                        {asset.mime_type.split("/")[1]} • {formatAssetSize(asset.size_bytes)}
-                      </p>
-                      {asset.bucket === "acervo" && asset.acervo_content_type && (
-                        <p className="mt-1 text-[10px] font-black uppercase tracking-widest text-emerald-600">
-                          {getAcervoTypeLabel(asset.acervo_content_type)}
-                        </p>
+	                  <div className="flex-1 min-w-0">
+	                      <p className="text-sm font-black text-slate-900 truncate">{asset.title}</p>
+	                      <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">
+	                        {asset.mime_type.split("/")[1]} • {formatAssetSize(asset.size_bytes)}
+	                      </p>
+                      {isImageAsset(asset) && !asset.alt_text?.trim() && (
+                        <p className="mt-1 text-[10px] font-black uppercase tracking-widest text-rose-500">Sem alt_text</p>
                       )}
-                    </div>
-                  </div>
+	                      {asset.bucket === "acervo" && asset.acervo_content_type && (
+	                        <p className="mt-1 text-[10px] font-black uppercase tracking-widest text-emerald-600">
+	                          {getAcervoTypeLabel(asset.acervo_content_type)}
+	                        </p>
+	                      )}
+                        {(assetReferences[asset.id]?.length || 0) === 0 ? (
+                          <p className="mt-1 text-[10px] font-black uppercase tracking-widest text-amber-600">Asset órfão</p>
+                        ) : (
+                          <p className="mt-1 text-[10px] font-black uppercase tracking-widest text-sky-600">
+                            Em uso: {assetReferences[asset.id].length}
+                          </p>
+                        )}
+	                    </div>
+	                  </div>
                   
-                  <div className="grid grid-cols-2 gap-2 mb-3">
-                    <button 
-                      onClick={() => copyToClipboard(asset.public_url)}
-                      className="py-2 bg-slate-50 hover:bg-slate-100 text-[9px] font-black text-slate-600 uppercase tracking-widest rounded-lg transition-all"
+	                  <div className="grid grid-cols-3 gap-2 mb-3">
+	                    <button
+                        onClick={() => startEditingAsset(asset)}
+                        className="py-2 bg-slate-50 hover:bg-slate-100 text-[9px] font-black text-slate-600 uppercase tracking-widest rounded-lg transition-all"
+                      >
+                        Editar
+                      </button>
+	                    <button 
+	                      onClick={() => copyToClipboard(asset.public_url)}
+	                      className="py-2 bg-slate-50 hover:bg-slate-100 text-[9px] font-black text-slate-600 uppercase tracking-widest rounded-lg transition-all"
                     >
                       Copiar URL
                     </button>
@@ -588,9 +898,9 @@ export function AdminUploadsPage() {
                     </a>
                   </div>
 
-                  <div className="pt-3 border-t border-slate-50 flex items-center justify-between gap-1">
-                    <p className="text-[8px] font-black text-slate-300 uppercase tracking-widest">Usar em:</p>
-                    <div className="flex items-center gap-1">
+	                  <div className="pt-3 border-t border-slate-50 flex items-center justify-between gap-1">
+	                    <p className="text-[8px] font-black text-slate-300 uppercase tracking-widest">Usar em:</p>
+	                    <div className="flex items-center gap-1">
                       <Link to={buildAcervoLink(asset.id, asset.acervo_content_type || "outro")} className="p-1.5 bg-slate-50 hover:bg-emerald-50 text-slate-400 hover:text-emerald-600 rounded-lg transition-all" title="Acervo">
                         📚
                       </Link>
@@ -600,10 +910,27 @@ export function AdminUploadsPage() {
                       <Link to={`/admin/blog/novo?assetId=${asset.id}`} className="p-1.5 bg-slate-50 hover:bg-emerald-50 text-slate-400 hover:text-emerald-600 rounded-lg transition-all" title="Blog">
                         ✍️
                       </Link>
-                    </div>
-                  </div>
-                </div>
-              ))
+	                    </div>
+	                  </div>
+
+                    {(assetReferences[asset.id]?.length || 0) > 0 && (
+                      <div className="mt-3 border-t border-slate-50 pt-3">
+                        <p className="text-[8px] font-black uppercase tracking-widest text-slate-300 mb-2">Referências</p>
+                        <div className="space-y-1">
+                          {assetReferences[asset.id].slice(0, 3).map((reference, index) => (
+                            <Link
+                              key={`${asset.id}-${reference.area}-${reference.role}-${index}`}
+                              to={reference.href}
+                              className="block rounded-lg bg-slate-50 px-3 py-2 text-[10px] font-bold text-slate-600 transition-all hover:bg-slate-100"
+                            >
+                              <span className="uppercase text-slate-400">{reference.area}</span> • {reference.role} • {reference.label}
+                            </Link>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+	                </div>
+	              ))
             )}
           </div>
         </div>

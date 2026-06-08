@@ -1,7 +1,7 @@
 import { useEffect, useState, useCallback } from "react";
 import { useNavigate, useParams, Link, useLocation } from "react-router-dom";
 import { supabase } from "../../lib/supabase/client";
-import { adminUploadMedia, formatAssetSize, getMediaAssetById, isImageAsset, type MediaAssetRecord } from "../../lib/admin/media";
+import { adminUploadMedia, formatAssetSize, getMediaAssetById, isImageAsset, validateAdminUploadFile, type MediaAssetRecord } from "../../lib/admin/media";
 
 const TYPES = [
   { value: "artigo_cientifico", label: "Artigo Científico" },
@@ -110,7 +110,7 @@ export function AdminAcervoEditPage() {
     if (!supabase) return;
     setLoading(true);
 
-    const [{ data: colls }, { data: assets }] = await Promise.all([
+      const [{ data: colls }, { data: assets }] = await Promise.all([
       supabase.from("acervo_collections").select("id, title").order("title"),
       supabase.from("media_assets")
         .select("id, bucket, path, title, file_name, public_url, mime_type, size_bytes, alt_text, status, created_at")
@@ -122,14 +122,14 @@ export function AdminAcervoEditPage() {
     setCollections(colls || []);
     setRecentAssets(assets || []);
 
-    if (isNew && assetIdFromUrl) {
-      const asset = await getMediaAssetById(assetIdFromUrl);
-      if (asset) {
-        if (!title) setTitle(asset.title);
+      if (isNew && assetIdFromUrl) {
+        const asset = await getMediaAssetById(assetIdFromUrl);
+        if (asset) {
+        setTitle((current) => current || asset.title);
         setType(normalizeAcervoType(typeFromUrl, asset));
-        if (!sourceName && asset.source_name) setSourceName(asset.source_name);
-        if (!sourceUrl && asset.source_url) setSourceUrl(asset.source_url);
-        if (!publishedAt && asset.source_date) setPublishedAt(asset.source_date);
+        if (asset.source_name) setSourceName((current) => current || asset.source_name || "");
+        if (asset.source_url) setSourceUrl((current) => current || asset.source_url || "");
+        if (asset.source_date) setPublishedAt((current) => current || asset.source_date || "");
         addMediaAsset(asset);
         if (isImageAsset(asset)) {
           setCoverAssetId(asset.id);
@@ -139,7 +139,7 @@ export function AdminAcervoEditPage() {
       setType(normalizeAcervoType(typeFromUrl));
     }
 
-    if (!isNew && loading) { // Only load item once
+    if (!isNew) {
       const { data, error } = await supabase.from("acervo_items").select("*").eq("id", id).single();
       if (error) {
         alert("Erro ao carregar item: " + error.message);
@@ -167,7 +167,7 @@ export function AdminAcervoEditPage() {
       }
     }
     setLoading(false);
-  }, [id, isNew, navigate, assetSearch, assetIdFromUrl, typeFromUrl, title, sourceName, sourceUrl, publishedAt]);
+  }, [id, isNew, navigate, assetSearch, assetIdFromUrl, typeFromUrl]);
 
   useEffect(() => {
     loadData();
@@ -305,6 +305,7 @@ export function AdminAcervoEditPage() {
 
     setIsUploading(true);
     try {
+      validateAdminUploadFile(file);
       const asset = await adminUploadMedia({
         bucket: "acervo",
         file,
@@ -742,7 +743,7 @@ export function AdminAcervoEditPage() {
               <h2 className="text-xl font-black text-slate-900">Anexos & Mídias</h2>
               <label className={`cursor-pointer px-4 py-2 bg-emerald-50 text-emerald-700 rounded-xl font-black text-xs border border-emerald-100 hover:bg-emerald-100 transition-all ${isUploading ? 'opacity-50' : ''}`}>
                 {isUploading ? "Enviando..." : "+ Novo Upload"}
-                <input type="file" className="hidden" onChange={handleQuickUpload} disabled={isUploading} />
+                <input type="file" className="hidden" accept=".pdf,image/jpeg,image/png,image/webp" onChange={handleQuickUpload} disabled={isUploading} />
               </label>
             </div>
 

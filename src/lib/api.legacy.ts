@@ -521,6 +521,7 @@ function rowToBlogPost(row: Record<string, unknown>): BlogPost {
     excerpt: typeof row.summary === "string" ? row.summary : null,
     content_md: typeof row.content_md === "string" ? row.content_md : null,
     cover_url: typeof row.cover_url === "string" ? row.cover_url : null,
+    cover_asset_id: typeof row.cover_asset_id === "string" ? row.cover_asset_id : null,
     cover_thumb_url: typeof row.cover_thumb_url === "string" ? row.cover_thumb_url : null,
     cover_small_url: typeof row.cover_small_url === "string" ? row.cover_small_url : null,
     tags: Array.isArray(row.tags) ? (row.tags as string[]) : [],
@@ -531,6 +532,56 @@ function rowToBlogPost(row: Record<string, unknown>): BlogPost {
     category: typeof row.category === "string" ? row.category : null,
     author_name: typeof row.author_name === "string" ? row.author_name : null
   };
+}
+
+async function hydrateBlogPostAssets(post: BlogPost): Promise<BlogPost> {
+  if (!post.cover_asset_id) return post;
+
+  const supabase = assertSupabase();
+  const { data, error } = await supabase
+    .from("media_assets")
+    .select("id, public_url")
+    .eq("id", post.cover_asset_id)
+    .maybeSingle();
+
+  if (error) throw error;
+
+  if (!data?.public_url) return post;
+
+  return {
+    ...post,
+    cover_url: data.public_url,
+  };
+}
+
+async function hydrateBlogPostListAssets(posts: BlogPost[]): Promise<BlogPost[]> {
+  const assetIds = Array.from(new Set(
+    posts
+      .filter((post) => post.cover_asset_id && !post.cover_url)
+      .map((post) => post.cover_asset_id as string)
+  ));
+
+  if (assetIds.length === 0) return posts;
+
+  const supabase = assertSupabase();
+  const { data, error } = await supabase
+    .from("media_assets")
+    .select("id, public_url")
+    .in("id", assetIds);
+
+  if (error) throw error;
+
+  const assetUrlById = new Map<string, string>();
+  (data || []).forEach((asset: any) => {
+    if (typeof asset?.id === "string" && typeof asset?.public_url === "string") {
+      assetUrlById.set(asset.id, asset.public_url);
+    }
+  });
+
+  return posts.map((post) => ({
+    ...post,
+    cover_url: post.cover_asset_id ? (assetUrlById.get(post.cover_asset_id) || post.cover_url) : post.cover_url,
+  }));
 }
 
 export async function listBlogPosts(params: ListBlogParams = {}): Promise<BlogPost[]> {
@@ -552,10 +603,11 @@ export async function listBlogPosts(params: ListBlogParams = {}): Promise<BlogPo
 
     const { data, error } = await query;
     if (error) throw error;
-    return ((data ?? []) as Record<string, unknown>[])
+    const posts = ((data ?? []) as Record<string, unknown>[])
       .filter((row) => !isDemoRecord(row))
       .map(rowToBlogPost)
       .filter((post) => isPublishTimeReached(post.publish_at));
+    return hydrateBlogPostListAssets(posts);
   } catch (error) {
     throw toAppError("Falha ao listar posts do blog", error);
   }
@@ -575,7 +627,7 @@ export async function getBlogPostBySlug(slug: string): Promise<BlogPost | null> 
     if (isDemoRecord(data as Record<string, unknown>)) return null;
     const post = rowToBlogPost(data as Record<string, unknown>);
     if (!isPublishTimeReached(post.publish_at)) return null;
-    return post;
+    return hydrateBlogPostAssets(post);
   } catch (error) {
     throw toAppError("Falha ao carregar post do blog", error);
   }
@@ -597,7 +649,9 @@ export type ReportDocument = {
   kind: ReportKind;
   featured: boolean;
   pdf_url: string | null;
+  pdf_asset_id?: string | null;
   cover_url: string | null;
+  cover_asset_id?: string | null;
   cover_thumb_url: string | null;
   tags: string[];
   created_at: string;
@@ -632,11 +686,76 @@ function rowToReportDocument(row: Record<string, unknown>): ReportDocument {
     kind,
     featured: Boolean(row.featured),
     pdf_url: typeof row.pdf_url === "string" ? row.pdf_url : null,
+    pdf_asset_id: typeof row.pdf_asset_id === "string" ? row.pdf_asset_id : null,
     cover_url: typeof row.cover_url === "string" ? row.cover_url : null,
+    cover_asset_id: typeof row.cover_asset_id === "string" ? row.cover_asset_id : null,
     cover_thumb_url: typeof row.cover_thumb_url === "string" ? row.cover_thumb_url : null,
     tags: Array.isArray(row.tags) ? (row.tags as string[]) : [],
     created_at: typeof row.created_at === "string" ? row.created_at : ""
   };
+}
+
+async function hydrateReportDocumentAssets(report: ReportDocument): Promise<ReportDocument> {
+  const needsPdf = Boolean(report.pdf_asset_id);
+  const needsCover = Boolean(report.cover_asset_id);
+
+  if (!needsPdf && !needsCover) return report;
+
+  const supabase = assertSupabase();
+  const assetIds = [report.pdf_asset_id, report.cover_asset_id].filter((value): value is string => Boolean(value));
+  const { data, error } = await supabase
+    .from("media_assets")
+    .select("id, public_url")
+    .in("id", assetIds);
+
+  if (error) throw error;
+
+  const assetUrlById = new Map<string, string>();
+  (data || []).forEach((asset: any) => {
+    if (typeof asset?.id === "string" && typeof asset?.public_url === "string") {
+      assetUrlById.set(asset.id, asset.public_url);
+    }
+  });
+
+  return {
+    ...report,
+    pdf_url: report.pdf_asset_id ? (assetUrlById.get(report.pdf_asset_id) || report.pdf_url) : report.pdf_url,
+    cover_url: report.cover_asset_id ? (assetUrlById.get(report.cover_asset_id) || report.cover_url) : report.cover_url,
+  };
+}
+
+async function hydrateReportDocumentListAssets(reports: ReportDocument[]): Promise<ReportDocument[]> {
+  const assetIds = Array.from(new Set(
+    reports.flatMap((report) => {
+      const ids: string[] = [];
+      if (report.cover_asset_id && !report.cover_url) ids.push(report.cover_asset_id);
+      if (report.pdf_asset_id && !report.pdf_url) ids.push(report.pdf_asset_id);
+      return ids;
+    })
+  ));
+
+  if (assetIds.length === 0) return reports;
+
+  const supabase = assertSupabase();
+  const { data, error } = await supabase
+    .from("media_assets")
+    .select("id, public_url")
+    .in("id", assetIds);
+
+  if (error) throw error;
+
+  const assetUrlById = new Map<string, string>();
+  (data || []).forEach((asset: any) => {
+    if (typeof asset?.id === "string" && typeof asset?.public_url === "string") {
+      assetUrlById.set(asset.id, asset.public_url);
+    }
+  });
+
+  return reports.map((report) => ({
+    ...report,
+    pdf_url: report.pdf_asset_id ? (assetUrlById.get(report.pdf_asset_id) || report.pdf_url) : report.pdf_url,
+    cover_url: report.cover_asset_id ? (assetUrlById.get(report.cover_asset_id) || report.cover_url) : report.cover_url,
+  }));
 }
 
 export async function listReports(params: ListReportsParams = {}): Promise<ReportDocument[]> {
@@ -664,9 +783,10 @@ export async function listReports(params: ListReportsParams = {}): Promise<Repor
 
     const { data, error } = await query;
     if (error) throw error;
-    return ((data || []) as Record<string, unknown>[])
+    const reports = ((data || []) as Record<string, unknown>[])
       .map(rowToReportDocument)
       .filter((report) => !kind || report.kind === kind);
+    return hydrateReportDocumentListAssets(reports);
   } catch (error) {
     throw toAppError("Falha ao listar relatorios", error);
   }
@@ -687,7 +807,8 @@ export async function getReportBySlug(slug: string): Promise<ReportDocument | nu
       .maybeSingle();
     if (error) throw error;
     if (!data) return null;
-    return rowToReportDocument(data as Record<string, unknown>);
+    const report = rowToReportDocument(data as Record<string, unknown>);
+    return hydrateReportDocumentAssets(report);
   } catch (error) {
     throw toAppError("Falha ao carregar relatorio", error);
   }

@@ -1,7 +1,7 @@
 import { useEffect, useState, useCallback } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { supabase } from "../../lib/supabase/client";
-import { adminUploadMedia } from "../../lib/admin/media";
+import { adminUploadMedia, validateAdminUploadFile } from "../../lib/admin/media";
 
 const STATUSES = [
   { value: "draft", label: "Rascunho" },
@@ -77,6 +77,9 @@ export function AdminAgendaEditPage() {
 
     setIsUploading(true);
     try {
+      validateAdminUploadFile(file, {
+        allowedMimeTypes: ["image/jpeg", "image/png", "image/webp"],
+      });
       const asset = await adminUploadMedia({
         bucket: "media",
         file,

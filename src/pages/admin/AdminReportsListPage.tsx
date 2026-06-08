@@ -1,6 +1,7 @@
 import { useEffect, useState, useCallback } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { supabase } from "../../lib/supabase/client";
+import { getLinkedMediaAssetIdsForContent } from "../../lib/admin/media";
 
 interface Report {
   id: string;
@@ -96,7 +97,15 @@ export function AdminReportsListPage() {
   };
 
   const handleDelete = async (id: string) => {
-    if (!supabase || !confirm("Tem certeza que deseja excluir este relatório?")) return;
+    if (!supabase) return;
+
+    const linkedAssetIds = await getLinkedMediaAssetIdsForContent("reports", id);
+    if (linkedAssetIds.length > 0) {
+      alert(`Exclusão bloqueada: este relatório possui ${linkedAssetIds.length} asset(s) vinculado(s). Revise PDF/capa antes de excluir o registro.`);
+      return;
+    }
+
+    if (!confirm("Tem certeza que deseja excluir este relatório?")) return;
     
     const { error } = await supabase.from("reports").delete().eq("id", id);
     if (error) {

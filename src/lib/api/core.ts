@@ -145,6 +145,7 @@ export type BlogPost = {
   excerpt: string | null;
   content_md: string | null;
   cover_url: string | null;
+  cover_asset_id?: string | null;
   cover_thumb_url: string | null;
   cover_small_url: string | null;
   tags: string[];
@@ -176,7 +177,9 @@ export type ReportDocument = {
   kind: ReportKind;
   featured: boolean;
   pdf_url: string | null;
+  pdf_asset_id?: string | null;
   cover_url: string | null;
+  cover_asset_id?: string | null;
   cover_thumb_url: string | null;
   tags: string[];
   created_at: string;
@@ -415,4 +418,3 @@ export function normalizeOpsKpi(raw?: Partial<OpsKPI> | null): OpsKPI {
     scheduled_content_items_count: toSafeNumber(raw?.scheduled_content_items_count)
   };
 }
-
