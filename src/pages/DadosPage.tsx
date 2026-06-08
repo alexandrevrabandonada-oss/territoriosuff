@@ -7,6 +7,7 @@ import { LoadingCard } from "../components/LoadingCard";
 import { OfflineBanner } from "../components/OfflineBanner";
 import { EmptyState } from "../components/EmptyState";
 import { TextToSpeechButton } from "../components/TextToSpeechButton";
+import { PortalPageShell, PortalSectionHeader } from "../components/portal";
 import type { DownsampledMeasurement, StationOverview, StationHealth } from "../lib/api";
 import { classifyOmsPollutant } from "../lib/airQuality";
 import { trackCsvDownload } from "../lib/observability";
@@ -662,7 +663,7 @@ export function DadosPage() {
   };
 
   return (
-    <section className="data-dashboard space-y-8 md:space-y-10">
+    <PortalPageShell className="data-dashboard">
       {!isOnline && (
         <div className="data-alert">
           <OfflineBanner
@@ -673,6 +674,11 @@ export function DadosPage() {
       )}
 
       {/* Abas de Navegação de Dados */}
+      <PortalSectionHeader
+        eyebrow={<span className="badge-dados-abertos">Catálogo público de dados</span>}
+        title="Dados abertos para ação pública"
+        subtitle="Use os atalhos abaixo para navegar entre leituras da rede SEMEAR, base oficial do INEA e análises consolidadas."
+      />
       <div className="grid gap-4 md:grid-cols-3">
         <div className="p-5 bg-white border-2 border-brand-primary rounded-2xl shadow-sm transition-all">
           <strong className="text-sm font-black text-brand-primary block">Dados ao vivo SEMEAR</strong>
@@ -745,7 +751,7 @@ export function DadosPage() {
           <p className="text-sm text-slate-300 font-medium leading-relaxed">
             Explore a linha do tempo 2022–2024 e veja os meses, estações e poluentes com mais eventos de atenção.
           </p>
-          <p className="text-[10px] text-slate-450">
+          <p className="text-[10px] text-slate-400">
             * Dado horário público WebLakes — comparação experimental — sem QA/QC oficial explícito.
           </p>
         </div>
@@ -1697,6 +1703,6 @@ export function DadosPage() {
           {error}
         </p>
       ) : null}
-    </section>
+    </PortalPageShell>
   );
 }

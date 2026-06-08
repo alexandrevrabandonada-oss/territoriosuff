@@ -1,6 +1,7 @@
 import { useEffect, useState, useRef, useCallback } from "react";
 import { Link } from "react-router-dom";
 import { IconShell, SurfaceCard } from "../../components/BrandSystem";
+import { PortalEmptyState, PortalHero, PortalPageShell, PortalSectionHeader } from "../../components/portal";
 import { InstagramEmbed } from "../../components/InstagramEmbed";
 import { Conversation, listConversations, createEnvironmentalReport } from "../../lib/api";
 import { supabase } from "../../lib/supabase/client";
@@ -50,40 +51,80 @@ export function ConversarListPage() {
     const conversationTopics = conversations.filter((item) => item.meta?.kind !== "activity");
 
     return (
-        <section className="portal-stage space-y-8 md:space-y-10">
-            <SurfaceCard className="portal-stage-hero portal-stage-hero-seed overflow-hidden p-0">
-                <div className="portal-stage-hero-inner">
-                    <div className="portal-stage-copy">
-                        <IconShell tone="seed" className="portal-stage-icon">
-                            <span aria-hidden="true">💬</span>
-                        </IconShell>
-                        <h1>Conversas e atividades</h1>
-                        <p>
-                            Registros de atividades, publicações do Instagram, rodas de conversa e feedback público para transformar leitura ambiental em escuta e ação coletiva.
-                        </p>
+        <PortalPageShell>
+            <PortalHero
+                tone="seed"
+                badge={<span className="badge-dados-abertos">Mobilização e escuta pública</span>}
+                title="Conversas e atividades"
+                subtitle="Registros de atividades, publicações do Instagram, rodas de conversa e feedback público para transformar leitura ambiental em escuta e ação coletiva."
+                metrics={
+                    <>
+                        <div className="rounded-2xl border border-white/10 bg-white/10 p-4 text-white">
+                            <div className="text-[10px] font-black uppercase tracking-[0.16em] text-white/70">Registros ativos</div>
+                            <div className="mt-2 text-3xl font-black">{activities.length + conversationTopics.length}</div>
+                        </div>
+                        <div className="rounded-2xl border border-white/10 bg-white/10 p-4 text-white">
+                            <div className="text-[10px] font-black uppercase tracking-[0.16em] text-white/70">Atividades em campo</div>
+                            <div className="mt-2 text-3xl font-black">{activities.length}</div>
+                        </div>
+                        <div className="rounded-2xl border border-white/10 bg-white/10 p-4 text-white">
+                            <div className="text-[10px] font-black uppercase tracking-[0.16em] text-white/70">Escuta pública</div>
+                            <div className="mt-2 text-3xl font-black">{conversationTopics.length}</div>
+                        </div>
+                    </>
+                }
+                aside={
+                    <div className="rounded-[1.8rem] border border-white/10 bg-white/10 p-5 text-white backdrop-blur-sm">
+                        <div className="flex items-center gap-3">
+                            <IconShell tone="seed" className="portal-stage-icon">
+                                <span aria-hidden="true">💬</span>
+                            </IconShell>
+                            <div>
+                                <div className="text-[10px] font-black uppercase tracking-[0.16em] text-white/70">Espaço de mobilização</div>
+                                <div className="mt-1 text-base font-black">Território, memória de campo e participação pública no mesmo fluxo.</div>
+                            </div>
+                        </div>
                     </div>
-                    <div className="portal-stage-stat">
-                        <span>{activities.length + conversationTopics.length}</span>
-                        <small>registro(s) ativo(s)</small>
-                    </div>
-                </div>
-            </SurfaceCard>
+                }
+            />
 
             {/* Seção de Relato Ambiental */}
             <EnvironmentalReportSection />
 
             {conversations.length === 0 ? (
-                <SurfaceCard className="portal-list-panel py-20 text-center">
-                    <p className="text-text-secondary">Nenhuma conversa ou atividade publicada no momento.</p>
-                </SurfaceCard>
+                <PortalEmptyState
+                    title="Nenhuma conversa ou atividade publicada no momento"
+                    description="Enquanto novos registros não entram, você pode enviar um relato ambiental, consultar a agenda pública ou explorar os relatórios e dados do portal."
+                    actions={
+                        <>
+                            <button onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })} className="rounded-2xl border border-emerald-200 bg-emerald-50 p-4 text-left transition-colors hover:bg-emerald-100">
+                                <div className="text-[10px] font-black uppercase tracking-[0.16em] text-emerald-700">Relatar</div>
+                                <div className="mt-2 text-sm font-black text-emerald-950">Abrir formulário ambiental</div>
+                            </button>
+                            <Link to="/agenda" className="rounded-2xl border border-slate-200 bg-white p-4 text-left transition-colors hover:bg-slate-50">
+                                <div className="text-[10px] font-black uppercase tracking-[0.16em] text-slate-500">Participar</div>
+                                <div className="mt-2 text-sm font-black text-slate-900">Ver agenda pública</div>
+                            </Link>
+                            <Link to="/relatorios" className="rounded-2xl border border-amber-200 bg-amber-50 p-4 text-left transition-colors hover:bg-amber-100">
+                                <div className="text-[10px] font-black uppercase tracking-[0.16em] text-amber-700">Evidências</div>
+                                <div className="mt-2 text-sm font-black text-amber-950">Ler relatórios e boletins</div>
+                            </Link>
+                            <Link to="/dados" className="rounded-2xl border border-cyan-200 bg-cyan-50 p-4 text-left transition-colors hover:bg-cyan-100">
+                                <div className="text-[10px] font-black uppercase tracking-[0.16em] text-cyan-700">Dados</div>
+                                <div className="mt-2 text-sm font-black text-cyan-950">Abrir painel público</div>
+                            </Link>
+                        </>
+                    }
+                />
             ) : (
                 <div className="space-y-10">
                     {activities.length > 0 && (
                         <section className="space-y-5" aria-labelledby="atividades-title">
-                            <div>
-                                <p className="text-xs font-black uppercase tracking-[0.2em] text-brand-primary">Atividades em campo</p>
-                                <h2 id="atividades-title" className="mt-2 text-3xl font-black tracking-tight text-text-primary">Registros recentes</h2>
-                            </div>
+                            <PortalSectionHeader
+                                eyebrow={<span className="badge-dados-abertos">Atividades em campo</span>}
+                                title={<span id="atividades-title">Registros recentes</span>}
+                                subtitle="Publicações e memórias de presença territorial que transformam dados em ação e escuta comunitária."
+                            />
                             <div className="activity-grid">
                                 {activities.map((activity) => (
                                     <article key={activity.id} className="activity-card">
@@ -108,10 +149,11 @@ export function ConversarListPage() {
 
                     {conversationTopics.length > 0 && (
                         <section className="space-y-5" aria-labelledby="conversas-title">
-                            <div>
-                                <p className="text-xs font-black uppercase tracking-[0.2em] text-brand-primary">Escuta pública</p>
-                                <h2 id="conversas-title" className="mt-2 text-3xl font-black tracking-tight text-text-primary">Rodas de conversa</h2>
-                            </div>
+                            <PortalSectionHeader
+                                eyebrow={<span className="badge-metodologia">Escuta pública</span>}
+                                title={<span id="conversas-title">Rodas de conversa</span>}
+                                subtitle="Temas, registros e chamados para participação social no território."
+                            />
                             <div className="portal-thread-list">
                                 {conversationTopics.map((c) => (
                                     <Link
@@ -133,7 +175,7 @@ export function ConversarListPage() {
                     )}
                 </div>
             )}
-        </section>
+        </PortalPageShell>
     );
 }
 

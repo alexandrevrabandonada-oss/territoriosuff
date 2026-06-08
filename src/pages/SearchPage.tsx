@@ -4,6 +4,7 @@ import { Link, useSearchParams } from "react-router-dom";
 import { EmptyState } from "../components/EmptyState";
 import { ErrorState } from "../components/ErrorState";
 import { SurfaceCard } from "../components/BrandSystem";
+import { PortalHero, PortalPageShell, PortalSectionHeader } from "../components/portal";
 import { SkeletonCard } from "../components/SkeletonCard";
 import {
   searchAcervo,
@@ -182,15 +183,28 @@ export function SearchPage() {
   };
 
   return (
-    <section className="portal-stage search-stage space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700 md:space-y-10">
-      <SurfaceCard className="portal-search-hero p-5 md:p-7">
-        <div>
-          <h1 className="text-4xl font-black tracking-[-0.055em] text-text-primary md:text-6xl">Busca no Portal</h1>
-          <p className="mt-2 max-w-2xl text-base leading-relaxed text-text-secondary">
-            Encontre dados, acervo, blog, relatórios, transparência e agenda em uma busca única e acessível.
-          </p>
-        </div>
+    <PortalPageShell className="search-stage animate-in fade-in slide-in-from-bottom-4 duration-700">
+      <PortalHero
+        badge={<span className="badge-dados-abertos">Navegação transversal</span>}
+        title="Busca no Portal"
+        subtitle="Encontre dados, acervo, blog, relatórios, transparência e agenda em uma busca única e acessível."
+        metrics={
+          <>
+          <div className="portal-kpi-card">
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-text-secondary">Escopo</p>
+            <p className="mt-2 text-3xl font-black text-brand-primary">6</p>
+            <p className="mt-1 text-sm text-text-secondary">frentes pesquisáveis</p>
+          </div>
+          <div className="portal-kpi-card">
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-text-secondary">Modo</p>
+            <p className="mt-2 text-2xl font-black text-text-primary">Busca única</p>
+            <p className="mt-1 text-sm text-text-secondary">conteúdo editorial, dados e documentos</p>
+          </div>
+          </>
+        }
+      />
 
+      <SurfaceCard className="portal-search-hero p-5 md:p-7">
         <div className="relative group">
           <label htmlFor="global-search" className="sr-only">Buscar no portal SEMEAR</label>
           <input
@@ -265,9 +279,16 @@ export function SearchPage() {
         <div className="portal-results space-y-12 pb-20">
           {results.mixed.length > 0 && (
             <section aria-labelledby="main-results-heading">
-              <h2 id="main-results-heading" className="mb-4 flex items-center gap-2 text-base font-black uppercase tracking-wider text-brand-primary">
-                Resultados principais <span className="rounded-full bg-brand-primary/10 px-2 py-1 text-xs text-brand-primary">{results.mixed.length}</span>
-              </h2>
+              <PortalSectionHeader
+                eyebrow="Leitura inicial"
+                title="Resultados principais"
+                subtitle="Abertura editorial da busca, com os itens mais relevantes para começar a leitura."
+              />
+              <h2 id="main-results-heading" className="sr-only">Resultados principais</h2>
+              <div className="mb-4 flex items-center gap-2 text-base font-black uppercase tracking-wider text-brand-primary">
+                <span>Itens encontrados</span>
+                <span className="rounded-full bg-brand-primary/10 px-2 py-1 text-xs text-brand-primary">{results.mixed.length}</span>
+              </div>
               <div className="grid gap-5 md:grid-cols-2">
                 {results.mixed.map((item) => {
                   const matchedReport = item.kind === "report"
@@ -296,6 +317,11 @@ export function SearchPage() {
 
           {results.reports.length > 0 && (
             <div className="space-y-4">
+              <PortalSectionHeader
+                eyebrow="Biblioteca pública"
+                title="Relatórios"
+                subtitle="Notas técnicas, relatórios e boletins relacionados ao termo pesquisado."
+              />
               <h2 className="flex items-center gap-2 text-xs font-black uppercase tracking-[0.3em] text-cta">
                 Relatórios <span className="rounded-full bg-cta/10 px-2 py-0.5 text-[10px] text-cta">{results.reports.length}</span>
               </h2>
@@ -317,6 +343,11 @@ export function SearchPage() {
 
           {results.acervo.length > 0 && (
             <div className="space-y-4">
+              <PortalSectionHeader
+                eyebrow="Memória"
+                title="Acervo"
+                subtitle="Itens históricos, documentos e registros relacionados ao tema."
+              />
               <h2 className="text-xs font-black uppercase tracking-[0.3em] text-cta">Acervo</h2>
               <div className="grid gap-5 md:grid-cols-2">
                 {results.acervo.map((item) => (
@@ -331,6 +362,11 @@ export function SearchPage() {
 
           {results.blog.length > 0 && (
             <div className="space-y-4">
+              <PortalSectionHeader
+                eyebrow="Leitura pública"
+                title="Blog"
+                subtitle="Textos editoriais e publicações recentes associados à busca."
+              />
               <h2 className="text-xs font-black uppercase tracking-[0.3em] text-cta">Blog</h2>
               <div className="grid gap-5 md:grid-cols-2">
                 {results.blog.map((post) => (
@@ -345,6 +381,11 @@ export function SearchPage() {
 
           {results.events.length > 0 && (
             <div className="space-y-4">
+              <PortalSectionHeader
+                eyebrow="Mobilização"
+                title="Agenda"
+                subtitle="Eventos, encontros e atividades públicas relacionados ao tema."
+              />
               <h2 className="text-xs font-black uppercase tracking-[0.3em] text-cta">Agenda</h2>
               <div className="grid gap-5 md:grid-cols-2">
                 {results.events.map((event) => (
@@ -358,6 +399,11 @@ export function SearchPage() {
 
           {results.transparency.length > 0 && (
             <div className="space-y-4">
+              <PortalSectionHeader
+                eyebrow="Prestação de contas"
+                title="Transparência"
+                subtitle="Lançamentos financeiros e registros públicos associados ao termo pesquisado."
+              />
               <h2 className="text-xs font-black uppercase tracking-[0.3em] text-cta">Transparência</h2>
               <div className="grid gap-5 md:grid-cols-2">
                 {results.transparency.map((expense) => (
@@ -374,7 +420,7 @@ export function SearchPage() {
           )}
         </div>
       )}
-    </section>
+    </PortalPageShell>
   );
 }
 

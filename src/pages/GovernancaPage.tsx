@@ -4,6 +4,7 @@ import changelogRaw from "../../data/changelog.md?raw";
 import { INSTITUTIONAL_CITATION, INSTITUTIONAL_COORDINATION, INSTITUTIONAL_FUNDING, INSTITUTIONAL_SUMMARY, INSTITUTIONAL_TAGLINE } from "../content/institucional";
 import { IconShell, SurfaceCard } from "../components/BrandSystem";
 import { BrandRadialDivider, BrandWatermarkPanel } from "../components/BrandMicro";
+import { PortalPageShell, PortalSectionHeader } from "../components/portal";
 
 function getLatestChangelogEntries(markdown: string, limit = 10): string[] {
   return markdown
@@ -26,7 +27,7 @@ const governanceLinks = [
 
 export function GovernancaPage() {
   return (
-    <section className="portal-stage space-y-8 md:space-y-10">
+    <PortalPageShell>
       <SurfaceCard className="portal-stage-hero portal-stage-hero-lab overflow-hidden p-0">
         <div className="portal-stage-hero-inner">
           <div className="portal-stage-copy">
@@ -46,6 +47,11 @@ export function GovernancaPage() {
       </SurfaceCard>
 
       <SurfaceCard className="portal-list-panel p-6">
+        <PortalSectionHeader
+          eyebrow={<span className="badge-dados-abertos">Política editorial</span>}
+          title="Política de publicação"
+          subtitle="Regras mínimas para tornar conteúdo público com clareza institucional e responsabilidade editorial."
+        />
         <BrandWatermarkPanel>
         <h2 className="text-lg font-black text-text-primary">Política de publicação</h2>
         <ul className="mt-3 list-disc space-y-2 pl-5 text-sm text-text-secondary md:text-base">
@@ -58,6 +64,11 @@ export function GovernancaPage() {
       </SurfaceCard>
 
       <SurfaceCard className="portal-list-panel p-6">
+        <PortalSectionHeader
+          eyebrow={<span className="badge-metodologia">Correção e rastreabilidade</span>}
+          title="Critérios de correção"
+          subtitle="Mudanças materiais devem virar registro público; correções simples podem ser silenciosas quando não mudam o sentido."
+        />
         <h2 className="text-lg font-black text-text-primary">Critérios de correção</h2>
         <ul className="mt-3 list-disc space-y-2 pl-5 text-sm text-text-secondary md:text-base">
           <li>Correções editoriais simples podem ser aplicadas sem republicação quando não alteram o sentido do conteúdo.</li>
@@ -69,6 +80,11 @@ export function GovernancaPage() {
       </SurfaceCard>
 
       <SurfaceCard className="portal-list-panel p-6">
+        <PortalSectionHeader
+          eyebrow={<span className="badge-dados-abertos">Privacidade e observabilidade</span>}
+          title="Privacidade e transparência técnica"
+          subtitle="O portal precisa ser auditável sem expor segredos, dados pessoais desnecessários ou ruído operacional."
+        />
         <h2 className="text-lg font-black text-text-primary">Privacidade e transparência técnica</h2>
         <ul className="mt-3 list-disc space-y-2 pl-5 text-sm text-text-secondary md:text-base">
           <li>Direitos de privacidade, dados pessoais e canais de contato estão descritos em <Link className="font-semibold text-brand-primary underline" to="/privacidade-lgpd">/privacidade-lgpd</Link>.</li>
@@ -81,6 +97,11 @@ export function GovernancaPage() {
       </SurfaceCard>
 
       <SurfaceCard className="portal-list-panel p-6">
+        <PortalSectionHeader
+          eyebrow={<span className="badge-dados-abertos">Atalhos institucionais</span>}
+          title="Atalhos institucionais"
+          subtitle="Caminhos rápidos para blog, acervo, relatórios, privacidade e status técnico."
+        />
         <h2 className="text-lg font-black text-text-primary">Atalhos institucionais</h2>
         <ul className="mt-3 flex flex-wrap gap-2">
           {governanceLinks.map((item) => (
@@ -97,6 +118,11 @@ export function GovernancaPage() {
       </SurfaceCard>
 
       <SurfaceCard className="logo-watermark-soft border-brand-primary/15 bg-brand-primary-soft p-6">
+        <PortalSectionHeader
+          eyebrow={<span className="badge-metodologia">Changelog público</span>}
+          title="Changelog público"
+          subtitle="Últimos movimentos do portal registrados de forma legível para o público."
+        />
         <h2 className="text-lg font-black text-brand-primary">Changelog público (últimos 10 itens)</h2>
         <ul className="mt-3 list-disc space-y-2 pl-5 text-sm text-text-primary md:text-base">
           {latestEntries.map((entry) => (
@@ -107,6 +133,6 @@ export function GovernancaPage() {
           Arquivo versionado em <code>data/changelog.md</code>.
         </p>
       </SurfaceCard>
-    </section>
+    </PortalPageShell>
   );
 }

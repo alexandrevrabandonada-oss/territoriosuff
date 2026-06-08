@@ -5,6 +5,7 @@ import { Chip, SurfaceCard } from "../../components/BrandSystem";
 import { BrandIllustratedEmptyState, BrandTextureSkeleton } from "../../components/BrandMicro";
 import { AxisEyebrow } from "../../components/AxisSystem";
 import { DocumentalCard } from "../../components/CardFamilies";
+import { PortalPageShell, PortalSectionHeader } from "../../components/portal";
 import { getOptimizedCover } from "../../lib/imageOptimization";
 import { listReports, type ReportDocument, type ReportKind } from "../../lib/api";
 
@@ -85,7 +86,7 @@ export function ReportsListPage() {
   const regularReports = useMemo(() => reports.filter((item) => !featuredIds.has(item.id)), [featuredIds, reports]);
 
   return (
-    <section className="portal-stage reports-stage space-y-8 md:space-y-10">
+    <PortalPageShell className="reports-stage">
       <SurfaceCard className="portal-stage-hero portal-stage-hero-documental overflow-hidden p-0">
         <div className="portal-stage-hero-inner">
           <div className="portal-stage-copy">
@@ -103,6 +104,11 @@ export function ReportsListPage() {
       </SurfaceCard>
 
       <SurfaceCard className="portal-filter-panel p-5 md:p-6">
+        <PortalSectionHeader
+          eyebrow={<span className="badge-dados-abertos">Catálogo público de evidências</span>}
+          title="Filtrar por ano, tipo, tema e busca"
+          subtitle="Use os filtros para transformar a biblioteca de PDFs em uma central de leitura e consulta pública mais direta."
+        />
         <div className="grid gap-5 md:grid-cols-4">
           <label className="block">
             <span className="mb-1 block text-xs font-semibold uppercase tracking-wide text-text-secondary">Ano</span>
@@ -207,6 +213,13 @@ export function ReportsListPage() {
       ) : null}
 
       <SurfaceCard className="p-6">
+        {!loading && !error && reports.length > 0 ? (
+          <PortalSectionHeader
+            eyebrow={<span className="badge-metodologia">Leitura editorial</span>}
+            title="Relatórios e evidências disponíveis"
+            subtitle="Coleção pública de relatórios, notas técnicas, boletins e anexos com leitura, memória e controle social."
+          />
+        ) : null}
         {loading ? (
           <div className="grid gap-4 md:grid-cols-2" aria-live="polite" aria-busy="true">
             {Array.from({ length: 4 }).map((_, index) => (
@@ -251,6 +264,6 @@ export function ReportsListPage() {
           </div>
         )}
       </SurfaceCard>
-    </section>
+    </PortalPageShell>
   );
 }

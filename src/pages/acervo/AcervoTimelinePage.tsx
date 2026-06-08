@@ -6,6 +6,7 @@ import { ACERVO_KIND_LABELS, type AcervoArea, AREA_KINDS } from "../../lib/acerv
 import { getOptimizedCover } from "../../lib/imageOptimization";
 import { Chip, EditorialCard, EditorialCardActions, EditorialCardBody, EditorialCardExcerpt, EditorialCardMeta, EditorialCardTitle, IconShell, SurfaceCard } from "../../components/BrandSystem";
 import { AxisEyebrow } from "../../components/AxisSystem";
+import { PortalPageShell, PortalSectionHeader } from "../../components/portal";
 
 const AREA_META: Record<AcervoArea, { label: string; emoji: string; description: string; color: string }> = {
   artigos: {
@@ -107,7 +108,7 @@ export function AcervoTimelinePage() {
   const meta = AREA_META[area];
 
   return (
-    <section className="portal-stage timeline-stage space-y-8 md:space-y-10">
+    <PortalPageShell className="timeline-stage">
       <SurfaceCard className="portal-stage-hero portal-stage-hero-documental overflow-hidden p-0">
         <div className="portal-stage-hero-inner">
           <div className="portal-stage-copy">
@@ -122,8 +123,11 @@ export function AcervoTimelinePage() {
       <div className="grid gap-6 md:grid-cols-[minmax(240px,280px)_minmax(0,1fr)]">
         <aside className="space-y-4 md:sticky md:top-24 md:self-start">
           <SurfaceCard className="p-5">
-            <AxisEyebrow axis="timeline">Linha do tempo</AxisEyebrow>
-            <p className="mt-2 text-sm text-text-secondary">Navegue pelo acervo histórico por ano de publicação.</p>
+            <PortalSectionHeader
+              eyebrow={<AxisEyebrow axis="timeline">Linha do tempo</AxisEyebrow>}
+              title="Navegue por ano"
+              subtitle="Recupere a memória pública do acervo seguindo a cronologia de publicação."
+            />
           </SurfaceCard>
           <SurfaceCard className="p-4">
             {isLoadingIndex ? (
@@ -228,7 +232,7 @@ export function AcervoTimelinePage() {
           </SurfaceCard>
         </main>
       </div>
-    </section>
+    </PortalPageShell>
   );
 }
 

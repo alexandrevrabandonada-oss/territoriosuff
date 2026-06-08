@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { IconShell, SurfaceCard } from "../components/BrandSystem";
+import { PortalHero, PortalPageShell, PortalSectionHeader } from "../components/portal";
 
 const participationLinks = [
   { href: "/agenda", label: "Inscricoes e agenda" },
@@ -10,19 +11,47 @@ const participationLinks = [
 
 export function ComoParticiparPage() {
   return (
-    <section className="portal-stage space-y-8 md:space-y-10">
-      <SurfaceCard className="portal-stage-hero portal-stage-hero-seed overflow-hidden p-0">
-        <div className="portal-stage-hero-inner">
-          <div className="portal-stage-copy">
-            <IconShell tone="seed" className="portal-stage-icon"><span aria-hidden="true">🤝</span></IconShell>
-            <h1>Como participar</h1>
-            <p>Formas simples de entrar nas atividades públicas, receber alertas, acompanhar dados e contribuir com relatos do território.</p>
+    <PortalPageShell>
+      <PortalHero
+        tone="seed"
+        badge={<span className="badge-dados-abertos">Participação pública</span>}
+        title="Como participar"
+        subtitle="Formas simples de entrar nas atividades públicas, receber alertas, acompanhar dados e contribuir com relatos do território."
+        metrics={
+          <>
+            <div className="rounded-2xl border border-white/10 bg-white/10 p-4 text-white">
+              <div className="text-[10px] font-black uppercase tracking-[0.16em] text-white/70">Canais</div>
+              <div className="mt-2 text-3xl font-black">4</div>
+            </div>
+            <div className="rounded-2xl border border-white/10 bg-white/10 p-4 text-white">
+              <div className="text-[10px] font-black uppercase tracking-[0.16em] text-white/70">Foco</div>
+              <div className="mt-2 text-lg font-black">Agenda, relatos, alertas e dados</div>
+            </div>
+            <div className="rounded-2xl border border-white/10 bg-white/10 p-4 text-white">
+              <div className="text-[10px] font-black uppercase tracking-[0.16em] text-white/70">Próximo passo</div>
+              <div className="mt-2 text-lg font-black">Escolher uma porta de entrada</div>
+            </div>
+          </>
+        }
+        aside={
+          <div className="rounded-[1.8rem] border border-white/10 bg-white/10 p-5 text-white backdrop-blur-sm">
+            <div className="flex items-center gap-3">
+              <IconShell tone="seed" className="portal-stage-icon"><span aria-hidden="true">🤝</span></IconShell>
+              <div>
+                <div className="text-[10px] font-black uppercase tracking-[0.16em] text-white/70">Engajamento cívico</div>
+                <div className="mt-1 text-base font-black">Participar aqui significa acompanhar, relatar, comparecer e cobrar.</div>
+              </div>
+            </div>
           </div>
-          <div className="portal-stage-stat"><span>4</span><small>canais de participação</small></div>
-        </div>
-      </SurfaceCard>
+        }
+      />
 
       <SurfaceCard className="portal-list-panel p-6">
+        <PortalSectionHeader
+          eyebrow={<span className="badge-metodologia">Canais de participação</span>}
+          title="Canais de participação"
+          subtitle="Quatro portas de entrada para quem quer se envolver com o portal e com o território."
+        />
         <h2 className="text-lg font-black text-text-primary">Canais de participacao</h2>
         <ul className="mt-3 list-disc space-y-2 pl-5 text-sm text-text-secondary md:text-base">
           <li>Inscreva-se nas atividades da agenda para oficinas, rodas de conversa e encontros tecnicos.</li>
@@ -33,6 +62,11 @@ export function ComoParticiparPage() {
       </SurfaceCard>
 
       <SurfaceCard className="portal-list-panel p-6">
+        <PortalSectionHeader
+          eyebrow={<span className="badge-dados-abertos">Atalhos úteis</span>}
+          title="Atalhos"
+          subtitle="Vá direto para o tipo de participação que faz sentido para você."
+        />
         <h2 className="text-lg font-black text-text-primary">Atalhos</h2>
         <ul className="mt-3 flex flex-wrap gap-2">
           {participationLinks.map((item) => (
@@ -49,6 +83,11 @@ export function ComoParticiparPage() {
       </SurfaceCard>
 
       <SurfaceCard className="portal-list-panel border-brand-primary/15 bg-brand-primary-soft p-6">
+        <PortalSectionHeader
+          eyebrow={<span className="badge-dados-abertos">Acessibilidade e contato</span>}
+          title="Acessibilidade e contato"
+          subtitle="O acesso à participação precisa ser simples, direto e suportado por canais claros."
+        />
         <h2 className="text-lg font-black text-brand-primary">Acessibilidade e contato</h2>
         <ul className="mt-3 list-disc space-y-2 pl-5 text-sm text-text-primary">
           <li>Conteudo pensado para leitura objetiva, com linguagem simples e estrutura por blocos.</li>
@@ -56,6 +95,6 @@ export function ComoParticiparPage() {
           <li>Tambem e possivel acompanhar atualizacoes de situacao em <Link className="font-semibold text-brand-primary underline" to="/status">/status</Link>.</li>
         </ul>
       </SurfaceCard>
-    </section>
+    </PortalPageShell>
   );
 }

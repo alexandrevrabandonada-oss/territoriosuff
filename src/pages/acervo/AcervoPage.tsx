@@ -14,6 +14,7 @@ import {
 } from "../../components/BrandSystem";
 import { BrandRadialDivider, BrandTextureSkeleton } from "../../components/BrandMicro";
 import { AxisEyebrow } from "../../components/AxisSystem";
+import { PortalPageShell, PortalSectionHeader } from "../../components/portal";
 import { listFeaturedAcervo, type AcervoItem } from "../../lib/api";
 import { ACERVO_KIND_LABELS } from "../../lib/acervo";
 
@@ -75,7 +76,7 @@ export function AcervoPage() {
     }, []);
 
     return (
-        <section className="acervo-hub space-y-8 md:space-y-10">
+        <PortalPageShell className="acervo-hub">
             <SurfaceCard className="acervo-hub-hero overflow-hidden p-0">
                 <div className="acervo-hub-hero-grid">
                     <div className="acervo-hub-copy">
@@ -151,13 +152,12 @@ export function AcervoPage() {
             {/* Destaques */}
             {(loading || featured.length > 0) && (
                 <SurfaceCard className="acervo-featured-panel p-5 md:p-6">
-                    <div className="mb-2 flex flex-col gap-2 md:flex-row md:items-end md:justify-between">
-                      <div className="space-y-2">
-                        <AxisEyebrow axis="acervo">Destaques</AxisEyebrow>
-                        <h2 className="axis-heading-acervo text-xl md:text-2xl">Em destaque no acervo</h2>
-                      </div>
-                      <Link to="/acervo/linha" className="ui-btn-ghost w-fit">Ver linha do tempo →</Link>
-                    </div>
+                    <PortalSectionHeader
+                      eyebrow={<AxisEyebrow axis="acervo">Destaques</AxisEyebrow>}
+                      title="Em destaque no acervo"
+                      subtitle="Seleção inicial para leitura pública, memória institucional e consulta de base técnica."
+                      action={<Link to="/acervo/linha" className="ui-btn-ghost w-fit">Ver linha do tempo →</Link>}
+                    />
                     {loading ? (
                         <div className="mt-5 grid gap-4 md:grid-cols-2">
                             <BrandTextureSkeleton className="h-36 rounded-[1.5rem]" lines={3} />
@@ -204,6 +204,6 @@ export function AcervoPage() {
                     <BrandRadialDivider className="mt-5" />
                 </SurfaceCard>
             )}
-        </section>
+        </PortalPageShell>
     );
 }

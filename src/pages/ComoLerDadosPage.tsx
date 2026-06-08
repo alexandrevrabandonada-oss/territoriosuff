@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { IconShell, SurfaceCard } from "../components/BrandSystem";
+import { PortalHero, PortalPageShell, PortalSectionHeader } from "../components/portal";
 
 const quickLinks = [
   { href: "/dados", label: "Painel de dados" },
@@ -10,19 +11,47 @@ const quickLinks = [
 
 export function ComoLerDadosPage() {
   return (
-    <section className="portal-stage space-y-8 md:space-y-10">
-      <SurfaceCard className="portal-stage-hero portal-stage-hero-lab overflow-hidden p-0">
-        <div className="portal-stage-hero-inner">
-          <div className="portal-stage-copy">
-            <IconShell tone="lab" className="portal-stage-icon"><span aria-hidden="true">📊</span></IconShell>
-            <h1>Como ler os dados</h1>
-            <p>Guia rápido para interpretar leituras de MP2.5 e MP10, tendências recentes e classificações públicas de risco.</p>
+    <PortalPageShell>
+      <PortalHero
+        tone="lab"
+        badge={<span className="badge-metodologia">Biblioteca pedagógica</span>}
+        title="Como ler os dados"
+        subtitle="Guia rápido para interpretar leituras de MP2.5 e MP10, tendências recentes e classificações públicas de risco."
+        metrics={
+          <>
+            <div className="rounded-2xl border border-white/10 bg-white/10 p-4 text-white">
+              <div className="text-[10px] font-black uppercase tracking-[0.16em] text-white/70">Passos</div>
+              <div className="mt-2 text-3xl font-black">4</div>
+            </div>
+            <div className="rounded-2xl border border-white/10 bg-white/10 p-4 text-white">
+              <div className="text-[10px] font-black uppercase tracking-[0.16em] text-white/70">Foco</div>
+              <div className="mt-2 text-lg font-black">Leitura pública responsável</div>
+            </div>
+            <div className="rounded-2xl border border-white/10 bg-white/10 p-4 text-white">
+              <div className="text-[10px] font-black uppercase tracking-[0.16em] text-white/70">Próximo passo</div>
+              <div className="mt-2 text-lg font-black">Ir de contexto para ação</div>
+            </div>
+          </>
+        }
+        aside={
+          <div className="rounded-[1.8rem] border border-white/10 bg-white/10 p-5 text-white backdrop-blur-sm">
+            <div className="flex items-center gap-3">
+              <IconShell tone="lab" className="portal-stage-icon"><span aria-hidden="true">📊</span></IconShell>
+              <div>
+                <div className="text-[10px] font-black uppercase tracking-[0.16em] text-white/70">Guia público</div>
+                <div className="mt-1 text-base font-black">Entenda o que um indicador diz, o que ele não diz e onde buscar mais contexto.</div>
+              </div>
+            </div>
           </div>
-          <div className="portal-stage-stat"><span>4</span><small>passos de leitura</small></div>
-        </div>
-      </SurfaceCard>
+        }
+      />
 
       <SurfaceCard className="portal-list-panel p-6">
+        <PortalSectionHeader
+          eyebrow={<span className="badge-dados-abertos">Leitura em camadas</span>}
+          title="Leitura em 4 passos"
+          subtitle="Um roteiro curto para evitar conclusões rápidas e interpretar melhor séries, horários e classificações."
+        />
         <h2 className="text-lg font-black text-text-primary">Leitura em 4 passos</h2>
         <ul className="mt-3 list-disc space-y-2 pl-5 text-sm text-text-secondary md:text-base">
           <li>Considere primeiro o horario da medicao para entender se e uma condicao pontual ou continua.</li>
@@ -33,6 +62,11 @@ export function ComoLerDadosPage() {
       </SurfaceCard>
 
       <SurfaceCard className="portal-list-panel p-6">
+        <PortalSectionHeader
+          eyebrow={<span className="badge-metodologia">Navegação guiada</span>}
+          title="Onde ver mais contexto"
+          subtitle="Avance do dado bruto para contexto territorial, institucional e metodológico."
+        />
         <h2 className="text-lg font-black text-text-primary">Onde ver mais contexto</h2>
         <ul className="mt-3 flex flex-wrap gap-2">
           {quickLinks.map((item) => (
@@ -49,6 +83,11 @@ export function ComoLerDadosPage() {
       </SurfaceCard>
 
       <SurfaceCard className="portal-list-panel border-brand-primary/15 bg-brand-primary-soft p-6">
+        <PortalSectionHeader
+          eyebrow={<span className="badge-dados-abertos">Acessibilidade e apoio</span>}
+          title="Acessibilidade e contato"
+          subtitle="O portal foi pensado para navegação pública, com foco visível, contraste reforçado e leitura assistida."
+        />
         <h2 className="text-lg font-black text-brand-primary">Acessibilidade e contato</h2>
         <ul className="mt-3 list-disc space-y-2 pl-5 text-sm text-text-primary">
           <li>As paginas seguem navegacao por teclado, foco visivel e contraste reforcado.</li>
@@ -56,6 +95,6 @@ export function ComoLerDadosPage() {
           <li>Para duvidas sobre interpretacao publica, consulte tambem a pagina de <Link className="font-semibold text-brand-primary underline" to="/sobre">Sobre o projeto</Link>.</li>
         </ul>
       </SurfaceCard>
-    </section>
+    </PortalPageShell>
   );
 }

@@ -1,0 +1,139 @@
+import { IconShell, SurfaceCard } from "../../../components/BrandSystem";
+import type { RadarComparisonTab, RadarMode } from "./RadarTypes";
+
+interface RadarHeroProps {
+  onNavigate: (mode: RadarMode, tab?: RadarComparisonTab) => void;
+}
+
+export function RadarHero({ onNavigate }: RadarHeroProps) {
+  return (
+    <SurfaceCard className="relative overflow-hidden rounded-[2.75rem] border border-[#10344f] bg-[radial-gradient(circle_at_top_left,rgba(16,185,129,0.22),transparent_28%),radial-gradient(circle_at_88%_16%,rgba(245,158,11,0.18),transparent_22%),linear-gradient(135deg,#041521_0%,#082031_22%,#0c2f46_58%,#041521_100%)] p-0 shadow-[0_28px_80px_-24px_rgba(4,21,33,0.72)]">
+      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_right,#ffffff08_1px,transparent_1px),linear-gradient(to_bottom,#ffffff07_1px,transparent_1px)] bg-[size:22px_22px]" />
+      <div className="pointer-events-none absolute inset-y-0 right-0 w-[36%] bg-[radial-gradient(circle_at_center,rgba(16,185,129,0.22),transparent_70%)] blur-2xl" />
+
+      <div className="relative z-10 flex flex-col justify-between gap-5 p-5 md:p-6 lg:flex-row lg:items-stretch lg:p-8">
+        <div className="relative flex max-w-3xl flex-1 flex-col justify-between gap-6 rounded-[2.15rem] border border-white/12 bg-[linear-gradient(180deg,rgba(255,255,255,0.08),rgba(255,255,255,0.03))] p-5 text-white backdrop-blur-xl md:p-7">
+          <div className="inline-flex w-fit items-center gap-2 rounded-full border border-[#f59e0b]/35 bg-[#f59e0b]/12 px-3.5 py-1.5 text-[10px] font-black uppercase tracking-[0.18em] text-[#fbbf24] shadow-[0_10px_30px_-18px_rgba(245,158,11,0.8)]">
+            <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-[#f59e0b]" />
+            Dados públicos · Análise experimental · Sem QA/QC oficial explícito
+          </div>
+
+          <div className="flex items-start gap-4">
+            <div className="rounded-[1.6rem] border border-emerald-400/20 bg-emerald-400/10 p-1.5 shadow-[0_20px_40px_-26px_rgba(16,185,129,1)]">
+              <IconShell tone="lab" className="portal-stage-icon border-0 bg-transparent shadow-none">
+                <svg className="h-6 w-6 text-emerald-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                </svg>
+              </IconShell>
+            </div>
+            <div className="space-y-3">
+              <div className="text-[10px] font-black uppercase tracking-[0.22em] text-emerald-300/80">Justiça ambiental em dados públicos</div>
+              <h1 className="max-w-4xl text-4xl font-black leading-[0.95] tracking-tight text-white md:text-6xl">
+                Observatório do Ar
+                <span className="mt-2 block text-emerald-300">Volta Redonda</span>
+              </h1>
+            </div>
+          </div>
+
+          <p className="max-w-2xl text-sm font-semibold leading-relaxed text-slate-200 md:text-base">
+            Explore dados públicos de qualidade do ar, meteorologia, território e exposição social com metodologia aberta e foco em justiça ambiental.
+          </p>
+
+          <div className="grid gap-3 sm:grid-cols-3">
+            <div className="rounded-2xl border border-white/10 bg-slate-950/50 p-4 shadow-[0_18px_40px_-30px_rgba(15,23,42,1)]">
+              <div className="text-[10px] font-black uppercase tracking-[0.18em] text-slate-400">Estações</div>
+              <div className="mt-3 text-3xl font-black text-white">4</div>
+              <div className="mt-1 text-[11px] font-semibold text-slate-300">pontos oficiais monitorados</div>
+            </div>
+            <div className="rounded-2xl border border-emerald-500/15 bg-emerald-500/[0.07] p-4 shadow-[0_18px_40px_-30px_rgba(16,185,129,0.8)]">
+              <div className="text-[10px] font-black uppercase tracking-[0.18em] text-emerald-200/80">Série histórica</div>
+              <div className="mt-3 text-3xl font-black text-white">2013–2026</div>
+              <div className="mt-1 text-[11px] font-semibold text-emerald-50/85">janela ampliada para leitura pública</div>
+            </div>
+            <div className="rounded-2xl border border-amber-400/20 bg-amber-400/[0.08] p-4 shadow-[0_18px_40px_-30px_rgba(245,158,11,0.8)]">
+              <div className="text-[10px] font-black uppercase tracking-[0.18em] text-amber-200/85">Camadas publicadas</div>
+              <div className="mt-3 text-3xl font-black text-white">4</div>
+              <div className="mt-1 text-[11px] font-semibold text-amber-50/90">poluentes já visíveis no radar</div>
+            </div>
+          </div>
+
+          <div className="flex flex-wrap items-center gap-2.5 pt-2">
+            <button
+              onClick={() => onNavigate("MAP")}
+              className="inline-flex cursor-pointer items-center gap-1.5 rounded-2xl bg-emerald-500 px-5 py-3 text-xs font-black text-slate-950 shadow-[0_16px_40px_-20px_rgba(16,185,129,0.95)] transition-all hover:scale-[1.02] hover:bg-emerald-400"
+            >
+              <svg className="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
+              </svg>
+              Explorar mapa
+            </button>
+
+            <button
+              onClick={() => onNavigate("TIME", "TREND")}
+              className="inline-flex cursor-pointer items-center gap-1.5 rounded-2xl border border-white/12 bg-white/[0.07] px-4 py-2.5 text-xs font-bold text-slate-100 transition-colors hover:bg-white/[0.12]"
+            >
+              <svg className="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              Ver por ano / histórico
+            </button>
+
+            <button
+              onClick={() => onNavigate("TERRITORY")}
+              className="inline-flex cursor-pointer items-center gap-1.5 rounded-2xl border border-white/12 bg-white/[0.07] px-4 py-2.5 text-xs font-bold text-slate-100 transition-colors hover:bg-white/[0.12]"
+            >
+              <svg className="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+              </svg>
+              Quem respira esse ar?
+            </button>
+
+            <button
+              onClick={() => onNavigate("METHODOLOGY")}
+              className="inline-flex cursor-pointer items-center gap-1.5 rounded-2xl border border-white/12 bg-white/[0.07] px-4 py-2.5 text-xs font-bold text-slate-100 transition-colors hover:bg-white/[0.12]"
+            >
+              <svg className="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+              </svg>
+              Metodologia
+            </button>
+          </div>
+        </div>
+
+        <div className="flex w-full flex-col justify-between gap-4 lg:max-w-[21rem] lg:pt-1">
+          <div className="rounded-[2rem] border border-emerald-500/20 bg-[linear-gradient(180deg,rgba(4,21,33,0.32),rgba(4,21,33,0.72))] p-5 shadow-[0_26px_50px_-34px_rgba(0,0,0,1)] backdrop-blur-sm">
+            <div className="text-[10px] font-black uppercase tracking-[0.18em] text-slate-300">Painel de situação</div>
+            <div className="mt-4 grid grid-cols-2 gap-3">
+              <div className="rounded-2xl border border-white/8 bg-white/[0.04] p-4">
+                <span className="block text-3xl font-black text-white">4</span>
+                <span className="mt-1 block text-[10px] font-bold uppercase tracking-wider text-slate-400">estações</span>
+              </div>
+              <div className="rounded-2xl border border-white/8 bg-white/[0.04] p-4">
+                <span className="block text-2xl font-black text-white">2013–2026</span>
+                <span className="mt-1 block text-[10px] font-bold uppercase tracking-wider text-slate-400">série pública</span>
+              </div>
+              <div className="rounded-2xl border border-emerald-500/20 bg-emerald-500/[0.09] p-4">
+                <span className="block text-3xl font-black text-emerald-300">33/33</span>
+                <span className="mt-1 block text-[10px] font-bold uppercase tracking-wider text-emerald-100/80">checks ok</span>
+              </div>
+              <div className="rounded-2xl border border-white/8 bg-white/[0.04] p-4">
+                <span className="block text-xl font-black text-white">Mapa · Tempo</span>
+                <span className="mt-1 block text-[10px] font-bold uppercase tracking-wider text-slate-400">rotas de leitura</span>
+              </div>
+            </div>
+          </div>
+
+          <div className="rounded-[1.8rem] border border-white/10 bg-white/[0.05] p-4 text-slate-200 shadow-[0_20px_40px_-32px_rgba(15,23,42,1)] backdrop-blur-sm">
+            <div className="text-[10px] font-black uppercase tracking-[0.18em] text-emerald-300/85">Leitura recomendada</div>
+            <p className="mt-2 text-sm font-semibold leading-relaxed text-slate-100">
+              Comece pelo mapa, avance para a linha do tempo e feche com os territórios prioritários.
+            </p>
+            <div className="mt-3 text-[11px] font-semibold text-slate-300">
+              A navegação foi desenhada para leitura cívica rápida, sem perder densidade técnica.
+            </div>
+          </div>
+        </div>
+      </div>
+    </SurfaceCard>
+  );
+}

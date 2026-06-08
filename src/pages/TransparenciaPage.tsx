@@ -4,7 +4,8 @@ import { useSearchParams } from "react-router-dom";
 import { EmptyState } from "../components/EmptyState";
 import { ErrorState } from "../components/ErrorState";
 import { SkeletonCard } from "../components/SkeletonCard";
-import { IconShell, SurfaceCard } from "../components/BrandSystem";
+import { SurfaceCard } from "../components/BrandSystem";
+import { PortalHero, PortalPageShell, PortalSectionHeader } from "../components/portal";
 import {
   getTransparencySummary,
   listExpenses,
@@ -267,24 +268,27 @@ export function TransparenciaPage() {
   }
 
   return (
-    <section className="portal-stage transparency-stage space-y-8 md:space-y-10">
-      <SurfaceCard className="portal-stage-hero portal-stage-hero-lab overflow-hidden p-0">
-        <div className="portal-stage-hero-inner">
-          <div className="portal-stage-copy">
-            <IconShell tone="lab" className="portal-stage-icon">
-            <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-            </svg>
-            </IconShell>
-            <h1>Transparência e prestação de contas</h1>
-            <p>Acompanhamento financeiro público, auditável e exportável do projeto SEMEAR, com filtros por período, categoria e fornecedor.</p>
+    <PortalPageShell className="transparency-stage">
+      <PortalHero
+        badge={<span className="badge-metodologia">Prestação de contas</span>}
+        title="Transparência e prestação de contas"
+        subtitle="Acompanhamento financeiro público, auditável e exportável do projeto SEMEAR, com filtros por período, categoria e fornecedor."
+        tone="lab"
+        metrics={
+          <>
+          <div className="portal-kpi-card portal-kpi-card-lab">
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-text-secondary">Total histórico</p>
+            <p className="mt-2 text-3xl font-black text-success">{summary ? formatBRL(summary.total_cents) : "R$ 0,00"}</p>
+            <p className="mt-1 text-sm text-text-secondary">publicado e auditável</p>
           </div>
-          <div className="portal-stage-stat">
-            <span>{summary ? formatBRL(summary.total_cents) : "R$ 0"}</span>
-            <small>total histórico publicado</small>
+          <div className="portal-kpi-card">
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-text-secondary">Período filtrado</p>
+            <p className="mt-2 text-3xl font-black text-brand-primary">{formatBRL(periodKpis.total)}</p>
+            <p className="mt-1 text-sm text-text-secondary">{periodKpis.count} lançamento(s)</p>
           </div>
-        </div>
-      </SurfaceCard>
+          </>
+        }
+      />
 
       <SurfaceCard className="portal-list-panel p-5 md:p-6">
           <p className="text-sm font-semibold text-accent-lab">{INSTITUTIONAL_FUNDING} · todos os recursos são públicos</p>
@@ -319,7 +323,11 @@ export function TransparenciaPage() {
       </section>
 
       <SurfaceCard className="portal-filter-panel p-6 md:p-8">
-        <h2 className="text-lg font-black text-text-primary">Filtrar lançamentos</h2>
+        <PortalSectionHeader
+          eyebrow="Filtro ativo"
+          title="Filtrar lançamentos"
+          subtitle="Refine a prestação de contas por período, categoria ou fornecedor sem alterar a base publicada."
+        />
         <div className="mt-4 grid gap-4 md:grid-cols-4">
           <div>
             <label htmlFor="filtro-mes" className="mb-1 block text-xs font-bold uppercase tracking-wide text-text-secondary">Mês</label>
@@ -378,9 +386,13 @@ export function TransparenciaPage() {
       </section>
 
       <SurfaceCard className="portal-list-panel p-6 md:p-8">
+        <PortalSectionHeader
+          eyebrow="Base aberta"
+          title="Despesas lançadas"
+          subtitle="Tabela pública com documentos associados quando disponíveis."
+        />
         <div className="mb-6 flex items-center justify-between gap-3">
           <div>
-            <h2 className="text-2xl font-black text-text-primary">Despesas lançadas</h2>
             <p className="mt-1 text-xs text-text-secondary">Documentos são publicados quando disponíveis.</p>
           </div>
           <button type="button" onClick={handleDownloadExpensesCsv} className="ui-btn-secondary motion-focus motion-action px-4">
@@ -438,7 +450,11 @@ export function TransparenciaPage() {
       </SurfaceCard>
 
       <SurfaceCard className="portal-list-panel p-6 md:p-8">
-        <h2 className="text-2xl font-black text-text-primary">Links oficiais de controle</h2>
+        <PortalSectionHeader
+          eyebrow="Controle externo"
+          title="Links oficiais de controle"
+          subtitle="Atalhos públicos para referências institucionais e acompanhamento complementar."
+        />
         <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {links.map((link) => (
             <a key={link.id} href={link.url} target="_blank" rel="noopener noreferrer" className="group motion-list-item flex flex-col gap-2 rounded-xl border border-border-subtle bg-bg-surface p-4 motion-surface motion-surface-hover">
@@ -492,7 +508,7 @@ export function TransparenciaPage() {
           </div>
         </div>
       )}
-    </section>
+    </PortalPageShell>
   );
 }
 

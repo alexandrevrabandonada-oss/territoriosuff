@@ -12,7 +12,7 @@ const links = [
   { href: "/relatorios", label: "Relatórios" },
   { href: "/agenda", label: "Agenda" },
   { href: "/conversar", label: "Conversas e atividades" },
-  { href: "/sobre", label: "Guias" }
+  { href: "/como-ler-dados", label: "Guias" }
 ];
 
 const mobileGroups = [
@@ -38,13 +38,14 @@ const mobileGroups = [
       { href: "/dossies", label: "Dossiês" }
     ]
   },
-  {
-    label: "Institucional",
-    links: [
-      { href: "/sobre", label: "Guias" },
-      { href: "/transparencia", label: "Transparência" }
-    ]
-  }
+      {
+        label: "Institucional",
+        links: [
+      { href: "/como-ler-dados", label: "Guias" },
+      { href: "/como-participar", label: "Como participar" },
+          { href: "/transparencia", label: "Transparência" }
+        ]
+      }
 ];
 
 export function Navbar() {

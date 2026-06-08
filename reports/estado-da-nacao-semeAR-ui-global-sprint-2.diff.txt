@@ -1,0 +1,971 @@
+diff --git a/src/components/Footer.tsx b/src/components/Footer.tsx
+index 1893c24..81cf303 100644
+--- a/src/components/Footer.tsx
++++ b/src/components/Footer.tsx
+@@ -17,6 +17,7 @@ export function Footer() {
+           <Link to="/sobre">Sobre o projeto</Link>
+           <Link to="/governanca">Equipe</Link>
+           <Link to="/transparencia">Transparência</Link>
++          <Link to="/como-ler-dados">Guias</Link>
+           <Link to="/privacidade-lgpd">FAQ</Link>
+           <Link to="/conversar">Conversas e atividades</Link>
+         </nav>
+diff --git a/src/components/Navbar.tsx b/src/components/Navbar.tsx
+index c99915d..991b241 100644
+--- a/src/components/Navbar.tsx
++++ b/src/components/Navbar.tsx
+@@ -12,7 +12,7 @@ const links = [
+   { href: "/relatorios", label: "Relatórios" },
+   { href: "/agenda", label: "Agenda" },
+   { href: "/conversar", label: "Conversas e atividades" },
+-  { href: "/sobre", label: "Guias" }
++  { href: "/como-ler-dados", label: "Guias" }
+ ];
+ 
+ const mobileGroups = [
+@@ -38,13 +38,14 @@ const mobileGroups = [
+       { href: "/dossies", label: "Dossiês" }
+     ]
+   },
+-  {
+-    label: "Institucional",
+-    links: [
+-      { href: "/sobre", label: "Guias" },
+-      { href: "/transparencia", label: "Transparência" }
+-    ]
+-  }
++      {
++        label: "Institucional",
++        links: [
++      { href: "/como-ler-dados", label: "Guias" },
++      { href: "/como-participar", label: "Como participar" },
++          { href: "/transparencia", label: "Transparência" }
++        ]
++      }
+ ];
+ 
+ export function Navbar() {
+diff --git a/src/index.css b/src/index.css
+index c14d1ec..3b3521e 100644
+--- a/src/index.css
++++ b/src/index.css
+@@ -2840,7 +2840,7 @@ body.reader-mode-active main {
+   line-height: 1.35;
+ }
+ 
+-@media (max-width: 1240px) {
++@media (max-width: 1340px) {
+   .site-topbar-inner {
+     grid-template-columns: auto auto;
+     justify-content: space-between;
+@@ -2932,25 +2932,31 @@ body.reader-mode-active main {
+   }
+ }
+ 
+-@media (min-width: 1241px) and (max-width: 1380px) {
++@media (min-width: 1341px) and (max-width: 1440px) {
+   .site-topbar-inner {
+-    gap: 1rem;
+-    padding-inline: 1.4rem;
++    gap: 0.8rem;
++    padding-inline: 1rem;
+   }
+ 
+   .site-nav {
+-    gap: 1rem;
++    gap: 0.15rem;
++    padding: 0.25rem;
+   }
+ 
+   .site-nav a {
+-    font-size: 0.86rem;
++    padding: 0.5rem 0.75rem;
++    font-size: 0.8rem;
++  }
++
++  .site-actions {
++    gap: 0.5rem;
+   }
+ 
+   .site-pwa-badge,
+   .site-install {
+-    min-height: 2.7rem;
+-    padding-inline: 1rem;
+-    font-size: 0.76rem;
++    min-height: 2.6rem;
++    padding-inline: 0.85rem;
++    font-size: 0.75rem;
+   }
+ }
+ 
+@@ -4382,3 +4388,180 @@ body.reader-mode-active main {
+     white-space: nowrap;
+   }
+ }
++
++/* Concreto Zen + Justiça Ambiental - Sprint 7 Visual System */
++.bg-ambient-zen {
++  background:
++    radial-gradient(circle at 10% 20%, rgba(16, 185, 129, 0.04), transparent 30rem),
++    radial-gradient(circle at 90% 80%, rgba(14, 44, 69, 0.05), transparent 40rem),
++    linear-gradient(180deg, #f8fafc 0%, #f1f5f9 50%, #e2e8f0 100%);
++}
++
++.bg-dot-grid {
++  background-image: radial-gradient(rgba(14, 44, 69, 0.05) 1px, transparent 1.5px);
++  background-size: 24px 24px;
++}
++
++.card-alerta {
++  background: #fffbeb;
++  border: 1.5px solid #d97706;
++  color: #78350f;
++  box-shadow: 0 4px 15px -3px rgba(217, 119, 6, 0.05);
++}
++
++.card-acao {
++  background: #f0fdf4;
++  border: 1.5px solid #10b981;
++  color: #064e3b;
++  box-shadow: 0 4px 15px -3px rgba(16, 185, 129, 0.05);
++}
++
++.card-social {
++  background: #fff5f5;
++  border: 1.5px solid #ef4444;
++  color: #7f1d1d;
++  box-shadow: 0 4px 15px -3px rgba(239, 68, 68, 0.05);
++}
++
++.card-tecnico {
++  background: #071f30;
++  border: 1.5px solid #0d2e46;
++  color: #f1f5f9;
++  box-shadow: 0 10px 25px -5px rgba(7, 31, 48, 0.2);
++}
++
++.card-leitura {
++  background: #ffffff;
++  border: 1px solid #e2e8f0;
++  color: #334155;
++  box-shadow: 0 4px 12px -2px rgba(148, 163, 184, 0.08);
++}
++
++.portal-page-shell {
++  position: relative;
++  isolation: isolate;
++}
++
++.portal-section-header {
++  display: flex;
++  flex-direction: column;
++  gap: 1rem;
++}
++
++.portal-hero-split {
++  display: grid;
++  gap: 1.5rem;
++}
++
++.portal-hero-aside {
++  display: grid;
++  align-content: start;
++  gap: 1rem;
++}
++
++.portal-hero-metrics {
++  display: grid;
++  gap: 0.75rem;
++}
++
++.portal-card-download {
++  border: 1px solid rgba(16, 185, 129, 0.18);
++  background: linear-gradient(180deg, #ffffff, #f0fdf4);
++}
++
++.portal-card-methodology {
++  border: 1px solid rgba(79, 70, 229, 0.14);
++  background: linear-gradient(180deg, #ffffff, #eef2ff);
++}
++
++.badge-metodologia {
++  display: inline-flex;
++  align-items: center;
++  gap: 0.5rem;
++  border-radius: 9999px;
++  border: 1px solid rgba(79, 70, 229, 0.18);
++  background: rgba(79, 70, 229, 0.08);
++  padding: 0.35rem 0.85rem;
++  font-size: 0.625rem;
++  font-weight: 900;
++  letter-spacing: 0.16em;
++  text-transform: uppercase;
++  color: #4338ca;
++}
++
++.badge-dados-abertos {
++  display: inline-flex;
++  align-items: center;
++  gap: 0.5rem;
++  border-radius: 9999px;
++  border: 1px solid rgba(16, 185, 129, 0.18);
++  background: rgba(16, 185, 129, 0.08);
++  padding: 0.35rem 0.85rem;
++  font-size: 0.625rem;
++  font-weight: 900;
++  letter-spacing: 0.16em;
++  text-transform: uppercase;
++  color: #047857;
++}
++
++.cta-primary,
++.cta-secondary {
++  display: inline-flex;
++  min-height: 44px;
++  align-items: center;
++  justify-content: center;
++  gap: 0.5rem;
++  border-radius: 1rem;
++  padding: 0.75rem 1.25rem;
++  font-size: 0.75rem;
++  font-weight: 900;
++  letter-spacing: 0.14em;
++  text-transform: uppercase;
++  transition: all 160ms ease;
++}
++
++.cta-primary {
++  background: #10b981;
++  color: #052033;
++  box-shadow: 0 16px 40px -20px rgba(16, 185, 129, 0.92);
++}
++
++.cta-primary:hover {
++  transform: translateY(-1px);
++  background: #34d399;
++}
++
++.cta-secondary {
++  border: 1px solid rgba(148, 163, 184, 0.28);
++  background: rgba(255, 255, 255, 0.82);
++  color: #0f172a;
++}
++
++.cta-secondary:hover {
++  transform: translateY(-1px);
++  background: #ffffff;
++}
++
++.portal-stage-hero-social::before {
++  background:
++    radial-gradient(circle at 86% 16%, rgba(244, 63, 94, 0.34), transparent 14rem),
++    radial-gradient(circle at 18% 18%, rgba(16, 185, 129, 0.22), transparent 16rem),
++    linear-gradient(135deg, rgba(4, 21, 33, 0.94), rgba(9, 24, 34, 0.82));
++}
++
++@media (min-width: 900px) {
++  .portal-hero-split {
++    grid-template-columns: minmax(0, 1.3fr) minmax(280px, 0.7fr);
++    align-items: start;
++  }
++
++  .portal-hero-metrics {
++    grid-template-columns: repeat(3, minmax(0, 1fr));
++  }
++
++  .portal-section-header {
++    flex-direction: row;
++    align-items: end;
++    justify-content: space-between;
++  }
++}
+diff --git a/src/pages/ComoParticiparPage.tsx b/src/pages/ComoParticiparPage.tsx
+index 1be25f5..8de69f2 100644
+--- a/src/pages/ComoParticiparPage.tsx
++++ b/src/pages/ComoParticiparPage.tsx
+@@ -1,5 +1,6 @@
+ import { Link } from "react-router-dom";
+ import { IconShell, SurfaceCard } from "../components/BrandSystem";
++import { PortalHero, PortalPageShell, PortalSectionHeader } from "../components/portal";
+ 
+ const participationLinks = [
+   { href: "/agenda", label: "Inscricoes e agenda" },
+@@ -10,19 +11,47 @@ const participationLinks = [
+ 
+ export function ComoParticiparPage() {
+   return (
+-    <section className="portal-stage space-y-8 md:space-y-10">
+-      <SurfaceCard className="portal-stage-hero portal-stage-hero-seed overflow-hidden p-0">
+-        <div className="portal-stage-hero-inner">
+-          <div className="portal-stage-copy">
+-            <IconShell tone="seed" className="portal-stage-icon"><span aria-hidden="true">🤝</span></IconShell>
+-            <h1>Como participar</h1>
+-            <p>Formas simples de entrar nas atividades públicas, receber alertas, acompanhar dados e contribuir com relatos do território.</p>
++    <PortalPageShell>
++      <PortalHero
++        tone="seed"
++        badge={<span className="badge-dados-abertos">Participação pública</span>}
++        title="Como participar"
++        subtitle="Formas simples de entrar nas atividades públicas, receber alertas, acompanhar dados e contribuir com relatos do território."
++        metrics={
++          <>
++            <div className="rounded-2xl border border-white/10 bg-white/10 p-4 text-white">
++              <div className="text-[10px] font-black uppercase tracking-[0.16em] text-white/70">Canais</div>
++              <div className="mt-2 text-3xl font-black">4</div>
++            </div>
++            <div className="rounded-2xl border border-white/10 bg-white/10 p-4 text-white">
++              <div className="text-[10px] font-black uppercase tracking-[0.16em] text-white/70">Foco</div>
++              <div className="mt-2 text-lg font-black">Agenda, relatos, alertas e dados</div>
++            </div>
++            <div className="rounded-2xl border border-white/10 bg-white/10 p-4 text-white">
++              <div className="text-[10px] font-black uppercase tracking-[0.16em] text-white/70">Próximo passo</div>
++              <div className="mt-2 text-lg font-black">Escolher uma porta de entrada</div>
++            </div>
++          </>
++        }
++        aside={
++          <div className="rounded-[1.8rem] border border-white/10 bg-white/10 p-5 text-white backdrop-blur-sm">
++            <div className="flex items-center gap-3">
++              <IconShell tone="seed" className="portal-stage-icon"><span aria-hidden="true">🤝</span></IconShell>
++              <div>
++                <div className="text-[10px] font-black uppercase tracking-[0.16em] text-white/70">Engajamento cívico</div>
++                <div className="mt-1 text-base font-black">Participar aqui significa acompanhar, relatar, comparecer e cobrar.</div>
++              </div>
++            </div>
+           </div>
+-          <div className="portal-stage-stat"><span>4</span><small>canais de participação</small></div>
+-        </div>
+-      </SurfaceCard>
++        }
++      />
+ 
+       <SurfaceCard className="portal-list-panel p-6">
++        <PortalSectionHeader
++          eyebrow={<span className="badge-metodologia">Canais de participação</span>}
++          title="Canais de participação"
++          subtitle="Quatro portas de entrada para quem quer se envolver com o portal e com o território."
++        />
+         <h2 className="text-lg font-black text-text-primary">Canais de participacao</h2>
+         <ul className="mt-3 list-disc space-y-2 pl-5 text-sm text-text-secondary md:text-base">
+           <li>Inscreva-se nas atividades da agenda para oficinas, rodas de conversa e encontros tecnicos.</li>
+@@ -33,6 +62,11 @@ export function ComoParticiparPage() {
+       </SurfaceCard>
+ 
+       <SurfaceCard className="portal-list-panel p-6">
++        <PortalSectionHeader
++          eyebrow={<span className="badge-dados-abertos">Atalhos úteis</span>}
++          title="Atalhos"
++          subtitle="Vá direto para o tipo de participação que faz sentido para você."
++        />
+         <h2 className="text-lg font-black text-text-primary">Atalhos</h2>
+         <ul className="mt-3 flex flex-wrap gap-2">
+           {participationLinks.map((item) => (
+@@ -49,6 +83,11 @@ export function ComoParticiparPage() {
+       </SurfaceCard>
+ 
+       <SurfaceCard className="portal-list-panel border-brand-primary/15 bg-brand-primary-soft p-6">
++        <PortalSectionHeader
++          eyebrow={<span className="badge-dados-abertos">Acessibilidade e contato</span>}
++          title="Acessibilidade e contato"
++          subtitle="O acesso à participação precisa ser simples, direto e suportado por canais claros."
++        />
+         <h2 className="text-lg font-black text-brand-primary">Acessibilidade e contato</h2>
+         <ul className="mt-3 list-disc space-y-2 pl-5 text-sm text-text-primary">
+           <li>Conteudo pensado para leitura objetiva, com linguagem simples e estrutura por blocos.</li>
+@@ -56,6 +95,6 @@ export function ComoParticiparPage() {
+           <li>Tambem e possivel acompanhar atualizacoes de situacao em <Link className="font-semibold text-brand-primary underline" to="/status">/status</Link>.</li>
+         </ul>
+       </SurfaceCard>
+-    </section>
++    </PortalPageShell>
+   );
+ }
+diff --git a/src/pages/GovernancaPage.tsx b/src/pages/GovernancaPage.tsx
+index 3b65575..af7d277 100644
+--- a/src/pages/GovernancaPage.tsx
++++ b/src/pages/GovernancaPage.tsx
+@@ -4,6 +4,7 @@ import changelogRaw from "../../data/changelog.md?raw";
+ import { INSTITUTIONAL_CITATION, INSTITUTIONAL_COORDINATION, INSTITUTIONAL_FUNDING, INSTITUTIONAL_SUMMARY, INSTITUTIONAL_TAGLINE } from "../content/institucional";
+ import { IconShell, SurfaceCard } from "../components/BrandSystem";
+ import { BrandRadialDivider, BrandWatermarkPanel } from "../components/BrandMicro";
++import { PortalPageShell, PortalSectionHeader } from "../components/portal";
+ 
+ function getLatestChangelogEntries(markdown: string, limit = 10): string[] {
+   return markdown
+@@ -26,7 +27,7 @@ const governanceLinks = [
+ 
+ export function GovernancaPage() {
+   return (
+-    <section className="portal-stage space-y-8 md:space-y-10">
++    <PortalPageShell>
+       <SurfaceCard className="portal-stage-hero portal-stage-hero-lab overflow-hidden p-0">
+         <div className="portal-stage-hero-inner">
+           <div className="portal-stage-copy">
+@@ -46,6 +47,11 @@ export function GovernancaPage() {
+       </SurfaceCard>
+ 
+       <SurfaceCard className="portal-list-panel p-6">
++        <PortalSectionHeader
++          eyebrow={<span className="badge-dados-abertos">Política editorial</span>}
++          title="Política de publicação"
++          subtitle="Regras mínimas para tornar conteúdo público com clareza institucional e responsabilidade editorial."
++        />
+         <BrandWatermarkPanel>
+         <h2 className="text-lg font-black text-text-primary">Política de publicação</h2>
+         <ul className="mt-3 list-disc space-y-2 pl-5 text-sm text-text-secondary md:text-base">
+@@ -58,6 +64,11 @@ export function GovernancaPage() {
+       </SurfaceCard>
+ 
+       <SurfaceCard className="portal-list-panel p-6">
++        <PortalSectionHeader
++          eyebrow={<span className="badge-metodologia">Correção e rastreabilidade</span>}
++          title="Critérios de correção"
++          subtitle="Mudanças materiais devem virar registro público; correções simples podem ser silenciosas quando não mudam o sentido."
++        />
+         <h2 className="text-lg font-black text-text-primary">Critérios de correção</h2>
+         <ul className="mt-3 list-disc space-y-2 pl-5 text-sm text-text-secondary md:text-base">
+           <li>Correções editoriais simples podem ser aplicadas sem republicação quando não alteram o sentido do conteúdo.</li>
+@@ -69,6 +80,11 @@ export function GovernancaPage() {
+       </SurfaceCard>
+ 
+       <SurfaceCard className="portal-list-panel p-6">
++        <PortalSectionHeader
++          eyebrow={<span className="badge-dados-abertos">Privacidade e observabilidade</span>}
++          title="Privacidade e transparência técnica"
++          subtitle="O portal precisa ser auditável sem expor segredos, dados pessoais desnecessários ou ruído operacional."
++        />
+         <h2 className="text-lg font-black text-text-primary">Privacidade e transparência técnica</h2>
+         <ul className="mt-3 list-disc space-y-2 pl-5 text-sm text-text-secondary md:text-base">
+           <li>Direitos de privacidade, dados pessoais e canais de contato estão descritos em <Link className="font-semibold text-brand-primary underline" to="/privacidade-lgpd">/privacidade-lgpd</Link>.</li>
+@@ -81,6 +97,11 @@ export function GovernancaPage() {
+       </SurfaceCard>
+ 
+       <SurfaceCard className="portal-list-panel p-6">
++        <PortalSectionHeader
++          eyebrow={<span className="badge-dados-abertos">Atalhos institucionais</span>}
++          title="Atalhos institucionais"
++          subtitle="Caminhos rápidos para blog, acervo, relatórios, privacidade e status técnico."
++        />
+         <h2 className="text-lg font-black text-text-primary">Atalhos institucionais</h2>
+         <ul className="mt-3 flex flex-wrap gap-2">
+           {governanceLinks.map((item) => (
+@@ -97,6 +118,11 @@ export function GovernancaPage() {
+       </SurfaceCard>
+ 
+       <SurfaceCard className="logo-watermark-soft border-brand-primary/15 bg-brand-primary-soft p-6">
++        <PortalSectionHeader
++          eyebrow={<span className="badge-metodologia">Changelog público</span>}
++          title="Changelog público"
++          subtitle="Últimos movimentos do portal registrados de forma legível para o público."
++        />
+         <h2 className="text-lg font-black text-brand-primary">Changelog público (últimos 10 itens)</h2>
+         <ul className="mt-3 list-disc space-y-2 pl-5 text-sm text-text-primary md:text-base">
+           {latestEntries.map((entry) => (
+@@ -107,6 +133,6 @@ export function GovernancaPage() {
+           Arquivo versionado em <code>data/changelog.md</code>.
+         </p>
+       </SurfaceCard>
+-    </section>
++    </PortalPageShell>
+   );
+ }
+diff --git a/src/pages/ImprensaPage.tsx b/src/pages/ImprensaPage.tsx
+index 956a027..3fc068a 100644
+--- a/src/pages/ImprensaPage.tsx
++++ b/src/pages/ImprensaPage.tsx
+@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
+ 
+ import { IconShell, SurfaceCard } from "../components/BrandSystem";
+ import { BrandRadialDivider, BrandWatermarkPanel } from "../components/BrandMicro";
++import { PortalPageShell, PortalSectionHeader } from "../components/portal";
+ import { INSTITUTIONAL_CITATION, INSTITUTIONAL_COORDINATION, INSTITUTIONAL_FUNDING, INSTITUTIONAL_SUMMARY, INSTITUTIONAL_TAGLINE } from "../content/institucional";
+ 
+ const quickLinks = [
+@@ -30,7 +31,7 @@ const downloads = [
+ 
+ export function ImprensaPage() {
+   return (
+-    <section className="portal-stage space-y-8 md:space-y-10">
++    <PortalPageShell>
+       <SurfaceCard className="portal-stage-hero portal-stage-hero-documental overflow-hidden p-0">
+         <div className="portal-stage-hero-inner">
+           <div className="portal-stage-copy">
+@@ -50,6 +51,11 @@ export function ImprensaPage() {
+       </SurfaceCard>
+ 
+       <SurfaceCard className="portal-list-panel logo-watermark-soft p-6 md:p-8">
++        <PortalSectionHeader
++          eyebrow={<span className="badge-dados-abertos">Resumo institucional</span>}
++          title="Resumo institucional"
++          subtitle="Base curta para jornalistas, assessorias e parceiros entenderem o escopo público do SEMEAR."
++        />
+         <BrandWatermarkPanel>
+         <h2 className="text-lg font-black text-text-primary">Resumo institucional</h2>
+         <div className="mt-3 space-y-3 text-sm leading-relaxed text-text-secondary md:text-base">
+@@ -61,6 +67,11 @@ export function ImprensaPage() {
+       </SurfaceCard>
+ 
+       <SurfaceCard className="portal-list-panel p-6 md:p-8">
++        <PortalSectionHeader
++          eyebrow={<span className="badge-metodologia">Uso e citação</span>}
++          title="Como citar dados"
++          subtitle="Referencie origem, recorte temporal e contexto técnico antes de reproduzir números ou interpretações."
++        />
+         <h2 className="text-lg font-black text-text-primary">Como citar dados</h2>
+         <ul className="mt-3 list-disc space-y-2 pl-5 text-sm text-text-secondary md:text-base">
+           {citationBullets.map((item) => (
+@@ -75,6 +86,11 @@ export function ImprensaPage() {
+       </SurfaceCard>
+ 
+       <SurfaceCard className="portal-list-panel p-6 md:p-8">
++        <PortalSectionHeader
++          eyebrow={<span className="badge-dados-abertos">Navegação rápida</span>}
++          title="Links rápidos"
++          subtitle="Atalhos para dados, relatórios, transparência e memória pública."
++        />
+         <h2 className="text-lg font-black text-text-primary">Links rapidos</h2>
+         <ul className="mt-3 grid gap-3 md:grid-cols-2">
+           {quickLinks.map((item) => (
+@@ -92,6 +108,11 @@ export function ImprensaPage() {
+ 
+       <section className="grid gap-6 lg:grid-cols-[1.2fr_0.8fr]">
+         <SurfaceCard className="portal-list-panel p-6 md:p-8">
++          <PortalSectionHeader
++            eyebrow={<span className="badge-dados-abertos">Contatos</span>}
++            title="Contatos"
++            subtitle="Canais institucionais e referências para imprensa e coordenação."
++          />
+           <h2 className="text-lg font-black text-text-primary">Contatos</h2>
+           <ul className="mt-3 space-y-3 text-sm text-text-secondary md:text-base">
+             {contacts.map((item) => (
+@@ -111,6 +132,11 @@ export function ImprensaPage() {
+         </SurfaceCard>
+ 
+         <SurfaceCard className="document-placeholder p-6 shadow-sm md:p-8">
++          <PortalSectionHeader
++            eyebrow={<span className="badge-metodologia">Identidade visual</span>}
++            title="Download de logos"
++            subtitle="Arquivos institucionais básicos para uso editorial controlado."
++          />
+           <h2 className="text-lg font-black text-brand-primary">Download de logos</h2>
+           <div className="mt-4 space-y-4">
+             <img
+@@ -141,6 +167,6 @@ export function ImprensaPage() {
+           </ul>
+         </SurfaceCard>
+       </section>
+-    </section>
++    </PortalPageShell>
+   );
+ }
+diff --git a/src/pages/SearchPage.tsx b/src/pages/SearchPage.tsx
+index 3be04f1..5dff4aa 100644
+--- a/src/pages/SearchPage.tsx
++++ b/src/pages/SearchPage.tsx
+@@ -4,6 +4,7 @@ import { Link, useSearchParams } from "react-router-dom";
+ import { EmptyState } from "../components/EmptyState";
+ import { ErrorState } from "../components/ErrorState";
+ import { SurfaceCard } from "../components/BrandSystem";
++import { PortalHero, PortalPageShell, PortalSectionHeader } from "../components/portal";
+ import { SkeletonCard } from "../components/SkeletonCard";
+ import {
+   searchAcervo,
+@@ -182,15 +183,28 @@ export function SearchPage() {
+   };
+ 
+   return (
+-    <section className="portal-stage search-stage space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700 md:space-y-10">
+-      <SurfaceCard className="portal-search-hero p-5 md:p-7">
+-        <div>
+-          <h1 className="text-4xl font-black tracking-[-0.055em] text-text-primary md:text-6xl">Busca no Portal</h1>
+-          <p className="mt-2 max-w-2xl text-base leading-relaxed text-text-secondary">
+-            Encontre dados, acervo, blog, relatórios, transparência e agenda em uma busca única e acessível.
+-          </p>
+-        </div>
++    <PortalPageShell className="search-stage animate-in fade-in slide-in-from-bottom-4 duration-700">
++      <PortalHero
++        badge={<span className="badge-dados-abertos">Navegação transversal</span>}
++        title="Busca no Portal"
++        subtitle="Encontre dados, acervo, blog, relatórios, transparência e agenda em uma busca única e acessível."
++        metrics={
++          <>
++          <div className="portal-kpi-card">
++            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-text-secondary">Escopo</p>
++            <p className="mt-2 text-3xl font-black text-brand-primary">6</p>
++            <p className="mt-1 text-sm text-text-secondary">frentes pesquisáveis</p>
++          </div>
++          <div className="portal-kpi-card">
++            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-text-secondary">Modo</p>
++            <p className="mt-2 text-2xl font-black text-text-primary">Busca única</p>
++            <p className="mt-1 text-sm text-text-secondary">conteúdo editorial, dados e documentos</p>
++          </div>
++          </>
++        }
++      />
+ 
++      <SurfaceCard className="portal-search-hero p-5 md:p-7">
+         <div className="relative group">
+           <label htmlFor="global-search" className="sr-only">Buscar no portal SEMEAR</label>
+           <input
+@@ -265,9 +279,16 @@ export function SearchPage() {
+         <div className="portal-results space-y-12 pb-20">
+           {results.mixed.length > 0 && (
+             <section aria-labelledby="main-results-heading">
+-              <h2 id="main-results-heading" className="mb-4 flex items-center gap-2 text-base font-black uppercase tracking-wider text-brand-primary">
+-                Resultados principais <span className="rounded-full bg-brand-primary/10 px-2 py-1 text-xs text-brand-primary">{results.mixed.length}</span>
+-              </h2>
++              <PortalSectionHeader
++                eyebrow="Leitura inicial"
++                title="Resultados principais"
++                subtitle="Abertura editorial da busca, com os itens mais relevantes para começar a leitura."
++              />
++              <h2 id="main-results-heading" className="sr-only">Resultados principais</h2>
++              <div className="mb-4 flex items-center gap-2 text-base font-black uppercase tracking-wider text-brand-primary">
++                <span>Itens encontrados</span>
++                <span className="rounded-full bg-brand-primary/10 px-2 py-1 text-xs text-brand-primary">{results.mixed.length}</span>
++              </div>
+               <div className="grid gap-5 md:grid-cols-2">
+                 {results.mixed.map((item) => {
+                   const matchedReport = item.kind === "report"
+@@ -296,6 +317,11 @@ export function SearchPage() {
+ 
+           {results.reports.length > 0 && (
+             <div className="space-y-4">
++              <PortalSectionHeader
++                eyebrow="Biblioteca pública"
++                title="Relatórios"
++                subtitle="Notas técnicas, relatórios e boletins relacionados ao termo pesquisado."
++              />
+               <h2 className="flex items-center gap-2 text-xs font-black uppercase tracking-[0.3em] text-cta">
+                 Relatórios <span className="rounded-full bg-cta/10 px-2 py-0.5 text-[10px] text-cta">{results.reports.length}</span>
+               </h2>
+@@ -317,6 +343,11 @@ export function SearchPage() {
+ 
+           {results.acervo.length > 0 && (
+             <div className="space-y-4">
++              <PortalSectionHeader
++                eyebrow="Memória"
++                title="Acervo"
++                subtitle="Itens históricos, documentos e registros relacionados ao tema."
++              />
+               <h2 className="text-xs font-black uppercase tracking-[0.3em] text-cta">Acervo</h2>
+               <div className="grid gap-5 md:grid-cols-2">
+                 {results.acervo.map((item) => (
+@@ -331,6 +362,11 @@ export function SearchPage() {
+ 
+           {results.blog.length > 0 && (
+             <div className="space-y-4">
++              <PortalSectionHeader
++                eyebrow="Leitura pública"
++                title="Blog"
++                subtitle="Textos editoriais e publicações recentes associados à busca."
++              />
+               <h2 className="text-xs font-black uppercase tracking-[0.3em] text-cta">Blog</h2>
+               <div className="grid gap-5 md:grid-cols-2">
+                 {results.blog.map((post) => (
+@@ -345,6 +381,11 @@ export function SearchPage() {
+ 
+           {results.events.length > 0 && (
+             <div className="space-y-4">
++              <PortalSectionHeader
++                eyebrow="Mobilização"
++                title="Agenda"
++                subtitle="Eventos, encontros e atividades públicas relacionados ao tema."
++              />
+               <h2 className="text-xs font-black uppercase tracking-[0.3em] text-cta">Agenda</h2>
+               <div className="grid gap-5 md:grid-cols-2">
+                 {results.events.map((event) => (
+@@ -358,6 +399,11 @@ export function SearchPage() {
+ 
+           {results.transparency.length > 0 && (
+             <div className="space-y-4">
++              <PortalSectionHeader
++                eyebrow="Prestação de contas"
++                title="Transparência"
++                subtitle="Lançamentos financeiros e registros públicos associados ao termo pesquisado."
++              />
+               <h2 className="text-xs font-black uppercase tracking-[0.3em] text-cta">Transparência</h2>
+               <div className="grid gap-5 md:grid-cols-2">
+                 {results.transparency.map((expense) => (
+@@ -374,7 +420,7 @@ export function SearchPage() {
+           )}
+         </div>
+       )}
+-    </section>
++    </PortalPageShell>
+   );
+ }
+ 
+diff --git a/src/pages/SobrePage.tsx b/src/pages/SobrePage.tsx
+index b1c1177..98ed21f 100644
+--- a/src/pages/SobrePage.tsx
++++ b/src/pages/SobrePage.tsx
+@@ -1,9 +1,10 @@
+ import { IconShell, SurfaceCard } from "../components/BrandSystem";
++import { PortalPageShell, PortalSectionHeader } from "../components/portal";
+ import { INSTITUTIONAL_CITATION, INSTITUTIONAL_COORDINATION, INSTITUTIONAL_FUNDING, INSTITUTIONAL_SUMMARY, INSTITUTIONAL_TAGLINE, INSTITUTIONAL_UNIVERSITY_FULL_NAME } from "../content/institucional";
+ 
+ export function SobrePage() {
+   return (
+-    <section className="portal-stage about-stage space-y-8 md:space-y-10">
++    <PortalPageShell className="about-stage">
+       {/* Hero Section */}
+       <SurfaceCard className="portal-stage-hero portal-stage-hero-lab overflow-hidden p-0">
+         <div className="portal-stage-hero-inner">
+@@ -49,6 +50,11 @@ export function SobrePage() {
+ 
+       {/* Core Principles */}
+       <SurfaceCard className="portal-list-panel p-6 md:p-8">
++        <PortalSectionHeader
++          eyebrow={<span className="badge-dados-abertos">Princípios institucionais</span>}
++          title="Princípios e valores"
++          subtitle="A base pública do portal se apoia em ciência aberta, justiça ambiental e memória coletiva."
++        />
+         <h2 className="mb-6 text-2xl font-black text-text-primary">Princípios e Valores</h2>
+         <div className="grid gap-6 md:grid-cols-3">
+           <div>
+@@ -91,6 +97,11 @@ export function SobrePage() {
+ 
+       {/* What We Do */}
+       <SurfaceCard className="portal-list-panel p-6 md:p-8">
++        <PortalSectionHeader
++          eyebrow={<span className="badge-metodologia">Frentes do projeto</span>}
++          title="O que fazemos"
++          subtitle="Monitoramento, memória pública, formação e leitura territorial climática."
++        />
+         <h2 className="mb-6 text-2xl font-black text-text-primary">O Que Fazemos</h2>
+         <div className="space-y-4">
+           <div className="flex gap-4">
+@@ -153,6 +164,11 @@ export function SobrePage() {
+ 
+       {/* Team & Contact */}
+       <SurfaceCard className="portal-list-panel border-brand-primary/15 bg-brand-primary-soft p-6 md:p-8">
++        <PortalSectionHeader
++          eyebrow={<span className="badge-dados-abertos">Contato institucional</span>}
++          title="Coordenação e contato"
++          subtitle="Referências institucionais para diálogo público, imprensa e transparência."
++        />
+         <h2 className="mb-4 text-2xl font-black text-brand-primary">Coordenação e Contato</h2>
+         <p className="text-base text-text-primary">
+           <strong>Coordenação Institucional:</strong> {INSTITUTIONAL_COORDINATION}
+@@ -164,6 +180,6 @@ export function SobrePage() {
+           <strong>Transparência:</strong> Acesse a <a href="/transparencia" className="text-brand-primary hover:underline">prestação de contas completa</a>
+         </p>
+       </SurfaceCard>
+-    </section>
++    </PortalPageShell>
+   );
+ }
+diff --git a/src/pages/StatusPage.tsx b/src/pages/StatusPage.tsx
+index 0c53290..5526fd3 100644
+--- a/src/pages/StatusPage.tsx
++++ b/src/pages/StatusPage.tsx
+@@ -7,10 +7,9 @@ import {
+   EditorialCardExcerpt,
+   EditorialCardMeta,
+   EditorialCardTitle,
+-  IconShell,
+-  SectionHeader,
+   SurfaceCard
+ } from "../components/BrandSystem";
++import { PortalHero, PortalPageShell, PortalSectionHeader } from "../components/portal";
+ import { getOpsKpisMonth, getSystemStatus, type OpsKPI, type SystemStatus } from "../lib/api";
+ import { getContrastAuditResults } from "../lib/contrastAudit";
+ import { getObservabilityErrorSummaryLast24h, trackCsvDownload, trackShare } from "../lib/observability";
+@@ -267,29 +266,37 @@ export function StatusPage() {
+   }
+ 
+   return (
+-    <section className="portal-stage status-stage space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700 pb-20 md:space-y-10">
+-      <SurfaceCard className="portal-stage-hero portal-stage-hero-lab overflow-hidden p-0">
+-        <div className="portal-stage-hero-inner">
+-          <div className="portal-stage-copy">
+-            <IconShell tone="lab" className="portal-stage-icon">
+-              <span aria-hidden="true">⎈</span>
+-            </IconShell>
+-            <h1>Status do Sistema</h1>
+-            <p>Visão consolidada da integridade técnica, operacional, financeira e editorial do portal SEMEAR.</p>
++    <PortalPageShell className="status-stage animate-in fade-in slide-in-from-bottom-4 duration-700 pb-20">
++      <PortalHero
++        badge={<span className="badge-dados-abertos">Operação pública</span>}
++        title="Status do Sistema"
++        subtitle="Visão consolidada da integridade técnica, operacional, financeira e editorial do portal SEMEAR."
++        tone="lab"
++        metrics={
++          <>
++          <div className="portal-kpi-card portal-kpi-card-lab">
++            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-text-secondary">Rede monitorada</p>
++            <p className="mt-2 text-3xl font-black text-brand-primary">{status.monitoring.stations_count}</p>
++            <p className="mt-1 text-sm text-text-secondary">estação(ões) ativas</p>
+           </div>
+-          <div className="portal-stage-stat">
+-            <span>{status.monitoring.stations_count}</span>
+-            <small>estação(ões) monitorada(s)</small>
++          <div className="portal-kpi-card">
++            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-text-secondary">Medições 24h</p>
++            <p className="mt-2 text-3xl font-black text-text-primary">{formatNumber(status.monitoring.measurements_24h)}</p>
++            <p className="mt-1 text-sm text-text-secondary">leituras recentes consolidadas</p>
+           </div>
+-        </div>
+-      </SurfaceCard>
++          </>
++        }
++      />
+ 
+       <SurfaceCard className="portal-list-panel p-6 md:p-8">
++        <PortalSectionHeader
++          eyebrow="Boletim mensal"
++          title="Resumo exportável de operação"
++          subtitle="Selecione o período para gerar um resumo institucional e exportar os KPIs consolidados do mês."
++        />
+         <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+           <div>
+             <p className="text-[10px] font-black uppercase tracking-[0.28em] text-ciano">Boletim Mensal</p>
+-            <h2 className="mt-2 text-2xl font-black text-texto">Resumo exportavel de operacao</h2>
+-            <p className="mt-2 text-sm text-texto/60">Selecione o periodo para gerar um resumo institucional e exportar os KPIs consolidados do mes.</p>
+           </div>
+           <div className="grid gap-3 sm:grid-cols-2">
+             <label className="flex flex-col gap-1 text-xs font-bold uppercase tracking-wide text-texto/70">
+@@ -414,10 +421,10 @@ export function StatusPage() {
+       </SurfaceCard>
+ 
+       <SurfaceCard className="p-6 md:p-8">
+-        <SectionHeader
++        <PortalSectionHeader
+           eyebrow="Operação"
+           title="Rede, transparência e conteúdo"
+-          description="Uma leitura institucional dos sinais do sistema, com mais hierarquia e menos aparência de console técnico."
++          subtitle="Uma leitura institucional dos sinais do sistema, com mais hierarquia e menos aparência de console técnico."
+         />
+         <div className="mt-6 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+           <EditorialCard variant="compact">
+@@ -644,10 +651,10 @@ export function StatusPage() {
+       )}
+ 
+       <SurfaceCard className="p-6 md:p-8">
+-        <SectionHeader
++        <PortalSectionHeader
+           eyebrow="Conteúdo"
+           title="Próximos passos e memória digital"
+-          description="Uma leitura final mais editorial para agenda, blog e acervo, fechando o Status com a mesma linguagem do restante do portal."
++          subtitle="Uma leitura final mais editorial para agenda, blog e acervo, fechando o Status com a mesma linguagem do restante do portal."
+         />
+         <div className="mt-6 grid gap-5 md:grid-cols-2">
+           <EditorialCard variant="standard">
+@@ -699,7 +706,7 @@ export function StatusPage() {
+           </EditorialCard>
+         </div>
+       </SurfaceCard>
+-    </section>
++    </PortalPageShell>
+   );
+ }
+ 
+diff --git a/src/pages/TransparenciaPage.tsx b/src/pages/TransparenciaPage.tsx
+index eec3205..28a3094 100644
+--- a/src/pages/TransparenciaPage.tsx
++++ b/src/pages/TransparenciaPage.tsx
+@@ -4,7 +4,8 @@ import { useSearchParams } from "react-router-dom";
+ import { EmptyState } from "../components/EmptyState";
+ import { ErrorState } from "../components/ErrorState";
+ import { SkeletonCard } from "../components/SkeletonCard";
+-import { IconShell, SurfaceCard } from "../components/BrandSystem";
++import { SurfaceCard } from "../components/BrandSystem";
++import { PortalHero, PortalPageShell, PortalSectionHeader } from "../components/portal";
+ import {
+   getTransparencySummary,
+   listExpenses,
+@@ -267,24 +268,27 @@ export function TransparenciaPage() {
+   }
+ 
+   return (
+-    <section className="portal-stage transparency-stage space-y-8 md:space-y-10">
+-      <SurfaceCard className="portal-stage-hero portal-stage-hero-lab overflow-hidden p-0">
+-        <div className="portal-stage-hero-inner">
+-          <div className="portal-stage-copy">
+-            <IconShell tone="lab" className="portal-stage-icon">
+-            <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+-            </svg>
+-            </IconShell>
+-            <h1>Transparência e prestação de contas</h1>
+-            <p>Acompanhamento financeiro público, auditável e exportável do projeto SEMEAR, com filtros por período, categoria e fornecedor.</p>
++    <PortalPageShell className="transparency-stage">
++      <PortalHero
++        badge={<span className="badge-metodologia">Prestação de contas</span>}
++        title="Transparência e prestação de contas"
++        subtitle="Acompanhamento financeiro público, auditável e exportável do projeto SEMEAR, com filtros por período, categoria e fornecedor."
++        tone="lab"
++        metrics={
++          <>
++          <div className="portal-kpi-card portal-kpi-card-lab">
++            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-text-secondary">Total histórico</p>
++            <p className="mt-2 text-3xl font-black text-success">{summary ? formatBRL(summary.total_cents) : "R$ 0,00"}</p>
++            <p className="mt-1 text-sm text-text-secondary">publicado e auditável</p>
+           </div>
+-          <div className="portal-stage-stat">
+-            <span>{summary ? formatBRL(summary.total_cents) : "R$ 0"}</span>
+-            <small>total histórico publicado</small>
++          <div className="portal-kpi-card">
++            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-text-secondary">Período filtrado</p>
++            <p className="mt-2 text-3xl font-black text-brand-primary">{formatBRL(periodKpis.total)}</p>
++            <p className="mt-1 text-sm text-text-secondary">{periodKpis.count} lançamento(s)</p>
+           </div>
+-        </div>
+-      </SurfaceCard>
++          </>
++        }
++      />
+ 
+       <SurfaceCard className="portal-list-panel p-5 md:p-6">
+           <p className="text-sm font-semibold text-accent-lab">{INSTITUTIONAL_FUNDING} · todos os recursos são públicos</p>
+@@ -319,7 +323,11 @@ export function TransparenciaPage() {
+       </section>
+ 
+       <SurfaceCard className="portal-filter-panel p-6 md:p-8">
+-        <h2 className="text-lg font-black text-text-primary">Filtrar lançamentos</h2>
++        <PortalSectionHeader
++          eyebrow="Filtro ativo"
++          title="Filtrar lançamentos"
++          subtitle="Refine a prestação de contas por período, categoria ou fornecedor sem alterar a base publicada."
++        />
+         <div className="mt-4 grid gap-4 md:grid-cols-4">
+           <div>
+             <label htmlFor="filtro-mes" className="mb-1 block text-xs font-bold uppercase tracking-wide text-text-secondary">Mês</label>
+@@ -378,9 +386,13 @@ export function TransparenciaPage() {
+       </section>
+ 
+       <SurfaceCard className="portal-list-panel p-6 md:p-8">
++        <PortalSectionHeader
++          eyebrow="Base aberta"
++          title="Despesas lançadas"
++          subtitle="Tabela pública com documentos associados quando disponíveis."
++        />
+         <div className="mb-6 flex items-center justify-between gap-3">
+           <div>
+-            <h2 className="text-2xl font-black text-text-primary">Despesas lançadas</h2>
+             <p className="mt-1 text-xs text-text-secondary">Documentos são publicados quando disponíveis.</p>
+           </div>
+           <button type="button" onClick={handleDownloadExpensesCsv} className="ui-btn-secondary motion-focus motion-action px-4">
+@@ -438,7 +450,11 @@ export function TransparenciaPage() {
+       </SurfaceCard>
+ 
+       <SurfaceCard className="portal-list-panel p-6 md:p-8">
+-        <h2 className="text-2xl font-black text-text-primary">Links oficiais de controle</h2>
++        <PortalSectionHeader
++          eyebrow="Controle externo"
++          title="Links oficiais de controle"
++          subtitle="Atalhos públicos para referências institucionais e acompanhamento complementar."
++        />
+         <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+           {links.map((link) => (
+             <a key={link.id} href={link.url} target="_blank" rel="noopener noreferrer" className="group motion-list-item flex flex-col gap-2 rounded-xl border border-border-subtle bg-bg-surface p-4 motion-surface motion-surface-hover">
+@@ -492,7 +508,7 @@ export function TransparenciaPage() {
+           </div>
+         </div>
+       )}
+-    </section>
++    </PortalPageShell>
+   );
+ }
+ 

@@ -1,123 +1,55 @@
-import { useEffect, useState, useMemo } from "react";
+import { Suspense, lazy, useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 
-import { IconShell, SurfaceCard } from "../../components/BrandSystem";
-import { MethodologyNotice } from "../../components/air/MethodologyNotice";
-import { DataFreshnessNotice } from "../../components/air/DataFreshnessNotice";
-import { AqiChart } from "../../components/air/AqiChart";
-import { IneaHistoricalTimeline } from "../../components/air/IneaHistoricalTimeline";
-import { AqiExplainer } from "../../components/air/AqiExplainer";
-import { HistoricalRawEvidenceBox } from "../../components/air/HistoricalRawEvidenceBox";
-import { AirAtlasMap } from "../../components/air/AirAtlasMap";
-import { YearExplorer } from "../../components/air/YearExplorer";
-import { ParticulateTimeline2020_2026 } from "../../components/air/ParticulateTimeline2020_2026";
-import { AttentionEpisodesPanel } from "../../components/air/AttentionEpisodesPanel";
-import { ThresholdComparisonPanel } from "../../components/air/ThresholdComparisonPanel";
-import { gases2024StationSummary } from "../../data/air/gases-2024-station-summary";
+import { RadarHero } from "./radar/RadarHero";
+import { RadarLaiModal } from "./radar/RadarLaiModal";
+import { RadarModeNav } from "./radar/RadarModeNav";
+import { RadarOverviewMode } from "./radar/RadarOverviewMode";
+import { RadarQuickSummary } from "./radar/RadarQuickSummary";
+import { RadarStationsMode } from "./radar/RadarStationsMode";
+import {
+  type BreakdownItem,
+  type LatestResult,
+  LAI_TEMPLATE,
+  type RadarComparisonTab,
+  type RadarMode,
+  type SummaryStats,
+  getIneaClassificationStyle
+} from "./radar/RadarTypes";
 
-interface StationSummary {
-  id: string;
-  name: string;
-  code: string;
-  lat: number | null;
-  lng: number | null;
-  active: boolean;
-}
+export { getIneaClassificationStyle };
 
-interface LatestResult {
-  station: StationSummary;
-  measured_at: string | null;
-  measurements: any[];
-}
+const RadarMapMode = lazy(() =>
+  import("./radar/RadarMapMode").then((module) => ({ default: module.RadarMapMode }))
+);
+const RadarTimeMode = lazy(() =>
+  import("./radar/RadarTimeMode").then((module) => ({ default: module.RadarTimeMode }))
+);
+const RadarTerritoryMode = lazy(() =>
+  import("./radar/RadarTerritoryMode").then((module) => ({ default: module.RadarTerritoryMode }))
+);
+const RadarMethodologyMode = lazy(() =>
+  import("./radar/RadarMethodologyMode").then((module) => ({ default: module.RadarMethodologyMode }))
+);
 
-interface SummaryStats {
-  totalStations: number;
-  timeRange: { minDate: string; maxDate: string };
-  totalMeasurements: number;
-  moderateOrWorseDaysCount: number;
-  mostFrequentControllingPollutant: string;
-  latest_ingested_at?: string | null;
-}
+type RadarDataNotice =
+  | { kind: "homologation"; message: string }
+  | { kind: "partial"; message: string }
+  | null;
 
-interface BreakdownItem {
-  BOA: number;
-  MODERADA: number;
-  RUIM: number;
-  "MUITO RUIM": number;
-  "PÉSSIMA": number;
-  moderateOrWorseDays: number;
-  totalDays: number;
-}
-
-const STATIC_STATIONS_MAP = [
-  {
-    station: { id: "belmonte", name: "VR-Belmonte", code: "BEL", lat: -22.517677, lng: -44.13254, active: true },
-    measured_at: null,
-    measurements: [],
-    description: "Estação oficial presente na base pública do INEA localizada no bairro Belmonte."
-  },
-  {
-    station: { id: "retiro", name: "VR-Retiro", code: "RET", lat: -22.502349, lng: -44.12281, active: true },
-    measured_at: null,
-    measurements: [],
-    description: "Estação oficial fixa automática na Av. Jaraguá (Retiro), monitorando área residencial."
-  },
-  {
-    station: { id: "santa-cecilia", name: "VR-Santa Cecília", code: "SCE", lat: -22.52253, lng: -44.106564, active: true },
-    measured_at: null,
-    measurements: [],
-    description: "Estação oficial localizada na Vila Santa Cecília, importante ponto comercial."
-  },
-  {
-    station: { id: "nossa-sra-graças", name: "VR-Nossa Sra. das Graças (Van)", code: "NSG", lat: -22.50656, lng: -44.09669, active: true },
-    measured_at: null,
-    measurements: [],
-    description: "Estação móvel automática instalada no campus do IFRJ (Aterrado) em 27/10/2023."
-  }
-];
-
-const LAI_TEMPLATE = `Prezados,
-
-Com amparo na Lei Federal de Acesso à Informação (Lei nº 12.527/2011) e na Lei Estadual do Rio de Janeiro nº 9.176/2021 (que rege as obrigações de transparência ativa), solicito o fornecimento, em formato aberto, estruturado e legível por máquina (como CSV, XLSX ou equivalente), da série histórica de dados de monitoramento de qualidade do ar obtidos pelas estações automáticas oficiais localizadas no município de Volta Redonda/RJ.
-
-Especificamente, requerem-se as informações conforme as seguintes especificações:
-
-1. Estações Monitoradas:
-   - VR-Retiro (localização aproximada: Av. Jaraguá, nº 800, bairro Retiro - Lat: -22.502349, Long: -44.122810);
-   - VR-Belmonte (localização aproximada: Bairro Belmonte - Lat: -22.517677, Long: -44.132540);
-   - VR-Santa Cecília (localização aproximada: Av. Vinte e Um, Vila Santa Cecília - Lat: -22.522530, Long: -44.106564).
-
-2. Período dos Dados:
-   - De 01 de janeiro de 2010 (ou desde a data de instalação/início de operação de cada estação, caso posterior) até 31 de dezembro de 2021.
-
-3. Variáveis e Parâmetros Requeridos:
-   - Registros com resolução temporal de médias horárias e médias diárias contendo:
-     - Concentrações físicas dos poluentes monitorados em suas respectivas unidades físicas de medida (µg/m³ ou ppm), incluindo Material Particulado (MP10 e MP2.5), Dióxido de Enxofre (SO2), Dióxido de Nitrogênio (NO2), Ozônio (O3) e Monóxido de Carbono (CO);
-     - Subíndices de qualidade do ar calculados para cada poluente e o Índice de Qualidade do Ar consolidado (IQAr) diário;
-     - Sinalizações de validação técnica do registro (flags de qualidade) e identificação de dados ausentes ou inválidos por falha técnica.
-
-Solicito também os microdados que deram origem aos relatórios RQAr, ao diagnóstico de rede e aos estudos acadêmicos que utilizaram dados das estações de Volta Redonda.
-
-Solicito que os dados sejam enviados por meio de arquivos digitais anexos ou disponibilização de link de download direto, conforme preconiza o art. 8º, § 3º, inciso II da Lei nº 12.527/2011, evitando o envio de arquivos digitalizados em formato de imagem ou documentos PDF que impeçam o tratamento computacional dos dados.
-
-Agradeço a atenção e aguardo o retorno no prazo legal.`;
-
-export function getIneaClassificationStyle(classification: string | null | undefined) {
-  const cls = (classification || "").toUpperCase().trim();
-  switch (cls) {
-    case "BOA":
-      return "border-emerald-500/20 bg-emerald-50 text-emerald-800";
-    case "MODERADA":
-      return "border-amber-500/20 bg-amber-50 text-amber-900";
-    case "RUIM":
-      return "border-orange-500/20 bg-orange-50 text-orange-950";
-    case "MUITO RUIM":
-      return "border-red-500/20 bg-red-50 text-red-900";
-    case "PÉSSIMA":
-      return "border-purple-500/20 bg-purple-50 text-purple-900";
-    default:
-      return "border-slate-300 bg-slate-50 text-slate-700";
-  }
+function RadarModeLoadingFallback() {
+  return (
+    <div className="rounded-[2rem] border border-divider-subtle bg-white/90 p-6 shadow-[0_24px_80px_rgba(15,23,42,0.08)] backdrop-blur">
+      <div className="animate-pulse space-y-4">
+        <div className="h-4 w-40 rounded-full bg-slate-200/70" />
+        <div className="h-10 w-72 rounded-2xl bg-slate-200/70" />
+        <div className="grid gap-4 md:grid-cols-2">
+          <div className="h-40 rounded-[1.5rem] bg-slate-200/60" />
+          <div className="h-40 rounded-[1.5rem] bg-slate-200/60" />
+        </div>
+      </div>
+    </div>
+  );
 }
 
 export function IneaRadarPage() {
@@ -129,26 +61,27 @@ export function IneaRadarPage() {
   const [monthlyProfile, setMonthlyProfile] = useState<any[]>([]);
   const [controllerFreq, setControllerFreq] = useState<any[]>([]);
   const [dataGaps, setDataGaps] = useState<any[]>([]);
-
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
-  const [retryTrigger, setRetryTrigger] = useState<number>(0);
+  const [loading, setLoading] = useState(true);
+  const [notice, setNotice] = useState<RadarDataNotice>(null);
+  const [retryTrigger, setRetryTrigger] = useState(0);
   const [isLaiModalOpen, setIsLaiModalOpen] = useState(false);
   const [copiedLai, setCopiedLai] = useState(false);
+  const [currentMode, setCurrentMode] = useState<RadarMode>("OVERVIEW");
+  const [comparisonTab, setComparisonTab] = useState<RadarComparisonTab>("TREND");
 
   useEffect(() => {
     async function fetchData() {
       try {
         setLoading(true);
-        setError(null);
+        setNotice(null);
 
         const [resSummary, resLatest, resRankings, resMonthly, resController, resGaps] = await Promise.all([
-          fetch("/api/air/inea/summary").then(r => r.ok ? r.json() : null),
-          fetch("/api/air/inea/latest").then(r => r.ok ? r.json() : null),
-          fetch("/api/air/inea/classification-days").then(r => r.ok ? r.json() : null),
-          fetch("/api/air/inea/analytics/monthly-profile").then(r => r.ok ? r.json() : null),
-          fetch("/api/air/inea/analytics/controller-frequency").then(r => r.ok ? r.json() : null),
-          fetch("/api/air/inea/analytics/data-gaps").then(r => r.ok ? r.json() : null)
+          fetch("/api/air/inea/summary").then((r) => (r.ok ? r.json() : null)),
+          fetch("/api/air/inea/latest").then((r) => (r.ok ? r.json() : null)),
+          fetch("/api/air/inea/classification-days").then((r) => (r.ok ? r.json() : null)),
+          fetch("/api/air/inea/analytics/monthly-profile").then((r) => (r.ok ? r.json() : null)),
+          fetch("/api/air/inea/analytics/controller-frequency").then((r) => (r.ok ? r.json() : null)),
+          fetch("/api/air/inea/analytics/data-gaps").then((r) => (r.ok ? r.json() : null))
         ]);
 
         if (resSummary) setSummary(resSummary);
@@ -168,32 +101,58 @@ export function IneaRadarPage() {
         if (resGaps) setDataGaps(resGaps);
 
         if (!resSummary || !resLatest) {
-          setError("Não foi possível carregar alguns dados oficiais.");
+          const isLocalHomologation =
+            typeof window !== "undefined" &&
+            (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1");
+
+          if (isLocalHomologation) {
+            setNotice({
+              kind: "homologation",
+              message: "Ambiente de homologação: usando dados estáticos/fallback."
+            });
+          } else if (!resSummary && !resLatest) {
+            setNotice({
+              kind: "partial",
+              message: "Parte das leituras públicas está temporariamente indisponível. A experiência segue com contexto editorial e dados de apoio."
+            });
+          }
         }
       } catch (err: any) {
         console.error("Failed to load official INEA data:", err);
-        setError("Não foi possível carregar os dados oficiais do INEA.");
+        const isLocalHomologation =
+          typeof window !== "undefined" &&
+          (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1");
+
+        setNotice(
+          isLocalHomologation
+            ? {
+                kind: "homologation",
+                message: "Ambiente de homologação: usando dados estáticos/fallback."
+              }
+            : {
+                kind: "partial",
+                message: "Parte das leituras públicas está temporariamente indisponível. A experiência segue com contexto editorial e dados de apoio."
+              }
+        );
       } finally {
         setLoading(false);
       }
     }
+
     void fetchData();
   }, [retryTrigger]);
 
-  // Fetch timeseries when selected chart station changes
   useEffect(() => {
     if (!selectedStationChart) return;
     let cancelled = false;
 
     async function loadChartData() {
       try {
-        const data = await fetch(
-          `/api/air/inea/timeseries?stationId=${selectedStationChart}&metricType=GENERAL_AQI`
-        ).then(r => {
+        const data = await fetch(`/api/air/inea/timeseries?stationId=${selectedStationChart}&metricType=GENERAL_AQI`).then((r) => {
           if (!r.ok) throw new Error("HTTP " + r.status);
           return r.json();
         });
-        
+
         if (!cancelled) {
           setTimeseries(data);
         }
@@ -203,10 +162,11 @@ export function IneaRadarPage() {
     }
 
     void loadChartData();
-    return () => { cancelled = true; };
+    return () => {
+      cancelled = true;
+    };
   }, [selectedStationChart]);
 
-  // Handle hash scrolling on page load
   useEffect(() => {
     if (window.location.hash) {
       const id = window.location.hash.substring(1);
@@ -226,6 +186,12 @@ export function IneaRadarPage() {
     }
   };
 
+  const navigateMode = (mode: RadarMode, tab?: RadarComparisonTab) => {
+    setCurrentMode(mode);
+    if (tab) setComparisonTab(tab);
+    scrollToId("subnav-anchor");
+  };
+
   const handleCopyLai = async () => {
     try {
       await navigator.clipboard.writeText(LAI_TEMPLATE);
@@ -236,30 +202,30 @@ export function IneaRadarPage() {
     }
   };
 
-  // Prepares the rankings sorted by moderate or worse days descending
   const sortedRankings = useMemo(() => {
     if (latestData.length === 0) return [];
     return Object.entries(rankings)
       .map(([stationId, breakdown]) => {
-        const s = latestData.find(l => l.station.id === stationId)?.station;
+        const station = latestData.find((l) => l.station.id === stationId)?.station;
         return {
           id: stationId,
-          name: s?.name || "Estação Desconhecida",
+          name: station?.name || "Estação Desconhecida",
           ...breakdown
         };
       })
       .sort((a, b) => b.moderateOrWorseDays - a.moderateOrWorseDays);
   }, [rankings, latestData]);
 
-  // Prepares chart series data
-  const chartPoints = useMemo(() => {
-    return timeseries.map(t => ({
-      ts: t.measured_at,
-      value: t.air_quality_index
-    }));
-  }, [timeseries]);
+  const chartPoints = useMemo(
+    () =>
+      timeseries.map((t) => ({
+        ts: t.measured_at,
+        value: t.air_quality_index
+      })),
+    [timeseries]
+  );
 
-  const displaySummary = summary || {
+  const displaySummary: SummaryStats = summary || {
     totalStations: 4,
     totalMeasurements: 15696,
     timeRange: { minDate: "2022-01-02", maxDate: "2025-02-13" },
@@ -268,1036 +234,113 @@ export function IneaRadarPage() {
     latest_ingested_at: null
   };
 
-  const displayLatestData = latestData.length > 0 ? latestData : STATIC_STATIONS_MAP;
-
   if (loading) {
     return (
-      <div className="container mx-auto px-4 py-8 max-w-7xl space-y-8 animate-pulse">
-        <div className="h-48 bg-slate-200/40 rounded-2xl" />
+      <div className="container mx-auto max-w-7xl animate-pulse space-y-8 px-4 py-8">
+        <div className="h-48 rounded-2xl bg-slate-200/40" />
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
           {[...Array(5)].map((_, i) => (
-            <div key={i} className="h-24 bg-slate-200/40 rounded-2xl" />
+            <div key={i} className="h-24 rounded-2xl bg-slate-200/40" />
           ))}
         </div>
-        <div className="h-96 bg-slate-200/40 rounded-2xl" />
+        <div className="h-96 rounded-2xl bg-slate-200/40" />
       </div>
     );
   }
 
   return (
-    <div className="container mx-auto px-4 py-8 max-w-7xl space-y-12 relative">
-      {/* Breadcrumbs */}
-      <div className="flex items-center gap-2 text-xs font-semibold text-slate-500">
-        <Link to="/qualidade-ar" className="hover:text-slate-800 transition-colors">Radar do Ar</Link>
-        <span>/</span>
-        <span className="text-slate-800">INEA</span>
-      </div>
+    <div className="relative min-h-screen w-full overflow-hidden bg-ambient-zen bg-dot-grid py-8">
+      <div className="pointer-events-none absolute left-1/4 top-1/4 h-[35rem] w-[35rem] rounded-full bg-emerald-400/5 blur-3xl" />
+      <div className="pointer-events-none absolute right-1/4 top-2/3 h-[40rem] w-[40rem] rounded-full bg-blue-500/5 blur-3xl" />
+      <div className="pointer-events-none absolute bottom-10 left-10 h-[30rem] w-[30rem] rounded-full bg-rose-500/5 blur-3xl" />
 
-      {/* 1. Hero Narrativo */}
-      <SurfaceCard className="portal-stage-hero portal-stage-hero-lab overflow-hidden p-0">
-        <div className="portal-stage-hero-inner">
-          <div className="portal-stage-copy max-w-3xl">
-            <IconShell tone="lab" className="portal-stage-icon">
-              <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-              </svg>
-            </IconShell>
-            <h1 className="text-2xl md:text-3xl font-extrabold text-slate-800 tracking-tight leading-tight">
-              Observatório do Ar — Volta Redonda
-            </h1>
-            <p className="text-slate-500 text-sm font-medium mt-2">
-              Explore a história recente da qualidade do ar, compare com a lei brasileira e com a OMS, e veja onde há leitura, alerta e silêncio.
-            </p>
-            <div className="flex flex-wrap items-center gap-2 mt-4">
-              <button
-                onClick={() => scrollToId("mapa")}
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-lg text-xs transition-colors shadow-sm"
-              >
-                Explorar mapa
-              </button>
-              <button
-                onClick={() => scrollToId("anos")}
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-slate-850 hover:bg-slate-800 text-white border border-slate-700 font-bold rounded-lg text-xs transition-colors"
-              >
-                Ver por ano
-              </button>
-              <button
-                onClick={() => scrollToId("comparar")}
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-slate-850 hover:bg-slate-800 text-white border border-slate-700 font-bold rounded-lg text-xs transition-colors"
-              >
-                Comparar com OMS
-              </button>
-              <button
-                onClick={() => scrollToId("novos-parametros")}
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-slate-850 hover:bg-slate-800 text-white border border-slate-700 font-bold rounded-lg text-xs transition-colors"
-              >
-                SO₂ e CO Experimental (2024)
-              </button>
-              <button
-                onClick={() => scrollToId("metodologia")}
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700/60 font-bold rounded-lg text-xs transition-colors"
-              >
-                Entender a metodologia
-              </button>
-            </div>
-          </div>
-          <div className="portal-stage-stat shrink-0">
-            <span>{displaySummary.totalStations} Estações</span>
-            <small>Volta Redonda-RJ</small>
-          </div>
-        </div>
-      </SurfaceCard>
-
-      {/* Frase de Impacto */}
-      <div className="border-l-4 border-emerald-500 bg-gradient-to-r from-emerald-50/30 to-transparent p-4 rounded-r-xl">
-        <blockquote className="text-sm md:text-base font-black text-emerald-800 tracking-wide italic">
-          "O dado que aparece importa. O dado que some também."
-        </blockquote>
-      </div>
-
-      {error && (
-        <div className="p-4 bg-red-50 border border-red-200 text-red-800 text-xs font-semibold rounded-2xl">
-          ⚠️ <strong>Nota:</strong> Não foi possível carregar os dados atualizados de todas as APIs. Exibindo dados estáticos conhecidos.
-          <button
-            onClick={() => setRetryTrigger(prev => prev + 1)}
-            className="ml-3 underline hover:text-red-950 font-bold"
-          >
-            Tentar novamente
-          </button>
-        </div>
-      )}
-
-      {/* 2. Bloco "Em 30 segundos" */}
-      <div className="space-y-4">
-        <h2 className="text-xs font-black text-slate-400 uppercase tracking-widest pl-1">
-          Resumo Rápido — Em 30 segundos
-        </h2>
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-6">
-          <SurfaceCard className="p-4 bg-white border border-slate-100 rounded-xl space-y-1.5 transition-all hover:shadow-xs">
-            <div className="h-2 w-2 rounded-full bg-brand-primary" />
-            <strong className="text-xs font-black text-slate-800 block">Estações com dados</strong>
-            <p className="text-[11px] text-slate-500 leading-normal">
-              4 estações oficiais monitorando o município de Volta Redonda.
-            </p>
-          </SurfaceCard>
-
-          <SurfaceCard className="p-4 bg-white border border-slate-100 rounded-xl space-y-1.5 transition-all hover:shadow-xs">
-            <div className="h-2 w-2 rounded-full bg-emerald-500" />
-            <strong className="text-xs font-black text-slate-800 block">Período Coberto</strong>
-            <p className="text-[11px] text-slate-500 leading-normal">
-              2022 a fev/2025 para índices (IQAr) e 2024 completo para dados brutos.
-            </p>
-          </SurfaceCard>
-
-          <SurfaceCard className="p-4 bg-white border border-slate-100 rounded-xl space-y-1.5 transition-all hover:shadow-xs">
-            <div className="h-2 w-2 rounded-full bg-indigo-500" />
-            <strong className="text-xs font-black text-slate-800 block">Poluentes Disponíveis</strong>
-            <p className="text-[11px] text-slate-500 leading-normal">
-              7 poluentes na base (PM10, PM2.5, SO2, NO2, O3, CO e PTS).
-            </p>
-          </SurfaceCard>
-
-          <SurfaceCard className="p-4 bg-white border border-slate-100 rounded-xl space-y-1.5 transition-all hover:shadow-xs">
-            <div className="h-2 w-2 rounded-full bg-amber-500" />
-            <strong className="text-xs font-black text-slate-800 block">Horas Coletadas</strong>
-            <p className="text-[11px] text-slate-500 leading-normal">
-              Mais de 15 mil registros horários brutos integrados de 2024.
-            </p>
-          </SurfaceCard>
-
-          <SurfaceCard className="p-4 bg-white border border-slate-100 rounded-xl space-y-1.5 transition-all hover:shadow-xs">
-            <div className="h-2 w-2 rounded-full bg-red-500" />
-            <strong className="text-xs font-black text-slate-800 block">Maior Lacuna</strong>
-            <p className="text-[11px] text-slate-500 leading-normal">
-              Até 100% de silêncio (lacuna completa) para múltiplos poluentes.
-            </p>
-          </SurfaceCard>
-
-          <SurfaceCard className="p-4 bg-white border border-slate-100 rounded-xl space-y-1.5 transition-all hover:shadow-xs">
-            <div className="h-2 w-2 rounded-full bg-purple-500" />
-            <strong className="text-xs font-black text-slate-800 block">Comparações Possíveis</strong>
-            <p className="text-[11px] text-slate-500 leading-normal">
-              Cruzamento automático de 7 poluentes com OMS e limites nacionais.
-            </p>
-          </SurfaceCard>
-        </div>
-      </div>
-
-      {/* 3. Aviso "Como ler sem cair em erro" */}
-      <div className="space-y-4">
-        <SurfaceCard className="p-5 bg-gradient-to-br from-slate-50 to-slate-100/50 border border-slate-200/60 rounded-2xl space-y-3">
-          <div className="flex items-center gap-2">
-            <span className="text-slate-500 shrink-0">
-              <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-              </svg>
-            </span>
-            <h3 className="font-black text-slate-800 text-xs uppercase tracking-wider">
-              Como ler sem cair em erro
-            </h3>
-          </div>
-          <p className="text-xs text-slate-700 leading-relaxed font-semibold">
-            Esses dados não mostram concentração bruta em µg/m³. Eles mostram índices e subíndices IQAr. Também não são leitura minuto a minuto. São a última base pública disponível.
-          </p>
-        </SurfaceCard>
-
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <DataFreshnessNotice />
-          <MethodologyNotice />
-        </div>
-      </div>
-
-      {/* 4. Seção com âncora #mapa (Onde o ar foi medido) */}
-      <section id="mapa" className="space-y-6 pt-4">
-        <div className="space-y-2">
-          <h2 className="text-lg font-black text-slate-800">Onde o ar foi medido</h2>
-          <p className="text-xs text-slate-500 font-semibold max-w-2xl">
-            Localização e situação física das 4 estações oficiais que compõem o monitoramento oficial nos dados do INEA em Volta Redonda.
-          </p>
-        </div>
-
-        <AirAtlasMap />
-
-        <div className="grid gap-6 md:grid-cols-2">
-          <SurfaceCard className="p-5 bg-white border border-slate-100 text-xs rounded-2xl space-y-2.5 shadow-sm">
-            <h4 className="font-black text-slate-800 flex items-center gap-1.5 uppercase tracking-wider text-[11px]">
-              <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
-              O que este mapa mostra
-            </h4>
-            <p className="text-slate-600 leading-relaxed font-medium">
-              Este mapa mostra PM10 em 2024 a partir de dados horários públicos exibidos pela plataforma INEA/WebLakes. As comparações com OMS e CONAMA 506 são experimentais porque a tabela não traz flag oficial de QA/QC por registro.
-            </p>
-          </SurfaceCard>
-
-          <SurfaceCard className="p-5 bg-white border border-slate-100 text-xs rounded-2xl space-y-2.5 shadow-sm">
-            <h4 className="font-black text-slate-800 flex items-center gap-1.5 uppercase tracking-wider text-[11px]">
-              <span className="w-2 h-2 rounded-full bg-amber-500"></span>
-              Principais sinais de atenção
-            </h4>
-            <ul className="list-disc list-inside text-slate-600 space-y-1 font-medium leading-relaxed">
-              <li>Belmonte teve a maior média anual de PM10.</li>
-              <li>Retiro teve o maior número de dias acima da CONAMA 506.</li>
-              <li>Santa Cecília teve menor média anual, mas ainda registrou eventos de atenção.</li>
-            </ul>
-          </SurfaceCard>
-        </div>
-
-        <div className="grid gap-6 lg:grid-cols-[320px_1fr]">
-          {/* Rankings panel */}
-          <SurfaceCard className="p-5 md:p-6 bg-white border border-slate-100 rounded-2xl flex flex-col justify-between">
-            <div>
-              <h2 className="text-xs font-black text-slate-400 uppercase tracking-widest">Ranking por Atenção</h2>
-              <p className="text-xs text-slate-400 mt-1">Estações com mais dias com classificação Moderada ou pior na base.</p>
-              
-              <div className="space-y-3 mt-4">
-                {sortedRankings.length === 0 ? (
-                  <p className="text-xs text-slate-400 italic">Sem dados de classificação disponíveis.</p>
-                ) : (
-                  sortedRankings.map((r, idx) => (
-                    <div key={r.id} className="p-3 border border-slate-50 bg-slate-50/50 rounded-xl flex items-center justify-between">
-                      <div className="flex items-center gap-2">
-                        <span className="text-xs font-black text-slate-300 w-4">#{idx + 1}</span>
-                        <div className="space-y-0.5">
-                          <Link to={`/qualidade-ar/inea/estacoes/${r.id}`} className="text-xs font-bold text-slate-800 hover:text-brand-primary">
-                            {r.name}
-                          </Link>
-                          <span className="text-[10px] text-slate-400 block">{r.totalDays} dias auditados</span>
-                        </div>
-                      </div>
-                      <div className="text-right">
-                        <strong className="text-sm font-black text-amber-700 block">{r.moderateOrWorseDays} dias</strong>
-                        <span className="text-[9px] text-slate-400 block font-semibold">Moderada ou pior</span>
-                      </div>
-                    </div>
-                  ))
-                )}
-              </div>
-            </div>
-
-            <div className="p-2.5 bg-slate-50 rounded-lg text-[9px] leading-tight text-slate-500 border border-slate-100 mt-4">
-              Poluente controlador mais frequente no município: <strong className="text-slate-700 font-extrabold">{displaySummary.mostFrequentControllingPollutant}</strong>
-            </div>
-          </SurfaceCard>
-
-          {/* Station Cards Grid */}
-          <div className="grid gap-4 sm:grid-cols-2">
-            {displayLatestData.map((d) => {
-              const desc = (d as any).description || STATIC_STATIONS_MAP.find(s => s.station.name === d.station.name)?.description || "";
-              return (
-                <SurfaceCard key={d.station.id} className="p-5 bg-white border border-slate-100 rounded-2xl flex flex-col justify-between transition-all duration-300 hover:shadow-md">
-                  <div className="space-y-2">
-                    <div className="flex items-start justify-between">
-                      <strong className="text-sm font-black text-slate-800 block">{d.station.name}</strong>
-                      {d.station.lat && d.station.lng && (
-                        <span className="text-[9px] bg-slate-100 text-slate-500 font-bold px-1.5 py-0.5 rounded">
-                          {d.station.lat.toFixed(4)}, {d.station.lng.toFixed(4)}
-                        </span>
-                      )}
-                    </div>
-                    <p className="text-xs text-slate-600 font-semibold leading-relaxed">
-                      {desc}
-                    </p>
-                  </div>
-                  <div className="pt-4 mt-2 border-t border-slate-50">
-                    <Link
-                      to={`/qualidade-ar/inea/estacoes/${d.station.id}`}
-                      className="text-brand-primary font-bold hover:underline text-xs flex items-center gap-1"
-                    >
-                      <span>Ver página da estação</span>
-                      <svg className="h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
-                      </svg>
-                    </Link>
-                  </div>
-                </SurfaceCard>
-              );
-            })}
-          </div>
-        </div>
-
-        {/* Latest Readings Table */}
-        {latestData.length > 0 && (
-          <SurfaceCard className="p-5 md:p-6 bg-white border border-slate-100 rounded-2xl">
-            <h2 className="text-xs font-black text-slate-400 uppercase tracking-widest pl-1">Últimas Leituras de Qualidade do Ar</h2>
-            <div className="overflow-x-auto mt-4">
-              <table className="w-full text-left border-collapse">
-                <thead>
-                  <tr className="border-b border-slate-100 bg-slate-50/30">
-                    <th scope="col" className="px-6 py-3 text-[10px] font-black uppercase tracking-widest text-slate-400">Estação</th>
-                    <th scope="col" className="px-6 py-3 text-[10px] font-black uppercase tracking-widest text-slate-400">Última Leitura</th>
-                    <th scope="col" className="px-6 py-3 text-[10px] font-black uppercase tracking-widest text-slate-400 text-center">Índice IQAr</th>
-                    <th scope="col" className="px-6 py-3 text-[10px] font-black uppercase tracking-widest text-slate-400">Classificação</th>
-                    <th scope="col" className="px-6 py-3 text-[10px] font-black uppercase tracking-widest text-slate-400">Controlador</th>
-                    <th scope="col" className="px-6 py-3 text-[10px] font-black uppercase tracking-widest text-slate-400 text-right">Ação</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-slate-50 text-xs">
-                  {latestData.map((d) => {
-                    const latestAqi = d.measurements.find(m => m.metric_type === "GENERAL_AQI");
-                    const classification = latestAqi?.air_quality_classification || "Sem Leitura";
-                    const value = latestAqi?.value !== undefined ? Math.round(latestAqi.value) : "-";
-                    const colorClass = getIneaClassificationStyle(classification);
-
-                    return (
-                      <tr key={d.station.id} className="hover:bg-slate-50/40">
-                        <td className="px-6 py-3 font-bold text-slate-800">
-                          <Link to={`/qualidade-ar/inea/estacoes/${d.station.id}`} className="hover:underline">
-                            {d.station.name}
-                          </Link>
-                        </td>
-                        <td className="px-6 py-3 text-slate-500 font-semibold">
-                          {d.measured_at ? new Date(d.measured_at).toLocaleString("pt-BR") : "-"}
-                        </td>
-                        <td className="px-6 py-3 text-center font-black text-slate-800 text-lg">
-                          {value}
-                        </td>
-                        <td className="px-6 py-3">
-                          <span className={`inline-block rounded-full border px-2.5 py-0.5 font-bold ${colorClass}`}>
-                            {classification}
-                          </span>
-                        </td>
-                        <td className="px-6 py-3 font-bold text-slate-600">
-                          {latestAqi?.controlling_pollutant || "-"}
-                        </td>
-                        <td className="px-6 py-3 text-right">
-                          <Link
-                            to={`/qualidade-ar/inea/estacoes/${d.station.id}`}
-                            className="text-brand-primary hover:underline font-bold"
-                          >
-                            Ver Estação
-                          </Link>
-                        </td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
-            </div>
-          </SurfaceCard>
-        )}
-      </section>
-
-      {/* Seção com âncora #anos (Ver por ano) */}
-      <section id="anos" className="space-y-6 pt-4">
-        <YearExplorer />
-      </section>
-
-      {/* Seção com âncora #timeline-plurianual (Série histórica ampliada 2013–2026) */}
-      <section id="timeline-plurianual" className="space-y-6 pt-4">
-        <div className="space-y-2">
-          <div className="flex flex-wrap items-center gap-3">
-            <h2 className="text-lg font-black text-slate-800">Série histórica ampliada 2013–2026</h2>
-            <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-amber-50 text-amber-850 border border-amber-500/20 shadow-xs">
-              Alguns anos possuem cobertura insuficiente para comparação anual plena.
-            </span>
-          </div>
-          <p className="text-xs text-slate-500 font-semibold leading-relaxed">
-            Veja como PM10, SO₂ e CO (2013–2026) e PM2.5 (2021–2026) se comportaram nas estações de Volta Redonda, ano a ano, em comparação experimental com as diretrizes da OMS e padrões da CONAMA 506.
-          </p>
-        </div>
-        <ParticulateTimeline2020_2026 />
-      </section>
-
-      {/* Seção com âncora #episodios (Episódios de atenção) */}
-      <section id="episodios" className="space-y-6 pt-4">
-        <div className="space-y-2">
-          <h2 className="text-lg font-black text-slate-800">Episódios de atenção</h2>
-          <p className="text-xs text-slate-500 font-semibold leading-relaxed">
-            Veja quando PM10 e PM2.5 mais se destacaram na série pública, por ano, mês, estação e régua de comparação.
-          </p>
-        </div>
-        <AttentionEpisodesPanel />
-      </section>
-
-      {/* Seção com âncora #comparar (Comparar com a OMS e com a lei brasileira) */}
-      <section id="comparar" className="space-y-6 pt-4">
-        <ThresholdComparisonPanel />
-      </section>
-
-      {/* 5. Seção com âncora #historia (A linha do tempo da base pública) */}
-      <section id="historia" className="space-y-6 pt-4">
-        <div className="space-y-2">
-          <h2 className="text-lg font-black text-slate-800">A linha do tempo da base pública</h2>
-          <p className="text-xs text-slate-500 font-semibold leading-relaxed max-w-3xl">
-            A linha mostra o período coberto pela base pública disponível, não todo o histórico possível de monitoramento.
-          </p>
-        </div>
-
-        <IneaHistoricalTimeline lastIngestedAt={displaySummary.latest_ingested_at} />
-
-        {/* Historical chart rendering inside history */}
-        {latestData.length > 0 && (
-          <SurfaceCard className="p-5 md:p-6 bg-white border border-slate-100 rounded-2xl space-y-4">
-            <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-              <div>
-                <strong className="text-xs font-black text-slate-400 uppercase tracking-widest block">Gráfico de Série Histórica do Índice Geral IQAr</strong>
-                <p className="text-[11px] text-slate-400">Acompanhe a variação diária registrada por estação física.</p>
-              </div>
-              <div>
-                <select
-                  value={selectedStationChart}
-                  onChange={(e) => setSelectedStationChart(e.target.value)}
-                  className="text-xs border border-slate-200 bg-white rounded-xl p-2 font-bold text-slate-700 outline-none focus:border-brand-primary"
-                >
-                  {latestData.map(d => (
-                    <option key={d.station.id} value={d.station.id}>{d.station.name}</option>
-                  ))}
-                </select>
-              </div>
-            </div>
-
-            <AqiChart data={chartPoints} />
-          </SurfaceCard>
-        )}
-      </section>
-
-      {/* 6. Seção com âncora #iqar (Como o INEA classifica o ar) */}
-      <section id="iqar" className="space-y-6 pt-4">
-        <div className="space-y-2">
-          <h2 className="text-lg font-black text-slate-800">Como o INEA classifica o ar</h2>
-          <p className="text-xs text-slate-500 font-semibold leading-relaxed">
-            Entenda o cálculo do IQAr, os subíndices de cada poluente e as 5 classificações oficiais adotadas pelo órgão de fiscalização.
-          </p>
-        </div>
-        <AqiExplainer />
-      </section>
-
-      {/* Evidências históricas de dados brutos */}
-      <div id="evidencias">
-        <HistoricalRawEvidenceBox />
-      </div>
-
-      {/* 7. Seção com âncora #alertas (Quando o alerta apareceu) */}
-      <section id="alertas" className="space-y-6 pt-4">
-        <div className="space-y-2">
-          <h2 className="text-lg font-black text-slate-800">Quando o alerta apareceu</h2>
-          <p className="text-xs text-slate-600 font-semibold leading-relaxed max-w-3xl">
-            Aqui não estamos dizendo que o ar foi ruim todos os dias. Estamos mostrando, entre os dias com registro disponível, quando a classificação apareceu como MODERADA ou pior.
-          </p>
-        </div>
-
-        {loading ? (
-          <div className="h-48 flex items-center justify-center text-xs text-slate-400 font-bold">
-            Carregando dados de sazonalidade...
-          </div>
-        ) : monthlyProfile.length === 0 ? (
-          <div className="p-4 bg-slate-50 border border-slate-200 rounded-2xl text-center text-xs text-slate-500 font-bold leading-relaxed">
-            Não foi possível carregar esta análise agora. A explicação metodológica e os links continuam disponíveis.
-          </div>
-        ) : (
-          <div className="space-y-4">
-            <div className="grid gap-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-              {monthlyProfile.map((m) => (
-                <div key={m.month} className="p-4 border border-slate-100 rounded-xl bg-slate-50/50 space-y-2">
-                  <div className="flex justify-between items-center text-xs">
-                    <strong className="font-extrabold text-slate-800">{m.month_name}</strong>
-                    <span className="text-[10px] bg-amber-50 text-amber-800 border border-amber-200/40 px-2 py-0.5 rounded font-black">
-                      {m.degraded_percent_of_measured_days}%
-                    </span>
-                  </div>
-                  <div className="h-2 w-full bg-slate-100 rounded-full overflow-hidden">
-                    <div
-                      style={{ width: `${m.degraded_percent_of_measured_days}%` }}
-                      className="h-full bg-amber-500 rounded-full"
-                    />
-                  </div>
-                  <span className="text-[9px] text-slate-400 font-semibold block">
-                    {m.degraded_days} dias de atenção de {m.measured_days} medidos
-                  </span>
-                </div>
-              ))}
-            </div>
-            <div className="p-3.5 bg-amber-50/50 border border-amber-200/20 rounded-xl text-[11px] leading-relaxed text-amber-900 font-semibold">
-              ⚠️ <strong>Ressalva Metodológica Importante:</strong> Estações com baixa cobertura não devem ser interpretadas como regiões de ar melhor. Ausência de dado não é qualidade boa.
-            </div>
-          </div>
-        )}
-      </section>
-
-      {/* 8. Seção com âncora #controladores (Quem puxou o índice) */}
-      <section id="controladores" className="space-y-6 pt-4">
-        <div className="space-y-2">
-          <h2 className="text-lg font-black text-slate-800">Quem puxou o índice</h2>
-          <p className="text-xs text-slate-600 font-semibold leading-relaxed">
-            O poluente controlador é aquele que mais pesou no Índice IQAr em determinado registro.
-          </p>
-        </div>
-
-        {loading ? (
-          <div className="h-48 flex items-center justify-center text-xs text-slate-400 font-bold">
-            Carregando controladores...
-          </div>
-        ) : controllerFreq.length === 0 ? (
-          <div className="p-4 bg-slate-50 border border-slate-200 rounded-2xl text-center text-xs text-slate-500 font-bold leading-relaxed">
-            Não foi possível carregar esta análise agora. A explicação metodológica e os links continuam disponíveis.
-          </div>
-        ) : (
-          <div className="grid gap-6 md:grid-cols-2">
-            <div className="space-y-4 flex flex-col justify-center">
-              {controllerFreq.map((item) => (
-                <div key={item.pollutant} className="space-y-1.5">
-                  <div className="flex justify-between items-center text-xs">
-                    <strong className="font-extrabold text-slate-700">{item.pollutant}</strong>
-                    <span className="font-semibold text-slate-500">{item.count} registros ({item.percentage}%)</span>
-                  </div>
-                  <div className="h-3.5 w-full bg-slate-100 rounded-full overflow-hidden">
-                    <div
-                      style={{ width: `${item.percentage}%` }}
-                      className="h-full bg-emerald-500 rounded-full transition-all duration-500"
-                    />
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            <div className="p-4 bg-slate-50 border border-slate-100 rounded-2xl flex flex-col justify-center space-y-3">
-              <h4 className="text-xs font-black text-slate-600 uppercase tracking-wider">Por que isso importa?</h4>
-              <p className="text-[11px] leading-relaxed text-slate-600 font-semibold">
-                Saber qual poluente é o "controlador" ajuda a identificar a principal fonte de preocupação ambiental na área. Por exemplo, altas frequências de Dióxido de Enxofre (SO₂) ou Materiais Particulados (PM10/PM2.5) frequentemente se relacionam a processos de combustão industrial e poeiras suspensas urbanas.
-              </p>
-            </div>
-          </div>
-        )}
-      </section>
-
-      {/* 9. Seção com âncora #lacunas (Onde a série fica em silêncio) */}
-      <section id="lacunas" className="space-y-6 pt-4">
-        <div className="space-y-3">
-          <h2 className="text-lg font-black text-slate-800">Onde a série fica em silêncio</h2>
-          <div className="flex flex-col gap-2">
-            <strong className="text-xl md:text-2xl font-black text-amber-700 block tracking-tight">
-              "Ausência de dado não é ar bom."
-            </strong>
-            <p className="text-xs text-slate-600 font-semibold leading-relaxed">
-              Quando a estação fica sem registro público, a população perde o direito de acompanhar o que respirou naquele período.
-            </p>
-          </div>
-        </div>
-
-        {loading ? (
-          <div className="h-48 flex items-center justify-center text-xs text-slate-400 font-bold">
-            Carregando dados de lacunas...
-          </div>
-        ) : dataGaps.length === 0 ? (
-          <div className="p-4 bg-slate-50 border border-slate-200 rounded-2xl text-center text-xs text-slate-500 font-bold leading-relaxed">
-            Não foi possível carregar esta análise agora. A explicação metodológica e os links continuam disponíveis.
-          </div>
-        ) : (
-          <div className="space-y-5">
-            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-              {dataGaps.map((gap) => (
-                <div key={gap.station_id} className="p-4 border border-slate-100 rounded-xl bg-slate-50/50 space-y-2 flex flex-col justify-between">
-                  <div>
-                    <strong className="text-xs font-extrabold text-slate-800 block">{gap.station_name}</strong>
-                    <span className="text-[9px] text-slate-400 font-bold block mt-0.5">Cobertura: {gap.coverage_percent}%</span>
-                  </div>
-                  <div className="pt-2 space-y-1">
-                    <div className="flex justify-between text-[10px] font-semibold text-slate-600">
-                      <span>Lacunas &gt; 24h:</span>
-                      <strong className="text-slate-800">{gap.gap_count} ocorrências</strong>
-                    </div>
-                    <div className="flex justify-between text-[10px] font-semibold text-slate-600">
-                      <span>Maior Lacuna:</span>
-                      <strong className="text-amber-800">{gap.max_gap_hours} horas</strong>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            <div className="p-3.5 bg-slate-100 rounded-xl text-[11px] leading-relaxed text-slate-500 font-semibold italic text-center">
-              "Estações com baixa cobertura não devem ser interpretadas como regiões de ar melhor. Ausência de dado não é qualidade boa."
-            </div>
-          </div>
-        )}
-      </section>
-
-      {/* 10. Seção "O que dá para afirmar" */}
-      <section className="space-y-4">
-        <h2 className="text-lg font-black text-slate-800">O que dá para afirmar</h2>
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          <SurfaceCard className="p-4 border border-slate-100 bg-white rounded-xl space-y-1">
-            <div className="h-2 w-2 rounded-full bg-emerald-500 mb-2" />
-            <p className="text-xs text-slate-700 font-bold leading-relaxed">
-              Há uma base pública oficial organizada de 2022 a fevereiro de 2025.
-            </p>
-          </SurfaceCard>
-
-          <SurfaceCard className="p-4 border border-slate-100 bg-white rounded-xl space-y-1">
-            <div className="h-2 w-2 rounded-full bg-emerald-500 mb-2" />
-            <p className="text-xs text-slate-700 font-bold leading-relaxed">
-              Há registros classificados como MODERADA e RUIM.
-            </p>
-          </SurfaceCard>
-
-          <SurfaceCard className="p-4 border border-slate-100 bg-white rounded-xl space-y-1">
-            <div className="h-2 w-2 rounded-full bg-emerald-500 mb-2" />
-            <p className="text-xs text-slate-700 font-bold leading-relaxed">
-              SO₂ e material particulado aparecem como controladores relevantes nos dados disponíveis.
-            </p>
-          </SurfaceCard>
-
-          <SurfaceCard className="p-4 border border-slate-100 bg-white rounded-xl space-y-1">
-            <div className="h-2 w-2 rounded-full bg-emerald-500 mb-2" />
-            <p className="text-xs text-slate-700 font-bold leading-relaxed">
-              Há lacunas importantes que precisam ser explicadas.
-            </p>
-          </SurfaceCard>
-        </div>
-      </section>
-
-      {/* 11. Seção "O que ainda precisamos cobrar" */}
-      <section className="space-y-4">
-        <h2 className="text-lg font-black text-slate-800">O que ainda precisamos cobrar</h2>
-        <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6">
-          <SurfaceCard className="p-4 border border-slate-100 bg-slate-50/50 rounded-xl space-y-2">
-            <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Demanda 1</span>
-            <p className="text-xs text-slate-700 font-bold leading-relaxed">
-              Dados anteriores a 2022 em formato aberto.
-            </p>
-          </SurfaceCard>
-
-          <SurfaceCard className="p-4 border border-slate-100 bg-slate-50/50 rounded-xl space-y-2">
-            <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Demanda 2</span>
-            <p className="text-xs text-slate-700 font-bold leading-relaxed">
-              Concentrações brutas horárias e diárias.
-            </p>
-          </SurfaceCard>
-
-          <SurfaceCard className="p-4 border border-slate-100 bg-slate-50/50 rounded-xl space-y-2">
-            <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Demanda 3</span>
-            <p className="text-xs text-slate-700 font-bold leading-relaxed">
-              Histórico de manutenção e falhas das estações.
-            </p>
-          </SurfaceCard>
-
-          <SurfaceCard className="p-4 border border-slate-100 bg-slate-50/50 rounded-xl space-y-2">
-            <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Demanda 4</span>
-            <p className="text-xs text-slate-700 font-bold leading-relaxed">
-              Metadados de instalação, calibração e operação.
-            </p>
-          </SurfaceCard>
-
-          <SurfaceCard className="p-4 border border-slate-100 bg-slate-50/50 rounded-xl space-y-2">
-            <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Demanda 5</span>
-            <p className="text-xs text-slate-700 font-bold leading-relaxed">
-              API pública documentada para consulta histórica.
-            </p>
-          </SurfaceCard>
-
-          <SurfaceCard className="p-4 border border-slate-100 bg-slate-50/50 rounded-xl space-y-2">
-            <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Demanda 6</span>
-            <p className="text-xs text-slate-700 font-bold leading-relaxed">
-              Publicação da série horária e diária completa que já foi usada em relatórios e pesquisas.
-            </p>
-          </SurfaceCard>
-        </div>
-      </section>
-
-      {/* 9.5. Seção com âncora #novos-parametros (SO₂ e CO — camada experimental 2024) */}
-      <section id="novos-parametros" className="space-y-6 pt-4 border-t border-slate-200/60">
-        <div className="space-y-2">
-          <div className="flex flex-wrap items-center gap-3">
-            <h2 className="text-lg font-black text-slate-800">SO₂ e CO — camada experimental 2024</h2>
-            <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-emerald-50 text-emerald-700 border border-emerald-500/20">
-              <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
-              Fase Experimental · Publicação Cautelosa
-            </span>
-          </div>
-          <p className="text-xs text-slate-500 font-semibold leading-relaxed max-w-3xl">
-            Publicação controlada de novos gases atmosféricos para o ano de 2024. As comparações com OMS e CONAMA 506 são experimentais. <span className="text-slate-700 font-black">Dado horário público WebLakes — comparação experimental — sem QA/QC oficial explícito.</span>
-          </p>
-        </div>
-
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {gases2024StationSummary.map((item, idx) => (
-            <SurfaceCard key={idx} className="p-5 bg-white border border-slate-100 rounded-3xl flex flex-col justify-between space-y-4 transition-all duration-300 hover:shadow-md">
-              <div className="space-y-3">
-                <div className="flex justify-between items-center">
-                  <div>
-                    <strong className="text-base font-black text-slate-800">{item.pollutant}</strong>
-                    <span className="text-[10px] font-bold text-slate-400 block">{item.station_name}</span>
-                  </div>
-                  <span className="text-[9px] font-black bg-emerald-50 text-emerald-750 border border-emerald-200/20 px-2.5 py-0.5 rounded-full uppercase shrink-0">
-                    {item.status}
-                  </span>
-                </div>
-
-                <div className="grid grid-cols-2 gap-3 pt-2 border-t border-slate-100 text-xs">
-                  <div className="space-y-0.5">
-                    <span className="text-[10px] text-slate-400 font-semibold uppercase tracking-wider">Média Período</span>
-                    <strong className="text-slate-800 font-black block">
-                      {item.period_mean.toFixed(3)} {item.pollutant === 'CO' ? 'ppm' : 'µg/m³'}
-                    </strong>
-                  </div>
-                  <div className="space-y-0.5">
-                    <span className="text-[10px] text-slate-400 font-semibold uppercase tracking-wider">Pico Horário</span>
-                    <strong className="text-slate-800 font-black block">
-                      {item.hourly_peak.toFixed(3)} {item.pollutant === 'CO' ? 'ppm' : 'µg/m³'}
-                    </strong>
-                  </div>
-                  <div className="space-y-0.5">
-                    <span className="text-[10px] text-slate-400 font-semibold uppercase tracking-wider">Cobertura</span>
-                    <strong className="text-slate-800 font-black block">
-                      {item.coverage_percent.toFixed(2)}%
-                    </strong>
-                  </div>
-                  <div className="space-y-0.5">
-                    <span className="text-[10px] text-slate-400 font-semibold uppercase tracking-wider">Dias Válidos</span>
-                    <strong className="text-slate-800 font-black block">
-                      {item.valid_days} dias
-                    </strong>
-                  </div>
-                  <div className="space-y-0.5">
-                    <span className="text-[10px] text-slate-400 font-semibold uppercase tracking-wider">Exced. OMS</span>
-                    <strong className="text-slate-800 font-black block">
-                      {item.who_exceedance_days} {item.who_exceedance_days === 1 ? 'dia' : 'dias'}
-                    </strong>
-                  </div>
-                  <div className="space-y-0.5">
-                    <span className="text-[10px] text-slate-400 font-semibold uppercase tracking-wider">Exced. CONAMA</span>
-                    <strong className="text-slate-800 font-black block">
-                      {item.conama_exceedance_events} {item.conama_exceedance_events === 1 ? 'evento' : 'eventos'}
-                    </strong>
-                  </div>
-                  {item.pollutant === 'CO' && (
-                    <div className="space-y-0.5 col-span-2 pt-1.5 border-t border-dashed border-slate-100">
-                      <span className="text-[10px] text-slate-400 font-semibold uppercase tracking-wider">Máxima Média Móvel 8h (CONAMA)</span>
-                      <strong className="text-slate-800 font-black block">
-                        {item.moving_8h_max?.toFixed(3)} ppm
-                      </strong>
-                    </div>
-                  )}
-                </div>
-
-                <div className="p-3 bg-slate-50 border border-slate-100 rounded-2xl text-[10px] text-slate-500 leading-normal font-medium">
-                  {item.methodology_note}
-                </div>
-              </div>
-
-              <div className="pt-3 border-t border-slate-100 flex justify-between items-center text-[10px] font-bold">
-                <span className="text-slate-400">Preview 2024</span>
-                <a
-                  href={
-                    item.pollutant === 'SO2'
-                      ? "/reports/estado-da-nacao-inea-so2-2024-publicacao-cautelosa.md"
-                      : "/reports/estado-da-nacao-inea-co-2024-unidade-janela8h.md"
-                  }
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-brand-primary hover:underline flex items-center gap-0.5"
-                >
-                  Ver Relatório Analítico &rarr;
-                </a>
-              </div>
-            </SurfaceCard>
-          ))}
-        </div>
-      </section>
-
-      {/* 9.6. Seção com âncora #parametros-bloqueados (Parâmetros ainda em auditoria) */}
-      <section id="parametros-bloqueados" className="space-y-6 pt-4 border-t border-slate-200/60">
-        <div className="space-y-2">
-          <div className="flex flex-wrap items-center gap-3">
-            <h2 className="text-lg font-black text-slate-800">Parâmetros ainda em auditoria</h2>
-            <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-slate-100 text-slate-600 border border-slate-200">
-              Quarentena de Homologação
-            </span>
-          </div>
-          <p className="text-xs text-slate-500 font-semibold leading-relaxed max-w-3xl">
-            Esses parâmetros não foram liberados como camada pública ativa. A decisão evita conclusões acima do que os dados sustentam.
-          </p>
-        </div>
-
-        <div className="grid gap-4 sm:grid-cols-3">
-          <SurfaceCard className="p-4 bg-white border border-slate-100 rounded-2xl flex flex-col justify-between space-y-3 transition-all duration-300 hover:shadow-xs opacity-75">
-            <div>
-              <div className="flex justify-between items-center">
-                <strong className="text-xs font-black text-slate-850">NO₂</strong>
-                <span className="text-[9px] font-black bg-amber-50 text-amber-750 border border-amber-200/25 px-2 py-0.5 rounded uppercase">Em Auditoria Crítica</span>
-              </div>
-              <p className="text-[11px] text-slate-500 font-semibold mt-1">
-                Dióxido de Nitrogênio: em auditoria crítica por provável anomalia de linha de base no Retiro.
-              </p>
-            </div>
-            <div className="pt-2 border-t border-slate-150 flex justify-between items-center text-[10px] font-bold">
-              <a href="/reports/estado-da-nacao-inea-no2-retiro-2024-auditoria-critica.md" target="_blank" rel="noopener noreferrer" className="text-brand-primary hover:underline">Ver Relatório Analítico &rarr;</a>
-            </div>
-          </SurfaceCard>
-
-          <SurfaceCard className="p-4 bg-white border border-slate-100 rounded-2xl flex flex-col justify-between space-y-3 transition-all duration-300 hover:shadow-xs opacity-75">
-            <div>
-              <div className="flex justify-between items-center">
-                <strong className="text-xs font-black text-slate-850">PTS</strong>
-                <span className="text-[9px] font-black bg-slate-100 text-slate-655 px-2 py-0.5 rounded uppercase">Somente Histórico-Técnico</span>
-              </div>
-              <p className="text-[11px] text-slate-500 font-semibold mt-1">
-                Partículas Totais em Suspensão: somente histórico-técnico em auditoria por provável anomalia de escala no Retiro.
-              </p>
-            </div>
-            <div className="pt-2 border-t border-slate-150 flex justify-between items-center text-[10px] font-bold">
-              <a href="/reports/estado-da-nacao-inea-pts-retiro-2024-auditoria-critica.md" target="_blank" rel="noopener noreferrer" className="text-brand-primary hover:underline">Ver Relatório Analítico &rarr;</a>
-            </div>
-          </SurfaceCard>
-
-          <SurfaceCard className="p-4 bg-white border border-slate-100 rounded-2xl flex flex-col justify-between space-y-3 transition-all duration-300 hover:shadow-xs opacity-75">
-            <div>
-              <div className="flex justify-between items-center">
-                <strong className="text-xs font-black text-slate-850">O₃</strong>
-                <span className="text-[9px] font-black bg-red-50 text-red-755 border border-red-200/25 px-2 py-0.5 rounded uppercase">Indisponível</span>
-              </div>
-              <p className="text-[11px] text-slate-500 font-semibold mt-1">
-                Ozônio: indisponível em 2024 na plataforma pública WebLakes.
-              </p>
-            </div>
-            <div className="pt-2 border-t border-slate-150 flex justify-between items-center text-[10px] font-bold">
-              <a href="/reports/estado-da-nacao-inea-o3-2024-indisponivel.md" target="_blank" rel="noopener noreferrer" className="text-brand-primary hover:underline">Ver Relatório Analítico &rarr;</a>
-            </div>
-          </SurfaceCard>
-        </div>
-
-        <div className="p-4 bg-gradient-to-r from-slate-50 to-slate-100/50 border border-slate-200/60 rounded-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-4 text-xs font-semibold text-slate-650 shadow-xs">
-          <div className="flex items-center gap-2">
-            <span className="text-emerald-600 shrink-0">
-              <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-              </svg>
-            </span>
-            <span>
-              Verifique o relatório final de garantia de qualidade e homologação do Lote C para o ano bissexto 2024.
-            </span>
-          </div>
-          <a
-            href="/reports/estado-da-nacao-observatorio-lote-c-qa-final.md"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex min-h-[32px] items-center justify-center rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-black text-[10px] uppercase transition-all px-4 tracking-wider"
-          >
-            Relatório de QA Final do Lote C &rarr;
-          </a>
-        </div>
-      </section>
-
-      {/* Seção com âncora #metodologia (Metodologia e confiança) */}
-      <section id="metodologia" className="space-y-6 pt-4 border-t border-slate-200/60">
-        <div className="space-y-2">
-          <div className="flex flex-wrap items-center gap-3">
-            <h2 className="text-lg font-black text-slate-800">Metodologia e Nível de Confiança</h2>
-            <Link
-              to="/qualidade-ar/inea/metodologia"
-              className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-emerald-50 text-emerald-600 border border-emerald-500/20 hover:bg-emerald-100 transition-colors shadow-sm"
-            >
-              <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
-              Dados abertos v1.1.0 · Healthcheck saudável
-            </Link>
-          </div>
-          <p className="text-xs text-slate-500 font-semibold leading-relaxed">
-            Entenda a procedência dos dados, as réguas de validação e as limitações das plataformas públicas.
-          </p>
-        </div>
-
-        <div className="grid gap-6 md:grid-cols-3">
-          <SurfaceCard className="p-5 bg-white border border-slate-100 rounded-2xl space-y-3">
-            <h4 className="text-xs font-black text-slate-400 uppercase tracking-widest">As Três Camadas de Dados</h4>
-            <div className="space-y-2 text-xs leading-relaxed text-slate-600 font-medium">
-              <div className="flex items-center gap-2">
-                <span className="w-2.5 h-2.5 rounded-full bg-amber-500"></span>
-                <span><strong>Dado bruto horário público:</strong> WebLakes/INEAPublico (2024).</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <span className="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
-                <span><strong>Índice oficial:</strong> Planilhas IQAr do INEA/Dados Abertos (2022-2025).</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <span className="w-2.5 h-2.5 rounded-full bg-blue-500"></span>
-                <span><strong>Dado agregado de relatório:</strong> Artigos e relatórios consolidados.</span>
-              </div>
-            </div>
-          </SurfaceCard>
-
-          <SurfaceCard className="p-5 bg-white border border-slate-100 rounded-2xl space-y-3">
-            <h4 className="text-xs font-black text-slate-400 uppercase tracking-widest">Limitações do WebLakes</h4>
-            <p className="text-xs leading-relaxed text-slate-600 font-medium">
-              Os dados brutos coletados da plataforma do INEA não contam com sinalização técnica de validação (QA/QC) explícita. 
-              Valores picos ou sequências de zeros persistentes podem representar anomalias instrumentais sem verificação oficial. 
-              Por isso, todas as ultrapassagens são tratadas como <strong>comparação experimental</strong>.
-            </p>
-          </SurfaceCard>
-
-          <SurfaceCard className="p-5 bg-white border border-slate-100 rounded-2xl space-y-3">
-            <h4 className="text-xs font-black text-slate-400 uppercase tracking-widest">Regras de Cálculo</h4>
-            <p className="text-xs leading-relaxed text-slate-600 font-medium">
-              <strong>Validade diária:</strong> Para calcular a média diária de um poluente, exige-se no mínimo 18 horas válidas (75% de representatividade). 
-              <strong>Cobertura:</strong> Mede a quantidade de leituras válidas recebidas em relação à cadência esperada do sensor no período. 
-              Ausência de dados nunca é interpretada como qualidade boa do ar.
-            </p>
-          </SurfaceCard>
-        </div>
-
-        {/* Links adicionais para metodologia e open data */}
-        <div className="flex flex-wrap gap-3 pt-2">
-          <Link
-            to="/qualidade-ar/inea/metodologia"
-            className="inline-flex items-center gap-2 px-5 py-2.5 bg-brand-primary text-white font-black uppercase tracking-[0.1em] rounded-xl hover:bg-brand-primary-dark transition-all text-xs shadow-md shadow-brand-primary/10"
-          >
-            Entender metodologia &rarr;
+      <div id="top-anchor" className="relative z-10 container mx-auto max-w-7xl space-y-12 px-4">
+        <div className="flex items-center gap-2 text-xs font-semibold text-slate-500">
+          <Link to="/qualidade-ar" className="transition-colors hover:text-slate-800">
+            Qualidade do Ar
           </Link>
-          <Link
-            to="/qualidade-ar/inea/metodologia#baixar-dados"
-            className="inline-flex items-center gap-2 px-5 py-2.5 bg-white text-slate-700 border border-slate-200 font-black uppercase tracking-[0.1em] rounded-xl hover:bg-slate-50 transition-all text-xs"
-          >
-            Baixar dados
-          </Link>
-          <Link
-            to="/qualidade-ar/inea/metodologia#dicionario"
-            className="inline-flex items-center gap-2 px-5 py-2.5 bg-white text-slate-700 border border-slate-200 font-black uppercase tracking-[0.1em] rounded-xl hover:bg-slate-50 transition-all text-xs"
-          >
-            Ver dicionário de dados
-          </Link>
-        </div>
-      </section>
-
-      {/* 12. CTA Final ("Queremos a série completa") */}
-      <SurfaceCard className="p-6 md:p-8 bg-gradient-to-br from-slate-900 to-slate-800 text-white rounded-3xl space-y-6 relative overflow-hidden shadow-lg border border-slate-700/50">
-        <div className="absolute -top-12 -right-12 w-48 h-48 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none" />
-        <div className="absolute -bottom-12 -left-12 w-48 h-48 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
-
-        <div className="max-w-3xl space-y-3 relative z-10">
-          <h2 className="text-xl md:text-2xl font-black tracking-tight text-white">
-            Queremos a série completa
-          </h2>
-          <p className="text-sm text-slate-300 font-medium leading-relaxed">
-            Se as estações já mediam antes de 2022, os dados anteriores também precisam estar disponíveis em formato aberto.
-          </p>
+          <span>/</span>
+          <span className="text-slate-800">Radar INEA</span>
         </div>
 
-        <div className="flex flex-wrap items-center gap-3 pt-2 relative z-10">
-          <button
-            onClick={() => setIsLaiModalOpen(true)}
-            className="px-5 py-2.5 bg-emerald-500 text-slate-950 font-black rounded-xl hover:bg-emerald-400 transition-colors text-xs shadow-md"
-          >
-            Ver minuta de LAI
-          </button>
-          <Link
-            to="/qualidade-ar/inea/analises"
-            className="px-5 py-2.5 bg-slate-800 text-slate-100 border border-slate-700 font-bold rounded-xl hover:bg-slate-750 transition-colors text-xs"
-          >
-            Ver análise técnica completa
-          </Link>
-          <Link
-            to="/dados"
-            className="px-5 py-2.5 bg-slate-800 text-slate-300 border border-slate-700/60 font-bold rounded-xl hover:bg-slate-750 transition-colors text-xs"
-          >
-            Voltar para Dados
-          </Link>
-        </div>
-      </SurfaceCard>
+        <RadarHero onNavigate={navigateMode} />
 
-      {/* Modal Interativa da Minuta de LAI */}
-      {isLaiModalOpen && (
-        <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4 z-50 animate-fade-in">
-          <div className="bg-white rounded-3xl max-w-2xl w-full p-6 shadow-2xl space-y-4 max-h-[85vh] flex flex-col border border-slate-100">
-            <div className="flex items-center justify-between border-b pb-3 shrink-0">
-              <div className="flex items-center gap-2">
-                <span className="text-emerald-600">
-                  <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                  </svg>
-                </span>
-                <strong className="text-slate-800 text-sm md:text-base font-black">
-                  Minuta para Pedido de Informação (LAI)
-                </strong>
-              </div>
-              <button
-                onClick={() => setIsLaiModalOpen(false)}
-                className="text-slate-400 hover:text-slate-600 rounded-lg p-1 transition-colors"
-                aria-label="Fechar"
-              >
-                <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M6 18L18 6M6 6l12 12" />
-                </svg>
-              </button>
-            </div>
+        <RadarQuickSummary
+          notice={notice}
+          latestData={latestData}
+          sortedRankings={sortedRankings}
+          displaySummary={displaySummary}
+          onRetry={() => setRetryTrigger((prev) => prev + 1)}
+        />
 
-            <p className="text-xs text-slate-500 font-semibold leading-relaxed shrink-0">
-              Copie o modelo abaixo e protocolo-o no e-SIC do Estado do Rio de Janeiro direcionado ao <strong>INEA</strong> para solicitar a série de 2010 a 2021.
-            </p>
+        <div id="subnav-anchor" className="scroll-mt-28" />
+        <RadarModeNav currentMode={currentMode} onSelectMode={navigateMode} />
 
-            <div className="overflow-y-auto p-4 bg-slate-50 border border-slate-100 rounded-2xl flex-1 select-all font-mono text-[10px] text-slate-700 whitespace-pre-wrap leading-relaxed">
-              {LAI_TEMPLATE}
-            </div>
+        {currentMode === "OVERVIEW" && (
+          <RadarOverviewMode
+            latestData={latestData}
+            sortedRankings={sortedRankings}
+            displaySummary={displaySummary}
+            onOpenLai={() => setIsLaiModalOpen(true)}
+            onNavigate={navigateMode}
+            onTop={() => scrollToId("top-anchor")}
+            onScrollToRecommendations={() => scrollToId("encaminhamentos")}
+          />
+        )}
 
-            <div className="flex items-center justify-end gap-3 pt-3 border-t shrink-0">
-              <button
-                onClick={handleCopyLai}
-                className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 shadow-sm ${copiedLai ? "bg-emerald-600 text-white" : "bg-brand-primary text-white hover:bg-brand-primary-dark"}`}
-              >
-                {copiedLai ? (
-                  <>
-                    <svg className="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
-                    </svg>
-                    <span>Copiado!</span>
-                  </>
-                ) : (
-                  <>
-                    <svg className="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
-                    </svg>
-                    <span>Copiar Minuta</span>
-                  </>
-                )}
-              </button>
-              <button
-                onClick={() => setIsLaiModalOpen(false)}
-                className="px-4 py-2 border border-slate-200 bg-white text-slate-700 font-bold rounded-xl hover:bg-slate-50 transition-colors text-xs"
-              >
-                Fechar
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+        {currentMode === "MAP" && (
+          <Suspense fallback={<RadarModeLoadingFallback />}>
+            <RadarMapMode onNavigate={navigateMode} onTop={() => scrollToId("top-anchor")} />
+          </Suspense>
+        )}
+
+        {currentMode === "TIME" && (
+          <Suspense fallback={<RadarModeLoadingFallback />}>
+            <RadarTimeMode
+              comparisonTab={comparisonTab}
+              setComparisonTab={setComparisonTab}
+              chartPoints={chartPoints}
+              controllerFreq={controllerFreq}
+              dataGaps={dataGaps}
+              latestData={latestData}
+              latestIngestedAt={displaySummary.latest_ingested_at}
+              monthlyProfile={monthlyProfile}
+              selectedStationChart={selectedStationChart}
+              setSelectedStationChart={setSelectedStationChart}
+              onNavigate={navigateMode}
+              onTop={() => scrollToId("top-anchor")}
+            />
+          </Suspense>
+        )}
+
+        {currentMode === "TERRITORY" && (
+          <Suspense fallback={<RadarModeLoadingFallback />}>
+            <RadarTerritoryMode
+              onNavigate={navigateMode}
+              onTop={() => scrollToId("top-anchor")}
+              onScrollToSocialMap={() => scrollToId("social-map-section")}
+            />
+          </Suspense>
+        )}
+
+        {currentMode === "STATIONS" && (
+          <RadarStationsMode latestData={latestData} onNavigate={navigateMode} onTop={() => scrollToId("top-anchor")} />
+        )}
+
+        {currentMode === "METHODOLOGY" && (
+          <Suspense fallback={<RadarModeLoadingFallback />}>
+            <RadarMethodologyMode
+              onNavigate={navigateMode}
+              onOpenLai={() => setIsLaiModalOpen(true)}
+              onTop={() => scrollToId("top-anchor")}
+            />
+          </Suspense>
+        )}
+
+        {isLaiModalOpen && (
+          <RadarLaiModal copied={copiedLai} onClose={() => setIsLaiModalOpen(false)} onCopy={handleCopyLai} />
+        )}
+      </div>
     </div>
   );
 }

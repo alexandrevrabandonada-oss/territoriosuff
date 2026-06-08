@@ -1,9 +1,10 @@
 import { IconShell, SurfaceCard } from "../components/BrandSystem";
+import { PortalPageShell, PortalSectionHeader } from "../components/portal";
 import { INSTITUTIONAL_CITATION, INSTITUTIONAL_COORDINATION, INSTITUTIONAL_FUNDING, INSTITUTIONAL_SUMMARY, INSTITUTIONAL_TAGLINE, INSTITUTIONAL_UNIVERSITY_FULL_NAME } from "../content/institucional";
 
 export function SobrePage() {
   return (
-    <section className="portal-stage about-stage space-y-8 md:space-y-10">
+    <PortalPageShell className="about-stage">
       {/* Hero Section */}
       <SurfaceCard className="portal-stage-hero portal-stage-hero-lab overflow-hidden p-0">
         <div className="portal-stage-hero-inner">
@@ -49,6 +50,11 @@ export function SobrePage() {
 
       {/* Core Principles */}
       <SurfaceCard className="portal-list-panel p-6 md:p-8">
+        <PortalSectionHeader
+          eyebrow={<span className="badge-dados-abertos">Princípios institucionais</span>}
+          title="Princípios e valores"
+          subtitle="A base pública do portal se apoia em ciência aberta, justiça ambiental e memória coletiva."
+        />
         <h2 className="mb-6 text-2xl font-black text-text-primary">Princípios e Valores</h2>
         <div className="grid gap-6 md:grid-cols-3">
           <div>
@@ -91,6 +97,11 @@ export function SobrePage() {
 
       {/* What We Do */}
       <SurfaceCard className="portal-list-panel p-6 md:p-8">
+        <PortalSectionHeader
+          eyebrow={<span className="badge-metodologia">Frentes do projeto</span>}
+          title="O que fazemos"
+          subtitle="Monitoramento, memória pública, formação e leitura territorial climática."
+        />
         <h2 className="mb-6 text-2xl font-black text-text-primary">O Que Fazemos</h2>
         <div className="space-y-4">
           <div className="flex gap-4">
@@ -153,6 +164,11 @@ export function SobrePage() {
 
       {/* Team & Contact */}
       <SurfaceCard className="portal-list-panel border-brand-primary/15 bg-brand-primary-soft p-6 md:p-8">
+        <PortalSectionHeader
+          eyebrow={<span className="badge-dados-abertos">Contato institucional</span>}
+          title="Coordenação e contato"
+          subtitle="Referências institucionais para diálogo público, imprensa e transparência."
+        />
         <h2 className="mb-4 text-2xl font-black text-brand-primary">Coordenação e Contato</h2>
         <p className="text-base text-text-primary">
           <strong>Coordenação Institucional:</strong> {INSTITUTIONAL_COORDINATION}
@@ -164,6 +180,6 @@ export function SobrePage() {
           <strong>Transparência:</strong> Acesse a <a href="/transparencia" className="text-brand-primary hover:underline">prestação de contas completa</a>
         </p>
       </SurfaceCard>
-    </section>
+    </PortalPageShell>
   );
 }

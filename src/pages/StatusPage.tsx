@@ -7,10 +7,9 @@ import {
   EditorialCardExcerpt,
   EditorialCardMeta,
   EditorialCardTitle,
-  IconShell,
-  SectionHeader,
   SurfaceCard
 } from "../components/BrandSystem";
+import { PortalHero, PortalPageShell, PortalSectionHeader } from "../components/portal";
 import { getOpsKpisMonth, getSystemStatus, type OpsKPI, type SystemStatus } from "../lib/api";
 import { getContrastAuditResults } from "../lib/contrastAudit";
 import { getObservabilityErrorSummaryLast24h, trackCsvDownload, trackShare } from "../lib/observability";
@@ -267,29 +266,37 @@ export function StatusPage() {
   }
 
   return (
-    <section className="portal-stage status-stage space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700 pb-20 md:space-y-10">
-      <SurfaceCard className="portal-stage-hero portal-stage-hero-lab overflow-hidden p-0">
-        <div className="portal-stage-hero-inner">
-          <div className="portal-stage-copy">
-            <IconShell tone="lab" className="portal-stage-icon">
-              <span aria-hidden="true">⎈</span>
-            </IconShell>
-            <h1>Status do Sistema</h1>
-            <p>Visão consolidada da integridade técnica, operacional, financeira e editorial do portal SEMEAR.</p>
+    <PortalPageShell className="status-stage animate-in fade-in slide-in-from-bottom-4 duration-700 pb-20">
+      <PortalHero
+        badge={<span className="badge-dados-abertos">Operação pública</span>}
+        title="Status do Sistema"
+        subtitle="Visão consolidada da integridade técnica, operacional, financeira e editorial do portal SEMEAR."
+        tone="lab"
+        metrics={
+          <>
+          <div className="portal-kpi-card portal-kpi-card-lab">
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-text-secondary">Rede monitorada</p>
+            <p className="mt-2 text-3xl font-black text-brand-primary">{status.monitoring.stations_count}</p>
+            <p className="mt-1 text-sm text-text-secondary">estação(ões) ativas</p>
           </div>
-          <div className="portal-stage-stat">
-            <span>{status.monitoring.stations_count}</span>
-            <small>estação(ões) monitorada(s)</small>
+          <div className="portal-kpi-card">
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-text-secondary">Medições 24h</p>
+            <p className="mt-2 text-3xl font-black text-text-primary">{formatNumber(status.monitoring.measurements_24h)}</p>
+            <p className="mt-1 text-sm text-text-secondary">leituras recentes consolidadas</p>
           </div>
-        </div>
-      </SurfaceCard>
+          </>
+        }
+      />
 
       <SurfaceCard className="portal-list-panel p-6 md:p-8">
+        <PortalSectionHeader
+          eyebrow="Boletim mensal"
+          title="Resumo exportável de operação"
+          subtitle="Selecione o período para gerar um resumo institucional e exportar os KPIs consolidados do mês."
+        />
         <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
           <div>
             <p className="text-[10px] font-black uppercase tracking-[0.28em] text-ciano">Boletim Mensal</p>
-            <h2 className="mt-2 text-2xl font-black text-texto">Resumo exportavel de operacao</h2>
-            <p className="mt-2 text-sm text-texto/60">Selecione o periodo para gerar um resumo institucional e exportar os KPIs consolidados do mes.</p>
           </div>
           <div className="grid gap-3 sm:grid-cols-2">
             <label className="flex flex-col gap-1 text-xs font-bold uppercase tracking-wide text-texto/70">
@@ -414,10 +421,10 @@ export function StatusPage() {
       </SurfaceCard>
 
       <SurfaceCard className="p-6 md:p-8">
-        <SectionHeader
+        <PortalSectionHeader
           eyebrow="Operação"
           title="Rede, transparência e conteúdo"
-          description="Uma leitura institucional dos sinais do sistema, com mais hierarquia e menos aparência de console técnico."
+          subtitle="Uma leitura institucional dos sinais do sistema, com mais hierarquia e menos aparência de console técnico."
         />
         <div className="mt-6 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
           <EditorialCard variant="compact">
@@ -644,10 +651,10 @@ export function StatusPage() {
       )}
 
       <SurfaceCard className="p-6 md:p-8">
-        <SectionHeader
+        <PortalSectionHeader
           eyebrow="Conteúdo"
           title="Próximos passos e memória digital"
-          description="Uma leitura final mais editorial para agenda, blog e acervo, fechando o Status com a mesma linguagem do restante do portal."
+          subtitle="Uma leitura final mais editorial para agenda, blog e acervo, fechando o Status com a mesma linguagem do restante do portal."
         />
         <div className="mt-6 grid gap-5 md:grid-cols-2">
           <EditorialCard variant="standard">
@@ -699,7 +706,7 @@ export function StatusPage() {
           </EditorialCard>
         </div>
       </SurfaceCard>
-    </section>
+    </PortalPageShell>
   );
 }
 

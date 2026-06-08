@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { IconShell, SurfaceCard, Chip } from "../components/BrandSystem";
+import { SurfaceCard, Chip } from "../components/BrandSystem";
+import { PortalHero, PortalPageShell, PortalSectionHeader } from "../components/portal";
 import { listStations, type Station } from "../lib/api";
 
 export function AlertasPage() {
@@ -224,7 +225,7 @@ export function AlertasPage() {
     }
 
     return (
-        <section className="portal-stage alerts-stage space-y-8 pb-20 md:space-y-10">
+        <PortalPageShell className="alerts-stage pb-20">
             <a href="#alerts-form" className="inline-flex min-h-[44px] items-center rounded-full border border-brand-primary/20 bg-white/90 px-4 py-2 text-xs font-black uppercase tracking-[0.14em] text-brand-primary shadow-sm shadow-brand-primary/5 focus:fixed focus:left-4 focus:top-4 focus:z-50">
                 Pular cabeçalho e ir para o formulário
             </a>
@@ -256,40 +257,50 @@ export function AlertasPage() {
                 </div>
             )}
 
-            <SurfaceCard className="portal-stage-hero portal-stage-hero-warm overflow-hidden p-0">
-                <div className="portal-stage-hero-inner">
-                    <div className="portal-stage-copy">
-                        <IconShell tone="warm" className="portal-stage-icon">
-                            <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
-                            </svg>
-                        </IconShell>
-                        <h1>Central de Alertas</h1>
-                        <p>Configure notificações push no seu smartphone ou computador para receber avisos imediatos quando a qualidade do ar ultrapassar os limiares recomendados.</p>
-                    </div>
-                    <div className="portal-stage-stat gap-4">
-                        <span>{status === "granted" ? "ATIVO" : "OFF"}</span>
-                        <small>{status === "granted" ? "permissão concedida" : status === "denied" ? "notificações bloqueadas" : "não configurado"}</small>
-                        <div className="flex flex-wrap gap-2">
-                            <Chip tone="seed">Notificações Push</Chip>
-                            <Chip tone="active">PWA Offline</Chip>
+            <PortalHero
+                badge={<span className="badge-dados-abertos">Alerta cidadão</span>}
+                title="Central de Alertas"
+                subtitle="Configure notificações push no seu smartphone ou computador para receber avisos imediatos quando a qualidade do ar ultrapassar os limiares recomendados."
+                tone="warm"
+                metrics={
+                    <>
+                        <div className="portal-kpi-card">
+                            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-text-secondary">Status</p>
+                            <p className="mt-2 text-3xl font-black text-brand-primary">{status === "granted" ? "ATIVO" : "OFF"}</p>
+                            <p className="mt-1 text-sm text-text-secondary">{status === "granted" ? "permissão concedida" : status === "denied" ? "notificações bloqueadas" : "não configurado"}</p>
+                        </div>
+                        <div className="portal-kpi-card">
+                            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-text-secondary">Modo</p>
+                            <div className="mt-2 flex flex-wrap gap-2">
+                                <Chip tone="seed">Notificações Push</Chip>
+                                <Chip tone="active">PWA Offline</Chip>
+                            </div>
+                            <p className="mt-2 text-sm text-text-secondary">sincronização local com opção de registro remoto</p>
+                        </div>
+                    </>
+                }
+                aside={
+                    <div className="space-y-3">
+                        <div className="rounded-2xl border border-white/30 bg-white/75 p-4 shadow-sm backdrop-blur">
+                            <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-brand-primary/70">Como funciona</p>
+                            <p className="mt-2 text-sm leading-relaxed text-slate-700">
+                                Configure limiares, teste o disparo no próprio dispositivo e acompanhe sinais recentes do sistema sem sair da página.
+                            </p>
                         </div>
                     </div>
-                </div>
-            </SurfaceCard>
+                }
+            />
 
             <div className="grid gap-6 md:grid-cols-3">
                 {/* CONFIGURATION FORM */}
                 <div className="md:col-span-2">
                     <div id="alerts-form">
                         <SurfaceCard className="portal-alert-panel p-6 md:p-8">
-                            <div className="flex items-center justify-between border-b border-brand-primary/5 pb-4 mb-6">
-                                <div>
-                                    <h2 className="text-base font-bold text-text-primary tracking-tight">Preferências de Disparo</h2>
-                                    <p className="text-xs text-text-secondary">Defina quando e como o sistema deve alertar você.</p>
-                                </div>
-                                <span className="text-[10px] font-black uppercase tracking-wider text-brand-primary/60 bg-brand-primary/5 px-2.5 py-1 rounded-full">Passo 1</span>
-                            </div>
+                            <PortalSectionHeader
+                                eyebrow="Passo 1"
+                                title="Preferências de disparo"
+                                subtitle="Defina quando e como o sistema deve alertar você."
+                            />
 
                         {error && (
                             <div className="mb-6 rounded-xl border border-red-200 bg-red-50 dark:bg-red-950/20 dark:border-red-900/50 p-4 text-xs text-red-600 dark:text-red-400 flex items-start gap-3" role="alert">
@@ -462,19 +473,13 @@ export function AlertasPage() {
                 {/* INTERACTIVE SIMULATOR CARD */}
                 <div className="space-y-6">
                     <SurfaceCard className="portal-alert-panel border-l-4 border-l-accent-warm p-6">
-                        <div className="flex items-center gap-2 mb-4">
-                            <span className="text-lg">🛠️</span>
-                            <div>
-                                <h3 className="text-sm font-bold text-text-primary tracking-tight">Simulador de Notificação</h3>
-                                <span className="text-[9px] uppercase tracking-wider font-black text-accent-warm">Ambiente de Testes PWA</span>
-                            </div>
-                        </div>
+                        <PortalSectionHeader
+                            eyebrow="Ambiente de testes PWA"
+                            title="Simulador de notificação"
+                            subtitle="Teste a recepção dos alertas no dispositivo atual sem depender de um episódio real de poluição."
+                        />
 
-                        <p className="text-xs text-text-secondary leading-normal mb-4">
-                            Teste a recepção dos alertas do PWA no seu dispositivo atual sem precisar esperar por uma ocorrência real de poluição ambiental.
-                        </p>
-
-                        <div className="space-y-4 pt-2 border-t border-slate-100 dark:border-slate-800">
+                        <div className="space-y-4 pt-2">
                             <div className="space-y-1">
                                 <span className="text-[10px] font-bold text-text-primary/60">Selecione o nível de poluição a simular:</span>
                                 <div className="grid grid-cols-2 gap-2 mt-1">
@@ -520,12 +525,12 @@ export function AlertasPage() {
 
                     {/* HISTÓRICO DE ALERTAS RECENTES */}
                     <SurfaceCard className="portal-list-panel p-6">
-                        <h3 className="text-xs font-bold text-brand-primary uppercase tracking-wider mb-4 flex items-center gap-1.5">
-                            <span className="relative flex h-2 w-2">
-                                <span className="relative inline-flex rounded-full h-2 w-2 bg-brand-primary"></span>
-                            </span>
-                            Alertas do Sistema (Últimos 7 dias)
-                        </h3>
+                        <PortalSectionHeader
+                            eyebrow="Sinais recentes"
+                            title="Alertas do sistema"
+                            subtitle="Exemplos de ocorrências e comunicados operacionais exibidos ao público."
+                            hint="Últimos 7 dias"
+                        />
 
                         <div className="space-y-3">
                             <div className="p-3 rounded-xl bg-slate-50 dark:bg-slate-900/20 border border-slate-100 dark:border-slate-800/40">
@@ -575,6 +580,6 @@ export function AlertasPage() {
             <footer className="portal-list-panel rounded-[1.75rem] p-6 text-center text-[11px] leading-relaxed text-text-secondary">
                 <p>Configurações avançadas persistidas no navegador via <strong>Push Manager</strong> e sincronizadas anonimamente com o portal.</p>
             </footer>
-        </section>
+        </PortalPageShell>
     );
 }

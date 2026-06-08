@@ -1671,7 +1671,7 @@ select {
     @apply max-w-4xl text-4xl font-black leading-[0.95] tracking-[-0.055em] text-white md:text-6xl;
   }
 
-  .portal-stage-copy p {
+  .portal-stage-copy > .space-y-3 > p {
     @apply max-w-3xl text-base leading-relaxed text-white/[0.78] md:text-lg;
   }
 
@@ -1717,6 +1717,14 @@ select {
 
   .portal-kpi-card {
     @apply rounded-[1.75rem] border border-brand-primary/10 bg-white/[0.9] p-5 shadow-[0_18px_55px_rgba(17,38,59,0.08)] backdrop-blur md:p-6;
+  }
+
+  .portal-stage-copy .portal-kpi-card {
+    color: #0f172a;
+  }
+
+  .portal-stage-copy .portal-kpi-card p {
+    max-width: none;
   }
 
   .portal-kpi-card-lab {
@@ -2840,7 +2848,7 @@ body.reader-mode-active main {
   line-height: 1.35;
 }
 
-@media (max-width: 1240px) {
+@media (max-width: 1340px) {
   .site-topbar-inner {
     grid-template-columns: auto auto;
     justify-content: space-between;
@@ -2932,25 +2940,31 @@ body.reader-mode-active main {
   }
 }
 
-@media (min-width: 1241px) and (max-width: 1380px) {
+@media (min-width: 1341px) and (max-width: 1440px) {
   .site-topbar-inner {
-    gap: 1rem;
-    padding-inline: 1.4rem;
+    gap: 0.8rem;
+    padding-inline: 1rem;
   }
 
   .site-nav {
-    gap: 1rem;
+    gap: 0.15rem;
+    padding: 0.25rem;
   }
 
   .site-nav a {
-    font-size: 0.86rem;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.8rem;
+  }
+
+  .site-actions {
+    gap: 0.5rem;
   }
 
   .site-pwa-badge,
   .site-install {
-    min-height: 2.7rem;
-    padding-inline: 1rem;
-    font-size: 0.76rem;
+    min-height: 2.6rem;
+    padding-inline: 0.85rem;
+    font-size: 0.75rem;
   }
 }
 
@@ -4380,5 +4394,196 @@ body.reader-mode-active main {
     min-height: 44px;
     padding: 0.55rem 0.65rem;
     white-space: nowrap;
+  }
+}
+
+/* Concreto Zen + Justiça Ambiental - Sprint 7 Visual System */
+.bg-ambient-zen {
+  background:
+    radial-gradient(circle at 10% 20%, rgba(16, 185, 129, 0.04), transparent 30rem),
+    radial-gradient(circle at 90% 80%, rgba(14, 44, 69, 0.05), transparent 40rem),
+    linear-gradient(180deg, #f8fafc 0%, #f1f5f9 50%, #e2e8f0 100%);
+}
+
+.bg-dot-grid {
+  background-image: radial-gradient(rgba(14, 44, 69, 0.05) 1px, transparent 1.5px);
+  background-size: 24px 24px;
+}
+
+.card-alerta {
+  background: #fffbeb;
+  border: 1.5px solid #d97706;
+  color: #78350f;
+  box-shadow: 0 4px 15px -3px rgba(217, 119, 6, 0.05);
+}
+
+.card-acao {
+  background: #f0fdf4;
+  border: 1.5px solid #10b981;
+  color: #064e3b;
+  box-shadow: 0 4px 15px -3px rgba(16, 185, 129, 0.05);
+}
+
+.card-social {
+  background: #fff5f5;
+  border: 1.5px solid #ef4444;
+  color: #7f1d1d;
+  box-shadow: 0 4px 15px -3px rgba(239, 68, 68, 0.05);
+}
+
+.card-tecnico {
+  background: #071f30;
+  border: 1.5px solid #0d2e46;
+  color: #f1f5f9;
+  box-shadow: 0 10px 25px -5px rgba(7, 31, 48, 0.2);
+}
+
+.card-leitura {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  color: #334155;
+  box-shadow: 0 4px 12px -2px rgba(148, 163, 184, 0.08);
+}
+
+.portal-page-shell {
+  position: relative;
+  isolation: isolate;
+}
+
+.portal-section-header {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.portal-hero-split {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.portal-hero-aside {
+  display: grid;
+  align-content: start;
+  gap: 1rem;
+}
+
+.portal-stage-hero .portal-hero-aside .home-intro {
+  color: rgba(255, 255, 255, 0.84);
+}
+
+.portal-stage-hero .portal-hero-aside .home-popular {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.portal-stage-hero .portal-hero-aside .home-popular a {
+  border-color: rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.92);
+  color: #142235;
+}
+
+.portal-hero-metrics {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.portal-card-download {
+  border: 1px solid rgba(16, 185, 129, 0.18);
+  background: linear-gradient(180deg, #ffffff, #f0fdf4);
+}
+
+.portal-card-methodology {
+  border: 1px solid rgba(79, 70, 229, 0.14);
+  background: linear-gradient(180deg, #ffffff, #eef2ff);
+}
+
+.badge-metodologia {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-radius: 9999px;
+  border: 1px solid rgba(79, 70, 229, 0.18);
+  background: rgba(79, 70, 229, 0.08);
+  padding: 0.35rem 0.85rem;
+  font-size: 0.625rem;
+  font-weight: 900;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #4338ca;
+}
+
+.badge-dados-abertos {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-radius: 9999px;
+  border: 1px solid rgba(16, 185, 129, 0.18);
+  background: rgba(16, 185, 129, 0.08);
+  padding: 0.35rem 0.85rem;
+  font-size: 0.625rem;
+  font-weight: 900;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #047857;
+}
+
+.cta-primary,
+.cta-secondary {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: 1rem;
+  padding: 0.75rem 1.25rem;
+  font-size: 0.75rem;
+  font-weight: 900;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  transition: all 160ms ease;
+}
+
+.cta-primary {
+  background: #10b981;
+  color: #052033;
+  box-shadow: 0 16px 40px -20px rgba(16, 185, 129, 0.92);
+}
+
+.cta-primary:hover {
+  transform: translateY(-1px);
+  background: #34d399;
+}
+
+.cta-secondary {
+  border: 1px solid rgba(148, 163, 184, 0.28);
+  background: rgba(255, 255, 255, 0.82);
+  color: #0f172a;
+}
+
+.cta-secondary:hover {
+  transform: translateY(-1px);
+  background: #ffffff;
+}
+
+.portal-stage-hero-social::before {
+  background:
+    radial-gradient(circle at 86% 16%, rgba(244, 63, 94, 0.34), transparent 14rem),
+    radial-gradient(circle at 18% 18%, rgba(16, 185, 129, 0.22), transparent 16rem),
+    linear-gradient(135deg, rgba(4, 21, 33, 0.94), rgba(9, 24, 34, 0.82));
+}
+
+@media (min-width: 900px) {
+  .portal-hero-split {
+    grid-template-columns: minmax(0, 1.3fr) minmax(280px, 0.7fr);
+    align-items: start;
+  }
+
+  .portal-hero-metrics {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .portal-section-header {
+    flex-direction: row;
+    align-items: end;
+    justify-content: space-between;
   }
 }
