@@ -1,0 +1,26 @@
+name,type,lat,lng,bairro,nearest_air_station,distance_to_industrial_area_m
+Creche Municipal Recanto das Crianças,Creche,-22.5038,-44.1205,Retiro,RET,1800
+C.E. Manuel Marinho,Escola,-22.5218,-44.1042,Vila Santa Cecília,SCE,1100
+E.M. Jesus Menino,Escola,-22.5188,-44.1351,Belmonte,BEL,3500
+Creche Municipal Ayrton Senna,Creche,-22.5050,-44.0950,Aterrado,NSG,1400
+E.M. Prefeito Waldyr Amaral,Escola,-22.4998,-44.1245,Retiro,RET,2300
+UBSF Retiro,UBS,-22.5015,-44.1210,Retiro,RET,1900
+UBSF Belmonte,UBS,-22.5165,-44.1308,Belmonte,BEL,3000
+UBSF Vila Mury,UBS,-22.4975,-44.1162,Vila Mury,RET,2600
+UPA 24h Santo Agostinho,UPA,-22.5085,-44.0750,Santo Agostinho,NSG,3800
+UBSF Conforto,UBS,-22.5110,-44.1080,Conforto,SCE,800
+Hospital das Clínicas de Volta Redonda,Hospital,-22.5230,-44.1052,Vila Santa Cecília,SCE,1200
+Hospital Mun. Dr. Munir Rafful (Retiro),Hospital,-22.5042,-44.1235,Retiro,RET,2000
+Hospital Unimed Volta Redonda,Hospital,-22.5148,-44.0990,Laranjal,NSG,1400
+Creche Municipal Sementes do Amanhã,Creche,-22.5080,-44.1350,Belmonte,BEL,3500
+E.M. Prof. Maria da Conceição Lopes,Escola,-22.5020,-44.0620,Santo Agostinho,NSG,4100
+C.E. Barão de Tefé,Escola,-22.5180,-44.1110,Conforto,SCE,800
+UBSF Santa Cruz,UBS,-22.5050,-44.1480,Santa Cruz,BEL,5000
+UBSF Jardim Amália,UBS,-22.5210,-44.0910,Jardim Amália,NSG,1900
+Hospital Municipal Dr. Nelson Gonçalves,Hospital,-22.5090,-44.0940,Aterrado,NSG,1400
+UPA 24h Central,UPA,-22.5225,-44.1065,Vila Santa Cecília,SCE,500
+UBSF São Geraldo,UBS,-22.5290,-44.1060,São Geraldo,SCE,1300
+CRAS Retiro,CRAS,-22.5005,-44.1250,Retiro,RET,2200
+CRAS Santa Cruz,CRAS,-22.5060,-44.1460,Santa Cruz,BEL,4800
+CRAS Santo Agostinho,CRAS,-22.5030,-44.0660,Santo Agostinho,NSG,3900
+CRAS Conforto,CRAS,-22.5160,-44.1105,Conforto,SCE,700

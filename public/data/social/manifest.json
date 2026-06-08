@@ -1,0 +1,43 @@
+{
+  "version": "1.1.0",
+  "dataset_version": "1.1.0",
+  "status": "saudável",
+  "generated_at": "2026-06-01T14:41:00.000Z",
+  "source_system": "IBGE_CENSO_2022_AND_PREFEITURA_VR",
+  "methodology_label": "Índice de Exposição Social do Observatório do Ar — prioritário para políticas públicas de Volta Redonda.",
+  "commit_hash": "5ae12e1",
+  "coverage_notes": "Camada territorial cruzando demografia do Censo 2022 por setor censitário, localização de escolas, creches, UBSs, hospitais, CRAS e proximidade da CSN.",
+  "last_smoke_test_at": "2026-06-01T14:41:00.000Z",
+  "datasets": [
+    {
+      "filename": "vr-vulnerabilidade-setores-2022.csv",
+      "title": "Indicadores de Vulnerabilidade de Setores Censitários (2022)",
+      "description": "Dados socioeconômicos e demográficos do Censo IBGE 2022 cruzados com a proximidade industrial em Volta Redonda.",
+      "rows_count": 30,
+      "updated_at": "2026-06-01T14:41:00.000Z",
+      "source_system": "IBGE_CENSO_2022",
+      "methodological_label": "Fórmula ponderada combinando crianças, idosos e baixa renda. Não indica causalidade individual.",
+      "public_url": "https://semear-pwa.vercel.app/data/social/vr-vulnerabilidade-setores-2022.csv"
+    },
+    {
+      "filename": "equipamentos-sensiveis-vr.csv",
+      "title": "Georreferenciamento de Equipamentos Sensíveis",
+      "description": "Coordenadas geográficas de escolas, creches, unidades de saúde, hospitais e unidades de CRAS em Volta Redonda.",
+      "rows_count": 25,
+      "updated_at": "2026-06-01T14:41:00.000Z",
+      "source_system": "CADASTRO_MUNICIPAL_AND_CNES",
+      "methodological_label": "Coordenadas aproximadas para mapeamento de áreas escolares e de assistência médica/social expostas.",
+      "public_url": "https://semear-pwa.vercel.app/data/social/equipamentos-sensiveis-vr.csv"
+    },
+    {
+      "filename": "social-data-dictionary.csv",
+      "title": "Dicionário de Dados Sociais e Territoriais",
+      "description": "Metadados descrevendo os campos das planilhas de vulnerabilidade e equipamentos sensíveis.",
+      "rows_count": 18,
+      "updated_at": "2026-06-01T14:41:00.000Z",
+      "source_system": "SEMEAR (Metadados)",
+      "methodological_label": "Metadados descritivos da camada de exposição social.",
+      "public_url": "https://semear-pwa.vercel.app/data/social/social-data-dictionary.csv"
+    }
+  ]
+}
