@@ -12,6 +12,7 @@ const links = [
   { href: "/relatorios", label: "Relatórios" },
   { href: "/agenda", label: "Agenda" },
   { href: "/conversar", label: "Conversas e atividades" },
+  { href: "/transparencia", label: "Transparência" },
   { href: "/como-ler-dados", label: "Guias" }
 ];
 
