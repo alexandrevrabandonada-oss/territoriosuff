@@ -234,7 +234,7 @@ export function ParticulateTimeline2020_2026() {
                 return (
                   <div key={st.id} className={`space-y-1 p-1 rounded-lg transition-all ${isHighlighted ? 'bg-slate-50/50' : ''}`}>
                     <div className="flex justify-between items-center text-xs">
-                      <span className={`font-bold ${isHighlighted ? 'text-slate-900 font-extrabold' : 'text-slate-650'}`}>{st.shortName}</span>
+                      <span className={`font-bold ${isHighlighted ? 'text-slate-900 font-extrabold' : 'text-slate-600'}`}>{st.shortName}</span>
                       <span className="font-mono font-bold text-slate-750">
                         {pData?.max !== null && pData?.max !== undefined ? `${pData.max.toFixed(2)} ${unit}` : "N/A"}
                       </span>
@@ -456,7 +456,7 @@ export function ParticulateTimeline2020_2026() {
       </div>
 
       {/* 4. Salvaguardas Metodológicas */}
-      <div className="bg-slate-50 border border-slate-150 p-4.5 rounded-2xl text-slate-500 text-[11px] leading-relaxed space-y-2.5">
+      <div className="bg-slate-50 border border-slate-200 p-4.5 rounded-2xl text-slate-500 text-[11px] leading-relaxed space-y-2.5">
         <div className="flex items-center gap-1.5 font-bold text-slate-700">
           <span className="w-2 h-2 rounded-full bg-slate-400" />
           Salvaguardas Metodológicas e Notas Técnicas
@@ -475,7 +475,7 @@ export function ParticulateTimeline2020_2026() {
             • <strong>Exposição Periódica:</strong> As leituras resumem a exposição histórica acumulada no período e não representam monitoramento ao vivo ou leitura minuto a minuto.
           </div>
         </div>
-        <div className="border-t border-slate-200/60 pt-2 font-mono text-[9px] text-slate-450 text-right">
+        <div className="border-t border-slate-200/60 pt-2 font-mono text-[9px] text-slate-400 text-right">
           Selo Metodológico: Dado horário público WebLakes — comparação experimental — sem QA/QC oficial explícito
         </div>
       </div>

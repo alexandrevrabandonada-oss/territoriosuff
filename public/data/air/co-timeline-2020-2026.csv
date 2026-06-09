@@ -1,2 +1,0 @@
-year,station_id,station_name,pollutant,annual_mean,max_hourly_peak,coverage_percent,exceedance_days_who,exceedance_days_conama,coverage_status
-2024,70,VR - Retiro,CO,1.01,1.93,99.57,0,0,SUFFICIENT

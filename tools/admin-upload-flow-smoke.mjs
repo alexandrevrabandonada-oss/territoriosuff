@@ -1,9 +1,10 @@
 import { assertAll, ok, readWorkspaceFile } from "./admin-smoke-lib.mjs";
 
 const label = "ADMIN UPLOAD FLOW SMOKE";
-const content = readWorkspaceFile("src/pages/admin/AdminUploadsPage.tsx");
+const uploadsContent = readWorkspaceFile("src/pages/admin/AdminUploadsPage.tsx");
+const dashboardContent = readWorkspaceFile("src/pages/admin/AdminDashboardPage.tsx");
 
-assertAll(content, [
+assertAll(uploadsContent, [
   'from("media_assets")',
   'const asset = await adminUploadMedia({',
   'if (status === "published" && file.type.startsWith("image/") && !altText.trim())',
@@ -11,12 +12,59 @@ assertAll(content, [
   'buildAcervoLink(successAsset.id, successAsset.acervo_content_type || acervoContentType)',
   'to={`/admin/relatorios/novo?assetId=${successAsset.id}`}',
   'to={`/admin/blog/novo?assetId=${successAsset.id}`}',
+  'Upload genérico',
+  'Matéria ou notícia preservada',
+  'Fluxo atual',
+  'id="admin-upload-form"',
+  'useSearchParams',
+  'Prontos p/ preservar',
+  'Fila ativa:',
+  'Buscar na fila',
+  'queueSearch',
+  'queueCounts',
+  'Ordenar fila',
+  'queueSort',
+  'Mais recentes',
+  'Sem origem primeiro',
+  'Órfãos primeiro',
+  'Prontos primeiro',
+  'Origem rápida',
+  'quickEditingAssetId',
+  'handleSaveQuickProvenance',
+  'Salvar origem',
+  'selectedAssetIds',
+  'Qualificação em lote',
+  'Selecionar visíveis',
+  'handleApplyBulkProvenance',
+  'Aplicar origem',
+  'type=${type}&autocapture=1',
+  'Criar matéria preservada com autocaptura',
+  'Matéria preservada',
+  'Preservar',
+  'sourceName,',
+  'sourceUrl,',
+  'sourceDate,',
+  'sourceName: assetSourceName.trim() || null,',
+  'sourceUrl: assetSourceUrl.trim() || null,',
+  'sourceDate: assetSourceDate || null,',
+  'Com link de origem',
   'acervoContentType: bucket === "acervo" ? acervoContentType : undefined',
   'contentCategory: bucket === "acervo" ? "acervo" : bucket',
   'Tipo de conteúdo no Acervo',
   'buildAcervoLink(asset.id, asset.acervo_content_type || "outro")',
   'to={`/admin/relatorios/novo?assetId=${asset.id}`}',
   'to={`/admin/blog/novo?assetId=${asset.id}`}',
+  'select("id, title, slug, type, cover_asset_id, media")',
+  'getPressReference',
+  'Já virou imprensa',
+  'Abrir imprensa',
 ], label);
 
-ok(label, "Uploads page reads media_assets, uploads through adminUploadMedia, enforces alt text on published images and forwards assetId into editorial flows.");
+assertAll(dashboardContent, [
+  'queue=without_origin',
+  'queue=without_source_name',
+  'queue=orphan',
+  'queue=ready_to_preserve',
+], label);
+
+ok(label, "Uploads page reads media_assets, preserves provenance metadata, enforces alt text on published images and forwards assetId into editorial flows.");

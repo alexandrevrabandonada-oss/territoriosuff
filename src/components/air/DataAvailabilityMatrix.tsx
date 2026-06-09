@@ -109,7 +109,7 @@ export function DataAvailabilityMatrix() {
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
           <h3 className="text-base font-black text-slate-800 uppercase tracking-wider">Matriz Amostral de Disponibilidade</h3>
-          <p className="text-xs text-slate-450 mt-1 font-semibold">
+          <p className="text-xs text-slate-400 mt-1 font-semibold">
             Status dos dados históricos exibidos na base pública INEA/WebLakes em testes de janelas pontuais.
           </p>
         </div>
@@ -232,7 +232,7 @@ export function DataAvailabilityMatrix() {
               </div>
             </div>
           ) : (
-            <div className="p-6 rounded-2xl border border-slate-100 bg-slate-50 text-center text-xs font-semibold text-slate-450 space-y-2">
+            <div className="p-6 rounded-2xl border border-slate-100 bg-slate-50 text-center text-xs font-semibold text-slate-400 space-y-2">
               <svg className="h-8 w-8 text-slate-300 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>

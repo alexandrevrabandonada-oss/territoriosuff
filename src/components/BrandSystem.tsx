@@ -1,9 +1,6 @@
-import type { ReactNode } from "react";
+import type { ReactNode, ComponentPropsWithoutRef } from "react";
 
-type SurfaceCardProps = {
-  children: ReactNode;
-  className?: string;
-};
+type SurfaceCardProps = ComponentPropsWithoutRef<"div">;
 
 type SectionHeaderProps = {
   eyebrow: string;
@@ -49,8 +46,8 @@ const chipToneClasses: Record<NonNullable<ChipProps["tone"]>, string> = {
   lab: "border-accent-lab/20 bg-accent-lab/10 text-accent-lab"
 };
 
-export function SurfaceCard({ children, className = "" }: SurfaceCardProps) {
-  return <div className={`surface-card motion-surface motion-surface-hover flex flex-col ${className}`.trim()}>{children}</div>;
+export function SurfaceCard({ children, className = "", ...props }: SurfaceCardProps) {
+  return <div {...props} className={`surface-card motion-surface motion-surface-hover flex flex-col ${className}`.trim()}>{children}</div>;
 }
 
 export function SectionHeader({ eyebrow, title, description, action }: SectionHeaderProps) {

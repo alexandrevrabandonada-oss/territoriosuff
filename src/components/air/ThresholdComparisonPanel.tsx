@@ -172,7 +172,7 @@ export function ThresholdComparisonPanel() {
         {/* Observed Value Card */}
         <SurfaceCard className="bg-slate-900 border border-slate-800 p-6 rounded-2xl flex flex-col justify-between space-y-4">
           <div>
-            <span className="text-[10px] text-slate-450 font-black uppercase tracking-widest block">
+            <span className="text-[10px] text-slate-400 font-black uppercase tracking-widest block">
               Registro Observado em Volta Redonda
             </span>
             <h4 className="text-sm font-bold text-slate-300 mt-1">{activeStationName} ({selectedYear})</h4>
@@ -192,7 +192,7 @@ export function ThresholdComparisonPanel() {
                   <span className="w-2.5 h-2.5 rounded-full bg-amber-500 animate-pulse"></span>
                   Poluente em Auditoria
                 </span>
-                <p className="text-slate-350 leading-relaxed font-medium">
+                <p className="text-slate-300 leading-relaxed font-medium">
                   Este poluente ainda está em auditoria para comparação anual.
                 </p>
               </div>
@@ -202,12 +202,12 @@ export function ThresholdComparisonPanel() {
                   <span className="w-2 h-2 rounded-full bg-amber-500 animate-pulse"></span>
                   Dados Sob Auditoria
                 </span>
-                <p className="text-slate-350 leading-relaxed font-medium">
+                <p className="text-slate-300 leading-relaxed font-medium">
                   Os dados de 2024 para esta estação estão passando por uma auditoria de consistência devido à detecção de divergência nos relatórios sequenciais e foram temporariamente suspensos de exibição pública.
                 </p>
               </div>
             ) : selectedYear === "2020" && selectedPollutantId === "20" ? (
-              <div className="mt-8 text-center py-6 bg-slate-950/20 border border-slate-850 rounded-xl">
+              <div className="mt-8 text-center py-6 bg-slate-950/20 border border-slate-800 rounded-xl">
                 <p className="text-xs text-amber-400 font-bold">Dados de PM2.5 indisponíveis em 2020</p>
                 <p className="text-[11px] text-slate-400 mt-1.5 max-w-xs mx-auto px-4">
                   O sensor para monitoramento de PM2.5 não retornou dados públicos na plataforma INEA/WebLakes no recorte analisado no ano de 2020.
@@ -216,7 +216,7 @@ export function ThresholdComparisonPanel() {
             ) : observedData ? (
               <div className="mt-4 space-y-4">
                 {isInsufficient && (
-                  <div className="bg-amber-950/40 border border-amber-900/40 text-amber-450 text-xs rounded-xl p-3.5 flex items-start gap-2.5">
+                  <div className="bg-amber-950/40 border border-amber-900/40 text-amber-400 text-xs rounded-xl p-3.5 flex items-start gap-2.5">
                     <span className="text-amber-500 font-bold shrink-0 mt-0.5">⚠️</span>
                     <div>
                       <strong>Cobertura insuficiente para comparação anual:</strong> Este recorte possui leituras públicas disponíveis, mas a cobertura anual ficou abaixo do patamar metodológico de 75%. Por isso, a média deve ser lida como média do período disponível, não como comparação anual plena.
@@ -224,7 +224,7 @@ export function ThresholdComparisonPanel() {
                   </div>
                 )}
 
-                <div className="bg-slate-950/60 p-4 rounded-xl border border-slate-850">
+                <div className="bg-slate-950/60 p-4 rounded-xl border border-slate-800">
                   <span className="text-[10px] text-slate-500 block font-semibold">
                     Média do Período {isInsufficient && "*(Sob ressalva)"}:
                   </span>
@@ -233,7 +233,7 @@ export function ThresholdComparisonPanel() {
                   </div>
                 </div>
 
-                <div className="bg-slate-950/60 p-4 rounded-xl border border-slate-850">
+                <div className="bg-slate-950/60 p-4 rounded-xl border border-slate-800">
                   <span className="text-[10px] text-slate-500 block font-semibold">Pico Horário Pontual de Concentração:</span>
                   <div className="text-xl font-black text-slate-200 font-mono mt-0.5">
                     {observedData.max !== null ? `${observedData.max.toFixed(2)} ${observedData.unit}` : 'N/A'}
@@ -254,8 +254,8 @@ export function ThresholdComparisonPanel() {
                 </div>
               </div>
             ) : (
-              <div className="mt-8 text-center py-6 bg-slate-950/20 border border-slate-850 rounded-xl">
-                <p className="text-xs text-slate-450 italic">Nenhum registro físico disponível na base para esta combinação.</p>
+              <div className="mt-8 text-center py-6 bg-slate-950/20 border border-slate-800 rounded-xl">
+                <p className="text-xs text-slate-400 italic">Nenhum registro físico disponível na base para esta combinação.</p>
               </div>
             )}
           </div>
@@ -268,11 +268,11 @@ export function ThresholdComparisonPanel() {
               </span>
             </div>
             {(selectedYear === "2024" && AUDIT_MODE_2024) ? (
-              <p className="text-[10px] text-slate-450 leading-relaxed font-medium">
+              <p className="text-[10px] text-slate-400 leading-relaxed font-medium">
                 * Coleta suspensa até revalidação do comportamento de estado da plataforma de origem.
               </p>
             ) : observedData ? (
-              <p className="text-[10px] text-slate-450 leading-relaxed font-medium">
+              <p className="text-[10px] text-slate-400 leading-relaxed font-medium">
                 * {observedData.notes}
               </p>
             ) : null}
@@ -283,7 +283,7 @@ export function ThresholdComparisonPanel() {
         {/* WHO 2021 Limits Card */}
         <SurfaceCard className="bg-slate-900 border border-slate-800 p-6 rounded-2xl space-y-4">
           <div>
-            <span className="text-[10px] text-rose-450 font-black uppercase tracking-widest block">
+            <span className="text-[10px] text-rose-400 font-black uppercase tracking-widest block">
               Diretrizes de Saúde da OMS (2021)
             </span>
             <p className="text-xs text-slate-400 mt-1 leading-relaxed">
@@ -292,13 +292,13 @@ export function ThresholdComparisonPanel() {
 
             <div className="mt-4 space-y-3">
               {whoThresholds.length === 0 ? (
-                <p className="text-xs text-slate-450 italic">Sem diretriz recomendada pela OMS para este poluente.</p>
+                <p className="text-xs text-slate-400 italic">Sem diretriz recomendada pela OMS para este poluente.</p>
               ) : (
                 whoThresholds.map((t, idx) => {
                   const isExceeded = observedData && observedData.mean !== null && t.averaging_period === "YEAR" && observedData.mean > t.threshold_value;
 
                   return (
-                    <div key={idx} className="p-3 bg-slate-950/40 rounded-xl border border-slate-850 space-y-1.5">
+                    <div key={idx} className="p-3 bg-slate-950/40 rounded-xl border border-slate-800 space-y-1.5">
                       <div className="flex justify-between items-center text-xs">
                         <strong className="text-slate-200">{t.averaging_period === "YEAR" ? "Anual" : t.averaging_period === "DAY" ? "Diário (24h)" : "8 Horas"}</strong>
                         <span className="font-mono font-bold text-rose-400 bg-rose-950/20 border border-rose-900/30 px-2 py-0.5 rounded text-[10px]">
@@ -322,7 +322,7 @@ export function ThresholdComparisonPanel() {
         {/* BR CONAMA 491/2018 Limits Card */}
         <SurfaceCard className="bg-slate-900 border border-slate-800 p-6 rounded-2xl space-y-4">
           <div>
-            <span className="text-[10px] text-orange-450 font-black uppercase tracking-widest block">
+            <span className="text-[10px] text-orange-400 font-black uppercase tracking-widest block">
               Legislação Nacional (CONAMA)
             </span>
             <p className="text-xs text-slate-400 mt-1 leading-relaxed">
@@ -331,13 +331,13 @@ export function ThresholdComparisonPanel() {
 
             <div className="mt-4 space-y-3 max-h-[300px] overflow-y-auto pr-1">
               {brThresholds.length === 0 ? (
-                <p className="text-xs text-slate-450 italic">Sem padrão nacional registrado para este poluente.</p>
+                <p className="text-xs text-slate-400 italic">Sem padrão nacional registrado para este poluente.</p>
               ) : (
                 brThresholds.map((t, idx) => {
                   return (
-                    <div key={idx} className="p-3 bg-slate-950/40 rounded-xl border border-slate-850 space-y-1">
+                    <div key={idx} className="p-3 bg-slate-950/40 rounded-xl border border-slate-800 space-y-1">
                       <div className="flex justify-between items-center text-xs">
-                        <strong className="text-slate-350">{t.label.replace("CONAMA ", "")}</strong>
+                        <strong className="text-slate-300">{t.label.replace("CONAMA ", "")}</strong>
                         <span className="font-mono font-bold text-orange-400 bg-orange-950/20 border border-orange-900/30 px-2 py-0.5 rounded text-[10px]">
                           {t.threshold_value} {t.unit}
                         </span>

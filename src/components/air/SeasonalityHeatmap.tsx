@@ -134,7 +134,7 @@ export function SeasonalityHeatmap({
                             <>
                               <div>Dias de atenção: <span className="font-bold text-white">{exceedDays} dias</span></div>
                               {cell?.max_hourly_value !== null && cell?.max_hourly_value !== undefined && (
-                                <div className="mt-1 border-t border-slate-700/60 pt-1 text-slate-350">
+                                <div className="mt-1 border-t border-slate-700/60 pt-1 text-slate-300">
                                   Pico horário pontual:<br/>
                                   <span className="font-mono text-white">{cell.max_hourly_value.toFixed(1)} µg/m³</span>
                                 </div>
@@ -162,7 +162,7 @@ export function SeasonalityHeatmap({
 
         {/* Legend Scale */}
         <div className="flex items-center gap-1.5 font-mono">
-          <span className="text-slate-450 mr-1.5 font-sans font-bold">Dias acima da régua:</span>
+          <span className="text-slate-400 mr-1.5 font-sans font-bold">Dias acima da régua:</span>
           
           <div className="flex items-center gap-1">
             <span className="w-4 h-4 rounded bg-slate-50 border border-slate-100 flex items-center justify-center font-bold text-slate-400">0</span>
@@ -196,7 +196,7 @@ export function SeasonalityHeatmap({
 
           <div className="flex items-center gap-1 ml-2 border-l border-slate-200 pl-3">
             <span className="w-4 h-4 rounded bg-slate-100 border border-slate-200 border-dashed flex items-center justify-center font-bold text-slate-400">N/A</span>
-            <span className="text-slate-450 font-sans font-bold">&lt;30%</span>
+            <span className="text-slate-400 font-sans font-bold">&lt;30%</span>
           </div>
         </div>
       </div>

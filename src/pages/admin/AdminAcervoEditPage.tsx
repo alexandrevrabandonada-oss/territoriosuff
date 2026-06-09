@@ -38,7 +38,100 @@ type AcervoMeta = {
   media_location?: string;
   document_context?: string;
   document_category?: string;
+  editorial_context?: string;
+  editorial_preservation_status?: "pending_review" | "ready" | "needs_recapture";
+  source_capture?: {
+    url: string;
+    title?: string;
+    source_name?: string;
+    published_at?: string | null;
+    excerpt?: string;
+    content_format: "markdown";
+    word_count?: number;
+    domain?: string;
+    captured_at: string;
+    snapshot_url?: string;
+    snapshot_path?: string;
+    snapshot_mime_type?: string;
+    snapshot_size_bytes?: number;
+  };
+  source_capture_history?: Array<{
+    url: string;
+    title?: string;
+    source_name?: string;
+    published_at?: string | null;
+    excerpt?: string;
+    content_format: "markdown";
+    word_count?: number;
+    domain?: string;
+    captured_at: string;
+    snapshot_url?: string;
+    snapshot_path?: string;
+    snapshot_mime_type?: string;
+    snapshot_size_bytes?: number;
+    replaced_live_copy?: boolean;
+  }>;
 };
+
+type CapturedArticlePayload = {
+  url: string;
+  title: string;
+  sourceName: string;
+  publishedAt: string | null;
+  excerpt: string;
+  markdown: string;
+  capturedAt: string;
+  wordCount: number;
+  domain: string;
+  snapshot?: {
+    path: string;
+    publicUrl: string;
+    mimeType: string;
+    sizeBytes: number;
+  } | null;
+};
+
+type CaptureDiffPreview = {
+  currentSnippet: string;
+  nextSnippet: string;
+  currentLength: number;
+  nextLength: number;
+};
+
+type CaptureFieldDiff = {
+  label: string;
+  currentValue: string;
+  nextValue: string;
+  changed: boolean;
+};
+
+function buildCaptureDiffPreview(currentText: string, nextText: string): CaptureDiffPreview {
+  const currentLines = currentText.split(/\r?\n/);
+  const nextLines = nextText.split(/\r?\n/);
+
+  let start = 0;
+  while (start < currentLines.length && start < nextLines.length && currentLines[start].trim() === nextLines[start].trim()) {
+    start += 1;
+  }
+
+  let currentEnd = currentLines.length - 1;
+  let nextEnd = nextLines.length - 1;
+  while (currentEnd >= start && nextEnd >= start && currentLines[currentEnd].trim() === nextLines[nextEnd].trim()) {
+    currentEnd -= 1;
+    nextEnd -= 1;
+  }
+
+  return {
+    currentSnippet: currentLines.slice(start, Math.min(currentEnd + 1, start + 12)).join("\n").trim() || "(sem trecho distinto encontrado)",
+    nextSnippet: nextLines.slice(start, Math.min(nextEnd + 1, start + 12)).join("\n").trim() || "(sem trecho distinto encontrado)",
+    currentLength: currentText.length,
+    nextLength: nextText.length,
+  };
+}
+
+function normalizeDiffValue(value: string | null | undefined) {
+  return (value || "").trim();
+}
 
 function normalizeAcervoType(value: string | null | undefined, asset?: Partial<MediaAssetRecord> | null) {
   if (!value) return asset?.acervo_content_type || "artigo_cientifico";
@@ -75,6 +168,7 @@ export function AdminAcervoEditPage() {
   const searchParams = new URLSearchParams(location.search);
   const assetIdFromUrl = searchParams.get("assetId");
   const typeFromUrl = searchParams.get("type");
+  const autoCaptureFromUrl = searchParams.get("autocapture") === "1";
   const isNew = !id;
 
   const [loading, setLoading] = useState(true);
@@ -101,10 +195,24 @@ export function AdminAcervoEditPage() {
   const [coverAssetId, setCoverAssetId] = useState("");
   const [media, setMedia] = useState<AcervoMediaAsset[]>([]);
   const [meta, setMeta] = useState<AcervoMeta>({});
+  const [isCapturingArticle, setIsCapturingArticle] = useState(false);
+  const [captureFeedback, setCaptureFeedback] = useState<string | null>(null);
+  const [applyCapturedMetadata, setApplyCapturedMetadata] = useState(false);
+  const [pendingCapture, setPendingCapture] = useState<{
+    markdown: string;
+    sourceCapture: NonNullable<AcervoMeta["source_capture"]>;
+    historyEntry: NonNullable<AcervoMeta["source_capture_history"]>[number];
+    summary?: string;
+    title?: string;
+    sourceName?: string;
+    publishedAt?: string | null;
+    diff: CaptureDiffPreview;
+  } | null>(null);
 
   // Quick Upload State
   const [isUploading, setIsUploading] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
+  const [autoCaptureTriggered, setAutoCaptureTriggered] = useState(false);
 
   const loadData = useCallback(async () => {
     if (!supabase) return;
@@ -343,6 +451,167 @@ export function AdminAcervoEditPage() {
   const isScientificType = type === "artigo_cientifico";
   const isNewsType = type === "noticia" || type === "materia";
   const isHistoricalDocument = type === "documento";
+  const sourceCapture = meta.source_capture;
+  const sourceCaptureHistory = Array.isArray(meta.source_capture_history) ? meta.source_capture_history : [];
+  const pendingMetadataDiffs: CaptureFieldDiff[] = pendingCapture ? [
+    {
+      label: "Título",
+      currentValue: normalizeDiffValue(title),
+      nextValue: normalizeDiffValue(pendingCapture.title),
+      changed: normalizeDiffValue(title) !== normalizeDiffValue(pendingCapture.title),
+    },
+    {
+      label: "Resumo",
+      currentValue: normalizeDiffValue(summary),
+      nextValue: normalizeDiffValue(pendingCapture.summary),
+      changed: normalizeDiffValue(summary) !== normalizeDiffValue(pendingCapture.summary),
+    },
+    {
+      label: "Fonte",
+      currentValue: normalizeDiffValue(sourceName),
+      nextValue: normalizeDiffValue(pendingCapture.sourceName),
+      changed: normalizeDiffValue(sourceName) !== normalizeDiffValue(pendingCapture.sourceName),
+    },
+    {
+      label: "Data original",
+      currentValue: normalizeDiffValue(publishedAt),
+      nextValue: normalizeDiffValue(pendingCapture.publishedAt || ""),
+      changed: normalizeDiffValue(publishedAt) !== normalizeDiffValue(pendingCapture.publishedAt || ""),
+    },
+  ] : [];
+
+  const formatCaptureDate = (value?: string | null) => {
+    if (!value) return "";
+    const date = new Date(value);
+    if (Number.isNaN(date.getTime())) return "";
+    return date.toLocaleString("pt-BR");
+  };
+
+  const handleCaptureArticle = async () => {
+    if (!sourceUrl.trim()) {
+      alert("Informe o link da matéria antes de capturar.");
+      return;
+    }
+
+    setIsCapturingArticle(true);
+    setCaptureFeedback(null);
+
+    try {
+      const response = await fetch("/api/acervo/capture-article", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ url: sourceUrl.trim() }),
+      });
+
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data?.error || "Falha ao capturar a matéria.");
+      }
+
+      const captured = data as CapturedArticlePayload;
+      const nextSourceCapture: NonNullable<AcervoMeta["source_capture"]> = {
+        url: captured.url || sourceUrl.trim(),
+        title: captured.title || sourceCapture?.title,
+        source_name: captured.sourceName || sourceCapture?.source_name || sourceName || undefined,
+        published_at: captured.publishedAt || sourceCapture?.published_at || null,
+        excerpt: captured.excerpt || sourceCapture?.excerpt,
+        content_format: "markdown",
+        word_count: captured.wordCount,
+        domain: captured.domain,
+        captured_at: captured.capturedAt,
+        snapshot_url: captured.snapshot?.publicUrl || sourceCapture?.snapshot_url,
+        snapshot_path: captured.snapshot?.path || sourceCapture?.snapshot_path,
+        snapshot_mime_type: captured.snapshot?.mimeType || sourceCapture?.snapshot_mime_type,
+        snapshot_size_bytes: captured.snapshot?.sizeBytes || sourceCapture?.snapshot_size_bytes,
+      };
+      const nextHistoryEntry = {
+        ...nextSourceCapture,
+        replaced_live_copy: true,
+      };
+
+      if (contentMd.trim() && contentMd.trim() !== captured.markdown.trim()) {
+        setApplyCapturedMetadata(false);
+        setPendingCapture({
+          markdown: captured.markdown,
+          sourceCapture: nextSourceCapture,
+          historyEntry: nextHistoryEntry,
+          summary: captured.excerpt,
+          title: captured.title,
+          sourceName: captured.sourceName,
+          publishedAt: captured.publishedAt,
+          diff: buildCaptureDiffPreview(contentMd, captured.markdown),
+        });
+        setCaptureFeedback("Nova captura pronta para revisão antes de substituir o texto preservado.");
+        return;
+      }
+
+      setContentMd(captured.markdown);
+      setSourceUrl(captured.url || sourceUrl.trim());
+      if (!sourceName.trim() && captured.sourceName) setSourceName(captured.sourceName);
+      if (!publishedAt && captured.publishedAt) setPublishedAt(captured.publishedAt);
+      if (!summary.trim() && captured.excerpt) setSummary(captured.excerpt);
+      if (!title.trim() && captured.title) setTitle(captured.title);
+
+      setMeta((current) => ({
+        ...current,
+        source_capture: nextSourceCapture,
+        source_capture_history: [
+          nextHistoryEntry,
+          ...(Array.isArray(current.source_capture_history) ? current.source_capture_history : []),
+        ].slice(0, 8),
+      }));
+
+      setCaptureFeedback("Matéria capturada e preservada no corpo do item.");
+    } catch (error: any) {
+      setCaptureFeedback(error?.message || "Falha ao capturar a matéria.");
+    } finally {
+      setIsCapturingArticle(false);
+    }
+  };
+
+  const applyPendingCapture = () => {
+    if (!pendingCapture) return;
+    setContentMd(pendingCapture.markdown);
+    if (applyCapturedMetadata) {
+      if (pendingCapture.sourceName) setSourceName(pendingCapture.sourceName);
+      if (pendingCapture.publishedAt) setPublishedAt(pendingCapture.publishedAt);
+      if (typeof pendingCapture.summary === "string") setSummary(pendingCapture.summary);
+      if (pendingCapture.title) setTitle(pendingCapture.title);
+    } else {
+      if (!sourceName.trim() && pendingCapture.sourceName) setSourceName(pendingCapture.sourceName);
+      if (!publishedAt && pendingCapture.publishedAt) setPublishedAt(pendingCapture.publishedAt);
+      if (!summary.trim() && pendingCapture.summary) setSummary(pendingCapture.summary);
+      if (!title.trim() && pendingCapture.title) setTitle(pendingCapture.title);
+    }
+    setMeta((current) => ({
+      ...current,
+      source_capture: pendingCapture.sourceCapture,
+      source_capture_history: [
+        pendingCapture.historyEntry,
+        ...(Array.isArray(current.source_capture_history) ? current.source_capture_history : []),
+      ].slice(0, 8),
+    }));
+    setPendingCapture(null);
+    setApplyCapturedMetadata(false);
+    setCaptureFeedback(applyCapturedMetadata ? "Nova captura aplicada com metadados capturados." : "Nova captura aplicada ao texto preservado.");
+  };
+
+  const keepCurrentTextWithPendingCapture = () => {
+    if (!pendingCapture) return;
+    setMeta((current) => ({
+      ...current,
+      source_capture: pendingCapture.sourceCapture,
+      source_capture_history: [
+        { ...pendingCapture.historyEntry, replaced_live_copy: false },
+        ...(Array.isArray(current.source_capture_history) ? current.source_capture_history : []),
+      ].slice(0, 8),
+    }));
+    setPendingCapture(null);
+    setApplyCapturedMetadata(false);
+    setCaptureFeedback("Nova captura registrada no histórico, mas o texto preservado atual foi mantido.");
+  };
 
   const removeMediaAsset = (assetId: string) => {
     setMedia(media.filter(m => m.id !== assetId));
@@ -357,6 +626,21 @@ export function AdminAcervoEditPage() {
     [newMedia[index], newMedia[targetIndex]] = [newMedia[targetIndex], newMedia[index]];
     setMedia(newMedia);
   };
+
+  useEffect(() => {
+    if (!autoCaptureFromUrl || autoCaptureTriggered || loading || isNew) return;
+    if (!isNewsType || !sourceUrl.trim() || isCapturingArticle) return;
+    setAutoCaptureTriggered(true);
+    void handleCaptureArticle();
+  }, [
+    autoCaptureFromUrl,
+    autoCaptureTriggered,
+    loading,
+    isNew,
+    isNewsType,
+    sourceUrl,
+    isCapturingArticle,
+  ]);
 
   if (loading) {
     return <div className="p-20 text-center text-slate-400 italic">Carregando editor...</div>;
@@ -517,6 +801,114 @@ export function AdminAcervoEditPage() {
         </div>
       )}
 
+      {pendingCapture && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/60 p-4 backdrop-blur-sm">
+          <div className="max-h-[90vh] w-full max-w-6xl overflow-hidden rounded-[2rem] border border-slate-200 bg-white shadow-2xl">
+            <div className="border-b border-slate-200 px-8 py-6">
+              <div className="flex items-start justify-between gap-4">
+                <div>
+                  <span className="block text-[11px] font-black uppercase tracking-[0.2em] text-amber-600">Revisar recaptura</span>
+                  <h2 className="mt-2 text-2xl font-black text-slate-950">Comparar texto atual com nova captura</h2>
+                  <p className="mt-2 text-sm font-medium text-slate-500">Revise o trecho alterado antes de substituir a cópia preservada.</p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setPendingCapture(null)}
+                  className="rounded-xl p-2 text-slate-400 transition hover:bg-slate-50 hover:text-slate-700"
+                >
+                  <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+
+            <div className="grid gap-0 overflow-auto md:grid-cols-2">
+              <div className="border-b border-slate-200 p-6 md:border-b-0 md:border-r">
+                <div className="mb-3 flex items-center justify-between gap-3">
+                  <h3 className="text-sm font-black uppercase tracking-wide text-slate-900">Texto atual</h3>
+                  <span className="text-xs font-bold text-slate-400">{pendingCapture.diff.currentLength} caracteres</span>
+                </div>
+                <pre className="max-h-[50vh] overflow-auto whitespace-pre-wrap rounded-2xl bg-slate-50 p-4 text-sm leading-relaxed text-slate-700">
+                  {pendingCapture.diff.currentSnippet}
+                </pre>
+              </div>
+              <div className="p-6">
+                <div className="mb-3 flex items-center justify-between gap-3">
+                  <h3 className="text-sm font-black uppercase tracking-wide text-emerald-800">Nova captura</h3>
+                  <span className="text-xs font-bold text-slate-400">{pendingCapture.diff.nextLength} caracteres</span>
+                </div>
+                <pre className="max-h-[50vh] overflow-auto whitespace-pre-wrap rounded-2xl bg-emerald-50 p-4 text-sm leading-relaxed text-emerald-950">
+                  {pendingCapture.diff.nextSnippet}
+                </pre>
+              </div>
+            </div>
+
+            <div className="border-t border-slate-200 px-8 py-6">
+              <h3 className="mb-4 text-sm font-black uppercase tracking-wide text-slate-900">Metadados capturados</h3>
+              <div className="grid gap-4 md:grid-cols-2">
+                {pendingMetadataDiffs.map((field) => (
+                  <div key={field.label} className={`rounded-2xl border p-4 ${field.changed ? "border-amber-200 bg-amber-50" : "border-slate-200 bg-slate-50"}`}>
+                    <div className="mb-3 flex items-center justify-between gap-3">
+                      <span className="text-xs font-black uppercase tracking-[0.18em] text-slate-500">{field.label}</span>
+                      <span className={`text-[10px] font-black uppercase tracking-wide ${field.changed ? "text-amber-700" : "text-slate-400"}`}>
+                        {field.changed ? "Alterado" : "Sem mudança"}
+                      </span>
+                    </div>
+                    <div className="space-y-3 text-sm">
+                      <div>
+                        <span className="block text-[11px] font-black uppercase tracking-wide text-slate-400">Atual</span>
+                        <p className="mt-1 rounded-xl bg-white px-3 py-2 font-medium text-slate-700">{field.currentValue || "vazio"}</p>
+                      </div>
+                      <div>
+                        <span className="block text-[11px] font-black uppercase tracking-wide text-slate-400">Capturado</span>
+                        <p className="mt-1 rounded-xl bg-white px-3 py-2 font-medium text-slate-700">{field.nextValue || "vazio"}</p>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="flex flex-wrap items-center justify-between gap-3 border-t border-slate-200 px-8 py-5">
+              <div className="space-y-3">
+                <p className="text-xs font-medium text-slate-500">O histórico da captura será preservado em ambos os casos.</p>
+                <label className="inline-flex items-start gap-3 rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm font-medium text-slate-700">
+                  <input
+                    type="checkbox"
+                    checked={applyCapturedMetadata}
+                    onChange={(e) => setApplyCapturedMetadata(e.target.checked)}
+                    className="mt-0.5 h-4 w-4 rounded border-slate-300 text-emerald-600 focus:ring-emerald-500"
+                  />
+                  <span>
+                    Aplicar tambem metadados capturados
+                    <span className="mt-1 block text-xs text-slate-500">
+                      Atualiza titulo, resumo, fonte e data original com os valores exibidos acima.
+                    </span>
+                  </span>
+                </label>
+              </div>
+              <div className="flex flex-wrap gap-3">
+                <button
+                  type="button"
+                  onClick={keepCurrentTextWithPendingCapture}
+                  className="rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm font-black text-slate-700 transition hover:bg-slate-50"
+                >
+                  Manter texto atual
+                </button>
+                <button
+                  type="button"
+                  onClick={applyPendingCapture}
+                  className="rounded-xl bg-emerald-500 px-4 py-3 text-sm font-black text-white transition hover:bg-emerald-600"
+                >
+                  Aplicar nova captura
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Main Content Form */}
         <div className="lg:col-span-2 space-y-6">
@@ -562,12 +954,18 @@ export function AdminAcervoEditPage() {
 
               <div>
                 <label className="block text-xs font-black text-slate-400 uppercase tracking-widest mb-2">Corpo do Texto (Markdown)</label>
-                <textarea
-                  value={contentMd}
-                  onChange={(e) => setContentMd(e.target.value)}
-                  className="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl font-mono text-sm h-80"
-                  placeholder="# Introdução\n\nTexto formatado..."
-                />
+                {isNewsType ? (
+                  <div className="rounded-2xl border border-emerald-100 bg-emerald-50 px-5 py-4 text-sm font-medium text-emerald-900">
+                    Para notícias e matérias, o corpo do texto fica no bloco <span className="font-black">Preservação da matéria</span> abaixo. Ali você pode capturar o link original e manter uma cópia preservada dentro do portal.
+                  </div>
+                ) : (
+                  <textarea
+                    value={contentMd}
+                    onChange={(e) => setContentMd(e.target.value)}
+                    className="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl font-mono text-sm h-80"
+                    placeholder="# Introdução\n\nTexto formatado..."
+                  />
+                )}
               </div>
             </div>
           </section>
@@ -604,16 +1002,18 @@ export function AdminAcervoEditPage() {
                   placeholder="Ex: Portal G1 / UFF"
                 />
               </div>
-              <div>
-                <label className="block text-xs font-black text-slate-400 uppercase tracking-widest mb-2">{isNewsType ? "Link da matéria" : isScientificType ? "Link externo" : "Link externo"}</label>
-                <input
-                  type="url"
-                  value={sourceUrl}
-                  onChange={(e) => setSourceUrl(e.target.value)}
-                  className="w-full px-5 py-3 bg-slate-50 border border-slate-100 rounded-xl font-bold"
-                  placeholder="https://..."
-                />
-              </div>
+              {!isNewsType && (
+                <div>
+                  <label className="block text-xs font-black text-slate-400 uppercase tracking-widest mb-2">{isScientificType ? "Link externo" : "Link externo"}</label>
+                  <input
+                    type="url"
+                    value={sourceUrl}
+                    onChange={(e) => setSourceUrl(e.target.value)}
+                    className="w-full px-5 py-3 bg-slate-50 border border-slate-100 rounded-xl font-bold"
+                    placeholder="https://..."
+                  />
+                </div>
+              )}
               {isScientificType && (
                 <>
                   <div>
@@ -668,6 +1068,199 @@ export function AdminAcervoEditPage() {
             </div>
           </section>
 
+          {isNewsType && (
+            <section className="overflow-hidden rounded-[2rem] border border-emerald-200 bg-white shadow-sm">
+              <div className="bg-[radial-gradient(circle_at_top_left,_rgba(16,185,129,0.26),_transparent_40%),linear-gradient(135deg,#052e2b_0%,#0f172a_52%,#064e3b_100%)] px-8 py-8 text-white">
+                <div className="max-w-3xl space-y-4">
+                  <span className="inline-flex items-center rounded-full border border-white/20 bg-white/10 px-3 py-1 text-[11px] font-black uppercase tracking-[0.22em] text-emerald-100">
+                    Preservação da matéria
+                  </span>
+                  <div>
+                    <h2 className="text-2xl font-black tracking-tight md:text-3xl">Salvar o link original e manter uma cópia viva no portal</h2>
+                    <p className="mt-2 text-sm font-medium text-emerald-50/90 md:text-base">
+                      Use o link da notícia para capturar o texto e guardar uma versão preservada no acervo. Se o site original sair do ar, o portal continua exibindo a matéria arquivada.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="space-y-6 p-8">
+                <div className="grid grid-cols-1 gap-6 xl:grid-cols-[1.4fr_0.8fr]">
+                  <div className="space-y-4">
+                    <div>
+                      <label className="mb-2 block text-xs font-black uppercase tracking-widest text-slate-400">Link original da matéria</label>
+                      <div className="flex flex-col gap-3 rounded-2xl border border-slate-200 bg-slate-50 p-3 md:flex-row">
+                        <input
+                          type="url"
+                          value={sourceUrl}
+                          onChange={(e) => setSourceUrl(e.target.value)}
+                          className="min-w-0 flex-1 rounded-xl border border-slate-200 bg-white px-4 py-3 font-bold text-slate-800 focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10"
+                          placeholder="https://..."
+                        />
+                        <button
+                          type="button"
+                          onClick={handleCaptureArticle}
+                          disabled={isCapturingArticle}
+                          className="inline-flex items-center justify-center rounded-xl bg-emerald-500 px-5 py-3 text-sm font-black uppercase tracking-wide text-white transition hover:bg-emerald-600 disabled:cursor-not-allowed disabled:opacity-60"
+                        >
+                          {isCapturingArticle ? "Capturando..." : sourceCapture ? "Recapturar matéria" : "Capturar e preservar"}
+                        </button>
+                      </div>
+                    </div>
+
+                    <div className="grid gap-4 md:grid-cols-3">
+                      <div className="rounded-2xl border border-slate-200 bg-white p-4">
+                        <span className="block text-[11px] font-black uppercase tracking-[0.2em] text-slate-400">Status</span>
+                        <strong className="mt-3 block text-lg font-black text-slate-900">{sourceCapture ? "Preservada" : "Aguardando captura"}</strong>
+                        <p className="mt-2 text-sm font-medium text-slate-500">
+                          {sourceCapture ? "O portal já guarda uma cópia em Markdown desta matéria." : "O item ainda depende só do link externo."}
+                        </p>
+                      </div>
+                      <div className="rounded-2xl border border-slate-200 bg-white p-4">
+                        <span className="block text-[11px] font-black uppercase tracking-[0.2em] text-slate-400">Última captura</span>
+                        <strong className="mt-3 block text-lg font-black text-slate-900">
+                          {sourceCapture?.captured_at ? formatCaptureDate(sourceCapture.captured_at) : "Ainda não capturada"}
+                        </strong>
+                        <p className="mt-2 text-sm font-medium text-slate-500">
+                          {sourceCapture?.domain ? `Origem: ${sourceCapture.domain}` : "Sem domínio identificado ainda."}
+                        </p>
+                      </div>
+                      <div className="rounded-2xl border border-slate-200 bg-white p-4">
+                        <span className="block text-[11px] font-black uppercase tracking-[0.2em] text-slate-400">Texto preservado</span>
+                        <strong className="mt-3 block text-lg font-black text-slate-900">
+                          {sourceCapture?.word_count ? `${sourceCapture.word_count} palavras` : contentMd.trim() ? "Texto preenchido manualmente" : "Sem cópia"}
+                        </strong>
+                        <p className="mt-2 text-sm font-medium text-slate-500">
+                          {sourceCapture?.title || "O corpo do item será usado como cópia preservada da matéria."}
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="rounded-2xl border border-slate-200 bg-white p-4">
+                      <label className="mb-2 block text-[11px] font-black uppercase tracking-[0.2em] text-slate-400">
+                        Status editorial da preservação
+                      </label>
+                      <select
+                        value={meta.editorial_preservation_status || "pending_review"}
+                        onChange={(e) => setMeta((current) => ({
+                          ...current,
+                          editorial_preservation_status: e.target.value as NonNullable<AcervoMeta["editorial_preservation_status"]>,
+                        }))}
+                        className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm font-bold text-slate-800"
+                      >
+                        <option value="pending_review">Capturada, revisão pendente</option>
+                        <option value="ready">Preservação fechada</option>
+                        <option value="needs_recapture">Recapturar depois</option>
+                      </select>
+                      <p className="mt-2 text-sm font-medium text-slate-500">
+                        Use este campo para marcar se a matéria já foi validada pela curadoria ou se ainda exige nova rodada.
+                      </p>
+                    </div>
+
+                    {sourceCapture?.snapshot_url && (
+                      <div className="rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-medium text-slate-600">
+                        Snapshot bruto salvo em storage.
+                        <a
+                          href={sourceCapture.snapshot_url}
+                          target="_blank"
+                          rel="noreferrer noopener"
+                          className="ml-2 font-black text-emerald-700 underline underline-offset-2"
+                        >
+                          Abrir HTML preservado
+                        </a>
+                        {typeof sourceCapture.snapshot_size_bytes === "number" ? (
+                          <span className="ml-2 text-slate-400">({formatAssetSize(sourceCapture.snapshot_size_bytes)})</span>
+                        ) : null}
+                      </div>
+                    )}
+
+                    {sourceCaptureHistory.length > 0 && (
+                      <div className="rounded-2xl border border-slate-200 bg-white p-4">
+                        <span className="block text-[11px] font-black uppercase tracking-[0.2em] text-slate-400">Histórico de capturas</span>
+                        <div className="mt-3 space-y-3">
+                          {sourceCaptureHistory.map((entry, index) => (
+                            <div key={`${entry.captured_at}-${index}`} className="rounded-xl border border-slate-100 bg-slate-50 px-4 py-3">
+                              <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
+                                <div>
+                                  <strong className="block text-sm font-black text-slate-900">
+                                    {entry.title || entry.source_name || `Captura ${index + 1}`}
+                                  </strong>
+                                  <p className="text-xs font-medium text-slate-500">
+                                    {formatCaptureDate(entry.captured_at)} • {entry.word_count ? `${entry.word_count} palavras` : "sem contagem"}
+                                    {entry.replaced_live_copy ? " • aplicada ao texto vivo" : " • registrada sem substituir"}
+                                  </p>
+                                </div>
+                                <div className="flex flex-wrap gap-2">
+                                  {entry.snapshot_url && (
+                                    <a
+                                      href={entry.snapshot_url}
+                                      target="_blank"
+                                      rel="noreferrer noopener"
+                                      className="text-xs font-black uppercase tracking-wide text-emerald-700 underline underline-offset-2"
+                                    >
+                                      Snapshot HTML
+                                    </a>
+                                  )}
+                                  {entry.url && (
+                                    <a
+                                      href={entry.url}
+                                      target="_blank"
+                                      rel="noreferrer noopener"
+                                      className="text-xs font-black uppercase tracking-wide text-slate-600 underline underline-offset-2"
+                                    >
+                                      Fonte
+                                    </a>
+                                  )}
+                                </div>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                    {captureFeedback && (
+                      <div className={`rounded-2xl px-4 py-3 text-sm font-bold ${sourceCapture ? "border border-emerald-100 bg-emerald-50 text-emerald-800" : "border border-amber-100 bg-amber-50 text-amber-800"}`}>
+                        {captureFeedback}
+                      </div>
+                    )}
+                  </div>
+
+                  <aside className="rounded-[1.5rem] border border-slate-200 bg-slate-50 p-5">
+                    <span className="block text-[11px] font-black uppercase tracking-[0.2em] text-slate-400">Boas práticas</span>
+                    <ul className="mt-4 space-y-3 text-sm font-medium leading-relaxed text-slate-600">
+                      <li>Guarde sempre o link original para preservar autoria e contexto.</li>
+                      <li>Recapture se a matéria for atualizada no veículo de origem.</li>
+                      <li>Use o contexto editorial para registrar leitura crítica, clipping e observações da curadoria.</li>
+                    </ul>
+                  </aside>
+                </div>
+
+                <div className="grid grid-cols-1 gap-6 xl:grid-cols-2">
+                  <div>
+                    <label className="mb-2 block text-xs font-black uppercase tracking-widest text-slate-400">Contexto editorial da curadoria</label>
+                    <textarea
+                      value={meta.editorial_context || ""}
+                      onChange={(e) => updateMeta("editorial_context", e.target.value)}
+                      className="h-52 w-full rounded-2xl border border-slate-200 bg-slate-50 px-5 py-4 font-medium text-slate-700"
+                      placeholder="Registre o contexto da clipping, por que essa matéria importa, relações com o território e observações editoriais."
+                    />
+                  </div>
+
+                  <div>
+                    <label className="mb-2 block text-xs font-black uppercase tracking-widest text-slate-400">Cópia preservada da matéria (Markdown)</label>
+                    <textarea
+                      value={contentMd}
+                      onChange={(e) => setContentMd(e.target.value)}
+                      className="h-52 w-full rounded-2xl border border-slate-200 bg-slate-50 px-5 py-4 font-mono text-sm text-slate-700"
+                      placeholder="A captura preencherá este campo. Você também pode revisar ou complementar manualmente."
+                    />
+                  </div>
+                </div>
+              </div>
+            </section>
+          )}
+
           {(isScientificType || isNewsType || isMediaType || isHistoricalDocument || type === "relatorio_tecnico") && (
             <section className="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm space-y-5">
               <h2 className="text-xl font-black text-slate-900">Campos específicos</h2>
@@ -695,17 +1288,6 @@ export function AdminAcervoEditPage() {
                       />
                     </div>
                   </>
-                )}
-                {isNewsType && (
-                  <div className="md:col-span-2">
-                    <label className="block text-xs font-black text-slate-400 uppercase tracking-widest mb-2">Contexto editorial</label>
-                    <textarea
-                      value={contentMd}
-                      onChange={(e) => setContentMd(e.target.value)}
-                      className="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl h-32 font-medium"
-                      placeholder="Contexto da notícia, clipping, histórico e observações da curadoria."
-                    />
-                  </div>
                 )}
                 {isMediaType && (
                   <>

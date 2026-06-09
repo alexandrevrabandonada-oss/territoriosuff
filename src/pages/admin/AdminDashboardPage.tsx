@@ -6,9 +6,15 @@ interface DashboardStats {
   acervoPublished: number;
   draftsTotal: number;
   uploadsTotal: number;
+  uploadsWithoutSourceUrl: number;
   reportsPublished: number;
   upcomingEvents: number;
   environmentalReportsNew: number;
+  pressTotal: number;
+  pressBacklog: number;
+  pressWithoutSnapshot: number;
+  pressPendingReview: number;
+  pressStaleCaptures: number;
 }
 
 interface Pendency {
@@ -78,6 +84,13 @@ type RecentEnvironmentalReportRecord = {
   created_at: string;
 };
 
+type PressDashboardRecord = {
+  id: string;
+  source_url?: string | null;
+  content_md?: string | null;
+  meta?: Record<string, unknown> | null;
+};
+
 const REPORT_CATEGORY_LABELS: Record<string, string> = {
   ar_fumaca: "Ar / Fumaça",
   residuos_lixo: "Lixo / Resíduos",
@@ -95,15 +108,77 @@ function dashboardTimestamp(...values: Array<string | null | undefined>): string
   return values.find((value): value is string => typeof value === "string" && value.length > 0) ?? new Date(0).toISOString();
 }
 
+function getPressSourceCapture(meta: Record<string, unknown> | null | undefined) {
+  if (!meta || typeof meta !== "object" || Array.isArray(meta)) return null;
+  const candidate = meta.source_capture;
+  if (!candidate || typeof candidate !== "object" || Array.isArray(candidate)) return null;
+  return candidate as Record<string, unknown>;
+}
+
+function getPressPreservationState(item: PressDashboardRecord) {
+  const meta = item.meta && typeof item.meta === "object" && !Array.isArray(item.meta)
+    ? item.meta as Record<string, unknown>
+    : null;
+  const sourceCapture = getPressSourceCapture(meta);
+  if (sourceCapture?.captured_at) return "preserved";
+  if (item.source_url && item.content_md?.trim()) return "manual_text";
+  if (item.source_url) return "link_only";
+  return "no_source";
+}
+
+function hasPressSnapshot(item: PressDashboardRecord) {
+  const meta = item.meta && typeof item.meta === "object" && !Array.isArray(item.meta)
+    ? item.meta as Record<string, unknown>
+    : null;
+  const sourceCapture = getPressSourceCapture(meta);
+  return typeof sourceCapture?.snapshot_url === "string" && sourceCapture.snapshot_url.trim().length > 0;
+}
+
+function getPressEditorialStatus(item: PressDashboardRecord) {
+  const meta = item.meta && typeof item.meta === "object" && !Array.isArray(item.meta)
+    ? item.meta as Record<string, unknown>
+    : null;
+  const candidate = meta?.editorial_preservation_status;
+  if (candidate === "ready" || candidate === "needs_recapture" || candidate === "pending_review") return candidate;
+  return "pending_review";
+}
+
+function getPressLastCaptureAt(item: PressDashboardRecord) {
+  const meta = item.meta && typeof item.meta === "object" && !Array.isArray(item.meta)
+    ? item.meta as Record<string, unknown>
+    : null;
+  const sourceCapture = getPressSourceCapture(meta);
+  return typeof sourceCapture?.captured_at === "string" ? sourceCapture.captured_at : null;
+}
+
+function daysSince(value?: string | null) {
+  if (!value) return null;
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return null;
+  const diffMs = Date.now() - date.getTime();
+  return Math.max(0, Math.floor(diffMs / (1000 * 60 * 60 * 24)));
+}
+
+function formatPercent(value: number, total: number) {
+  if (!total) return "0%";
+  return `${Math.round((value / total) * 100)}%`;
+}
+
 export function AdminDashboardPage() {
   const [loading, setLoading] = useState(true);
   const [stats, setStats] = useState<DashboardStats>({
     acervoPublished: 0,
     draftsTotal: 0,
     uploadsTotal: 0,
+    uploadsWithoutSourceUrl: 0,
     reportsPublished: 0,
     upcomingEvents: 0,
     environmentalReportsNew: 0,
+    pressTotal: 0,
+    pressBacklog: 0,
+    pressWithoutSnapshot: 0,
+    pressPendingReview: 0,
+    pressStaleCaptures: 0,
   });
   const [pendencies, setPendencies] = useState<Pendency[]>([]);
   const [activityGroups, setActivityGroups] = useState<ActivityGroup[]>([]);
@@ -123,6 +198,7 @@ export function AdminDashboardPage() {
         { count: blogDraftCount },
         { count: reportsDraftCount },
         { count: uploadsTotalCount },
+        { count: uploadsWithoutSourceUrlCount },
         { count: reportsPublishedCount },
         { count: upcomingEventsCount },
         { count: environmentalReportsNewCount },
@@ -138,12 +214,14 @@ export function AdminDashboardPage() {
         { data: recentReportsEdited },
         { data: recentEventsCreated },
         { data: recentEnvironmentalReportsNew },
+        { data: pressItems },
       ] = await Promise.all([
         supabase.from("acervo_items").select("*", { count: "exact", head: true }).eq("status", "published"),
         supabase.from("acervo_items").select("*", { count: "exact", head: true }).eq("status", "draft"),
         supabase.from("blog_posts").select("*", { count: "exact", head: true }).eq("status", "draft"),
         supabase.from("reports").select("*", { count: "exact", head: true }).eq("status", "draft"),
         supabase.from("media_assets").select("*", { count: "exact", head: true }),
+        supabase.from("media_assets").select("*", { count: "exact", head: true }).or("source_url.is.null,source_url.eq.''"),
         supabase.from("reports").select("*", { count: "exact", head: true }).eq("status", "published"),
         supabase.from("events").select("*", { count: "exact", head: true }).gte("start_at", now.toISOString()).neq("status", "cancelled"),
         supabase.from("environmental_reports").select("*", { count: "exact", head: true }).eq("status", "new"),
@@ -224,15 +302,41 @@ export function AdminDashboardPage() {
           .eq("status", "new")
           .order("created_at", { ascending: false })
           .limit(5),
+        supabase
+          .from("acervo_items")
+          .select("id, source_url, content_md, meta")
+          .in("type", ["noticia", "materia"])
+          .limit(200),
       ]);
+
+      const pressRecords = (pressItems || []) as PressDashboardRecord[];
+      const pressBacklog = pressRecords.filter((item) => {
+        const state = getPressPreservationState(item);
+        return state === "link_only" || state === "no_source";
+      }).length;
+      const pressWithoutSnapshot = pressRecords.filter((item) => {
+        const state = getPressPreservationState(item);
+        return state === "preserved" && !hasPressSnapshot(item);
+      }).length;
+      const pressPendingReview = pressRecords.filter((item) => getPressEditorialStatus(item) !== "ready").length;
+      const pressStaleCaptures = pressRecords.filter((item) => {
+        const captureAge = daysSince(getPressLastCaptureAt(item));
+        return captureAge !== null && captureAge > 30;
+      }).length;
 
       setStats({
         acervoPublished: acervoPublishedCount || 0,
         draftsTotal: (acervoDraftCount || 0) + (blogDraftCount || 0) + (reportsDraftCount || 0),
         uploadsTotal: uploadsTotalCount || 0,
+        uploadsWithoutSourceUrl: uploadsWithoutSourceUrlCount || 0,
         reportsPublished: reportsPublishedCount || 0,
         upcomingEvents: upcomingEventsCount || 0,
         environmentalReportsNew: environmentalReportsNewCount || 0,
+        pressTotal: pressRecords.length,
+        pressBacklog,
+        pressWithoutSnapshot,
+        pressPendingReview,
+        pressStaleCaptures,
       });
 
       const nextPendencies: Pendency[] = [];
@@ -314,6 +418,50 @@ export function AdminDashboardPage() {
           severity: "critical",
         });
       });
+
+      if ((uploadsWithoutSourceUrlCount || 0) > 0) {
+        nextPendencies.push({
+          id: "upload-provenance",
+          area: "Uploads",
+          title: `${uploadsWithoutSourceUrlCount} asset(s) sem link de origem`,
+          reason: "Arquivos salvos sem rastreabilidade externa explícita",
+          link: "/admin/uploads",
+          severity: "warning",
+        });
+      }
+
+      if (pressBacklog > 0) {
+        nextPendencies.push({
+          id: "press-backlog",
+          area: "Imprensa",
+          title: `${pressBacklog} item(ns) no backlog de captura`,
+          reason: "Notícias e matérias ainda dependem de link externo ou estão sem fonte",
+          link: "/admin/acervo/imprensa?queue=backlog",
+          severity: "critical",
+        });
+      }
+
+      if (pressWithoutSnapshot > 0) {
+        nextPendencies.push({
+          id: "press-snapshot",
+          area: "Imprensa",
+          title: `${pressWithoutSnapshot} preservada(s) sem snapshot`,
+          reason: "Há matérias preservadas sem HTML bruto salvo",
+          link: "/admin/acervo/imprensa?queue=preserved_without_snapshot",
+          severity: "warning",
+        });
+      }
+
+      if (pressStaleCaptures > 0) {
+        nextPendencies.push({
+          id: "press-stale",
+          area: "Imprensa",
+          title: `${pressStaleCaptures} captura(s) antiga(s)`,
+          reason: "Há matérias com última captura acima de 30 dias",
+          link: "/admin/acervo/imprensa?queue=stale",
+          severity: "warning",
+        });
+      }
 
       setPendencies(nextPendencies.slice(0, 12));
 
@@ -400,6 +548,7 @@ export function AdminDashboardPage() {
     { label: "Acervo publicado", value: stats.acervoPublished, sub: "Itens ativos no portal", icon: "📚", tone: "blue" },
     { label: "Rascunhos", value: stats.draftsTotal, sub: "Conteúdos pendentes", icon: "📝", tone: "amber" },
     { label: "Uploads totais", value: stats.uploadsTotal, sub: "Arquivos armazenados", icon: "☁️", tone: "emerald" },
+    { label: "Uploads sem origem", value: stats.uploadsWithoutSourceUrl, sub: "Pedir revisão de procedência", icon: "🔗", tone: "violet" },
     { label: "Relatórios publicados", value: stats.reportsPublished, sub: "Biblioteca oficial", icon: "📄", tone: "indigo" },
     { label: "Eventos futuros", value: stats.upcomingEvents, sub: "Agenda viva", icon: "🗓️", tone: "rose" },
   ];
@@ -425,6 +574,9 @@ export function AdminDashboardPage() {
             <Link to="/admin/acervo" className="admin-command-ghost">
               Revisar acervo
             </Link>
+            <Link to="/admin/acervo/imprensa" className="admin-command-ghost">
+              Capturar matérias
+            </Link>
           </div>
         </div>
         <div className="admin-command-board">
@@ -445,7 +597,7 @@ export function AdminDashboardPage() {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-5">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-6">
         {statCards.map((card) => (
           <div key={card.label} className={`admin-kpi-card admin-kpi-${card.tone}`}>
             <div className="admin-kpi-icon">
@@ -459,6 +611,84 @@ export function AdminDashboardPage() {
           </div>
         ))}
       </div>
+
+      <section className="admin-panel p-6">
+        <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+          <div>
+            <span className="admin-eyebrow">Imprensa</span>
+            <h2 className="mt-3 text-2xl font-black tracking-tight text-slate-950">Pulso da preservação</h2>
+          </div>
+          <Link to="/admin/acervo/imprensa" className="admin-command-ghost">
+            Abrir fila de imprensa
+          </Link>
+        </div>
+
+        <div className="mt-6 grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
+          <Link to="/admin/acervo/imprensa?queue=backlog" className="rounded-[1.5rem] border border-amber-200 bg-amber-50 p-5 transition hover:-translate-y-0.5">
+            <span className="block text-[11px] font-black uppercase tracking-[0.18em] text-amber-700">Backlog de captura</span>
+            <strong className="mt-3 block text-3xl font-black text-amber-900">{loading ? "..." : stats.pressBacklog}</strong>
+            <p className="mt-2 text-sm font-medium text-amber-900/80">
+              Itens que ainda não estão preservados de forma robusta. {loading ? "..." : formatPercent(stats.pressBacklog, stats.pressTotal)}
+            </p>
+          </Link>
+          <Link to="/admin/acervo/imprensa?queue=preserved_without_snapshot" className="rounded-[1.5rem] border border-violet-200 bg-violet-50 p-5 transition hover:-translate-y-0.5">
+            <span className="block text-[11px] font-black uppercase tracking-[0.18em] text-violet-700">Sem snapshot</span>
+            <strong className="mt-3 block text-3xl font-black text-violet-900">{loading ? "..." : stats.pressWithoutSnapshot}</strong>
+            <p className="mt-2 text-sm font-medium text-violet-900/80">
+              Matérias preservadas sem HTML bruto salvo. {loading ? "..." : formatPercent(stats.pressWithoutSnapshot, stats.pressTotal)}
+            </p>
+          </Link>
+          <Link to="/admin/acervo/imprensa?editorial=pending_review" className="rounded-[1.5rem] border border-sky-200 bg-sky-50 p-5 transition hover:-translate-y-0.5">
+            <span className="block text-[11px] font-black uppercase tracking-[0.18em] text-sky-700">Revisão pendente</span>
+            <strong className="mt-3 block text-3xl font-black text-sky-900">{loading ? "..." : stats.pressPendingReview}</strong>
+            <p className="mt-2 text-sm font-medium text-sky-900/80">
+              Itens ainda não marcados como preservação fechada. {loading ? "..." : formatPercent(stats.pressPendingReview, stats.pressTotal)}
+            </p>
+          </Link>
+          <Link to="/admin/acervo/imprensa?queue=stale" className="rounded-[1.5rem] border border-blue-200 bg-blue-50 p-5 transition hover:-translate-y-0.5">
+            <span className="block text-[11px] font-black uppercase tracking-[0.18em] text-blue-700">Capturas antigas</span>
+            <strong className="mt-3 block text-3xl font-black text-blue-900">{loading ? "..." : stats.pressStaleCaptures}</strong>
+            <p className="mt-2 text-sm font-medium text-blue-900/80">
+              Matérias com última captura acima de 30 dias. {loading ? "..." : formatPercent(stats.pressStaleCaptures, stats.pressTotal)}
+            </p>
+          </Link>
+        </div>
+      </section>
+
+      <section className="admin-panel p-6">
+        <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+          <div>
+            <span className="admin-eyebrow">Uploads</span>
+            <h2 className="mt-3 text-2xl font-black tracking-tight text-slate-950">Fila de qualificação</h2>
+          </div>
+          <Link to="/admin/uploads" className="admin-command-ghost">
+            Abrir uploads
+          </Link>
+        </div>
+
+        <div className="mt-6 grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
+          <Link to="/admin/uploads?queue=without_origin" className="rounded-[1.5rem] border border-violet-200 bg-violet-50 p-5 transition hover:-translate-y-0.5">
+            <span className="block text-[11px] font-black uppercase tracking-[0.18em] text-violet-700">Sem link de origem</span>
+            <strong className="mt-3 block text-3xl font-black text-violet-900">{loading ? "..." : stats.uploadsWithoutSourceUrl}</strong>
+            <p className="mt-2 text-sm font-medium text-violet-900/80">Assets que ainda precisam de URL original para rastreabilidade.</p>
+          </Link>
+          <Link to="/admin/uploads?queue=without_source_name" className="rounded-[1.5rem] border border-amber-200 bg-amber-50 p-5 transition hover:-translate-y-0.5">
+            <span className="block text-[11px] font-black uppercase tracking-[0.18em] text-amber-700">Sem nome da fonte</span>
+            <strong className="mt-3 block text-3xl font-black text-amber-900">Revisar</strong>
+            <p className="mt-2 text-sm font-medium text-amber-900/80">Revisar veículo, instituição ou acervo de origem antes de publicar.</p>
+          </Link>
+          <Link to="/admin/uploads?queue=orphan" className="rounded-[1.5rem] border border-sky-200 bg-sky-50 p-5 transition hover:-translate-y-0.5">
+            <span className="block text-[11px] font-black uppercase tracking-[0.18em] text-sky-700">Assets órfãos</span>
+            <strong className="mt-3 block text-3xl font-black text-sky-900">Abrir</strong>
+            <p className="mt-2 text-sm font-medium text-sky-900/80">Arquivos sem uso em acervo, blog, relatório ou agenda.</p>
+          </Link>
+          <Link to="/admin/uploads?queue=ready_to_preserve" className="rounded-[1.5rem] border border-emerald-200 bg-emerald-50 p-5 transition hover:-translate-y-0.5">
+            <span className="block text-[11px] font-black uppercase tracking-[0.18em] text-emerald-700">Prontos para preservar</span>
+            <strong className="mt-3 block text-3xl font-black text-emerald-900">Abrir</strong>
+            <p className="mt-2 text-sm font-medium text-emerald-900/80">Uploads já com procedência suficiente para virar matéria preservada.</p>
+          </Link>
+        </div>
+      </section>
 
       <div className="grid grid-cols-1 gap-8 lg:grid-cols-12">
         <div className="space-y-8 lg:col-span-5">
@@ -543,6 +773,10 @@ export function AdminDashboardPage() {
               <Link to="/admin/acervo" className="group flex flex-col items-center rounded-[1.5rem] bg-slate-900 p-5 shadow-xl transition-all hover:bg-slate-800">
                 <span className="mb-3 text-3xl transition-transform group-hover:scale-110">🔍</span>
                 <span className="text-center text-[9px] font-black uppercase leading-tight text-white">Revisar rascunhos</span>
+              </Link>
+              <Link to="/admin/acervo/imprensa" className="admin-action-tile group flex flex-col items-center p-5">
+                <span className="mb-3 text-3xl transition-transform group-hover:scale-110">🗞️</span>
+                <span className="text-center text-[9px] font-black uppercase leading-tight text-slate-600">Capturar matérias</span>
               </Link>
             </div>
           </section>

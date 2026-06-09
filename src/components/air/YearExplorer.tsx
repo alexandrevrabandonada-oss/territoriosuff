@@ -101,7 +101,7 @@ export function YearExplorer() {
     if (year === "2024" && AUDIT_MODE_2024) {
       return (
         <div className="space-y-6">
-          <div className="bg-amber-950/20 border border-amber-900/40 p-5 rounded-2xl text-xs text-slate-350 leading-relaxed space-y-3">
+          <div className="bg-amber-950/20 border border-amber-900/40 p-5 rounded-2xl text-xs text-slate-300 leading-relaxed space-y-3">
             <p className="font-bold text-amber-400 flex items-center gap-2 text-sm">
               <span className="w-2 h-2 rounded-full bg-amber-500 animate-pulse"></span>
               Coleta Anual 2024 em Auditoria Metodológica
@@ -119,20 +119,20 @@ export function YearExplorer() {
               <div className="flex justify-between items-start border-b border-slate-800 pb-3">
                 <div>
                   <h4 className="text-lg font-bold text-slate-100">Piloto Mensal Validado — Volta Redonda - Retiro</h4>
-                  <span className="text-[10px] text-emerald-450 font-bold uppercase tracking-wider block mt-0.5">
+                  <span className="text-[10px] text-emerald-400 font-bold uppercase tracking-wider block mt-0.5">
                     Estação ID: 70 | Período: Julho de 2024 (01/07 a 31/07)
                   </span>
                 </div>
                 <div className="text-right">
                   <span className="text-xs text-slate-400 block">Cobertura:</span>
-                  <span className="text-sm font-mono font-bold text-emerald-450">
+                  <span className="text-sm font-mono font-bold text-emerald-400">
                     96.6% (719h/744h)
                   </span>
                 </div>
               </div>
 
               <div className="space-y-4">
-                <h5 className="text-xs font-black text-slate-450 uppercase tracking-widest">Poluente Auditado e Validado</h5>
+                <h5 className="text-xs font-black text-slate-400 uppercase tracking-widest">Poluente Auditado e Validado</h5>
                 
                 <div className="space-y-2">
                   <div className="flex justify-between items-center text-xs">
@@ -142,7 +142,7 @@ export function YearExplorer() {
                     </span>
                   </div>
                   
-                  <div className="grid grid-cols-3 gap-2 bg-slate-950/40 p-2.5 rounded-lg border border-slate-850">
+                  <div className="grid grid-cols-3 gap-2 bg-slate-950/40 p-2.5 rounded-lg border border-slate-800">
                     <div>
                       <span className="text-[10px] text-slate-500 block font-semibold">Média Mensal:</span>
                       <span className="text-xs font-mono font-bold text-slate-300">
@@ -168,8 +168,8 @@ export function YearExplorer() {
                 </div>
               </div>
 
-              <div className="bg-slate-950/60 p-4 rounded-xl border border-slate-850 text-xs space-y-2">
-                <span className="font-black text-[10px] text-slate-450 uppercase tracking-wider block">
+              <div className="bg-slate-950/60 p-4 rounded-xl border border-slate-800 text-xs space-y-2">
+                <span className="font-black text-[10px] text-slate-400 uppercase tracking-wider block">
                   Nota Editorial
                 </span>
                 <p className="text-slate-300 leading-relaxed font-medium">
@@ -195,7 +195,7 @@ export function YearExplorer() {
           </div>
         )}
 
-        <div className="bg-slate-850/80 border border-slate-800 p-5 rounded-2xl text-xs text-slate-300 leading-relaxed space-y-3 shadow-md">
+        <div className="bg-slate-800/80 border border-slate-800 p-5 rounded-2xl text-xs text-slate-300 leading-relaxed space-y-3 shadow-md">
           <p className="font-bold text-slate-100 flex items-center gap-1.5 text-sm">
             <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
             Como ler esses números
@@ -203,7 +203,7 @@ export function YearExplorer() {
           <p>
             Os valores vêm de dados horários públicos exibidos pela plataforma INEA/WebLakes. Como a tabela não traz uma flag oficial de QA/QC por registro, tratamos as comparações com OMS e CONAMA como experimentais. Ainda assim, a alta cobertura horária permite identificar sinais fortes de atenção.
           </p>
-          <div className="text-[10px] text-slate-450 border-t border-slate-800 pt-2.5 font-semibold">
+          <div className="text-[10px] text-slate-400 border-t border-slate-800 pt-2.5 font-semibold">
             Selo Metodológico: Dado horário público WebLakes — comparação experimental — sem QA/QC oficial explícito
           </div>
         </div>
@@ -214,7 +214,7 @@ export function YearExplorer() {
               <span className="w-2 h-2 rounded-full bg-indigo-500"></span>
               PM10 validado experimentalmente
             </h4>
-            <span className="text-[9px] bg-emerald-950 text-emerald-450 border border-emerald-900/25 px-2 py-0.5 rounded font-bold">
+            <span className="text-[9px] bg-emerald-950 text-emerald-400 border border-emerald-900/25 px-2 py-0.5 rounded font-bold">
               PM10 Único Validado
             </span>
           </div>
@@ -226,11 +226,11 @@ export function YearExplorer() {
                   <SurfaceCard key={stationId} className="bg-slate-900 border border-slate-800 p-6 rounded-2xl flex flex-col justify-between min-h-[260px] shadow-lg">
                     <div className="border-b border-slate-800 pb-3">
                       <h4 className="text-base font-bold text-slate-100">{site.name}</h4>
-                      <span className="text-[10px] text-slate-450 font-bold uppercase tracking-wider block mt-0.5">
+                      <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wider block mt-0.5">
                         Estação ID: {stationId} | Volta Redonda
                       </span>
                     </div>
-                    <div className="py-6 px-4 text-center text-xs font-semibold text-slate-500 italic bg-slate-950/40 border border-slate-850 rounded-xl my-4">
+                    <div className="py-6 px-4 text-center text-xs font-semibold text-slate-500 italic bg-slate-950/40 border border-slate-800 rounded-xl my-4">
                       Estação meteorológica / sem PM10 disponível nesta camada.
                     </div>
                     <div className="text-[10px] text-slate-500 leading-normal">
@@ -253,13 +253,13 @@ export function YearExplorer() {
                   <div className="flex justify-between items-start border-b border-slate-800 pb-3">
                     <div>
                       <h4 className="text-base font-bold text-slate-100">{site.name}</h4>
-                      <span className="text-[10px] text-slate-450 font-bold uppercase tracking-wider block mt-0.5">
+                      <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wider block mt-0.5">
                         Estação ID: {stationId} | Volta Redonda
                       </span>
                     </div>
                     <div className="text-right">
-                      <span className="text-[10px] text-slate-450 block">Cobertura:</span>
-                      <span className={`text-sm font-mono font-bold ${year === "2021" && stationId === "71" ? 'text-amber-500' : 'text-emerald-450'}`}>
+                      <span className="text-[10px] text-slate-400 block">Cobertura:</span>
+                      <span className={`text-sm font-mono font-bold ${year === "2021" && stationId === "71" ? 'text-amber-500' : 'text-emerald-400'}`}>
                         {pData.coveragePct.toFixed(1)}%
                       </span>
                       {year === "2021" && stationId === "71" && (
@@ -278,7 +278,7 @@ export function YearExplorer() {
                       </span>
                     </div>
                     
-                    <div className="grid grid-cols-3 gap-2 bg-slate-950/40 p-2.5 rounded-lg border border-slate-850">
+                    <div className="grid grid-cols-3 gap-2 bg-slate-950/40 p-2.5 rounded-lg border border-slate-800">
                       <div>
                         <span className="text-[10px] text-slate-500 block font-semibold">Média Anual:</span>
                         <span className="text-xs font-mono font-bold text-slate-300">
@@ -303,11 +303,11 @@ export function YearExplorer() {
                     </div>
                   </div>
 
-                  <div className="bg-slate-950/60 p-4 rounded-xl border border-slate-850 text-xs space-y-2">
-                    <span className="font-black text-[9px] text-slate-450 uppercase tracking-wider block">
+                  <div className="bg-slate-950/60 p-4 rounded-xl border border-slate-800 text-xs space-y-2">
+                    <span className="font-black text-[9px] text-slate-400 uppercase tracking-wider block">
                       Nota de Exposição ({year})
                     </span>
-                    <div className="text-slate-350 leading-relaxed font-medium text-[11px]">
+                    <div className="text-slate-300 leading-relaxed font-medium text-[11px]">
                       {getExposureNotePM10(stationId, year, pData)}
                     </div>
                   </div>
@@ -324,7 +324,7 @@ export function YearExplorer() {
                     Sensor Não Operacional na Rede Oficial
                   </span>
                 </div>
-                <div className="p-4 bg-slate-950/45 border border-slate-850 rounded-xl max-w-md">
+                <div className="p-4 bg-slate-950/45 border border-slate-800 rounded-xl max-w-md">
                   <p className="text-xs text-amber-400 font-bold">Dados de PM2.5 indisponíveis em 2020</p>
                   <p className="text-[11px] text-slate-400 mt-1.5 leading-relaxed">
                     O sensor para monitoramento de PM2.5 não retornou dados públicos na plataforma INEA/WebLakes no recorte analisado no ano de 2020. A série histórica deste parâmetro se inicia apenas a partir do ano de 2021.
@@ -336,11 +336,11 @@ export function YearExplorer() {
                 <div className="flex justify-between items-start border-b border-slate-800 pb-3">
                   <div>
                     <h4 className="text-base font-bold text-slate-100">Material Particulado Fino (PM2.5) — {year}</h4>
-                    <span className="text-[10px] text-emerald-450 font-bold uppercase tracking-wider block mt-0.5">
+                    <span className="text-[10px] text-emerald-400 font-bold uppercase tracking-wider block mt-0.5">
                       Comparação Experimental Validada | Três Estações Operacionais
                     </span>
                   </div>
-                  <span className="text-[9px] bg-emerald-950 text-emerald-450 border border-emerald-900/25 px-2 py-0.5 rounded font-bold">
+                  <span className="text-[9px] bg-emerald-950 text-emerald-400 border border-emerald-900/25 px-2 py-0.5 rounded font-bold">
                     PM2.5 Validado
                   </span>
                 </div>
@@ -361,7 +361,7 @@ export function YearExplorer() {
                         <div className="border-b border-slate-800/60 pb-1.5 flex justify-between items-end">
                           <div>
                             <span className="text-xs font-bold text-slate-100 block">{site?.name || `Estação ${stationId}`}</span>
-                            <span className={`text-[9px] font-mono ${year === "2021" && stationId === "71" ? 'text-amber-500 font-bold' : 'text-slate-450'}`}>
+                            <span className={`text-[9px] font-mono ${year === "2021" && stationId === "71" ? 'text-amber-500 font-bold' : 'text-slate-400'}`}>
                               Cobertura: {pData.coveragePct.toFixed(1)}%
                             </span>
                           </div>
@@ -372,16 +372,16 @@ export function YearExplorer() {
                           )}
                         </div>
 
-                        <div className="grid grid-cols-1 gap-1.5 bg-slate-950/40 p-2 rounded-lg border border-slate-850">
+                        <div className="grid grid-cols-1 gap-1.5 bg-slate-950/40 p-2 rounded-lg border border-slate-800">
                           <div className="flex justify-between items-center">
                             <span className="text-[9px] text-slate-500 font-semibold">Média Anual:</span>
-                            <span className="text-xs font-mono font-bold text-slate-350">
+                            <span className="text-xs font-mono font-bold text-slate-300">
                               {pData.mean !== null ? `${pData.mean.toFixed(2)} ${pData.unit}` : "N/A"}
                             </span>
                           </div>
                           <div className="flex justify-between items-center">
                             <span className="text-[9px] text-slate-500 font-semibold">Pico Horário:</span>
-                            <span className="text-xs font-mono font-bold text-slate-350">
+                            <span className="text-xs font-mono font-bold text-slate-300">
                               {pData.max !== null ? `${pData.max.toFixed(2)} ${pData.unit}` : "N/A"}
                             </span>
                           </div>
@@ -399,11 +399,11 @@ export function YearExplorer() {
                   })}
                 </div>
 
-                <div className="bg-slate-950/60 p-4 rounded-xl border border-slate-850 text-xs space-y-2">
-                  <span className="font-black text-[9px] text-slate-450 uppercase tracking-wider block">
+                <div className="bg-slate-950/60 p-4 rounded-xl border border-slate-800 text-xs space-y-2">
+                  <span className="font-black text-[9px] text-slate-400 uppercase tracking-wider block">
                     Nota Metodológica e de Exposição (PM2.5) — {year}
                   </span>
-                  <div className="text-slate-350 leading-relaxed font-medium text-[11px] space-y-1.5">
+                  <div className="text-slate-300 leading-relaxed font-medium text-[11px] space-y-1.5 font-sans">
                     <p>
                       O material particulado fino (PM2.5) representa as partículas mais finas em suspensão. Os dados foram recalculados a partir das leituras horárias públicas fornecidas pela plataforma INEA/WebLakes para o ano de {year}.
                     </p>
@@ -460,11 +460,11 @@ export function YearExplorer() {
 
           <div className="grid gap-6 md:grid-cols-2">
             <div className="space-y-4">
-              <h5 className="text-xs font-black text-slate-450 uppercase tracking-widest">Valores de Referência Coletados</h5>
+              <h5 className="text-xs font-black text-slate-400 uppercase tracking-widest">Valores de Referência Coletados</h5>
               <div className="space-y-3">
                 {isTrienio ? (
                   <>
-                    <div className="p-3 bg-slate-950/40 rounded-lg border border-slate-850 flex justify-between items-center text-xs">
+                    <div className="p-3 bg-slate-950/40 rounded-lg border border-slate-800 flex justify-between items-center text-xs">
                       <div>
                         <strong className="text-slate-200 block">PM10 (Partículas Inaláveis)</strong>
                         <span className="text-[10px] text-slate-500">Média Trienal / Pico Diário</span>
@@ -475,7 +475,7 @@ export function YearExplorer() {
                       </div>
                     </div>
 
-                    <div className="p-3 bg-slate-950/40 rounded-lg border border-slate-850 flex justify-between items-center text-xs">
+                    <div className="p-3 bg-slate-950/40 rounded-lg border border-slate-800 flex justify-between items-center text-xs">
                       <div>
                         <strong className="text-slate-200 block">PTS (Partículas Totais)</strong>
                         <span className="text-[10px] text-slate-500">Média Trienal / Pico Diário</span>
@@ -486,7 +486,7 @@ export function YearExplorer() {
                       </div>
                     </div>
 
-                    <div className="p-3 bg-slate-950/40 rounded-lg border border-slate-850 flex justify-between items-center text-xs">
+                    <div className="p-3 bg-slate-950/40 rounded-lg border border-slate-800 flex justify-between items-center text-xs">
                       <div>
                         <strong className="text-slate-200 block">O3 (Ozônio)</strong>
                         <span className="text-[10px] text-slate-500">Média Trienal / Pico Diário</span>
@@ -499,7 +499,7 @@ export function YearExplorer() {
                   </>
                 ) : (
                   <>
-                    <div className="p-3 bg-slate-950/40 rounded-lg border border-slate-850 flex justify-between items-center text-xs">
+                    <div className="p-3 bg-slate-950/40 rounded-lg border border-slate-800 flex justify-between items-center text-xs">
                       <div>
                         <strong className="text-slate-200 block">O3 - VR Belmonte</strong>
                         <span className="text-[10px] text-slate-500">Máximo Horário</span>
@@ -510,7 +510,7 @@ export function YearExplorer() {
                       </div>
                     </div>
 
-                    <div className="p-3 bg-slate-950/40 rounded-lg border border-slate-850 flex justify-between items-center text-xs">
+                    <div className="p-3 bg-slate-950/40 rounded-lg border border-slate-800 flex justify-between items-center text-xs">
                       <div>
                         <strong className="text-slate-200 block">PTS - VR Santa Cecília</strong>
                         <span className="text-[10px] text-slate-500">Máximo Diário (24h)</span>
@@ -526,8 +526,8 @@ export function YearExplorer() {
             </div>
 
             <div className="space-y-4">
-              <h5 className="text-xs font-black text-slate-450 uppercase tracking-widest">Excedências e Impacto OMS</h5>
-              <div className="p-4 bg-slate-950/60 rounded-xl border border-slate-850 space-y-3 text-xs">
+              <h5 className="text-xs font-black text-slate-400 uppercase tracking-widest">Excedências e Impacto OMS</h5>
+              <div className="p-4 bg-slate-950/60 rounded-xl border border-slate-800 space-y-3 text-xs">
                 {isTrienio ? (
                   <>
                     <div className="flex justify-between items-center">

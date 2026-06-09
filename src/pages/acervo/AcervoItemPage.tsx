@@ -16,6 +16,44 @@ const SOURCE_TYPE_LABELS: Record<string, string> = {
     pessoal: "Pessoal"
 };
 
+type SourceCaptureMeta = {
+    url?: string;
+    title?: string;
+    source_name?: string;
+    published_at?: string | null;
+    excerpt?: string;
+    content_format?: string;
+    word_count?: number;
+    domain?: string;
+    captured_at?: string;
+    snapshot_url?: string;
+    snapshot_path?: string;
+    snapshot_mime_type?: string;
+    snapshot_size_bytes?: number;
+    replaced_live_copy?: boolean;
+};
+
+type SourceCaptureHistoryEntry = SourceCaptureMeta;
+
+function getSourceCapture(meta: Record<string, unknown> | null | undefined): SourceCaptureMeta | null {
+    if (!meta || typeof meta !== "object" || Array.isArray(meta)) return null;
+    const candidate = (meta as Record<string, unknown>).source_capture;
+    if (!candidate || typeof candidate !== "object" || Array.isArray(candidate)) return null;
+    return candidate as SourceCaptureMeta;
+}
+
+function getEditorialContext(meta: Record<string, unknown> | null | undefined) {
+    if (!meta || typeof meta !== "object" || Array.isArray(meta)) return "";
+    const value = (meta as Record<string, unknown>).editorial_context;
+    return typeof value === "string" ? value.trim() : "";
+}
+
+function getSourceCaptureHistory(meta: Record<string, unknown> | null | undefined): SourceCaptureHistoryEntry[] {
+    if (!meta || typeof meta !== "object" || Array.isArray(meta)) return [];
+    const value = (meta as Record<string, unknown>).source_capture_history;
+    return Array.isArray(value) ? (value as SourceCaptureHistoryEntry[]) : [];
+}
+
 function SimpleMarkdown({ text }: { text: string }) {
     return <SafeMarkdown text={text} className="text-sm leading-relaxed text-text-primary" />;
 }
@@ -150,6 +188,9 @@ export function AcervoItemPage() {
     const [fontSize, setFontSize] = useState(18); // Default 18px
     const [scrollProgress, setScrollProgress] = useState(0);
     const [activeHeadingId, setActiveHeadingId] = useState<string>("");
+    const sourceCapture = useMemo(() => getSourceCapture(item?.meta), [item?.meta]);
+    const editorialContext = useMemo(() => getEditorialContext(item?.meta), [item?.meta]);
+    const sourceCaptureHistory = useMemo(() => getSourceCaptureHistory(item?.meta), [item?.meta]);
 
     useEffect(() => {
         if (readerMode) {
@@ -683,6 +724,13 @@ export function AcervoItemPage() {
                         </div>
                     )}
 
+                    {editorialContext && (
+                        <div className="mb-8 rounded-2xl border border-slate-200 bg-slate-50 p-5 text-text-primary">
+                            <span className="mb-2 block text-[10px] font-black uppercase tracking-[0.18em] text-slate-500">Contexto editorial</span>
+                            <p className="text-sm leading-relaxed text-slate-700">{editorialContext}</p>
+                        </div>
+                    )}
+
                     {/* Excerpt */}
                     {item.excerpt && (
                         <p className="mb-6 text-base font-semibold leading-relaxed text-text-primary">{item.excerpt}</p>
@@ -695,6 +743,51 @@ export function AcervoItemPage() {
                             text={[item.excerpt, item.curator_note, item.content_md].filter(Boolean).join("\n\n")}
                         />
                     </div>
+
+                    {sourceCapture && item.content_md && (
+                        <div className="mb-6 rounded-2xl border border-emerald-200 bg-emerald-50 p-5">
+                            <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
+                                <div>
+                                    <span className="block text-[10px] font-black uppercase tracking-[0.2em] text-emerald-700">Cópia preservada</span>
+                                    <h3 className="mt-2 text-lg font-black text-emerald-950">Esta matéria foi preservada no portal</h3>
+                                    <p className="mt-2 text-sm font-medium leading-relaxed text-emerald-900/80">
+                                        Capturada em {sourceCapture.captured_at ? new Date(sourceCapture.captured_at).toLocaleString("pt-BR") : "data não informada"} para manter acesso público mesmo se o link original sair do ar.
+                                    </p>
+                                </div>
+                                {item.source_url && (
+                                    <div className="flex flex-wrap gap-2">
+                                        <a
+                                            className="inline-flex items-center justify-center rounded-xl border border-emerald-300 bg-white px-4 py-2 text-xs font-black uppercase tracking-wide text-emerald-800 transition hover:bg-emerald-100"
+                                            href={item.source_url}
+                                            rel="noopener noreferrer"
+                                            target="_blank"
+                                        >
+                                            Abrir fonte original
+                                        </a>
+                                        {sourceCapture.snapshot_url && (
+                                            <a
+                                                className="inline-flex items-center justify-center rounded-xl border border-emerald-300 bg-emerald-900 px-4 py-2 text-xs font-black uppercase tracking-wide text-white transition hover:bg-emerald-800"
+                                                href={sourceCapture.snapshot_url}
+                                                rel="noopener noreferrer"
+                                                target="_blank"
+                                            >
+                                                Abrir snapshot HTML
+                                            </a>
+                                        )}
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                    )}
+
+                    {sourceCaptureHistory.length > 1 && (
+                        <div className="mb-6 rounded-2xl border border-slate-200 bg-slate-50 p-5">
+                            <span className="block text-[10px] font-black uppercase tracking-[0.18em] text-slate-500">Rastro de preservação</span>
+                            <p className="mt-2 text-sm font-medium leading-relaxed text-slate-700">
+                                Este item registra {sourceCaptureHistory.length} capturas arquivadas da matéria. A versão exibida acima é a cópia ativa mais recente.
+                            </p>
+                        </div>
+                    )}
 
                     {/* Body */}
                     {item.content_md ? <SimpleMarkdown text={item.content_md} /> : null}

@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { supabase } from "../../lib/supabase/client";
 import { getLinkedMediaAssetIdsForContent } from "../../lib/admin/media";
 
@@ -8,9 +8,12 @@ interface AcervoItem {
   title: string;
   type: string;
   status: string;
-  published_at: string;
-  publish_at: string;
+  published_at: string | null;
+  publish_at: string | null;
   slug: string;
+  source_url?: string | null;
+  content_md?: string | null;
+  meta?: Record<string, unknown> | null;
 }
 
 const TYPE_LABELS: Record<string, string> = {
@@ -39,13 +42,70 @@ const STATUS_COLORS: Record<string, string> = {
   archived: "bg-rose-100 text-rose-700",
 };
 
+const PRESERVATION_LABELS: Record<string, string> = {
+  all: "Tudo",
+  preserved: "Preservada",
+  link_only: "Só link externo",
+  manual_text: "Texto manual",
+  no_source: "Sem fonte",
+};
+
+const PRESERVATION_COLORS: Record<string, string> = {
+  preserved: "bg-emerald-100 text-emerald-700",
+  link_only: "bg-amber-100 text-amber-700",
+  manual_text: "bg-blue-100 text-blue-700",
+  no_source: "bg-slate-100 text-slate-600",
+};
+
+function isNewsType(type: string) {
+  return type === "noticia" || type === "materia";
+}
+
+function getPreservationState(item: AcervoItem) {
+  if (!isNewsType(item.type)) return null;
+  const meta = item.meta && typeof item.meta === "object" && !Array.isArray(item.meta)
+    ? item.meta as Record<string, unknown>
+    : null;
+  const sourceCapture = meta?.source_capture && typeof meta.source_capture === "object" && !Array.isArray(meta.source_capture)
+    ? meta.source_capture as Record<string, unknown>
+    : null;
+
+  if (sourceCapture?.captured_at) return "preserved";
+  if (item.source_url && item.content_md?.trim()) return "manual_text";
+  if (item.source_url) return "link_only";
+  return "no_source";
+}
+
 export function AdminAcervoListPage() {
+  const [searchParams, setSearchParams] = useSearchParams();
   const [items, setItems] = useState<AcervoItem[]>([]);
   const [loading, setLoading] = useState(true);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [filterType, setFilterType] = useState("");
-  const [filterStatus, setFilterStatus] = useState("");
+  const [searchTerm, setSearchTerm] = useState(searchParams.get("q") || "");
+  const [filterType, setFilterType] = useState(searchParams.get("type") || "");
+  const [filterStatus, setFilterStatus] = useState(searchParams.get("status") || "");
+  const [filterPreservation, setFilterPreservation] = useState(searchParams.get("preservation") || "all");
   const navigate = useNavigate();
+
+  useEffect(() => {
+    setSearchTerm(searchParams.get("q") || "");
+    setFilterType(searchParams.get("type") || "");
+    setFilterStatus(searchParams.get("status") || "");
+    setFilterPreservation(searchParams.get("preservation") || "all");
+  }, [searchParams]);
+
+  const applyFiltersToUrl = useCallback((next: {
+    q?: string;
+    type?: string;
+    status?: string;
+    preservation?: string;
+  }) => {
+    const params = new URLSearchParams();
+    if (next.q) params.set("q", next.q);
+    if (next.type) params.set("type", next.type);
+    if (next.status) params.set("status", next.status);
+    if (next.preservation && next.preservation !== "all") params.set("preservation", next.preservation);
+    setSearchParams(params);
+  }, [setSearchParams]);
 
   const loadItems = useCallback(async () => {
     if (!supabase) return;
@@ -53,7 +113,7 @@ export function AdminAcervoListPage() {
 
     let query = supabase
       .from("acervo_items")
-      .select("id, title, type, status, published_at, publish_at, slug")
+      .select("id, title, type, status, published_at, publish_at, slug, source_url, content_md, meta")
       .order("created_at", { ascending: false });
 
     if (searchTerm) {
@@ -71,10 +131,15 @@ export function AdminAcervoListPage() {
     if (error) {
       console.error("[Acervo] Erro ao carregar:", error);
     } else {
-      setItems(data || []);
+      const nextItems = (data || []) as AcervoItem[];
+      setItems(
+        filterPreservation === "all"
+          ? nextItems
+          : nextItems.filter((item) => getPreservationState(item) === filterPreservation),
+      );
     }
     setLoading(false);
-  }, [searchTerm, filterType, filterStatus]);
+  }, [searchTerm, filterType, filterStatus, filterPreservation]);
 
   useEffect(() => {
     loadItems();
@@ -98,6 +163,11 @@ export function AdminAcervoListPage() {
       loadItems();
     }
   };
+
+  const newsItems = items.filter((item) => isNewsType(item.type));
+  const preservedCount = newsItems.filter((item) => getPreservationState(item) === "preserved").length;
+  const linkOnlyCount = newsItems.filter((item) => getPreservationState(item) === "link_only").length;
+  const noSourceCount = newsItems.filter((item) => getPreservationState(item) === "no_source").length;
 
   return (
     <div className="admin-list-page space-y-8 animate-in fade-in duration-500">
@@ -126,6 +196,40 @@ export function AdminAcervoListPage() {
             </svg>
             Novo Item
           </Link>
+          <Link
+            to="/admin/acervo/imprensa"
+            className="rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-xs font-black uppercase tracking-wide text-amber-800 transition hover:bg-amber-100"
+          >
+            Abrir backlog de captura
+          </Link>
+        </div>
+      </div>
+
+      <div className="grid gap-4 md:grid-cols-3">
+        <div className="rounded-[1.5rem] border border-slate-200 bg-white p-5 shadow-sm">
+          <span className="block text-[11px] font-black uppercase tracking-[0.18em] text-slate-400">Matérias preservadas</span>
+          <strong className="mt-3 block text-3xl font-black text-slate-900">{preservedCount}</strong>
+          <p className="mt-2 text-sm font-medium text-slate-500">Itens de imprensa com captura registrada e cópia arquivada no portal.</p>
+        </div>
+        <div className="rounded-[1.5rem] border border-amber-200 bg-amber-50 p-5 shadow-sm">
+          <span className="block text-[11px] font-black uppercase tracking-[0.18em] text-amber-700">Dependem do link</span>
+          <strong className="mt-3 block text-3xl font-black text-amber-900">{linkOnlyCount}</strong>
+          <p className="mt-2 text-sm font-medium text-amber-800/80">Notícias e matérias ainda sem captura preservada no acervo.</p>
+          <Link to="/admin/acervo/imprensa" className="mt-4 inline-block text-xs font-black uppercase tracking-wide text-amber-800 underline underline-offset-2">
+            Ver fila de imprensa
+          </Link>
+        </div>
+        <div className="rounded-[1.5rem] border border-slate-200 bg-slate-50 p-5 shadow-sm">
+          <span className="block text-[11px] font-black uppercase tracking-[0.18em] text-slate-500">Sem fonte</span>
+          <strong className="mt-3 block text-3xl font-black text-slate-900">{noSourceCount}</strong>
+          <p className="mt-2 text-sm font-medium text-slate-600">Itens editoriais que ainda precisam de link de origem para rastreabilidade.</p>
+          <button
+            type="button"
+            onClick={() => applyFiltersToUrl({ q: searchTerm, type: filterType, status: filterStatus, preservation: "no_source" })}
+            className="mt-4 text-xs font-black uppercase tracking-wide text-slate-700 underline underline-offset-2"
+          >
+            Revisar sem fonte
+          </button>
         </div>
       </div>
 
@@ -136,7 +240,16 @@ export function AdminAcervoListPage() {
           <input
             type="text"
             value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
+            onChange={(e) => {
+              const value = e.target.value;
+              setSearchTerm(value);
+              applyFiltersToUrl({
+                q: value,
+                type: filterType,
+                status: filterStatus,
+                preservation: filterPreservation,
+              });
+            }}
             placeholder="Título do item..."
             className="w-full px-4 py-2 bg-slate-50 border border-slate-200 rounded-lg focus:ring-2 focus:ring-emerald-500/20 transition-all"
           />
@@ -146,7 +259,16 @@ export function AdminAcervoListPage() {
           <label className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Tipo</label>
           <select
             value={filterType}
-            onChange={(e) => setFilterType(e.target.value)}
+            onChange={(e) => {
+              const value = e.target.value;
+              setFilterType(value);
+              applyFiltersToUrl({
+                q: searchTerm,
+                type: value,
+                status: filterStatus,
+                preservation: filterPreservation,
+              });
+            }}
             className="w-full px-4 py-2 bg-slate-50 border border-slate-200 rounded-lg focus:ring-2 focus:ring-emerald-500/20"
           >
             <option value="">Todos</option>
@@ -160,12 +282,43 @@ export function AdminAcervoListPage() {
           <label className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Status</label>
           <select
             value={filterStatus}
-            onChange={(e) => setFilterStatus(e.target.value)}
+            onChange={(e) => {
+              const value = e.target.value;
+              setFilterStatus(value);
+              applyFiltersToUrl({
+                q: searchTerm,
+                type: filterType,
+                status: value,
+                preservation: filterPreservation,
+              });
+            }}
             className="w-full px-4 py-2 bg-slate-50 border border-slate-200 rounded-lg focus:ring-2 focus:ring-emerald-500/20"
           >
             <option value="">Todos</option>
             {Object.entries(STATUS_LABELS).map(([val, label]) => (
               <option key={val} value={val}>{label}</option>
+            ))}
+          </select>
+        </div>
+
+        <div className="w-52">
+          <label className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Preservação</label>
+          <select
+            value={filterPreservation}
+            onChange={(e) => {
+              const value = e.target.value;
+              setFilterPreservation(value);
+              applyFiltersToUrl({
+                q: searchTerm,
+                type: filterType,
+                status: filterStatus,
+                preservation: value,
+              });
+            }}
+            className="w-full px-4 py-2 bg-slate-50 border border-slate-200 rounded-lg focus:ring-2 focus:ring-emerald-500/20"
+          >
+            {Object.entries(PRESERVATION_LABELS).map(([value, label]) => (
+              <option key={value} value={value}>{label}</option>
             ))}
           </select>
         </div>
@@ -196,6 +349,7 @@ export function AdminAcervoListPage() {
                   <th scope="col" className="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Título</th>
                   <th scope="col" className="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Tipo</th>
                   <th scope="col" className="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Status</th>
+                  <th scope="col" className="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Preservação</th>
                   <th scope="col" className="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Data</th>
                   <th scope="col" className="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider text-right">Ações</th>
                 </tr>
@@ -216,8 +370,21 @@ export function AdminAcervoListPage() {
                       </span>
                     </td>
                     <td className="px-6 py-4">
+                      {getPreservationState(item) ? (
+                        <span className={`text-[10px] uppercase tracking-widest font-bold px-2 py-1 rounded-full ${PRESERVATION_COLORS[getPreservationState(item) as keyof typeof PRESERVATION_COLORS]}`}>
+                          {PRESERVATION_LABELS[getPreservationState(item) as keyof typeof PRESERVATION_LABELS]}
+                        </span>
+                      ) : (
+                        <span className="text-xs text-slate-400">Não se aplica</span>
+                      )}
+                    </td>
+                    <td className="px-6 py-4">
                       <span className="text-sm text-slate-500">
-                        {item.published_at ? new Date(item.published_at).toLocaleDateString("pt-BR") : "--"}
+                        {item.published_at
+                          ? new Date(item.published_at).toLocaleDateString("pt-BR")
+                          : item.publish_at
+                            ? new Date(item.publish_at).toLocaleDateString("pt-BR")
+                            : "--"}
                       </span>
                     </td>
                     <td className="px-6 py-4 text-right space-x-2">
@@ -240,6 +407,17 @@ export function AdminAcervoListPage() {
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
                         </svg>
                       </button>
+                      {getPreservationState(item) === "link_only" && (
+                        <button
+                          onClick={() => navigate(`/admin/acervo/${item.id}`)}
+                          className="p-2 text-slate-400 hover:text-amber-600 transition-colors"
+                          title="Capturar matéria"
+                        >
+                          <svg className="w-5 h-5 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v8m4-4H8m13 0A9 9 0 113 12a9 9 0 0118 0z" />
+                          </svg>
+                        </button>
+                      )}
                       <button 
                         onClick={() => handleDelete(item.id)}
                         className="p-2 text-slate-400 hover:text-rose-600 transition-colors"

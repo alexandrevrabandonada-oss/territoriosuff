@@ -10,6 +10,7 @@ const AdminDashboardPage = lazy(() => import("../pages/admin/AdminDashboardPage"
 const AdminUploadsPage = lazy(() => import("../pages/admin/AdminUploadsPage").then((m) => ({ default: m.AdminUploadsPage })));
 const AdminAcervoListPage = lazy(() => import("../pages/admin/AdminAcervoListPage").then((m) => ({ default: m.AdminAcervoListPage })));
 const AdminAcervoEditPage = lazy(() => import("../pages/admin/AdminAcervoEditPage").then((m) => ({ default: m.AdminAcervoEditPage })));
+const AdminPressPreservationPage = lazy(() => import("../pages/admin/AdminPressPreservationPage").then((m) => ({ default: m.AdminPressPreservationPage })));
 const AdminPaperWizardPage = lazy(() => import("../pages/admin/AdminPaperWizardPage").then((m) => ({ default: m.AdminPaperWizardPage })));
 const AdminBlogListPage = lazy(() => import("../pages/admin/AdminBlogListPage").then((m) => ({ default: m.AdminBlogListPage })));
 const AdminBlogEditPage = lazy(() => import("../pages/admin/AdminBlogEditPage").then((m) => ({ default: m.AdminBlogEditPage })));
@@ -30,6 +31,7 @@ function AdminShell() {
         <Routes>
           <Route index element={<AdminDashboardPage />} />
           <Route path="acervo" element={<AdminAcervoListPage />} />
+          <Route path="acervo/imprensa" element={<AdminPressPreservationPage />} />
           <Route path="acervo/novo" element={<AdminAcervoEditPage />} />
           <Route path="acervo/artigos/novo" element={<AdminPaperWizardPage />} />
           <Route path="acervo/:id" element={<AdminAcervoEditPage />} />

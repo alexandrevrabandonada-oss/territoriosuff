@@ -214,7 +214,7 @@ export function AttentionEpisodesPanel() {
       {/* Narrative block header */}
       <div className="bg-gradient-to-r from-slate-800 to-slate-900 text-white p-6 rounded-2xl shadow-sm space-y-2">
         <h4 className="text-base font-bold">Quando o ar exige mais atenção?</h4>
-        <p className="text-xs text-slate-350 leading-relaxed max-w-3xl">
+        <p className="text-xs text-slate-300 leading-relaxed max-w-3xl">
           Em vez de olhar só a média anual, este painel mostra os meses, dias e picos horários em que PM10 e PM2.5 chamaram mais atenção nas estações de Volta Redonda.
         </p>
       </div>
@@ -241,7 +241,7 @@ export function AttentionEpisodesPanel() {
                 </div>
               </>
             ) : (
-              <div className="text-[10px] text-slate-450 italic py-2">Nenhum evento registrado no período.</div>
+              <div className="text-[10px] text-slate-400 italic py-2">Nenhum evento registrado no período.</div>
             )}
           </div>
         </SurfaceCard>
@@ -262,11 +262,11 @@ export function AttentionEpisodesPanel() {
                   Em <span className="text-slate-900 font-bold">{formatDateTime(maxPeakEpisode.max_hourly_at)}</span>
                   {selectedStation === 'all' && <> na estação <span className="text-slate-900 font-bold">{maxPeakEpisode.station_name.replace('VR - ', '')}</span></>}
                   <br/>
-                  <span className="text-slate-450 text-[9px] italic">(pico horário pontual de concentração)</span>
+                  <span className="text-slate-400 text-[9px] italic">(pico horário pontual de concentração)</span>
                 </div>
               </>
             ) : (
-              <div className="text-[10px] text-slate-450 italic py-2">Sem pico horário registrado.</div>
+              <div className="text-[10px] text-slate-400 italic py-2">Sem pico horário registrado.</div>
             )}
           </div>
         </SurfaceCard>
@@ -290,7 +290,7 @@ export function AttentionEpisodesPanel() {
                 </div>
               </>
             ) : (
-              <div className="text-[10px] text-slate-450 italic py-2">Nenhuma ultrapassagem registrada no período.</div>
+              <div className="text-[10px] text-slate-400 italic py-2">Nenhuma ultrapassagem registrada no período.</div>
             )}
           </div>
         </SurfaceCard>
@@ -315,7 +315,7 @@ export function AttentionEpisodesPanel() {
                 </div>
               </>
             ) : (
-              <div className="text-[10px] text-slate-450 italic py-2">Sem dados de cobertura.</div>
+              <div className="text-[10px] text-slate-400 italic py-2">Sem dados de cobertura.</div>
             )}
           </div>
         </SurfaceCard>
@@ -367,7 +367,7 @@ export function AttentionEpisodesPanel() {
       </div>
 
       {/* Safety block of Metodologia & Freshness */}
-      <div className="bg-slate-50 border border-slate-150 p-4.5 rounded-2xl text-slate-500 text-[11px] leading-relaxed space-y-2.5">
+      <div className="bg-slate-50 border border-slate-200 p-4.5 rounded-2xl text-slate-500 text-[11px] leading-relaxed space-y-2.5">
         <div className="flex items-center gap-1.5 font-bold text-slate-700">
           <span className="w-2 h-2 rounded-full bg-slate-400" />
           Salvaguardas Metodológicas e Notas Técnicas
@@ -386,7 +386,7 @@ export function AttentionEpisodesPanel() {
             • <strong>Exposição Periódica:</strong> As leituras resumem a exposição histórica acumulada no período e não representam monitoramento ao vivo ou leitura minuto a minuto.
           </div>
         </div>
-        <div className="border-t border-slate-200/60 pt-2 font-mono text-[9px] text-slate-450 text-right">
+        <div className="border-t border-slate-200/60 pt-2 font-mono text-[9px] text-slate-400 text-right">
           Selo Metodológico: Dado horário público WebLakes — comparação experimental — sem QA/QC oficial explícito
         </div>
       </div>

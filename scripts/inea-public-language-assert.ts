@@ -21,7 +21,11 @@ const visualFiles = [
   path.join(process.cwd(), 'src', 'components', 'air', 'SeasonalityHeatmap.tsx'),
   path.join(process.cwd(), 'src', 'components', 'air', 'AttentionEpisodesPanel.tsx'),
   path.join(process.cwd(), 'src', 'data', 'air', 'pm10-2024-station-summary.ts'),
-  path.join(process.cwd(), 'src', 'pages', 'air', 'IneaMethodologyPage.tsx')
+  path.join(process.cwd(), 'src', 'pages', 'air', 'IneaMethodologyPage.tsx'),
+  path.join(process.cwd(), 'src', 'components', 'air', 'RainWashEffectPanel.tsx'),
+  path.join(process.cwd(), 'src', 'components', 'air', 'SocialExposureMap.tsx'),
+  path.join(process.cwd(), 'src', 'components', 'air', 'SensitiveFacilitiesLayer.tsx'),
+  path.join(process.cwd(), 'src', 'components', 'air', 'VulnerabilityLegend.tsx')
 ];
 
 const reportFiles: string[] = [
@@ -100,6 +104,24 @@ if (fs.existsSync(reportsDir)) {
     }
   }
 }
+
+// Append new Tijolo 49 & 50 & 50.1 & 50.2 reports explicitly
+reportFiles.push(
+  path.join(reportsDir, 'estado-da-nacao-observatorio-meteorologia-disponibilidade.md'),
+  path.join(reportsDir, 'estado-da-nacao-observatorio-saude-ar-disponibilidade.md'),
+  path.join(reportsDir, 'estado-da-nacao-observatorio-queimadas-contexto.md'),
+  path.join(reportsDir, 'estado-da-nacao-observatorio-vulnerabilidade-territorial.md'),
+  path.join(reportsDir, 'estado-da-nacao-observatorio-agua-territorio.md'),
+  path.join(reportsDir, 'pedidos-lai-inea-governanca-observatorio.md'),
+  path.join(reportsDir, 'estado-da-nacao-observatorio-matriz-dados-complementares.md'),
+  path.join(reportsDir, 'estado-da-nacao-observatorio-meteorologia-v0.md'),
+  path.join(reportsDir, 'estado-da-nacao-observatorio-vento-direcao-validacao.md'),
+  path.join(reportsDir, 'estado-da-nacao-observatorio-meteorologia-v1.6.1-smoke-producao.md'),
+  path.join(reportsDir, 'estado-da-nacao-observatorio-vulnerabilidade-dados-base.md'),
+  path.join(reportsDir, 'estado-da-nacao-observatorio-exposicao-social-v0.md'),
+  path.join(reportsDir, 'estado-da-nacao-observatorio-exposicao-social-v0-smoke.md'),
+  path.join(reportsDir, 'estado-da-nacao-observatorio-exposicao-social-v0-smoke-producao.md')
+);
 
 // Deduplicate files to scan
 const FILES_TO_SCAN = Array.from(new Set([...visualFiles, ...reportFiles]));

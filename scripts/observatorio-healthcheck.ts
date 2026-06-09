@@ -121,11 +121,21 @@ async function main() {
   results.push(await performCheck('API: Classificação IQAr', `${targetHost}/api/air/inea/classification-days`, 'api', 'application/json'));
   results.push(await performCheck('API: Lacunas (Gaps)', `${targetHost}/api/air/inea/analytics/data-gaps`, 'api', 'application/json'));
 
+  // 3.5. Social Layer Checks
+  const socialManifestResult = await performCheck('Social Dataset Manifest', `${targetHost}/data/social/manifest.json`, 'manifest', 'application/json');
+  results.push(socialManifestResult);
+
+  results.push(await performCheck('CSV: Setores Censitários de Vulnerabilidade', `${targetHost}/data/social/vr-vulnerabilidade-setores-2022.csv`, 'csv', 'text/csv'));
+  results.push(await performCheck('CSV: Equipamentos Sensíveis', `${targetHost}/data/social/equipamentos-sensiveis-vr.csv`, 'csv', 'text/csv'));
+  results.push(await performCheck('CSV: Dicionário de Dados Sociais', `${targetHost}/data/social/social-data-dictionary.csv`, 'csv', 'text/csv'));
+
   // 4. CSV Dataset Checks (dynamically extracted from Manifest if manifest succeeded, else fallback)
   let datasetsToTest = [
     { file: 'pm10-2020-station-summary.csv', title: 'Resumo PM10 2020' },
     { file: 'pm10-2021-station-summary.csv', title: 'Resumo PM10 2021' },
     { file: 'pm25-2021-station-summary.csv', title: 'Resumo PM2.5 2021' },
+    { file: 'pm25-2022-station-summary.csv', title: 'Resumo PM2.5 2022' },
+    { file: 'pm25-2023-station-summary.csv', title: 'Resumo PM2.5 2023' },
     { file: 'pm10-2024-station-summary.csv', title: 'Resumo PM10 2024' },
     { file: 'pm25-2024-station-summary.csv', title: 'Resumo PM2.5 2024' },
     { file: 'so2-2024-station-summary.csv', title: 'Resumo SO2 2024' },
@@ -135,8 +145,11 @@ async function main() {
     { file: 'pm10-2026-partial-station-summary.csv', title: 'Resumo PM10 2026 Parcial' },
     { file: 'pm25-2026-partial-station-summary.csv', title: 'Resumo PM2.5 2026 Parcial' },
     { file: 'particulate-timeline-2020-2026.csv', title: 'Linha do Tempo 2020-2026' },
-    { file: 'so2-timeline-2020-2026.csv', title: 'Linha do Tempo SO2 2020-2026' },
-    { file: 'co-timeline-2020-2026.csv', title: 'Linha do Tempo CO 2020-2026' },
+    { file: 'pm10-timeline-2013-2026.csv', title: 'Linha do Tempo PM10 2013-2026' },
+    { file: 'so2-timeline-2013-2026.csv', title: 'Linha do Tempo SO2 2013-2026' },
+    { file: 'co-timeline-2013-2026.csv', title: 'Linha do Tempo CO 2013-2026' },
+    { file: 'weather/weather-vr-2013-2026.csv', title: 'Dataset Meteorologico' },
+    { file: 'weather/weather-dictionary.csv', title: 'Dicionario Meteorologico' },
     { file: 'attention-episodes-2020-2026.csv', title: 'Episódios de Atenção' },
     { file: 'data-dictionary.csv', title: 'Dicionário de Dados' }
   ];

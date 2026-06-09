@@ -51,7 +51,11 @@
     "inea:qa:methodology": "tsx scripts/inea-methodology-assert.ts",
     "inea:qa:language": "tsx scripts/inea-public-language-assert.ts",
     "inea:qa:analytics": "tsx scripts/inea-analytics-assert.ts",
-    "inea:qa:recompute-2024": "tsx scripts/inea-weblakes-recompute-2024.ts"
+    "inea:qa:recompute-2024": "tsx scripts/inea-weblakes-recompute-2024.ts",
+    "press:report:stale": "tsx scripts/press-preservation-stale-report.ts",
+    "press:report:snapshot-gap": "tsx scripts/press-preservation-snapshot-gap-report.ts",
+    "press:report:pending-review": "tsx scripts/press-preservation-pending-review-report.ts",
+    "press:report:executive": "tsx scripts/press-preservation-executive-report.ts"
   },
   "dependencies": {
     "@sentry/react": "^10.45.0",

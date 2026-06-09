@@ -3,6 +3,9 @@ import { Link } from "react-router-dom";
 import { IconShell, SurfaceCard } from "../../components/BrandSystem";
 import { DataFreshnessNotice } from "../../components/air/DataFreshnessNotice";
 import { PublicInterpretationBox } from "../../components/air/PublicInterpretationBox";
+import { WindRosePanel } from "../../components/air/WindRosePanel";
+import { WeatherPollutionCorrelation } from "../../components/air/WeatherPollutionCorrelation";
+import { RainWashEffectPanel } from "../../components/air/RainWashEffectPanel";
 
 export function IneaAnalyticsPage() {
   const [degradedDays, setDegradedDays] = useState<any[]>([]);
@@ -549,6 +552,23 @@ export function IneaAnalyticsPage() {
           </table>
         </div>
       </SurfaceCard>
+
+      {/* Camada Meteorológica e Dispersão — v0 */}
+      <div className="space-y-6">
+        <div className="space-y-1">
+          <h2 className="text-xl font-bold text-slate-800">Camada Meteorológica & Dispersão</h2>
+          <p className="text-xs text-slate-500 font-medium">
+            Correlações físicas da velocidade e direção do vento, calmaria e chuva com a concentração de poluentes.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <WindRosePanel />
+          <WeatherPollutionCorrelation />
+        </div>
+
+        <RainWashEffectPanel />
+      </div>
 
       {/* Public Interpretation Box */}
       <PublicInterpretationBox />

@@ -1,0 +1,13 @@
+field_name,label,description,unit,source,caveat
+datetime,Data/Hora,Carimbo de data e hora do registro de medição meteorológica em formato ISO 8601.,N/A,INEA / INMET,Horário padrão de Brasília.
+temperature,Temperatura,Temperatura horária média do ar medida a 2 metros de altura.,°C,INMET Estação A609 Volta Redonda / WebLakes,Leitura automática horária em superfície.
+humidity,Umidade Relativa,Umidade relativa do ar média na hora.,%,INMET Estação A609 Volta Redonda,Importante indicador de dispersão e formação de nevoeiro.
+rain,Precipitação (Chuva),Quantidade acumulada de chuva no intervalo de uma hora.,mm,INMET Estação A609 Volta Redonda,O principal fator de remoção úmida (lavagem atmosférica pela chuva) de material particulado.
+pressure,Pressão Atmosférica,Pressão atmosférica média horária corrigida para o nível da estação.,hPa,INMET Estação A609 Volta Redonda,Pressões elevadas indicam frentes estáveis propícias para inversão térmica.
+wind_speed,Velocidade do Vento,Velocidade média horária do vento medida a 10 metros.,m/s,INEA / WebLakes Estação Retiro (70),Velocidades abaixo de 1.5 m/s caracterizam estado de calmaria atmosférica.
+wind_direction,Direção do Vento,Direção de onde sopra o vetor do vento em graus azimutais (0-360°).,graus (°),INEA / WebLakes Estação Retiro (70),"0° = Norte, 90° = Leste, 180° = Sul, 270° = Oeste. Crucial para identificar a origem das plumas de poluição."
+solar_radiation,Radiação Solar,Radiação solar global acumulada no intervalo de uma hora.,W/m²,INMET Estação A609 Volta Redonda,Fator desencadeador de reações fotoquímicas de formação de Ozônio (O3).
+data_source_type,Tipo de Fonte de Dados,Classificacao do registro quanto a origem dos dados de vento: OBSERVED (medido) ou MODELED (simulado/fallback).,N/A,SEMEAR (Classificacao),Informa se o vetor de vento do horario foi de fato registrado por sensor fisico.
+wind_source,Origem do Vento,Identificacao da fonte do registro de velocidade e direcao do vento.,N/A,INEA / WebLakes / SEMEAR,Indica se provem da estacao Retiro ou de modelo de calmaria estocastico.
+rain_source,Origem da Chuva,Identificacao da fonte do registro de precipitacao acumulada.,N/A,INMET / SEMEAR,Atualmente modelada a partir das normais climatologicas locais (A609 Volta Redonda).
+methodology_note,Nota Metodologica,Descritivo sintetico detalhando a metodologia de captacao ou modelagem da linha.,N/A,SEMEAR (Metadados),Importante para auditoria e separacao de escopo de dados experimentais.

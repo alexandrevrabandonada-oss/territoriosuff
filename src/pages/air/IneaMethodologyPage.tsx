@@ -60,7 +60,8 @@ export function IneaMethodologyPage() {
     { id: "baixar-dados", label: "Baixar Dados (CSV)" },
     { id: "dicionario", label: "Dicionário de Dados" },
     { id: "disponibilidade", label: "Disponibilidade dos Dados" },
-    { id: "expansao", label: "Decisões de Governança" }
+    { id: "expansao", label: "Decisões de Governança" },
+    { id: "justica-ambiental", label: "Exposição Social e Justiça Ambiental" }
   ];
 
   const handleScrollTo = (id: string) => {
@@ -154,28 +155,28 @@ export function IneaMethodologyPage() {
               O Observatório possui rotina de verificação automática. O status saudável indica que páginas, APIs e arquivos públicos responderam corretamente no último healthcheck.
             </p>
 
-            <div className="space-y-2 text-xs font-medium text-slate-655 pt-1">
+            <div className="space-y-2 text-xs font-medium text-slate-600 pt-1">
               <div className="flex justify-between items-center">
-                <span className="text-slate-450 font-bold">Status atual:</span>
+                <span className="text-slate-400 font-bold">Status atual:</span>
                 <span className="inline-flex items-center gap-1 font-bold text-emerald-600">
                   <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
                   {manifest?.status ? (manifest.status.charAt(0).toUpperCase() + manifest.status.slice(1)) : "Saudável"}
                 </span>
               </div>
               <div className="flex justify-between items-center col-span-2">
-                <span className="text-slate-450 font-bold text-[10px]">Último healthcheck:</span>
+                <span className="text-slate-400 font-bold text-[10px]">Último healthcheck:</span>
                 <span className="font-bold text-slate-800 text-[9px] truncate max-w-[120px]" title={manifest ? formatDate(manifest.last_smoke_test_at || manifest.generated_at) : ""}>
                   {manifest ? formatDate(manifest.last_smoke_test_at || manifest.generated_at) : "Carregando..."}
                 </span>
               </div>
               <div className="flex justify-between items-center">
-                <span className="text-slate-450 font-bold">Versão do dataset:</span>
+                <span className="text-slate-400 font-bold">Versão do dataset:</span>
                 <span className="font-bold text-slate-800">
                   {manifest?.version || manifest?.dataset_version || "1.6.0"}
                 </span>
               </div>
               <div className="flex justify-between items-center">
-                <span className="text-slate-450 font-bold">Datasets públicos:</span>
+                <span className="text-slate-400 font-bold">Datasets públicos:</span>
                 <span className="font-bold text-slate-800">
                   {manifest?.datasets ? manifest.datasets.length : 21}
                 </span>
@@ -366,7 +367,7 @@ export function IneaMethodologyPage() {
                   </ul>
                 </div>
               </div>
-              <p className="text-xs text-slate-450 italic mt-2">
+              <p className="text-xs text-slate-400 italic mt-2">
                 Nota: Todas as checagens com essas réguas são executadas como uma comparação experimental, já que o espelho original não conta com QA/QC oficial por linha.
               </p>
             </SurfaceCard>
@@ -528,7 +529,7 @@ export function IneaMethodologyPage() {
               <SurfaceCard className="p-0 bg-white border border-slate-100 rounded-3xl overflow-hidden shadow-sm">
                 <div className="overflow-x-auto">
                   <table className="min-w-full divide-y divide-slate-100 text-left">
-                    <thead className="bg-slate-50 text-[10px] font-black uppercase tracking-wider text-slate-450">
+                    <thead className="bg-slate-50 text-[10px] font-black uppercase tracking-wider text-slate-400">
                       <tr>
                         <th className="px-5 py-4">Arquivo</th>
                         <th className="px-5 py-4">O que contém</th>
@@ -734,7 +735,7 @@ export function IneaMethodologyPage() {
             <SurfaceCard className="p-0 bg-white border border-slate-100 rounded-3xl overflow-hidden shadow-sm">
               <div className="overflow-x-auto">
                 <table className="min-w-full divide-y divide-slate-100 text-left">
-                  <thead className="bg-slate-50 text-[10px] font-black uppercase tracking-wider text-slate-450">
+                  <thead className="bg-slate-50 text-[10px] font-black uppercase tracking-wider text-slate-400">
                     <tr>
                       <th className="px-5 py-4">Campo</th>
                       <th className="px-5 py-4">Rótulo</th>
@@ -764,7 +765,7 @@ export function IneaMethodologyPage() {
                         <td className="px-5 py-4">
                           {entry.source}
                         </td>
-                        <td className="px-5 py-4 italic text-slate-450 text-[11px] leading-relaxed">
+                        <td className="px-5 py-4 italic text-slate-400 text-[11px] leading-relaxed">
                           {entry.caveat}
                         </td>
                       </tr>
@@ -801,7 +802,7 @@ export function IneaMethodologyPage() {
             </div>
 
             <SurfaceCard className="p-6 bg-white border border-slate-100 rounded-3xl space-y-6">
-              <p className="text-sm text-slate-655 leading-relaxed font-semibold">
+              <p className="text-sm text-slate-600 leading-relaxed font-semibold">
                 O Observatório do Ar expandiu o monitoramento para incluir parâmetros gasosos atmosféricos. SO₂ e CO possuem série histórica publicada de 2013 a 2026. NO₂ e PTS permanecem em quarentena por anomalias instrumentais confirmadas em 2024. O₃ está indisponível no recorte validado.
               </p>
 
@@ -864,6 +865,42 @@ export function IneaMethodologyPage() {
             </SurfaceCard>
           </section>
 
+          {/* Section 11: Exposição social e justiça ambiental */}
+          <section id="justica-ambiental" className="space-y-4 scroll-mt-6 border-t border-slate-200/60 pt-6">
+            <div className="flex items-center gap-3">
+              <IconShell tone="warm" className="shrink-0 h-9 w-9">
+                <svg className="h-4.5 w-4.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                </svg>
+              </IconShell>
+              <h2 className="text-xl font-black text-slate-800">Exposição social e justiça ambiental</h2>
+            </div>
+
+            <SurfaceCard className="p-6 bg-white border border-slate-100 rounded-3xl space-y-4">
+              <div className="p-4 bg-rose-500/5 border border-rose-500/20 text-rose-950 rounded-2xl text-xs font-bold leading-relaxed">
+                ⚠️ <strong>Nota de Salvaguarda Metodológica Obrigatória:</strong><br />
+                O índice não mede risco individual nem prova causalidade. Ele organiza dados territoriais para indicar áreas onde vulnerabilidade social e exposição ambiental podem se sobrepor.
+              </div>
+
+              <div className="space-y-3.5 text-sm text-slate-600 font-medium leading-relaxed">
+                <p>
+                  A justiça ambiental baseia-se no princípio de que nenhuma comunidade deve suportar uma carga desproporcional de consequências ambientais negativas devido à sua condição socioeconômica ou demográfica. Em Volta Redonda, a sobreposição histórica de bairros residenciais populosos e a proximidade do complexo metalúrgico da Usina Presidente Vargas (CSN) criam dinâmicas complexas de exposição crônica.
+                </p>
+                <p>
+                  <strong>Metodologia do Índice de Exposição Social (v0):</strong>
+                </p>
+                <ul className="list-disc list-inside space-y-2 pl-2 text-xs">
+                  <li><strong>Vulnerabilidade Social (Peso 0.6):</strong> Focado em demografia biologicamente sensível. Reúne a taxa de crianças de 0 a 5 anos (cujos sistemas respiratórios estão em formação) e idosos de 60 anos ou mais (propensos a agravamento de comorbidades cardíacas e pulmonares).</li>
+                  <li><strong>Proxy Socioeconômica (Peso 0.4):</strong> Baseado na proporção de domicílios particulares permanentes com rendimento per capita de até meio salário mínimo (Censo IBGE 2022). Esse proxy reflete a capacidade financeira de adaptação da população.</li>
+                  <li><strong>Exposição Atmosférica Combinada:</strong> Fatores geográficos que integram a distância linear até as fontes emissoras industriais e o comportamento dos ventos locais descritos na camada meteorológica v1.6.1 (corredor Noroeste-Sudeste).</li>
+                </ul>
+                <p>
+                  Este índice serve como uma ferramenta de planejamento para priorizar a distribuição de arborização urbana, instalação de barreiras físicas (green belts), monitoramento de saúde na atenção primária e direcionamento de investimentos públicos municipais.
+                </p>
+              </div>
+            </SurfaceCard>
+          </section>
+
           {/* Mobile Status Operacional (visible only on mobile viewports) */}
           <div className="block lg:hidden mt-8 p-6 bg-slate-50 border border-slate-100 rounded-3xl space-y-4">
             <h4 className="text-xs font-black uppercase tracking-wider text-slate-400">Status Operacional</h4>
@@ -872,22 +909,22 @@ export function IneaMethodologyPage() {
               O Observatório possui rotina de verificação automática. O status saudável indica que páginas, APIs e arquivos públicos responderam corretamente no último healthcheck.
             </p>
 
-            <div className="grid grid-cols-2 gap-3 text-xs font-semibold text-slate-650">
+            <div className="grid grid-cols-2 gap-3 text-xs font-semibold text-slate-600">
               <div className="p-3 bg-white rounded-2xl border border-slate-100/50 flex flex-col justify-between">
-                <span className="text-[10px] uppercase text-slate-450 tracking-wider">Status Atual</span>
+                <span className="text-[10px] uppercase text-slate-400 tracking-wider">Status Atual</span>
                 <span className="inline-flex items-center gap-1 font-bold text-emerald-600 mt-1">
                   <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
                   {manifest?.status ? (manifest.status.charAt(0).toUpperCase() + manifest.status.slice(1)) : "Saudável"}
                 </span>
               </div>
               <div className="p-3 bg-white rounded-2xl border border-slate-100/50 flex flex-col justify-between">
-                <span className="text-[10px] uppercase text-slate-450 tracking-wider">Versão Dataset</span>
+                <span className="text-[10px] uppercase text-slate-400 tracking-wider">Versão Dataset</span>
                 <span className="font-bold text-slate-800 mt-1">
                   {manifest?.version || manifest?.dataset_version || "1.6.0"}
                 </span>
               </div>
               <div className="p-3 bg-white rounded-2xl border border-slate-100/50 flex flex-col justify-between col-span-2">
-                <span className="text-[10px] uppercase text-slate-450 tracking-wider">Último Healthcheck</span>
+                <span className="text-[10px] uppercase text-slate-400 tracking-wider">Último Healthcheck</span>
                 <span className="font-bold text-slate-800 mt-1 text-[10px]">
                   {manifest ? formatDate(manifest.last_smoke_test_at || manifest.generated_at) : "Carregando..."}
                 </span>
@@ -899,7 +936,7 @@ export function IneaMethodologyPage() {
                 href="/data/air/manifest.json"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="block text-center py-2.5 px-4 bg-slate-200/50 hover:bg-slate-200 rounded-xl text-[10px] font-black uppercase text-slate-655 tracking-wider transition-colors"
+                className="block text-center py-2.5 px-4 bg-slate-200/50 hover:bg-slate-200 rounded-xl text-[10px] font-black uppercase text-slate-600 tracking-wider transition-colors"
               >
                 Ver manifest.json
               </a>
