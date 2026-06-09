@@ -8,6 +8,8 @@ interface DashboardStats {
   uploadsTotal: number;
   uploadsWithoutSourceUrl: number;
   reportsPublished: number;
+  transparencyLivePublished: number;
+  transparencyLiveWithoutSourceAsset: number;
   upcomingEvents: number;
   environmentalReportsNew: number;
   pressTotal: number;
@@ -172,6 +174,8 @@ export function AdminDashboardPage() {
     uploadsTotal: 0,
     uploadsWithoutSourceUrl: 0,
     reportsPublished: 0,
+    transparencyLivePublished: 0,
+    transparencyLiveWithoutSourceAsset: 0,
     upcomingEvents: 0,
     environmentalReportsNew: 0,
     pressTotal: 0,
@@ -200,6 +204,8 @@ export function AdminDashboardPage() {
         { count: uploadsTotalCount },
         { count: uploadsWithoutSourceUrlCount },
         { count: reportsPublishedCount },
+        { count: transparencyLivePublishedCount },
+        { count: transparencyLiveWithoutSourceAssetCount },
         { count: upcomingEventsCount },
         { count: environmentalReportsNewCount },
         { data: publishedImagesNoAlt },
@@ -223,6 +229,8 @@ export function AdminDashboardPage() {
         supabase.from("media_assets").select("*", { count: "exact", head: true }),
         supabase.from("media_assets").select("*", { count: "exact", head: true }).or("source_url.is.null,source_url.eq.''"),
         supabase.from("reports").select("*", { count: "exact", head: true }).eq("status", "published"),
+        supabase.from("transparency_live_reports").select("*", { count: "exact", head: true }).eq("status", "published"),
+        supabase.from("transparency_live_reports").select("*", { count: "exact", head: true }).or("source_asset_id.is.null,source_asset_id.eq.''"),
         supabase.from("events").select("*", { count: "exact", head: true }).gte("start_at", now.toISOString()).neq("status", "cancelled"),
         supabase.from("environmental_reports").select("*", { count: "exact", head: true }).eq("status", "new"),
         supabase
@@ -330,6 +338,8 @@ export function AdminDashboardPage() {
         uploadsTotal: uploadsTotalCount || 0,
         uploadsWithoutSourceUrl: uploadsWithoutSourceUrlCount || 0,
         reportsPublished: reportsPublishedCount || 0,
+        transparencyLivePublished: transparencyLivePublishedCount || 0,
+        transparencyLiveWithoutSourceAsset: transparencyLiveWithoutSourceAssetCount || 0,
         upcomingEvents: upcomingEventsCount || 0,
         environmentalReportsNew: environmentalReportsNewCount || 0,
         pressTotal: pressRecords.length,
@@ -426,6 +436,17 @@ export function AdminDashboardPage() {
           title: `${uploadsWithoutSourceUrlCount} asset(s) sem link de origem`,
           reason: "Arquivos salvos sem rastreabilidade externa explícita",
           link: "/admin/uploads",
+          severity: "warning",
+        });
+      }
+
+      if ((transparencyLiveWithoutSourceAssetCount || 0) > 0) {
+        nextPendencies.push({
+          id: "transparency-live-source-asset",
+          area: "Transparência viva",
+          title: `${transparencyLiveWithoutSourceAssetCount} fechamento(s) sem PDF de origem`,
+          reason: "Leituras mensais publicadas ou em edição sem vínculo editorial explícito ao documento-base",
+          link: "/admin/transparencia-viva",
           severity: "warning",
         });
       }
@@ -550,6 +571,8 @@ export function AdminDashboardPage() {
     { label: "Uploads totais", value: stats.uploadsTotal, sub: "Arquivos armazenados", icon: "☁️", tone: "emerald" },
     { label: "Uploads sem origem", value: stats.uploadsWithoutSourceUrl, sub: "Pedir revisão de procedência", icon: "🔗", tone: "violet" },
     { label: "Relatórios publicados", value: stats.reportsPublished, sub: "Biblioteca oficial", icon: "📄", tone: "indigo" },
+    { label: "Transparência viva", value: stats.transparencyLivePublished, sub: "Fechamentos mensais publicados", icon: "🫀", tone: "emerald" },
+    { label: "TV sem PDF-base", value: stats.transparencyLiveWithoutSourceAsset, sub: "Rastreabilidade editorial pendente", icon: "🧭", tone: "amber" },
     { label: "Eventos futuros", value: stats.upcomingEvents, sub: "Agenda viva", icon: "🗓️", tone: "rose" },
   ];
 
@@ -576,6 +599,9 @@ export function AdminDashboardPage() {
             </Link>
             <Link to="/admin/acervo/imprensa" className="admin-command-ghost">
               Capturar matérias
+            </Link>
+            <Link to="/admin/transparencia-viva" className="admin-command-ghost">
+              Fechamentos mensais
             </Link>
           </div>
         </div>
@@ -769,6 +795,10 @@ export function AdminDashboardPage() {
               <Link to="/admin/blog" className="admin-action-tile group flex flex-col items-center p-5">
                 <span className="mb-3 text-3xl transition-transform group-hover:scale-110">📰</span>
                 <span className="text-center text-[9px] font-black uppercase leading-tight text-slate-600">Gerenciar Blog</span>
+              </Link>
+              <Link to="/admin/transparencia-viva/novo" className="admin-action-tile group flex flex-col items-center p-5">
+                <span className="mb-3 text-3xl transition-transform group-hover:scale-110">🫀</span>
+                <span className="text-center text-[9px] font-black uppercase leading-tight text-slate-600">Novo fechamento mensal</span>
               </Link>
               <Link to="/admin/acervo" className="group flex flex-col items-center rounded-[1.5rem] bg-slate-900 p-5 shadow-xl transition-all hover:bg-slate-800">
                 <span className="mb-3 text-3xl transition-transform group-hover:scale-110">🔍</span>

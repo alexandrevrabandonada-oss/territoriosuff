@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
+import { Link } from "react-router-dom";
 import { useSearchParams } from "react-router-dom";
 
 import { EmptyState } from "../components/EmptyState";
@@ -8,15 +9,20 @@ import { SurfaceCard } from "../components/BrandSystem";
 import { PortalHero, PortalPageShell, PortalSectionHeader } from "../components/portal";
 import {
   getTransparencySummary,
+  listLiveTransparencyReports,
   listExpenses,
+  listConversations,
   listTransparencyLinks,
+  type Conversation,
   type Expense,
+  type LiveTransparencyMonthlyReport,
   type TransparencyLink,
   type TransparencySummary
 } from "../lib/api";
 import { trackCsvDownload } from "../lib/observability";
 
 import { INSTITUTIONAL_FUNDING } from "../content/institucional";
+import { LIVE_TRANSPARENCIA_REPORTS } from "../content/transparencyLive";
 
 function formatBRL(cents: number) {
   return new Intl.NumberFormat("pt-BR", {
@@ -48,11 +54,32 @@ function normalizeMonthParam(value: string | null): string {
   return String(month).padStart(2, "0");
 }
 
+function isActivity(item: Conversation) {
+  return item.meta?.kind === "activity";
+}
+
+function formatDateLabel(value: string) {
+  return new Date(value).toLocaleDateString("pt-BR", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric"
+  });
+}
+
+function formatPercent(value: number) {
+  return new Intl.NumberFormat("pt-BR", {
+    minimumFractionDigits: 1,
+    maximumFractionDigits: 1
+  }).format(value);
+}
+
 export function TransparenciaPage() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [summary, setSummary] = useState<TransparencySummary | null>(null);
   const [links, setLinks] = useState<TransparencyLink[]>([]);
   const [expenses, setExpenses] = useState<Expense[]>([]);
+  const [conversations, setConversations] = useState<Conversation[]>([]);
+  const [monthlyReports, setMonthlyReports] = useState<LiveTransparencyMonthlyReport[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [viewerExpense, setViewerExpense] = useState<Expense | null>(null);
@@ -85,15 +112,19 @@ export function TransparenciaPage() {
     async function fetchData() {
       try {
         setLoading(true);
-        const [sumData, linkData, expData] = await Promise.all([
+        const [sumData, linkData, expData, conversationData, monthlyData] = await Promise.all([
           getTransparencySummary(),
           listTransparencyLinks(),
-          listExpenses(2000)
+          listExpenses(2000),
+          listConversations(),
+          listLiveTransparencyReports().catch(() => LIVE_TRANSPARENCIA_REPORTS)
         ]);
         if (!cancelled) {
           setSummary(sumData);
           setLinks(linkData);
           setExpenses(expData);
+          setConversations(conversationData);
+          setMonthlyReports(monthlyData.length > 0 ? monthlyData : LIVE_TRANSPARENCIA_REPORTS);
         }
       } catch (err) {
         if (!cancelled) setError(err instanceof Error ? err.message : "Falha ao carregar dados.");
@@ -214,6 +245,56 @@ export function TransparenciaPage() {
     };
   }, [filteredExpenses]);
 
+  const liveTransparency = useMemo(() => {
+    const activities = conversations.filter(isActivity);
+    const hearingTopics = conversations.filter((item) => !isActivity(item));
+    const recentCutoff = new Date();
+    recentCutoff.setDate(recentCutoff.getDate() - 30);
+
+    const recentItems = conversations.filter((item) => new Date(item.created_at).getTime() >= recentCutoff.getTime());
+    const recentActivities = recentItems.filter(isActivity);
+    const recentHearings = recentItems.filter((item) => !isActivity(item));
+    const territories = new Set(
+      conversations
+        .map((item) => (typeof item.meta?.location === "string" ? item.meta.location.trim() : ""))
+        .filter(Boolean)
+    );
+    const publishedResults = conversations.filter((item) => Boolean(item.excerpt?.trim() || item.body_md?.trim()));
+    const itemsWithInstagram = activities.filter((item) => Boolean(item.meta?.instagram_url));
+
+    return {
+      activities,
+      hearingTopics,
+      recentItems,
+      recentActivities,
+      recentHearings,
+      territories: Array.from(territories).sort((a, b) => a.localeCompare(b, "pt-BR")),
+      publishedResults,
+      itemsWithInstagram,
+      latestItems: [...conversations].slice(0, 4)
+    };
+  }, [conversations]);
+
+  const monthlyTransparency = useMemo(() => {
+    const reports = [...(monthlyReports.length > 0 ? monthlyReports : LIVE_TRANSPARENCIA_REPORTS)].sort((a, b) =>
+      b.month_key.localeCompare(a.month_key)
+    );
+    const latest = reports[0] ?? null;
+    const previous = reports[1] ?? null;
+    const hearingsDelta = latest && previous ? latest.hearings_count - previous.hearings_count : null;
+    const actionsDelta = latest && previous ? latest.actions_count - previous.actions_count : null;
+    const coverageDelta = latest && previous ? latest.territorial_coverage_pct - previous.territorial_coverage_pct : null;
+
+    return {
+      reports,
+      latest,
+      previous,
+      hearingsDelta,
+      actionsDelta,
+      coverageDelta
+    };
+  }, [monthlyReports]);
+
   const handleDownloadExpensesCsv = () => {
     const header = ["occurred_on", "vendor", "category", "amount", "description", "document_url"];
     const rows = filteredExpenses.map((exp) => [
@@ -294,6 +375,284 @@ export function TransparenciaPage() {
           <p className="text-sm font-semibold text-accent-lab">{INSTITUTIONAL_FUNDING} · todos os recursos são públicos</p>
           <p className="mt-1 text-sm text-text-secondary">Prestação de contas permanente e acessível à população</p>
       </SurfaceCard>
+
+      <SurfaceCard className="portal-filter-panel p-6 md:p-8">
+        <PortalSectionHeader
+          eyebrow="Transparência viva"
+          title="Escutas e atividades publicadas em fluxo contínuo"
+          subtitle="Acompanhamento público das ações territoriais já registradas no portal, com atualização a partir das publicações e memórias de campo do SEMEAR."
+        />
+        <div className="mt-5 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+          <div className="portal-kpi-card portal-kpi-card-lab">
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-text-secondary">Últimos 30 dias</p>
+            <p className="mt-2 text-3xl font-black text-brand-primary">{liveTransparency.recentItems.length}</p>
+            <p className="mt-1 text-sm text-text-secondary">registros públicos entre escutas e atividades</p>
+          </div>
+          <div className="portal-kpi-card">
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-text-secondary">Atividades de campo</p>
+            <p className="mt-2 text-3xl font-black text-success">{liveTransparency.activities.length}</p>
+            <p className="mt-1 text-sm text-text-secondary">{liveTransparency.itemsWithInstagram.length} com publicação vinculada</p>
+          </div>
+          <div className="portal-kpi-card">
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-text-secondary">Escuta pública</p>
+            <p className="mt-2 text-3xl font-black text-brand-primary">{liveTransparency.hearingTopics.length}</p>
+            <p className="mt-1 text-sm text-text-secondary">{liveTransparency.recentHearings.length} atualização(ões) no ciclo recente</p>
+          </div>
+          <div className="portal-kpi-card">
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-text-secondary">Territórios citados</p>
+            <p className="mt-2 text-3xl font-black text-success">{liveTransparency.territories.length}</p>
+            <p className="mt-1 text-sm text-text-secondary">{liveTransparency.publishedResults.length} registros com devolutiva publicada</p>
+          </div>
+        </div>
+
+        <div className="mt-6 grid gap-5 xl:grid-cols-[minmax(0,1.2fr)_minmax(320px,0.8fr)]">
+          <div className="rounded-[1.5rem] border border-base/40 bg-fundo/70 p-5">
+            <div className="flex items-center justify-between gap-4">
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-text-secondary">Feed recente</p>
+                <h3 className="mt-2 text-xl font-black text-text-primary">O que já foi devolvido ao público</h3>
+              </div>
+              <Link to="/conversar" className="ui-btn-ghost motion-focus motion-action px-4">
+                Abrir conversas
+              </Link>
+            </div>
+            <div className="mt-5 space-y-3">
+              {liveTransparency.latestItems.length === 0 ? (
+                <EmptyState
+                  title="Sem escutas publicadas ainda"
+                  description="Assim que as atividades e rodas de conversa forem publicadas, esta área passa a refletir o movimento territorial em tempo quase real."
+                />
+              ) : (
+                liveTransparency.latestItems.map((item) => {
+                  const activity = isActivity(item);
+                  const location = typeof item.meta?.location === "string" ? item.meta.location.trim() : "";
+                  return (
+                    <article key={item.id} className="rounded-[1.25rem] border border-base/40 bg-white/80 p-4">
+                      <div className="flex flex-wrap items-center gap-2">
+                        <span className={`rounded-full px-3 py-1 text-[11px] font-black uppercase tracking-wide ${activity ? "bg-emerald-100 text-emerald-800" : "bg-cyan-100 text-cyan-800"}`}>
+                          {activity ? "Atividade" : "Escuta"}
+                        </span>
+                        <span className="text-xs font-semibold text-text-secondary">{formatDateLabel(item.created_at)}</span>
+                        {location ? <span className="text-xs font-semibold text-text-secondary">{location}</span> : null}
+                      </div>
+                      <h4 className="mt-3 text-lg font-black text-text-primary">{item.title}</h4>
+                      {item.excerpt ? <p className="mt-2 text-sm leading-relaxed text-text-secondary">{item.excerpt}</p> : null}
+                      {!item.excerpt && item.body_md ? <p className="mt-2 line-clamp-4 text-sm leading-relaxed text-text-secondary">{item.body_md}</p> : null}
+                    </article>
+                  );
+                })
+              )}
+            </div>
+          </div>
+
+          <div className="rounded-[1.5rem] border border-base/40 bg-fundo/70 p-5">
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-text-secondary">Sinais do território</p>
+            <h3 className="mt-2 text-xl font-black text-text-primary">Leitura operacional das escutas</h3>
+            <div className="mt-5 space-y-4">
+              <div className="rounded-[1.25rem] border border-base/40 bg-white/80 p-4">
+                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-text-secondary">Atividade recente</p>
+                <p className="mt-2 text-base font-black text-text-primary">{liveTransparency.recentActivities.length} registro(s) de campo nos últimos 30 dias</p>
+              </div>
+              <div className="rounded-[1.25rem] border border-base/40 bg-white/80 p-4">
+                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-text-secondary">Territórios mencionados</p>
+                <p className="mt-2 text-sm leading-relaxed text-text-secondary">
+                  {liveTransparency.territories.slice(0, 6).join(" • ") || "Sem localização publicada ainda."}
+                </p>
+              </div>
+              <div className="rounded-[1.25rem] border border-base/40 bg-white/80 p-4">
+                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-text-secondary">Devolutiva publicada</p>
+                <p className="mt-2 text-base font-black text-text-primary">{liveTransparency.publishedResults.length} registro(s) com texto editorial ou síntese pública</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </SurfaceCard>
+
+      {monthlyTransparency.latest ? (
+        <SurfaceCard className="portal-filter-panel p-6 md:p-8">
+          <PortalSectionHeader
+            eyebrow="Leitura mensal"
+            title="Resumo público das escutas consolidadas"
+            subtitle="Camada editorial baseada nos relatórios mensais interpretativos do SEMEAR Territórios, separando o fluxo diário da leitura consolidada de escutas, coberturas e encaminhamentos."
+          />
+
+          <div className="mt-5 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+            <div className="portal-kpi-card portal-kpi-card-lab">
+              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-text-secondary">Mês consolidado</p>
+              <p className="mt-2 text-2xl font-black text-brand-primary">{monthlyTransparency.latest.month_label}</p>
+              <p className="mt-1 text-sm text-text-secondary">{monthlyTransparency.latest.source_label}</p>
+            </div>
+            <div className="portal-kpi-card">
+              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-text-secondary">Escutas no mês</p>
+              <p className="mt-2 text-3xl font-black text-success">{monthlyTransparency.latest.hearings_count}</p>
+              <p className="mt-1 text-sm text-text-secondary">
+                {monthlyTransparency.hearingsDelta === null
+                  ? "sem base anterior publicada"
+                  : `${monthlyTransparency.hearingsDelta >= 0 ? "+" : ""}${monthlyTransparency.hearingsDelta} em relação ao mês anterior`}
+              </p>
+            </div>
+            <div className="portal-kpi-card">
+              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-text-secondary">Ações no mês</p>
+              <p className="mt-2 text-3xl font-black text-brand-primary">{monthlyTransparency.latest.actions_count}</p>
+              <p className="mt-1 text-sm text-text-secondary">
+                {monthlyTransparency.actionsDelta === null
+                  ? "sem base anterior publicada"
+                  : `${monthlyTransparency.actionsDelta >= 0 ? "+" : ""}${monthlyTransparency.actionsDelta} em relação ao mês anterior`}
+              </p>
+            </div>
+            <div className="portal-kpi-card">
+              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-text-secondary">Cobertura territorial</p>
+              <p className="mt-2 text-3xl font-black text-success">{formatPercent(monthlyTransparency.latest.territorial_coverage_pct)}%</p>
+              <p className="mt-1 text-sm text-text-secondary">
+                status {monthlyTransparency.latest.territorial_status === "critica" ? "crítico" : monthlyTransparency.latest.territorial_status === "adequada" ? "adequado" : "atenção"}
+                {monthlyTransparency.coverageDelta === null ? "" : ` · ${monthlyTransparency.coverageDelta >= 0 ? "+" : ""}${formatPercent(monthlyTransparency.coverageDelta)} p.p.`}
+              </p>
+            </div>
+          </div>
+
+          <div className="mt-6 grid gap-5 xl:grid-cols-[minmax(0,1.1fr)_minmax(340px,0.9fr)]">
+            <div className="rounded-[1.5rem] border border-base/40 bg-fundo/70 p-5">
+              <div className="flex flex-wrap items-start justify-between gap-3">
+                <div>
+                  <p className="text-xs font-semibold uppercase tracking-[0.2em] text-text-secondary">Fechamento do mês</p>
+                  <h3 className="mt-2 text-2xl font-black text-text-primary">{monthlyTransparency.latest.month_label}</h3>
+                </div>
+                <a
+                  href={monthlyTransparency.latest.source_url || "#"}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="ui-btn-ghost motion-focus motion-action px-4"
+                >
+                  Abrir relatório
+                </a>
+              </div>
+
+              <div className="mt-5 space-y-4">
+                <div className="rounded-[1.25rem] border border-base/40 bg-white/80 p-4">
+                  <p className="text-xs font-semibold uppercase tracking-[0.2em] text-text-secondary">Leitura executiva</p>
+                  <p className="mt-2 text-sm leading-relaxed text-text-primary">{monthlyTransparency.latest.executive_summary}</p>
+                </div>
+
+                <div className="grid gap-4 lg:grid-cols-2">
+                  <div className={`rounded-[1.25rem] border p-4 ${
+                    monthlyTransparency.latest.territorial_status === "critica"
+                      ? "border-rose-200 bg-rose-50"
+                      : monthlyTransparency.latest.territorial_status === "adequada"
+                        ? "border-emerald-200 bg-emerald-50"
+                        : "border-amber-200 bg-amber-50"
+                  }`}>
+                    <p className="text-xs font-semibold uppercase tracking-[0.2em] text-text-secondary">Alerta metodológico</p>
+                    <p className="mt-2 text-sm leading-relaxed text-text-primary">{monthlyTransparency.latest.methodological_alert}</p>
+                  </div>
+                  <div className="rounded-[1.25rem] border border-emerald-200 bg-emerald-50 p-4">
+                    <p className="text-xs font-semibold uppercase tracking-[0.2em] text-text-secondary">Recomendação operacional</p>
+                    <p className="mt-2 text-sm leading-relaxed text-text-primary">{monthlyTransparency.latest.operational_recommendation}</p>
+                  </div>
+                </div>
+
+                <div className="rounded-[1.25rem] border border-base/40 bg-white/80 p-4">
+                  <p className="text-xs font-semibold uppercase tracking-[0.2em] text-text-secondary">Temas dominantes</p>
+                  <div className="mt-3 flex flex-wrap gap-2">
+                    {monthlyTransparency.latest.dominant_themes.map((theme) => (
+                      <span key={theme} className="rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-xs font-black uppercase tracking-wide text-emerald-800">
+                        {theme}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="grid gap-4 lg:grid-cols-2">
+                  <div className="rounded-[1.25rem] border border-base/40 bg-white/80 p-4">
+                    <p className="text-xs font-semibold uppercase tracking-[0.2em] text-text-secondary">Prioridades mais citadas</p>
+                    <div className="mt-3 space-y-2">
+                      {monthlyTransparency.latest.grouped_priorities.map((priority) => (
+                        <div key={priority.label} className="flex items-center justify-between gap-3 text-sm">
+                          <span className="text-text-secondary">{priority.label}</span>
+                          <span className="font-black text-text-primary">{priority.count}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                  <div className="rounded-[1.25rem] border border-base/40 bg-white/80 p-4">
+                    <p className="text-xs font-semibold uppercase tracking-[0.2em] text-text-secondary">Sinais qualitativos</p>
+                    <div className="mt-3 space-y-2">
+                      {monthlyTransparency.latest.qualitative_signals.map((signal) => (
+                        <div key={signal.label} className="flex items-center justify-between gap-3 text-sm">
+                          <span className="text-text-secondary">{signal.label}</span>
+                          <span className="font-black text-text-primary">{signal.count}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+
+                <div className="rounded-[1.25rem] border border-base/40 bg-white/80 p-4">
+                  <p className="text-xs font-semibold uppercase tracking-[0.2em] text-text-secondary">Encaminhamentos recomendados</p>
+                  <div className="mt-3 grid gap-2">
+                    {monthlyTransparency.latest.recommended_next_steps.map((step) => (
+                      <div key={step} className="rounded-2xl border border-base/40 bg-fundo/70 px-3 py-2 text-sm text-text-secondary">
+                        {step}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="rounded-[1.5rem] border border-base/40 bg-fundo/70 p-5">
+              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-text-secondary">Linha do tempo interpretativa</p>
+              <h3 className="mt-2 text-xl font-black text-text-primary">Relatórios que já viraram devolutiva</h3>
+              <div className="mt-5 space-y-4">
+                {monthlyTransparency.reports.map((report) => (
+                  <article key={report.id} className="rounded-[1.25rem] border border-base/40 bg-white/80 p-4">
+                    <div className="flex items-start justify-between gap-3">
+                      <div>
+                        <p className="text-xs font-semibold uppercase tracking-[0.2em] text-text-secondary">{report.month_label}</p>
+                        <h4 className="mt-2 text-lg font-black text-text-primary">
+                          {report.actions_count} ações · {report.hearings_count} escutas
+                        </h4>
+                      </div>
+                      <span className={`rounded-full px-3 py-1 text-[11px] font-black uppercase tracking-wide ${
+                        report.territorial_status === "critica"
+                          ? "bg-rose-100 text-rose-800"
+                          : report.territorial_status === "adequada"
+                            ? "bg-emerald-100 text-emerald-800"
+                            : "bg-amber-100 text-amber-800"
+                      }`}>
+                        {report.territorial_status === "critica" ? "Cobertura crítica" : report.territorial_status === "adequada" ? "Cobertura adequada" : "Cobertura parcial"}
+                      </span>
+                    </div>
+                    <p className="mt-3 text-sm leading-relaxed text-text-secondary">{report.executive_summary}</p>
+                    <div className="mt-4 grid gap-3 sm:grid-cols-2">
+                      <div className="rounded-2xl border border-base/40 bg-fundo/70 p-3">
+                        <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-text-secondary">Territórios da ação</p>
+                        <p className="mt-2 text-sm text-text-primary">{report.action_territories.join(" • ")}</p>
+                      </div>
+                      <div className="rounded-2xl border border-base/40 bg-fundo/70 p-3">
+                        <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-text-secondary">Escuta territorial</p>
+                        <p className="mt-2 text-sm text-text-primary">{report.hearing_territories.join(" • ")}</p>
+                      </div>
+                    </div>
+                    <div className="mt-4 flex flex-wrap gap-2">
+                      {report.dominant_themes.slice(0, 4).map((theme) => (
+                        <span key={theme} className="rounded-full border border-base/40 bg-fundo/70 px-3 py-1 text-[11px] font-black uppercase tracking-wide text-text-secondary">
+                          {theme}
+                        </span>
+                      ))}
+                    </div>
+                    <div className="mt-4 flex flex-wrap gap-3">
+                      <a href={report.source_url || "#"} target="_blank" rel="noreferrer" className="text-sm font-black text-brand-primary hover:underline">
+                        Ler relatório completo
+                      </a>
+                      <span className="text-sm text-text-secondary">{report.review_pending}</span>
+                    </div>
+                  </article>
+                ))}
+              </div>
+            </div>
+          </div>
+        </SurfaceCard>
+      ) : null}
 
       <section className="grid gap-6 md:grid-cols-3">
         <div className="portal-kpi-card portal-kpi-card-lab">

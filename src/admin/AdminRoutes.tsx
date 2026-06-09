@@ -16,6 +16,8 @@ const AdminBlogListPage = lazy(() => import("../pages/admin/AdminBlogListPage").
 const AdminBlogEditPage = lazy(() => import("../pages/admin/AdminBlogEditPage").then((m) => ({ default: m.AdminBlogEditPage })));
 const AdminActivitiesListPage = lazy(() => import("../pages/admin/AdminActivitiesListPage").then((m) => ({ default: m.AdminActivitiesListPage })));
 const AdminActivitiesEditPage = lazy(() => import("../pages/admin/AdminActivitiesEditPage").then((m) => ({ default: m.AdminActivitiesEditPage })));
+const AdminTransparencyLiveListPage = lazy(() => import("../pages/admin/AdminTransparencyLiveListPage").then((m) => ({ default: m.AdminTransparencyLiveListPage })));
+const AdminTransparencyLiveEditPage = lazy(() => import("../pages/admin/AdminTransparencyLiveEditPage").then((m) => ({ default: m.AdminTransparencyLiveEditPage })));
 const AdminAgendaListPage = lazy(() => import("../pages/admin/AdminAgendaListPage").then((m) => ({ default: m.AdminAgendaListPage })));
 const AdminAgendaEditPage = lazy(() => import("../pages/admin/AdminAgendaEditPage").then((m) => ({ default: m.AdminAgendaEditPage })));
 const AdminAgendaInscriptionsPage = lazy(() => import("../pages/admin/AdminAgendaInscriptionsPage").then((m) => ({ default: m.AdminAgendaInscriptionsPage })));
@@ -47,6 +49,9 @@ function AdminShell() {
           <Route path="atividades" element={<AdminActivitiesListPage />} />
           <Route path="atividades/novo" element={<AdminActivitiesEditPage />} />
           <Route path="atividades/:id" element={<AdminActivitiesEditPage />} />
+          <Route path="transparencia-viva" element={<AdminTransparencyLiveListPage />} />
+          <Route path="transparencia-viva/novo" element={<AdminTransparencyLiveEditPage />} />
+          <Route path="transparencia-viva/:id" element={<AdminTransparencyLiveEditPage />} />
           <Route path="agenda" element={<AdminAgendaListPage />} />
           <Route path="agenda/novo" element={<AdminAgendaEditPage />} />
           <Route path="agenda/:id" element={<AdminAgendaEditPage />} />

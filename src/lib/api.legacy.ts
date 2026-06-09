@@ -488,6 +488,7 @@ export type BlogPost = {
   excerpt: string | null;
   content_md: string | null;
   cover_url: string | null;
+  cover_asset_id?: string | null;
   cover_thumb_url: string | null;
   cover_small_url: string | null;
   tags: string[];
@@ -591,7 +592,7 @@ export async function listBlogPosts(params: ListBlogParams = {}): Promise<BlogPo
 
     let query = supabase
       .from("blog_posts")
-      .select("id, slug, title, summary, cover_url, cover_thumb_url, cover_small_url, tags, published_at, publish_at, status, created_at, category, author_name")
+      .select("id, slug, title, summary, cover_url, cover_asset_id, cover_thumb_url, cover_small_url, tags, published_at, publish_at, status, created_at, category, author_name")
       .eq("status", "published")
       .order("published_at", { ascending: false, nullsFirst: false })
       .range(offset, offset + limit - 1);

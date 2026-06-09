@@ -378,6 +378,39 @@ export type EnvironmentalReport = {
   updated_at: string;
 };
 
+export type LiveTransparencyCountItem = {
+  label: string;
+  count: number;
+};
+
+export type LiveTransparencyMonthlyReport = {
+  id: string;
+  month_key: string;
+  month_label: string;
+  source_asset_id?: string | null;
+  source_url: string | null;
+  source_label: string | null;
+  exported_at: string | null;
+  actions_count: number;
+  hearings_count: number;
+  territorial_coverage_pct: number;
+  territorial_status: "critica" | "atencao" | "adequada";
+  executive_summary: string;
+  methodological_alert: string;
+  operational_recommendation: string;
+  dominant_themes: string[];
+  action_territories: string[];
+  hearing_territories: string[];
+  grouped_priorities: LiveTransparencyCountItem[];
+  qualitative_signals: LiveTransparencyCountItem[];
+  recommended_next_steps: string[];
+  actions_performed: string[];
+  review_pending: string;
+  status: "draft" | "published" | "archived";
+  created_at: string;
+  updated_at: string;
+};
+
 export function toAppError(scope: string, error: unknown): Error {
   const message =
     error && typeof error === "object" && "message" in error && typeof error.message === "string"
