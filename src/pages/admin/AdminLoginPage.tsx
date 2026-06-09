@@ -2,7 +2,8 @@ import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { supabase } from "../../lib/supabase/client";
 
-type AuthMode = "login" | "signup" | "forgot";
+type AuthMode = "login" | "signup" | "forgot" | "otp";
+
 
 export function AdminLoginPage() {
   const [mode, setMode] = useState<AuthMode>("login");
@@ -38,6 +39,16 @@ export function AdminLoginPage() {
         if (loginError) throw loginError;
         navigate(from, { replace: true });
       } 
+      else if (mode === "otp") {
+        const { error: otpError } = await supabase.auth.signInWithOtp({
+          email,
+          options: {
+            emailRedirectTo: `${window.location.origin}/admin`,
+          }
+        });
+        if (otpError) throw otpError;
+        setMessage("Link de acesso enviado! Verifique seu e-mail para entrar no painel.");
+      }
       else if (mode === "signup") {
         const { error: signUpError } = await supabase.auth.signUp({
           email,
@@ -84,11 +95,13 @@ export function AdminLoginPage() {
             <p className="admin-eyebrow justify-center border-0 bg-transparent text-emerald-700">Área segura SEMEAR</p>
             <h2 className="mt-4 text-4xl font-black tracking-tight text-slate-950">
               {mode === "login" && "Bem-vindo"}
+              {mode === "otp" && "Entrar sem Senha"}
               {mode === "signup" && "Criar Conta"}
               {mode === "forgot" && "Recuperar Senha"}
             </h2>
             <p className="mt-3 text-slate-500 font-medium">
               {mode === "login" && "Acesso Administrativo SEMEAR"}
+              {mode === "otp" && "Enviaremos um link de acesso por e-mail"}
               {mode === "signup" && "Junte-se à equipe de gestão"}
               {mode === "forgot" && "Enviaremos um link seguro"}
             </p>
@@ -111,7 +124,7 @@ export function AdminLoginPage() {
               />
             </div>
 
-            {mode !== "forgot" && (
+            {mode !== "forgot" && mode !== "otp" && (
               <div>
                 <div className="flex items-center justify-between mb-2">
                   <label className="block text-xs font-black text-slate-400 uppercase tracking-widest" htmlFor="password">
@@ -168,6 +181,7 @@ export function AdminLoginPage() {
               ) : (
                 <>
                   {mode === "login" && "Entrar no Painel"}
+                  {mode === "otp" && "Enviar Link de Acesso"}
                   {mode === "signup" && "Confirmar Cadastro"}
                   {mode === "forgot" && "Enviar Link"}
                 </>
@@ -177,15 +191,26 @@ export function AdminLoginPage() {
 
           <div className="mt-8 text-center">
             {mode === "login" ? (
-              <p className="text-slate-500 text-sm font-medium">
-                Não tem uma conta?{" "}
-                <button 
-                  onClick={() => setMode("signup")}
-                  className="text-emerald-600 font-bold hover:underline"
-                >
-                  Cadastre-se aqui
-                </button>
-              </p>
+              <div className="space-y-3">
+                <p className="text-slate-500 text-sm font-medium">
+                  Não tem uma conta?{" "}
+                  <button 
+                    onClick={() => setMode("signup")}
+                    className="text-emerald-600 font-bold hover:underline"
+                  >
+                    Cadastre-se aqui
+                  </button>
+                </p>
+                <div className="pt-2 border-t border-slate-100">
+                  <button 
+                    type="button"
+                    onClick={() => setMode("otp")}
+                    className="text-emerald-600 font-bold hover:underline text-sm"
+                  >
+                    Entrar sem senha (Link Mágico)
+                  </button>
+                </div>
+              </div>
             ) : (
               <button 
                 onClick={() => setMode("login")}
