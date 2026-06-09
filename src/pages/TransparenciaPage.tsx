@@ -574,6 +574,76 @@ function TerritorySpotlight({
   );
 }
 
+function PublishedMonthsStrip({
+  reports
+}: {
+  reports: LiveTransparencyMonthlyReport[];
+}) {
+  return (
+    <SurfaceCard className="border-slate-200 bg-white p-6 md:p-7">
+      <PortalSectionHeader
+        eyebrow="Fechamentos publicados"
+        title="Meses já disponíveis para leitura pública"
+        subtitle="O painel trabalha com fechamentos mensais publicados. O mês mais recente ganha destaque, mas os anteriores continuam públicos e comparáveis."
+      />
+      <div className="mt-5 grid gap-4 lg:grid-cols-2">
+        {reports.map((report) => {
+          const tone = getCoverageTone(report.territorial_status);
+          return (
+            <article key={report.id} className="rounded-[1.5rem] border border-slate-200 bg-slate-50/80 p-5 shadow-sm">
+              <div className="flex flex-wrap items-start justify-between gap-3">
+                <div>
+                  <p className="text-[11px] font-black uppercase tracking-[0.18em] text-slate-500">{report.month_key}</p>
+                  <h3 className="mt-2 text-2xl font-black tracking-tight text-slate-950">{report.month_label}</h3>
+                </div>
+                <span className={`rounded-full border px-3 py-1 text-[11px] font-black uppercase tracking-wide ${tone.chip}`}>
+                  {tone.label}
+                </span>
+              </div>
+
+              <div className="mt-5 grid gap-3 sm:grid-cols-3">
+                <div className="rounded-[1.25rem] border border-slate-200 bg-white p-4">
+                  <p className="text-[10px] font-black uppercase tracking-[0.18em] text-slate-400">Escutas</p>
+                  <p className="mt-2 text-2xl font-black text-slate-950">{report.hearings_count}</p>
+                </div>
+                <div className="rounded-[1.25rem] border border-slate-200 bg-white p-4">
+                  <p className="text-[10px] font-black uppercase tracking-[0.18em] text-slate-400">Ações</p>
+                  <p className="mt-2 text-2xl font-black text-slate-950">{report.actions_count}</p>
+                </div>
+                <div className="rounded-[1.25rem] border border-slate-200 bg-white p-4">
+                  <p className="text-[10px] font-black uppercase tracking-[0.18em] text-slate-400">Cobertura</p>
+                  <p className="mt-2 text-2xl font-black text-slate-950">{formatPercent(report.territorial_coverage_pct)}%</p>
+                </div>
+              </div>
+
+              <p className="mt-4 text-sm leading-relaxed text-slate-600">{report.executive_summary}</p>
+
+              <div className="mt-4 flex flex-wrap gap-2">
+                {report.dominant_themes.slice(0, 4).map((theme) => (
+                  <span key={`${report.id}-${theme}`} className="rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-[11px] font-black uppercase tracking-wide text-emerald-800">
+                    {theme}
+                  </span>
+                ))}
+              </div>
+
+              <div className="mt-5 flex flex-wrap gap-3">
+                {report.source_url ? (
+                  <a href={report.source_url} target="_blank" rel="noreferrer" className="ui-btn-ghost motion-focus motion-action px-4">
+                    Abrir fechamento
+                  </a>
+                ) : null}
+                <Link to="/conversar" className="ui-btn-ghost motion-focus motion-action px-4">
+                  Ver publicações relacionadas
+                </Link>
+              </div>
+            </article>
+          );
+        })}
+      </div>
+    </SurfaceCard>
+  );
+}
+
 export function TransparenciaPage() {
   const [conversations, setConversations] = useState<Conversation[]>([]);
   const [monthlyReports, setMonthlyReports] = useState<LiveTransparencyMonthlyReport[]>([]);
@@ -702,6 +772,23 @@ export function TransparenciaPage() {
     ];
   }, [conversations.length, liveTransparency.territoryCounts.length, liveTransparency.withLocation.length, liveTransparency.withNarrative.length, monthlyTransparency.latest]);
 
+  const territorialCoverageSummary = useMemo(() => {
+    if (monthlyTransparency.latest) {
+      return {
+        label: "Cobertura territorial",
+        value: `${formatPercent(monthlyTransparency.latest.territorial_coverage_pct)}%`,
+        helper: "Percentual do fechamento publicado que já sustenta leitura territorial."
+      };
+    }
+
+    const rawLocationPct = conversations.length > 0 ? (liveTransparency.withLocation.length / conversations.length) * 100 : 0;
+    return {
+      label: "Localização explícita",
+      value: `${formatPercent(rawLocationPct)}%`,
+      helper: "Publicações que já trazem território informado no registro bruto."
+    };
+  }, [conversations.length, liveTransparency.withLocation.length, monthlyTransparency.latest]);
+
   if (loading) {
     return (
       <div className="grid gap-4 md:grid-cols-3">
@@ -785,9 +872,9 @@ export function TransparenciaPage() {
           tone="green"
         />
         <MetricCard
-          label="Localização explícita"
-          value={`${formatPercent(conversations.length > 0 ? (liveTransparency.withLocation.length / conversations.length) * 100 : 0)}%`}
-          helper="Publicações que já trazem território informado."
+          label={territorialCoverageSummary.label}
+          value={territorialCoverageSummary.value}
+          helper={territorialCoverageSummary.helper}
           tone="amber"
         />
         <MetricCard
@@ -907,6 +994,10 @@ export function TransparenciaPage() {
 
       {monthlyTransparency.reports.length > 0 ? (
         <MonthlyVolumeChart reports={monthlyTransparency.reports.slice(0, 6)} />
+      ) : null}
+
+      {monthlyTransparency.reports.length > 0 ? (
+        <PublishedMonthsStrip reports={monthlyTransparency.reports} />
       ) : null}
 
       {monthlyTransparency.latest ? (
