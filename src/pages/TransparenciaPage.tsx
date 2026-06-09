@@ -1,6 +1,7 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import { useSearchParams } from "react-router-dom";
+import { CircleMarker, MapContainer, Popup, TileLayer } from "react-leaflet";
+import "leaflet/dist/leaflet.css";
 
 import { EmptyState } from "../components/EmptyState";
 import { ErrorState } from "../components/ErrorState";
@@ -8,50 +9,38 @@ import { SkeletonCard } from "../components/SkeletonCard";
 import { SurfaceCard } from "../components/BrandSystem";
 import { PortalHero, PortalPageShell, PortalSectionHeader } from "../components/portal";
 import {
-  getTransparencySummary,
-  listLiveTransparencyReports,
-  listExpenses,
   listConversations,
-  listTransparencyLinks,
+  listLiveTransparencyReports,
   type Conversation,
-  type Expense,
-  type LiveTransparencyMonthlyReport,
-  type TransparencyLink,
-  type TransparencySummary
+  type LiveTransparencyCountItem,
+  type LiveTransparencyMonthlyReport
 } from "../lib/api";
-import { trackCsvDownload } from "../lib/observability";
-
-import { INSTITUTIONAL_FUNDING } from "../content/institucional";
 import { LIVE_TRANSPARENCIA_REPORTS } from "../content/transparencyLive";
 
-function formatBRL(cents: number) {
-  return new Intl.NumberFormat("pt-BR", {
-    style: "currency",
-    currency: "BRL"
-  }).format(cents / 100);
-}
+const FEC_TRANSPARENCIA_URL = "https://conveniar.somosfec.org.br/PortalTransparencia/Default.aspx?txtNomeProjeto=&txtNomePessoaResponsavel=Carlos+Eduardo&txtNomePessoaFinanciador=&txtDataAssinatura=2025&ddlCodStatusConvenio=10&ddlFiltroTipoProjeto=0&ddlFiltroCategoriaProjeto=0&ddlFiltroInstrumentoJuridico=0&ddlFiltroEmendaParlamentar=Sim&pagina=projetos#projetos";
 
-function toCsvCell(value: unknown) {
-  const text = String(value ?? "");
-  if (text.includes(",") || text.includes('"') || text.includes("\n")) {
-    return `"${text.replace(/"/g, '""')}"`;
-  }
-  return text;
-}
+const TERRITORY_COORDINATES: Record<string, [number, number]> = {
+  aterrado: [-22.5268, -44.1024],
+  "agua limpa": [-22.4986, -44.0872],
+  conforto: [-22.5158, -44.0912],
+  "dom bosco": [-22.5038, -44.1114],
+  eucaliptal: [-22.512, -44.1188],
+  minerlandia: [-22.5077, -44.1312],
+  retiro: [-22.5025, -44.1219],
+  "santa cruz": [-22.4888, -44.1085],
+  "santo agostinho": [-22.5141, -44.0818],
+  sessenta: [-22.5215, -44.0959],
+  "vila rica": [-22.5008, -44.0996],
+  "vila santa cecilia": [-22.5204, -44.0954],
+  zoologico: [-22.5186, -44.1077]
+};
 
-function getMonthYear(dateStr: string): { month: string; year: string } {
-  const date = new Date(dateStr);
-  const month = String(date.getMonth() + 1).padStart(2, "0");
-  const year = String(date.getFullYear());
-  return { month, year };
-}
-
-function normalizeMonthParam(value: string | null): string {
-  if (!value) return "all";
-  if (value === "all") return value;
-  const month = Number.parseInt(value, 10);
-  if (!Number.isFinite(month) || month < 1 || month > 12) return "all";
-  return String(month).padStart(2, "0");
+function normalizeText(value: string) {
+  return value
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .trim();
 }
 
 function isActivity(item: Conversation) {
@@ -73,207 +62,320 @@ function formatPercent(value: number) {
   }).format(value);
 }
 
+function formatShortMonth(value: string) {
+  const parts = value.split("-");
+  if (parts.length !== 2) return value;
+  const date = new Date(Number(parts[0]), Number(parts[1]) - 1, 1);
+  return date.toLocaleDateString("pt-BR", { month: "short", year: "2-digit" });
+}
+
+function getLocationLabel(item: Conversation) {
+  return typeof item.meta?.location === "string" ? item.meta.location.trim() : "";
+}
+
+function getActivityDate(item: Conversation) {
+  if (typeof item.meta?.activity_date === "string" && item.meta.activity_date.trim()) {
+    return item.meta.activity_date;
+  }
+  return item.created_at;
+}
+
+type TerritoryCount = {
+  name: string;
+  count: number;
+  coordinates: [number, number] | null;
+};
+
+function getTerritoryCoordinates(name: string): [number, number] | null {
+  const normalized = normalizeText(name);
+  return TERRITORY_COORDINATES[normalized] || null;
+}
+
+function mergeTerritoryCount(
+  map: Map<string, { label: string; count: number }>,
+  territoryName: string
+) {
+  const label = territoryName.trim();
+  if (!label) return;
+
+  const key = normalizeText(label);
+  const current = map.get(key);
+  map.set(key, {
+    label: current?.label ?? label,
+    count: (current?.count ?? 0) + 1
+  });
+}
+
+function MetricCard({
+  label,
+  value,
+  helper,
+  tone = "default"
+}: {
+  label: string;
+  value: string | number;
+  helper: string;
+  tone?: "default" | "green" | "blue" | "amber";
+}) {
+  const toneClass =
+    tone === "green"
+      ? "border-emerald-200 bg-emerald-50/80"
+      : tone === "blue"
+        ? "border-cyan-200 bg-cyan-50/80"
+        : tone === "amber"
+          ? "border-amber-200 bg-amber-50/80"
+          : "border-slate-200 bg-white";
+
+  return (
+    <div className={`rounded-[1.5rem] border p-5 shadow-sm ${toneClass}`}>
+      <p className="text-[11px] font-black uppercase tracking-[0.18em] text-slate-500">{label}</p>
+      <p className="mt-3 text-3xl font-black tracking-tight text-slate-950">{value}</p>
+      <p className="mt-2 text-sm font-medium leading-relaxed text-slate-600">{helper}</p>
+    </div>
+  );
+}
+
+function MonthlyVolumeChart({
+  reports
+}: {
+  reports: LiveTransparencyMonthlyReport[];
+}) {
+  const reversed = [...reports].reverse();
+  const maxValue = Math.max(
+    1,
+    ...reversed.flatMap((report) => [report.hearings_count, report.actions_count * 10])
+  );
+
+  return (
+    <div className="grid gap-4">
+      <div className="flex items-center justify-between gap-4">
+        <div>
+          <p className="text-xs font-black uppercase tracking-[0.18em] text-slate-400">Volume mensal</p>
+          <h3 className="mt-2 text-2xl font-black tracking-tight text-slate-950">Escutas e ações ao longo dos meses</h3>
+        </div>
+        <div className="flex flex-wrap gap-3 text-[11px] font-black uppercase tracking-widest text-slate-500">
+          <span className="inline-flex items-center gap-2"><span className="h-3 w-3 rounded-full bg-emerald-500" /> Escutas</span>
+          <span className="inline-flex items-center gap-2"><span className="h-3 w-3 rounded-full bg-slate-900" /> Ações x10</span>
+        </div>
+      </div>
+      <div className="grid min-h-[280px] grid-cols-2 gap-3 rounded-[1.5rem] border border-slate-200 bg-white p-5 shadow-sm md:grid-cols-4 xl:grid-cols-6">
+        {reversed.map((report) => {
+          const hearingHeight = `${Math.max(14, (report.hearings_count / maxValue) * 190)}px`;
+          const actionHeight = `${Math.max(14, ((report.actions_count * 10) / maxValue) * 190)}px`;
+
+          return (
+            <div key={report.id} className="flex min-h-[220px] flex-col justify-end rounded-[1.25rem] border border-slate-100 bg-slate-50/80 p-3">
+              <div className="flex items-end justify-center gap-2">
+                <div className="flex w-10 flex-col items-center">
+                  <div className="mb-2 text-[11px] font-black text-slate-500">{report.hearings_count}</div>
+                  <div className="w-full rounded-t-xl bg-emerald-500" style={{ height: hearingHeight }} />
+                </div>
+                <div className="flex w-10 flex-col items-center">
+                  <div className="mb-2 text-[11px] font-black text-slate-500">{report.actions_count}</div>
+                  <div className="w-full rounded-t-xl bg-slate-900" style={{ height: actionHeight }} />
+                </div>
+              </div>
+              <div className="mt-4 text-center">
+                <p className="text-[10px] font-black uppercase tracking-[0.18em] text-slate-400">{formatShortMonth(report.month_key)}</p>
+                <p className="mt-2 text-xs font-semibold text-slate-600">
+                  {report.territorial_status === "critica"
+                    ? "Cobertura crítica"
+                    : report.territorial_status === "adequada"
+                      ? "Cobertura adequada"
+                      : "Cobertura parcial"}
+                </p>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+function HorizontalCountList({
+  title,
+  subtitle,
+  items,
+  colorClass
+}: {
+  title: string;
+  subtitle: string;
+  items: LiveTransparencyCountItem[];
+  colorClass: string;
+}) {
+  const max = Math.max(1, ...items.map((item) => item.count));
+
+  return (
+    <div className="rounded-[1.5rem] border border-slate-200 bg-white p-5 shadow-sm">
+      <p className="text-xs font-black uppercase tracking-[0.18em] text-slate-400">{subtitle}</p>
+      <h3 className="mt-2 text-2xl font-black tracking-tight text-slate-950">{title}</h3>
+      <div className="mt-5 space-y-3">
+        {items.length === 0 ? (
+          <div className="rounded-[1.25rem] border border-dashed border-slate-200 bg-slate-50 px-4 py-5 text-sm leading-relaxed text-slate-600">
+            Este fechamento ainda não trouxe contagens consolidadas para este bloco. O painel continua mostrando interpretação territorial, escutas recentes e encaminhamentos públicos.
+          </div>
+        ) : (
+          items.map((item) => (
+            <div key={item.label}>
+              <div className="mb-2 flex items-center justify-between gap-3">
+                <span className="text-sm font-semibold text-slate-700">{item.label}</span>
+                <span className="text-sm font-black text-slate-950">{item.count}</span>
+              </div>
+              <div className="h-3 overflow-hidden rounded-full bg-slate-100">
+                <div className={`h-full rounded-full ${colorClass}`} style={{ width: `${(item.count / max) * 100}%` }} />
+              </div>
+            </div>
+          ))
+        )}
+      </div>
+    </div>
+  );
+}
+
+function TerritoryMap({
+  territories
+}: {
+  territories: TerritoryCount[];
+}) {
+  const mapped = territories.filter((item) => item.coordinates);
+  const maxCount = Math.max(1, ...mapped.map((item) => item.count));
+
+  if (mapped.length === 0) {
+    return (
+      <EmptyState
+        title="Sem territórios mapeáveis ainda"
+        description="Assim que as escutas publicadas vierem com bairro ou localização, o mapa passa a mostrar o espalhamento territorial."
+      />
+    );
+  }
+
+  return (
+    <div className="overflow-hidden rounded-[1.5rem] border border-slate-200 bg-white shadow-sm">
+      <div className="border-b border-slate-100 px-5 py-4">
+        <p className="text-xs font-black uppercase tracking-[0.18em] text-slate-400">Mapa aproximado</p>
+        <h3 className="mt-2 text-2xl font-black tracking-tight text-slate-950">Onde as escutas e atividades têm acontecido</h3>
+        <p className="mt-2 text-sm font-medium leading-relaxed text-slate-600">
+          Posicionamento aproximado por bairro ou território quando essa informação aparece nas publicações do portal.
+        </p>
+      </div>
+      <div className="h-[420px]">
+        <MapContainer center={[-22.5155, -44.104]} zoom={12} scrollWheelZoom={false} className="h-full w-full">
+          <TileLayer
+            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          />
+          {mapped.map((territory) => (
+            <CircleMarker
+              key={territory.name}
+              center={territory.coordinates as [number, number]}
+              radius={8 + (territory.count / maxCount) * 18}
+              pathOptions={{
+                color: "#0f172a",
+                weight: 1.5,
+                fillColor: "#10b981",
+                fillOpacity: 0.68
+              }}
+            >
+              <Popup>
+                <div className="min-w-[180px]">
+                  <p className="text-sm font-black text-slate-950">{territory.name}</p>
+                  <p className="mt-1 text-sm text-slate-600">{territory.count} registro(s) publicados</p>
+                </div>
+              </Popup>
+            </CircleMarker>
+          ))}
+        </MapContainer>
+      </div>
+    </div>
+  );
+}
+
 export function TransparenciaPage() {
-  const [searchParams, setSearchParams] = useSearchParams();
-  const [summary, setSummary] = useState<TransparencySummary | null>(null);
-  const [links, setLinks] = useState<TransparencyLink[]>([]);
-  const [expenses, setExpenses] = useState<Expense[]>([]);
   const [conversations, setConversations] = useState<Conversation[]>([]);
   const [monthlyReports, setMonthlyReports] = useState<LiveTransparencyMonthlyReport[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [viewerExpense, setViewerExpense] = useState<Expense | null>(null);
-
-  const [selectedMonth, setSelectedMonth] = useState("all");
-  const [selectedYear, setSelectedYear] = useState("all");
-  const [selectedCategory, setSelectedCategory] = useState("all");
-  const [vendorQuery, setVendorQuery] = useState("");
-  const [filtersHydrated, setFiltersHydrated] = useState(false);
-
-  const modalRef = useRef<HTMLDivElement>(null);
-  const closeButtonRef = useRef<HTMLButtonElement>(null);
-  const previousActiveElementRef = useRef<HTMLElement | null>(null);
-
-  useEffect(() => {
-    const month = normalizeMonthParam(searchParams.get("month"));
-    const year = searchParams.get("year") || "all";
-    const category = searchParams.get("category") || "all";
-    const q = searchParams.get("q") || "";
-
-    setSelectedMonth((current) => (current === month ? current : month));
-    setSelectedYear((current) => (current === year ? current : year));
-    setSelectedCategory((current) => (current === category ? current : category));
-    setVendorQuery((current) => (current === q ? current : q));
-    setFiltersHydrated(true);
-  }, [searchParams]);
 
   useEffect(() => {
     let cancelled = false;
+
     async function fetchData() {
       try {
         setLoading(true);
-        const [sumData, linkData, expData, conversationData, monthlyData] = await Promise.all([
-          getTransparencySummary(),
-          listTransparencyLinks(),
-          listExpenses(2000),
+        const [conversationData, monthlyData] = await Promise.all([
           listConversations(),
           listLiveTransparencyReports().catch(() => LIVE_TRANSPARENCIA_REPORTS)
         ]);
-        if (!cancelled) {
-          setSummary(sumData);
-          setLinks(linkData);
-          setExpenses(expData);
-          setConversations(conversationData);
-          setMonthlyReports(monthlyData.length > 0 ? monthlyData : LIVE_TRANSPARENCIA_REPORTS);
-        }
+
+        if (cancelled) return;
+
+        setConversations(conversationData);
+        setMonthlyReports(monthlyData.length > 0 ? monthlyData : LIVE_TRANSPARENCIA_REPORTS);
       } catch (err) {
-        if (!cancelled) setError(err instanceof Error ? err.message : "Falha ao carregar dados.");
+        if (!cancelled) {
+          setError(err instanceof Error ? err.message : "Falha ao carregar dados.");
+        }
       } finally {
         if (!cancelled) setLoading(false);
       }
     }
+
     void fetchData();
     return () => {
       cancelled = true;
     };
   }, []);
 
-  useEffect(() => {
-    if (viewerExpense) {
-      previousActiveElementRef.current = document.activeElement as HTMLElement;
-      window.setTimeout(() => closeButtonRef.current?.focus(), 50);
-    } else if (previousActiveElementRef.current) {
-      previousActiveElementRef.current.focus();
-    }
-
-    const onKeyDown = (ev: KeyboardEvent) => {
-      if (!viewerExpense) return;
-      if (ev.key === "Escape") {
-        setViewerExpense(null);
-        return;
-      }
-      if (ev.key === "Tab" && modalRef.current) {
-        const focusable = Array.from(
-          modalRef.current.querySelectorAll<HTMLElement>('a[href], button:not([disabled]), iframe, [tabindex]:not([tabindex="-1"])')
-        );
-        if (focusable.length === 0) return;
-        const first = focusable[0];
-        const last = focusable[focusable.length - 1];
-        const active = document.activeElement as HTMLElement | null;
-        if (ev.shiftKey && active === first) {
-          ev.preventDefault();
-          last.focus();
-        } else if (!ev.shiftKey && active === last) {
-          ev.preventDefault();
-          first.focus();
-        }
-      }
-    };
-
-    document.addEventListener("keydown", onKeyDown);
-    return () => document.removeEventListener("keydown", onKeyDown);
-  }, [viewerExpense]);
-
-  useEffect(() => {
-    if (!filtersHydrated) return;
-
-    const nextParams = new URLSearchParams();
-    if (selectedMonth !== "all") nextParams.set("month", selectedMonth);
-    if (selectedYear !== "all") nextParams.set("year", selectedYear);
-    if (selectedCategory !== "all") nextParams.set("category", selectedCategory);
-    if (vendorQuery.trim()) nextParams.set("q", vendorQuery.trim());
-
-    const current = searchParams.toString();
-    const next = nextParams.toString();
-    if (current !== next) {
-      setSearchParams(nextParams, { replace: true });
-    }
-  }, [filtersHydrated, selectedMonth, selectedYear, selectedCategory, vendorQuery, searchParams, setSearchParams]);
-
-  const monthOptions = useMemo(() => {
-    const values = new Set<string>();
-    expenses.forEach((exp) => values.add(getMonthYear(exp.occurred_on).month));
-    if (selectedMonth !== "all") values.add(selectedMonth);
-    return Array.from(values).sort((a, b) => Number(a) - Number(b));
-  }, [expenses, selectedMonth]);
-
-  const yearOptions = useMemo(() => {
-    const values = new Set<string>();
-    expenses.forEach((exp) => values.add(getMonthYear(exp.occurred_on).year));
-    if (selectedYear !== "all") values.add(selectedYear);
-    return Array.from(values).sort((a, b) => Number(b) - Number(a));
-  }, [expenses, selectedYear]);
-
-  const categoryOptions = useMemo(() => {
-    const values = new Set(expenses.map((exp) => exp.category));
-    if (selectedCategory !== "all") values.add(selectedCategory);
-    return Array.from(values).sort((a, b) => a.localeCompare(b, "pt-BR"));
-  }, [expenses, selectedCategory]);
-
-  const filteredExpenses = useMemo(() => {
-    const vendorTerm = vendorQuery.trim().toLowerCase();
-    return expenses
-      .filter((exp) => {
-        const { month, year } = getMonthYear(exp.occurred_on);
-        if (selectedMonth !== "all" && month !== selectedMonth) return false;
-        if (selectedYear !== "all" && year !== selectedYear) return false;
-        if (selectedCategory !== "all" && exp.category !== selectedCategory) return false;
-        if (vendorTerm && !exp.vendor.toLowerCase().includes(vendorTerm)) return false;
-        return true;
-      })
-      .sort((a, b) => new Date(b.occurred_on).getTime() - new Date(a.occurred_on).getTime());
-  }, [expenses, selectedMonth, selectedYear, selectedCategory, vendorQuery]);
-
-  const periodKpis = useMemo(() => {
-    const total = filteredExpenses.reduce((acc, exp) => acc + exp.amount_cents, 0);
-
-    const byCategory = filteredExpenses.reduce((acc, exp) => {
-      acc[exp.category] = (acc[exp.category] ?? 0) + exp.amount_cents;
-      return acc;
-    }, {} as Record<string, number>);
-
-    const byVendor = filteredExpenses.reduce((acc, exp) => {
-      acc[exp.vendor] = (acc[exp.vendor] ?? 0) + exp.amount_cents;
-      return acc;
-    }, {} as Record<string, number>);
-
-    return {
-      total,
-      topCategories: Object.entries(byCategory).sort((a, b) => b[1] - a[1]).slice(0, 5),
-      topVendors: Object.entries(byVendor).sort((a, b) => b[1] - a[1]).slice(0, 5),
-      count: filteredExpenses.length
-    };
-  }, [filteredExpenses]);
-
   const liveTransparency = useMemo(() => {
     const activities = conversations.filter(isActivity);
-    const hearingTopics = conversations.filter((item) => !isActivity(item));
+    const hearings = conversations.filter((item) => !isActivity(item));
     const recentCutoff = new Date();
     recentCutoff.setDate(recentCutoff.getDate() - 30);
 
     const recentItems = conversations.filter((item) => new Date(item.created_at).getTime() >= recentCutoff.getTime());
     const recentActivities = recentItems.filter(isActivity);
     const recentHearings = recentItems.filter((item) => !isActivity(item));
-    const territories = new Set(
-      conversations
-        .map((item) => (typeof item.meta?.location === "string" ? item.meta.location.trim() : ""))
-        .filter(Boolean)
-    );
-    const publishedResults = conversations.filter((item) => Boolean(item.excerpt?.trim() || item.body_md?.trim()));
-    const itemsWithInstagram = activities.filter((item) => Boolean(item.meta?.instagram_url));
+    const withLocation = conversations.filter((item) => Boolean(getLocationLabel(item)));
+    const withNarrative = conversations.filter((item) => Boolean(item.excerpt?.trim() || item.body_md?.trim()));
+
+    const territoryCountMap = new Map<string, { label: string; count: number }>();
+    withLocation.forEach((item) => {
+      mergeTerritoryCount(territoryCountMap, getLocationLabel(item));
+    });
+
+    monthlyReports.forEach((report) => {
+      report.action_territories.forEach((territory) => {
+        mergeTerritoryCount(territoryCountMap, territory);
+      });
+      report.hearing_territories.forEach((territory) => {
+        mergeTerritoryCount(territoryCountMap, territory);
+      });
+    });
+
+    const territoryCounts = Array.from(territoryCountMap.values())
+      .map(({ label, count }) => ({
+        name: label,
+        count,
+        coordinates: getTerritoryCoordinates(label)
+      }))
+      .sort((a, b) => b.count - a.count);
 
     return {
       activities,
-      hearingTopics,
+      hearings,
       recentItems,
       recentActivities,
       recentHearings,
-      territories: Array.from(territories).sort((a, b) => a.localeCompare(b, "pt-BR")),
-      publishedResults,
-      itemsWithInstagram,
-      latestItems: [...conversations].slice(0, 4)
+      withLocation,
+      withNarrative,
+      territoryCounts,
+      territoryNames: territoryCounts.map((item) => item.name),
+      latestItems: [...conversations]
+        .sort((a, b) => new Date(getActivityDate(b)).getTime() - new Date(getActivityDate(a)).getTime())
+        .slice(0, 6)
     };
-  }, [conversations]);
+  }, [conversations, monthlyReports]);
 
   const monthlyTransparency = useMemo(() => {
     const reports = [...(monthlyReports.length > 0 ? monthlyReports : LIVE_TRANSPARENCIA_REPORTS)].sort((a, b) =>
@@ -281,46 +383,41 @@ export function TransparenciaPage() {
     );
     const latest = reports[0] ?? null;
     const previous = reports[1] ?? null;
-    const hearingsDelta = latest && previous ? latest.hearings_count - previous.hearings_count : null;
-    const actionsDelta = latest && previous ? latest.actions_count - previous.actions_count : null;
-    const coverageDelta = latest && previous ? latest.territorial_coverage_pct - previous.territorial_coverage_pct : null;
 
     return {
       reports,
       latest,
       previous,
-      hearingsDelta,
-      actionsDelta,
-      coverageDelta
+      hearingsDelta: latest && previous ? latest.hearings_count - previous.hearings_count : null,
+      actionsDelta: latest && previous ? latest.actions_count - previous.actions_count : null,
+      coverageDelta: latest && previous ? latest.territorial_coverage_pct - previous.territorial_coverage_pct : null
     };
   }, [monthlyReports]);
 
-  const handleDownloadExpensesCsv = () => {
-    const header = ["occurred_on", "vendor", "category", "amount", "description", "document_url"];
-    const rows = filteredExpenses.map((exp) => [
-      exp.occurred_on,
-      exp.vendor,
-      exp.category,
-      (exp.amount_cents / 100).toFixed(2),
-      exp.description,
-      exp.document_url ?? ""
-    ]);
+  const pedagogicCards = useMemo(() => {
+    const locationPct = conversations.length > 0 ? (liveTransparency.withLocation.length / conversations.length) * 100 : 0;
+    const narrativePct = conversations.length > 0 ? (liveTransparency.withNarrative.length / conversations.length) * 100 : 0;
+    const latest = monthlyTransparency.latest;
 
-    const csv = [header, ...rows]
-      .map((row) => row.map((cell) => toCsvCell(cell)).join(","))
-      .join("\n");
-
-    const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = `gastos_transparencia_${selectedYear}_${selectedMonth}_${selectedCategory}_${new Date().toISOString().slice(0, 10)}.csv`;
-    trackCsvDownload("transparencia", filteredExpenses.length);
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-  };
+    return [
+      {
+        title: "1. Onde escutamos",
+        description: `${liveTransparency.territoryCounts.length} territórios aparecem nas publicações. ${formatPercent(locationPct)}% dos registros já saem com localização territorial explícita.`
+      },
+      {
+        title: "2. O que apareceu",
+        description: latest
+          ? `${latest.dominant_themes.slice(0, 3).join(", ")} aparecem como eixos recorrentes na leitura mais recente.`
+          : "Os temas recorrentes passam a aparecer aqui à medida que os fechamentos mensais forem publicados."
+      },
+      {
+        title: "3. O que virou encaminhamento",
+        description: latest
+          ? `${latest.recommended_next_steps.length} encaminhamento(s) público(s) já foram registrados para o mês consolidado mais recente. ${formatPercent(narrativePct)}% dos registros publicados trazem texto editorial ou devolutiva.`
+          : "A devolutiva pública aparece quando a equipe consolida a interpretação mensal e publica os próximos passos."
+      }
+    ];
+  }, [conversations.length, liveTransparency.territoryCounts.length, liveTransparency.withLocation.length, liveTransparency.withNarrative.length, monthlyTransparency.latest]);
 
   if (loading) {
     return (
@@ -337,10 +434,7 @@ export function TransparenciaPage() {
       <ErrorState
         description={error}
         action={
-          <button
-            onClick={() => window.location.reload()}
-            className="ui-btn-primary motion-focus motion-action px-5"
-          >
+          <button onClick={() => window.location.reload()} className="ui-btn-primary motion-focus motion-action px-5">
             Tentar novamente
           </button>
         }
@@ -351,526 +445,251 @@ export function TransparenciaPage() {
   return (
     <PortalPageShell className="transparency-stage">
       <PortalHero
-        badge={<span className="badge-metodologia">Prestação de contas</span>}
-        title="Transparência e prestação de contas"
-        subtitle="Acompanhamento financeiro público, auditável e exportável do projeto SEMEAR, com filtros por período, categoria e fornecedor."
+        badge={<span className="badge-metodologia">Transparência viva</span>}
+        title="Escutas, território e devolutiva pública"
+        subtitle="Uma leitura pública e pedagógica do que o SEMEAR escutou, onde esteve presente e quais encaminhamentos surgiram das atividades e escutas publicadas."
         tone="lab"
         metrics={
           <>
-          <div className="portal-kpi-card portal-kpi-card-lab">
-            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-text-secondary">Total histórico</p>
-            <p className="mt-2 text-3xl font-black text-success">{summary ? formatBRL(summary.total_cents) : "R$ 0,00"}</p>
-            <p className="mt-1 text-sm text-text-secondary">publicado e auditável</p>
-          </div>
-          <div className="portal-kpi-card">
-            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-text-secondary">Período filtrado</p>
-            <p className="mt-2 text-3xl font-black text-brand-primary">{formatBRL(periodKpis.total)}</p>
-            <p className="mt-1 text-sm text-text-secondary">{periodKpis.count} lançamento(s)</p>
-          </div>
+            <div className="portal-kpi-card portal-kpi-card-lab">
+              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-text-secondary">Escutas publicadas</p>
+              <p className="mt-2 text-3xl font-black text-brand-primary">{liveTransparency.hearings.length}</p>
+              <p className="mt-1 text-sm text-text-secondary">registros públicos de escuta já visíveis no portal</p>
+            </div>
+            <div className="portal-kpi-card">
+              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-text-secondary">Atividades de campo</p>
+              <p className="mt-2 text-3xl font-black text-success">{liveTransparency.activities.length}</p>
+              <p className="mt-1 text-sm text-text-secondary">ações com memória pública ou devolutiva registrada</p>
+            </div>
           </>
         }
       />
 
-      <SurfaceCard className="portal-list-panel p-5 md:p-6">
-          <p className="text-sm font-semibold text-accent-lab">{INSTITUTIONAL_FUNDING} · todos os recursos são públicos</p>
-          <p className="mt-1 text-sm text-text-secondary">Prestação de contas permanente e acessível à população</p>
+      <SurfaceCard className="border-0 bg-slate-950 px-6 py-7 text-white shadow-none md:px-8">
+        <div className="grid gap-4 xl:grid-cols-[minmax(0,1.2fr)_minmax(320px,0.8fr)]">
+          <div>
+            <p className="text-xs font-black uppercase tracking-[0.2em] text-emerald-300">Leitura cívica</p>
+            <h2 className="mt-3 text-3xl font-black tracking-tight md:text-4xl">
+              Transparência aqui significa mostrar o território, não só publicar números
+            </h2>
+            <p className="mt-4 max-w-3xl text-sm leading-relaxed text-white/78 md:text-base">
+              Esta página organiza o ciclo completo das escutas: presença territorial, interpretação do que apareceu, consolidação mensal e próximos passos.
+              O objetivo não é apenas provar que houve atividade, mas permitir que qualquer pessoa entenda o que foi escutado, onde isso aconteceu e como a equipe está respondendo.
+            </p>
+          </div>
+          <div className="grid gap-3">
+            {pedagogicCards.map((card) => (
+              <div key={card.title} className="rounded-[1.5rem] border border-white/10 bg-white/5 p-4">
+                <p className="text-sm font-black text-white">{card.title}</p>
+                <p className="mt-2 text-sm leading-relaxed text-white/72">{card.description}</p>
+              </div>
+            ))}
+          </div>
+        </div>
       </SurfaceCard>
 
-      <SurfaceCard className="portal-filter-panel p-6 md:p-8">
-        <PortalSectionHeader
-          eyebrow="Transparência viva"
-          title="Escutas e atividades publicadas em fluxo contínuo"
-          subtitle="Acompanhamento público das ações territoriais já registradas no portal, com atualização a partir das publicações e memórias de campo do SEMEAR."
+      <section className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+        <MetricCard
+          label="Últimos 30 dias"
+          value={liveTransparency.recentItems.length}
+          helper="Registros novos entre escutas e atividades no ciclo recente."
+          tone="blue"
         />
-        <div className="mt-5 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-          <div className="portal-kpi-card portal-kpi-card-lab">
-            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-text-secondary">Últimos 30 dias</p>
-            <p className="mt-2 text-3xl font-black text-brand-primary">{liveTransparency.recentItems.length}</p>
-            <p className="mt-1 text-sm text-text-secondary">registros públicos entre escutas e atividades</p>
-          </div>
-          <div className="portal-kpi-card">
-            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-text-secondary">Atividades de campo</p>
-            <p className="mt-2 text-3xl font-black text-success">{liveTransparency.activities.length}</p>
-            <p className="mt-1 text-sm text-text-secondary">{liveTransparency.itemsWithInstagram.length} com publicação vinculada</p>
-          </div>
-          <div className="portal-kpi-card">
-            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-text-secondary">Escuta pública</p>
-            <p className="mt-2 text-3xl font-black text-brand-primary">{liveTransparency.hearingTopics.length}</p>
-            <p className="mt-1 text-sm text-text-secondary">{liveTransparency.recentHearings.length} atualização(ões) no ciclo recente</p>
-          </div>
-          <div className="portal-kpi-card">
-            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-text-secondary">Territórios citados</p>
-            <p className="mt-2 text-3xl font-black text-success">{liveTransparency.territories.length}</p>
-            <p className="mt-1 text-sm text-text-secondary">{liveTransparency.publishedResults.length} registros com devolutiva publicada</p>
-          </div>
-        </div>
+        <MetricCard
+          label="Territórios citados"
+          value={liveTransparency.territoryCounts.length}
+          helper="Bairros ou territórios que já aparecem nas publicações do portal."
+          tone="green"
+        />
+        <MetricCard
+          label="Localização explícita"
+          value={`${formatPercent(conversations.length > 0 ? (liveTransparency.withLocation.length / conversations.length) * 100 : 0)}%`}
+          helper="Percentual de registros públicos que já trazem território informado."
+          tone="amber"
+        />
+        <MetricCard
+          label="Mês consolidado"
+          value={monthlyTransparency.latest?.month_label || "Sem fechamento"}
+          helper="Último mês com leitura editorial consolidada e publicada."
+          tone="default"
+        />
+      </section>
 
-        <div className="mt-6 grid gap-5 xl:grid-cols-[minmax(0,1.2fr)_minmax(320px,0.8fr)]">
-          <div className="rounded-[1.5rem] border border-base/40 bg-fundo/70 p-5">
-            <div className="flex items-center justify-between gap-4">
-              <div>
-                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-text-secondary">Feed recente</p>
-                <h3 className="mt-2 text-xl font-black text-text-primary">O que já foi devolvido ao público</h3>
-              </div>
-              <Link to="/conversar" className="ui-btn-ghost motion-focus motion-action px-4">
-                Abrir conversas
-              </Link>
-            </div>
+      <section className="grid gap-6 xl:grid-cols-[minmax(0,1.05fr)_minmax(340px,0.95fr)]">
+        <TerritoryMap territories={liveTransparency.territoryCounts.slice(0, 12)} />
+
+        <div className="grid gap-6">
+          <SurfaceCard className="p-6 md:p-7">
+            <PortalSectionHeader
+              eyebrow="Leitura territorial"
+              title="Onde olhar primeiro"
+              subtitle="Uma visão rápida dos territórios que mais aparecem nas publicações e no mês consolidado mais recente."
+            />
             <div className="mt-5 space-y-3">
-              {liveTransparency.latestItems.length === 0 ? (
-                <EmptyState
-                  title="Sem escutas publicadas ainda"
-                  description="Assim que as atividades e rodas de conversa forem publicadas, esta área passa a refletir o movimento territorial em tempo quase real."
-                />
-              ) : (
-                liveTransparency.latestItems.map((item) => {
-                  const activity = isActivity(item);
-                  const location = typeof item.meta?.location === "string" ? item.meta.location.trim() : "";
-                  return (
-                    <article key={item.id} className="rounded-[1.25rem] border border-base/40 bg-white/80 p-4">
-                      <div className="flex flex-wrap items-center gap-2">
-                        <span className={`rounded-full px-3 py-1 text-[11px] font-black uppercase tracking-wide ${activity ? "bg-emerald-100 text-emerald-800" : "bg-cyan-100 text-cyan-800"}`}>
-                          {activity ? "Atividade" : "Escuta"}
-                        </span>
-                        <span className="text-xs font-semibold text-text-secondary">{formatDateLabel(item.created_at)}</span>
-                        {location ? <span className="text-xs font-semibold text-text-secondary">{location}</span> : null}
-                      </div>
-                      <h4 className="mt-3 text-lg font-black text-text-primary">{item.title}</h4>
-                      {item.excerpt ? <p className="mt-2 text-sm leading-relaxed text-text-secondary">{item.excerpt}</p> : null}
-                      {!item.excerpt && item.body_md ? <p className="mt-2 line-clamp-4 text-sm leading-relaxed text-text-secondary">{item.body_md}</p> : null}
-                    </article>
-                  );
-                })
-              )}
-            </div>
-          </div>
-
-          <div className="rounded-[1.5rem] border border-base/40 bg-fundo/70 p-5">
-            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-text-secondary">Sinais do território</p>
-            <h3 className="mt-2 text-xl font-black text-text-primary">Leitura operacional das escutas</h3>
-            <div className="mt-5 space-y-4">
-              <div className="rounded-[1.25rem] border border-base/40 bg-white/80 p-4">
-                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-text-secondary">Atividade recente</p>
-                <p className="mt-2 text-base font-black text-text-primary">{liveTransparency.recentActivities.length} registro(s) de campo nos últimos 30 dias</p>
-              </div>
-              <div className="rounded-[1.25rem] border border-base/40 bg-white/80 p-4">
-                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-text-secondary">Territórios mencionados</p>
-                <p className="mt-2 text-sm leading-relaxed text-text-secondary">
-                  {liveTransparency.territories.slice(0, 6).join(" • ") || "Sem localização publicada ainda."}
-                </p>
-              </div>
-              <div className="rounded-[1.25rem] border border-base/40 bg-white/80 p-4">
-                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-text-secondary">Devolutiva publicada</p>
-                <p className="mt-2 text-base font-black text-text-primary">{liveTransparency.publishedResults.length} registro(s) com texto editorial ou síntese pública</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </SurfaceCard>
-
-      {monthlyTransparency.latest ? (
-        <SurfaceCard className="portal-filter-panel p-6 md:p-8">
-          <PortalSectionHeader
-            eyebrow="Leitura mensal"
-            title="Resumo público das escutas consolidadas"
-            subtitle="Camada editorial baseada nos relatórios mensais interpretativos do SEMEAR Territórios, separando o fluxo diário da leitura consolidada de escutas, coberturas e encaminhamentos."
-          />
-
-          <div className="mt-5 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-            <div className="portal-kpi-card portal-kpi-card-lab">
-              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-text-secondary">Mês consolidado</p>
-              <p className="mt-2 text-2xl font-black text-brand-primary">{monthlyTransparency.latest.month_label}</p>
-              <p className="mt-1 text-sm text-text-secondary">{monthlyTransparency.latest.source_label}</p>
-            </div>
-            <div className="portal-kpi-card">
-              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-text-secondary">Escutas no mês</p>
-              <p className="mt-2 text-3xl font-black text-success">{monthlyTransparency.latest.hearings_count}</p>
-              <p className="mt-1 text-sm text-text-secondary">
-                {monthlyTransparency.hearingsDelta === null
-                  ? "sem base anterior publicada"
-                  : `${monthlyTransparency.hearingsDelta >= 0 ? "+" : ""}${monthlyTransparency.hearingsDelta} em relação ao mês anterior`}
-              </p>
-            </div>
-            <div className="portal-kpi-card">
-              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-text-secondary">Ações no mês</p>
-              <p className="mt-2 text-3xl font-black text-brand-primary">{monthlyTransparency.latest.actions_count}</p>
-              <p className="mt-1 text-sm text-text-secondary">
-                {monthlyTransparency.actionsDelta === null
-                  ? "sem base anterior publicada"
-                  : `${monthlyTransparency.actionsDelta >= 0 ? "+" : ""}${monthlyTransparency.actionsDelta} em relação ao mês anterior`}
-              </p>
-            </div>
-            <div className="portal-kpi-card">
-              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-text-secondary">Cobertura territorial</p>
-              <p className="mt-2 text-3xl font-black text-success">{formatPercent(monthlyTransparency.latest.territorial_coverage_pct)}%</p>
-              <p className="mt-1 text-sm text-text-secondary">
-                status {monthlyTransparency.latest.territorial_status === "critica" ? "crítico" : monthlyTransparency.latest.territorial_status === "adequada" ? "adequado" : "atenção"}
-                {monthlyTransparency.coverageDelta === null ? "" : ` · ${monthlyTransparency.coverageDelta >= 0 ? "+" : ""}${formatPercent(monthlyTransparency.coverageDelta)} p.p.`}
-              </p>
-            </div>
-          </div>
-
-          <div className="mt-6 grid gap-5 xl:grid-cols-[minmax(0,1.1fr)_minmax(340px,0.9fr)]">
-            <div className="rounded-[1.5rem] border border-base/40 bg-fundo/70 p-5">
-              <div className="flex flex-wrap items-start justify-between gap-3">
-                <div>
-                  <p className="text-xs font-semibold uppercase tracking-[0.2em] text-text-secondary">Fechamento do mês</p>
-                  <h3 className="mt-2 text-2xl font-black text-text-primary">{monthlyTransparency.latest.month_label}</h3>
-                </div>
-                <a
-                  href={monthlyTransparency.latest.source_url || "#"}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="ui-btn-ghost motion-focus motion-action px-4"
-                >
-                  Abrir relatório
-                </a>
-              </div>
-
-              <div className="mt-5 space-y-4">
-                <div className="rounded-[1.25rem] border border-base/40 bg-white/80 p-4">
-                  <p className="text-xs font-semibold uppercase tracking-[0.2em] text-text-secondary">Leitura executiva</p>
-                  <p className="mt-2 text-sm leading-relaxed text-text-primary">{monthlyTransparency.latest.executive_summary}</p>
-                </div>
-
-                <div className="grid gap-4 lg:grid-cols-2">
-                  <div className={`rounded-[1.25rem] border p-4 ${
-                    monthlyTransparency.latest.territorial_status === "critica"
-                      ? "border-rose-200 bg-rose-50"
-                      : monthlyTransparency.latest.territorial_status === "adequada"
-                        ? "border-emerald-200 bg-emerald-50"
-                        : "border-amber-200 bg-amber-50"
-                  }`}>
-                    <p className="text-xs font-semibold uppercase tracking-[0.2em] text-text-secondary">Alerta metodológico</p>
-                    <p className="mt-2 text-sm leading-relaxed text-text-primary">{monthlyTransparency.latest.methodological_alert}</p>
-                  </div>
-                  <div className="rounded-[1.25rem] border border-emerald-200 bg-emerald-50 p-4">
-                    <p className="text-xs font-semibold uppercase tracking-[0.2em] text-text-secondary">Recomendação operacional</p>
-                    <p className="mt-2 text-sm leading-relaxed text-text-primary">{monthlyTransparency.latest.operational_recommendation}</p>
-                  </div>
-                </div>
-
-                <div className="rounded-[1.25rem] border border-base/40 bg-white/80 p-4">
-                  <p className="text-xs font-semibold uppercase tracking-[0.2em] text-text-secondary">Temas dominantes</p>
-                  <div className="mt-3 flex flex-wrap gap-2">
-                    {monthlyTransparency.latest.dominant_themes.map((theme) => (
-                      <span key={theme} className="rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-xs font-black uppercase tracking-wide text-emerald-800">
-                        {theme}
+              {liveTransparency.territoryCounts.slice(0, 8).map((territory, index) => (
+                <div key={territory.name} className="rounded-[1.25rem] border border-slate-100 bg-slate-50/80 p-4">
+                  <div className="flex items-center justify-between gap-3">
+                    <div className="flex items-center gap-3">
+                      <span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-slate-900 text-sm font-black text-white">
+                        {index + 1}
                       </span>
-                    ))}
-                  </div>
-                </div>
-
-                <div className="grid gap-4 lg:grid-cols-2">
-                  <div className="rounded-[1.25rem] border border-base/40 bg-white/80 p-4">
-                    <p className="text-xs font-semibold uppercase tracking-[0.2em] text-text-secondary">Prioridades mais citadas</p>
-                    <div className="mt-3 space-y-2">
-                      {monthlyTransparency.latest.grouped_priorities.map((priority) => (
-                        <div key={priority.label} className="flex items-center justify-between gap-3 text-sm">
-                          <span className="text-text-secondary">{priority.label}</span>
-                          <span className="font-black text-text-primary">{priority.count}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                  <div className="rounded-[1.25rem] border border-base/40 bg-white/80 p-4">
-                    <p className="text-xs font-semibold uppercase tracking-[0.2em] text-text-secondary">Sinais qualitativos</p>
-                    <div className="mt-3 space-y-2">
-                      {monthlyTransparency.latest.qualitative_signals.map((signal) => (
-                        <div key={signal.label} className="flex items-center justify-between gap-3 text-sm">
-                          <span className="text-text-secondary">{signal.label}</span>
-                          <span className="font-black text-text-primary">{signal.count}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-
-                <div className="rounded-[1.25rem] border border-base/40 bg-white/80 p-4">
-                  <p className="text-xs font-semibold uppercase tracking-[0.2em] text-text-secondary">Encaminhamentos recomendados</p>
-                  <div className="mt-3 grid gap-2">
-                    {monthlyTransparency.latest.recommended_next_steps.map((step) => (
-                      <div key={step} className="rounded-2xl border border-base/40 bg-fundo/70 px-3 py-2 text-sm text-text-secondary">
-                        {step}
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="rounded-[1.5rem] border border-base/40 bg-fundo/70 p-5">
-              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-text-secondary">Linha do tempo interpretativa</p>
-              <h3 className="mt-2 text-xl font-black text-text-primary">Relatórios que já viraram devolutiva</h3>
-              <div className="mt-5 space-y-4">
-                {monthlyTransparency.reports.map((report) => (
-                  <article key={report.id} className="rounded-[1.25rem] border border-base/40 bg-white/80 p-4">
-                    <div className="flex items-start justify-between gap-3">
                       <div>
-                        <p className="text-xs font-semibold uppercase tracking-[0.2em] text-text-secondary">{report.month_label}</p>
-                        <h4 className="mt-2 text-lg font-black text-text-primary">
-                          {report.actions_count} ações · {report.hearings_count} escutas
-                        </h4>
-                      </div>
-                      <span className={`rounded-full px-3 py-1 text-[11px] font-black uppercase tracking-wide ${
-                        report.territorial_status === "critica"
-                          ? "bg-rose-100 text-rose-800"
-                          : report.territorial_status === "adequada"
-                            ? "bg-emerald-100 text-emerald-800"
-                            : "bg-amber-100 text-amber-800"
-                      }`}>
-                        {report.territorial_status === "critica" ? "Cobertura crítica" : report.territorial_status === "adequada" ? "Cobertura adequada" : "Cobertura parcial"}
-                      </span>
-                    </div>
-                    <p className="mt-3 text-sm leading-relaxed text-text-secondary">{report.executive_summary}</p>
-                    <div className="mt-4 grid gap-3 sm:grid-cols-2">
-                      <div className="rounded-2xl border border-base/40 bg-fundo/70 p-3">
-                        <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-text-secondary">Territórios da ação</p>
-                        <p className="mt-2 text-sm text-text-primary">{report.action_territories.join(" • ")}</p>
-                      </div>
-                      <div className="rounded-2xl border border-base/40 bg-fundo/70 p-3">
-                        <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-text-secondary">Escuta territorial</p>
-                        <p className="mt-2 text-sm text-text-primary">{report.hearing_territories.join(" • ")}</p>
+                        <p className="text-sm font-black text-slate-950">{territory.name}</p>
+                        <p className="mt-1 text-xs font-medium text-slate-500">Registros com localização publicada</p>
                       </div>
                     </div>
-                    <div className="mt-4 flex flex-wrap gap-2">
-                      {report.dominant_themes.slice(0, 4).map((theme) => (
-                        <span key={theme} className="rounded-full border border-base/40 bg-fundo/70 px-3 py-1 text-[11px] font-black uppercase tracking-wide text-text-secondary">
-                          {theme}
-                        </span>
-                      ))}
-                    </div>
-                    <div className="mt-4 flex flex-wrap gap-3">
-                      <a href={report.source_url || "#"} target="_blank" rel="noreferrer" className="text-sm font-black text-brand-primary hover:underline">
-                        Ler relatório completo
-                      </a>
-                      <span className="text-sm text-text-secondary">{report.review_pending}</span>
-                    </div>
-                  </article>
-                ))}
-              </div>
+                    <span className="text-xl font-black text-emerald-600">{territory.count}</span>
+                  </div>
+                </div>
+              ))}
+              {liveTransparency.territoryCounts.length === 0 ? (
+                <EmptyState
+                  title="Sem territórios publicados ainda"
+                  description="Assim que as escutas vierem com bairro ou localização no portal, esta leitura territorial fica disponível."
+                />
+              ) : null}
             </div>
-          </div>
-        </SurfaceCard>
+          </SurfaceCard>
+
+          {monthlyTransparency.latest ? (
+            <SurfaceCard className="p-6 md:p-7">
+              <PortalSectionHeader
+                eyebrow="Interpretação do mês"
+                title={`Leitura consolidada de ${monthlyTransparency.latest.month_label}`}
+                subtitle="O resumo mensal organiza a leitura executiva, os limites metodológicos e o próximo passo público."
+              />
+              <div className="mt-5 space-y-4">
+                <div className="rounded-[1.25rem] border border-slate-100 bg-slate-50/80 p-4">
+                  <p className="text-xs font-black uppercase tracking-[0.18em] text-slate-400">Leitura executiva</p>
+                  <p className="mt-2 text-sm leading-relaxed text-slate-700">{monthlyTransparency.latest.executive_summary}</p>
+                </div>
+                <div className="grid gap-4 lg:grid-cols-2">
+                  <div className="rounded-[1.25rem] border border-amber-200 bg-amber-50/80 p-4">
+                    <p className="text-xs font-black uppercase tracking-[0.18em] text-amber-700">Cautela metodológica</p>
+                    <p className="mt-2 text-sm leading-relaxed text-slate-700">{monthlyTransparency.latest.methodological_alert}</p>
+                  </div>
+                  <div className="rounded-[1.25rem] border border-emerald-200 bg-emerald-50/80 p-4">
+                    <p className="text-xs font-black uppercase tracking-[0.18em] text-emerald-700">Próximo passo</p>
+                    <p className="mt-2 text-sm leading-relaxed text-slate-700">{monthlyTransparency.latest.operational_recommendation}</p>
+                  </div>
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  {monthlyTransparency.latest.dominant_themes.map((theme) => (
+                    <span key={theme} className="rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-[11px] font-black uppercase tracking-wide text-emerald-800">
+                      {theme}
+                    </span>
+                  ))}
+                </div>
+                <div className="flex flex-wrap gap-3">
+                  {monthlyTransparency.latest.source_url ? (
+                    <a href={monthlyTransparency.latest.source_url} target="_blank" rel="noreferrer" className="ui-btn-ghost motion-focus motion-action px-4">
+                      Abrir relatório mensal
+                    </a>
+                  ) : (
+                    <span className="inline-flex items-center rounded-full border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-500">
+                      Relatório mensal sem link público
+                    </span>
+                  )}
+                  <Link to="/conversar" className="ui-btn-ghost motion-focus motion-action px-4">
+                    Ver publicações de campo
+                  </Link>
+                </div>
+              </div>
+            </SurfaceCard>
+          ) : null}
+        </div>
+      </section>
+
+      {monthlyTransparency.reports.length > 0 ? (
+        <MonthlyVolumeChart reports={monthlyTransparency.reports.slice(0, 6)} />
       ) : null}
 
-      <section className="grid gap-6 md:grid-cols-3">
-        <div className="portal-kpi-card portal-kpi-card-lab">
-          <p className="text-sm font-semibold uppercase tracking-wider text-text-secondary">Total histórico</p>
-          <p className="mt-2 text-3xl font-black text-success">{summary ? formatBRL(summary.total_cents) : "R$ 0,00"}</p>
-          <p className="mt-1 text-xs text-text-secondary">{INSTITUTIONAL_FUNDING}</p>
-        </div>
-
-        <div className="portal-kpi-card">
-          <p className="text-sm font-semibold uppercase tracking-wider text-text-secondary">Total no período filtrado</p>
-          <p className="mt-2 text-3xl font-black text-brand-primary">{formatBRL(periodKpis.total)}</p>
-          <p className="mt-1 text-xs text-text-secondary">{periodKpis.count} lançamento(s)</p>
-        </div>
-
-        <div className="portal-kpi-card">
-          <p className="text-sm font-semibold uppercase tracking-wider text-text-secondary">Top categorias (período)</p>
-          <div className="mt-2 space-y-1">
-            {periodKpis.topCategories.slice(0, 3).map(([cat, amount]) => (
-              <div key={cat} className="flex justify-between text-xs">
-                <span className="text-text-secondary">{cat}</span>
-                <span className="font-bold text-text-primary">{formatBRL(amount)}</span>
-              </div>
-            ))}
-            {periodKpis.topCategories.length === 0 && <p className="text-xs text-text-secondary">Sem dados no filtro.</p>}
-          </div>
-        </div>
-      </section>
-
-      <SurfaceCard className="portal-filter-panel p-6 md:p-8">
-        <PortalSectionHeader
-          eyebrow="Filtro ativo"
-          title="Filtrar lançamentos"
-          subtitle="Refine a prestação de contas por período, categoria ou fornecedor sem alterar a base publicada."
-        />
-        <div className="mt-4 grid gap-4 md:grid-cols-4">
-          <div>
-            <label htmlFor="filtro-mes" className="mb-1 block text-xs font-bold uppercase tracking-wide text-text-secondary">Mês</label>
-            <select id="filtro-mes" value={selectedMonth} onChange={(e) => setSelectedMonth(e.target.value)} className="motion-input motion-focus w-full rounded-md px-3 py-2 text-sm">
-              <option value="all">Todos</option>
-              {monthOptions.map((month) => <option key={month} value={month}>{month}</option>)}
-            </select>
-          </div>
-          <div>
-            <label htmlFor="filtro-ano" className="mb-1 block text-xs font-bold uppercase tracking-wide text-text-secondary">Ano</label>
-            <select id="filtro-ano" value={selectedYear} onChange={(e) => setSelectedYear(e.target.value)} className="motion-input motion-focus w-full rounded-md px-3 py-2 text-sm">
-              <option value="all">Todos</option>
-              {yearOptions.map((year) => <option key={year} value={year}>{year}</option>)}
-            </select>
-          </div>
-          <div>
-            <label htmlFor="filtro-categoria" className="mb-1 block text-xs font-bold uppercase tracking-wide text-text-secondary">Categoria</label>
-            <select id="filtro-categoria" value={selectedCategory} onChange={(e) => setSelectedCategory(e.target.value)} className="motion-input motion-focus w-full rounded-md px-3 py-2 text-sm">
-              <option value="all">Todas</option>
-              {categoryOptions.map((cat) => <option key={cat} value={cat}>{cat}</option>)}
-            </select>
-          </div>
-          <div>
-            <label htmlFor="filtro-fornecedor" className="mb-1 block text-xs font-bold uppercase tracking-wide text-text-secondary">Fornecedor (busca)</label>
-            <input id="filtro-fornecedor" type="search" value={vendorQuery} onChange={(e) => setVendorQuery(e.target.value)} placeholder="Digite o nome" className="motion-input motion-focus w-full rounded-md px-3 py-2 text-sm" />
-          </div>
-        </div>
-      </SurfaceCard>
-
-      <section className="grid gap-6 md:grid-cols-2">
-        <div className="portal-list-panel rounded-[1.75rem] p-6">
-          <h3 className="text-sm font-semibold uppercase tracking-wider text-text-secondary">Top categorias (filtro ativo)</h3>
-          <div className="mt-3 space-y-2">
-            {periodKpis.topCategories.map(([cat, amount]) => (
-              <div key={cat} className="flex items-center justify-between text-sm">
-                <span className="text-text-secondary">{cat}</span>
-                <span className="font-bold text-text-primary">{formatBRL(amount)}</span>
-              </div>
-            ))}
-            {periodKpis.topCategories.length === 0 && <p className="text-sm text-text-secondary">Sem dados.</p>}
-          </div>
-        </div>
-
-        <div className="portal-list-panel rounded-[1.75rem] p-6">
-          <h3 className="text-sm font-semibold uppercase tracking-wider text-text-secondary">Top fornecedores (filtro ativo)</h3>
-          <div className="mt-3 space-y-2">
-            {periodKpis.topVendors.map(([vendor, amount]) => (
-              <div key={vendor} className="flex items-center justify-between text-sm">
-                <span className="text-text-secondary">{vendor}</span>
-                <span className="font-bold text-text-primary">{formatBRL(amount)}</span>
-              </div>
-            ))}
-            {periodKpis.topVendors.length === 0 && <p className="text-sm text-text-secondary">Sem dados.</p>}
-          </div>
-        </div>
-      </section>
-
-      <SurfaceCard className="portal-list-panel p-6 md:p-8">
-        <PortalSectionHeader
-          eyebrow="Base aberta"
-          title="Despesas lançadas"
-          subtitle="Tabela pública com documentos associados quando disponíveis."
-        />
-        <div className="mb-6 flex items-center justify-between gap-3">
-          <div>
-            <p className="mt-1 text-xs text-text-secondary">Documentos são publicados quando disponíveis.</p>
-          </div>
-          <button type="button" onClick={handleDownloadExpensesCsv} className="ui-btn-secondary motion-focus motion-action px-4">
-            Baixar CSV do filtro
-          </button>
-        </div>
-
-        <div className="overflow-x-auto rounded-xl border border-border-subtle" aria-label="Tabela de despesas filtradas">
-          <table className="w-full border-collapse text-left text-base" aria-describedby="caption-despesas">
-            <caption id="caption-despesas" className="sr-only">Tabela de despesas com filtros por mês, ano, categoria e fornecedor. Ordenada por data decrescente.</caption>
-            <thead>
-              <tr className="border-b border-border-subtle bg-bg-surface">
-                <th className="px-4 py-3 text-sm font-bold uppercase tracking-wider text-text-secondary">Data</th>
-                <th className="px-4 py-3 text-sm font-bold uppercase tracking-wider text-text-secondary">Favorecido</th>
-                <th className="hidden px-4 py-3 text-sm font-bold uppercase tracking-wider text-text-secondary md:table-cell">Categoria</th>
-                <th className="px-4 py-3 text-sm font-bold uppercase tracking-wider text-text-secondary">Descrição</th>
-                <th className="px-4 py-3 text-right text-sm font-bold uppercase tracking-wider text-text-secondary">Valor</th>
-                <th className="px-4 py-3 text-right text-sm font-bold uppercase tracking-wider text-text-secondary">Documento</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-border-subtle">
-              {filteredExpenses.map((exp) => (
-                <tr key={exp.id} className="motion-control hover:bg-bg-surface">
-                  <td className="whitespace-nowrap px-4 py-4 font-mono text-sm text-text-secondary">{new Date(exp.occurred_on).toLocaleDateString("pt-BR")}</td>
-                  <td className="px-4 py-4 font-semibold text-text-primary">{exp.vendor}</td>
-                  <td className="hidden px-4 py-4 md:table-cell"><span className="inline-block rounded-full bg-brand-primary/10 px-3 py-1 text-xs font-semibold text-brand-primary">{exp.category}</span></td>
-                  <td className="max-w-[220px] px-4 py-4 text-sm text-text-secondary line-clamp-1">{exp.description}</td>
-                  <td className="whitespace-nowrap px-4 py-4 text-right text-base font-bold text-success">{formatBRL(exp.amount_cents)}</td>
-                  <td className="px-4 py-4 text-right">
-                    {exp.document_url ? (
-                      <button
-                        type="button"
-                        onClick={() => setViewerExpense(exp)}
-                        className="inline-flex min-h-11 items-center gap-1 text-sm font-bold text-brand-primary hover:underline"
-                      >
-                        Abrir documento
-                        <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                        </svg>
-                      </button>
-                    ) : (
-                      <span className="inline-flex items-center rounded-full bg-bg-surface px-2 py-1 text-xs font-semibold text-text-secondary">Sem documento</span>
-                    )}
-                  </td>
-                </tr>
+      {monthlyTransparency.latest ? (
+        <section className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_minmax(0,0.9fr)]">
+          <HorizontalCountList
+            title="Prioridades mais citadas"
+            subtitle="Recorrência quantitativa"
+            items={monthlyTransparency.latest.grouped_priorities}
+            colorClass="bg-slate-900"
+          />
+          <HorizontalCountList
+            title="Sinais qualitativos"
+            subtitle="Leitura interpretativa"
+            items={monthlyTransparency.latest.qualitative_signals}
+            colorClass="bg-emerald-500"
+          />
+          <SurfaceCard className="p-6 md:p-7">
+            <PortalSectionHeader
+              eyebrow="Encaminhamentos"
+              title="O que a equipe disse que precisa fazer"
+              subtitle="Os próximos passos públicos ajudam a separar escuta, interpretação e resposta institucional."
+            />
+            <div className="mt-5 grid gap-3">
+              {monthlyTransparency.latest.recommended_next_steps.map((step) => (
+                <div key={step} className="rounded-[1.25rem] border border-slate-100 bg-slate-50/80 p-4 text-sm font-medium leading-relaxed text-slate-700">
+                  {step}
+                </div>
               ))}
-              {filteredExpenses.length === 0 && (
-                <tr>
-                  <td colSpan={6} className="py-12"><EmptyState title="Nenhum lançamento para os filtros selecionados" description="Ajuste mês, ano, categoria ou fornecedor para localizar outro lançamento." /></td>
-                </tr>
-              )}
-            </tbody>
-          </table>
-        </div>
-      </SurfaceCard>
+            </div>
+          </SurfaceCard>
+        </section>
+      ) : null}
 
-      <SurfaceCard className="portal-list-panel p-6 md:p-8">
+      <SurfaceCard className="p-6 md:p-8">
         <PortalSectionHeader
-          eyebrow="Controle externo"
-          title="Links oficiais de controle"
-          subtitle="Atalhos públicos para referências institucionais e acompanhamento complementar."
+          eyebrow="Memória pública"
+          title="Escutas e atividades mais recentes"
+          subtitle="O fluxo contínuo mostra presença territorial e devolutiva pública antes mesmo da consolidação mensal."
         />
-        <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {links.map((link) => (
-            <a key={link.id} href={link.url} target="_blank" rel="noopener noreferrer" className="group motion-list-item flex flex-col gap-2 rounded-xl border border-border-subtle bg-bg-surface p-4 motion-surface motion-surface-hover">
-              <span className="inline-block rounded-full bg-brand-primary/10 px-3 py-1 text-xs font-semibold text-brand-primary">{link.kind}</span>
-              <span className="text-base font-bold text-text-primary group-hover:text-brand-primary">{link.title}</span>
-              <span className="mt-auto inline-flex items-center gap-1 text-sm font-semibold text-text-secondary">Acessar link externo</span>
-            </a>
-          ))}
-          {links.length === 0 && (
-            <div className="col-span-full"><EmptyState title="Nenhum link oficial disponível no momento" description="Os links oficiais aparecerão aqui quando forem publicados." /></div>
+        <div className="mt-5 grid gap-4 xl:grid-cols-2">
+          {liveTransparency.latestItems.length === 0 ? (
+            <EmptyState
+              title="Sem escutas publicadas ainda"
+              description="Assim que as atividades e rodas de conversa forem publicadas, esta área passa a refletir o movimento territorial em fluxo contínuo."
+            />
+          ) : (
+            liveTransparency.latestItems.map((item) => {
+              const activity = isActivity(item);
+              const location = getLocationLabel(item);
+
+              return (
+                <article key={item.id} className="rounded-[1.5rem] border border-slate-200 bg-slate-50/70 p-5">
+                  <div className="flex flex-wrap items-center gap-2">
+                    <span className={`rounded-full px-3 py-1 text-[11px] font-black uppercase tracking-wide ${activity ? "bg-emerald-100 text-emerald-800" : "bg-cyan-100 text-cyan-800"}`}>
+                      {activity ? "Atividade" : "Escuta"}
+                    </span>
+                    <span className="text-xs font-semibold text-slate-500">{formatDateLabel(getActivityDate(item))}</span>
+                    {location ? <span className="text-xs font-semibold text-slate-500">{location}</span> : null}
+                  </div>
+                  <h3 className="mt-3 text-xl font-black tracking-tight text-slate-950">{item.title}</h3>
+                  {item.excerpt ? <p className="mt-3 text-sm leading-relaxed text-slate-700">{item.excerpt}</p> : null}
+                  {!item.excerpt && item.body_md ? <p className="mt-3 line-clamp-5 text-sm leading-relaxed text-slate-700">{item.body_md}</p> : null}
+                  <div className="mt-4">
+                    <Link to="/conversar" className="text-sm font-black text-emerald-700 hover:underline">
+                      Ver fluxo completo das publicações
+                    </Link>
+                  </div>
+                </article>
+              );
+            })
           )}
         </div>
       </SurfaceCard>
 
-      {viewerExpense?.document_url && (
-        <div
-          className="fixed inset-0 z-50 flex flex-col items-center justify-center motion-overlay p-4 motion-dialog"
-          role="dialog"
-          aria-modal="true"
-          aria-labelledby="transparencia-viewer-title"
-          onClick={(e) => {
-            if (e.target === e.currentTarget) setViewerExpense(null);
-          }}
-        >
-          <h2 id="transparencia-viewer-title" className="sr-only">Visualizador de documento</h2>
-          <div ref={modalRef} className="motion-dialog-panel motion-dialog w-full max-w-5xl">
-            <div className="mb-3 flex w-full justify-end gap-2">
-              <a
-                href={viewerExpense.document_url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="motion-action inline-flex min-h-[44px] items-center rounded-lg border border-white/30 bg-white/10 px-4 py-2 text-sm font-semibold text-white hover:bg-white/20"
-              >
-                Abrir documento
-              </a>
-              <button
-                ref={closeButtonRef}
-                type="button"
-                onClick={() => setViewerExpense(null)}
-                className="motion-action inline-flex min-h-[44px] min-w-[44px] items-center justify-center rounded-lg bg-error px-3 text-white hover:bg-error/90"
-                aria-label="Fechar visualizador de documento (ESC)"
-              >
-                ✕
-              </button>
-            </div>
-            <iframe
-              src={viewerExpense.document_url}
-              title={`Documento de ${viewerExpense.vendor}`}
-              className="motion-pop h-[80vh] w-full rounded-xl border border-white/20 bg-white"
-            />
+      <SurfaceCard className="border-slate-200 bg-slate-50 px-6 py-6 md:px-8">
+        <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+          <div className="max-w-3xl">
+            <p className="text-xs font-black uppercase tracking-[0.18em] text-slate-400">Transparência financeira</p>
+            <h2 className="mt-2 text-2xl font-black tracking-tight text-slate-950">Prestação de contas financeira disponível no portal da FEC</h2>
+            <p className="mt-2 text-sm leading-relaxed text-slate-600">
+              A leitura principal desta página está focada em escutas, território e devolutiva pública. A prestação financeira oficial do projeto permanece disponível no Portal da Transparência da FEC.
+            </p>
           </div>
+          <a href={FEC_TRANSPARENCIA_URL} target="_blank" rel="noreferrer" className="ui-btn-primary motion-focus motion-action px-5">
+            Abrir transparência financeira da FEC
+          </a>
         </div>
-      )}
+      </SurfaceCard>
     </PortalPageShell>
   );
 }
-
-
-
-

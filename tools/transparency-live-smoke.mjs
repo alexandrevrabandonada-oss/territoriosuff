@@ -11,21 +11,19 @@ const parserUtil = readWorkspaceFile("src/lib/transparencyLiveParser.ts");
 
 assertAll(content, [
   "listConversations",
-  "const [conversations, setConversations] = useState<Conversation[]>([])",
   "Transparência viva",
-  "Escutas e atividades publicadas em fluxo contínuo",
-  "Resumo público das escutas consolidadas",
-  "Camada editorial baseada nos relatórios mensais interpretativos do SEMEAR Territórios",
-  "Abrir relatório",
-  "Linha do tempo interpretativa",
-  "Relatórios que já viraram devolutiva",
-  "Últimos 30 dias",
-  "Feed recente",
-  "Sinais do território",
-  "liveTransparency.recentItems.length",
+  "Escutas, território e devolutiva pública",
+  "Onde as escutas e atividades têm acontecido",
+  "Transparência aqui significa mostrar o território, não só publicar números",
+  "Escutas e ações ao longo dos meses",
+  "Prioridades mais citadas",
+  "Sinais qualitativos",
+  "Prestação de contas financeira disponível no portal da FEC",
+  "Abrir transparência financeira da FEC",
+  "FEC_TRANSPARENCIA_URL",
+  "liveTransparency.hearings.length",
   "liveTransparency.activities.length",
-  "liveTransparency.hearingTopics.length",
-  "liveTransparency.territories.length",
+  "liveTransparency.territoryCounts.length",
   'to="/conversar"',
   "LIVE_TRANSPARENCIA_REPORTS",
   "monthlyTransparency.latest"
@@ -105,4 +103,4 @@ assertAll(parserUtil, [
   "Pendências de revisão"
 ], label);
 
-ok(label, "Transparency page combines financial accountability with live territorial listening signals.");
+ok(label, "Transparency page presents escutas, território e devolutiva pública com rodapé financeiro externo.");
