@@ -23,6 +23,7 @@ reports/state.md
 reports/lighthouse/
 db_push.log
 db_push_*.log
+qa_output.txt
 trans_debug.txt
 .env.local
 vapid.json
