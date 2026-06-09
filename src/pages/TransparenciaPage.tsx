@@ -91,6 +91,28 @@ function getTerritoryCoordinates(name: string): [number, number] | null {
   return TERRITORY_COORDINATES[normalized] || null;
 }
 
+function getCoverageTone(status: LiveTransparencyMonthlyReport["territorial_status"]) {
+  if (status === "adequada") {
+    return {
+      bar: "bg-emerald-500",
+      chip: "border-emerald-200 bg-emerald-50 text-emerald-800",
+      label: "Cobertura adequada"
+    };
+  }
+  if (status === "atencao") {
+    return {
+      bar: "bg-amber-500",
+      chip: "border-amber-200 bg-amber-50 text-amber-800",
+      label: "Cobertura em atenção"
+    };
+  }
+  return {
+    bar: "bg-rose-500",
+    chip: "border-rose-200 bg-rose-50 text-rose-800",
+    label: "Cobertura crítica"
+  };
+}
+
 function mergeTerritoryCount(
   map: Map<string, { label: string; count: number }>,
   territoryName: string
@@ -193,6 +215,59 @@ function MonthlyVolumeChart({
   );
 }
 
+function CoverageMeter({
+  report,
+  coverageDelta
+}: {
+  report: LiveTransparencyMonthlyReport;
+  coverageDelta: number | null;
+}) {
+  const tone = getCoverageTone(report.territorial_status);
+  const clampedValue = Math.max(0, Math.min(100, report.territorial_coverage_pct));
+  const deltaLabel =
+    coverageDelta === null
+      ? "Sem base comparativa anterior."
+      : coverageDelta === 0
+        ? "Cobertura estável em relação ao mês anterior."
+        : `${coverageDelta > 0 ? "+" : ""}${formatPercent(coverageDelta)} p.p. frente ao mês anterior.`;
+
+  return (
+    <SurfaceCard className="overflow-hidden border-0 bg-slate-950 p-6 text-white shadow-none md:p-7">
+      <PortalSectionHeader
+        eyebrow="Qualidade da leitura"
+        title="Quanto desse ciclo já virou leitura territorial utilizável"
+        subtitle="Cobertura territorial não mede participação total. Mede quanto do material publicado já permite localizar a escuta com utilidade pública."
+      />
+      <div className="mt-6 grid gap-5 xl:grid-cols-[minmax(0,1fr)_220px]">
+        <div>
+          <div className="flex flex-wrap items-center gap-3">
+            <span className={`rounded-full border px-3 py-1 text-[11px] font-black uppercase tracking-wide ${tone.chip}`}>
+              {tone.label}
+            </span>
+            <span className="text-sm font-semibold text-white/65">{deltaLabel}</span>
+          </div>
+          <div className="mt-5 h-5 overflow-hidden rounded-full bg-white/10">
+            <div className={`h-full rounded-full ${tone.bar}`} style={{ width: `${clampedValue}%` }} />
+          </div>
+          <div className="mt-3 flex items-center justify-between gap-3 text-xs font-semibold text-white/55">
+            <span>0%</span>
+            <span>território ainda ausente</span>
+            <span>100%</span>
+          </div>
+          <p className="mt-4 text-sm leading-relaxed text-white/72">{report.methodological_alert}</p>
+        </div>
+        <div className="rounded-[1.5rem] border border-white/10 bg-white/5 p-5 text-white">
+          <p className="text-xs font-black uppercase tracking-[0.18em] text-emerald-300">Cobertura atual</p>
+          <p className="mt-3 text-4xl font-black tracking-tight">{formatPercent(report.territorial_coverage_pct)}%</p>
+          <p className="mt-3 text-sm leading-relaxed text-white/75">
+            Percentual do fechamento mensal que já tem base territorial suficiente para leitura por bairro ou território.
+          </p>
+        </div>
+      </div>
+    </SurfaceCard>
+  );
+}
+
 function HorizontalCountList({
   title,
   subtitle,
@@ -258,6 +333,10 @@ function TerritoryMap({
         <p className="mt-2 text-sm font-medium leading-relaxed text-slate-600">
           Posicionamento aproximado por bairro ou território quando essa informação aparece nas publicações do portal.
         </p>
+        <div className="mt-4 flex flex-wrap gap-3 text-[11px] font-black uppercase tracking-wide text-slate-500">
+          <span className="inline-flex items-center gap-2"><span className="h-3 w-3 rounded-full bg-emerald-500" /> Mais registros, maior círculo</span>
+          <span className="inline-flex items-center gap-2"><span className="h-3 w-3 rounded-full border-2 border-slate-900 bg-emerald-500/60" /> Posição aproximada por território</span>
+        </div>
       </div>
       <div className="h-[420px]">
         <MapContainer center={[-22.5155, -44.104]} zoom={12} scrollWheelZoom={false} className="h-full w-full">
@@ -288,6 +367,210 @@ function TerritoryMap({
         </MapContainer>
       </div>
     </div>
+  );
+}
+
+function MonthlyPulsePanel({
+  latest,
+  hearingsDelta,
+  actionsDelta
+}: {
+  latest: LiveTransparencyMonthlyReport;
+  hearingsDelta: number | null;
+  actionsDelta: number | null;
+}) {
+  const dominantTheme = latest.dominant_themes[0] ?? "Sem eixo dominante";
+  const firstPriority = latest.grouped_priorities[0];
+  const firstSignal = latest.qualitative_signals[0];
+
+  return (
+    <section className="grid gap-4 xl:grid-cols-[minmax(0,1.2fr)_repeat(3,minmax(0,1fr))]">
+      <div className="rounded-[1.75rem] border-0 bg-slate-950 p-6 text-white shadow-none">
+        <p className="text-[11px] font-black uppercase tracking-[0.18em] text-emerald-300">Mês consolidado</p>
+        <p className="mt-3 text-4xl font-black tracking-tight">{latest.month_label}</p>
+        <p className="mt-3 max-w-md text-sm leading-relaxed text-white/72">Fechamento mais recente disponível para leitura pública e devolutiva.</p>
+      </div>
+      <div className="rounded-[1.5rem] border border-slate-200 bg-white p-5 shadow-sm">
+        <p className="text-[11px] font-black uppercase tracking-[0.18em] text-slate-500">Ritmo de escutas</p>
+        <p className="mt-3 text-3xl font-black tracking-tight text-slate-950">{latest.hearings_count}</p>
+        <p className="mt-2 text-sm leading-relaxed text-slate-600">
+          {hearingsDelta === null ? "Sem comparação com mês anterior." : `${hearingsDelta > 0 ? "+" : ""}${hearingsDelta} em relação ao fechamento anterior.`}
+        </p>
+      </div>
+      <div className="rounded-[1.5rem] border border-slate-200 bg-white p-5 shadow-sm">
+        <p className="text-[11px] font-black uppercase tracking-[0.18em] text-slate-500">Foco dominante</p>
+        <p className="mt-3 text-2xl font-black tracking-tight text-slate-950">{dominantTheme}</p>
+        <p className="mt-2 text-sm leading-relaxed text-slate-600">
+          {firstPriority ? `${firstPriority.label} apareceu ${firstPriority.count} vez(es) entre as prioridades agrupadas.` : "O fechamento ainda não consolidou prioridades quantitativas."}
+        </p>
+      </div>
+      <div className="rounded-[1.5rem] border border-emerald-900/40 bg-emerald-950 p-5 text-white shadow-sm">
+        <p className="text-[11px] font-black uppercase tracking-[0.18em] text-emerald-300">Sinal de interpretação</p>
+        <p className="mt-3 text-2xl font-black tracking-tight">{firstSignal?.label ?? "Sem sinal consolidado"}</p>
+        <p className="mt-2 text-sm leading-relaxed text-white/72">
+          {actionsDelta === null
+            ? `${latest.actions_count} ação(ões) registradas neste fechamento.`
+            : `${latest.actions_count} ação(ões) no mês, com variação de ${actionsDelta > 0 ? "+" : ""}${actionsDelta} frente ao ciclo anterior.`}
+        </p>
+      </div>
+    </section>
+  );
+}
+
+function ActionsTimeline({
+  actions
+}: {
+  actions: string[];
+}) {
+  return (
+    <SurfaceCard className="p-6 md:p-7">
+      <PortalSectionHeader
+        eyebrow="Linha de campo"
+        title="Ações que sustentam o fechamento"
+        subtitle="Uma linha do tempo simples para ligar escuta, presença territorial e devolutiva."
+      />
+      <div className="mt-5 grid gap-3">
+        {actions.length === 0 ? (
+          <EmptyState
+            title="Sem ações detalhadas neste fechamento"
+            description="Quando o mês consolidado trouxer agenda de campo detalhada, esta linha do tempo aparece aqui."
+          />
+        ) : (
+          actions.map((action, index) => (
+            <div key={`${index}-${action}`} className="grid gap-3 rounded-[1.25rem] border border-slate-100 bg-slate-50/80 p-4 md:grid-cols-[44px_minmax(0,1fr)] md:items-start">
+              <span className="inline-flex h-11 w-11 items-center justify-center rounded-full bg-slate-900 text-sm font-black text-white">
+                {index + 1}
+              </span>
+              <p className="text-sm font-medium leading-relaxed text-slate-700">{action}</p>
+            </div>
+          ))
+        )}
+      </div>
+    </SurfaceCard>
+  );
+}
+
+function ListeningJourneyStrip({
+  totalItems,
+  locatedItems,
+  narrativeItems,
+  nextSteps
+}: {
+  totalItems: number;
+  locatedItems: number;
+  narrativeItems: number;
+  nextSteps: number;
+}) {
+  const stages = [
+    {
+      label: "1. Registro público",
+      value: totalItems,
+      helper: "escutas e atividades já publicadas"
+    },
+    {
+      label: "2. Com território",
+      value: locatedItems,
+      helper: "itens que já permitem leitura territorial"
+    },
+    {
+      label: "3. Com narrativa",
+      value: narrativeItems,
+      helper: "publicações com devolutiva ou texto de contexto"
+    },
+    {
+      label: "4. Próximo passo",
+      value: nextSteps,
+      helper: "encaminhamentos públicos do fechamento atual"
+    }
+  ];
+
+  return (
+    <SurfaceCard className="border-slate-200 bg-gradient-to-br from-white via-slate-50 to-emerald-50/70 p-6 md:p-7">
+      <PortalSectionHeader
+        eyebrow="Percurso da transparência"
+        title="Como uma escuta vira devolutiva pública"
+        subtitle="A ideia desta página é mostrar a travessia completa: publicar, localizar, interpretar e devolver um próximo passo."
+      />
+      <div className="mt-5 grid gap-4 xl:grid-cols-4">
+        {stages.map((stage, index) => (
+          <div key={stage.label} className="relative rounded-[1.5rem] border border-white/80 bg-white/90 p-5 shadow-sm backdrop-blur">
+            <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-emerald-600 text-xs font-black text-white">
+              {index + 1}
+            </span>
+            <p className="mt-4 text-[11px] font-black uppercase tracking-[0.18em] text-slate-500">{stage.label}</p>
+            <p className="mt-2 text-3xl font-black tracking-tight text-slate-950">{stage.value}</p>
+            <p className="mt-2 text-sm leading-relaxed text-slate-600">{stage.helper}</p>
+          </div>
+        ))}
+      </div>
+    </SurfaceCard>
+  );
+}
+
+function TerritorySpotlight({
+  territories,
+  latest
+}: {
+  territories: TerritoryCount[];
+  latest: LiveTransparencyMonthlyReport | null;
+}) {
+  const featured = territories.slice(0, 3);
+  const latestSet = new Set(
+    latest ? [...latest.action_territories, ...latest.hearing_territories].map((item) => normalizeText(item)) : []
+  );
+
+  return (
+    <SurfaceCard className="border-0 bg-slate-950 p-6 text-white shadow-none md:p-7">
+      <PortalSectionHeader
+        eyebrow="Territórios em foco"
+        title="Onde a leitura pública pede mais atenção"
+        subtitle="Este bloco combina recorrência territorial e presença no fechamento mais recente para orientar a leitura de prioridade."
+      />
+      <div className="mt-5 grid gap-4 lg:grid-cols-3">
+        {featured.length === 0 ? (
+          <EmptyState
+            title="Sem territórios suficientes para destaque"
+            description="Assim que mais registros territoriais forem publicados, esta leitura de foco aparece aqui."
+          />
+        ) : (
+          featured.map((territory, index) => {
+            const inLatest = latestSet.has(normalizeText(territory.name));
+            return (
+              <div key={territory.name} className="rounded-[1.5rem] border border-white/10 bg-white/5 p-5 shadow-sm">
+                <div className="flex items-start justify-between gap-3">
+                  <div>
+                    <p className="text-[11px] font-black uppercase tracking-[0.18em] text-white/55">Prioridade {index + 1}</p>
+                    <h3 className="mt-2 text-2xl font-black tracking-tight text-white">{territory.name}</h3>
+                  </div>
+                  <span className="rounded-full bg-emerald-100 px-3 py-1 text-[11px] font-black uppercase tracking-wide text-emerald-800">
+                    {territory.count} registros
+                  </span>
+                </div>
+                <p className="mt-4 text-sm leading-relaxed text-white/72">
+                  {inLatest
+                    ? "Este território continua presente no fechamento mensal mais recente e merece leitura cruzada entre escutas, ações e encaminhamentos."
+                    : "Este território aparece com frequência histórica nas publicações e merece acompanhamento, mesmo quando não lidera o último fechamento."}
+                </p>
+                <div className="mt-4 flex flex-wrap gap-2">
+                  <span className={`rounded-full px-3 py-1 text-[11px] font-black uppercase tracking-wide ${inLatest ? "bg-slate-900 text-white" : "bg-slate-100 text-slate-700"}`}>
+                    {inLatest ? "Presente no último fechamento" : "Fora do último fechamento"}
+                  </span>
+                  {territory.coordinates ? (
+                    <span className="rounded-full bg-cyan-100 px-3 py-1 text-[11px] font-black uppercase tracking-wide text-cyan-800">
+                      Mapeável
+                    </span>
+                  ) : (
+                    <span className="rounded-full bg-amber-100 px-3 py-1 text-[11px] font-black uppercase tracking-wide text-amber-800">
+                      Sem coordenada aproximada
+                    </span>
+                  )}
+                </div>
+              </div>
+            );
+          })
+        )}
+      </div>
+    </SurfaceCard>
   );
 }
 
@@ -402,18 +685,18 @@ export function TransparenciaPage() {
     return [
       {
         title: "1. Onde escutamos",
-        description: `${liveTransparency.territoryCounts.length} territórios aparecem nas publicações. ${formatPercent(locationPct)}% dos registros já saem com localização territorial explícita.`
+        description: `${liveTransparency.territoryCounts.length} territórios já aparecem nas publicações. ${formatPercent(locationPct)}% dos registros saem com localização explícita.`
       },
       {
         title: "2. O que apareceu",
         description: latest
-          ? `${latest.dominant_themes.slice(0, 3).join(", ")} aparecem como eixos recorrentes na leitura mais recente.`
+          ? `${latest.dominant_themes.slice(0, 3).join(", ")} puxam a leitura do fechamento mais recente.`
           : "Os temas recorrentes passam a aparecer aqui à medida que os fechamentos mensais forem publicados."
       },
       {
         title: "3. O que virou encaminhamento",
         description: latest
-          ? `${latest.recommended_next_steps.length} encaminhamento(s) público(s) já foram registrados para o mês consolidado mais recente. ${formatPercent(narrativePct)}% dos registros publicados trazem texto editorial ou devolutiva.`
+          ? `${latest.recommended_next_steps.length} encaminhamento(s) já foram registrados. ${formatPercent(narrativePct)}% das publicações trazem devolutiva ou contexto editorial.`
           : "A devolutiva pública aparece quando a equipe consolida a interpretação mensal e publica os próximos passos."
       }
     ];
@@ -454,12 +737,12 @@ export function TransparenciaPage() {
             <div className="portal-kpi-card portal-kpi-card-lab">
               <p className="text-xs font-semibold uppercase tracking-[0.2em] text-text-secondary">Escutas publicadas</p>
               <p className="mt-2 text-3xl font-black text-brand-primary">{liveTransparency.hearings.length}</p>
-              <p className="mt-1 text-sm text-text-secondary">registros públicos de escuta já visíveis no portal</p>
+              <p className="mt-1 text-sm text-text-secondary">já visíveis no portal</p>
             </div>
             <div className="portal-kpi-card">
               <p className="text-xs font-semibold uppercase tracking-[0.2em] text-text-secondary">Atividades de campo</p>
               <p className="mt-2 text-3xl font-black text-success">{liveTransparency.activities.length}</p>
-              <p className="mt-1 text-sm text-text-secondary">ações com memória pública ou devolutiva registrada</p>
+              <p className="mt-1 text-sm text-text-secondary">com memória pública registrada</p>
             </div>
           </>
         }
@@ -474,7 +757,7 @@ export function TransparenciaPage() {
             </h2>
             <p className="mt-4 max-w-3xl text-sm leading-relaxed text-white/78 md:text-base">
               Esta página organiza o ciclo completo das escutas: presença territorial, interpretação do que apareceu, consolidação mensal e próximos passos.
-              O objetivo não é apenas provar que houve atividade, mas permitir que qualquer pessoa entenda o que foi escutado, onde isso aconteceu e como a equipe está respondendo.
+              O objetivo é permitir leitura pública do que foi escutado, onde isso aconteceu e como a equipe está respondendo.
             </p>
           </div>
           <div className="grid gap-3">
@@ -492,28 +775,36 @@ export function TransparenciaPage() {
         <MetricCard
           label="Últimos 30 dias"
           value={liveTransparency.recentItems.length}
-          helper="Registros novos entre escutas e atividades no ciclo recente."
+          helper="Entradas novas no ciclo recente."
           tone="blue"
         />
         <MetricCard
           label="Territórios citados"
           value={liveTransparency.territoryCounts.length}
-          helper="Bairros ou territórios que já aparecem nas publicações do portal."
+          helper="Bairros ou territórios já visíveis no portal."
           tone="green"
         />
         <MetricCard
           label="Localização explícita"
           value={`${formatPercent(conversations.length > 0 ? (liveTransparency.withLocation.length / conversations.length) * 100 : 0)}%`}
-          helper="Percentual de registros públicos que já trazem território informado."
+          helper="Publicações que já trazem território informado."
           tone="amber"
         />
         <MetricCard
           label="Mês consolidado"
           value={monthlyTransparency.latest?.month_label || "Sem fechamento"}
-          helper="Último mês com leitura editorial consolidada e publicada."
+          helper="Último fechamento publicado."
           tone="default"
         />
       </section>
+
+      {monthlyTransparency.latest ? (
+        <MonthlyPulsePanel
+          latest={monthlyTransparency.latest}
+          hearingsDelta={monthlyTransparency.hearingsDelta}
+          actionsDelta={monthlyTransparency.actionsDelta}
+        />
+      ) : null}
 
       <section className="grid gap-6 xl:grid-cols-[minmax(0,1.05fr)_minmax(340px,0.95fr)]">
         <TerritoryMap territories={liveTransparency.territoryCounts.slice(0, 12)} />
@@ -523,7 +814,7 @@ export function TransparenciaPage() {
             <PortalSectionHeader
               eyebrow="Leitura territorial"
               title="Onde olhar primeiro"
-              subtitle="Uma visão rápida dos territórios que mais aparecem nas publicações e no mês consolidado mais recente."
+              subtitle="Territórios mais recorrentes nas publicações e no fechamento mais recente."
             />
             <div className="mt-5 space-y-3">
               {liveTransparency.territoryCounts.slice(0, 8).map((territory, index) => (
@@ -535,7 +826,7 @@ export function TransparenciaPage() {
                       </span>
                       <div>
                         <p className="text-sm font-black text-slate-950">{territory.name}</p>
-                        <p className="mt-1 text-xs font-medium text-slate-500">Registros com localização publicada</p>
+                        <p className="mt-1 text-xs font-medium text-slate-500">Leitura territorial recorrente</p>
                       </div>
                     </div>
                     <span className="text-xl font-black text-emerald-600">{territory.count}</span>
@@ -600,6 +891,20 @@ export function TransparenciaPage() {
         </div>
       </section>
 
+      {monthlyTransparency.latest ? (
+        <CoverageMeter
+          report={monthlyTransparency.latest}
+          coverageDelta={monthlyTransparency.coverageDelta}
+        />
+      ) : null}
+
+      <ListeningJourneyStrip
+        totalItems={conversations.length}
+        locatedItems={liveTransparency.withLocation.length}
+        narrativeItems={liveTransparency.withNarrative.length}
+        nextSteps={monthlyTransparency.latest?.recommended_next_steps.length ?? 0}
+      />
+
       {monthlyTransparency.reports.length > 0 ? (
         <MonthlyVolumeChart reports={monthlyTransparency.reports.slice(0, 6)} />
       ) : null}
@@ -635,11 +940,20 @@ export function TransparenciaPage() {
         </section>
       ) : null}
 
+      {monthlyTransparency.latest ? (
+        <ActionsTimeline actions={monthlyTransparency.latest.actions_performed} />
+      ) : null}
+
+      <TerritorySpotlight
+        territories={liveTransparency.territoryCounts}
+        latest={monthlyTransparency.latest}
+      />
+
       <SurfaceCard className="p-6 md:p-8">
         <PortalSectionHeader
-          eyebrow="Memória pública"
+          eyebrow="Fluxo recente"
           title="Escutas e atividades mais recentes"
-          subtitle="O fluxo contínuo mostra presença territorial e devolutiva pública antes mesmo da consolidação mensal."
+          subtitle="Publicações em fluxo contínuo antes da consolidação mensal."
         />
         <div className="mt-5 grid gap-4 xl:grid-cols-2">
           {liveTransparency.latestItems.length === 0 ? (
