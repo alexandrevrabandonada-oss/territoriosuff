@@ -7,11 +7,11 @@ import { PortalLayout } from "./layout/PortalLayout";
 
 // Eager-loaded (critical path)
 import { HomePage } from "./pages/HomePage";
-import { DadosPage } from "./pages/DadosPage";
 
 const AdminRoutes = lazy(() => import("./admin/AdminRoutes"));
 
 // Lazy-loaded (non-critical public)
+const DadosPage = lazy(() => import("./pages/DadosPage").then((m) => ({ default: m.DadosPage })));
 const SobrePage = lazy(() => import("./pages/SobrePage").then((m) => ({ default: m.SobrePage })));
 const AgendaPage = lazy(() => import("./pages/AgendaPage").then((m) => ({ default: m.AgendaPage })));
 const InscricoesPage = lazy(() => import("./pages/InscricoesPage").then((m) => ({ default: m.InscricoesPage })));

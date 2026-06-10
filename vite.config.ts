@@ -41,19 +41,9 @@ export default defineConfig({
   build: {
     sourcemap: process.env.SENTRY_AUTH_TOKEN ? "hidden" : false,
     rollupOptions: {
-      output: {
+        output: {
           manualChunks(id) {
             const normalizedId = id.replace(/\\/g, "/");
-            
-            if (
-              normalizedId.includes("/src/admin/") ||
-              normalizedId.includes("/pages/admin/") ||
-              normalizedId.includes("/lib/admin/") ||
-              normalizedId.includes("/layout/AdminLayout") ||
-              normalizedId.includes("/components/AdminGuard")
-            ) {
-              return "admin-bundle";
-            }
 
           if (!normalizedId.includes("node_modules")) return undefined;
 
@@ -71,6 +61,14 @@ export default defineConfig({
 
           if (normalizedId.includes("/leaflet/") || normalizedId.includes("/react-leaflet/")) {
             return "vendor-maps";
+          }
+
+          if (normalizedId.includes("/pdfjs-dist/")) {
+            return "vendor-pdf";
+          }
+
+          if (normalizedId.includes("/uplot/")) {
+            return "vendor-uplot";
           }
 
           if (normalizedId.includes("/recharts/") || normalizedId.includes("/victory-vendor/")) {
