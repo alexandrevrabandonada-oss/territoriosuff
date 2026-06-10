@@ -1,8 +1,31 @@
-import { useEffect, useState } from "react";
+import { Suspense, lazy, useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { SurfaceCard, IconShell } from "../../components/BrandSystem";
-import { DATA_DICTIONARY } from "../../data/air/data-dictionary.ts";
-import { DataAvailabilityMatrix } from "../../components/air/DataAvailabilityMatrix";
+
+const DataAvailabilityMatrix = lazy(() =>
+  import("../../components/air/DataAvailabilityMatrix").then((module) => ({ default: module.DataAvailabilityMatrix }))
+);
+
+type DataDictionaryEntry = {
+  field_name: string;
+  label: string;
+  description: string;
+  unit: string;
+  source: string;
+  caveat: string;
+};
+
+function MethodologySectionFallback() {
+  return (
+    <SurfaceCard className="rounded-3xl border border-slate-100 bg-white p-6 shadow-sm">
+      <div className="animate-pulse space-y-3">
+        <div className="h-4 w-44 rounded-full bg-slate-200/80" />
+        <div className="h-20 rounded-2xl bg-slate-100/90" />
+        <div className="h-20 rounded-2xl bg-slate-50" />
+      </div>
+    </SurfaceCard>
+  );
+}
 
 function formatDate(dateStr: string | undefined): string {
   if (!dateStr) return "N/A";
@@ -24,6 +47,7 @@ export function IneaMethodologyPage() {
   const location = useLocation();
   const [activeSection, setActiveSection] = useState("origem");
   const [manifest, setManifest] = useState<any>(null);
+  const [dataDictionary, setDataDictionary] = useState<DataDictionaryEntry[]>([]);
 
   useEffect(() => {
     fetch("/data/air/manifest.json")
@@ -33,6 +57,22 @@ export function IneaMethodologyPage() {
       })
       .then((data) => setManifest(data))
       .catch((err) => console.error("Error loading manifest:", err));
+  }, []);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    import("../../data/air/data-dictionary.ts")
+      .then((module) => {
+        if (!cancelled) {
+          setDataDictionary(module.DATA_DICTIONARY);
+        }
+      })
+      .catch((err) => console.error("Error loading data dictionary:", err));
+
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   // Handle smooth scroll when navigating to hash anchors
@@ -746,7 +786,7 @@ export function IneaMethodologyPage() {
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-slate-100 text-xs font-medium text-slate-600">
-                    {DATA_DICTIONARY.map((entry) => (
+                    {dataDictionary.map((entry) => (
                       <tr key={entry.field_name} className="hover:bg-slate-50/50 transition-colors">
                         <td className="px-5 py-4 font-mono text-brand-primary font-bold">
                           {entry.field_name}
@@ -773,6 +813,13 @@ export function IneaMethodologyPage() {
                   </tbody>
                 </table>
               </div>
+              {dataDictionary.length === 0 && (
+                <div className="border-t border-slate-100 p-5">
+                  <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4 text-center text-xs font-bold text-slate-500">
+                    Carregando dicionário de dados...
+                  </div>
+                </div>
+              )}
             </SurfaceCard>
           </section>
 
@@ -787,7 +834,9 @@ export function IneaMethodologyPage() {
               <h2 className="text-xl font-black text-slate-800">Disponibilidade dos dados por estação</h2>
             </div>
             
-            <DataAvailabilityMatrix />
+            <Suspense fallback={<MethodologySectionFallback />}>
+              <DataAvailabilityMatrix />
+            </Suspense>
           </section>
 
           {/* Section 10: Parâmetros em Expansão (Homologação) */}

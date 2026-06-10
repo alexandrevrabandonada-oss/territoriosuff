@@ -21,6 +21,7 @@ Rodada automatizada de estabilizacao e performance de baixo risco, sem alterar d
 - `pdfjs-dist` isolado em `vendor-pdf`.
 - `uplot` isolado em `vendor-uplot`.
 - `RadarTimeMode` passou a lazy-load de paineis internos pesados (`YearExplorer`, `ParticulateTimeline2020_2026`, `IneaHistoricalTimeline`, `AttentionEpisodesPanel`, `ThresholdComparisonPanel`, `AqiChart`).
+- `IneaMethodologyPage` passou a deferir `DATA_DICTIONARY` e `DataAvailabilityMatrix`.
 
 ## Resultado observado
 
@@ -49,15 +50,22 @@ Rodada automatizada de estabilizacao e performance de baixo risco, sem alterar d
   - `IneaHistoricalTimeline`: `4.02 kB`
   - `AqiChart`: `2.61 kB`
 
+### Melhoria na metodologia
+
+- `IneaMethodologyPage` caiu de aproximadamente `221.95 kB` para `51.61 kB`.
+- O peso foi redistribuido para cargas tardias coerentes com a leitura:
+  - `data-dictionary`: `13.26 kB`
+  - `DataAvailabilityMatrix`: `158.58 kB`
+
 ## Pesos que ainda exigem atencao
 
 Os maiores remanescentes desta foto de build sao:
 
 - `vendor-pdf`: `486.69 kB`
-- `IneaMethodologyPage`: `221.95 kB`
 - `AttentionEpisodesPanel`: `175.22 kB`
 - `ParticulateTimeline2020_2026`: `163.31 kB`
 - `summary-2026`: `187.47 kB`
+- `DataAvailabilityMatrix`: `158.58 kB`
 - `vendor-supabase`: `170.74 kB`
 - `vendor-maps`: `161.21 kB`
 - `index.css`: `385.87 kB`
@@ -81,9 +89,9 @@ Ha sinais de acoplamento visual excessivo no CSS compilado. Nao e urgente para e
 ### Prioridade 1
 
 1. Revisar `RadarTimeMode` por sub-blocos e dependencias de grafico.
-2. Auditar `IneaMethodologyPage` para reduzir carga inicial da pagina metodologica.
-3. Medir de onde vem `summary-2026` e confirmar se parte desse peso pode virar carga tardia.
-4. Avaliar se `AttentionEpisodesPanel` e `ParticulateTimeline2020_2026` merecem subdivisao adicional ou carga por recorte.
+2. Medir de onde vem `summary-2026` e confirmar se parte desse peso pode virar carga tardia.
+3. Avaliar se `AttentionEpisodesPanel` e `ParticulateTimeline2020_2026` merecem subdivisao adicional ou carga por recorte.
+4. Verificar se `DataAvailabilityMatrix` precisa realmente carregar a matriz completa de uma vez ou se pode paginar/segmentar.
 
 ### Prioridade 2
 
@@ -109,6 +117,7 @@ Baixo para regressao funcional nas entregas desta rodada. As mudancas publicadas
 
 - `1c6fb8f` - stabilize smoke checks and cleanup warnings
 - `ef89bde` - improve route-level code splitting and bundle chunking
+- `2bef2fd` - split RadarTimeMode panels into lazy chunks
 
 ## Proximo passo recomendado
 
