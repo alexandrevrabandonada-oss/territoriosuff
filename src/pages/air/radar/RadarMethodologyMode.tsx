@@ -4,6 +4,7 @@ import { AqiExplainer } from "../../../components/air/AqiExplainer";
 import { HistoricalRawEvidenceBox } from "../../../components/air/HistoricalRawEvidenceBox";
 import { gases2024StationSummary } from "../../../data/air/gases-2024-station-summary";
 import { RadarEvidenceBadge } from "./RadarEvidenceBadge";
+import { RadarHistoricalResearchPanel } from "./RadarHistoricalResearchPanel";
 import type { RadarComparisonTab, RadarMode } from "./RadarTypes";
 import { RadarModeFooter } from "./RadarModeFooter";
 import { RadarVisualNotice } from "./RadarVisualNotice";
@@ -179,6 +180,8 @@ export function RadarMethodologyMode({ onNavigate, onOpenLai, onTop }: RadarMeth
             ))}
           </div>
         </section>
+
+        <RadarHistoricalResearchPanel />
 
         <div className="space-y-4">
           <h3 className="pl-1 text-xs font-black uppercase tracking-widest text-slate-400">
