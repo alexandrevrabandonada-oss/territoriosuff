@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link, useParams } from "react-router-dom";
+import "../../styles/acervo.css";
 import { getCollectionBySlug, type CollectionWithItems } from "../../lib/api";
 import { ACERVO_KIND_LABELS } from "../../lib/acervo";
 import { getOptimizedCover } from "../../lib/imageOptimization";

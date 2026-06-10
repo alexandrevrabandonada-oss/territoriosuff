@@ -1,7 +1,7 @@
 import { useEffect, useState, useCallback } from "react";
 import { useNavigate, useParams, Link, useLocation } from "react-router-dom";
-import { supabase } from "../../lib/supabase/client";
 import { adminUploadMedia, formatAssetSize, getMediaAssetById, isImageAsset, validateAdminUploadFile, type MediaAssetRecord } from "../../lib/admin/media";
+import { getSupabaseClientOrNull } from "../../lib/supabase/runtime";
 
 const TYPES = [
   { value: "artigo_cientifico", label: "Artigo Científico" },
@@ -215,6 +215,7 @@ export function AdminAcervoEditPage() {
   const [autoCaptureTriggered, setAutoCaptureTriggered] = useState(false);
 
   const loadData = useCallback(async () => {
+    const supabase = await getSupabaseClientOrNull();
     if (!supabase) return;
     setLoading(true);
 
@@ -296,6 +297,7 @@ export function AdminAcervoEditPage() {
 
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
+    const supabase = await getSupabaseClientOrNull();
     if (!supabase) return;
     setSaving(true);
 

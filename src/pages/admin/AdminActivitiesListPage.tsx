@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-
-import { supabase } from "../../lib/supabase/client";
+import { getSupabaseClientOrNull } from "../../lib/supabase/runtime";
 
 type ActivityRow = {
   id: string;
@@ -30,6 +29,7 @@ export function AdminActivitiesListPage() {
   const navigate = useNavigate();
 
   const loadItems = useCallback(async () => {
+    const supabase = await getSupabaseClientOrNull();
     if (!supabase) return;
     setLoading(true);
 
@@ -56,6 +56,7 @@ export function AdminActivitiesListPage() {
   }, [loadItems]);
 
   const handleDelete = async (id: string) => {
+    const supabase = await getSupabaseClientOrNull();
     if (!supabase || !window.confirm("Excluir esta atividade?")) return;
     const { error } = await supabase.from("conversations").delete().eq("id", id);
     if (error) {

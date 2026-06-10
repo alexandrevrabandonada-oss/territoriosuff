@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { supabase } from "../../lib/supabase/client";
+import { getSupabaseClientOrNull } from "../../lib/supabase/runtime";
 
 type AuthMode = "login" | "signup" | "forgot" | "otp";
 
@@ -24,6 +24,7 @@ export function AdminLoginPage() {
     setError(null);
     setMessage(null);
 
+    const supabase = await getSupabaseClientOrNull();
     if (!supabase) {
       setError("Supabase não configurado.");
       setLoading(false);

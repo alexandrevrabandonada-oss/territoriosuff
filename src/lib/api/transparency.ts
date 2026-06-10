@@ -1,10 +1,10 @@
-import { assertSupabase, type Expense, type TransparencyLink, type TransparencySummary, toAppError } from "./core";
+import { getSupabase, type Expense, type TransparencyLink, type TransparencySummary, toAppError } from "./core";
 
 export type { Expense, TransparencyLink, TransparencySummary } from "./core";
 
 export async function listTransparencyLinks(): Promise<TransparencyLink[]> {
   try {
-    const supabase = assertSupabase();
+    const supabase = await getSupabase();
     const { data, error } = await supabase
       .from("transparency_links")
       .select("*")
@@ -18,7 +18,7 @@ export async function listTransparencyLinks(): Promise<TransparencyLink[]> {
 
 export async function listExpenses(limit = 100): Promise<Expense[]> {
   try {
-    const supabase = assertSupabase();
+    const supabase = await getSupabase();
     const { data, error } = await supabase
       .from("expenses")
       .select("*")
@@ -33,7 +33,7 @@ export async function listExpenses(limit = 100): Promise<Expense[]> {
 
 export async function getTransparencySummary(): Promise<TransparencySummary> {
   try {
-    const supabase = assertSupabase();
+    const supabase = await getSupabase();
     const { data, error } = await supabase
       .from("expenses")
       .select("category, amount_cents");

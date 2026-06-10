@@ -1,9 +1,9 @@
 import { listReports } from "./content";
-import { assertSupabase, AcervoItem, BlogPost, Event, isPublishTimeReached, ReportDocument, SearchResultItem, toAppError } from "./core";
+import { AcervoItem, BlogPost, Event, getSupabase, isPublishTimeReached, ReportDocument, SearchResultItem, toAppError } from "./core";
 
 export async function searchAcervo(q: string, limit = 10): Promise<AcervoItem[]> {
   try {
-    const supabase = assertSupabase();
+    const supabase = await getSupabase();
     const { data, error } = await supabase
       .from("acervo_items")
       .select("*")
@@ -23,7 +23,7 @@ export async function searchAcervo(q: string, limit = 10): Promise<AcervoItem[]>
  */
 export async function searchBlog(q: string, limit = 10): Promise<BlogPost[]> {
   try {
-    const supabase = assertSupabase();
+    const supabase = await getSupabase();
     const { data, error } = await supabase
       .from("blog_posts")
       .select("*")
@@ -50,7 +50,7 @@ export async function searchReports(q: string, limit = 10): Promise<ReportDocume
  */
 export async function searchTransparency(q: string, limit = 10): Promise<any[]> {
   try {
-    const supabase = assertSupabase();
+    const supabase = await getSupabase();
     const { data, error } = await supabase
       .from("expenses")
       .select("*")
@@ -70,7 +70,7 @@ export async function searchTransparency(q: string, limit = 10): Promise<any[]> 
  */
 export async function searchEvents(q: string, limit = 10): Promise<Event[]> {
   try {
-    const supabase = assertSupabase();
+    const supabase = await getSupabase();
     const { data, error } = await supabase
       .from("events")
       .select("*")
@@ -91,7 +91,7 @@ export async function searchEvents(q: string, limit = 10): Promise<Event[]> {
 
 export async function searchAll(q: string, limit = 30): Promise<SearchResultItem[]> {
   try {
-    const supabase = assertSupabase();
+    const supabase = await getSupabase();
     const { data, error } = await supabase.rpc("search_all", {
       p_q: q,
       p_limit: limit

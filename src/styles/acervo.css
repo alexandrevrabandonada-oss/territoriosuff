@@ -1,0 +1,134 @@
+@tailwind components;
+
+@layer components {
+  .acervo-hub {
+    @apply relative;
+  }
+
+  .acervo-hub::before {
+    content: "";
+    @apply pointer-events-none absolute -inset-x-8 -top-14 h-96 rounded-[3rem] opacity-75;
+    background:
+      radial-gradient(circle at 14% 20%, rgba(163, 216, 50, 0.2), transparent 17rem),
+      radial-gradient(circle at 84% 10%, rgba(0, 93, 170, 0.2), transparent 22rem),
+      linear-gradient(180deg, rgba(255,255,255,0.28), transparent);
+    z-index: -1;
+  }
+
+  .acervo-hub-hero {
+    @apply relative border-0 bg-transparent shadow-none;
+  }
+
+  .acervo-hub-hero::before {
+    content: "";
+    @apply pointer-events-none absolute inset-0 rounded-[2.35rem];
+    background:
+      radial-gradient(circle at 18% 18%, rgba(163, 216, 50, 0.22), transparent 18rem),
+      radial-gradient(circle at 90% 18%, rgba(0, 183, 177, 0.32), transparent 18rem),
+      linear-gradient(135deg, #071d34 0%, #0b345a 46%, #005daa 100%);
+  }
+
+  .acervo-hub-hero::after {
+    content: "";
+    @apply pointer-events-none absolute inset-0 rounded-[2.35rem] opacity-45;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.07) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.07) 1px, transparent 1px);
+    background-size: 36px 36px;
+    mask-image: linear-gradient(120deg, rgba(0,0,0,0.76), transparent 76%);
+  }
+
+  .acervo-hub-hero-grid {
+    @apply relative z-10 grid gap-4 p-5 md:p-7 lg:grid-cols-[minmax(0,1fr)_minmax(320px,0.52fr)] lg:items-stretch;
+  }
+
+  .acervo-hub-copy {
+    @apply flex min-h-[22rem] flex-col justify-between rounded-[2rem] border border-white/10 bg-white/[0.05] p-5 text-white backdrop-blur md:p-7;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.12);
+  }
+
+  .acervo-hub-copy .axis-eyebrow-acervo,
+  .acervo-hub-copy .axis-eyebrow {
+    @apply border-white/20 bg-white/10 text-white;
+  }
+
+  .acervo-hub-copy h1 {
+    @apply max-w-4xl text-4xl font-black leading-[0.95] tracking-[-0.055em] text-white md:text-6xl;
+  }
+
+  .acervo-hub-copy p {
+    @apply max-w-3xl text-base leading-relaxed text-white/[0.78] md:text-lg;
+  }
+
+  .acervo-hub-metrics {
+    @apply grid gap-3 md:grid-cols-3;
+  }
+
+  .acervo-hub-metrics div {
+    @apply rounded-2xl border border-white/10 bg-white/[0.08] p-4;
+  }
+
+  .acervo-hub-metrics span {
+    @apply block text-2xl font-black leading-none text-white;
+  }
+
+  .acervo-hub-metrics small {
+    @apply mt-2 block text-[10px] font-black uppercase tracking-[0.18em] text-cyan-100/75;
+  }
+
+  .acervo-timeline-brief {
+    @apply flex flex-col justify-between gap-5 rounded-[2rem] border border-white/15 bg-white/95 p-5 text-text-primary shadow-[0_28px_70px_rgba(0,0,0,0.22)] transition hover:-translate-y-1 hover:bg-white md:p-6;
+  }
+
+  .acervo-timeline-brief h2 {
+    @apply mt-3 text-2xl font-black leading-tight tracking-[-0.035em] text-text-primary md:text-3xl;
+  }
+
+  .acervo-timeline-brief p {
+    @apply mt-2 text-sm leading-relaxed text-text-secondary md:text-base;
+  }
+
+  .acervo-timeline-brief > span {
+    @apply inline-flex w-fit items-center gap-2 rounded-full border border-brand-primary/15 bg-brand-primary-soft px-4 py-2 text-sm font-black text-brand-primary-dark;
+  }
+
+  .acervo-area-grid {
+    @apply grid gap-4 md:grid-cols-2 xl:grid-cols-4;
+  }
+
+  .acervo-area-card {
+    @apply relative flex min-h-[17rem] h-full flex-col justify-between overflow-hidden rounded-[1.75rem] border border-brand-primary/10 bg-white/[0.88] p-5 shadow-[0_18px_55px_rgba(17,38,59,0.08)] backdrop-blur transition duration-200 group-hover:-translate-y-1 group-hover:border-brand-primary/20 group-hover:shadow-[0_28px_70px_rgba(17,38,59,0.13)];
+  }
+
+  .acervo-area-card::before {
+    content: "";
+    @apply pointer-events-none absolute inset-x-0 top-0 h-1;
+    background: linear-gradient(90deg, rgba(0,93,170,0.2), rgba(0,183,177,0.45), rgba(163,216,50,0.45));
+  }
+
+  .acervo-area-card::after {
+    content: "";
+    @apply pointer-events-none absolute -right-14 -top-14 h-32 w-32 rounded-full bg-brand-primary/10 blur-2xl transition group-hover:bg-accent-seed/20;
+  }
+
+  .acervo-area-card span {
+    @apply block text-[10px] font-black uppercase tracking-[0.18em] text-brand-primary-dark;
+  }
+
+  .acervo-area-card h2 {
+    @apply mt-2 text-xl font-black leading-tight tracking-[-0.035em] text-text-primary md:text-2xl;
+  }
+
+  .acervo-area-card p {
+    @apply mt-3 text-sm leading-relaxed text-text-secondary;
+  }
+
+  .acervo-area-card strong {
+    @apply mt-6 inline-flex items-center gap-2 text-sm font-black text-brand-primary transition group-hover:translate-x-1;
+  }
+
+  .acervo-featured-panel {
+    @apply overflow-hidden border-brand-primary/10 bg-white/[0.9] shadow-[0_24px_70px_rgba(17,38,59,0.09)] backdrop-blur;
+  }
+
+}

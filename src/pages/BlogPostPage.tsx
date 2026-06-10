@@ -5,7 +5,8 @@ import { IconShell, SurfaceCard } from "../components/BrandSystem";
 import { BrandIllustratedEmptyState, BrandRadialDivider, BrandTextureSkeleton, BrandWatermarkPanel } from "../components/BrandMicro";
 import { SafeMarkdown } from "../components/SafeMarkdown";
 import { TextToSpeechButton } from "../components/TextToSpeechButton";
-import { getBlogPostBySlug, type BlogPost } from "../lib/api";
+import { getBlogPostBySlug } from "../lib/api/content";
+import type { BlogPost } from "../lib/api/core";
 import { trackShare } from "../lib/observability";
 import { usePageMetadata } from "../hooks/usePageMetadata";
 

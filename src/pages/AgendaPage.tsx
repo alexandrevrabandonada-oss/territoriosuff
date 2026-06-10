@@ -3,7 +3,8 @@ import { Link } from "react-router-dom";
 
 import { IconShell, SurfaceCard } from "../components/BrandSystem";
 import { PortalEmptyState, PortalHero, PortalPageShell, PortalSectionHeader } from "../components/portal";
-import { listUpcomingEvents, type Event } from "../lib/api";
+import { listUpcomingEvents } from "../lib/api/content";
+import type { Event } from "../lib/api/core";
 import { trackShare } from "../lib/observability";
 
 const ENV_HINT = " Verifique .env.local (VITE_SUPABASE_URL e VITE_SUPABASE_ANON_KEY).";

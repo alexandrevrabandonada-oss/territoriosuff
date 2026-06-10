@@ -3,8 +3,10 @@ import { Link } from "react-router-dom";
 import { MapContainer, TileLayer, Marker, Polygon } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
+import "../styles/mapa.css";
 
-import { getStationOverview, getStationHealth, type StationOverview, type StationHealth } from "../lib/api";
+import { getStationOverview, getStationHealth } from "../lib/api/monitoring";
+import type { StationOverview, StationHealth } from "../lib/api/core";
 
 import { OfflineBanner } from "../components/OfflineBanner";
 import { Chip, IconShell, SurfaceCard } from "../components/BrandSystem";

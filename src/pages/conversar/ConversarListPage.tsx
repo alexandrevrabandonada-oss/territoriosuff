@@ -4,7 +4,15 @@ import { IconShell, SurfaceCard } from "../../components/BrandSystem";
 import { PortalEmptyState, PortalHero, PortalPageShell, PortalSectionHeader } from "../../components/portal";
 import { InstagramEmbed } from "../../components/InstagramEmbed";
 import { Conversation, listConversations, createEnvironmentalReport } from "../../lib/api";
-import { supabase } from "../../lib/supabase/client";
+
+let supabaseClientPromise: Promise<typeof import("../../lib/supabase/client")> | null = null;
+
+async function loadSupabaseClient() {
+    if (!supabaseClientPromise) {
+        supabaseClientPromise = import("../../lib/supabase/client");
+    }
+    return supabaseClientPromise;
+}
 
 export function ConversarListPage() {
     const [conversations, setConversations] = useState<Conversation[]>([]);
@@ -314,6 +322,7 @@ function EnvironmentalReportSection() {
             try {
                 let imageUrl = null;
                 if (report.imageBase64 && report.imageType) {
+                    const { supabase } = await loadSupabaseClient();
                     if (!supabase) {
                         throw new Error("Conexão com o banco de dados não configurada.");
                     }
@@ -550,6 +559,7 @@ function EnvironmentalReportSection() {
         try {
             let imageUrl = null;
             if (imageFile) {
+                const { supabase } = await loadSupabaseClient();
                 if (!supabase) {
                     throw new Error("Conexão com o banco de dados não configurada.");
                 }

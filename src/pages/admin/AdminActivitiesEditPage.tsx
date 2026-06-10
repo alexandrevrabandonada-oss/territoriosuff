@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 
 import { InstagramEmbed } from "../../components/InstagramEmbed";
-import { supabase } from "../../lib/supabase/client";
+import { getSupabaseClientOrNull } from "../../lib/supabase/runtime";
 
 function slugify(value: string): string {
   return value
@@ -30,6 +30,7 @@ export function AdminActivitiesEditPage() {
   const [status, setStatus] = useState<"draft" | "published">("draft");
 
   const loadItem = useCallback(async () => {
+    const supabase = await getSupabaseClientOrNull();
     if (!supabase || isNew) return;
     setLoading(true);
     const { data, error } = await supabase.from("conversations").select("*").eq("id", id).single();
@@ -59,6 +60,7 @@ export function AdminActivitiesEditPage() {
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
+    const supabase = await getSupabaseClientOrNull();
     if (!supabase) return;
     if (!title.trim() || !slug.trim()) {
       alert("Título e slug são obrigatórios.");

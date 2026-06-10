@@ -1,6 +1,6 @@
 import { useEffect, useState, useCallback } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { supabase } from "../../lib/supabase/client";
+import { getSupabaseClientOrNull } from "../../lib/supabase/runtime";
 
 interface EventItem {
   id: string;
@@ -34,6 +34,7 @@ export function AdminAgendaListPage() {
   const navigate = useNavigate();
 
   const loadEvents = useCallback(async () => {
+    const supabase = await getSupabaseClientOrNull();
     if (!supabase) return;
     setLoading(true);
 

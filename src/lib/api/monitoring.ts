@@ -1,11 +1,9 @@
 import { isAboveOmsThreshold } from "../airQuality";
-import { listBlogPosts } from "./content";
-import { getTransparencySummary } from "./transparency";
 import {
-  assertSupabase,
   BlogPost,
   DownsampledMeasurement,
   EventSummary,
+  getSupabase,
   Measurement,
   normalizeOpsKpi,
   OpsKPI,
@@ -22,7 +20,7 @@ import {
 
 export async function getStationOverview(): Promise<StationOverview[]> {
   try {
-    const supabase = assertSupabase();
+    const supabase = await getSupabase();
     const { data, error } = await supabase.rpc("get_station_overview");
     if (error) throw error;
     return (data ?? []) as StationOverview[];
@@ -33,7 +31,7 @@ export async function getStationOverview(): Promise<StationOverview[]> {
 
 export async function getStationHealth(): Promise<StationHealth[]> {
   try {
-    const supabase = assertSupabase();
+    const supabase = await getSupabase();
     const { data, error } = await supabase.rpc("get_station_health");
     if (error) throw error;
     return (data ?? []) as StationHealth[];
@@ -44,7 +42,7 @@ export async function getStationHealth(): Promise<StationHealth[]> {
 
 export async function listStations(): Promise<Station[]> {
   try {
-    const supabase = assertSupabase();
+    const supabase = await getSupabase();
     const { data, error } = await supabase.from("stations").select("*").order("name", { ascending: true });
     if (error) throw error;
     return (data ?? []) as Station[];
@@ -55,7 +53,7 @@ export async function listStations(): Promise<Station[]> {
 
 export async function getLatestMeasurements(stationId: string, limit = 20): Promise<Measurement[]> {
   try {
-    const supabase = assertSupabase();
+    const supabase = await getSupabase();
     const { data, error } = await supabase
       .from("measurements")
       .select("*")
@@ -74,7 +72,7 @@ export async function getMeasurementsDownsampled(
   range: "24h" | "7d"
 ): Promise<DownsampledMeasurement[]> {
   try {
-    const supabase = assertSupabase();
+    const supabase = await getSupabase();
     const { data, error } = await supabase.rpc("get_measurements_downsampled", {
       p_station_id: stationId,
       p_range: range
@@ -93,7 +91,7 @@ export async function getMeasurementsByRange(
   bucketMinutes = 60
 ): Promise<DownsampledMeasurement[]> {
   try {
-    const supabase = assertSupabase();
+    const supabase = await getSupabase();
     const { data, error } = await supabase.rpc("get_measurements_by_range", {
       p_station_id: stationId,
       p_start_ts: startTs,
@@ -109,7 +107,7 @@ export async function getMeasurementsByRange(
 
 export async function getOpsKpisMonth(year: number, month: number): Promise<OpsKPI> {
   try {
-    const supabase = assertSupabase();
+    const supabase = await getSupabase();
     const { data, error } = await supabase.rpc("get_ops_kpis_month", {
       p_year: year,
       p_month: month
@@ -123,7 +121,9 @@ export async function getOpsKpisMonth(year: number, month: number): Promise<OpsK
 
 export async function getSystemStatus(): Promise<SystemStatus> {
   try {
-    const supabase = assertSupabase();
+    const supabase = await getSupabase();
+    const contentApiPromise = import("./content");
+    const transparencyApiPromise = import("./transparency");
 
     const [{ count: stationsCount }, { count: measurements24h }] = await Promise.all([
       supabase.from("stations").select("*", { count: "exact", head: true }),
@@ -152,8 +152,8 @@ export async function getSystemStatus(): Promise<SystemStatus> {
         .gt("start_at", new Date().toISOString())
         .limit(3),
       supabase.from("acervo_items").select("*").order("created_at", { ascending: false }).limit(3),
-      listBlogPosts({ limit: 2 }),
-      getTransparencySummary(),
+      contentApiPromise.then(({ listBlogPosts }) => listBlogPosts({ limit: 2 })),
+      transparencyApiPromise.then(({ getTransparencySummary }) => getTransparencySummary()),
       supabase.from("expenses")
         .select("category, amount_cents")
         .gte("occurred_on", monthStart.toISOString().slice(0, 10))

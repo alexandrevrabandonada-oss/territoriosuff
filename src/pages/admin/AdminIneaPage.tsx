@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { supabase } from "../../lib/supabase/client";
+import { getSupabaseClientOrNull } from "../../lib/supabase/runtime";
 
 interface IngestRun {
   id: string;
@@ -57,6 +57,7 @@ export function AdminIneaPage() {
   const [filterMetricType, setFilterMetricType] = useState<string>("");
 
   const loadData = useCallback(async () => {
+    const supabase = await getSupabaseClientOrNull();
     if (!supabase) return;
     setLoading(true);
 

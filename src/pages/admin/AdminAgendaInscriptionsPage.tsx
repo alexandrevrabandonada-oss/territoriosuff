@@ -1,6 +1,6 @@
 import { useEffect, useState, useCallback } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { supabase } from "../../lib/supabase/client";
+import { getSupabaseClientOrNull } from "../../lib/supabase/runtime";
 
 interface Registration {
   id: string;
@@ -27,6 +27,7 @@ export function AdminAgendaInscriptionsPage() {
   const [loading, setLoading] = useState(true);
 
   const loadData = useCallback(async () => {
+    const supabase = await getSupabaseClientOrNull();
     if (!supabase || !id) return;
     setLoading(true);
 
@@ -59,6 +60,7 @@ export function AdminAgendaInscriptionsPage() {
   }, [loadData]);
 
   const toggleAttendance = async (regId: string, currentStatus: string) => {
+    const supabase = await getSupabaseClientOrNull();
     if (!supabase) return;
     const newStatus = currentStatus === "attended" ? "confirmed" : "attended";
     

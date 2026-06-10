@@ -36,5 +36,6 @@ reports/relatorio_*.md
 reeports/
 scratch/
 tmp/
+.tmp/
 
 .vercel

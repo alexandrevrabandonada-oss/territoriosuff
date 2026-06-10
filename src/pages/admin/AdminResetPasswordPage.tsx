@@ -1,7 +1,7 @@
 import { FormEvent, useEffect, useMemo, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 
-import { supabase } from "../../lib/supabase/client";
+import { getSupabaseClientOrNull } from "../../lib/supabase/runtime";
 
 function readAuthError(location: ReturnType<typeof useLocation>) {
   const query = new URLSearchParams(location.search);
@@ -39,6 +39,7 @@ export function AdminResetPasswordPage() {
     setError(null);
     setMessage(null);
 
+    const supabase = await getSupabaseClientOrNull();
     if (!supabase) {
       setError("Supabase não configurado.");
       return;

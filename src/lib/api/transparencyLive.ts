@@ -1,5 +1,5 @@
 import {
-  assertSupabase,
+  getSupabase,
   toAppError,
   type LiveTransparencyCountItem,
   type LiveTransparencyMonthlyReport
@@ -62,7 +62,7 @@ function rowToLiveTransparencyReport(row: Record<string, unknown>): LiveTranspar
 
 export async function listLiveTransparencyReports(includeDrafts = false): Promise<LiveTransparencyMonthlyReport[]> {
   try {
-    const supabase = assertSupabase();
+    const supabase = await getSupabase();
     let query = supabase
       .from("transparency_live_reports")
       .select("*")

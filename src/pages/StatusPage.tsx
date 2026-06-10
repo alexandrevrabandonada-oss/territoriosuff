@@ -10,7 +10,8 @@ import {
   SurfaceCard
 } from "../components/BrandSystem";
 import { PortalHero, PortalPageShell, PortalSectionHeader } from "../components/portal";
-import { getOpsKpisMonth, getSystemStatus, type OpsKPI, type SystemStatus } from "../lib/api";
+import { getOpsKpisMonth, getSystemStatus } from "../lib/api/monitoring";
+import type { OpsKPI, SystemStatus } from "../lib/api/core";
 import { getContrastAuditResults } from "../lib/contrastAudit";
 import { getObservabilityErrorSummaryLast24h, trackCsvDownload, trackShare } from "../lib/observability";
 

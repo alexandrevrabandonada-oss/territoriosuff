@@ -1,7 +1,9 @@
 import { trackApiError } from '../observability';
-import { assertSupabase as assertSupabaseClient } from '../supabase/client';
+import { getSupabaseClient } from "../supabase/runtime";
 
-export const assertSupabase = assertSupabaseClient;
+export async function getSupabase() {
+  return getSupabaseClient();
+}
 
 export type Station = {
   id: string;

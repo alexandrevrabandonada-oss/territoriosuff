@@ -2,6 +2,7 @@ import { lazy } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 
 import { AdminGuard } from "../components/AdminGuard";
+import "../styles/admin.css";
 
 const AdminLayout = lazy(() => import("../layout/AdminLayout").then((m) => ({ default: m.AdminLayout })));
 const AdminLoginPage = lazy(() => import("../pages/admin/AdminLoginPage").then((m) => ({ default: m.AdminLoginPage })));

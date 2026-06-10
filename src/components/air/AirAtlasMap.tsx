@@ -3,24 +3,8 @@ import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 
+import { loadIneaSummaryYear } from '../../lib/inea/summaryLoader';
 import { SITES, PARAMETERS } from '../../lib/inea/weblakesDictionary';
-import summary2020 from '../../../data/inea_weblakes_normalized/summary-2020.json';
-import summary2021 from '../../../data/inea_weblakes_normalized/summary-2021.json';
-import summary2022 from '../../../data/inea_weblakes_normalized/summary-2022.json';
-import summary2023 from '../../../data/inea_weblakes_normalized/summary-2023.json';
-import summary2024 from '../../../data/inea_weblakes_normalized/summary-2024.json';
-import summary2025 from '../../../data/inea_weblakes_normalized/summary-2025.json';
-import summary2026 from '../../../data/inea_weblakes_normalized/summary-2026.json';
-
-const SUMMARIES: Record<string, any> = {
-  "2020": summary2020,
-  "2021": summary2021,
-  "2022": summary2022,
-  "2023": summary2023,
-  "2024": summary2024,
-  "2025": summary2025,
-  "2026": summary2026
-};
 
 // Fix Leaflet icons
 import markerIcon2x from 'leaflet/dist/images/marker-icon-2x.png';
@@ -72,6 +56,9 @@ export function AirAtlasMap() {
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [selectedStation, setSelectedStation] = useState<string>("70"); // Default station is Retiro
   const [showLegend, setShowLegend] = useState<boolean>(true); // For collapsible legend
+  const [loadedSummary, setLoadedSummary] = useState<Record<string, any> | null>(null);
+  const [isLoadingSummary, setIsLoadingSummary] = useState<boolean>(true);
+  const [summaryLoadError, setSummaryLoadError] = useState<boolean>(false);
 
   // Reset month when year changes, and redirect PM2.5 in 2020
   useEffect(() => {
@@ -96,6 +83,35 @@ export function AirAtlasMap() {
     }
     return () => clearInterval(timer);
   }, [isPlaying, selectedYear]);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    setIsLoadingSummary(true);
+    setSummaryLoadError(false);
+
+    loadIneaSummaryYear(selectedYear)
+      .then((summary) => {
+        if (!cancelled) {
+          setLoadedSummary(summary);
+        }
+      })
+      .catch(() => {
+        if (!cancelled) {
+          setLoadedSummary(null);
+          setSummaryLoadError(true);
+        }
+      })
+      .finally(() => {
+        if (!cancelled) {
+          setIsLoadingSummary(false);
+        }
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [selectedYear]);
 
   const pollutantInfo = PARAMETERS[selectedPollutant] || { pollutant: "PM10", unit: "µg/m³" };
 
@@ -168,7 +184,7 @@ export function AirAtlasMap() {
       tier: string;
     }> = {};
 
-    const summaryCast = SUMMARIES[selectedYear] as any;
+    const summaryCast = loadedSummary as any;
 
     for (const stationId of ["69", "70", "71", "72"]) {
       const coords = STATION_COORDINATES[stationId] || { lat: -22.5, lng: -44.1, desc: "" };
@@ -255,7 +271,7 @@ export function AirAtlasMap() {
     }
 
     return result;
-  }, [selectedYear, selectedPollutant, selectedMonth, selectedMetric, selectedRegime, pollutantInfo.unit]);
+  }, [loadedSummary, selectedPollutant, selectedMonth, selectedMetric, selectedRegime, pollutantInfo.unit]);
 
   const activeStationData = mapData[selectedStation];
 
@@ -514,6 +530,18 @@ export function AirAtlasMap() {
               </Marker>
             ))}
           </MapContainer>
+
+          {isLoadingSummary && (
+            <div className="absolute inset-x-4 top-4 z-[1100] rounded-xl border border-emerald-500/20 bg-[#061420]/92 px-4 py-3 text-xs font-semibold text-emerald-100 shadow-lg backdrop-blur">
+              Carregando resumo consolidado de {selectedYear} para atualizar o atlas.
+            </div>
+          )}
+
+          {!isLoadingSummary && summaryLoadError && (
+            <div className="absolute inset-x-4 top-4 z-[1100] rounded-xl border border-rose-500/20 bg-[#061420]/92 px-4 py-3 text-xs font-semibold text-rose-100 shadow-lg backdrop-blur">
+              Nao foi possivel carregar o resumo anual do atlas neste momento.
+            </div>
+          )}
 
           {/* Collapsible map legend - fixed, simple, pedagogical */}
           <div className="absolute bottom-4 right-4 bg-[#061420]/95 backdrop-blur border border-slate-850 p-3.5 rounded-xl z-[1000] text-xs max-w-[240px] shadow-lg transition-all duration-300">

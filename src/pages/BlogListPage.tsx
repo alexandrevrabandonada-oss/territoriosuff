@@ -4,7 +4,8 @@ import { Link } from "react-router-dom";
 import { IconShell, SurfaceCard } from "../components/BrandSystem";
 import { BrandIllustratedEmptyState, BrandTextureSkeleton } from "../components/BrandMicro";
 import { EditorialFamilyCard } from "../components/CardFamilies";
-import { listBlogPosts, type BlogPost } from "../lib/api";
+import { listBlogPosts } from "../lib/api/content";
+import type { BlogPost } from "../lib/api/core";
 import { getOptimizedCover } from "../lib/imageOptimization";
 
 export function BlogListPage() {

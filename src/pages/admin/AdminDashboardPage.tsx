@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { supabase } from "../../lib/supabase/client";
+import { getSupabaseClientOrNull } from "../../lib/supabase/runtime";
 
 interface DashboardStats {
   acervoPublished: number;
@@ -188,6 +188,7 @@ export function AdminDashboardPage() {
   const [activityGroups, setActivityGroups] = useState<ActivityGroup[]>([]);
 
   const loadDashboard = useCallback(async () => {
+    const supabase = await getSupabaseClientOrNull();
     if (!supabase) return;
     setLoading(true);
 

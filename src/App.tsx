@@ -5,10 +5,8 @@ import { LoadingCard } from "./components/LoadingCard";
 import { RouteObservability } from "./components/RouteObservability";
 import { PortalLayout } from "./layout/PortalLayout";
 
-// Eager-loaded (critical path)
-import { HomePage } from "./pages/HomePage";
-
 const AdminRoutes = lazy(() => import("./admin/AdminRoutes"));
+const HomePage = lazy(() => import("./pages/HomePage").then((m) => ({ default: m.HomePage })));
 
 // Lazy-loaded (non-critical public)
 const DadosPage = lazy(() => import("./pages/DadosPage").then((m) => ({ default: m.DadosPage })));

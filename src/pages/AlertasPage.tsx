@@ -2,7 +2,8 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { SurfaceCard, Chip } from "../components/BrandSystem";
 import { PortalHero, PortalPageShell, PortalSectionHeader } from "../components/portal";
-import { listStations, type Station } from "../lib/api";
+import { listStations } from "../lib/api/monitoring";
+import type { Station } from "../lib/api/core";
 
 export function AlertasPage() {
     const [status, setStatus] = useState<"default" | "granted" | "denied">("default");

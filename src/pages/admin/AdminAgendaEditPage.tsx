@@ -1,7 +1,7 @@
 import { useEffect, useState, useCallback } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { supabase } from "../../lib/supabase/client";
 import { adminUploadMedia, validateAdminUploadFile } from "../../lib/admin/media";
+import { getSupabaseClientOrNull } from "../../lib/supabase/runtime";
 
 const STATUSES = [
   { value: "draft", label: "Rascunho" },
@@ -34,6 +34,7 @@ export function AdminAgendaEditPage() {
   const [registrationEnabled, setRegistrationEnabled] = useState(true);
 
   const loadData = useCallback(async () => {
+    const supabase = await getSupabaseClientOrNull();
     if (!supabase) return;
     setLoading(true);
 
@@ -99,6 +100,7 @@ export function AdminAgendaEditPage() {
 
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
+    const supabase = await getSupabaseClientOrNull();
     if (!supabase) return;
     setSaving(true);
 

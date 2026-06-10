@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
+import "../../styles/acervo.css";
 
 import { getAcervoByYear, getAcervoYearIndex, type AcervoItem, type AcervoYearIndex } from "../../lib/api";
 import { ACERVO_KIND_LABELS, type AcervoArea, AREA_KINDS } from "../../lib/acervo";

@@ -1,7 +1,7 @@
 import { useEffect, useState, useCallback } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { supabase } from "../../lib/supabase/client";
 import { getLinkedMediaAssetIdsForContent } from "../../lib/admin/media";
+import { getSupabaseClientOrNull } from "../../lib/supabase/runtime";
 
 interface BlogPost {
   id: string;
@@ -36,6 +36,7 @@ export function AdminBlogListPage() {
   const navigate = useNavigate();
 
   const loadPosts = useCallback(async () => {
+    const supabase = await getSupabaseClientOrNull();
     if (!supabase) return;
     setLoading(true);
 
@@ -66,6 +67,7 @@ export function AdminBlogListPage() {
   }, [loadPosts]);
 
   const handleDelete = async (id: string) => {
+    const supabase = await getSupabaseClientOrNull();
     if (!supabase) return;
 
     const linkedAssetIds = await getLinkedMediaAssetIdsForContent("blog", id);

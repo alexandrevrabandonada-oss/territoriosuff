@@ -1,4 +1,4 @@
-import { supabase } from "./client";
+import { getSupabaseClientOrNull } from "./runtime";
 
 export interface UserProfile {
   id: string;
@@ -10,6 +10,7 @@ export interface UserProfile {
  * Verifica se o usuário atual tem privilégios de administrador.
  */
 export async function isAdmin(): Promise<boolean> {
+  const supabase = await getSupabaseClientOrNull();
   if (!supabase) return false;
 
   const { data: { user } } = await supabase.auth.getUser();
@@ -29,6 +30,7 @@ export async function isAdmin(): Promise<boolean> {
  * Helper para obter o perfil simplificado do usuário logado.
  */
 export async function getCurrentProfile(): Promise<UserProfile | null> {
+  const supabase = await getSupabaseClientOrNull();
   if (!supabase) return null;
 
   const { data: { user } } = await supabase.auth.getUser();
@@ -47,6 +49,7 @@ export async function getCurrentProfile(): Promise<UserProfile | null> {
  * Realiza o logout do usuário.
  */
 export async function logout() {
+  const supabase = await getSupabaseClientOrNull();
   if (!supabase) return;
   await supabase.auth.signOut();
   window.location.href = "/";

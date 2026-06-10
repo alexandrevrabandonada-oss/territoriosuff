@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 import { formatAssetSize, type MediaAssetRecord } from "../../lib/admin/media";
-import { supabase } from "../../lib/supabase/client";
+import { getSupabaseClientOrNull } from "../../lib/supabase/runtime";
 
 type MonthlyReportRow = {
   id: string;
@@ -41,6 +41,7 @@ export function AdminTransparencyLiveListPage() {
   const latestItem = items[0] || null;
 
   const loadItems = useCallback(async () => {
+    const supabase = await getSupabaseClientOrNull();
     if (!supabase) return;
     setLoading(true);
 
@@ -96,6 +97,7 @@ export function AdminTransparencyLiveListPage() {
   const unlinkedCount = items.filter((item) => !item.source_asset_id).length;
 
   const handleDelete = async (id: string) => {
+    const supabase = await getSupabaseClientOrNull();
     if (!supabase || !window.confirm("Excluir este fechamento mensal?")) return;
     const { error } = await supabase.from("transparency_live_reports").delete().eq("id", id);
     if (error) {

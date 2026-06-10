@@ -1,4 +1,4 @@
-import { supabase } from "../supabase/client";
+import { getSupabaseClient } from "../supabase/runtime";
 
 export interface MediaAssetRecord {
   id: string;
@@ -112,7 +112,7 @@ export function validateAdminUploadFile(file: File, options: UploadValidationOpt
 }
 
 export async function getMediaAssetById(assetId: string): Promise<MediaAssetRecord | null> {
-  if (!supabase) throw new Error("Supabase não configurado.");
+  const supabase = await getSupabaseClient();
 
   const { data, error } = await supabase
     .from("media_assets")
@@ -129,7 +129,7 @@ export async function getMediaAssetById(assetId: string): Promise<MediaAssetReco
  * O path é organizado automaticamente por bucket/ano/mês.
  */
 export async function adminUploadMedia(options: UploadOptions) {
-  if (!supabase) throw new Error("Supabase não configurado.");
+  const supabase = await getSupabaseClient();
 
   const {
     bucket,
@@ -222,7 +222,7 @@ export async function adminUploadMedia(options: UploadOptions) {
 }
 
 export async function updateMediaAssetMetadata(options: UpdateMediaAssetOptions) {
-  if (!supabase) throw new Error("Supabase não configurado.");
+  const supabase = await getSupabaseClient();
 
   const {
     assetId,
@@ -274,7 +274,7 @@ export async function updateMediaAssetMetadata(options: UpdateMediaAssetOptions)
 }
 
 export async function getLinkedMediaAssetIdsForContent(contentKind: ContentKind, contentId: string) {
-  if (!supabase) throw new Error("Supabase não configurado.");
+  const supabase = await getSupabaseClient();
 
   if (contentKind === "acervo") {
     const { data, error } = await supabase

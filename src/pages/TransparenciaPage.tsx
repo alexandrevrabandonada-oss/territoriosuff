@@ -1,7 +1,5 @@
-import { useEffect, useMemo, useState } from "react";
+import { Suspense, lazy, useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import { CircleMarker, MapContainer, Popup, TileLayer } from "react-leaflet";
-import "leaflet/dist/leaflet.css";
 
 import { EmptyState } from "../components/EmptyState";
 import { ErrorState } from "../components/ErrorState";
@@ -18,6 +16,12 @@ import {
 import { LIVE_TRANSPARENCIA_REPORTS } from "../content/transparencyLive";
 
 const FEC_TRANSPARENCIA_URL = "https://conveniar.somosfec.org.br/PortalTransparencia/Default.aspx?txtNomeProjeto=&txtNomePessoaResponsavel=Carlos+Eduardo&txtNomePessoaFinanciador=&txtDataAssinatura=2025&ddlCodStatusConvenio=10&ddlFiltroTipoProjeto=0&ddlFiltroCategoriaProjeto=0&ddlFiltroInstrumentoJuridico=0&ddlFiltroEmendaParlamentar=Sim&pagina=projetos#projetos";
+
+const TransparencyTerritoryMap = lazy(() =>
+  import("../components/maps/TransparencyTerritoryMap").then((module) => ({
+    default: module.TransparencyTerritoryMap
+  }))
+);
 
 const TERRITORY_COORDINATES: Record<string, [number, number]> = {
   aterrado: [-22.5268, -44.1024],
@@ -313,8 +317,9 @@ function TerritoryMap({
 }: {
   territories: TerritoryCount[];
 }) {
-  const mapped = territories.filter((item) => item.coordinates);
-  const maxCount = Math.max(1, ...mapped.map((item) => item.count));
+  const mapped = territories.filter(
+    (item): item is TerritoryCount & { coordinates: [number, number] } => Boolean(item.coordinates)
+  );
 
   if (mapped.length === 0) {
     return (
@@ -339,32 +344,9 @@ function TerritoryMap({
         </div>
       </div>
       <div className="h-[420px]">
-        <MapContainer center={[-22.5155, -44.104]} zoom={12} scrollWheelZoom={false} className="h-full w-full">
-          <TileLayer
-            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-          />
-          {mapped.map((territory) => (
-            <CircleMarker
-              key={territory.name}
-              center={territory.coordinates as [number, number]}
-              radius={8 + (territory.count / maxCount) * 18}
-              pathOptions={{
-                color: "#0f172a",
-                weight: 1.5,
-                fillColor: "#10b981",
-                fillOpacity: 0.68
-              }}
-            >
-              <Popup>
-                <div className="min-w-[180px]">
-                  <p className="text-sm font-black text-slate-950">{territory.name}</p>
-                  <p className="mt-1 text-sm text-slate-600">{territory.count} registro(s) publicados</p>
-                </div>
-              </Popup>
-            </CircleMarker>
-          ))}
-        </MapContainer>
+        <Suspense fallback={<SkeletonCard className="h-full rounded-none border-0 shadow-none" />}>
+          <TransparencyTerritoryMap territories={mapped} />
+        </Suspense>
       </div>
     </div>
   );

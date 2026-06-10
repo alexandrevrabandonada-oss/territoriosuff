@@ -1,8 +1,8 @@
 import { useEffect, useState, useCallback } from "react";
 import { useNavigate, useParams, Link, useLocation } from "react-router-dom";
 import { SafeMarkdown } from "../../components/SafeMarkdown";
-import { supabase } from "../../lib/supabase/client";
 import { adminUploadMedia, formatAssetSize, getMediaAssetById, isImageAsset, isPdfAsset, validateAdminUploadFile, type MediaAssetRecord } from "../../lib/admin/media";
+import { getSupabaseClientOrNull } from "../../lib/supabase/runtime";
 
 const CATEGORIES = [
   "Notícias",
@@ -67,6 +67,7 @@ export function AdminBlogEditPage() {
   };
 
   const loadData = useCallback(async () => {
+    const supabase = await getSupabaseClientOrNull();
     if (!supabase) return;
     setLoading(true);
 
@@ -166,6 +167,7 @@ export function AdminBlogEditPage() {
 
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
+    const supabase = await getSupabaseClientOrNull();
     if (!supabase) return;
 
     const coverAsset = selectedCoverAsset || recentAssets.find((asset) => asset.id === coverAssetId) || null;

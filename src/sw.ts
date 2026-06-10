@@ -39,7 +39,27 @@ registerRoute(
   })
 );
 
-// 2. PDF runtime: CacheFirst
+// 2. Lazy chunks and route CSS: cache on first use instead of precaching everything.
+registerRoute(
+  ({ url }) =>
+    url.origin === self.location.origin &&
+    url.pathname.startsWith("/assets/") &&
+    (url.pathname.endsWith(".js") || url.pathname.endsWith(".css")),
+  new StaleWhileRevalidate({
+    cacheName: "app-assets-runtime",
+    plugins: [
+      new ExpirationPlugin({
+        maxEntries: 180,
+        maxAgeSeconds: 14 * 24 * 60 * 60
+      }),
+      new CacheableResponsePlugin({
+        statuses: [0, 200]
+      })
+    ]
+  })
+);
+
+// 3. PDF runtime: CacheFirst
 registerRoute(
   /^https:\/\/.*\.supabase\.co\/storage\/v1\/object\/public\/(?:reports|transparency)\/.*\.pdf$/,
   new CacheFirst({
@@ -56,7 +76,7 @@ registerRoute(
   })
 );
 
-// 3. Thumb/Cover runtime: StaleWhileRevalidate
+// 4. Thumb/Cover runtime: StaleWhileRevalidate
 registerRoute(
   /^https:\/\/.*\.supabase\.co\/storage\/v1\/object\/public\/(?:acervo|reports|transparency)\/.*(?:thumb|cover).*\.(?:png|jpg|jpeg|webp|svg)$/,
   new StaleWhileRevalidate({
@@ -73,7 +93,7 @@ registerRoute(
   })
 );
 
-// 4. Acervo images: CacheFirst
+// 5. Acervo images: CacheFirst
 registerRoute(
   /^https:\/\/.*\.supabase\.co\/storage\/v1\/object\/public\/acervo\/.*(?:\.png|\.jpg|\.jpeg|\.webp|\.svg)$/,
   new CacheFirst({
@@ -90,7 +110,7 @@ registerRoute(
   })
 );
 
-// 5. Acervo PDFs: NetworkFirst
+// 6. Acervo PDFs: NetworkFirst
 registerRoute(
   /^https:\/\/.*\.supabase\.co\/storage\/v1\/object\/public\/acervo\/.*\.pdf$/,
   new NetworkFirst({

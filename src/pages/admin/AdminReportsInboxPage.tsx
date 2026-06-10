@@ -1,7 +1,4 @@
-import { useEffect, useState, useCallback } from "react";
-import { MapContainer, TileLayer, Marker } from "react-leaflet";
-import L from "leaflet";
-import "leaflet/dist/leaflet.css";
+import { Suspense, lazy, useEffect, useState, useCallback } from "react";
 
 import {
   listEnvironmentalReports,
@@ -10,17 +7,11 @@ import {
   type EnvironmentalReport
 } from "../../lib/api";
 
-import markerIcon2x from "leaflet/dist/images/marker-icon-2x.png";
-import markerIcon from "leaflet/dist/images/marker-icon.png";
-import markerShadow from "leaflet/dist/images/marker-shadow.png";
-
-// Fix default marker icons in react-leaflet
-delete (L.Icon.Default.prototype as any)._getIconUrl;
-L.Icon.Default.mergeOptions({
-  iconUrl: markerIcon,
-  iconRetinaUrl: markerIcon2x,
-  shadowUrl: markerShadow,
-});
+const AdminReportLocationMap = lazy(() =>
+  import("../../components/maps/AdminReportLocationMap").then((module) => ({
+    default: module.AdminReportLocationMap
+  }))
+);
 
 function parseCoordinates(locationStr: string): [number, number] | null {
   if (!locationStr) return null;
@@ -579,18 +570,9 @@ export function AdminReportsInboxPage() {
                   </p>
                   {coordinates && (
                     <div className="mt-3 rounded-xl overflow-hidden border border-slate-800 h-[200px] relative z-10">
-                      <MapContainer
-                        center={coordinates}
-                        zoom={15}
-                        scrollWheelZoom={false}
-                        style={{ height: "100%", width: "100%" }}
-                      >
-                        <TileLayer
-                          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                        />
-                        <Marker position={coordinates} />
-                      </MapContainer>
+                      <Suspense fallback={<div className="h-full w-full animate-pulse bg-slate-900" />}>
+                        <AdminReportLocationMap coordinates={coordinates} />
+                      </Suspense>
                     </div>
                   )}
                 </div>

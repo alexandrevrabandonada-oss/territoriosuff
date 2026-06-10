@@ -1,14 +1,13 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 
+import "../styles/home.css";
 import type {
-  AcervoCollection,
   AcervoItem,
   BlogPost,
   Event,
   ReportDocument,
-  StationOverview,
-  TransparencySummary
+  StationOverview
 } from "../lib/api";
 import { PortalHero, PortalPageShell, PortalSectionHeader } from "../components/portal";
 
@@ -88,8 +87,6 @@ export function HomePage() {
   const [events, setEvents] = useState<Event[]>([]);
   const [, setAcervo] = useState<AcervoItem[]>([]);
   const [latestBlog, setLatestBlog] = useState<BlogPost | null>(null);
-  const [, setTransparency] = useState<TransparencySummary | null>(null);
-  const [, setCollections] = useState<AcervoCollection[]>([]);
   const [reports, setReports] = useState<ReportDocument[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -97,26 +94,21 @@ export function HomePage() {
     async function load() {
       try {
         setLoading(true);
-        const [monitoringApi, contentApi, transparencyApi] = await Promise.all([
+        const [monitoringApi, contentApi] = await Promise.all([
           import("../lib/api/monitoring"),
-          import("../lib/api/content"),
-          import("../lib/api/transparency")
+          import("../lib/api/content")
         ]);
-        const [stationsData, eventsData, acervoData, blogData, transData, collectionsData, reportsData] = await Promise.all([
+        const [stationsData, eventsData, acervoData, blogData, reportsData] = await Promise.all([
           monitoringApi.getStationOverview(),
           contentApi.listUpcomingEvents(),
           contentApi.listAcervoItems({ featured: true, limit: 6 }),
           contentApi.listBlogPosts({ limit: 1 }),
-          transparencyApi.getTransparencySummary(),
-          contentApi.listFeaturedCollections(3),
           contentApi.listLatestReports(3)
         ]);
         setStations(stationsData);
         setEvents(eventsData.slice(0, 3));
         setAcervo(acervoData);
         setLatestBlog(blogData[0] || null);
-        setTransparency(transData);
-        setCollections(collectionsData as AcervoCollection[]);
         setReports(reportsData.slice(0, 3));
       } catch (err) {
         console.error("Erro ao carregar dados da home:", err);

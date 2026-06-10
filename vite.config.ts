@@ -138,6 +138,24 @@ export default defineConfig({
       },
       injectManifest: {
         globPatterns: ["**/*.{js,css,html,ico,png,svg}"],
+        globIgnores: [
+          "assets/Admin*.js",
+          "assets/Admin*.css",
+          "assets/acervo-*.css",
+          "assets/MapaPage-*.css",
+          "assets/*Page-*.js",
+          "assets/extractPdfText-*.js",
+          "assets/transparencyLiveParser-*.js",
+          "assets/vendor-pdf-*.js",
+          "assets/vendor-maps-*.js",
+          "assets/vendor-maps-*.css",
+          "assets/vendor-supabase-*.js",
+          "assets/vendor-uplot-*.js",
+          "assets/vendor-uplot-*.css",
+          "assets/summary-*.js",
+          "assets/attention-episodes-*.js",
+          "assets/availability-matrix-*.js"
+        ],
         additionalManifestEntries: [
           { url: "/", revision: null },
           { url: "/dados", revision: null },

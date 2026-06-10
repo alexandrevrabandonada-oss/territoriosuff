@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { Link, useSearchParams } from "react-router-dom";
-import { supabase } from "../../lib/supabase/client";
 import { ADMIN_MAX_FILE_SIZE, adminUploadMedia, formatAssetSize, isImageAsset, updateMediaAssetMetadata, validateAdminUploadFile, type MediaAssetRecord } from "../../lib/admin/media";
+import { getSupabaseClientOrNull } from "../../lib/supabase/runtime";
 
 const ACERVO_EDITORIAL_TYPES = [
   {
@@ -153,6 +153,7 @@ export function AdminUploadsPage() {
   const [queueSort, setQueueSort] = useState<UploadQueueSort>("recent");
 
   const loadRecentAssets = useCallback(async () => {
+    const supabase = await getSupabaseClientOrNull();
     if (!supabase) return;
     setLoading(true);
     const { data, error: fetchError } = await supabase
@@ -170,7 +171,13 @@ export function AdminUploadsPage() {
   }, []);
 
   const loadAssetReferences = useCallback(async (assetIds: string[]) => {
-    if (!supabase || assetIds.length === 0) {
+    if (assetIds.length === 0) {
+      setAssetReferences({});
+      return;
+    }
+
+    const supabase = await getSupabaseClientOrNull();
+    if (!supabase) {
       setAssetReferences({});
       return;
     }

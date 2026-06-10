@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
-import { supabase } from "../../lib/supabase/client";
 import { adminUploadMedia, validateAdminUploadFile } from "../../lib/admin/media";
+import { getSupabaseClientOrNull } from "../../lib/supabase/runtime";
 
 const RELEVANCE_LEVELS = [
   { value: "referencia central", label: "Referência Central" },
@@ -36,6 +36,7 @@ export function AdminPaperWizardPage() {
   });
 
   const loadData = useCallback(async () => {
+    const supabase = await getSupabaseClientOrNull();
     if (!supabase) return;
     const { data: colls } = await supabase.from("acervo_collections").select("id, title").order("title");
     setCollections(colls || []);
@@ -53,6 +54,7 @@ export function AdminPaperWizardPage() {
 
   // Validation: Duplicate DOI or Title
   const checkDuplicates = useCallback(async (field: "doi" | "title", value: string) => {
+    const supabase = await getSupabaseClientOrNull();
     if (!supabase || !value || value.length < 5) return;
     
     let query = supabase.from("acervo_items").select("id, title").limit(1);
@@ -100,6 +102,7 @@ export function AdminPaperWizardPage() {
   };
 
   const handleSubmit = async (finalStatus: "draft" | "published") => {
+    const supabase = await getSupabaseClientOrNull();
     if (!supabase) return;
     setLoading(true);
 

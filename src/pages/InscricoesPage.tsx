@@ -2,7 +2,8 @@ import { FormEvent, useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 
 import { IconShell, SurfaceCard } from "../components/BrandSystem";
-import { createRegistration, getEventSummary, type EventSummary } from "../lib/api";
+import { createRegistration, getEventSummary } from "../lib/api/content";
+import type { EventSummary } from "../lib/api/core";
 
 type FormState = {
   name: string;

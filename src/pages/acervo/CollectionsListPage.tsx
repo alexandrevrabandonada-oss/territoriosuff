@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import "../../styles/acervo.css";
 import { listCollections, type AcervoCollection } from "../../lib/api";
 import { getOptimizedCover } from "../../lib/imageOptimization";
 import { IconShell, SurfaceCard } from "../../components/BrandSystem";

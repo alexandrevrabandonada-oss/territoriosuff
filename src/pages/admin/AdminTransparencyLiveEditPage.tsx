@@ -2,9 +2,27 @@ import { useCallback, useEffect, useState } from "react";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 
 import { formatAssetSize, getMediaAssetById, type MediaAssetRecord } from "../../lib/admin/media";
-import { extractPdfText, extractPdfTextFromBlob } from "../../lib/extractPdfText";
-import { supabase } from "../../lib/supabase/client";
-import { parseLiveTransparencyReportText } from "../../lib/transparencyLiveParser";
+import { getSupabaseClientOrNull } from "../../lib/supabase/runtime";
+import type { ParsedLiveTransparencyDraft } from "../../lib/transparencyLiveParser";
+
+let pdfExtractionRuntimePromise: Promise<typeof import("../../lib/extractPdfText")> | null = null;
+let transparencyParserRuntimePromise: Promise<typeof import("../../lib/transparencyLiveParser")> | null = null;
+
+async function loadPdfExtractionRuntime() {
+  if (!pdfExtractionRuntimePromise) {
+    pdfExtractionRuntimePromise = import("../../lib/extractPdfText");
+  }
+
+  return pdfExtractionRuntimePromise;
+}
+
+async function loadTransparencyParserRuntime() {
+  if (!transparencyParserRuntimePromise) {
+    transparencyParserRuntimePromise = import("../../lib/transparencyLiveParser");
+  }
+
+  return transparencyParserRuntimePromise;
+}
 
 function normalizeMonthLabel(value: string) {
   return value
@@ -42,7 +60,7 @@ function joinCountItems(items?: Array<{ label: string; count: number }> | null) 
 }
 
 function applyParsedDraft(
-  parsed: ReturnType<typeof parseLiveTransparencyReportText>,
+  parsed: ParsedLiveTransparencyDraft,
   fallback: {
     monthKey: string;
     monthLabel: string;
@@ -143,6 +161,7 @@ export function AdminTransparencyLiveEditPage() {
   const [duplicateMonthReport, setDuplicateMonthReport] = useState<{ id: string; month_key: string; month_label: string; status: string } | null>(null);
 
   const loadItem = useCallback(async () => {
+    const supabase = await getSupabaseClientOrNull();
     if (!supabase) return;
     setLoading(true);
 
@@ -212,15 +231,15 @@ export function AdminTransparencyLiveEditPage() {
   }, [loadItem]);
 
   useEffect(() => {
-    if (!supabase || !monthKey.trim()) {
-      setDuplicateMonthReport(null);
-      return;
-    }
-
-    const client = supabase;
     let active = true;
 
     async function checkDuplicateMonth() {
+      const client = await getSupabaseClientOrNull();
+      if (!client || !monthKey.trim()) {
+        if (active) setDuplicateMonthReport(null);
+        return;
+      }
+
       let query = client
         .from("transparency_live_reports")
         .select("id, month_key, month_label, status")
@@ -249,7 +268,7 @@ export function AdminTransparencyLiveEditPage() {
     };
   }, [id, isNew, monthKey]);
 
-  const applyParsed = (parsed: ReturnType<typeof parseLiveTransparencyReportText>) => {
+  const applyParsed = (parsed: ParsedLiveTransparencyDraft) => {
     applyParsedDraft(
       parsed,
       {
@@ -294,12 +313,14 @@ export function AdminTransparencyLiveEditPage() {
 
   const extractAndApplyText = async (text: string) => {
     setRawReportText(text);
+    const { parseLiveTransparencyReportText } = await loadTransparencyParserRuntime();
     const parsed = parseLiveTransparencyReportText(text);
     applyParsed(parsed);
   };
 
   const handleSave = async (event: React.FormEvent) => {
     event.preventDefault();
+    const supabase = await getSupabaseClientOrNull();
     if (!supabase) return;
 
     if (!monthKey.trim() || !monthLabel.trim()) {
@@ -357,13 +378,14 @@ export function AdminTransparencyLiveEditPage() {
     navigate("/admin/transparencia-viva");
   };
 
-  const handleParseRawText = () => {
+  const handleParseRawText = async () => {
     if (!rawReportText.trim()) {
       alert("Cole o texto do relatório antes de tentar pré-preencher.");
       return;
     }
 
     try {
+      const { parseLiveTransparencyReportText } = await loadTransparencyParserRuntime();
       const parsed = parseLiveTransparencyReportText(rawReportText);
       applyParsed(parsed);
     } catch (error) {
@@ -387,6 +409,7 @@ export function AdminTransparencyLiveEditPage() {
     setSelectedPdfAsset(null);
 
     try {
+      const { extractPdfText } = await loadPdfExtractionRuntime();
       const extractedText = await extractPdfText(file);
       await extractAndApplyText(extractedText);
     } catch (error) {
@@ -409,6 +432,7 @@ export function AdminTransparencyLiveEditPage() {
       }
 
       const blob = await response.blob();
+      const { extractPdfTextFromBlob } = await loadPdfExtractionRuntime();
       const extractedText = await extractPdfTextFromBlob(blob);
       await extractAndApplyText(extractedText);
     } catch (error) {

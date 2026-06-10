@@ -1,7 +1,7 @@
 import { useEffect, useState, useCallback } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
-import { supabase } from "../../lib/supabase/client";
 import { getLinkedMediaAssetIdsForContent } from "../../lib/admin/media";
+import { getSupabaseClientOrNull } from "../../lib/supabase/runtime";
 
 interface AcervoItem {
   id: string;
@@ -108,6 +108,7 @@ export function AdminAcervoListPage() {
   }, [setSearchParams]);
 
   const loadItems = useCallback(async () => {
+    const supabase = await getSupabaseClientOrNull();
     if (!supabase) return;
     setLoading(true);
 
@@ -146,6 +147,7 @@ export function AdminAcervoListPage() {
   }, [loadItems]);
 
   const handleDelete = async (id: string) => {
+    const supabase = await getSupabaseClientOrNull();
     if (!supabase) return;
 
     const linkedAssetIds = await getLinkedMediaAssetIdsForContent("acervo", id);
