@@ -1,15 +1,38 @@
+import { Suspense, lazy } from "react";
+
 import { SurfaceCard } from "../../../components/BrandSystem";
-import { AqiChart } from "../../../components/air/AqiChart";
-import { AttentionEpisodesPanel } from "../../../components/air/AttentionEpisodesPanel";
-import { IneaHistoricalTimeline } from "../../../components/air/IneaHistoricalTimeline";
-import { ParticulateTimeline2020_2026 } from "../../../components/air/ParticulateTimeline2020_2026";
-import { ThresholdComparisonPanel } from "../../../components/air/ThresholdComparisonPanel";
-import { YearExplorer } from "../../../components/air/YearExplorer";
 import type { RadarComparisonTab, RadarMode } from "./RadarTypes";
 import { RADAR_TIME_TABS } from "./RadarTypes";
 import { RadarMicroguide } from "./RadarMicroguide";
 import { RadarModeFooter } from "./RadarModeFooter";
 import { RadarVisualNotice } from "./RadarVisualNotice";
+
+const AqiChart = lazy(() => import("../../../components/air/AqiChart").then((module) => ({ default: module.AqiChart })));
+const AttentionEpisodesPanel = lazy(() =>
+  import("../../../components/air/AttentionEpisodesPanel").then((module) => ({ default: module.AttentionEpisodesPanel }))
+);
+const IneaHistoricalTimeline = lazy(() =>
+  import("../../../components/air/IneaHistoricalTimeline").then((module) => ({ default: module.IneaHistoricalTimeline }))
+);
+const ParticulateTimeline2020_2026 = lazy(() =>
+  import("../../../components/air/ParticulateTimeline2020_2026").then((module) => ({ default: module.ParticulateTimeline2020_2026 }))
+);
+const ThresholdComparisonPanel = lazy(() =>
+  import("../../../components/air/ThresholdComparisonPanel").then((module) => ({ default: module.ThresholdComparisonPanel }))
+);
+const YearExplorer = lazy(() => import("../../../components/air/YearExplorer").then((module) => ({ default: module.YearExplorer })));
+
+function RadarPanelLoadingFallback() {
+  return (
+    <div className="rounded-[1.5rem] border border-slate-200 bg-slate-50/80 p-5 shadow-xs">
+      <div className="animate-pulse space-y-3">
+        <div className="h-4 w-40 rounded-full bg-slate-200/80" />
+        <div className="h-24 rounded-[1rem] bg-slate-200/70" />
+        <div className="h-24 rounded-[1rem] bg-slate-100/90" />
+      </div>
+    </div>
+  );
+}
 
 interface RadarTimeModeProps {
   comparisonTab: RadarComparisonTab;
@@ -84,7 +107,9 @@ export function RadarTimeMode({
         {comparisonTab === "TREND" && (
           <div className="space-y-10">
             <section id="anos" className="space-y-6">
-              <YearExplorer />
+              <Suspense fallback={<RadarPanelLoadingFallback />}>
+                <YearExplorer />
+              </Suspense>
             </section>
 
             <section id="timeline-plurianual" className="space-y-6 border-t border-slate-100 pt-4">
@@ -99,7 +124,9 @@ export function RadarTimeMode({
                   Veja como PM10, SO₂ e CO (2013–2026) e PM2.5 (2021–2026) se comportaram nas estações de Volta Redonda, ano a ano, em comparação experimental com as diretrizes da OMS e padrões da CONAMA 506.
                 </p>
               </div>
-              <ParticulateTimeline2020_2026 />
+              <Suspense fallback={<RadarPanelLoadingFallback />}>
+                <ParticulateTimeline2020_2026 />
+              </Suspense>
             </section>
 
             <section id="historia" className="space-y-6 border-t border-slate-100 pt-4">
@@ -110,7 +137,9 @@ export function RadarTimeMode({
                 </p>
               </div>
 
-              <IneaHistoricalTimeline lastIngestedAt={latestIngestedAt} />
+              <Suspense fallback={<RadarPanelLoadingFallback />}>
+                <IneaHistoricalTimeline lastIngestedAt={latestIngestedAt} />
+              </Suspense>
 
               {latestData.length > 0 && (
                 <SurfaceCard className="space-y-4 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm md:p-6">
@@ -134,7 +163,9 @@ export function RadarTimeMode({
                     </div>
                   </div>
 
-                  <AqiChart data={chartPoints} />
+                  <Suspense fallback={<RadarPanelLoadingFallback />}>
+                    <AqiChart data={chartPoints} />
+                  </Suspense>
                 </SurfaceCard>
               )}
             </section>
@@ -150,11 +181,15 @@ export function RadarTimeMode({
                   Veja quando PM10 e PM2.5 mais se destacaram na série pública, por ano, mês, estação e régua de comparação.
                 </p>
               </div>
-              <AttentionEpisodesPanel />
+              <Suspense fallback={<RadarPanelLoadingFallback />}>
+                <AttentionEpisodesPanel />
+              </Suspense>
             </section>
 
             <section id="comparar" className="space-y-6 border-t border-slate-100 pt-4">
-              <ThresholdComparisonPanel />
+              <Suspense fallback={<RadarPanelLoadingFallback />}>
+                <ThresholdComparisonPanel />
+              </Suspense>
             </section>
 
             <section id="alertas" className="space-y-6 border-t border-slate-100 pt-4">
