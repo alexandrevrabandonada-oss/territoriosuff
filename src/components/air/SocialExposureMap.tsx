@@ -1,12 +1,12 @@
-import { useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { MapContainer, TileLayer, Marker, Popup, Circle } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 
-import { CENSUS_SECTORS, CensusSector } from '../../data/social/census-sectors';
 import { SensitiveFacilitiesLayer } from './SensitiveFacilitiesLayer';
 import { VulnerabilityLegend } from './VulnerabilityLegend';
-import { Facility } from '../../data/social/sensitive-facilities';
+import type { CensusSector } from '../../data/social/census-sectors';
+import type { Facility } from '../../data/social/sensitive-facilities';
 
 // Fix default Leaflet icon paths
 import markerIcon2x from 'leaflet/dist/images/marker-icon-2x.png';
@@ -50,7 +50,7 @@ function createCsnIcon() {
 }
 
 export function SocialExposureMap() {
-  const [selectedSector, setSelectedSector] = useState<CensusSector | null>(CENSUS_SECTORS[0]);
+  const [selectedSector, setSelectedSector] = useState<CensusSector | null>(null);
   const [showSectors, setShowSectors] = useState<boolean>(true);
   const [showFacilities, setShowFacilities] = useState<boolean>(true);
   const [demographicFilter, setDemographicFilter] = useState<'ALL' | 'CHILDREN' | 'ELDERLY' | 'INCOME' | 'INDUSTRIAL'>('ALL');
@@ -58,6 +58,35 @@ export function SocialExposureMap() {
     'Escola', 'Creche', 'UBS', 'UPA', 'Hospital', 'CRAS'
   ]);
   const [showStations, setShowStations] = useState<boolean>(true);
+  const [sectors, setSectors] = useState<CensusSector[]>([]);
+  const [facilities, setFacilities] = useState<Facility[]>([]);
+  const [isLoadingLayers, setIsLoadingLayers] = useState(true);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    Promise.all([
+      import('../../data/social/census-sectors'),
+      import('../../data/social/sensitive-facilities')
+    ])
+      .then(([sectorModule, facilityModule]) => {
+        if (cancelled) return;
+
+        const loadedSectors = sectorModule.CENSUS_SECTORS;
+        setSectors(loadedSectors);
+        setFacilities(facilityModule.SENSITIVE_FACILITIES);
+        setSelectedSector((current) => current ?? loadedSectors[0] ?? null);
+      })
+      .finally(() => {
+        if (!cancelled) {
+          setIsLoadingLayers(false);
+        }
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   // Sector visual helper
   const getSectorStyle = (zone: CensusSector['exposureZone']) => {
@@ -73,22 +102,24 @@ export function SocialExposureMap() {
     }
   };
 
-  const filteredSectors = CENSUS_SECTORS.filter(sec => {
-    if (demographicFilter === 'ALL') return true;
-    if (demographicFilter === 'CHILDREN') {
-      return (sec.children05 / sec.populationTotal) > 0.07;
-    }
-    if (demographicFilter === 'ELDERLY') {
-      return (sec.elderly60plus / sec.populationTotal) > 0.18;
-    }
-    if (demographicFilter === 'INCOME') {
-      return sec.lowIncomeProxy > 0.25;
-    }
-    if (demographicFilter === 'INDUSTRIAL') {
-      return sec.distanceToIndustrialAreaM < 1500;
-    }
-    return true;
-  });
+  const filteredSectors = useMemo(() => {
+    return sectors.filter(sec => {
+      if (demographicFilter === 'ALL') return true;
+      if (demographicFilter === 'CHILDREN') {
+        return (sec.children05 / sec.populationTotal) > 0.07;
+      }
+      if (demographicFilter === 'ELDERLY') {
+        return (sec.elderly60plus / sec.populationTotal) > 0.18;
+      }
+      if (demographicFilter === 'INCOME') {
+        return sec.lowIncomeProxy > 0.25;
+      }
+      if (demographicFilter === 'INDUSTRIAL') {
+        return sec.distanceToIndustrialAreaM < 1500;
+      }
+      return true;
+    });
+  }, [demographicFilter, sectors]);
 
   const toggleFacilityType = (type: Facility['type']) => {
     setSelectedFacilityTypes(prev =>
@@ -118,6 +149,17 @@ export function SocialExposureMap() {
           <p className="text-slate-350 text-xs font-semibold mt-1">
             Cruze a vulnerabilidade social com infraestruturas sensíveis e a proximidade do polo industrial.
           </p>
+          <div className="mt-3 flex flex-wrap gap-2">
+            <div className="inline-flex items-center gap-2 rounded-full border border-indigo-400/20 bg-indigo-400/10 px-3 py-1 text-[10px] font-black text-indigo-100">
+              <span className="h-2 w-2 rounded-full bg-indigo-400" />
+              <span className="uppercase tracking-[0.16em]">Priorização pública</span>
+              <span className="hidden font-semibold normal-case text-indigo-100/80 md:inline">camada territorial para orientar monitoramento, prevenção e resposta</span>
+            </div>
+            <div className="inline-flex items-center gap-2 rounded-full border border-amber-400/20 bg-amber-400/10 px-3 py-1 text-[10px] font-black text-amber-100">
+              <span className="h-2 w-2 rounded-full bg-amber-400" />
+              <span className="uppercase tracking-[0.16em]">Não é laudo causal</span>
+            </div>
+          </div>
         </div>
 
         {/* Map Control Toolbar */}
@@ -254,12 +296,18 @@ export function SocialExposureMap() {
             })}
 
             {/* Sensitive Facilities Layer */}
-            <SensitiveFacilitiesLayer visible={showFacilities} selectedTypes={selectedFacilityTypes} />
+            <SensitiveFacilitiesLayer facilities={facilities} visible={showFacilities} selectedTypes={selectedFacilityTypes} />
           </MapContainer>
+
+          {isLoadingLayers && (
+            <div className="absolute inset-x-4 top-4 z-[1100] rounded-xl border border-indigo-500/20 bg-[#061420]/92 px-4 py-3 text-xs font-semibold text-indigo-100 shadow-lg backdrop-blur">
+              Carregando camadas territoriais e equipamentos sensiveis.
+            </div>
+          )}
 
           {/* Floating Map Safeguard Warning */}
           <div className="absolute bottom-4 left-4 right-4 md:right-auto md:max-w-md bg-[#061420]/95 backdrop-blur-md border border-slate-800 p-3 rounded-xl z-[1000] text-[10px] leading-relaxed text-slate-350 shadow-xl">
-            <span className="text-amber-400 font-bold">⚠️ Índice Experimental:</span> Este mapa organiza dados socioeconômicos e serve para priorização de políticas públicas. Não mede risco individual de adoecimento nem prova causalidade direta.
+            <span className="text-amber-400 font-bold">⚠️ Índice Experimental:</span> Este mapa organiza dados socioeconômicos e sinais territoriais de pressão ambiental para priorização de políticas públicas. Não mede risco individual de adoecimento nem prova causalidade direta.
           </div>
         </div>
 
@@ -320,6 +368,9 @@ export function SocialExposureMap() {
 
                 <div className="p-2.5 bg-slate-900/60 border border-slate-800 rounded-lg text-[10px] text-slate-300 leading-relaxed font-semibold">
                   <strong className="text-slate-100">Nota do Setor:</strong> {selectedSector.methodologyNote}
+                </div>
+                <div className="rounded-lg border border-indigo-500/20 bg-indigo-500/10 px-3 py-2 text-[10px] font-semibold leading-relaxed text-indigo-100">
+                  Leia este setor como aproximação territorial de prioridade. O score combina sensibilidade demográfica, proxy socioeconômica e proximidade industrial, mas não representa dose individual nem laudo epidemiológico.
                 </div>
               </div>
             ) : (

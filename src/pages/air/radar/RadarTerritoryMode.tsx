@@ -1,7 +1,13 @@
-import { SocialExposureMap } from "../../../components/air/SocialExposureMap";
+import { Suspense, lazy } from "react";
+import { LoadingCard } from "../../../components/LoadingCard";
+import { RadarEvidenceBadge } from "./RadarEvidenceBadge";
 import type { RadarComparisonTab, RadarMode } from "./RadarTypes";
 import { RadarMicroguide } from "./RadarMicroguide";
 import { RadarModeFooter } from "./RadarModeFooter";
+
+const SocialExposureMap = lazy(() =>
+  import("../../../components/air/SocialExposureMap").then((module) => ({ default: module.SocialExposureMap })),
+);
 
 interface RadarTerritoryModeProps {
   onNavigate: (mode: RadarMode, tab?: RadarComparisonTab) => void;
@@ -26,6 +32,18 @@ export function RadarTerritoryMode({ onNavigate, onTop, onScrollToSocialMap }: R
         <p className="max-w-3xl text-sm font-medium text-slate-300">
           Cruzamento geográfico das emissões industriais e da qualidade do ar com a densidade populacional e os equipamentos de saúde e educação de Volta Redonda (Censo 2022).
         </p>
+        <div className="flex flex-wrap gap-2">
+          <RadarEvidenceBadge
+            level="interpretive"
+            label="Priorização territorial"
+            detail="esta camada organiza pressão ambiental e vulnerabilidade social para orientar ação pública"
+          />
+          <RadarEvidenceBadge
+            level="insufficient"
+            label="Não é prova causal"
+            detail="o mapa não mede risco individual nem comprova nexo isolado de adoecimento"
+          />
+        </div>
       </div>
 
       <RadarMicroguide
@@ -39,7 +57,7 @@ export function RadarTerritoryMode({ onNavigate, onTop, onScrollToSocialMap }: R
           <div className="text-[10px] font-black uppercase tracking-[0.18em] text-emerald-200/80">Leitura pública orientada</div>
           <h3 className="mt-3 text-2xl font-black tracking-tight text-white">Onde pressão ambiental e população se cruzam</h3>
           <p className="mt-2 text-sm font-semibold leading-relaxed text-slate-300">
-            Utilize as camadas interativas para analisar escolas, postos de saúde, setores censitários e a densidade de poeira nos territórios mais sensíveis.
+            Utilize as camadas interativas para analisar escolas, postos de saúde, setores censitários e sinais territoriais de pressão ambiental nos recortes mais sensíveis.
           </p>
         </div>
         <div className="rounded-[2rem] border border-emerald-500/15 bg-emerald-500/[0.08] p-5 shadow-[0_22px_44px_-34px_rgba(16,185,129,0.95)]">
@@ -58,7 +76,9 @@ export function RadarTerritoryMode({ onNavigate, onTop, onScrollToSocialMap }: R
 
       <div className="space-y-8">
         <div id="social-map-section" className="scroll-mt-32">
-          <SocialExposureMap />
+          <Suspense fallback={<LoadingCard message="Carregando mapa territorial..." />}>
+            <SocialExposureMap />
+          </Suspense>
         </div>
 
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -78,7 +98,7 @@ export function RadarTerritoryMode({ onNavigate, onTop, onScrollToSocialMap }: R
               <h4 className="mt-3 text-base font-black text-white">População 60+</h4>
             </div>
             <p className="mt-4 text-[12px] font-semibold leading-relaxed text-rose-50">
-              A senescência pulmonar combinada à exposição crônica a gases como SO₂ eleva as taxas de internação por complicações cardiorrespiratórias.
+              A senescência pulmonar e a maior fragilidade cardiorrespiratória tornam esse grupo mais sensível a contextos persistentes de poluição atmosférica.
             </p>
           </div>
 
@@ -98,7 +118,7 @@ export function RadarTerritoryMode({ onNavigate, onTop, onScrollToSocialMap }: R
               <h4 className="mt-3 text-base font-black text-white">Zonas de Influência</h4>
             </div>
             <p className="mt-4 text-[12px] font-semibold leading-relaxed text-emerald-50">
-              Setores censitários adjacentes aos limites industriais sofrem impacto cumulativo de poeiras fugitivas devido à direção predominante dos ventos.
+              Setores censitários adjacentes aos limites industriais merecem prioridade de leitura quando coincidem com corredores predominantes de vento e maior sensibilidade social.
             </p>
           </div>
         </div>

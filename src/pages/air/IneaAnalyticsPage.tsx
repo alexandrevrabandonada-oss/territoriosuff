@@ -6,6 +6,7 @@ import { PublicInterpretationBox } from "../../components/air/PublicInterpretati
 import { WindRosePanel } from "../../components/air/WindRosePanel";
 import { WeatherPollutionCorrelation } from "../../components/air/WeatherPollutionCorrelation";
 import { RainWashEffectPanel } from "../../components/air/RainWashEffectPanel";
+import { RadarEvidenceBadge } from "./radar/RadarEvidenceBadge";
 
 export function IneaAnalyticsPage() {
   const [degradedDays, setDegradedDays] = useState<any[]>([]);
@@ -130,6 +131,18 @@ export function IneaAnalyticsPage() {
             <p className="text-slate-500 text-sm font-medium mt-1">
               Camada analítica e diagnóstico das medições históricas de qualidade do ar em Volta Redonda.
             </p>
+            <div className="mt-3 flex flex-wrap gap-2">
+              <RadarEvidenceBadge
+                level="experimental"
+                label="Leitura analítica pública"
+                detail="diagnóstico útil para interpretação coletiva, com cautela sobre cobertura e validação por registro"
+              />
+              <RadarEvidenceBadge
+                level="interpretive"
+                label="Meteorologia mista"
+                detail="vento observado; demais condições atmosféricas devem ser lidas como camada auxiliar"
+              />
+            </div>
           </div>
           <div className="flex flex-wrap items-center gap-2">
             <Link 
@@ -560,6 +573,10 @@ export function IneaAnalyticsPage() {
           <p className="text-xs text-slate-500 font-medium">
             Correlações físicas da velocidade e direção do vento, calmaria e chuva com a concentração de poluentes.
           </p>
+          <div className="pt-2 flex flex-wrap gap-2">
+            <RadarEvidenceBadge level="strong" label="Vento observado" detail="direção e velocidade do vento formam a parte mais forte desta camada" />
+            <RadarEvidenceBadge level="interpretive" label="Condições estimadas" detail="chuva e demais condições devem ser lidas como apoio interpretativo" />
+          </div>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">

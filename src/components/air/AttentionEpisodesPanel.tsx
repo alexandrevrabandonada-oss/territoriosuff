@@ -1,7 +1,7 @@
-import { useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { SurfaceCard } from '../BrandSystem';
-import { ATTENTION_EPISODES, AttentionEpisode } from '../../data/air/attention-episodes-2020-2026';
 import { SeasonalityHeatmap } from './SeasonalityHeatmap';
+import { loadAttentionEpisodes, type AttentionEpisode } from '../../lib/air/attentionEpisodesLoader';
 
 const STATIONS = [
   { id: "69", shortName: "Belmonte", name: "VR - Belmonte" },
@@ -42,14 +42,46 @@ export function AttentionEpisodesPanel() {
   const [selectedYear, setSelectedYear] = useState<number>(2024);
   const [selectedStation, setSelectedStation] = useState<string>('all'); // 'all' | '69' | '70' | '71'
   const [selectedRegime, setSelectedRegime] = useState<'OMS' | 'CONAMA'>('OMS');
+  const [episodes, setEpisodes] = useState<AttentionEpisode[]>([]);
+  const [loadingEpisodes, setLoadingEpisodes] = useState(true);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    loadAttentionEpisodes()
+      .then((data) => {
+        if (!cancelled) {
+          setEpisodes(data);
+        }
+      })
+      .catch((err) => {
+        console.error("Failed to load attention episodes:", err);
+        if (!cancelled) {
+          setEpisodes([]);
+        }
+      })
+      .finally(() => {
+        if (!cancelled) {
+          setLoadingEpisodes(false);
+        }
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   // 1. Filter dataset for current selectors
-  const filteredEpisodes = ATTENTION_EPISODES.filter(ep => {
-    const matchesPollutant = ep.pollutant === selectedPollutant;
-    const matchesYear = ep.year === selectedYear;
-    const matchesStation = selectedStation === 'all' || ep.station_id === selectedStation;
-    return matchesPollutant && matchesYear && matchesStation;
-  });
+  const filteredEpisodes = useMemo(
+    () =>
+      episodes.filter((ep) => {
+        const matchesPollutant = ep.pollutant === selectedPollutant;
+        const matchesYear = ep.year === selectedYear;
+        const matchesStation = selectedStation === 'all' || ep.station_id === selectedStation;
+        return matchesPollutant && matchesYear && matchesStation;
+      }),
+    [episodes, selectedPollutant, selectedStation, selectedYear]
+  );
 
   // Helper to resolve exceedance days based on active regime
   const getExceedanceDays = (ep: AttentionEpisode) => {
@@ -107,6 +139,16 @@ export function AttentionEpisodesPanel() {
 
   return (
     <div id="painel-episodios-atencao" className="space-y-6">
+      {loadingEpisodes ? (
+        <SurfaceCard className="rounded-2xl border border-slate-100 bg-white p-6 shadow-sm">
+          <div className="animate-pulse space-y-4">
+            <div className="h-4 w-52 rounded-full bg-slate-200/80" />
+            <div className="h-24 rounded-2xl bg-slate-100/90" />
+            <div className="h-24 rounded-2xl bg-slate-50" />
+          </div>
+        </SurfaceCard>
+      ) : (
+        <>
       {/* Visual Controls */}
       <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4 border-b border-slate-100 pb-4">
         <div>
@@ -328,6 +370,7 @@ export function AttentionEpisodesPanel() {
           Matriz de Concentração Mensal de Eventos
         </h4>
         <SeasonalityHeatmap
+          episodes={episodes}
           selectedPollutant={selectedPollutant}
           selectedYear={selectedYear}
           selectedRegime={selectedRegime}
@@ -340,7 +383,7 @@ export function AttentionEpisodesPanel() {
         <SurfaceCard className={`p-4 border rounded-xl transition-all ${selectedStation === "69" ? 'border-rose-300 bg-rose-50/10' : 'border-slate-100 bg-white'}`}>
           <h5 className="font-bold text-slate-800 text-sm mb-1.5">VR - Belmonte</h5>
           <p className="text-slate-600 text-xs leading-relaxed">
-            <strong>Belmonte aparece com maior recorrência de atenção em vários recortes.</strong> Esta estação acumula com frequência a maior contagem de dias com médias elevadas, sofrendo o impacto cumulativo de episódios prolongados de exposição.
+            <strong>Belmonte aparece com maior recorrência de atenção em vários recortes.</strong> Esta estação reúne com frequência a maior contagem de dias com médias elevadas, o que a coloca como prioridade de leitura histórica no conjunto analisado.
           </p>
         </SurfaceCard>
 
@@ -354,14 +397,14 @@ export function AttentionEpisodesPanel() {
         <SurfaceCard className={`p-4 border rounded-xl transition-all ${selectedStation === "71" ? 'border-teal-300 bg-teal-50/10' : 'border-slate-100 bg-white'}`}>
           <h5 className="font-bold text-slate-800 text-sm mb-1.5">VR - Santa Cecília</h5>
           <p className="text-slate-600 text-xs leading-relaxed">
-            <strong>Santa Cecília tem médias menores, mas não ausência de episódios.</strong> A topografia local e ventos podem suavizar a exposição recorrente, mas a estação ainda capta dias específicos de atenção acima das recomendações internacionais da OMS.
+            <strong>Santa Cecília tem médias menores, mas não ausência de episódios.</strong> A estação costuma registrar médias mais baixas no conjunto, mas ainda capta dias específicos de atenção acima das recomendações internacionais da OMS nesta leitura experimental.
           </p>
         </SurfaceCard>
 
         <SurfaceCard className="p-4 border border-slate-100 bg-white rounded-xl">
           <h5 className="font-bold text-slate-800 text-sm mb-1.5">Sazonalidade e Meteorologia</h5>
           <p className="text-slate-600 text-xs leading-relaxed">
-            <strong>Meses de estiagem e inverno merecem atenção especial.</strong> O calor e a seca prolongada, ou a inversão térmica no meio do ano, concentram historicamente a grande parte dos episódios de atenção, agravados pela falta de dispersão atmosférica.
+            <strong>Meses de estiagem e inverno merecem atenção especial.</strong> A leitura histórica sugere maior concentração de episódios de atenção em períodos secos e de dispersão menos favorável, com reforço analítico no meio do ano.
           </p>
         </SurfaceCard>
       </div>
@@ -390,6 +433,8 @@ export function AttentionEpisodesPanel() {
           Selo Metodológico: Dado horário público WebLakes — comparação experimental — sem QA/QC oficial explícito
         </div>
       </div>
+        </>
+      )}
     </div>
   );
 }

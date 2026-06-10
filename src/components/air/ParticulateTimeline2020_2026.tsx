@@ -393,7 +393,7 @@ export function ParticulateTimeline2020_2026() {
             ) : activeYear === "2026" ? (
               <><strong>No acumulado parcial de 2026, Belmonte apresenta episódios críticos.</strong> Mesmo sendo um período parcial, a estação já demonstra uma quantidade significativa de ultrapassagens sob a métrica experimental da OMS.</>
             ) : activeYear === "2020" ? (
-              <><strong>Em 2020, Belmonte registrou média anual de PM10 sob atenção.</strong> A média no período alcançou níveis que ultrapassam a recomendação de exposição de longo prazo, confirmando a criticidade histórica da área urbana próxima à usina siderúrgica.</>
+              <><strong>Em 2020, Belmonte registrou média anual de PM10 sob atenção.</strong> A média no período ultrapassou a recomendação de longo prazo usada nesta comparação experimental, reforçando a leitura histórica de atenção para a área monitorada.</>
             ) : (
               <><strong>Belmonte concentra os maiores sinais de atenção no período.</strong> A estação registra de forma recorrente as maiores médias anuais tanto para PM10 quanto para PM2.5, liderando as excedências diárias às diretrizes da OMS e da CONAMA 506.</>
             )}
@@ -412,13 +412,13 @@ export function ParticulateTimeline2020_2026() {
               </span>
             )}
             {parseInt(activeYear) < 2020 ? (
-              <><strong>VR - Retiro no período histórico ({activeYear}):</strong> Registrou de forma experimental as médias de particulados grossos e gases, sofrendo variações pontuais decorrentes do fluxo local.</>
+              <><strong>VR - Retiro no período histórico ({activeYear}):</strong> Registrou de forma experimental médias de particulados grossos e gases, com oscilações pontuais compatíveis com a dinâmica local observada na série.</>
             ) : activeYear === "2025" ? (
-              <><strong>Retiro destacou-se por picos notáveis de PM2.5 in 2025.</strong> O fluxo veicular e as condições locais contribuíram para dias de atenção concentrados, apresentando picos horários expressivos no meio do ano.</>
+              <><strong>Retiro destacou-se por picos notáveis de PM2.5 em 2025.</strong> O fluxo veicular e as condições locais contribuíram para dias de atenção concentrados, apresentando picos horários expressivos no meio do ano.</>
             ) : activeYear === "2026" ? (
-              <><strong>Picos pontuais em Retiro já chamam a atenção in 2026.</strong> A análise preliminar indica eventos isolados de alta concentração nas primeiras horas do dia, necessitando de acompanhamento.</>
+              <><strong>Picos pontuais em Retiro já chamam a atenção em 2026.</strong> A análise preliminar indica eventos isolados de alta concentração nas primeiras horas do dia, necessitando de acompanhamento.</>
             ) : activeYear === "2020" ? (
-              <><strong>Registros de PM10 in Retiro em 2020 apontam padrão de tráfego.</strong> A exposição diária ao material particulado grosso manteve-se correlacionada com períodos secos e de fluxo viário intenso, com picos pontuais severos.</>
+              <><strong>Registros de PM10 em Retiro em 2020 sugerem influência de dinâmica local.</strong> A série mostra picos pontuais em períodos secos e de maior circulação urbana, o que pede leitura conjunta com meteorologia e cobertura.</>
             ) : (
               <><strong>Retiro aparece com episódios relevantes, especialmente em picos.</strong> A estação destaca-se por registrar picos horários pontuais de concentração de material particulado no ano, acumulando múltiplos dias de atenção.</>
             )}
@@ -445,7 +445,7 @@ export function ParticulateTimeline2020_2026() {
             ) : activeYear === "2026" ? (
               <><strong>Comportamento moderado em Santa Cecília no ano de 2026.</strong> A média parcial segue abaixo das demais estações, mas dias de ultrapassagem da OMS continuam a ser computados experimentalmente.</>
             ) : activeYear === "2020" ? (
-              <><strong>Santa Cecília apresentou as menores médias de PM10 em 2020.</strong> Apesar do perfil residencial com maior dispersão, a estação ainda acumulou alguns registros de ultrapassagens das diretrizes mais exigentes da OMS.</>
+              <><strong>Santa Cecília apresentou as menores médias de PM10 em 2020.</strong> Ainda assim, a estação acumulou alguns registros de ultrapassagem das diretrizes mais exigentes da OMS nesta leitura experimental.</>
             ) : (
               <><strong>Santa Cecília tem menores médias, mas não ausência de atenção.</strong> Embora registre historicamente os menores índices médios anuais do trio de estações, ainda excede frequentemente as recomendações de saúde humana da OMS.</>
             )}
@@ -458,7 +458,7 @@ export function ParticulateTimeline2020_2026() {
             <h5 className="font-bold text-slate-800 text-sm">Sazonalidade e Clima</h5>
           </div>
           <p className="text-slate-600 text-xs leading-relaxed">
-            <strong>Inverno e estiagem concentram as ultrapassagens.</strong> A dispersão atmosférica desfavorável e a falta de chuva nos meses de seca elevam drasticamente o registro de dias de atenção na cidade.
+            <strong>Inverno e estiagem concentram as ultrapassagens.</strong> A leitura histórica sugere mais dias de atenção em períodos secos e de dispersão menos favorável, especialmente quando a cobertura horária permanece alta.
           </p>
         </SurfaceCard>
       </div>

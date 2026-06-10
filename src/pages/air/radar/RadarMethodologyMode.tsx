@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { AqiExplainer } from "../../../components/air/AqiExplainer";
 import { HistoricalRawEvidenceBox } from "../../../components/air/HistoricalRawEvidenceBox";
 import { gases2024StationSummary } from "../../../data/air/gases-2024-station-summary";
+import { RadarEvidenceBadge } from "./RadarEvidenceBadge";
 import type { RadarComparisonTab, RadarMode } from "./RadarTypes";
 import { RadarModeFooter } from "./RadarModeFooter";
 import { RadarVisualNotice } from "./RadarVisualNotice";
@@ -60,6 +61,65 @@ const DOWNLOAD_ITEMS = [
   { title: "Linha do Tempo 2020-2026", file: "particulate-timeline-2020-2026.csv", size: "45 KB", desc: "Série de longo prazo consolidando médias anuais de particulados." }
 ];
 
+const PARAMETER_STATUS = [
+  {
+    parameter: "PM10",
+    scope: "Série histórica principal",
+    status: "Liberado com cautela experimental",
+    level: "experimental" as const,
+    description: "É a camada mais madura do Radar em série pública, com leitura plurianual, cobertura por estação e comparação OMS/CONAMA.",
+    releaseRule: "Pode sustentar triagem pública e leitura histórica, sem se apresentar como QA/QC oficial por registro."
+  },
+  {
+    parameter: "PM2.5",
+    scope: "Série histórica desde 2021",
+    status: "Liberado com cautela experimental",
+    level: "experimental" as const,
+    description: "Sustenta leitura relevante de exposição respiratória fina, mas a série pública começa depois do PM10 e tem janelas de cobertura mais curtas.",
+    releaseRule: "Pode sustentar leitura pública comparativa, sempre com aviso de cobertura e experimentalidade."
+  },
+  {
+    parameter: "SO₂",
+    scope: "Expansão plurianual publicada",
+    status: "Experimental expandido",
+    level: "experimental" as const,
+    description: "Já possui série no portal e ajuda a identificar episódios ligados a combustão industrial, mas ainda em regime de publicação cautelosa.",
+    releaseRule: "Usar como observação experimental; não superdimensionar causalidade nem equivalência com validação oficial fechada."
+  },
+  {
+    parameter: "CO",
+    scope: "Expansão plurianual publicada",
+    status: "Experimental expandido",
+    level: "experimental" as const,
+    description: "É útil para leitura complementar da mistura atmosférica, inclusive em janela móvel de 8 horas.",
+    releaseRule: "Usar como camada complementar experimental, não como eixo isolado de conclusão pública."
+  },
+  {
+    parameter: "NO₂",
+    scope: "Base retida",
+    status: "Bloqueado em auditoria crítica",
+    level: "insufficient" as const,
+    description: "Foi segurado corretamente por provável anomalia de linha de base e não deve reentrar na UI antes de auditoria concluída.",
+    releaseRule: "Só liberar com critério técnico público, relatório de auditoria e regra clara de correção ou exclusão."
+  },
+  {
+    parameter: "PTS",
+    scope: "Memória técnica",
+    status: "Histórico técnico em auditoria",
+    level: "interpretive" as const,
+    description: "Tem valor para memória de engenharia e debate público histórico, mas não deve ser confundido com a lógica atual do IQAr e dos particulados finos.",
+    releaseRule: "Manter fora da camada operacional do Radar até revisão técnica específica."
+  },
+  {
+    parameter: "Meteorologia",
+    scope: "Camada auxiliar",
+    status: "Mista: vento observado, demais variáveis estimadas",
+    level: "interpretive" as const,
+    description: "O manifesto já diferencia ventos reais de variáveis simuladas por médias locais, o que exige leitura separada.",
+    releaseRule: "Separar visualmente vento observado de condições atmosféricas estimadas."
+  }
+];
+
 export function RadarMethodologyMode({ onNavigate, onOpenLai, onTop }: RadarMethodologyModeProps) {
   return (
     <div className="animate-fade-in space-y-8 pt-4">
@@ -71,9 +131,55 @@ export function RadarMethodologyMode({ onNavigate, onOpenLai, onTop }: RadarMeth
         <p className="text-sm font-medium text-slate-600">
           Entenda a procedência dos dados abertos, as réguas de validação e as limitações das plataformas públicas.
         </p>
+        <div className="flex flex-wrap gap-2 pt-1">
+          <RadarEvidenceBadge
+            level="experimental"
+            label="Base pública processada"
+            detail="leituras abertas do ecossistema INEA/WebLakes com validação cívico-técnica do portal"
+          />
+          <RadarEvidenceBadge
+            level="interpretive"
+            label="Leituras territoriais"
+            detail="priorização pública e justiça ambiental, não causalidade individual"
+          />
+        </div>
       </div>
 
       <div className="space-y-10">
+        <section id="governanca-parametros" className="space-y-6">
+          <div className="space-y-2">
+            <h3 className="text-lg font-black text-slate-800">Quadro público de governança por parâmetro</h3>
+            <p className="max-w-4xl text-xs font-semibold leading-relaxed text-slate-600">
+              Nem todo dado do Radar tem o mesmo peso metodológico. Este quadro organiza o que já está liberado para leitura pública, o que está em regime
+              experimental e o que permanece fora da camada operacional.
+            </p>
+          </div>
+
+          <div className="grid gap-4 lg:grid-cols-2">
+            {PARAMETER_STATUS.map((item) => (
+              <div
+                key={item.parameter}
+                className="space-y-4 rounded-[1.75rem] border border-slate-200 bg-[linear-gradient(180deg,#ffffff,#f8fafc)] p-5 shadow-[0_16px_34px_-28px_rgba(15,23,42,0.35)]"
+              >
+                <div className="flex flex-wrap items-start justify-between gap-3">
+                  <div>
+                    <div className="text-[10px] font-black uppercase tracking-[0.18em] text-slate-400">{item.scope}</div>
+                    <h4 className="mt-1 text-base font-black tracking-tight text-slate-900">{item.parameter}</h4>
+                  </div>
+                  <RadarEvidenceBadge level={item.level} label={item.status} detail={item.scope} />
+                </div>
+
+                <p className="text-xs font-semibold leading-relaxed text-slate-600">{item.description}</p>
+
+                <div className="rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3">
+                  <div className="text-[10px] font-black uppercase tracking-[0.16em] text-slate-500">Regra de liberação pública</div>
+                  <p className="mt-1 text-[11px] font-semibold leading-relaxed text-slate-700">{item.releaseRule}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+
         <div className="space-y-4">
           <h3 className="pl-1 text-xs font-black uppercase tracking-widest text-slate-400">
             Como Ler Sem Cair em Erro — Guia de Confiança
@@ -110,6 +216,7 @@ export function RadarMethodologyMode({ onNavigate, onOpenLai, onTop }: RadarMeth
             <p className="text-xs font-semibold leading-relaxed text-slate-500">
               Entenda o cálculo do IQAr, os subíndices de cada poluente e as 5 classificações oficiais adotadas pelo órgão de fiscalização.
             </p>
+            <RadarEvidenceBadge level="strong" label="Camada normativa" detail="explicação do índice e das réguas oficiais de classificação" />
           </div>
           <AqiExplainer />
         </section>
@@ -127,6 +234,7 @@ export function RadarMethodologyMode({ onNavigate, onOpenLai, onTop }: RadarMeth
               Publicação controlada de novos gases atmosféricos para o ano de 2024. As comparações com OMS e CONAMA 506 são experimentais.{" "}
               <span className="font-black text-slate-700">Dado horário público WebLakes — comparação experimental — sem QA/QC oficial explícito.</span>
             </p>
+            <RadarEvidenceBadge level="experimental" label="Expansão cautelosa" detail="dados úteis para observação pública, ainda sem cadeia oficial explícita de QA/QC por registro" />
           </div>
 
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
@@ -220,6 +328,7 @@ export function RadarMethodologyMode({ onNavigate, onOpenLai, onTop }: RadarMeth
             <p className="max-w-3xl text-xs font-semibold leading-relaxed text-slate-500">
               Esses parâmetros não foram liberados como camada pública ativa. A decisão evita conclusões acima do que os dados sustentam.
             </p>
+            <RadarEvidenceBadge level="insufficient" label="Quarentena técnica" detail="dados retidos por anomalia, indisponibilidade ou insuficiência metodológica" />
           </div>
 
           <div className="grid gap-4 sm:grid-cols-3">
@@ -289,6 +398,53 @@ export function RadarMethodologyMode({ onNavigate, onOpenLai, onTop }: RadarMeth
           />
         </section>
 
+        <section id="sedimentaveis" className="space-y-6 border-t border-slate-100 pt-4">
+          <div className="space-y-2">
+            <div className="flex flex-wrap items-center gap-3">
+              <h2 className="text-lg font-black text-slate-800">Partículas sedimentáveis / “pó preto”</h2>
+              <RadarEvidenceBadge
+                level="interpretive"
+                label="Eixo paralelo em preparação"
+                detail="tema público relevante para Volta Redonda, mas fora da lógica do IQAr"
+              />
+            </div>
+            <p className="max-w-3xl text-xs font-semibold leading-relaxed text-slate-500">
+              O Radar deve tratar partículas sedimentáveis como camada própria de deposição material e incômodo ambiental. Essa leitura não deve ser misturada
+              automaticamente com PM10, PM2.5, OMS ou IQAr.
+            </p>
+          </div>
+
+          <div className="grid gap-4 md:grid-cols-3">
+            <div className="rounded-[1.6rem] border border-slate-200 bg-white p-5 shadow-[0_16px_34px_-28px_rgba(15,23,42,0.35)]">
+              <div className="text-[10px] font-black uppercase tracking-[0.16em] text-slate-400">O que é</div>
+              <h4 className="mt-2 text-base font-black text-slate-900">Deposição material</h4>
+              <p className="mt-2 text-[11px] font-semibold leading-relaxed text-slate-600">
+                Camada voltada a material sedimentável, poeira fugitiva, deposição seca e incômodo ambiental percebido pela população.
+              </p>
+            </div>
+            <div className="rounded-[1.6rem] border border-slate-200 bg-white p-5 shadow-[0_16px_34px_-28px_rgba(15,23,42,0.35)]">
+              <div className="text-[10px] font-black uppercase tracking-[0.16em] text-slate-400">O que não é</div>
+              <h4 className="mt-2 text-base font-black text-slate-900">Não é IQAr</h4>
+              <p className="mt-2 text-[11px] font-semibold leading-relaxed text-slate-600">
+                Não deve ser apresentado como continuação direta da régua de saúde respiratória usada para particulados inaláveis e gases.
+              </p>
+            </div>
+            <div className="rounded-[1.6rem] border border-slate-200 bg-white p-5 shadow-[0_16px_34px_-28px_rgba(15,23,42,0.35)]">
+              <div className="text-[10px] font-black uppercase tracking-[0.16em] text-slate-400">Próxima entrega</div>
+              <h4 className="mt-2 text-base font-black text-slate-900">Memória pública própria</h4>
+              <p className="mt-2 text-[11px] font-semibold leading-relaxed text-slate-600">
+                O caminho correto é criar um eixo com evidências, documentos, ciclos de coleta e leitura territorial específica, separado do painel respiratório.
+              </p>
+            </div>
+          </div>
+
+          <RadarVisualNotice
+            type="quarantine"
+            title="Separação metodológica obrigatória"
+            description="Partículas sedimentáveis podem fortalecer o observatório, mas só como eixo paralelo de deposição material, fiscalização e incômodo ambiental. Misturar essa camada com IQAr enfraquece a defensabilidade técnica do Radar."
+          />
+        </section>
+
         <div className="space-y-4 border-t border-slate-100 pt-4">
           <div className="flex flex-col justify-between gap-4 rounded-2xl border-2 border-emerald-500/30 bg-emerald-50 p-4 text-emerald-950 sm:flex-row sm:items-center">
             <div className="space-y-1">
@@ -354,6 +510,7 @@ export function RadarMethodologyMode({ onNavigate, onOpenLai, onTop }: RadarMeth
             <p className="text-xs font-semibold leading-relaxed text-slate-500">
               Entenda a procedência dos dados, as réguas de validação e as limitações das plataformas públicas.
             </p>
+            <RadarEvidenceBadge level="interpretive" label="Força da evidência" detail="separe dado observado, dado processado e hipótese de interpretação" />
           </div>
 
           <div className="grid gap-6 md:grid-cols-3">

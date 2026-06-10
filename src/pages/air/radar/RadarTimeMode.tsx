@@ -1,6 +1,7 @@
 import { Suspense, lazy } from "react";
 
 import { SurfaceCard } from "../../../components/BrandSystem";
+import { RadarEvidenceBadge } from "./RadarEvidenceBadge";
 import type { RadarComparisonTab, RadarMode } from "./RadarTypes";
 import { RADAR_TIME_TABS } from "./RadarTypes";
 import { RadarMicroguide } from "./RadarMicroguide";
@@ -75,6 +76,11 @@ export function RadarTimeMode({
         <p className="text-xs font-bold text-brand-primary">
           💡 Este modo responde: Como a qualidade do ar variou ao longo dos anos, meses e dias, e em quais períodos ocorreram os maiores picos de poluição?
         </p>
+        <RadarEvidenceBadge
+          level="experimental"
+          label="Leitura histórica experimental"
+          detail="útil para tendência e sazonalidade, com cautela sobre cobertura e ausência de QA/QC oficial explícito por registro"
+        />
       </div>
 
       <RadarMicroguide
@@ -119,6 +125,7 @@ export function RadarTimeMode({
                   <span className="inline-flex items-center gap-1 rounded-full border border-amber-500/20 bg-amber-50 px-2.5 py-0.5 text-[10px] font-black uppercase tracking-wider text-amber-850 shadow-xs">
                     Alguns anos possuem cobertura insuficiente para comparação anual plena.
                   </span>
+                  <RadarEvidenceBadge level="experimental" detail="série pública ampliada, ainda dependente da cobertura instrumental disponível" />
                 </div>
                 <p className="text-xs font-semibold leading-relaxed text-slate-500">
                   Veja como PM10, SO₂ e CO (2013–2026) e PM2.5 (2021–2026) se comportaram nas estações de Volta Redonda, ano a ano, em comparação experimental com as diretrizes da OMS e padrões da CONAMA 506.
@@ -135,6 +142,7 @@ export function RadarTimeMode({
                 <p className="max-w-3xl text-xs font-semibold leading-relaxed text-slate-500">
                   A linha mostra o período coberto pela base pública disponível, não todo o histórico possível de monitoramento.
                 </p>
+                <RadarEvidenceBadge level="strong" label="Cobertura observada" detail="esta visualização mostra o que está publicado na base atual do portal" />
               </div>
 
               <Suspense fallback={<RadarPanelLoadingFallback />}>
@@ -180,6 +188,7 @@ export function RadarTimeMode({
                 <p className="text-xs font-semibold leading-relaxed text-slate-500">
                   Veja quando PM10 e PM2.5 mais se destacaram na série pública, por ano, mês, estação e régua de comparação.
                 </p>
+                <RadarEvidenceBadge level="experimental" detail="episódios dependem de cobertura diária mínima e comparação experimental OMS/CONAMA" />
               </div>
               <Suspense fallback={<RadarPanelLoadingFallback />}>
                 <AttentionEpisodesPanel />
@@ -198,6 +207,7 @@ export function RadarTimeMode({
                 <p className="max-w-3xl text-xs font-semibold leading-relaxed text-slate-600">
                   Aqui não estamos dizendo que o ar foi ruim todos os dias. Estamos mostrando, entre os dias com registro disponível, quando a classificação apareceu como MODERADA ou pior.
                 </p>
+                <RadarEvidenceBadge level="interpretive" label="Leitura de triagem" detail="interpretação pública dos dias medidos; silêncio de dados não equivale a condição boa" />
               </div>
 
               {monthlyProfile.length === 0 ? (
@@ -239,6 +249,7 @@ export function RadarTimeMode({
                 <p className="text-xs font-semibold leading-relaxed text-slate-600">
                   O poluente controlador é aquele que mais pesou no Índice IQAr em determinado registro.
                 </p>
+                <RadarEvidenceBadge level="experimental" detail="o controlador ajuda na leitura de mistura atmosférica, não substitui atribuição causal fechada" />
               </div>
 
               {controllerFreq.length === 0 ? (
@@ -287,6 +298,7 @@ export function RadarTimeMode({
                   <p className="text-xs font-semibold leading-relaxed text-slate-600">
                     Quando a estação fica sem registro público, a população perde o direito de acompanhar o que respirou naquele período.
                   </p>
+                  <RadarEvidenceBadge level="strong" label="Regra transversal do Radar" detail="lacuna de dado é perda de monitoramento, não melhora implícita da qualidade do ar" />
                 </div>
               </div>
 

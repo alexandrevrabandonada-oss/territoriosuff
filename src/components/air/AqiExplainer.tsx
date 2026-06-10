@@ -13,7 +13,7 @@ const CLASSIFICATIONS: ClassificationDetail[] = [
     name: "BOA",
     range: "0 - 40",
     description: "Qualidade do ar considerada satisfatória, apresentando pouco ou nenhum risco à saúde.",
-    effect: "Sem impactos previstos na saúde da população em geral."
+    effect: "Em geral, não se esperam efeitos relevantes para a população geral."
   },
   {
     name: "MODERADA",

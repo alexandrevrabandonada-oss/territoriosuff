@@ -267,7 +267,7 @@ export function IneaMethodologyPage() {
                 Essas leituras físicas horárias brutas são transmitidas pelas estações automáticas oficiais instaladas em Volta Redonda (Belmonte, Retiro e Santa Cecília). É crucial destacar que a base WebLakes original <strong>não disponibiliza uma flag técnica oficial de validação de qualidade (QA/QC) explícita por registro horário</strong>. Dessa forma, as análises de excedência são tratadas estritamente sob o escopo de <strong>comparação experimental</strong>.
               </p>
               <p className="text-sm text-slate-600 font-medium leading-relaxed">
-                <strong>Diferença de Sistemas:</strong> Enquanto a plataforma WebLakes disponibiliza dados horários de concentração (µg/m³), as planilhas oficiais consolidadas de qualidade do ar do INEA (Dados Abertos RJ) apresentam médias de índices adimensionalizados (IQAr) em escala diária. O Observatório do Ar reconcilia essas bases para oferecer uma visão integrada da exposição cívica.
+                <strong>Diferença de Sistemas:</strong> Enquanto a plataforma WebLakes disponibiliza dados horários de concentração (µg/m³), as planilhas oficiais consolidadas de qualidade do ar do INEA (Dados Abertos RJ) apresentam médias de índices adimensionalizados (IQAr) em escala diária. O Observatório do Ar reconcilia essas bases para oferecer uma leitura pública integrada de qualidade do ar e prioridade territorial.
               </p>
             </SurfaceCard>
           </section>
@@ -489,7 +489,7 @@ export function IneaMethodologyPage() {
                 <div className="p-3.5 bg-slate-50 rounded-2xl">
                   <strong>1. Erros de Offset (Deslocamento de Zero):</strong>
                   <p className="mt-1 font-medium text-slate-500">
-                    Ocorrem quando o sensor registra um valor mínimo basal deslocado para cima. Em 2024, a estação Retiro para NO₂ registrou um offset sistemático de aproximadamente +20 µg/m³, distorcendo a exposição crônica anual.
+                    Ocorrem quando o sensor registra um valor mínimo basal deslocado para cima. Em 2024, a estação Retiro para NO₂ registrou um offset sistemático de aproximadamente +20 µg/m³, distorcendo a leitura anual de concentração nesse parâmetro.
                   </p>
                 </div>
                 <div className="p-3.5 bg-slate-50 rounded-2xl">
@@ -928,23 +928,23 @@ export function IneaMethodologyPage() {
             <SurfaceCard className="p-6 bg-white border border-slate-100 rounded-3xl space-y-4">
               <div className="p-4 bg-rose-500/5 border border-rose-500/20 text-rose-950 rounded-2xl text-xs font-bold leading-relaxed">
                 ⚠️ <strong>Nota de Salvaguarda Metodológica Obrigatória:</strong><br />
-                O índice não mede risco individual nem prova causalidade. Ele organiza dados territoriais para indicar áreas onde vulnerabilidade social e exposição ambiental podem se sobrepor.
+                O índice não mede risco individual, não estima dose pessoal e não prova causalidade. Ele organiza dados territoriais para indicar áreas onde sensibilidade social e sinais ambientais podem se sobrepor, apoiando priorização pública.
               </div>
 
               <div className="space-y-3.5 text-sm text-slate-600 font-medium leading-relaxed">
                 <p>
-                  A justiça ambiental baseia-se no princípio de que nenhuma comunidade deve suportar uma carga desproporcional de consequências ambientais negativas devido à sua condição socioeconômica ou demográfica. Em Volta Redonda, a sobreposição histórica de bairros residenciais populosos e a proximidade do complexo metalúrgico da Usina Presidente Vargas (CSN) criam dinâmicas complexas de exposição crônica.
+                  A justiça ambiental parte do princípio de que nenhuma comunidade deve ficar sistematicamente mais exposta a pressões ambientais por sua condição socioeconômica, territorial ou demográfica. Em Volta Redonda, a sobreposição entre bairros residenciais populosos, equipamentos sociais e proximidade do complexo metalúrgico da Usina Presidente Vargas (CSN) exige leitura pública cuidadosa, sem transformar o índice em laudo causal.
                 </p>
                 <p>
                   <strong>Metodologia do Índice de Exposição Social (v0):</strong>
                 </p>
                 <ul className="list-disc list-inside space-y-2 pl-2 text-xs">
-                  <li><strong>Vulnerabilidade Social (Peso 0.6):</strong> Focado em demografia biologicamente sensível. Reúne a taxa de crianças de 0 a 5 anos (cujos sistemas respiratórios estão em formação) e idosos de 60 anos ou mais (propensos a agravamento de comorbidades cardíacas e pulmonares).</li>
-                  <li><strong>Proxy Socioeconômica (Peso 0.4):</strong> Baseado na proporção de domicílios particulares permanentes com rendimento per capita de até meio salário mínimo (Censo IBGE 2022). Esse proxy reflete a capacidade financeira de adaptação da população.</li>
-                  <li><strong>Exposição Atmosférica Combinada:</strong> Fatores geográficos que integram a distância linear até as fontes emissoras industriais e o comportamento dos ventos locais descritos na camada meteorológica v1.6.1 (corredor Noroeste-Sudeste).</li>
+                  <li><strong>Sensibilidade Social (Peso 0.6):</strong> Focado em demografia mais sensível a contextos de poluição persistente. Reúne a taxa de crianças de 0 a 5 anos e idosos de 60 anos ou mais, sem inferir diagnóstico individual.</li>
+                  <li><strong>Proxy Socioeconômica (Peso 0.4):</strong> Baseado na proporção de domicílios particulares permanentes com rendimento per capita de até meio salário mínimo (Censo IBGE 2022). Esse proxy indica menor margem material de adaptação e resposta, sem representar vulnerabilidade clínica individual.</li>
+                  <li><strong>Pressão Atmosférica Territorial:</strong> Fatores geográficos que integram distância linear até áreas industriais e comportamento dos ventos locais descritos na camada meteorológica v1.6.1 (corredor Noroeste-Sudeste), como aproximação territorial de prioridade pública.</li>
                 </ul>
                 <p>
-                  Este índice serve como uma ferramenta de planejamento para priorizar a distribuição de arborização urbana, instalação de barreiras físicas (green belts), monitoramento de saúde na atenção primária e direcionamento de investimentos públicos municipais.
+                  Este índice serve como ferramenta de planejamento para priorizar arborização urbana, barreiras vegetadas, atenção territorial da saúde pública e direcionamento de investimentos municipais. Ele não substitui investigação epidemiológica, fiscalização ambiental ou perícia técnica.
                 </p>
               </div>
             </SurfaceCard>

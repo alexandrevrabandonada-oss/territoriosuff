@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 
+import { RadarEvidenceBadge } from "./RadarEvidenceBadge";
 import type { BreakdownItem, LatestResult, SummaryStats, RadarComparisonTab, RadarMode } from "./RadarTypes";
 import { getIneaClassificationStyle } from "./RadarTypes";
 import { RadarModeFooter } from "./RadarModeFooter";
@@ -45,6 +46,18 @@ export function RadarOverviewMode({
         <p className="text-sm font-medium text-slate-600">
           Consulte o ranking de atenção das estações e as últimas medições consolidadas na base pública oficial.
         </p>
+        <div className="flex flex-wrap gap-2 pt-1">
+          <RadarEvidenceBadge
+            level="interpretive"
+            label="Painel de triagem"
+            detail="esta visão geral ajuda a priorizar leitura pública; ela não substitui a checagem de cobertura, séries e metodologia"
+          />
+          <RadarEvidenceBadge
+            level="experimental"
+            label="Base pública processada"
+            detail="números consolidados a partir da base pública aberta com cautela metodológica"
+          />
+        </div>
       </div>
 
       <div className="grid gap-4 xl:grid-cols-[1.35fr_1fr_1fr]">
@@ -64,6 +77,11 @@ export function RadarOverviewMode({
               <p className="max-w-md text-[13px] font-semibold leading-relaxed text-[#92400e]">
                 Registrou {topStation?.moderateOrWorseDays || 0} dias com classificação Moderada ou pior na base pública consolidada.
               </p>
+              <RadarEvidenceBadge
+                level="interpretive"
+                label="Onde olhar primeiro"
+                detail="priorização editorial baseada nos dias medidos e classificados, não diagnóstico fechado do território inteiro"
+              />
             </div>
 
             <div className="grid gap-3 sm:grid-cols-2">
@@ -102,7 +120,7 @@ export function RadarOverviewMode({
             <div className="mt-3 text-4xl font-black tracking-tight text-[#7f1d1d]">60k+</div>
           </div>
           <p className="text-[12px] font-semibold leading-relaxed opacity-90">
-            Moradores em áreas vizinhas aos complexos industriais e sob dispersão frequente de emissões.
+            Moradores em áreas que merecem atenção territorial reforçada pela proximidade industrial e pela leitura pública de dispersão atmosférica.
           </p>
         </div>
 
@@ -113,6 +131,9 @@ export function RadarOverviewMode({
               <p className="mt-1 text-xs font-semibold text-slate-500">
                 Estações com mais dias com classificação Moderada ou pior na base.
               </p>
+              <div className="mt-2">
+                <RadarEvidenceBadge level="experimental" detail="ranking depende da cobertura publicada e do histórico consolidado disponível" />
+              </div>
             </div>
             <div className="rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-[10px] font-bold text-slate-600">
               Controlador recorrente: <strong className="text-[#0e2c45]">{displaySummary.mostFrequentControllingPollutant}</strong>
@@ -158,6 +179,7 @@ export function RadarOverviewMode({
             <p className="text-xs font-semibold leading-relaxed text-slate-600">
               Use este painel como triagem: veja quem concentrou mais dias de atenção, compare a última base consolidada e só depois mergulhe em séries e territórios.
             </p>
+            <RadarEvidenceBadge level="interpretive" detail="use como porta de entrada; confirme a leitura nos modos Tempo, Território e Metodologia" />
           </div>
 
           <div className="mt-4 grid gap-3">
@@ -210,6 +232,9 @@ export function RadarOverviewMode({
               <div>
                 <h2 className="text-[11px] font-black uppercase tracking-[0.2em] text-slate-400">Leitura de situação</h2>
                 <p className="mt-1 text-xs font-semibold text-slate-500">Últimos dados consolidados transformados em quadro de atenção pública.</p>
+                <div className="mt-2">
+                  <RadarEvidenceBadge level="experimental" label="Últimas leituras consolidadas" detail="quadro operacional útil para atenção pública, sem substituir auditoria de cobertura e séries" />
+                </div>
               </div>
               <div className="rounded-full bg-slate-900 px-3 py-1 text-[10px] font-black uppercase tracking-[0.16em] text-white">
                 Painel operacional
@@ -294,6 +319,7 @@ export function RadarOverviewMode({
               <p className="max-w-2xl text-sm font-semibold leading-relaxed text-slate-600">
                 Você ainda pode usar o Radar para entender o território, ler o histórico, comparar referências de qualidade do ar e verificar a metodologia pública.
               </p>
+              <RadarEvidenceBadge level="insufficient" label="Sem rodada recente consolidada" detail="quando falta leitura recente, a interpretação deve migrar para histórico, cobertura e metodologia" />
             </div>
 
             <div className="mt-5 grid gap-3 md:grid-cols-2 xl:grid-cols-4">
@@ -384,10 +410,10 @@ export function RadarOverviewMode({
               <span className="block text-[9px] font-black uppercase tracking-wider text-emerald-700">Eixo 3 · Saúde Coletiva</span>
               <h3 className="flex items-center gap-1.5 text-sm font-black text-[#064e3b]"><span>🏥</span> CUIDAR: Reforçar UBS nos Territórios Críticos</h3>
               <p className="text-xs font-semibold leading-relaxed text-[#064e3b] opacity-90">
-                Reforçar equipes médicas e insumos respiratórios nas UBS e UPAs localizadas nas zonas urbanas de maior exposição crônica.
+                Reforçar equipes médicas e insumos respiratórios nas UBS e UPAs localizadas nos recortes urbanos de maior prioridade territorial.
               </p>
               <div className="rounded-xl border border-emerald-200 bg-white/60 p-3 text-xs font-bold text-[#064e3b]">
-                🎯 <strong>Ação Direta:</strong> Priorizar atendimentos e exames preventivos voltados a grupos de alta vulnerabilidade nos bairros sob maior pluma.
+                🎯 <strong>Ação Direta:</strong> Priorizar atendimentos e exames preventivos voltados a grupos de alta vulnerabilidade nos bairros com maior convergência entre sensibilidade social, cobertura pública e pressão ambiental.
               </div>
             </div>
             <button
@@ -403,10 +429,10 @@ export function RadarOverviewMode({
               <span className="block text-[9px] font-black uppercase tracking-wider text-emerald-700">Eixo 4 · Blindagem Física</span>
               <h3 className="flex items-center gap-1.5 text-sm font-black text-[#064e3b]"><span>🌳</span> PROTEGER: Arborização e Cortinas Verdes</h3>
               <p className="text-xs font-semibold leading-relaxed text-[#064e3b] opacity-90">
-                Criar cinturões arbóreos e cortinas verdes para blindar fisicamente equipamentos sociais cruciais.
+                Criar cinturões arbóreos e cortinas verdes para proteger fisicamente equipamentos sociais em áreas prioritárias.
               </p>
               <div className="rounded-xl border border-emerald-200 bg-white/60 p-3 text-xs font-bold text-[#064e3b]">
-                🎯 <strong>Ação Direta:</strong> Exigir o plantio de cortinas verdes no entorno de creches, escolas, CRAS e postos de saúde nas áreas mais expostas.
+                🎯 <strong>Ação Direta:</strong> Exigir o plantio de cortinas verdes no entorno de creches, escolas, CRAS e postos de saúde nas áreas priorizadas pelo cruzamento territorial do Radar.
               </div>
             </div>
             <button

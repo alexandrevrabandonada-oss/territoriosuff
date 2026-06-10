@@ -1,6 +1,7 @@
-import { ATTENTION_EPISODES } from '../../data/air/attention-episodes-2020-2026';
+import type { AttentionEpisode } from '../../lib/air/attentionEpisodesLoader';
 
 interface SeasonalityHeatmapProps {
+  episodes: AttentionEpisode[];
   selectedPollutant: 'PM10' | 'PM2.5';
   selectedYear: number;
   selectedRegime: 'OMS' | 'CONAMA';
@@ -29,6 +30,7 @@ const MONTHS = [
 ];
 
 export function SeasonalityHeatmap({
+  episodes,
   selectedPollutant,
   selectedYear,
   selectedRegime,
@@ -38,7 +40,7 @@ export function SeasonalityHeatmap({
   // Helpers to fetch data
   const getCellData = (stationId: string, monthId: string) => {
     const monthKey = `${selectedYear}-${monthId}`;
-    return ATTENTION_EPISODES.find(
+    return episodes.find(
       ep =>
         ep.year === selectedYear &&
         ep.pollutant === selectedPollutant &&

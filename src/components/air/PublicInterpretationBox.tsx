@@ -13,6 +13,11 @@ export function PublicInterpretationBox() {
           <h3 className="font-bold text-amber-900 text-sm uppercase tracking-wider">
             Como Interpretar estes Achados Cidadãos?
           </h3>
+          <div className="inline-flex items-center gap-2 rounded-full border border-amber-300 bg-white/70 px-3 py-1 text-[10px] font-black text-amber-900">
+            <span className="h-2 w-2 rounded-full bg-amber-500" />
+            <span className="uppercase tracking-[0.16em]">Leitura pública de atenção</span>
+            <span className="hidden font-semibold normal-case text-amber-800/80 md:inline">use este quadro para cobrança cívica, não como substituto de perícia ou laudo causal</span>
+          </div>
           <div className="text-xs leading-relaxed text-amber-800 space-y-3 font-medium">
             <p>
               A análise da qualidade do ar em Volta Redonda baseia-se em <strong>dados oficiais processados</strong> oriundos do INEA. 
@@ -24,6 +29,9 @@ export function PublicInterpretationBox() {
               </li>
               <li>
                 <strong>Valores do Índice, Não Massa Física:</strong> O Radar do Ar exibe a <strong>classificação oficial do índice</strong> IQAr (subíndices adimensionais), não a concentração física de poluentes de forma direta (microgramas por metro cúbico). Um índice elevado reflete o cruzamento estatístico da medição com faixas regulamentares oficiais.
+              </li>
+              <li>
+                <strong>Território como Prioridade, Não Sentença:</strong> Quando um bairro, setor ou equipamento social aparece como prioritário, isso significa que ele merece mais monitoramento, prevenção e resposta pública. Não significa que todos os moradores sofreram o mesmo nível de exposição nem que já exista nexo causal individual demonstrado.
               </li>
               <li>
                 <strong>Monitoramento Batch:</strong> Lembre-se de que os dados são processados a partir de planilhas públicas atualizadas periodicamente pelo INEA, não representando fluxo contínuo minuto a minuto.

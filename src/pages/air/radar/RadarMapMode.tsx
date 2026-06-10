@@ -1,8 +1,13 @@
+import { Suspense, lazy } from "react";
 import { SurfaceCard } from "../../../components/BrandSystem";
-import { AirAtlasMap } from "../../../components/air/AirAtlasMap";
+import { LoadingCard } from "../../../components/LoadingCard";
 import type { RadarComparisonTab, RadarMode } from "./RadarTypes";
 import { RadarMicroguide } from "./RadarMicroguide";
 import { RadarModeFooter } from "./RadarModeFooter";
+
+const AirAtlasMap = lazy(() =>
+  import("../../../components/air/AirAtlasMap").then((module) => ({ default: module.AirAtlasMap })),
+);
 
 interface RadarMapModeProps {
   onNavigate: (mode: RadarMode, tab?: RadarComparisonTab) => void;
@@ -31,7 +36,9 @@ export function RadarMapMode({ onNavigate, onTop }: RadarMapModeProps) {
       />
 
       <div className="space-y-8">
-        <AirAtlasMap />
+        <Suspense fallback={<LoadingCard message="Carregando mapa interativo..." />}>
+          <AirAtlasMap />
+        </Suspense>
 
         <div className="grid gap-6 md:grid-cols-2">
           <SurfaceCard className="space-y-2.5 rounded-2xl border border-slate-100 bg-white/80 p-5 text-xs shadow-xs">

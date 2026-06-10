@@ -1,23 +1,6 @@
-import { useState } from "react";
-import matrixData from "../../../data/air/availability-matrix.json";
+import { useEffect, useMemo, useState } from "react";
+import { loadAvailabilityMatrix, type AvailabilityEntry } from "../../lib/air/availabilityMatrixLoader";
 import { SurfaceCard } from "../BrandSystem";
-
-interface AvailabilityEntry {
-  station_id: string;
-  station_name: string;
-  parameter_id: string;
-  pollutant: string;
-  year: number;
-  sampled_windows: number;
-  windows_with_data: number;
-  estimated_availability: string;
-  unit_detected: string;
-  parser_status: string;
-  min_sample_value: number | null;
-  max_sample_value: number | null;
-  zeros_count: number;
-  notes: string;
-}
 
 const STATIONS = [
   { id: "69", name: "VR - Belmonte" },
@@ -88,14 +71,41 @@ const STATUS_CONFIG: Record<string, { label: string; colorClass: string; bgClass
 export function DataAvailabilityMatrix() {
   const [selectedStation, setSelectedStation] = useState("70");
   const [selectedCell, setSelectedCell] = useState<AvailabilityEntry | null>(null);
+  const [entries, setEntries] = useState<AvailabilityEntry[]>([]);
+  const [loadingEntries, setLoadingEntries] = useState(true);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    loadAvailabilityMatrix()
+      .then((data) => {
+        if (!cancelled) {
+          setEntries(data);
+        }
+      })
+      .catch(() => {
+        if (!cancelled) {
+          setEntries([]);
+        }
+      })
+      .finally(() => {
+        if (!cancelled) {
+          setLoadingEntries(false);
+        }
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  const entriesByStationYearPollutant = useMemo(
+    () => new Map(entries.map((entry) => [`${entry.station_id}:${entry.year}:${entry.pollutant}`, entry] as const)),
+    [entries]
+  );
 
   const getCellData = (year: number, pollutant: string): AvailabilityEntry | undefined => {
-    return (matrixData as AvailabilityEntry[]).find(
-      (entry) =>
-        entry.station_id === selectedStation &&
-        entry.year === year &&
-        entry.pollutant === pollutant
-    );
+    return entriesByStationYearPollutant.get(`${selectedStation}:${year}:${pollutant}`);
   };
 
   const handleCellClick = (entry: AvailabilityEntry | undefined) => {
@@ -135,6 +145,12 @@ export function DataAvailabilityMatrix() {
         </div>
       </div>
 
+      {loadingEntries ? (
+        <div className="rounded-2xl border border-slate-100 bg-slate-50/60 p-8 text-center text-sm font-semibold text-slate-500">
+          Carregando matriz amostral de disponibilidade...
+        </div>
+      ) : (
+        <>
       {/* Main Grid View */}
       <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-6 items-start">
         {/* Grid Table */}
@@ -259,6 +275,8 @@ export function DataAvailabilityMatrix() {
       <div className="p-4 bg-blue-50/50 border border-blue-500/10 rounded-2xl text-xs text-blue-700 leading-relaxed font-semibold">
         <strong>Nota Regulamentar:</strong> Esta matriz mostra disponibilidade amostral pontual de dados e foi estruturada apenas como indicação cívica experimental do portal. Não substitui e não invalida o processo de coleta histórica integral do Observatório do Ar.
       </div>
+        </>
+      )}
     </SurfaceCard>
   );
 }

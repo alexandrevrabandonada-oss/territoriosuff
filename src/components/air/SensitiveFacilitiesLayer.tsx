@@ -1,7 +1,7 @@
 import React from 'react';
 import { Marker, Popup } from 'react-leaflet';
 import L from 'leaflet';
-import { SENSITIVE_FACILITIES, Facility } from '../../data/social/sensitive-facilities';
+import type { Facility } from '../../data/social/sensitive-facilities';
 
 // Create a custom styled marker icon for facilities
 function getFacilityIcon(type: Facility['type']) {
@@ -39,14 +39,15 @@ function getFacilityIcon(type: Facility['type']) {
 }
 
 interface SensitiveFacilitiesLayerProps {
+  facilities: Facility[];
   visible: boolean;
   selectedTypes: Facility['type'][];
 }
 
-export function SensitiveFacilitiesLayer({ visible, selectedTypes }: SensitiveFacilitiesLayerProps) {
+export function SensitiveFacilitiesLayer({ facilities, visible, selectedTypes }: SensitiveFacilitiesLayerProps) {
   if (!visible) return null;
 
-  const filteredFacilities = SENSITIVE_FACILITIES.filter(facility => {
+  const filteredFacilities = facilities.filter(facility => {
     return selectedTypes.includes(facility.type);
   });
 

@@ -564,7 +564,7 @@ export function YearExplorer() {
                       <strong className="text-rose-500 font-mono">2 dias</strong>
                     </div>
                     <p className="text-[11px] text-slate-400 leading-relaxed pt-2 border-t border-slate-800">
-                      Estudo publicado na RBCIamb demonstrou forte associação estatística entre estes picos de poluição atmosférica registrada em Volta Redonda e as internações por doenças respiratórias de crianças e idosos locais.
+                      Estudo publicado na RBCIamb relatou associação estatística relevante entre episódios de poluição atmosférica em Volta Redonda e internações respiratórias em grupos sensíveis. No Radar, essa referência deve ser lida como apoio contextual de saúde pública, não como nexo causal individual.
                     </p>
                   </>
                 ) : (

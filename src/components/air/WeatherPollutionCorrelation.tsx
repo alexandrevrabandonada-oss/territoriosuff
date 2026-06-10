@@ -12,6 +12,11 @@ export function WeatherPollutionCorrelation() {
         <p className="text-xs text-slate-500 font-medium">
           Série histórica de estagnação de ventos e eventos de baixa dispersão atmosférica.
         </p>
+        <div className="inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-[10px] font-black text-emerald-800">
+          <span className="h-2 w-2 rounded-full bg-emerald-500" />
+          <span className="uppercase tracking-[0.16em]">Vento observado</span>
+          <span className="hidden font-semibold normal-case text-emerald-700/80 md:inline">calmaria e dispersão usam a camada de vento como base mais forte</span>
+        </div>
       </div>
 
       {/* High-level metrics */}
@@ -47,7 +52,7 @@ export function WeatherPollutionCorrelation() {
           💨 <strong>O Fenômeno da Calmaria:</strong> A calmaria (ventos abaixo de 1.5 m/s) reduz drasticamente a taxa de dispersão horizontal de poluentes urbanos e industriais. Quando o ar se move lentamente, a poluição gerada localmente se acumula sobre a cidade em vez de ser transportada para longe da mancha urbana.
         </p>
         <p>
-          🌡️ **Efeito Noturno e Inversão Térmica:** Durante a noite e nas primeiras horas da manhã, a calmaria frequentemente coincide com a inversão térmica (camada de ar frio sob o ar quente), agindo como uma tampa física invisível que aprisiona o material particulado (PM10 e PM2.5) perto do solo.
+          🌡️ <strong>Efeito noturno como hipótese física:</strong> Durante a noite e nas primeiras horas da manhã, a calmaria pode coincidir com condições favoráveis à inversão térmica, aprisionando material particulado perto do solo. Esta leitura deve ser entendida como interpretação atmosférica plausível, não como prova instrumental direta de cada episódio.
         </p>
       </div>
 

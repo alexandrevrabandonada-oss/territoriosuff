@@ -11,6 +11,11 @@ export function RainWashEffectPanel() {
         <p className="text-xs text-slate-500 font-medium">
           O papel da precipitação hídrica na limpeza e remoção física de material particulado.
         </p>
+        <div className="inline-flex items-center gap-2 rounded-full border border-indigo-200 bg-indigo-50 px-3 py-1 text-[10px] font-black text-indigo-900">
+          <span className="h-2 w-2 rounded-full bg-indigo-500" />
+          <span className="uppercase tracking-[0.16em]">Condição estimada</span>
+          <span className="hidden font-semibold normal-case text-indigo-800/80 md:inline">interpretação auxiliar; a leitura de chuva não deve ser tratada como medição local equivalente ao vento observado</span>
+        </div>
       </div>
 
       {/* Main visual side-by-side comparison */}
@@ -84,7 +89,7 @@ export function RainWashEffectPanel() {
           🌧️ <strong>Lavagem atmosférica pela chuva (*Wet Deposition*):</strong> A precipitação pluvial atua como um coletor físico natural. As gotas de água colidem com as partículas em suspensão, limpando a coluna de ar e depositando os compostos no solo e corpos d'água. 
         </p>
         <p>
-          📉 <strong>Redução Significativa de Picos:</strong> Durante as chuvas de verão, Volta Redonda atinge os menores índices horários médios de poluição do ano civil, mesmo sob plena atividade das fontes emissoras locais. Em contraste, a estiagem prolongada do inverno retira essa barreira natural de remoção hídrica, estendendo a permanência de poluentes na atmosfera.
+          📉 <strong>Redução de picos como leitura auxiliar:</strong> Durante períodos chuvosos, a série sugere queda dos índices horários médios de poluição. Esta interpretação ajuda a entender a remoção hídrica de partículas, mas deve ser lida como apoio analítico, não como prova isolada de causa e efeito em cada episódio.
         </p>
       </div>
     </SurfaceCard>

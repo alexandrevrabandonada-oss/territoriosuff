@@ -94,6 +94,11 @@ export function WindRosePanel() {
           <p className="text-xs text-slate-500 font-medium">
             Influência da rosa dos ventos na distribuição e transporte de poluentes.
           </p>
+          <div className="inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-[10px] font-black text-emerald-800">
+            <span className="h-2 w-2 rounded-full bg-emerald-500" />
+            <span className="uppercase tracking-[0.16em]">Vento observado</span>
+            <span className="hidden font-semibold normal-case text-emerald-700/80 md:inline">setores de direção e velocidade vêm da camada de vento mais confiável do sistema</span>
+          </div>
         </div>
         <div className="flex bg-slate-100 p-1 rounded-xl self-start">
           <button
@@ -208,7 +213,7 @@ export function WindRosePanel() {
                 Ao mapear as concentrações médias de SO₂ por direção, observa-se uma elevação nas leituras médias quando o vento sopra do quadrante **SSE/SE**. 
               </p>
               <p className="text-xs leading-relaxed text-slate-600 font-medium">
-                Geograficamente, este setor alinha-se com a área da Usina Siderúrgica Presidente Vargas (CSN) localizada a sudeste da estação Retiro. Isso indica o transporte físico da pluma industrial na direção dos bairros residenciais.
+                Geograficamente, este setor alinha-se com a área da Usina Siderúrgica Presidente Vargas (CSN) localizada a sudeste da estação Retiro. Isso sugere compatibilidade com transporte físico da pluma industrial na direção dos bairros residenciais, mas não prova fonte isolada sem auditoria complementar.
               </p>
             </div>
           )}
