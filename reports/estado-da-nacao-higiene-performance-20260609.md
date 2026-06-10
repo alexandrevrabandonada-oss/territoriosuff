@@ -22,6 +22,7 @@ Rodada automatizada de estabilizacao e performance de baixo risco, sem alterar d
 - `uplot` isolado em `vendor-uplot`.
 - `RadarTimeMode` passou a lazy-load de paineis internos pesados (`YearExplorer`, `ParticulateTimeline2020_2026`, `IneaHistoricalTimeline`, `AttentionEpisodesPanel`, `ThresholdComparisonPanel`, `AqiChart`).
 - `IneaMethodologyPage` passou a deferir `DATA_DICTIONARY` e `DataAvailabilityMatrix`.
+- Resumos anuais `summary-YYYY` passaram a carregar via loader dinamico com cache, em vez de entrarem estaticamente nos paineis temporais.
 
 ## Resultado observado
 
@@ -50,6 +51,17 @@ Rodada automatizada de estabilizacao e performance de baixo risco, sem alterar d
   - `IneaHistoricalTimeline`: `4.02 kB`
   - `AqiChart`: `2.61 kB`
 
+### Melhoria nos resumos anuais
+
+- `YearExplorer` passou a aproximadamente `23.27 kB`.
+- `ThresholdComparisonPanel` passou a aproximadamente `21.49 kB`.
+- `ParticulateTimeline2020_2026` passou a aproximadamente `20.26 kB`.
+- O antigo peso concentrado em `summary-2026` foi quebrado em chunks anuais carregados sob demanda, por exemplo:
+  - `summary-2026`: `16.48 kB`
+  - `summary-2024`: `23.66 kB`
+  - `summary-2025`: `39.30 kB`
+  - `summary-2020`: `37.51 kB`
+
 ### Melhoria na metodologia
 
 - `IneaMethodologyPage` caiu de aproximadamente `221.95 kB` para `51.61 kB`.
@@ -62,13 +74,11 @@ Rodada automatizada de estabilizacao e performance de baixo risco, sem alterar d
 Os maiores remanescentes desta foto de build sao:
 
 - `vendor-pdf`: `486.69 kB`
+- `index.css`: `386.00 kB`
 - `AttentionEpisodesPanel`: `175.22 kB`
-- `ParticulateTimeline2020_2026`: `163.31 kB`
-- `summary-2026`: `187.47 kB`
-- `DataAvailabilityMatrix`: `158.58 kB`
 - `vendor-supabase`: `170.74 kB`
 - `vendor-maps`: `161.21 kB`
-- `index.css`: `385.87 kB`
+- `DataAvailabilityMatrix`: `158.58 kB`
 
 ## Leitura tecnica
 
@@ -76,9 +86,9 @@ Os maiores remanescentes desta foto de build sao:
 
 Isso ja e um ganho porque o custo nao contamina mais rotas comuns. O proximo passo nao e "quebrar" o PDF no escuro, e sim identificar quais fluxos realmente precisam desse runtime no primeiro paint.
 
-### 2. `RadarTimeMode` deixou de ser o gargalo monolitico
+### 2. Os gargalos migraram para componentes e runtimes especificos
 
-O roteamento do Radar ja usava `lazy()`. Nesta rodada, o problema interno do modo de tempo tambem foi quebrado por painel. O proximo alvo deixa de ser o container `RadarTimeMode` e passa a ser os paineis historicos maiores, principalmente `AttentionEpisodesPanel`, `ParticulateTimeline2020_2026` e o dataset `summary-2026`.
+O roteamento do Radar ja usava `lazy()`. Agora os custos mais relevantes deixaram de estar em containers monoliticos e passaram a ficar concentrados em componentes ou runtimes mais claros, principalmente `AttentionEpisodesPanel`, `DataAvailabilityMatrix`, `vendor-pdf`, `vendor-maps` e `index.css`.
 
 ### 3. CSS global ainda esta volumoso
 
@@ -88,10 +98,10 @@ Ha sinais de acoplamento visual excessivo no CSS compilado. Nao e urgente para e
 
 ### Prioridade 1
 
-1. Revisar `RadarTimeMode` por sub-blocos e dependencias de grafico.
-2. Medir de onde vem `summary-2026` e confirmar se parte desse peso pode virar carga tardia.
-3. Avaliar se `AttentionEpisodesPanel` e `ParticulateTimeline2020_2026` merecem subdivisao adicional ou carga por recorte.
-4. Verificar se `DataAvailabilityMatrix` precisa realmente carregar a matriz completa de uma vez ou se pode paginar/segmentar.
+1. Avaliar se `AttentionEpisodesPanel` merece subdivisao adicional ou carga por recorte.
+2. Verificar se `DataAvailabilityMatrix` precisa realmente carregar a matriz completa de uma vez ou se pode paginar/segmentar.
+3. Auditar `vendor-pdf` no fluxo publico para confirmar onde o runtime completo e realmente necessario.
+4. Revisar `AirAtlasMap` e `SocialExposureMap` para confirmar se o custo de `vendor-maps` pode ser mais adiado.
 
 ### Prioridade 2
 
@@ -118,7 +128,8 @@ Baixo para regressao funcional nas entregas desta rodada. As mudancas publicadas
 - `1c6fb8f` - stabilize smoke checks and cleanup warnings
 - `ef89bde` - improve route-level code splitting and bundle chunking
 - `2bef2fd` - split RadarTimeMode panels into lazy chunks
+- `05a860c` - defer methodology heavy sections
 
 ## Proximo passo recomendado
 
-Abrir a proxima rodada em cima de `src/pages/air/radar/RadarTimeMode.tsx`, porque e o maior peso publico ainda restante e o melhor candidato a ganho perceptivel sem tocar em regras de negocio.
+Abrir a proxima rodada em cima de `src/components/air/AttentionEpisodesPanel.tsx` ou do fluxo publico de PDF, porque agora sao os gargalos mais claros e com melhor custo-beneficio para uma nova rodada de reducao.

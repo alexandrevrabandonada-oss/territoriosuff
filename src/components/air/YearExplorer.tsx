@@ -1,14 +1,8 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { SurfaceCard, Chip } from '../BrandSystem';
 import { SITES } from '../../lib/inea/weblakesDictionary';
 import { AUDIT_MODE_2024 } from '../../lib/inea/auditFlags';
-import summary2020 from '../../../data/inea_weblakes_normalized/summary-2020.json';
-import summary2021 from '../../../data/inea_weblakes_normalized/summary-2021.json';
-import summary2022 from '../../../data/inea_weblakes_normalized/summary-2022.json';
-import summary2023 from '../../../data/inea_weblakes_normalized/summary-2023.json';
-import summary2024 from '../../../data/inea_weblakes_normalized/summary-2024.json';
-import summary2025 from '../../../data/inea_weblakes_normalized/summary-2025.json';
-import summary2026 from '../../../data/inea_weblakes_normalized/summary-2026.json';
+import { loadIneaSummaryYear } from '../../lib/inea/summaryLoader';
 
 interface MonthStat {
   mean: number | null;
@@ -42,18 +36,37 @@ interface StationData {
   pollutants: Record<string, PollutantStat>;
 }
 
-const SUMMARIES: Record<string, Record<string, StationData>> = {
-  "2020": summary2020 as any,
-  "2021": summary2021 as any,
-  "2022": summary2022 as any,
-  "2023": summary2023 as any,
-  "2024": summary2024 as any,
-  "2025": summary2025 as any,
-  "2026": summary2026 as any
-};
-
 export function YearExplorer() {
   const [selectedYear, setSelectedYear] = useState<string>("2024");
+  const [summary, setSummary] = useState<Record<string, StationData> | null>(null);
+  const [loadingSummary, setLoadingSummary] = useState(true);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    setLoadingSummary(true);
+    loadIneaSummaryYear(selectedYear)
+      .then((data) => {
+        if (!cancelled) {
+          setSummary((data as Record<string, StationData> | null) ?? null);
+        }
+      })
+      .catch((err) => {
+        console.error("Failed to load year summary:", err);
+        if (!cancelled) {
+          setSummary(null);
+        }
+      })
+      .finally(() => {
+        if (!cancelled) {
+          setLoadingSummary(false);
+        }
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [selectedYear]);
 
   const getExposureNotePM10 = (stationId: string, year: string, pData: any) => {
     if (!pData) return null;
@@ -240,7 +253,7 @@ export function YearExplorer() {
                 );
               }
 
-              const stationData = SUMMARIES[year]?.[stationId];
+              const stationData = summary?.[stationId];
               if (!stationData) return null;
               const pData = stationData.pollutants["18"]; // PM10 only
               if (!pData) return null;
@@ -347,7 +360,7 @@ export function YearExplorer() {
 
                 <div className="grid gap-6 md:grid-cols-3">
                   {["69", "70", "71"].map((stationId) => {
-                    const stationData = SUMMARIES[year]?.[stationId];
+                    const stationData = summary?.[stationId];
                     const pData = stationData?.pollutants["20"];
                     const site = SITES[stationId];
 
@@ -428,6 +441,18 @@ export function YearExplorer() {
   const renderPre2024 = (period: string) => {
     // 2013-2015 or 2015
     const isTrienio = period === "2013-2015";
+
+    if (loadingSummary) {
+      return (
+        <SurfaceCard className="bg-slate-900 border border-slate-800 p-6 rounded-2xl">
+          <div className="animate-pulse space-y-3">
+            <div className="h-4 w-48 rounded-full bg-slate-800" />
+            <div className="h-24 rounded-2xl bg-slate-800/80" />
+            <div className="h-24 rounded-2xl bg-slate-800/60" />
+          </div>
+        </SurfaceCard>
+      );
+    }
 
     return (
       <div className="space-y-6">

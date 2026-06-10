@@ -1,36 +1,6 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { SurfaceCard } from '../BrandSystem';
-import summary2013 from '../../../data/inea_weblakes_normalized/summary-2013.json';
-import summary2014 from '../../../data/inea_weblakes_normalized/summary-2014.json';
-import summary2015 from '../../../data/inea_weblakes_normalized/summary-2015.json';
-import summary2016 from '../../../data/inea_weblakes_normalized/summary-2016.json';
-import summary2017 from '../../../data/inea_weblakes_normalized/summary-2017.json';
-import summary2018 from '../../../data/inea_weblakes_normalized/summary-2018.json';
-import summary2019 from '../../../data/inea_weblakes_normalized/summary-2019.json';
-import summary2020 from '../../../data/inea_weblakes_normalized/summary-2020.json';
-import summary2021 from '../../../data/inea_weblakes_normalized/summary-2021.json';
-import summary2022 from '../../../data/inea_weblakes_normalized/summary-2022.json';
-import summary2023 from '../../../data/inea_weblakes_normalized/summary-2023.json';
-import summary2024 from '../../../data/inea_weblakes_normalized/summary-2024.json';
-import summary2025 from '../../../data/inea_weblakes_normalized/summary-2025.json';
-import summary2026 from '../../../data/inea_weblakes_normalized/summary-2026.json';
-
-const SUMMARIES: Record<string, any> = {
-  "2013": summary2013,
-  "2014": summary2014,
-  "2015": summary2015,
-  "2016": summary2016,
-  "2017": summary2017,
-  "2018": summary2018,
-  "2019": summary2019,
-  "2020": summary2020,
-  "2021": summary2021,
-  "2022": summary2022,
-  "2023": summary2023,
-  "2024": summary2024,
-  "2025": summary2025,
-  "2026": summary2026
-};
+import { loadIneaSummaryYear } from '../../lib/inea/summaryLoader';
 
 const STATIONS = [
   { id: "69", name: "VR - Belmonte", shortName: "Belmonte", desc: "Região residencial próxima à divisa municipal." },
@@ -49,6 +19,8 @@ export function ParticulateTimeline2020_2026() {
   const [selectedYear, setSelectedYear] = useState<string>("2025");
   const [selectedPollutant, setSelectedPollutant] = useState<string>("18"); // 18 = PM10, 20 = PM2.5, 23 = SO2, 3 = CO
   const [selectedStation, setSelectedStation] = useState<string>("69"); // Highlighted station
+  const [yearSummary, setYearSummary] = useState<any | null>(null);
+  const [loadingSummary, setLoadingSummary] = useState(true);
 
   const handleSelectPollutant = (pollutantId: string) => {
     setSelectedPollutant(pollutantId);
@@ -70,7 +42,33 @@ export function ParticulateTimeline2020_2026() {
     activeYear = availableYears[0];
   }
 
-  const yearSummary = SUMMARIES[activeYear];
+  useEffect(() => {
+    let cancelled = false;
+
+    setLoadingSummary(true);
+    loadIneaSummaryYear(activeYear)
+      .then((data) => {
+        if (!cancelled) {
+          setYearSummary(data);
+        }
+      })
+      .catch((err) => {
+        console.error("Failed to load multiyear timeline summary:", err);
+        if (!cancelled) {
+          setYearSummary(null);
+        }
+      })
+      .finally(() => {
+        if (!cancelled) {
+          setLoadingSummary(false);
+        }
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [activeYear]);
+
   const polInfo = POLLUTANTS_INFO[selectedPollutant as keyof typeof POLLUTANTS_INFO] || { name: "", unit: "" };
   const unit = polInfo.unit;
 
@@ -99,7 +97,7 @@ export function ParticulateTimeline2020_2026() {
 
   const isInsufficient = (yr: string, stId: string) => {
     if (yr === "2021" && stId === "71") return true;
-    const summaryData = SUMMARIES[yr];
+    const summaryData = yr === activeYear ? yearSummary : null;
     if (!summaryData) return false;
     const coverage = summaryData[stId]?.pollutants?.[selectedPollutant]?.coveragePct;
     return coverage !== undefined && coverage < 75 && yr !== "2026";
@@ -183,6 +181,15 @@ export function ParticulateTimeline2020_2026() {
       )}
 
       {/* 2. Visual Comparative Charts */}
+      {loadingSummary ? (
+        <SurfaceCard className="p-6 bg-white border border-slate-100 rounded-2xl shadow-sm">
+          <div className="animate-pulse space-y-4">
+            <div className="h-4 w-52 rounded-full bg-slate-200/80" />
+            <div className="h-32 rounded-2xl bg-slate-100/90" />
+            <div className="h-32 rounded-2xl bg-slate-50" />
+          </div>
+        </SurfaceCard>
+      ) : (
       <div className="grid gap-6 md:grid-cols-2">
         {/* Card: Média Anual e Cobertura */}
         <SurfaceCard className="p-5 md:p-6 bg-white border border-slate-100 rounded-2xl space-y-5 shadow-sm">
@@ -364,6 +371,7 @@ export function ParticulateTimeline2020_2026() {
           </div>
         </SurfaceCard>
       </div>
+      )}
 
       {/* 3. Narrative Cards (2x2 Grid) */}
       <div className="grid gap-4 sm:grid-cols-2">

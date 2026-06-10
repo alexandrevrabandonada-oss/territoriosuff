@@ -1,33 +1,55 @@
-import { useState, useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { SurfaceCard } from '../BrandSystem';
 import { SITES, PARAMETERS } from '../../lib/inea/weblakesDictionary';
 import { THRESHOLDS } from '../../lib/air/thresholds';
 import { AUDIT_MODE_2024 } from '../../lib/inea/auditFlags';
-import summary2020 from '../../../data/inea_weblakes_normalized/summary-2020.json';
-import summary2021 from '../../../data/inea_weblakes_normalized/summary-2021.json';
-import summary2022 from '../../../data/inea_weblakes_normalized/summary-2022.json';
-import summary2023 from '../../../data/inea_weblakes_normalized/summary-2023.json';
-import summary2024 from '../../../data/inea_weblakes_normalized/summary-2024.json';
-import summary2025 from '../../../data/inea_weblakes_normalized/summary-2025.json';
-import summary2026 from '../../../data/inea_weblakes_normalized/summary-2026.json';
 import seedFindings from '../../../data/inea_historical_sources/seed-public-findings.json';
-
-const SUMMARIES: Record<string, any> = {
-  "2020": summary2020,
-  "2021": summary2021,
-  "2022": summary2022,
-  "2023": summary2023,
-  "2024": summary2024,
-  "2025": summary2025,
-  "2026": summary2026
-};
+import { loadIneaSummaryYear } from '../../lib/inea/summaryLoader';
 
 export function ThresholdComparisonPanel() {
   const [selectedPollutantId, setSelectedPollutantId] = useState<string>("18"); // Default PM10
   const [selectedStationId, setSelectedStationId] = useState<string>("70"); // Default Retiro
   const [selectedYear, setSelectedYear] = useState<string>("2024"); // Default 2024
+  const [summary, setSummary] = useState<any | null>(null);
+  const [loadingSummary, setLoadingSummary] = useState(false);
 
   const isInsufficient = selectedYear === "2021" && selectedStationId === "71";
+
+  useEffect(() => {
+    let cancelled = false;
+    const requiresSummary = ["2020", "2021", "2022", "2023", "2024", "2025", "2026"].includes(selectedYear);
+
+    if (!requiresSummary) {
+      setSummary(null);
+      setLoadingSummary(false);
+      return () => {
+        cancelled = true;
+      };
+    }
+
+    setLoadingSummary(true);
+    loadIneaSummaryYear(selectedYear)
+      .then((data) => {
+        if (!cancelled) {
+          setSummary(data);
+        }
+      })
+      .catch((err) => {
+        console.error("Failed to load threshold comparison summary:", err);
+        if (!cancelled) {
+          setSummary(null);
+        }
+      })
+      .finally(() => {
+        if (!cancelled) {
+          setLoadingSummary(false);
+        }
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [selectedYear]);
 
 
   // Get active pollutant and station info
@@ -41,9 +63,9 @@ export function ThresholdComparisonPanel() {
 
   // Extract observed data for selection
   const observedData = useMemo(() => {
-    if (SUMMARIES[selectedYear]) {
+    if (summary) {
       if (selectedPollutantId !== "18" && selectedPollutantId !== "20") return null;
-      const stationData = SUMMARIES[selectedYear][selectedStationId];
+      const stationData = summary[selectedStationId];
       const pData = stationData?.pollutants[selectedPollutantId];
       if (pData && pData.totalHours > 0) {
         return {
@@ -212,6 +234,10 @@ export function ThresholdComparisonPanel() {
                 <p className="text-[11px] text-slate-400 mt-1.5 max-w-xs mx-auto px-4">
                   O sensor para monitoramento de PM2.5 não retornou dados públicos na plataforma INEA/WebLakes no recorte analisado no ano de 2020.
                 </p>
+              </div>
+            ) : loadingSummary ? (
+              <div className="mt-8 text-center py-6 bg-slate-950/20 border border-slate-800 rounded-xl">
+                <p className="text-xs text-slate-400 italic">Carregando dados comparativos...</p>
               </div>
             ) : observedData ? (
               <div className="mt-4 space-y-4">
