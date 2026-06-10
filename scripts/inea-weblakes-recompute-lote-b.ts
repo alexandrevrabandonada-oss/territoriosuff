@@ -115,7 +115,7 @@ interface StationSummary {
   months: MonthStats[];
 }
 
-async function auditAndRecomputeYear(year: number, isPartial: boolean) {
+async function auditAndRecomputeYear(year: number, _isPartial: boolean) {
   const maxMonth = 12; // Both 2020 and 2021 are complete years
 
   const rawCacheDir = path.join(process.cwd(), '.cache', 'inea', 'weblakes', 'raw');

@@ -6,7 +6,7 @@ const editContent = readWorkspaceFile("src/pages/admin/AdminAcervoEditPage.tsx")
 
 assertAll(listContent, [
   'from("acervo_items")',
-  '.select("id, title, type, status, published_at, publish_at, slug")',
+  '.select("id, title, type, status, published_at, publish_at, slug, source_url, content_md, meta")',
   'query = query.ilike("title", `%${searchTerm}%`);',
   'query = query.eq("type", filterType);',
   'query = query.eq("status", filterStatus);',
