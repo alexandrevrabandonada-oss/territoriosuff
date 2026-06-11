@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 
 import { AqiExplainer } from "../../../components/air/AqiExplainer";
 import { HistoricalRawEvidenceBox } from "../../../components/air/HistoricalRawEvidenceBox";
+import { AIR_PUBLIC_DATA_BASE_PATH, AIR_PUBLIC_DOWNLOADS } from "../../../data/air/public-downloads";
 import { gases2024StationSummary } from "../../../data/air/gases-2024-station-summary";
 import { RadarEvidenceBadge } from "./RadarEvidenceBadge";
 import { RadarHistoricalResearchPanel } from "./RadarHistoricalResearchPanel";
@@ -52,14 +53,6 @@ const FAQ_ITEMS = [
     content:
       "O padrão regulatório diário baseia-se em médias de 24 horas. Picos instantâneos indicam episódios de poluição aguda ou poeira suspensa decorrente de ventos, mas diferem da média diária consolidada do dia."
   }
-];
-
-const DOWNLOAD_ITEMS = [
-  { title: "Manifesto completo", file: "manifest.json", format: ".JSON", desc: "Lista versionada de todos os arquivos públicos, datas, origem e rótulos metodológicos." },
-  { title: "PM10 2013-2026", file: "pm10-timeline-2013-2026.csv", format: ".CSV", desc: "Linha do tempo plurianual de PM10 por estação, cobertura e excedências experimentais." },
-  { title: "SO₂ 2013-2026", file: "so2-timeline-2013-2026.csv", format: ".CSV", desc: "Série histórica consolidada de dióxido de enxofre em Volta Redonda." },
-  { title: "CO 2013-2026", file: "co-timeline-2013-2026.csv", format: ".CSV", desc: "Série histórica consolidada de monóxido de carbono, mantendo a unidade nativa em ppm." },
-  { title: "Episódios 2020-2026", file: "attention-episodes-2020-2026.csv", format: ".CSV", desc: "Base de episódios de atenção para leitura pedagógica de excedências e sazonalidade." }
 ];
 
 const PARAMETER_STATUS = [
@@ -474,7 +467,7 @@ export function RadarMethodologyMode({ onNavigate, onOpenLai, onTop }: RadarMeth
           </p>
 
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
-            {DOWNLOAD_ITEMS.map((item, idx) => (
+            {AIR_PUBLIC_DOWNLOADS.map((item, idx) => (
               <div
                 key={idx}
                 className="flex flex-col justify-between space-y-4 rounded-[1.8rem] border border-emerald-200 bg-[linear-gradient(180deg,#ffffff,#f0fdf4)] p-5 shadow-[0_20px_45px_-34px_rgba(16,185,129,0.45)] transition-all duration-300 hover:scale-[1.02] hover:shadow-[0_24px_52px_-34px_rgba(16,185,129,0.6)]"
@@ -488,7 +481,7 @@ export function RadarMethodologyMode({ onNavigate, onOpenLai, onTop }: RadarMeth
                   <p className="text-[10px] font-semibold leading-relaxed text-slate-600">{item.desc}</p>
                 </div>
                 <a
-                  href={`/data/air/${item.file}`}
+                  href={`${AIR_PUBLIC_DATA_BASE_PATH}/${item.file}`}
                   download={item.file.endsWith(".csv") ? item.file : undefined}
                   className="inline-flex min-h-[38px] w-full items-center justify-center rounded-2xl bg-slate-950 text-[10px] font-black uppercase tracking-[0.16em] text-white transition-colors hover:bg-emerald-600"
                 >
