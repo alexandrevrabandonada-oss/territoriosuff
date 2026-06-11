@@ -1,6 +1,7 @@
 import { isAboveOmsThreshold } from "../airQuality";
 import {
   BlogPost,
+  AcervoItem,
   DownsampledMeasurement,
   EventSummary,
   getSupabase,
@@ -17,6 +18,36 @@ import {
   TransparencySummary,
   isPublishTimeReached
 } from "./core";
+
+type TopShareRow = {
+  kind: string;
+  slug: string;
+  count: number;
+};
+
+type PushStationRow = {
+  station_code: string | null;
+};
+
+type PushPollutantRow = {
+  pollutant: string | null;
+};
+
+type LatestMeasurementRow = {
+  ts?: string | null;
+  station?: { name?: string | null } | Array<{ name?: string | null }> | null;
+};
+
+type PublishedAcervoSummary = {
+  publish_at?: string | null;
+  [key: string]: unknown;
+};
+
+function getLatestMeasurementStationName(row: LatestMeasurementRow) {
+  const station = row.station;
+  const stationName = Array.isArray(station) ? station[0]?.name : station?.name;
+  return stationName || "N/A";
+}
 
 export async function getStationOverview(): Promise<StationOverview[]> {
   try {
@@ -198,18 +229,18 @@ export async function getSystemStatus(): Promise<SystemStatus> {
     const sevenDaysExpensesResult = results[6] as { data: Array<{ category: string; amount_cents: number }> };
     const social7d = results[7] as { count: number };
     const socialKinds = results[8] as { data: Array<{ kind: string | null }> };
-    const topShares = results[9] as { data: any[] };
+    const topShares = results[9] as { data: TopShareRow[] };
     const alerts7d = results[10] as { count: number };
-    const alertsStations = results[11] as { data: any[] };
-    const alertsPollutants = results[12] as { data: any[] };
+    const alertsStations = results[11] as { data: PushStationRow[] };
+    const alertsPollutants = results[12] as { data: PushPollutantRow[] };
     const breaches24hResult = results[13] as { data: Array<{ station_id?: string; pm25?: number | null; pm10?: number | null; station?: { code?: string | null; name?: string | null } | Array<{ code?: string | null; name?: string | null }> | null }> };
     const stationHealthData = results[14] as { data: StationHealth[] };
     const opsKpiResult = results[15] as { data: OpsKPI[] };
     const stationKpiResult = results[16] as { data: StationKPI[] };
 
     const stationCounts = new Map<string, number>();
-    (alertsStations.data || []).forEach((item: any) => {
-      const code = item.station_code;
+    (alertsStations.data || []).forEach((item) => {
+      const code = item.station_code || "-";
       stationCounts.set(code, (stationCounts.get(code) || 0) + 1);
     });
     const topStations = Array.from(stationCounts.entries())
@@ -224,8 +255,8 @@ export async function getSystemStatus(): Promise<SystemStatus> {
     }, {} as Record<string, number>);
 
     const pollutantCounts = new Map<string, number>();
-    (alertsPollutants.data || []).forEach((item: any) => {
-      const pol = item.pollutant;
+    (alertsPollutants.data || []).forEach((item) => {
+      const pol = item.pollutant || "-";
       pollutantCounts.set(pol, (pollutantCounts.get(pol) || 0) + 1);
     });
     const topPollutants = Array.from(pollutantCounts.entries())
@@ -273,12 +304,13 @@ export async function getSystemStatus(): Promise<SystemStatus> {
         measurements_24h: measurements24h || 0,
         latest_measurement: latestM ? {
           ts: String(latestM.ts),
-          station_name: String((latestM.station as any)?.name || "N/A")
+          station_name: getLatestMeasurementStationName(latestM as LatestMeasurementRow)
         } : null
       },
       content: {
         upcoming_events: (events.data ?? []) as EventSummary[],
-        latest_acervo: ((acervo.data ?? []) as any[]).filter((item) => isPublishTimeReached(String(item.publish_at ?? "") || null)),
+        latest_acervo: ((acervo.data ?? []) as PublishedAcervoSummary[])
+          .filter((item) => isPublishTimeReached(String(item.publish_at ?? "") || null)) as AcervoItem[],
         latest_blog: blog,
         reports_published_month: reportsPublishedMonth.count || 0
       },
@@ -294,7 +326,7 @@ export async function getSystemStatus(): Promise<SystemStatus> {
       social: {
         total_7d: social7d.count || 0,
         by_kind: socialByKind,
-        top_slugs: (topShares.data || []) as { kind: string; slug: string; count: number }[]
+        top_slugs: topShares.data || []
       },
       alerts: {
         total_7d: alerts7d.count || 0,

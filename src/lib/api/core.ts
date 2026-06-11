@@ -345,13 +345,13 @@ export type ClimateCorridor = {
   slug: string;
   title: string;
   excerpt: string | null;
-  geometry_json: any | null;
+  geometry_json: Record<string, unknown> | null;
   featured: boolean;
   cover_url: string | null;
   note_md: string | null;
   position: number;
   created_at: string;
-  meta: any;
+  meta: Record<string, unknown> | null;
 };
 
 export type ClimateCorridorLink = {

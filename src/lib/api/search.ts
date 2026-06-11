@@ -1,6 +1,16 @@
 import { listReports } from "./content";
 import { AcervoItem, BlogPost, Event, getSupabase, isPublishTimeReached, ReportDocument, SearchResultItem, toAppError } from "./core";
 
+export type TransparencySearchResult = {
+  id: string;
+  occurred_on: string | null;
+  category: string | null;
+  vendor: string | null;
+  description: string | null;
+  amount_cents: number | null;
+  [key: string]: unknown;
+};
+
 export async function searchAcervo(q: string, limit = 10): Promise<AcervoItem[]> {
   try {
     const supabase = await getSupabase();
@@ -48,7 +58,7 @@ export async function searchReports(q: string, limit = 10): Promise<ReportDocume
 /**
  * Busca gastos na transparência por fornecedor, descrição ou categoria.
  */
-export async function searchTransparency(q: string, limit = 10): Promise<any[]> {
+export async function searchTransparency(q: string, limit = 10): Promise<TransparencySearchResult[]> {
   try {
     const supabase = await getSupabase();
     const { data, error } = await supabase
@@ -59,7 +69,7 @@ export async function searchTransparency(q: string, limit = 10): Promise<any[]> 
       .limit(limit);
 
     if (error) throw error;
-    return data as any[];
+    return (data ?? []) as TransparencySearchResult[];
   } catch (error) {
     throw toAppError("Falha ao buscar na transparência", error);
   }
