@@ -12,6 +12,8 @@ assertAll(mediaLib, [
   "export const ADMIN_ALLOWED_BUCKETS",
   "export const ADMIN_ALLOWED_MIME_TYPES",
   "export const ADMIN_MAX_FILE_SIZE = 15 * 1024 * 1024",
+  "export const ADMIN_MAX_PDF_FILE_SIZE = 30 * 1024 * 1024",
+  'maxFileSize = file.type === "application/pdf" ? ADMIN_MAX_PDF_FILE_SIZE : ADMIN_MAX_FILE_SIZE',
   "validateAdminUploadFile(file)",
   "Bucket de upload não permitido.",
   "Tipo de arquivo não permitido. Use PDF, JPG, PNG ou WEBP.",

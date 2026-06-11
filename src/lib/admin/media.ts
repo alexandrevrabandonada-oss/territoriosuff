@@ -67,6 +67,7 @@ export const ADMIN_ALLOWED_MIME_TYPES = [
   "image/webp",
 ] as const;
 export const ADMIN_MAX_FILE_SIZE = 15 * 1024 * 1024; // 15MB
+export const ADMIN_MAX_PDF_FILE_SIZE = 30 * 1024 * 1024; // 30MB
 
 type UploadValidationOptions = {
   allowedMimeTypes?: readonly string[];
@@ -100,7 +101,7 @@ export function formatAssetSize(sizeBytes: number | null | undefined) {
 export function validateAdminUploadFile(file: File, options: UploadValidationOptions = {}) {
   const {
     allowedMimeTypes = ADMIN_ALLOWED_MIME_TYPES,
-    maxFileSize = ADMIN_MAX_FILE_SIZE,
+    maxFileSize = file.type === "application/pdf" ? ADMIN_MAX_PDF_FILE_SIZE : ADMIN_MAX_FILE_SIZE,
   } = options;
 
   if (!allowedMimeTypes.includes(file.type)) {

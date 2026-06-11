@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import { Link, useSearchParams } from "react-router-dom";
-import { ADMIN_MAX_FILE_SIZE, adminUploadMedia, formatAssetSize, isImageAsset, updateMediaAssetMetadata, validateAdminUploadFile, type MediaAssetRecord } from "../../lib/admin/media";
+import { ADMIN_MAX_FILE_SIZE, ADMIN_MAX_PDF_FILE_SIZE, adminUploadMedia, formatAssetSize, isImageAsset, updateMediaAssetMetadata, validateAdminUploadFile, type MediaAssetRecord } from "../../lib/admin/media";
 import { getSupabaseClientOrNull } from "../../lib/supabase/runtime";
 
 const ACERVO_EDITORIAL_TYPES = [
@@ -834,7 +834,7 @@ export function AdminUploadsPage() {
                   </div>
                   <p className="text-base font-bold text-slate-900">Clique ou arraste o arquivo aqui</p>
                   <p className="text-xs text-slate-500 mt-1 uppercase font-bold tracking-widest">
-                    PDF, JPG, PNG ou WEBP • Máx {Math.round(ADMIN_MAX_FILE_SIZE / 1024 / 1024)}MB
+                    PDF até {Math.round(ADMIN_MAX_PDF_FILE_SIZE / 1024 / 1024)}MB • imagens até {Math.round(ADMIN_MAX_FILE_SIZE / 1024 / 1024)}MB
                   </p>
                 </>
               ) : (

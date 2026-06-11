@@ -16,6 +16,7 @@ Passada técnica no fluxo de upload e organização de mídia/acervo, sem altera
 - Corrigida a autocaptura de notícia/matéria vinda do upload: o parâmetro `autocapture=1` agora pode acionar captura também em item novo do Acervo.
 - Adicionado smoke dedicado para proteger o caminho upload editorial -> link/fonte -> item de Acervo com autocaptura.
 - Adicionado smoke de contrato de storage para manter alinhados buckets permitidos, MIME types, limite de upload, policies admin e regra de alt text entre app e migração.
+- Ajustado limite de upload por tipo: imagens seguem limitadas a 15MB e PDFs administrativos passam a aceitar até 30MB, pensando em relatórios e documentos escaneados do Acervo.
 
 ## Verificações
 
@@ -29,5 +30,5 @@ Passada técnica no fluxo de upload e organização de mídia/acervo, sem altera
 ## Próximas frentes recomendadas
 
 1. Mapear políticas reais de retenção e backup dos buckets `acervo`, `media`, `blog`, `reports` e `transparency` no painel Supabase.
-2. Avaliar limite operacional de 15MB para PDFs longos ou escaneados do Acervo.
-3. Criar checklist editorial para assets órfãos, sem procedência e prontos para preservação.
+2. Criar checklist editorial para assets órfãos, sem procedência e prontos para preservação.
+3. Avaliar compressão/otimização automática futura para PDFs muito grandes antes do upload.
