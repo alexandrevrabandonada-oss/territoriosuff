@@ -1,7 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 
-const apiPath = path.resolve("src/lib/api.legacy.ts");
+const apiPath = path.resolve("src/lib/api/content.ts");
 
 function fail(message) {
   console.error(`[NO DEMO CONTENT SMOKE] FAILED: ${message}`);
@@ -9,7 +9,7 @@ function fail(message) {
 }
 
 if (!fs.existsSync(apiPath)) {
-  fail("src/lib/api.legacy.ts not found");
+  fail("src/lib/api/content.ts not found");
 }
 
 const source = fs.readFileSync(apiPath, "utf8");
