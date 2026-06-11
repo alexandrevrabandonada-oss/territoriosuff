@@ -55,11 +55,11 @@ const FAQ_ITEMS = [
 ];
 
 const DOWNLOAD_ITEMS = [
-  { title: "Série PM10 2024", file: "pm10-2024-station-summary.csv", size: "320 KB", desc: "Médias diárias e horárias brutas calculadas para PM10 nas estações." },
-  { title: "Série PM2.5 2024", file: "pm25-2024-station-summary.csv", size: "115 KB", desc: "Leituras diárias processadas para poeira fina (MP2.5) em 2024." },
-  { title: "Série SO₂ 2024", file: "so2-2024-station-summary.csv", size: "90 KB", desc: "Médias e picos horários de Dióxido de Enxofre na rede automática." },
-  { title: "Série CO 2024", file: "co-2024-station-summary.csv", size: "75 KB", desc: "Dados agregados de Monóxido de Carbono em unidades de ppm." },
-  { title: "Linha do Tempo 2020-2026", file: "particulate-timeline-2020-2026.csv", size: "45 KB", desc: "Série de longo prazo consolidando médias anuais de particulados." }
+  { title: "Manifesto completo", file: "manifest.json", format: ".JSON", desc: "Lista versionada de todos os arquivos públicos, datas, origem e rótulos metodológicos." },
+  { title: "PM10 2013-2026", file: "pm10-timeline-2013-2026.csv", format: ".CSV", desc: "Linha do tempo plurianual de PM10 por estação, cobertura e excedências experimentais." },
+  { title: "SO₂ 2013-2026", file: "so2-timeline-2013-2026.csv", format: ".CSV", desc: "Série histórica consolidada de dióxido de enxofre em Volta Redonda." },
+  { title: "CO 2013-2026", file: "co-timeline-2013-2026.csv", format: ".CSV", desc: "Série histórica consolidada de monóxido de carbono, mantendo a unidade nativa em ppm." },
+  { title: "Episódios 2020-2026", file: "attention-episodes-2020-2026.csv", format: ".CSV", desc: "Base de episódios de atenção para leitura pedagógica de excedências e sazonalidade." }
 ];
 
 const PARAMETER_STATUS = [
@@ -467,8 +467,11 @@ export function RadarMethodologyMode({ onNavigate, onOpenLai, onTop }: RadarMeth
           </div>
 
           <h3 className="pl-1 pt-2 text-xs font-black uppercase tracking-widest text-slate-400">
-            Biblioteca de Downloads (Formatos Livres)
+            Atalhos de Downloads (Formatos Livres)
           </h3>
+          <p className="pl-1 text-[11px] font-semibold leading-relaxed text-slate-500">
+            Estes são atalhos principais. A lista completa e versionada fica no manifesto público, que deve ser usado como fonte de verdade para auditoria.
+          </p>
 
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
             {DOWNLOAD_ITEMS.map((item, idx) => (
@@ -478,18 +481,18 @@ export function RadarMethodologyMode({ onNavigate, onOpenLai, onTop }: RadarMeth
               >
                 <div className="space-y-2">
                   <div className="flex items-center justify-between">
-                    <span className="inline-block rounded-full border border-emerald-200 bg-white px-2.5 py-1 text-[8px] font-black tracking-[0.16em] text-emerald-700">.CSV</span>
-                    <span className="text-[9px] font-bold text-slate-500">{item.size}</span>
+                    <span className="inline-block rounded-full border border-emerald-200 bg-white px-2.5 py-1 text-[8px] font-black tracking-[0.16em] text-emerald-700">{item.format}</span>
+                    <span className="text-[9px] font-bold uppercase tracking-[0.14em] text-slate-500">versionado</span>
                   </div>
                   <h4 className="text-sm font-black leading-snug text-slate-900">{item.title}</h4>
                   <p className="text-[10px] font-semibold leading-relaxed text-slate-600">{item.desc}</p>
                 </div>
                 <a
                   href={`/data/air/${item.file}`}
-                  download
+                  download={item.file.endsWith(".csv") ? item.file : undefined}
                   className="inline-flex min-h-[38px] w-full items-center justify-center rounded-2xl bg-slate-950 text-[10px] font-black uppercase tracking-[0.16em] text-white transition-colors hover:bg-emerald-600"
                 >
-                  📥 Baixar Arquivo
+                  {item.file.endsWith(".csv") ? "📥 Baixar arquivo" : "Ver manifesto"}
                 </a>
               </div>
             ))}
