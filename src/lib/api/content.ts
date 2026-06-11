@@ -61,6 +61,33 @@ export type CreateEnvironmentalReportPayload = {
   created_at?: string;
 };
 
+type AssetPublicUrlRow = {
+  id?: unknown;
+  public_url?: unknown;
+};
+
+type AcervoCollectionRelationRow = {
+  acervo_collections?: unknown;
+};
+
+type AcervoCollectionIdRelationRow = {
+  collection_id?: unknown;
+};
+
+type AcervoItemRelationRow = {
+  acervo_items?: unknown;
+};
+
+function buildAssetUrlMap(rows: AssetPublicUrlRow[] | null | undefined) {
+  const assetUrlById = new Map<string, string>();
+  (rows || []).forEach((asset) => {
+    if (typeof asset?.id === "string" && typeof asset?.public_url === "string") {
+      assetUrlById.set(asset.id, asset.public_url);
+    }
+  });
+  return assetUrlById;
+}
+
 function isDemoRecord(row: Record<string, unknown>): boolean {
   const slug = typeof row.slug === "string" ? row.slug : "";
   const meta = row.meta && typeof row.meta === "object" && !Array.isArray(row.meta)
@@ -372,12 +399,7 @@ async function hydrateBlogPostListAssets(posts: BlogPost[]): Promise<BlogPost[]>
 
   if (error) throw error;
 
-  const assetUrlById = new Map<string, string>();
-  (data || []).forEach((asset: any) => {
-    if (typeof asset?.id === "string" && typeof asset?.public_url === "string") {
-      assetUrlById.set(asset.id, asset.public_url);
-    }
-  });
+  const assetUrlById = buildAssetUrlMap(data);
 
   return posts.map((post) => ({
     ...post,
@@ -476,12 +498,7 @@ async function hydrateReportDocumentAssets(report: ReportDocument): Promise<Repo
 
   if (error) throw error;
 
-  const assetUrlById = new Map<string, string>();
-  (data || []).forEach((asset: any) => {
-    if (typeof asset?.id === "string" && typeof asset?.public_url === "string") {
-      assetUrlById.set(asset.id, asset.public_url);
-    }
-  });
+  const assetUrlById = buildAssetUrlMap(data);
 
   return {
     ...report,
@@ -510,12 +527,7 @@ async function hydrateReportDocumentListAssets(reports: ReportDocument[]): Promi
 
   if (error) throw error;
 
-  const assetUrlById = new Map<string, string>();
-  (data || []).forEach((asset: any) => {
-    if (typeof asset?.id === "string" && typeof asset?.public_url === "string") {
-      assetUrlById.set(asset.id, asset.public_url);
-    }
-  });
+  const assetUrlById = buildAssetUrlMap(data);
 
   return reports.map((report) => ({
     ...report,
@@ -644,7 +656,9 @@ export async function listCollectionsForItem(itemSlugOrId: string): Promise<Acer
       .order("position", { ascending: true });
 
     if (error) throw error;
-    return (data?.map((row: any) => row.acervo_collections) || []).filter(Boolean) as unknown as AcervoCollection[];
+    return ((data || []) as AcervoCollectionRelationRow[])
+      .map((row) => row.acervo_collections)
+      .filter(Boolean) as AcervoCollection[];
   } catch (error) {
     console.warn("Falha ao buscar coleções do item:", error);
     return [];
@@ -672,7 +686,9 @@ export async function getRelatedItemsByCollections(itemSlugOrId: string, limit =
       .eq("item_id", itemId);
 
     if (errCols) throw errCols;
-    const colIds = (cols || []).map((c: any) => c.collection_id);
+    const colIds = ((cols || []) as AcervoCollectionIdRelationRow[])
+      .map((row) => row.collection_id)
+      .filter((collectionId): collectionId is string => typeof collectionId === "string");
     if (colIds.length === 0) return [];
 
     const { data: related, error: errRelated } = await supabase
@@ -689,7 +705,7 @@ export async function getRelatedItemsByCollections(itemSlugOrId: string, limit =
     if (errRelated) throw errRelated;
 
     const uniqueItems = new Map<string, AcervoItem>();
-    for (const row of (related || []) as any[]) {
+    for (const row of (related || []) as AcervoItemRelationRow[]) {
       if (!row.acervo_items) continue;
       const itemPayload = Array.isArray(row.acervo_items) ? row.acervo_items[0] : row.acervo_items;
       const item = rowToAcervoItem(itemPayload as Record<string, unknown>);
@@ -729,7 +745,7 @@ export async function getCollectionBySlug(slug: string): Promise<CollectionWithI
 
     return {
       ...(collection as AcervoCollection),
-      items: (items || []).map((rel: any) => rowToAcervoItem(rel.acervo_items))
+      items: ((items || []) as AcervoItemRelationRow[]).map((rel) => rowToAcervoItem(rel.acervo_items as Record<string, unknown>))
     };
   } catch (error) {
     throw toAppError("Falha ao carregar dossiê", error);
