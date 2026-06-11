@@ -4,13 +4,13 @@ import { SITES, PARAMETERS } from '../../lib/inea/weblakesDictionary';
 import { THRESHOLDS } from '../../lib/air/thresholds';
 import { AUDIT_MODE_2024 } from '../../lib/inea/auditFlags';
 import seedFindings from '../../../data/inea_historical_sources/seed-public-findings.json';
-import { loadIneaSummaryYear } from '../../lib/inea/summaryLoader';
+import { loadIneaSummaryYear, type SummaryPayload } from '../../lib/inea/summaryLoader';
 
 export function ThresholdComparisonPanel() {
   const [selectedPollutantId, setSelectedPollutantId] = useState<string>("18"); // Default PM10
   const [selectedStationId, setSelectedStationId] = useState<string>("70"); // Default Retiro
   const [selectedYear, setSelectedYear] = useState<string>("2024"); // Default 2024
-  const [summary, setSummary] = useState<any | null>(null);
+  const [summary, setSummary] = useState<SummaryPayload | null>(null);
   const [loadingSummary, setLoadingSummary] = useState(false);
 
   const isInsufficient = selectedYear === "2021" && selectedStationId === "71";
@@ -53,7 +53,7 @@ export function ThresholdComparisonPanel() {
 
 
   // Get active pollutant and station info
-  const activePollutant = PARAMETERS[selectedPollutantId];
+  const activePollutant = PARAMETERS[selectedPollutantId] ?? PARAMETERS["18"];
   const activeStationName = SITES[selectedStationId]?.name || "Estação";
 
   // Filter thresholds for active pollutant

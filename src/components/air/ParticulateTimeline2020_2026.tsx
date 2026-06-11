@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { SurfaceCard } from '../BrandSystem';
-import { loadIneaSummaryYear } from '../../lib/inea/summaryLoader';
+import { loadIneaSummaryYear, type SummaryPayload } from '../../lib/inea/summaryLoader';
 
 const STATIONS = [
   { id: "69", name: "VR - Belmonte", shortName: "Belmonte", desc: "Região residencial próxima à divisa municipal." },
@@ -19,7 +19,7 @@ export function ParticulateTimeline2020_2026() {
   const [selectedYear, setSelectedYear] = useState<string>("2025");
   const [selectedPollutant, setSelectedPollutant] = useState<string>("18"); // 18 = PM10, 20 = PM2.5, 23 = SO2, 3 = CO
   const [selectedStation, setSelectedStation] = useState<string>("69"); // Highlighted station
-  const [yearSummary, setYearSummary] = useState<any | null>(null);
+  const [yearSummary, setYearSummary] = useState<SummaryPayload | null>(null);
   const [loadingSummary, setLoadingSummary] = useState(true);
 
   const handleSelectPollutant = (pollutantId: string) => {

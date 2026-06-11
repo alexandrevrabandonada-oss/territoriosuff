@@ -5,6 +5,7 @@ import { MethodologyNotice } from "../../components/air/MethodologyNotice";
 import { DataFreshnessNotice } from "../../components/air/DataFreshnessNotice";
 import { AqiChart } from "../../components/air/AqiChart";
 import { getIneaClassificationStyle } from "./IneaRadarPage";
+import { fetchRadarJson } from "./radar/radarApi";
 import type { RadarMeasurement, RadarTimeseriesPoint } from "./radar/RadarTypes";
 
 interface StationSummary {
@@ -77,9 +78,9 @@ export function IneaStationPage() {
 
         // Fetch API endpoints
         const [resLatest, resTimeseries, resBreakdown]: [LatestResponse, RadarTimeseriesPoint[], ClassificationDaysBreakdown] = await Promise.all([
-          fetch("/api/air/inea/latest").then(r => r.json()),
-          fetch(`/api/air/inea/timeseries?stationId=${stationId}&metricType=GENERAL_AQI`).then(r => r.json()),
-          fetch(`/api/air/inea/classification-days?stationId=${stationId}`).then(r => r.json())
+          fetchRadarJson<LatestResponse>("/api/air/inea/latest"),
+          fetchRadarJson<RadarTimeseriesPoint[]>(`/api/air/inea/timeseries?stationId=${stationId}&metricType=GENERAL_AQI`),
+          fetchRadarJson<ClassificationDaysBreakdown>(`/api/air/inea/classification-days?stationId=${stationId}`)
         ]);
 
         const stationsList = resLatest.stations || [];

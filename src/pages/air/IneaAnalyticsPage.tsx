@@ -7,6 +7,7 @@ import { WindRosePanel } from "../../components/air/WindRosePanel";
 import { WeatherPollutionCorrelation } from "../../components/air/WeatherPollutionCorrelation";
 import { RainWashEffectPanel } from "../../components/air/RainWashEffectPanel";
 import { RadarEvidenceBadge } from "./radar/RadarEvidenceBadge";
+import { fetchRadarJson } from "./radar/radarApi";
 import type { ControllerFrequencyItem, DataGapItem, MonthlyProfileItem } from "./radar/RadarTypes";
 
 interface DegradedDayItem {
@@ -33,6 +34,8 @@ interface ClassificationDayItem {
   totalDays?: number;
 }
 
+type ClassificationDaysResponse = Record<string, ClassificationDayItem>;
+
 export function IneaAnalyticsPage() {
   const [degradedDays, setDegradedDays] = useState<DegradedDayItem[]>([]);
   const [controllerFreq, setControllerFreq] = useState<ControllerFrequencyItem[]>([]);
@@ -54,12 +57,12 @@ export function IneaAnalyticsPage() {
           resGaps,
           resClassif
         ] = await Promise.all([
-          fetch("/api/air/inea/analytics/degraded-days").then(r => r.json()),
-          fetch("/api/air/inea/analytics/controller-frequency").then(r => r.json()),
-          fetch("/api/air/inea/analytics/monthly-profile").then(r => r.json()),
-          fetch("/api/air/inea/analytics/station-ranking").then(r => r.json()),
-          fetch("/api/air/inea/analytics/data-gaps").then(r => r.json()),
-          fetch("/api/air/inea/classification-days").then(r => r.json())
+          fetchRadarJson<DegradedDayItem[]>("/api/air/inea/analytics/degraded-days"),
+          fetchRadarJson<ControllerFrequencyItem[]>("/api/air/inea/analytics/controller-frequency"),
+          fetchRadarJson<MonthlyProfileItem[]>("/api/air/inea/analytics/monthly-profile"),
+          fetchRadarJson<StationRankingItem[]>("/api/air/inea/analytics/station-ranking"),
+          fetchRadarJson<DataGapItem[]>("/api/air/inea/analytics/data-gaps"),
+          fetchRadarJson<ClassificationDaysResponse>("/api/air/inea/classification-days")
         ]);
 
         setDegradedDays(resDegraded);
