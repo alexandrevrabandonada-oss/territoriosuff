@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef, useMemo } from "react";
+import { useEffect, useState, useRef, useMemo, type ReactNode } from "react";
 import { Link, useParams } from "react-router-dom";
 import "../../styles/acervo.css";
 
@@ -74,7 +74,7 @@ interface HeadingItem {
 
 function renderInline(text: string) {
     const pattern = /(\*\*([^*]+)\*\*|\*([^*]+)\*)/g;
-    const nodes: any[] = [];
+    const nodes: ReactNode[] = [];
     let lastIndex = 0;
     let match: RegExpExecArray | null;
 

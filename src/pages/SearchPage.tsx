@@ -17,7 +17,8 @@ import {
   type BlogPost,
   type Event,
   type ReportDocument,
-  type SearchResultItem
+  type SearchResultItem,
+  type TransparencySearchResult
 } from "../lib/api";
 
 type SearchType = "todos" | "acervo" | "blog" | "relatorios" | "transparencia" | "agenda";
@@ -26,7 +27,7 @@ type SearchResults = {
   acervo: AcervoItem[];
   blog: BlogPost[];
   reports: ReportDocument[];
-  transparency: any[];
+  transparency: TransparencySearchResult[];
   events: Event[];
   mixed: SearchResultItem[];
 };
@@ -117,24 +118,13 @@ export function SearchPage() {
             mixed: isAll ? mixedWithReports : []
           });
         } else {
-          const promises: Promise<any>[] = [];
-
-          if (tipo === "todos" || tipo === "acervo") promises.push(searchAcervo(query, 10));
-          else promises.push(Promise.resolve([]));
-
-          if (tipo === "todos" || tipo === "blog") promises.push(searchBlog(query, 10));
-          else promises.push(Promise.resolve([]));
-
-          if (tipo === "todos" || tipo === "relatorios") promises.push(searchReports(query, 10));
-          else promises.push(Promise.resolve([]));
-
-          if (tipo === "todos" || tipo === "transparencia") promises.push(searchTransparency(query, 10));
-          else promises.push(Promise.resolve([]));
-
-          if (tipo === "todos" || tipo === "agenda") promises.push(searchEvents(query, 10));
-          else promises.push(Promise.resolve([]));
-
-          const [acervoRes, blogRes, reportsRes, transRes, eventsRes] = await Promise.all(promises);
+          const [acervoRes, blogRes, reportsRes, transRes, eventsRes] = await Promise.all([
+            tipo === "todos" || tipo === "acervo" ? searchAcervo(query, 10) : Promise.resolve([] as AcervoItem[]),
+            tipo === "todos" || tipo === "blog" ? searchBlog(query, 10) : Promise.resolve([] as BlogPost[]),
+            tipo === "todos" || tipo === "relatorios" ? searchReports(query, 10) : Promise.resolve([] as ReportDocument[]),
+            tipo === "todos" || tipo === "transparencia" ? searchTransparency(query, 10) : Promise.resolve([] as TransparencySearchResult[]),
+            tipo === "todos" || tipo === "agenda" ? searchEvents(query, 10) : Promise.resolve([] as Event[])
+          ]);
 
           setResults({
             acervo: acervoRes,
@@ -410,7 +400,7 @@ export function SearchPage() {
                   <Link key={expense.id} to="/transparencia" className="group motion-list-item flex flex-col rounded-[1.35rem] border border-base/40 bg-fundo/60 p-5 motion-surface motion-surface-hover">
                     <div className="flex justify-between items-start">
                       <span className="text-[10px] font-bold uppercase tracking-widest text-texto/40">{expense.category}</span>
-                      <span className="text-sm font-black text-primaria">{formatCurrency(expense.amount_cents)}</span>
+                      <span className="text-sm font-black text-primaria">{formatCurrency(expense.amount_cents ?? 0)}</span>
                     </div>
                     <h3 className="mt-1 font-bold text-texto group-hover:text-ciano">{expense.vendor}</h3>
                   </Link>

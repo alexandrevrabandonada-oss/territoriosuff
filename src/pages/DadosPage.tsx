@@ -366,7 +366,7 @@ export function DadosPage() {
   }, [isComparing, selectedStationIds, compareData]);
 
   const alignedCompareData = useMemo<uPlot.AlignedData>(() => {
-    if (!isComparing || sortedTs.length === 0) return [[], []] as any;
+    if (!isComparing || sortedTs.length === 0) return [[], []] as uPlot.AlignedData;
     
     const seriesData = selectedStationIds.map(() => [] as (number | null)[]);
     sortedTs.forEach(ts => {

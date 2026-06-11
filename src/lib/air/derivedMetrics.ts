@@ -129,14 +129,14 @@ export function computeMoving8h(rawHourlySeries: NormalizedRow[]): Moving8hAvera
 
 // 4. Detecção de excedências
 export function detectThresholdExceedances(
-  series: { datetime?: string; date?: string; value: number | null }[],
+  series: Array<{ datetime?: string; date?: string; value: number | null }>,
   thresholdValue: number
-): any[] {
+): Array<{ datetime?: string; date?: string; value: number | null }> {
   return series.filter(s => s.value !== null && s.value > thresholdValue);
 }
 
 // 5. Cobertura de dados
-export function computeCoverage(series: any[], expectedCadence: number): number {
+export function computeCoverage(series: { length: number }, expectedCadence: number): number {
   if (expectedCadence <= 0) return 0;
   return (series.length / expectedCadence) * 100;
 }

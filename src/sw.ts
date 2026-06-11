@@ -6,11 +6,32 @@ import { CacheFirst, NetworkFirst, StaleWhileRevalidate } from 'workbox-strategi
 import { ExpirationPlugin } from 'workbox-expiration';
 import { CacheableResponsePlugin } from 'workbox-cacheable-response';
 
+type WorkboxManifestEntry = string | { url: string; revision: string | null };
+type SemearPushPayload = {
+  title?: string;
+  body?: string;
+  icon?: string;
+  badge?: string;
+  data?: { url?: string } & Record<string, unknown>;
+  tag?: string;
+};
+type SemearNotificationOptions = NotificationOptions & {
+  vibrate?: number[];
+};
+
+declare const self: ServiceWorkerGlobalScope & {
+  __WB_MANIFEST?: WorkboxManifestEntry[];
+};
+
+function isWindowClient(client: Client): client is WindowClient {
+  return "focus" in client;
+}
+
 // Clean up old caches
 cleanupOutdatedCaches();
 
 // Precache resources compiled by Vite (self.__WB_MANIFEST is injected at build time)
-precacheAndRoute((self as any).__WB_MANIFEST || []);
+precacheAndRoute(self.__WB_MANIFEST || []);
 
 // Set up navigate fallback (index.html) for SPA routing
 try {
@@ -129,20 +150,20 @@ registerRoute(
 
 // Self-claim and skip waiting so updates take effect immediately
 self.addEventListener('install', () => {
-  (self as any).skipWaiting();
+  self.skipWaiting();
 });
 
-self.addEventListener('activate', (event: any) => {
-  event.waitUntil((self as any).clients.claim());
+self.addEventListener('activate', (event: ExtendableEvent) => {
+  event.waitUntil(self.clients.claim());
 });
 
 // Push notifications listeners
-self.addEventListener('push', (event: any) => {
+self.addEventListener('push', (event: PushEvent) => {
   if (!event.data) return;
   try {
-    const payload = event.data.json();
+    const payload = event.data.json() as SemearPushPayload;
     const title = payload.title || 'Alerta SEMEAR';
-    const options = {
+    const options: SemearNotificationOptions = {
       body: payload.body || '',
       icon: payload.icon || '/icons/icon-192.png',
       badge: payload.badge || '/icons/icon-192.png',
@@ -152,13 +173,13 @@ self.addEventListener('push', (event: any) => {
       requireInteraction: true
     };
     event.waitUntil(
-      (self as any).registration.showNotification(title, options)
+      self.registration.showNotification(title, options)
     );
   } catch (err) {
     console.error('Erro ao processar notificação push:', err);
     const text = event.data.text();
     event.waitUntil(
-      (self as any).registration.showNotification('Alerta SEMEAR', {
+      self.registration.showNotification('Alerta SEMEAR', {
         body: text,
         icon: '/icons/icon-192.png',
         badge: '/icons/icon-192.png',
@@ -168,18 +189,18 @@ self.addEventListener('push', (event: any) => {
   }
 });
 
-self.addEventListener('notificationclick', (event: any) => {
+self.addEventListener('notificationclick', (event: NotificationEvent) => {
   event.notification.close();
   const urlToOpen = event.notification.data?.url || '/';
   
   event.waitUntil(
-    (self as any).clients.matchAll({ type: 'window', includeUncontrolled: true }).then((clientList: any[]) => {
+    self.clients.matchAll({ type: 'window', includeUncontrolled: true }).then((clientList) => {
       // Check if there is already a window open with this exact URL path
       for (const client of clientList) {
-        const clientUrl = new URL(client.url, (self as any).location.href);
-        const targetUrl = new URL(urlToOpen, (self as any).location.href);
-        if (clientUrl.pathname === targetUrl.pathname && 'focus' in client) {
-          if ('navigate' in client && client.url !== targetUrl.href) {
+        const clientUrl = new URL(client.url, self.location.href);
+        const targetUrl = new URL(urlToOpen, self.location.href);
+        if (clientUrl.pathname === targetUrl.pathname && isWindowClient(client)) {
+          if (client.url !== targetUrl.href) {
             client.navigate(targetUrl.href);
           }
           return client.focus();
@@ -188,16 +209,14 @@ self.addEventListener('notificationclick', (event: any) => {
       // If there is any open window, navigate and focus it
       if (clientList.length > 0) {
         const client = clientList[0];
-        if ('focus' in client) {
+        if (isWindowClient(client)) {
           client.focus();
-          if ('navigate' in client) {
-            return client.navigate(urlToOpen);
-          }
+          return client.navigate(urlToOpen);
         }
       }
       // Otherwise open a new window
-      if ((self as any).clients.openWindow) {
-        return (self as any).clients.openWindow(urlToOpen);
+      if (self.clients.openWindow) {
+        return self.clients.openWindow(urlToOpen);
       }
     })
   );

@@ -73,8 +73,9 @@ export function AcervoTimelinePage() {
         if (data.length > 0 && !queryYear) {
           setSearchParams({ year: String(data[0].year) }, { replace: true });
         }
-      } catch (err: any) {
-        setError(err.message || "Erro ao carregar a linha do tempo.");
+      } catch (err) {
+        const message = err instanceof Error ? err.message : "Erro ao carregar a linha do tempo.";
+        setError(message);
       } finally {
         setIsLoadingIndex(false);
       }
@@ -89,8 +90,9 @@ export function AcervoTimelinePage() {
         setIsLoadingItems(true);
         const data = await getAcervoByYear(selectedYear);
         setItems(data);
-      } catch (err: any) {
-        setError(err.message || "Erro ao consultar ano.");
+      } catch (err) {
+        const message = err instanceof Error ? err.message : "Erro ao consultar ano.";
+        setError(message);
       } finally {
         setIsLoadingItems(false);
       }

@@ -500,9 +500,29 @@ export type BlogPost = {
   created_at: string;
 };
 
+type BlogPostStatus = BlogPost["status"];
+type MediaAssetPublicUrlRow = {
+  id: string;
+  public_url: string | null;
+};
+type TopShareRow = { kind: string; slug: string; count: number };
+type AlertStationRow = { station_code: string };
+type AlertPollutantRow = { pollutant: string };
+type LatestMeasurementRow = {
+  ts: string;
+  station?: { name?: string | null } | Array<{ name?: string | null }> | null;
+};
+type AcervoCollectionItemRelation = {
+  acervo_items: Record<string, unknown> | Record<string, unknown>[] | null;
+};
+
 function isPublishTimeReached(publishAt: string | null): boolean {
   if (!publishAt) return true;
   return new Date(publishAt).getTime() <= Date.now();
+}
+
+function isBlogPostStatus(value: unknown): value is BlogPostStatus {
+  return value === "draft" || value === "scheduled" || value === "published" || value === "archived";
 }
 
 
@@ -515,6 +535,8 @@ export type ListBlogParams = {
 };
 
 function rowToBlogPost(row: Record<string, unknown>): BlogPost {
+  const status = isBlogPostStatus(row.status) ? row.status : "draft";
+
   return {
     id: String(row.id ?? ""),
     slug: String(row.slug ?? ""),
@@ -528,7 +550,7 @@ function rowToBlogPost(row: Record<string, unknown>): BlogPost {
     tags: Array.isArray(row.tags) ? (row.tags as string[]) : [],
     published_at: typeof row.published_at === "string" ? row.published_at : null,
     publish_at: typeof row.publish_at === "string" ? row.publish_at : null,
-    status: (row.status as any) ?? "draft",
+    status,
     created_at: typeof row.created_at === "string" ? row.created_at : "",
     category: typeof row.category === "string" ? row.category : null,
     author_name: typeof row.author_name === "string" ? row.author_name : null
@@ -573,7 +595,7 @@ async function hydrateBlogPostListAssets(posts: BlogPost[]): Promise<BlogPost[]>
   if (error) throw error;
 
   const assetUrlById = new Map<string, string>();
-  (data || []).forEach((asset: any) => {
+  ((data || []) as MediaAssetPublicUrlRow[]).forEach((asset) => {
     if (typeof asset?.id === "string" && typeof asset?.public_url === "string") {
       assetUrlById.set(asset.id, asset.public_url);
     }
@@ -712,7 +734,7 @@ async function hydrateReportDocumentAssets(report: ReportDocument): Promise<Repo
   if (error) throw error;
 
   const assetUrlById = new Map<string, string>();
-  (data || []).forEach((asset: any) => {
+  ((data || []) as MediaAssetPublicUrlRow[]).forEach((asset) => {
     if (typeof asset?.id === "string" && typeof asset?.public_url === "string") {
       assetUrlById.set(asset.id, asset.public_url);
     }
@@ -746,7 +768,7 @@ async function hydrateReportDocumentListAssets(reports: ReportDocument[]): Promi
   if (error) throw error;
 
   const assetUrlById = new Map<string, string>();
-  (data || []).forEach((asset: any) => {
+  ((data || []) as MediaAssetPublicUrlRow[]).forEach((asset) => {
     if (typeof asset?.id === "string" && typeof asset?.public_url === "string") {
       assetUrlById.set(asset.id, asset.public_url);
     }
@@ -975,7 +997,7 @@ export type SystemStatus = {
   };
   content: {
     upcoming_events: EventSummary[];
-    latest_acervo: any[];
+    latest_acervo: AcervoItem[];
     latest_blog: BlogPost[];
     reports_published_month: number;
   };
@@ -1086,17 +1108,17 @@ export async function getSystemStatus(): Promise<SystemStatus> {
     const sevenDaysExpensesResult = results[6] as { data: Array<{ category: string; amount_cents: number }> };
     const social7d = results[7] as { count: number };
     const socialKinds = results[8] as { data: Array<{ kind: string | null }> };
-    const topShares = results[9] as { data: any[] };
+    const topShares = results[9] as { data: TopShareRow[] };
     const alerts7d = results[10] as { count: number };
-    const alertsStations = results[11] as { data: any[] };
-    const alertsPollutants = results[12] as { data: any[] };
+    const alertsStations = results[11] as { data: AlertStationRow[] };
+    const alertsPollutants = results[12] as { data: AlertPollutantRow[] };
     const breaches24hResult = results[13] as { data: Array<{ station_id?: string; pm25?: number | null; pm10?: number | null; station?: { code?: string | null; name?: string | null } | Array<{ code?: string | null; name?: string | null }> | null }> };
     const stationHealthData = results[14] as { data: StationHealth[] };
     const opsKpiResult = results[15] as { data: OpsKPI[] };
     const stationKpiResult = results[16] as { data: StationKPI[] };
 
     const stationCounts = new Map<string, number>();
-    (alertsStations.data || []).forEach((item: any) => {
+    (alertsStations.data || []).forEach((item) => {
       const code = item.station_code;
       stationCounts.set(code, (stationCounts.get(code) || 0) + 1);
     });
@@ -1112,7 +1134,7 @@ export async function getSystemStatus(): Promise<SystemStatus> {
     }, {} as Record<string, number>);
 
     const pollutantCounts = new Map<string, number>();
-    (alertsPollutants.data || []).forEach((item: any) => {
+    (alertsPollutants.data || []).forEach((item) => {
       const pol = item.pollutant;
       pollutantCounts.set(pol, (pollutantCounts.get(pol) || 0) + 1);
     });
@@ -1155,20 +1177,26 @@ export async function getSystemStatus(): Promise<SystemStatus> {
       }
     });
 
+    const latestMeasurement = latestM as LatestMeasurementRow | null;
+    const latestStation = Array.isArray(latestMeasurement?.station)
+      ? latestMeasurement?.station[0]
+      : latestMeasurement?.station;
+
     return {
       monitoring: {
         stations_count: stationsCount || 0,
         measurements_24h: measurements24h || 0,
-        latest_measurement: latestM ? {
-          ts: String(latestM.ts),
-          station_name: String((latestM.station as any)?.name || "N/A")
+        latest_measurement: latestMeasurement ? {
+          ts: String(latestMeasurement.ts),
+          station_name: String(latestStation?.name || "N/A")
         } : null
       },
       content: {
         upcoming_events: (events.data ?? []) as EventSummary[],
         latest_acervo: ((acervo.data ?? []) as Record<string, unknown>[])
           .filter((item) => !isDemoRecord(item))
-          .filter((item) => isPublishTimeReached(String(item.publish_at ?? "") || null)),
+          .map(rowToAcervoItem)
+          .filter((item) => isPublishTimeReached(item.publish_at)),
         latest_blog: blog.filter((post) => !String(post.slug ?? "").startsWith("demo-")),
         reports_published_month: reportsPublishedMonth.count || 0
       },
@@ -1184,7 +1212,7 @@ export async function getSystemStatus(): Promise<SystemStatus> {
       social: {
         total_7d: social7d.count || 0,
         by_kind: socialByKind,
-        top_slugs: (topShares.data || []) as { kind: string; slug: string; count: number }[]
+        top_slugs: topShares.data || []
       },
       alerts: {
         total_7d: alerts7d.count || 0,
@@ -1253,7 +1281,7 @@ export async function searchBlog(q: string, limit = 10): Promise<BlogPost[]> {
 /**
  * Busca gastos na transparência por fornecedor, descrição ou categoria.
  */
-export async function searchTransparency(q: string, limit = 10): Promise<any[]> {
+export async function searchTransparency(q: string, limit = 10): Promise<Expense[]> {
   try {
     const supabase = assertSupabase();
     const { data, error } = await supabase
@@ -1264,7 +1292,7 @@ export async function searchTransparency(q: string, limit = 10): Promise<any[]> 
       .limit(limit);
 
     if (error) throw error;
-    return data as any[];
+    return (data ?? []) as Expense[];
   } catch (error) {
     throw toAppError("Falha ao buscar na transparência", error);
   }
@@ -1500,7 +1528,10 @@ export async function getCollectionBySlug(slug: string): Promise<CollectionWithI
 
     return {
       ...(collection as AcervoCollection),
-      items: (items || []).map((rel: any) => rowToAcervoItem(rel.acervo_items))
+      items: ((items || []) as AcervoCollectionItemRelation[])
+        .map((rel) => Array.isArray(rel.acervo_items) ? rel.acervo_items[0] : rel.acervo_items)
+        .filter((item): item is Record<string, unknown> => Boolean(item))
+        .map(rowToAcervoItem)
     };
   } catch (error) {
     throw toAppError("Falha ao carregar dossiê", error);
@@ -1632,13 +1663,13 @@ export type ClimateCorridor = {
   slug: string;
   title: string;
   excerpt: string | null;
-  geometry_json: any | null; // e.g. GeoJSON literal
+  geometry_json: Record<string, unknown> | null; // e.g. GeoJSON literal
   featured: boolean;
   cover_url: string | null;
   note_md: string | null;
   position: number;
   created_at: string;
-  meta: any;
+  meta: Record<string, unknown>;
 };
 
 export type ClimateCorridorLink = {
