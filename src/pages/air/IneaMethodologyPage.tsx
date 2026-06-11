@@ -852,7 +852,7 @@ export function IneaMethodologyPage() {
 
             <SurfaceCard className="p-6 bg-white border border-slate-100 rounded-3xl space-y-6">
               <p className="text-sm text-slate-600 leading-relaxed font-semibold">
-                O Observatório do Ar expandiu o monitoramento para incluir parâmetros gasosos atmosféricos. SO₂ e CO possuem série histórica publicada de 2013 a 2026. NO₂ e PTS permanecem em quarentena por anomalias instrumentais confirmadas em 2024. O₃ está indisponível no recorte validado.
+                O Observatório do Ar expandiu o monitoramento para incluir parâmetros gasosos atmosféricos. SO₂ e CO possuem série histórica publicada de 2013 a 2026. NO₂ permanece bloqueado por salvaguarda editorial. PTS e O₃ aparecem na memória histórica 2013-2015, mas seguem separados dos painéis consolidados: PTS como memória técnica e O₃ como métrica em auditoria.
               </p>
 
               <div className="space-y-4">
@@ -884,7 +884,7 @@ export function IneaMethodologyPage() {
                   </ul>
                 </div>
 
-                <h3 className="text-sm font-black text-slate-800 uppercase tracking-wider">Parâmetros Bloqueados e Indisponíveis 🚫</h3>
+                <h3 className="text-sm font-black text-slate-800 uppercase tracking-wider">Parâmetros em quarentena ou bloqueio editorial 🚫</h3>
 
                 <div className="p-4 bg-amber-50/40 border border-amber-500/10 rounded-2xl space-y-2">
                   <strong className="text-xs text-amber-800 uppercase tracking-wider block">NO₂ (Dióxido de Nitrogênio) — Em Auditoria Crítica (Bloqueado)</strong>
@@ -898,16 +898,16 @@ export function IneaMethodologyPage() {
                 </div>
 
                 <div className="p-4 bg-slate-50 border border-slate-100 rounded-2xl space-y-2">
-                  <strong className="text-xs text-slate-800 uppercase tracking-wider block">PTS (Partículas Totais em Suspensão) — Histórico-Técnico em Quarentena</strong>
+                  <strong className="text-xs text-slate-800 uppercase tracking-wider block">PTS (Partículas Totais em Suspensão) — Memória Técnica em Quarentena</strong>
                   <p className="text-xs text-slate-500 leading-relaxed font-medium">
-                    PTS permanece restrito a relatórios técnicos internos (quarentena técnica). Em 2024, a estação Retiro apresentou erro de ganho instrumental de <strong>fator 10x</strong> confirmado, enquanto Belmonte e Santa Cecília permaneceram normais. A anomalia é isolada a 2024. O PTS <strong>não é equivalente</strong> ao PM10 ou PM2.5 e é regulado pela antiga portaria CONAMA 03/1990 (limite diário: 240 µg/m³).
+                    PTS aparece de forma consistente na memória histórica 2013-2015 e pode sustentar leitura técnica sobre poeira total. Ainda assim, permanece fora dos painéis consolidados porque <strong>não é equivalente</strong> ao PM10 ou PM2.5 e porque, em 2024, a estação Retiro apresentou erro de ganho instrumental de <strong>fator 10x</strong> confirmado. A publicação deve separar claramente memória histórica, auditoria técnica e alertas operacionais.
                   </p>
                 </div>
 
-                <div className="p-4 bg-slate-50 border border-slate-100 rounded-2xl space-y-2">
-                  <strong className="text-xs text-slate-800 uppercase tracking-wider block">O₃ (Ozônio) — Indisponível</strong>
+                <div className="p-4 bg-rose-50/60 border border-rose-100 rounded-2xl space-y-2">
+                  <strong className="text-xs text-rose-900 uppercase tracking-wider block">O₃ (Ozônio) — Recuperado no triênio, mas em auditoria</strong>
                   <p className="text-xs text-slate-500 leading-relaxed font-medium">
-                    O diagnóstico de disponibilidade confirma que nenhuma leitura de O₃ foi transmitida pelas estações de Volta Redonda no recorte validado (0 horas coletadas em 2024). Classificado como <strong>indisponível</strong> no recorte atual devido à ausência crônica de dados das estações.
+                    O diagnóstico histórico recuperou leituras de O₃ para 2013-2015, com cobertura suficiente para análise preliminar. Porém, a média do preview ainda diverge da literatura usada como validação cruzada; a diferença não parece ser explicada apenas pela regra de 18 horas válidas. Por isso, O₃ deve permanecer fora da publicação consolidada até confirmar a janela estatística correta, sem ser tratado como indisponível em todo o histórico.
                   </p>
                 </div>
               </div>
