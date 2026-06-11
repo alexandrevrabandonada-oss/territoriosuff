@@ -24,11 +24,18 @@ const COVERAGE_LAYERS = [
     detail: "Linhas do tempo já disponíveis para leitura complementar, com CO mantido em ppm e SO2 em microgramas por metro cúbico."
   },
   {
-    title: "NO2, O3 e PTS",
-    range: "Em auditoria",
+    title: "NO2",
+    range: "Bloqueado",
     status: "Quarentena técnica",
     tone: "insufficient" as const,
-    detail: "Não entram na camada pública operacional antes de auditoria de escala, disponibilidade, unidade e estabilidade de série."
+    detail: "Permanece fora da camada pública operacional por salvaguarda editorial diante de anomalia de linha de base no Retiro."
+  },
+  {
+    title: "O3 e PTS",
+    range: "2013-2015",
+    status: "Memória em auditoria",
+    tone: "insufficient" as const,
+    detail: "Foram recuperados no triênio histórico, mas não entram em alertas ou painéis consolidados antes de confirmar métrica, unidade e estabilidade."
   }
 ];
 

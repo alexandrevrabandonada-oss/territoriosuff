@@ -377,11 +377,13 @@ export function RadarMethodologyMode({ onNavigate, onOpenLai, onTop }: RadarMeth
               <div>
                 <div className="flex items-center justify-between">
                   <strong className="text-xs font-black text-white">O₃</strong>
-                  <span className="rounded border border-red-500/20 bg-red-500/10 px-2 py-0.5 text-[9px] font-black uppercase text-red-300">
-                    Indisponível
+                  <span className="rounded border border-rose-500/20 bg-rose-500/10 px-2 py-0.5 text-[9px] font-black uppercase text-rose-300">
+                    Em Auditoria
                   </span>
                 </div>
-                <p className="mt-1 text-[11px] font-semibold text-slate-350">Ozônio: indisponível em 2024 na plataforma pública WebLakes.</p>
+                <p className="mt-1 text-[11px] font-semibold text-slate-350">
+                  Ozônio: sem transmissão no recorte de 2024, mas recuperado no triênio 2013-2015 com métrica ainda divergente da validação cruzada.
+                </p>
               </div>
               <div className="flex items-center justify-between border-t border-slate-800 pt-2 text-[10px] font-bold">
                 <a href="/reports/estado-da-nacao-inea-o3-2024-indisponivel.md" target="_blank" rel="noopener noreferrer" className="text-emerald-400 hover:text-emerald-300 hover:underline">
