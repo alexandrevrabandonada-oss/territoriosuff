@@ -17,6 +17,10 @@ function readAuthError(location: ReturnType<typeof useLocation>) {
   return message ? decodeURIComponent(message.replace(/\+/g, " ")) : null;
 }
 
+function getErrorMessage(error: unknown, fallback = "Não foi possível redefinir a senha.") {
+  return error instanceof Error ? error.message : fallback;
+}
+
 export function AdminResetPasswordPage() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -68,9 +72,9 @@ export function AdminResetPasswordPage() {
       window.setTimeout(() => {
         navigate("/admin/login", { replace: true });
       }, 1200);
-    } catch (err: any) {
+    } catch (err) {
       console.error("[Auth reset] Erro:", err);
-      setError(err.message || "Não foi possível redefinir a senha.");
+      setError(getErrorMessage(err));
     } finally {
       setLoading(false);
     }

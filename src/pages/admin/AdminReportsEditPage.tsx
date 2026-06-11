@@ -21,6 +21,10 @@ function toDbReportType(value: string): string {
   return value;
 }
 
+function getErrorMessage(error: unknown, fallback = "Erro desconhecido") {
+  return error instanceof Error ? error.message : fallback;
+}
+
 const STATUSES = [
   { value: "draft", label: "Rascunho" },
   { value: "published", label: "Publicado" },
@@ -192,8 +196,8 @@ export function AdminReportsEditPage() {
         applyPdfAsset(asset);
       }
       loadData();
-    } catch (err: any) {
-      alert("Erro no upload: " + err.message);
+    } catch (err) {
+      alert("Erro no upload: " + getErrorMessage(err));
     } finally {
       setIsUploading(false);
     }
@@ -265,8 +269,8 @@ export function AdminReportsEditPage() {
         alert("🎉 Relatório salvo como rascunho!");
         navigate("/admin/relatorios");
       }
-    } catch (err: any) {
-      alert("Erro ao salvar: " + err.message);
+    } catch (err) {
+      alert("Erro ao salvar: " + getErrorMessage(err));
     } finally {
       setSaving(false);
     }

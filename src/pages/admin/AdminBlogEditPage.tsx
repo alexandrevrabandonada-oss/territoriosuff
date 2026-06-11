@@ -31,6 +31,10 @@ function toLocalDateTimeInput(value: string | null | undefined): string {
   return localDate.toISOString().slice(0, 16);
 }
 
+function getErrorMessage(error: unknown, fallback = "Erro desconhecido") {
+  return error instanceof Error ? error.message : fallback;
+}
+
 export function AdminBlogEditPage() {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -158,8 +162,8 @@ export function AdminBlogEditPage() {
         setAttachmentAsset(asset);
       }
       loadData();
-    } catch (err: any) {
-      alert("Erro no upload: " + err.message);
+    } catch (err) {
+      alert("Erro no upload: " + getErrorMessage(err));
     } finally {
       setIsUploading(false);
     }
@@ -234,8 +238,8 @@ export function AdminBlogEditPage() {
         alert("🎉 Matéria salva como rascunho com sucesso!");
         navigate("/admin/blog");
       }
-    } catch (err: any) {
-      alert("Erro ao salvar: " + err.message);
+    } catch (err) {
+      alert("Erro ao salvar: " + getErrorMessage(err));
     } finally {
       setSaving(false);
     }

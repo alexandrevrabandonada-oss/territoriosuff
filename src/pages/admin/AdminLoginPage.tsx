@@ -4,6 +4,9 @@ import { getSupabaseClientOrNull } from "../../lib/supabase/runtime";
 
 type AuthMode = "login" | "signup" | "forgot" | "otp";
 
+function getErrorMessage(error: unknown, fallback = "Ocorreu um erro inesperado.") {
+  return error instanceof Error ? error.message : fallback;
+}
 
 export function AdminLoginPage() {
   const [mode, setMode] = useState<AuthMode>("login");
@@ -68,9 +71,9 @@ export function AdminLoginPage() {
         if (resetError) throw resetError;
         setMessage("Link de recuperação enviado! Verifique sua caixa de entrada.");
       }
-    } catch (err: any) {
+    } catch (err) {
       console.error(`[Auth ${mode}] Erro:`, err);
-      setError(err.message || "Ocorreu um erro inesperado.");
+      setError(getErrorMessage(err));
     } finally {
       setLoading(false);
     }
