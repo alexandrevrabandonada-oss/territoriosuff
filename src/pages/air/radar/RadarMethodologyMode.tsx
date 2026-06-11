@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 import { AqiExplainer } from "../../../components/air/AqiExplainer";
 import { HistoricalRawEvidenceBox } from "../../../components/air/HistoricalRawEvidenceBox";
-import { AIR_PUBLIC_DATA_BASE_PATH, AIR_PUBLIC_DOWNLOADS } from "../../../data/air/public-downloads";
+import { AIR_PUBLIC_DOWNLOADS, getAirPublicDataPath } from "../../../data/air/public-downloads";
 import { gases2024StationSummary } from "../../../data/air/gases-2024-station-summary";
 import { RadarEvidenceBadge } from "./RadarEvidenceBadge";
 import { RadarHistoricalResearchPanel } from "./RadarHistoricalResearchPanel";
@@ -318,7 +318,7 @@ export function RadarMethodologyMode({ onNavigate, onOpenLai, onTop }: RadarMeth
             <div className="flex flex-wrap items-center gap-3">
               <h2 className="text-lg font-black text-slate-800">Parâmetros ainda em auditoria</h2>
               <span className="inline-flex items-center gap-1 rounded-full border border-slate-200 bg-slate-100 px-2.5 py-0.5 text-[10px] font-black uppercase tracking-wider text-slate-600">
-                Quarentena de Homologação
+                Quarentena Técnica
               </span>
             </div>
             <p className="max-w-3xl text-xs font-semibold leading-relaxed text-slate-500">
@@ -388,8 +388,8 @@ export function RadarMethodologyMode({ onNavigate, onOpenLai, onTop }: RadarMeth
 
           <RadarVisualNotice
             type="quarantine"
-            title="Auditoria e Garantia de Qualidade"
-            description="Verifique o relatório final de garantia de qualidade e homologação do Lote C para o ano bissexto 2024."
+            title="Auditoria e Garantia Metodológica"
+            description="Verifique o relatório final de garantia metodológica do Lote C para o ano bissexto 2024. Essa validação é interna ao Observatório e não substitui QA/QC oficial por registro."
             nextStep="Acesse o relatório analítico no link ao lado."
             action={() => window.open("/reports/estado-da-nacao-observatorio-lote-c-qa-final.md", "_blank")}
             actionLabel="Ver Relatório de QA Lote C →"
@@ -481,7 +481,7 @@ export function RadarMethodologyMode({ onNavigate, onOpenLai, onTop }: RadarMeth
                   <p className="text-[10px] font-semibold leading-relaxed text-slate-600">{item.desc}</p>
                 </div>
                 <a
-                  href={`${AIR_PUBLIC_DATA_BASE_PATH}/${item.file}`}
+                  href={getAirPublicDataPath(item.file)}
                   download={item.file.endsWith(".csv") ? item.file : undefined}
                   className="inline-flex min-h-[38px] w-full items-center justify-center rounded-2xl bg-slate-950 text-[10px] font-black uppercase tracking-[0.16em] text-white transition-colors hover:bg-emerald-600"
                 >

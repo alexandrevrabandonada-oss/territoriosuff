@@ -429,7 +429,7 @@ async function auditAndRecompute() {
   // Write Cache Audit Report (Tarefa 2 / 3)
   // ─────────────────────────────────────────────────────────────────────────
   let cacheAuditMd = `# Estado da Nação — Auditoria do Cache WebLakes 2024
-## Novos Poluentes em Homologação nas Estações de Volta Redonda
+## Novos Poluentes em Auditoria nas Estações de Volta Redonda
 
 **Data do Relatório:** ${new Date().toISOString().split('T')[0]}  
 **Ano:** 2024  
@@ -499,12 +499,12 @@ async function auditAndRecompute() {
       reportMd += `\n### Estação: ${station.name} (ID ${station.id})\n\n`;
       
       if (res.totalFoundRecords === 0) {
-        reportMd += `*   **Status de Homologação:** **${res.status}**\n`;
+        reportMd += `*   **Status de Auditoria:** **${res.status}**\n`;
         reportMd += `*   **Nota:** Sem dados públicos registrados na plataforma para esta estação/poluente no ano de 2024.\n\n`;
         continue;
       }
 
-      reportMd += `*   **Status de Homologação:** **${res.status}**\n`;
+      reportMd += `*   **Status de Auditoria:** **${res.status}**\n`;
       reportMd += `*   **Cobertura:** **${res.coveragePct.toFixed(2)}%** (${res.totalFoundRecords}h de ${res.totalExpectedHours}h esperadas)\n`;
       reportMd += `*   **Média do Período:** **${res.hourlyMean !== null ? res.hourlyMean.toFixed(3) + ' ' + pollutant.unit : 'N/D'}**\n`;
       reportMd += `*   **Pico Máximo Horário:** **${res.hourlyMax !== null ? res.hourlyMax.toFixed(3) + ' ' + pollutant.unit : 'N/D'}**\n`;

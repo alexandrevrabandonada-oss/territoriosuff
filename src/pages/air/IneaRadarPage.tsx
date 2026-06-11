@@ -9,10 +9,15 @@ import { RadarQuickSummary } from "./radar/RadarQuickSummary";
 import { RadarStationsMode } from "./radar/RadarStationsMode";
 import {
   type BreakdownItem,
+  type ControllerFrequencyItem,
+  type DataGapItem,
   type LatestResult,
   LAI_TEMPLATE,
+  type MonthlyProfileItem,
+  type RadarChartPoint,
   type RadarComparisonTab,
   type RadarMode,
+  type RadarTimeseriesPoint,
   type SummaryStats,
   getIneaClassificationStyle
 } from "./radar/RadarTypes";
@@ -33,9 +38,13 @@ const RadarMethodologyMode = lazy(() =>
 );
 
 type RadarDataNotice =
-  | { kind: "homologation"; message: string }
+  | { kind: "validation"; message: string }
   | { kind: "partial"; message: string }
   | null;
+
+type LatestResponse = {
+  stations?: LatestResult[];
+};
 
 function RadarModeLoadingFallback() {
   return (
@@ -55,12 +64,12 @@ function RadarModeLoadingFallback() {
 export function IneaRadarPage() {
   const [summary, setSummary] = useState<SummaryStats | null>(null);
   const [latestData, setLatestData] = useState<LatestResult[]>([]);
-  const [timeseries, setTimeseries] = useState<any[]>([]);
+  const [timeseries, setTimeseries] = useState<RadarTimeseriesPoint[]>([]);
   const [rankings, setRankings] = useState<Record<string, BreakdownItem>>({});
   const [selectedStationChart, setSelectedStationChart] = useState<string>("");
-  const [monthlyProfile, setMonthlyProfile] = useState<any[]>([]);
-  const [controllerFreq, setControllerFreq] = useState<any[]>([]);
-  const [dataGaps, setDataGaps] = useState<any[]>([]);
+  const [monthlyProfile, setMonthlyProfile] = useState<MonthlyProfileItem[]>([]);
+  const [controllerFreq, setControllerFreq] = useState<ControllerFrequencyItem[]>([]);
+  const [dataGaps, setDataGaps] = useState<DataGapItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [notice, setNotice] = useState<RadarDataNotice>(null);
   const [retryTrigger, setRetryTrigger] = useState(0);
@@ -86,9 +95,9 @@ export function IneaRadarPage() {
 
         if (resSummary) setSummary(resSummary);
         if (resLatest) {
-          const list = resLatest.stations || [];
+          const list = ((resLatest as LatestResponse).stations || []);
           setLatestData(list);
-          const activeStations = list.filter((r: any) => r.measured_at !== null);
+          const activeStations = list.filter((r) => r.measured_at !== null);
           if (activeStations.length > 0) {
             setSelectedStationChart(activeStations[0].station.id);
           } else if (list.length > 0) {
@@ -101,14 +110,14 @@ export function IneaRadarPage() {
         if (resGaps) setDataGaps(resGaps);
 
         if (!resSummary || !resLatest) {
-          const isLocalHomologation =
+          const isLocalValidation =
             typeof window !== "undefined" &&
             (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1");
 
-          if (isLocalHomologation) {
+          if (isLocalValidation) {
             setNotice({
-              kind: "homologation",
-              message: "Ambiente de homologação: usando dados estáticos/fallback."
+              kind: "validation",
+              message: "Ambiente de validação: usando dados estáticos/fallback."
             });
           } else if (!resSummary && !resLatest) {
             setNotice({
@@ -117,17 +126,17 @@ export function IneaRadarPage() {
             });
           }
         }
-      } catch (err: any) {
+      } catch (err) {
         console.error("Failed to load official INEA data:", err);
-        const isLocalHomologation =
+        const isLocalValidation =
           typeof window !== "undefined" &&
           (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1");
 
         setNotice(
-          isLocalHomologation
+          isLocalValidation
             ? {
-                kind: "homologation",
-                message: "Ambiente de homologação: usando dados estáticos/fallback."
+                kind: "validation",
+                message: "Ambiente de validação: usando dados estáticos/fallback."
               }
             : {
                 kind: "partial",
@@ -218,10 +227,12 @@ export function IneaRadarPage() {
 
   const chartPoints = useMemo(
     () =>
-      timeseries.map((t) => ({
-        ts: t.measured_at,
-        value: t.air_quality_index
-      })),
+      timeseries
+        .filter((t) => typeof t.air_quality_index === "number")
+        .map((t): RadarChartPoint => ({
+          ts: t.measured_at,
+          value: t.air_quality_index
+        })),
     [timeseries]
   );
 

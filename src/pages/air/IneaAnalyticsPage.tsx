@@ -7,14 +7,39 @@ import { WindRosePanel } from "../../components/air/WindRosePanel";
 import { WeatherPollutionCorrelation } from "../../components/air/WeatherPollutionCorrelation";
 import { RainWashEffectPanel } from "../../components/air/RainWashEffectPanel";
 import { RadarEvidenceBadge } from "./radar/RadarEvidenceBadge";
+import type { ControllerFrequencyItem, DataGapItem, MonthlyProfileItem } from "./radar/RadarTypes";
+
+interface DegradedDayItem {
+  station_id: string;
+  station_name: string;
+  degraded_percent_of_measured_days: number;
+}
+
+interface StationRankingItem {
+  station_id: string;
+  station_name: string;
+  coverage_percent: number;
+  degraded_percent_of_measured_days: number;
+  max_aqi: number;
+  max_aqi_classification: string;
+}
+
+interface ClassificationDayItem {
+  BOA?: number;
+  MODERADA?: number;
+  RUIM?: number;
+  "MUITO RUIM"?: number;
+  "PÉSSIMA"?: number;
+  totalDays?: number;
+}
 
 export function IneaAnalyticsPage() {
-  const [degradedDays, setDegradedDays] = useState<any[]>([]);
-  const [controllerFreq, setControllerFreq] = useState<any[]>([]);
-  const [monthlyProfile, setMonthlyProfile] = useState<any[]>([]);
-  const [stationRanking, setStationRanking] = useState<any[]>([]);
-  const [dataGaps, setDataGaps] = useState<any[]>([]);
-  const [classificationDays, setClassificationDays] = useState<Record<string, any>>({});
+  const [degradedDays, setDegradedDays] = useState<DegradedDayItem[]>([]);
+  const [controllerFreq, setControllerFreq] = useState<ControllerFrequencyItem[]>([]);
+  const [monthlyProfile, setMonthlyProfile] = useState<MonthlyProfileItem[]>([]);
+  const [stationRanking, setStationRanking] = useState<StationRankingItem[]>([]);
+  const [dataGaps, setDataGaps] = useState<DataGapItem[]>([]);
+  const [classificationDays, setClassificationDays] = useState<Record<string, ClassificationDayItem>>({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -44,7 +69,7 @@ export function IneaAnalyticsPage() {
         setDataGaps(resGaps);
         setClassificationDays(resClassif);
         setLoading(false);
-      } catch (err: any) {
+      } catch (err) {
         console.error("Error loading analytics data:", err);
         setError("Não foi possível carregar as análises. Verifique a conexão com o banco de dados.");
         setLoading(false);
@@ -318,7 +343,7 @@ export function IneaAnalyticsPage() {
           </div>
 
           <div className="space-y-5">
-            {Object.entries(classificationDays).map(([sId, data]: [string, any]) => {
+            {Object.entries(classificationDays).map(([sId, data]) => {
               const stationName = degradedDays.find(d => d.station_id === sId)?.station_name || sId;
               
               // Recalculate total including insufficient/missing days if any
@@ -334,49 +359,49 @@ export function IneaAnalyticsPage() {
                   </div>
                   {/* Stacked Progress Bar */}
                   <div className="h-6 w-full rounded-lg overflow-hidden flex bg-slate-100 shadow-inner">
-                    {data.BOA > 0 && (
+                    {(data.BOA ?? 0) > 0 && (
                       <div 
-                        style={{ width: `${(data.BOA / total) * 100}%` }} 
+                        style={{ width: `${((data.BOA ?? 0) / total) * 100}%` }}
                         className="bg-green-500 h-full flex items-center justify-center text-[10px] text-white font-extrabold transition-all hover:opacity-90"
                         title={`BOA: ${data.BOA} dias`}
                       >
-                        {data.BOA > 15 && `BOA (${data.BOA})`}
+                        {(data.BOA ?? 0) > 15 && `BOA (${data.BOA})`}
                       </div>
                     )}
-                    {data.MODERADA > 0 && (
+                    {(data.MODERADA ?? 0) > 0 && (
                       <div 
-                        style={{ width: `${(data.MODERADA / total) * 100}%` }} 
+                        style={{ width: `${((data.MODERADA ?? 0) / total) * 100}%` }}
                         className="bg-yellow-400 h-full flex items-center justify-center text-[10px] text-yellow-900 font-extrabold transition-all hover:opacity-90"
                         title={`MODERADA: ${data.MODERADA} dias`}
                       >
-                        {data.MODERADA > 15 && `MOD (${data.MODERADA})`}
+                        {(data.MODERADA ?? 0) > 15 && `MOD (${data.MODERADA})`}
                       </div>
                     )}
-                    {data.RUIM > 0 && (
+                    {(data.RUIM ?? 0) > 0 && (
                       <div 
-                        style={{ width: `${(data.RUIM / total) * 100}%` }} 
+                        style={{ width: `${((data.RUIM ?? 0) / total) * 100}%` }}
                         className="bg-orange-500 h-full flex items-center justify-center text-[10px] text-white font-extrabold transition-all hover:opacity-90"
                         title={`RUIM: ${data.RUIM} dias`}
                       >
-                        {data.RUIM > 10 && `RUIM (${data.RUIM})`}
+                        {(data.RUIM ?? 0) > 10 && `RUIM (${data.RUIM})`}
                       </div>
                     )}
-                    {data["MUITO RUIM"] > 0 && (
+                    {(data["MUITO RUIM"] ?? 0) > 0 && (
                       <div 
-                        style={{ width: `${(data["MUITO RUIM"] / total) * 100}%` }} 
+                        style={{ width: `${((data["MUITO RUIM"] ?? 0) / total) * 100}%` }}
                         className="bg-red-500 h-full flex items-center justify-center text-[10px] text-white font-extrabold transition-all hover:opacity-90"
                         title={`MUITO RUIM: ${data["MUITO RUIM"]} dias`}
                       >
-                        {data["MUITO RUIM"] > 5 && `M.R. (${data["MUITO RUIM"]})`}
+                        {(data["MUITO RUIM"] ?? 0) > 5 && `M.R. (${data["MUITO RUIM"]})`}
                       </div>
                     )}
-                    {data["PÉSSIMA"] > 0 && (
+                    {(data["PÉSSIMA"] ?? 0) > 0 && (
                       <div 
-                        style={{ width: `${(data["PÉSSIMA"] / total) * 100}%` }} 
+                        style={{ width: `${((data["PÉSSIMA"] ?? 0) / total) * 100}%` }}
                         className="bg-purple-600 h-full flex items-center justify-center text-[10px] text-white font-extrabold transition-all hover:opacity-90"
                         title={`PÉSSIMA: ${data["PÉSSIMA"]} dias`}
                       >
-                        {data["PÉSSIMA"] > 5 && `PÉS (${data["PÉSSIMA"]})`}
+                        {(data["PÉSSIMA"] ?? 0) > 5 && `PÉS (${data["PÉSSIMA"]})`}
                       </div>
                     )}
                     {insufficient > 0 && (

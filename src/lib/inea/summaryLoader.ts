@@ -1,4 +1,25 @@
-type SummaryPayload = Record<string, any>;
+export interface IneaSummaryMetric {
+  pollutant?: string;
+  unit?: string;
+  totalHours: number;
+  coveragePct: number;
+  zeroHours: number;
+  missingHours?: number;
+  exceedances?: {
+    WHO_24H?: number;
+    BR_24H_FINAL?: number;
+  };
+  mean: number | null;
+  max: number | null;
+  months?: Record<string, Omit<IneaSummaryMetric, "months" | "totalHours"> & { totalHours?: number }>;
+}
+
+export interface IneaStationSummary {
+  name?: string;
+  pollutants: Record<string, IneaSummaryMetric | undefined>;
+}
+
+export type SummaryPayload = Record<string, IneaStationSummary | undefined>;
 
 const summaryLoaders: Record<string, () => Promise<SummaryPayload>> = {
   "2013": () => import("../../../data/inea_weblakes_normalized/summary-2013.json").then((module) => module.default as SummaryPayload),

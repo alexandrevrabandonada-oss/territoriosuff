@@ -37,7 +37,7 @@ export const DATA_DICTIONARY: DataDictionaryEntry[] = [
     description: "Ano civil ao qual se referem as leituras e estatísticas agregadas. O ano de 2026 é parcial.",
     unit: "N/A",
     source: "INEA/WebLakes",
-    caveat: "As análises plurianuais cobrem o período de 2020 a 2026 (com 2026 parcial).",
+    caveat: "As séries públicas principais variam por poluente: PM10, SO2 e CO chegam a 2013-2026; PM2.5 começa em 2021; alguns recortes de particulados e episódios cobrem 2020-2026. O ano de 2026 é parcial.",
     files: "timelines, station-summaries",
     status: "published"
   },
@@ -101,7 +101,7 @@ export const DATA_DICTIONARY: DataDictionaryEntry[] = [
     description: "Média aritmética simples calculada com base em todas as leituras horárias disponíveis no período. Usado nos CSVs de resumo por estação.",
     unit: "µg/m³ (PM10, PM2.5, SO2) ou ppm (CO)",
     source: "SEMEAR (Computado)",
-    caveat: "Utiliza apenas as horas válidas, sem imputação de lacunas. Como comparação experimental, não representa dados oficialmente homologados. CO é exibido em ppm (unidade nativa da plataforma INEA/WebLakes).",
+    caveat: "Utiliza apenas as horas válidas, sem imputação de lacunas. Como comparação experimental, não representa QA/QC oficial por registro. CO é exibido em ppm (unidade nativa da plataforma INEA/WebLakes).",
     files: "station-summaries",
     status: "published"
   },
@@ -255,7 +255,7 @@ export const DATA_DICTIONARY: DataDictionaryEntry[] = [
     description: "Nota técnica ressaltando o escopo experimental e as restrições da análise.",
     unit: "N/A",
     source: "SEMEAR (Nota)",
-    caveat: "Informa o usuário sobre a ausência de homologação e a necessidade de ler as ressalvas metodológicas.",
+    caveat: "Informa o usuário sobre a ausência de QA/QC oficial por registro e a necessidade de ler as ressalvas metodológicas.",
     files: "station-summaries",
     status: "published"
   },

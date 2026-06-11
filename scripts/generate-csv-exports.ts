@@ -3,6 +3,13 @@ import * as path from 'node:path';
 import { execSync } from 'node:child_process';
 import { DATA_DICTIONARY } from '../src/data/air/data-dictionary.ts';
 import { ATTENTION_EPISODES } from '../src/data/air/attention-episodes-2020-2026.ts';
+import { AIR_PUBLIC_DATA_BASE_PATH } from '../src/data/air/public-downloads.ts';
+
+const PUBLIC_DATA_ORIGIN = "https://semear-pwa.vercel.app";
+
+function publicDataUrl(file: string): string {
+  return `${PUBLIC_DATA_ORIGIN}${AIR_PUBLIC_DATA_BASE_PATH}/${file}`;
+}
 
 // Helper to escape CSV values
 function escapeCsv(val: any): string {
@@ -373,7 +380,7 @@ async function main() {
         updated_at: generatedAt,
         source_system: "WEBLAKES_CONCENTRATION_WITH_WIND",
         methodological_label: "Dado horário público WebLakes — comparação experimental — sem QA/QC oficial explícito.",
-        public_url: "https://semear-pwa.vercel.app/data/air/pm10-2020-station-summary.csv"
+        public_url: publicDataUrl("pm10-2020-station-summary.csv")
       },
       {
         filename: "pm10-2021-station-summary.csv",
@@ -383,7 +390,7 @@ async function main() {
         updated_at: generatedAt,
         source_system: "WEBLAKES_CONCENTRATION_WITH_WIND",
         methodological_label: "Dado horário público WebLakes — comparação experimental — sem QA/QC oficial explícito.",
-        public_url: "https://semear-pwa.vercel.app/data/air/pm10-2021-station-summary.csv"
+        public_url: publicDataUrl("pm10-2021-station-summary.csv")
       },
       {
         filename: "pm25-2021-station-summary.csv",
@@ -393,7 +400,7 @@ async function main() {
         updated_at: generatedAt,
         source_system: "WEBLAKES_CONCENTRATION_WITH_WIND",
         methodological_label: "Dado horário público WebLakes — comparação experimental — sem QA/QC oficial explícito.",
-        public_url: "https://semear-pwa.vercel.app/data/air/pm25-2021-station-summary.csv"
+        public_url: publicDataUrl("pm25-2021-station-summary.csv")
       },
       {
         filename: "pm25-2022-station-summary.csv",
@@ -403,7 +410,7 @@ async function main() {
         updated_at: generatedAt,
         source_system: "WEBLAKES_CONCENTRATION_WITH_WIND",
         methodological_label: "Dado horário público WebLakes — comparação experimental — sem QA/QC oficial explícito.",
-        public_url: "https://semear-pwa.vercel.app/data/air/pm25-2022-station-summary.csv"
+        public_url: publicDataUrl("pm25-2022-station-summary.csv")
       },
       {
         filename: "pm25-2023-station-summary.csv",
@@ -413,7 +420,7 @@ async function main() {
         updated_at: generatedAt,
         source_system: "WEBLAKES_CONCENTRATION_WITH_WIND",
         methodological_label: "Dado horário público WebLakes — comparação experimental — sem QA/QC oficial explícito.",
-        public_url: "https://semear-pwa.vercel.app/data/air/pm25-2023-station-summary.csv"
+        public_url: publicDataUrl("pm25-2023-station-summary.csv")
       },
       {
         filename: "pm10-2024-station-summary.csv",
@@ -423,7 +430,7 @@ async function main() {
         updated_at: generatedAt,
         source_system: "WEBLAKES_CONCENTRATION_WITH_WIND",
         methodological_label: "Dado horário público WebLakes — comparação experimental — sem QA/QC oficial explícito.",
-        public_url: "https://semear-pwa.vercel.app/data/air/pm10-2024-station-summary.csv"
+        public_url: publicDataUrl("pm10-2024-station-summary.csv")
       },
       {
         filename: "pm25-2024-station-summary.csv",
@@ -433,7 +440,7 @@ async function main() {
         updated_at: generatedAt,
         source_system: "WEBLAKES_CONCENTRATION_WITH_WIND",
         methodological_label: "Dado horário público WebLakes — comparação experimental — sem QA/QC oficial explícito.",
-        public_url: "https://semear-pwa.vercel.app/data/air/pm25-2024-station-summary.csv"
+        public_url: publicDataUrl("pm25-2024-station-summary.csv")
       },
       {
         filename: "so2-2024-station-summary.csv",
@@ -443,7 +450,7 @@ async function main() {
         updated_at: generatedAt,
         source_system: "WEBLAKES_CONCENTRATION_WITH_WIND",
         methodological_label: "Dado horário público WebLakes — comparação experimental — sem QA/QC oficial explícito.",
-        public_url: "https://semear-pwa.vercel.app/data/air/so2-2024-station-summary.csv"
+        public_url: publicDataUrl("so2-2024-station-summary.csv")
       },
       {
         filename: "co-2024-station-summary.csv",
@@ -453,7 +460,7 @@ async function main() {
         updated_at: generatedAt,
         source_system: "WEBLAKES_CONCENTRATION_WITH_WIND",
         methodological_label: "Dado horário público WebLakes — comparação experimental — sem QA/QC oficial explícito.",
-        public_url: "https://semear-pwa.vercel.app/data/air/co-2024-station-summary.csv"
+        public_url: publicDataUrl("co-2024-station-summary.csv")
       },
       {
         filename: "pm10-2025-station-summary.csv",
@@ -463,7 +470,7 @@ async function main() {
         updated_at: generatedAt,
         source_system: "WEBLAKES_CONCENTRATION_WITH_WIND",
         methodological_label: "Dado horário público WebLakes — comparação experimental — sem QA/QC oficial explícito.",
-        public_url: "https://semear-pwa.vercel.app/data/air/pm10-2025-station-summary.csv"
+        public_url: publicDataUrl("pm10-2025-station-summary.csv")
       },
       {
         filename: "pm25-2025-station-summary.csv",
@@ -473,7 +480,7 @@ async function main() {
         updated_at: generatedAt,
         source_system: "WEBLAKES_CONCENTRATION_WITH_WIND",
         methodological_label: "Dado horário público WebLakes — comparação experimental — sem QA/QC oficial explícito.",
-        public_url: "https://semear-pwa.vercel.app/data/air/pm25-2025-station-summary.csv"
+        public_url: publicDataUrl("pm25-2025-station-summary.csv")
       },
       {
         filename: "pm10-2026-partial-station-summary.csv",
@@ -483,7 +490,7 @@ async function main() {
         updated_at: generatedAt,
         source_system: "WEBLAKES_CONCENTRATION_WITH_WIND",
         methodological_label: "Dado horário público WebLakes — comparação experimental — sem QA/QC oficial explícito. Ano Parcial.",
-        public_url: "https://semear-pwa.vercel.app/data/air/pm10-2026-partial-station-summary.csv"
+        public_url: publicDataUrl("pm10-2026-partial-station-summary.csv")
       },
       {
         filename: "pm25-2026-partial-station-summary.csv",
@@ -493,7 +500,7 @@ async function main() {
         updated_at: generatedAt,
         source_system: "WEBLAKES_CONCENTRATION_WITH_WIND",
         methodological_label: "Dado horário público WebLakes — comparação experimental — sem QA/QC oficial explícito. Ano Parcial.",
-        public_url: "https://semear-pwa.vercel.app/data/air/pm25-2026-partial-station-summary.csv"
+        public_url: publicDataUrl("pm25-2026-partial-station-summary.csv")
       },
       {
         filename: "particulate-timeline-2020-2026.csv",
@@ -503,7 +510,7 @@ async function main() {
         updated_at: generatedAt,
         source_system: "WEBLAKES_CONCENTRATION_WITH_WIND",
         methodological_label: "Dado horário público WebLakes — comparação experimental — sem QA/QC oficial explícito.",
-        public_url: "https://semear-pwa.vercel.app/data/air/particulate-timeline-2020-2026.csv"
+        public_url: publicDataUrl("particulate-timeline-2020-2026.csv")
       },
       {
         "filename": "weather/weather-vr-2013-2026.csv",
@@ -513,7 +520,7 @@ async function main() {
         "updated_at": generatedAt,
         "source_system": "INMET_A609_AND_INEA_WEBLAKES",
         "methodological_label": "Camada meteorológica experimental para Volta Redonda. Ventos reais; outras variáveis simuladas por médias locais.",
-        "public_url": "https://semear-pwa.vercel.app/data/air/weather/weather-vr-2013-2026.csv"
+        "public_url": publicDataUrl("weather/weather-vr-2013-2026.csv")
       },
       {
         "filename": "weather/weather-dictionary.csv",
@@ -523,7 +530,7 @@ async function main() {
         "updated_at": generatedAt,
         "source_system": "SEMEAR (Metadados)",
         "methodological_label": "Metadados descritivos da camada meteorológica experimental.",
-        "public_url": "https://semear-pwa.vercel.app/data/air/weather/weather-dictionary.csv"
+        "public_url": publicDataUrl("weather/weather-dictionary.csv")
       },
       {
         filename: "pm10-timeline-2013-2026.csv",
@@ -533,7 +540,7 @@ async function main() {
         updated_at: generatedAt,
         source_system: "WEBLAKES_CONCENTRATION_WITH_WIND",
         methodological_label: "Dado horário público WebLakes — comparação experimental — sem QA/QC oficial explícito.",
-        public_url: "https://semear-pwa.vercel.app/data/air/pm10-timeline-2013-2026.csv"
+        public_url: publicDataUrl("pm10-timeline-2013-2026.csv")
       },
       {
         filename: "so2-timeline-2013-2026.csv",
@@ -543,7 +550,7 @@ async function main() {
         updated_at: generatedAt,
         source_system: "WEBLAKES_CONCENTRATION_WITH_WIND",
         methodological_label: "Dado horário público WebLakes — comparação experimental — sem QA/QC oficial explícito.",
-        public_url: "https://semear-pwa.vercel.app/data/air/so2-timeline-2013-2026.csv"
+        public_url: publicDataUrl("so2-timeline-2013-2026.csv")
       },
       {
         filename: "co-timeline-2013-2026.csv",
@@ -553,7 +560,7 @@ async function main() {
         updated_at: generatedAt,
         source_system: "WEBLAKES_CONCENTRATION_WITH_WIND",
         methodological_label: "Dado horário público WebLakes — comparação experimental — sem QA/QC oficial explícito.",
-        public_url: "https://semear-pwa.vercel.app/data/air/co-timeline-2013-2026.csv"
+        public_url: publicDataUrl("co-timeline-2013-2026.csv")
       },
       {
         filename: "attention-episodes-2020-2026.csv",
@@ -563,7 +570,7 @@ async function main() {
         updated_at: generatedAt,
         source_system: "WEBLAKES_CONCENTRATION_WITH_WIND",
         methodological_label: "Dado horário público WebLakes — comparação experimental — sem QA/QC oficial explícito.",
-        public_url: "https://semear-pwa.vercel.app/data/air/attention-episodes-2020-2026.csv"
+        public_url: publicDataUrl("attention-episodes-2020-2026.csv")
       },
       {
         filename: "data-dictionary.csv",
@@ -573,7 +580,7 @@ async function main() {
         updated_at: generatedAt,
         source_system: "SEMEAR (Metadados)",
         methodological_label: "Metadados descritivos da comparação experimental do Observatório do Ar.",
-        public_url: "https://semear-pwa.vercel.app/data/air/data-dictionary.csv"
+        public_url: publicDataUrl("data-dictionary.csv")
       }
     ]
   };

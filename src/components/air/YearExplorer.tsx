@@ -2,43 +2,11 @@ import { useEffect, useState } from 'react';
 import { SurfaceCard, Chip } from '../BrandSystem';
 import { SITES } from '../../lib/inea/weblakesDictionary';
 import { AUDIT_MODE_2024 } from '../../lib/inea/auditFlags';
-import { loadIneaSummaryYear } from '../../lib/inea/summaryLoader';
-
-interface MonthStat {
-  mean: number | null;
-  max: number | null;
-  coveragePct: number;
-  zeroHours: number;
-  missingHours: number;
-  exceedances: {
-    WHO_24H?: number;
-    BR_24H_FINAL?: number;
-  };
-}
-
-interface PollutantStat {
-  pollutant: string;
-  unit: string;
-  totalHours: number;
-  coveragePct: number;
-  mean: number | null;
-  max: number | null;
-  zeroHours: number;
-  exceedances: {
-    WHO_24H?: number;
-    BR_24H_FINAL?: number;
-  };
-  months?: Record<string, MonthStat>;
-}
-
-interface StationData {
-  name: string;
-  pollutants: Record<string, PollutantStat>;
-}
+import { loadIneaSummaryYear, type IneaSummaryMetric, type SummaryPayload } from '../../lib/inea/summaryLoader';
 
 export function YearExplorer() {
   const [selectedYear, setSelectedYear] = useState<string>("2024");
-  const [summary, setSummary] = useState<Record<string, StationData> | null>(null);
+  const [summary, setSummary] = useState<SummaryPayload | null>(null);
   const [loadingSummary, setLoadingSummary] = useState(true);
 
   useEffect(() => {
@@ -48,7 +16,7 @@ export function YearExplorer() {
     loadIneaSummaryYear(selectedYear)
       .then((data) => {
         if (!cancelled) {
-          setSummary((data as Record<string, StationData> | null) ?? null);
+          setSummary(data ?? null);
         }
       })
       .catch((err) => {
@@ -68,7 +36,7 @@ export function YearExplorer() {
     };
   }, [selectedYear]);
 
-  const getExposureNotePM10 = (stationId: string, year: string, pData: any) => {
+  const getExposureNotePM10 = (stationId: string, year: string, pData: IneaSummaryMetric | undefined) => {
     if (!pData) return null;
     const coverage = pData.coveragePct.toFixed(1);
     const mean = pData.mean !== null ? pData.mean.toFixed(2) : "N/A";

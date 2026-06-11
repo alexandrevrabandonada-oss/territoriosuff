@@ -1,19 +1,18 @@
 import { Suspense, lazy, useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { SurfaceCard, IconShell } from "../../components/BrandSystem";
+import { AIR_PUBLIC_DOWNLOADS, AIR_PUBLIC_FILES, type AirPublicManifest, getAirPublicDataPath } from "../../data/air/public-downloads";
+import type { DataDictionaryEntry } from "../../data/air/data-dictionary";
 
 const DataAvailabilityMatrix = lazy(() =>
   import("../../components/air/DataAvailabilityMatrix").then((module) => ({ default: module.DataAvailabilityMatrix }))
 );
 
-type DataDictionaryEntry = {
-  field_name: string;
-  label: string;
-  description: string;
-  unit: string;
-  source: string;
-  caveat: string;
-};
+const FEATURED_DOWNLOAD_FILES = [
+  "pm10-timeline-2013-2026.csv",
+  "so2-timeline-2013-2026.csv",
+  "co-timeline-2013-2026.csv"
+];
 
 function MethodologySectionFallback() {
   return (
@@ -46,16 +45,16 @@ function formatDate(dateStr: string | undefined): string {
 export function IneaMethodologyPage() {
   const location = useLocation();
   const [activeSection, setActiveSection] = useState("origem");
-  const [manifest, setManifest] = useState<any>(null);
+  const [manifest, setManifest] = useState<AirPublicManifest | null>(null);
   const [dataDictionary, setDataDictionary] = useState<DataDictionaryEntry[]>([]);
 
   useEffect(() => {
-    fetch("/data/air/manifest.json")
+    fetch(getAirPublicDataPath("manifest.json"))
       .then((res) => {
         if (!res.ok) throw new Error("Manifest not found");
         return res.json();
       })
-      .then((data) => setManifest(data))
+      .then((data: AirPublicManifest) => setManifest(data))
       .catch((err) => console.error("Error loading manifest:", err));
   }, []);
 
@@ -224,7 +223,7 @@ export function IneaMethodologyPage() {
               
               <div className="grid grid-cols-2 gap-2 pt-2">
                 <a
-                  href="/data/air/manifest.json"
+                  href={getAirPublicDataPath("manifest.json")}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="block text-center py-1.5 px-2 bg-slate-100 hover:bg-slate-200/70 rounded-xl text-[9px] font-black uppercase text-slate-600 tracking-wider transition-colors"
@@ -527,47 +526,21 @@ export function IneaMethodologyPage() {
             </div>
             
             <div className="grid gap-4 sm:grid-cols-3">
-              <SurfaceCard className="p-5 bg-white border border-slate-100 rounded-2xl flex flex-col justify-between space-y-4 shadow-sm">
-                <div>
-                  <h4 className="text-xs font-black uppercase text-slate-400">Linha do Tempo de PM10 (2013-2026)</h4>
-                  <p className="text-[11px] text-slate-500 font-semibold mt-1">Série histórica plurianual consolidando médias, coberturas e excedências diárias de PM10.</p>
-                </div>
-                <a
-                  href="/data/air/pm10-timeline-2013-2026.csv"
-                  download="pm10-timeline-2013-2026.csv"
-                  className="inline-flex min-h-[38px] items-center justify-center rounded-xl bg-brand-primary text-white font-black text-xs uppercase hover:bg-brand-primary-dark transition-all w-full tracking-wider shadow-sm"
-                >
-                  Download (CSV)
-                </a>
-              </SurfaceCard>
-
-              <SurfaceCard className="p-5 bg-white border border-slate-100 rounded-2xl flex flex-col justify-between space-y-4 shadow-sm">
-                <div>
-                  <h4 className="text-xs font-black uppercase text-slate-400">Linha do Tempo de SO2 (2013-2026)</h4>
-                  <p className="text-[11px] text-slate-500 font-semibold mt-1">Série histórica plurianual consolidando médias, coberturas e excedências diárias de SO₂.</p>
-                </div>
-                <a
-                  href="/data/air/so2-timeline-2013-2026.csv"
-                  download="so2-timeline-2013-2026.csv"
-                  className="inline-flex min-h-[38px] items-center justify-center rounded-xl bg-brand-primary text-white font-black text-xs uppercase hover:bg-brand-primary-dark transition-all w-full tracking-wider shadow-sm"
-                >
-                  Download (CSV)
-                </a>
-              </SurfaceCard>
-
-              <SurfaceCard className="p-5 bg-white border border-slate-100 rounded-2xl flex flex-col justify-between space-y-4 shadow-sm">
-                <div>
-                  <h4 className="text-xs font-black uppercase text-slate-400">Linha do Tempo de CO (2013-2026)</h4>
-                  <p className="text-[11px] text-slate-500 font-semibold mt-1">Série histórica plurianual consolidando médias, coberturas e excedências diárias de CO.</p>
-                </div>
-                <a
-                  href="/data/air/co-timeline-2013-2026.csv"
-                  download="co-timeline-2013-2026.csv"
-                  className="inline-flex min-h-[38px] items-center justify-center rounded-xl bg-brand-primary text-white font-black text-xs uppercase hover:bg-brand-primary-dark transition-all w-full tracking-wider shadow-sm"
-                >
-                  Download (CSV)
-                </a>
-              </SurfaceCard>
+              {AIR_PUBLIC_DOWNLOADS.filter((item) => FEATURED_DOWNLOAD_FILES.includes(item.file)).map((item) => (
+                <SurfaceCard key={item.file} className="p-5 bg-white border border-slate-100 rounded-2xl flex flex-col justify-between space-y-4 shadow-sm">
+                  <div>
+                    <h4 className="text-xs font-black uppercase text-slate-400">{item.title}</h4>
+                    <p className="text-[11px] text-slate-500 font-semibold mt-1">{item.desc}</p>
+                  </div>
+                  <a
+                    href={getAirPublicDataPath(item.file)}
+                    download={item.file}
+                    className="inline-flex min-h-[38px] items-center justify-center rounded-xl bg-brand-primary text-white font-black text-xs uppercase hover:bg-brand-primary-dark transition-all w-full tracking-wider shadow-sm"
+                  >
+                    Download ({item.format.replace(".", "")})
+                  </a>
+                </SurfaceCard>
+              ))}
             </div>
 
             {/* Tabela de Arquivos disponíveis */}
@@ -586,155 +559,7 @@ export function IneaMethodologyPage() {
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-slate-100 text-xs font-medium text-slate-600">
-                      {[
-                        {
-                          file: "pm10-timeline-2013-2026.csv",
-                          desc: "Série histórica estendida e consolidada de PM10 de 2013 a 2026.",
-                          format: "CSV",
-                          updated: "Maio de 2026",
-                          path: "/data/air/pm10-timeline-2013-2026.csv"
-                        },
-                        {
-                          file: "so2-timeline-2013-2026.csv",
-                          desc: "Série histórica estendida e consolidada de SO₂ de 2013 a 2026.",
-                          format: "CSV",
-                          updated: "Maio de 2026",
-                          path: "/data/air/so2-timeline-2013-2026.csv"
-                        },
-                        {
-                          file: "co-timeline-2013-2026.csv",
-                          desc: "Série histórica estendida e consolidada de CO de 2013 a 2026.",
-                          format: "CSV",
-                          updated: "Maio de 2026",
-                          path: "/data/air/co-timeline-2013-2026.csv"
-                        },
-                        {
-                          file: "pm10-2020-station-summary.csv",
-                          desc: "Estatísticas anuais consolidadas por estação para o PM10 em 2020.",
-                          format: "CSV",
-                          updated: "Maio de 2026",
-                          path: "/data/air/pm10-2020-station-summary.csv"
-                        },
-                        {
-                          file: "pm10-2021-station-summary.csv",
-                          desc: "Estatísticas anuais consolidadas por estação para o PM10 em 2021.",
-                          format: "CSV",
-                          updated: "Maio de 2026",
-                          path: "/data/air/pm10-2021-station-summary.csv"
-                        },
-                        {
-                          file: "pm25-2021-station-summary.csv",
-                          desc: "Estatísticas anuais consolidadas por estação para o PM2.5 em 2021.",
-                          format: "CSV",
-                          updated: "Maio de 2026",
-                          path: "/data/air/pm25-2021-station-summary.csv"
-                        },
-                        {
-                          file: "pm25-2022-station-summary.csv",
-                          desc: "Estatísticas anuais consolidadas por estação para o PM2.5 em 2022.",
-                          format: "CSV",
-                          updated: "Maio de 2026",
-                          path: "/data/air/pm25-2022-station-summary.csv"
-                        },
-                        {
-                          file: "pm25-2023-station-summary.csv",
-                          desc: "Estatísticas anuais consolidadas por estação para o PM2.5 em 2023.",
-                          format: "CSV",
-                          updated: "Maio de 2026",
-                          path: "/data/air/pm25-2023-station-summary.csv"
-                        },
-                        {
-                          file: "pm10-2024-station-summary.csv",
-                          desc: "Estatísticas anuais consolidadas por estação para o PM10 em 2024.",
-                          format: "CSV",
-                          updated: "Maio de 2026",
-                          path: "/data/air/pm10-2024-station-summary.csv"
-                        },
-                        {
-                          file: "pm25-2024-station-summary.csv",
-                          desc: "Estatísticas anuais consolidadas por estação para o PM2.5 em 2024.",
-                          format: "CSV",
-                          updated: "Maio de 2026",
-                          path: "/data/air/pm25-2024-station-summary.csv"
-                        },
-                        {
-                          file: "so2-2024-station-summary.csv",
-                          desc: "Estatísticas anuais consolidadas por estação para o SO2 experimental em 2024.",
-                          format: "CSV",
-                          updated: "Maio de 2026",
-                          path: "/data/air/so2-2024-station-summary.csv"
-                        },
-                        {
-                          file: "co-2024-station-summary.csv",
-                          desc: "Estatísticas anuais consolidadas por estação para o CO experimental em 2024.",
-                          format: "CSV",
-                          updated: "Maio de 2026",
-                          path: "/data/air/co-2024-station-summary.csv"
-                        },
-                        {
-                          file: "pm10-2025-station-summary.csv",
-                          desc: "Estatísticas anuais consolidadas por estação para o PM10 em 2025.",
-                          format: "CSV",
-                          updated: "Maio de 2026",
-                          path: "/data/air/pm10-2025-station-summary.csv"
-                        },
-                        {
-                          file: "pm25-2025-station-summary.csv",
-                          desc: "Estatísticas anuais consolidadas por estação para o PM2.5 em 2025.",
-                          format: "CSV",
-                          updated: "Maio de 2026",
-                          path: "/data/air/pm25-2025-station-summary.csv"
-                        },
-                        {
-                          file: "pm10-2026-partial-station-summary.csv",
-                          desc: "Estatísticas parciais acumuladas (Jan a Mai) por estação para o PM10 em 2026.",
-                          format: "CSV",
-                          updated: "Maio de 2026",
-                          path: "/data/air/pm10-2026-partial-station-summary.csv"
-                        },
-                        {
-                          file: "pm25-2026-partial-station-summary.csv",
-                          desc: "Estatísticas parciais acumuladas (Jan a Mai) por estação para o PM2.5 em 2026.",
-                          format: "CSV",
-                          updated: "Maio de 2026",
-                          path: "/data/air/pm25-2026-partial-station-summary.csv"
-                        },
-                        {
-                          file: "particulate-timeline-2020-2026.csv",
-                          desc: "Linha do tempo plurianual de médias, coberturas e excedências anuais de particulados (2020-2026).",
-                          format: "CSV",
-                          updated: "Maio de 2026",
-                          path: "/data/air/particulate-timeline-2020-2026.csv"
-                        },
-                        {
-                          file: "so2-timeline-2020-2026.csv",
-                          desc: "Linha do tempo plurianual de médias, coberturas e excedências anuais para o SO2 (2020-2026).",
-                          format: "CSV",
-                          updated: "Maio de 2026",
-                          path: "/data/air/so2-timeline-2020-2026.csv"
-                        },
-                        {
-                          file: "co-timeline-2020-2026.csv",
-                          desc: "Linha do tempo plurianual de médias, coberturas e excedências anuais para o CO (2020-2026).",
-                          format: "CSV",
-                          updated: "Maio de 2026",
-                          path: "/data/air/co-timeline-2020-2026.csv"
-                        },
-                        {
-                          file: "attention-episodes-2020-2026.csv",
-                          desc: "Série mensal de excedências OMS/CONAMA e picos horários de concentração (2020–2026).",
-                          format: "CSV",
-                          updated: "Maio de 2026",
-                          path: "/data/air/attention-episodes-2020-2026.csv"
-                        },
-                        {
-                          file: "data-dictionary.csv",
-                          desc: "Metadados descrevendo os campos das planilhas exportadas.",
-                          format: "CSV",
-                          updated: "Maio de 2026",
-                          path: "/data/air/data-dictionary.csv"
-                        }
-                      ].map((row) => (
+                      {AIR_PUBLIC_FILES.map((row) => (
                         <tr key={row.file} className="hover:bg-slate-50/50 transition-colors">
                           <td className="px-5 py-4 font-mono text-brand-primary font-bold">
                             {row.file}
@@ -752,7 +577,7 @@ export function IneaMethodologyPage() {
                           </td>
                           <td className="px-5 py-4 text-right">
                             <a
-                              href={row.path}
+                              href={getAirPublicDataPath(row.file)}
                               download={row.file}
                               className="inline-flex min-h-[32px] items-center justify-center rounded-lg bg-brand-primary/10 hover:bg-brand-primary/20 text-brand-primary px-3 py-1 text-xs font-black uppercase tracking-wider transition-colors"
                             >
@@ -846,7 +671,7 @@ export function IneaMethodologyPage() {
             </Suspense>
           </section>
 
-          {/* Section 10: Parâmetros em Expansão (Homologação) */}
+          {/* Section 10: Parâmetros em expansão e decisão de governança */}
           <section id="expansao" className="space-y-4 scroll-mt-6 border-t border-slate-200/60 pt-6">
             <div className="flex items-center gap-3">
               <IconShell tone="warm" className="shrink-0 h-9 w-9">
@@ -989,7 +814,7 @@ export function IneaMethodologyPage() {
             
             <div className="grid grid-cols-2 gap-2 pt-2">
               <a
-                href="/data/air/manifest.json"
+                href={getAirPublicDataPath("manifest.json")}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="block text-center py-2.5 px-4 bg-slate-200/50 hover:bg-slate-200 rounded-xl text-[10px] font-black uppercase text-slate-600 tracking-wider transition-colors"

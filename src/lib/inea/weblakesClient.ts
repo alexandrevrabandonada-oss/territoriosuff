@@ -268,9 +268,10 @@ export async function fetchWebLakesDataSafe(
         allRows.push(...dayRows);
         success = true;
         console.log(`[Safe Client] Successfully fetched ${dayRows.length} rows for ${dayStr}.`);
-      } catch (err: any) {
+      } catch (err) {
         attempt++;
-        console.warn(`[Safe Client] Attempt ${attempt} failed for ${dayStr}: ${err.message || err}`);
+        const message = err instanceof Error ? err.message : String(err);
+        console.warn(`[Safe Client] Attempt ${attempt} failed for ${dayStr}: ${message}`);
         if (attempt < maxAttempts) {
           console.log(`[Safe Client] Backoff waiting 5s before retry...`);
           await delay(5000);
@@ -375,4 +376,3 @@ export function normalizeConcentrationRow(
     raw: row
   };
 }
-

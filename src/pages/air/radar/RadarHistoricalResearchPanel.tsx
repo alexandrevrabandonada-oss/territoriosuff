@@ -1,3 +1,4 @@
+import { getAirPublicDataPath } from "../../../data/air/public-downloads";
 import { RadarEvidenceBadge } from "./RadarEvidenceBadge";
 import { RadarVisualNotice } from "./RadarVisualNotice";
 
@@ -76,7 +77,7 @@ const PUBLIC_SOURCES = [
   },
   {
     label: "Dados abertos do portal",
-    href: "/data/air/manifest.json",
+    href: getAirPublicDataPath("manifest.json"),
     detail: "Manifesto local dos CSVs publicados pelo SEMEAR."
   },
   {

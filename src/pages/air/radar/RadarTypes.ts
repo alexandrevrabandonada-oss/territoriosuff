@@ -7,10 +7,57 @@ export interface StationSummary {
   active: boolean;
 }
 
+export interface RadarMeasurement {
+  metric_type: string;
+  value?: number | null;
+  unit?: string | null;
+  pollutant?: string | null;
+  air_quality_classification?: string | null;
+  pollutant_name?: string | null;
+  controlling_pollutant?: string | null;
+  measured_at?: string | null;
+}
+
 export interface LatestResult {
   station: StationSummary;
   measured_at: string | null;
-  measurements: any[];
+  measurements: RadarMeasurement[];
+}
+
+export interface RadarChartPoint {
+  ts: string;
+  value: number;
+}
+
+export interface RadarTimeseriesPoint {
+  measured_at: string;
+  air_quality_index: number;
+  controlling_pollutant?: string | null;
+}
+
+export interface MonthlyProfileItem {
+  month: number | string;
+  month_name: string;
+  degraded_days: number;
+  measured_days: number;
+  degraded_percent_of_measured_days: number;
+}
+
+export interface ControllerFrequencyItem {
+  pollutant: string;
+  count: number;
+  percentage: number;
+}
+
+export interface DataGapItem {
+  station_id: string;
+  station_name: string;
+  measured_days: number;
+  expected_days: number;
+  insufficient_data_days: number;
+  coverage_percent: number;
+  gap_count: number;
+  max_gap_hours: number;
 }
 
 export interface SummaryStats {
@@ -85,7 +132,7 @@ export const STATIC_STATIONS_MAP = [
 ] satisfies Array<{
   station: StationSummary;
   measured_at: string | null;
-  measurements: any[];
+  measurements: RadarMeasurement[];
   description: string;
 }>;
 

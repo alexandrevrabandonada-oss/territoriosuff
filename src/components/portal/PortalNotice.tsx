@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 
 type PortalNoticeProps = {
-  type: "info" | "cautela" | "alerta" | "homologacao" | "metodologia" | "sem-dado";
+  type: "info" | "cautela" | "alerta" | "validacao" | "metodologia" | "sem-dado";
   title: ReactNode;
   description: ReactNode;
   nextStep?: ReactNode;
@@ -24,10 +24,10 @@ const typeClassMap: Record<PortalNoticeProps["type"], { shell: string; badge: st
     badge: "bg-red-600 text-white",
     label: "Alerta"
   },
-  homologacao: {
+  validacao: {
     shell: "border-cyan-300/70 bg-[linear-gradient(135deg,#ecfeff,#cffafe)] text-cyan-950 shadow-[0_18px_38px_-30px_rgba(8,145,178,0.75)]",
     badge: "bg-cyan-700 text-white",
-    label: "Homologação"
+    label: "Validação"
   },
   metodologia: {
     shell: "border-indigo-300/70 bg-[linear-gradient(135deg,#eef2ff,#e0e7ff)] text-indigo-950 shadow-[0_18px_38px_-30px_rgba(79,70,229,0.75)]",

@@ -13,7 +13,7 @@ import markerIcon2x from 'leaflet/dist/images/marker-icon-2x.png';
 import markerIcon from 'leaflet/dist/images/marker-icon.png';
 import markerShadow from 'leaflet/dist/images/marker-shadow.png';
 
-delete (L.Icon.Default.prototype as any)._getIconUrl;
+delete (L.Icon.Default.prototype as { _getIconUrl?: unknown })._getIconUrl;
 L.Icon.Default.mergeOptions({
   iconUrl: markerIcon,
   iconRetinaUrl: markerIcon2x,
@@ -50,10 +50,12 @@ function createCsnIcon() {
 }
 
 export function SocialExposureMap() {
+  type DemographicFilter = 'ALL' | 'CHILDREN' | 'ELDERLY' | 'INCOME' | 'INDUSTRIAL';
+
   const [selectedSector, setSelectedSector] = useState<CensusSector | null>(null);
   const [showSectors, setShowSectors] = useState<boolean>(true);
   const [showFacilities, setShowFacilities] = useState<boolean>(true);
-  const [demographicFilter, setDemographicFilter] = useState<'ALL' | 'CHILDREN' | 'ELDERLY' | 'INCOME' | 'INDUSTRIAL'>('ALL');
+  const [demographicFilter, setDemographicFilter] = useState<DemographicFilter>('ALL');
   const [selectedFacilityTypes, setSelectedFacilityTypes] = useState<Facility['type'][]>([
     'Escola', 'Creche', 'UBS', 'UPA', 'Hospital', 'CRAS'
   ]);
@@ -174,7 +176,7 @@ export function SocialExposureMap() {
             {showSectors && (
               <select
                 value={demographicFilter}
-                onChange={(e) => setDemographicFilter(e.target.value as any)}
+                onChange={(e) => setDemographicFilter(e.target.value as DemographicFilter)}
                 className="bg-[#0c283d] text-slate-200 text-[11px] outline-none border border-slate-700/60 rounded px-2 py-1 font-semibold cursor-pointer"
               >
                 <option value="ALL">Filtro: Todos</option>

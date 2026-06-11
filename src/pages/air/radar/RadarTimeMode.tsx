@@ -2,7 +2,15 @@ import { Suspense, lazy } from "react";
 
 import { SurfaceCard } from "../../../components/BrandSystem";
 import { RadarEvidenceBadge } from "./RadarEvidenceBadge";
-import type { RadarComparisonTab, RadarMode } from "./RadarTypes";
+import type {
+  ControllerFrequencyItem,
+  DataGapItem,
+  LatestResult,
+  MonthlyProfileItem,
+  RadarChartPoint,
+  RadarComparisonTab,
+  RadarMode
+} from "./RadarTypes";
 import { RADAR_TIME_TABS } from "./RadarTypes";
 import { RadarMicroguide } from "./RadarMicroguide";
 import { RadarModeFooter } from "./RadarModeFooter";
@@ -38,12 +46,12 @@ function RadarPanelLoadingFallback() {
 interface RadarTimeModeProps {
   comparisonTab: RadarComparisonTab;
   setComparisonTab: (tab: RadarComparisonTab) => void;
-  chartPoints: Array<{ ts: string; value: number }>;
-  controllerFreq: any[];
-  dataGaps: any[];
-  latestData: Array<{ station: { id: string; name: string } }>;
+  chartPoints: RadarChartPoint[];
+  controllerFreq: ControllerFrequencyItem[];
+  dataGaps: DataGapItem[];
+  latestData: LatestResult[];
   latestIngestedAt: string | null | undefined;
-  monthlyProfile: any[];
+  monthlyProfile: MonthlyProfileItem[];
   selectedStationChart: string;
   setSelectedStationChart: (stationId: string) => void;
   onNavigate: (mode: RadarMode, tab?: RadarComparisonTab) => void;

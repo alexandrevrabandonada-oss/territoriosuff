@@ -13,6 +13,8 @@ const POLLUTANTS = [
 ];
 
 const YEARS = [2020, 2021, 2022, 2023, 2024, 2025, 2026];
+const SERIES_LABEL = '2020-2026';
+const LEGACY_OUTPUT_PREFIX = 'legacy-recorte-2020-2026';
 
 function isLeapYear(year: number): boolean {
   return (year % 4 === 0 && year % 100 !== 0) || (year % 400 === 0);
@@ -196,18 +198,18 @@ async function run() {
     console.log(`Saved timeline CSV to: ${csvPath}`);
   };
 
-  writeTimelineCsv('so2-timeline-2020-2026.csv', so2Timeline);
-  writeTimelineCsv('co-timeline-2020-2026.csv', coTimeline);
+  writeTimelineCsv(`so2-timeline-${LEGACY_OUTPUT_PREFIX}.csv`, so2Timeline);
+  writeTimelineCsv(`co-timeline-${LEGACY_OUTPUT_PREFIX}.csv`, coTimeline);
 
   // ─────────────────────────────────────────────────────────────────────────
-  // Write consolidatory report reports/estado-da-nacao-inea-so2-co-2020-2026.md
+  // Write consolidatory report for this legacy partial slice.
   // ─────────────────────────────────────────────────────────────────────────
-  let reportMd = `# Estado da Nação — Expansão Histórica de SO₂ e CO (2020–2026)
+  let reportMd = `# Estado da Nação — Recorte Legado de SO₂ e CO (${SERIES_LABEL})
 ## Estações: Belmonte, Retiro e Santa Cecília
 
-**Data de Emissão:** ${new Date().toISOString().split('T')[0]}  
-**Série Abrangida:** 2020 a 2026 (2026 parcial)  
-**Status de Homologação:** Aprovado para Publicação de Transparência Cívica  
+**Data de Emissão:** ${new Date().toISOString().split('T')[0]}<br>
+**Série Abrangida:** ${SERIES_LABEL} (2026 parcial)<br>
+**Status de Publicação:** Recorte legado de recomputação; a fonte pública principal é a série 2013-2026 exportada por generate-csv-exports.ts<br>
 **Status Metodológico:** Comparação experimental — sem QA/QC oficial explícito
 
 ---
@@ -249,8 +251,8 @@ async function run() {
 *   **CO:** Unidade nativa em ppm preservada. Convertida para mg/m³ exclusivamente para validação com as diretrizes diárias da OMS. Nenhuma excedência da OMS (4 mg/m³) ou do padrão CONAMA de 8h (9 ppm) foi observada nas séries históricas, indicando comportamento estável do parâmetro.
 `;
 
-  const reportPath = path.join(reportsDir, 'estado-da-nacao-inea-so2-co-2020-2026.md');
-  const publicReportPath = path.join(process.cwd(), 'public', 'reports', 'estado-da-nacao-inea-so2-co-2020-2026.md');
+  const reportPath = path.join(reportsDir, `estado-da-nacao-inea-so2-co-${LEGACY_OUTPUT_PREFIX}.md`);
+  const publicReportPath = path.join(process.cwd(), 'public', 'reports', `estado-da-nacao-inea-so2-co-${LEGACY_OUTPUT_PREFIX}.md`);
   fs.writeFileSync(reportPath, reportMd, 'utf8');
   fs.writeFileSync(publicReportPath, reportMd, 'utf8');
   console.log(`Saved report to: ${reportPath}`);

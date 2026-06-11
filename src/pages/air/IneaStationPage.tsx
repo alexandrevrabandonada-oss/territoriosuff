@@ -5,6 +5,7 @@ import { MethodologyNotice } from "../../components/air/MethodologyNotice";
 import { DataFreshnessNotice } from "../../components/air/DataFreshnessNotice";
 import { AqiChart } from "../../components/air/AqiChart";
 import { getIneaClassificationStyle } from "./IneaRadarPage";
+import type { RadarMeasurement, RadarTimeseriesPoint } from "./radar/RadarTypes";
 
 interface StationSummary {
   id: string;
@@ -20,7 +21,11 @@ interface StationSummary {
 interface LatestResult {
   station: StationSummary;
   measured_at: string | null;
-  measurements: any[];
+  measurements: RadarMeasurement[];
+}
+
+interface LatestResponse {
+  stations?: LatestResult[];
 }
 
 interface ClassificationDaysBreakdown {
@@ -55,8 +60,8 @@ export function IneaStationPage() {
   const { stationId } = useParams<{ stationId: string }>();
 
   const [stationInfo, setStationInfo] = useState<StationSummary | null>(null);
-  const [latestMeasurements, setLatestMeasurements] = useState<any[]>([]);
-  const [timeseries, setTimeseries] = useState<any[]>([]);
+  const [latestMeasurements, setLatestMeasurements] = useState<RadarMeasurement[]>([]);
+  const [timeseries, setTimeseries] = useState<RadarTimeseriesPoint[]>([]);
   const [breakdown, setBreakdown] = useState<ClassificationDaysBreakdown | null>(null);
 
   const [loading, setLoading] = useState<boolean>(true);
@@ -71,7 +76,7 @@ export function IneaStationPage() {
         setError(null);
 
         // Fetch API endpoints
-        const [resLatest, resTimeseries, resBreakdown] = await Promise.all([
+        const [resLatest, resTimeseries, resBreakdown]: [LatestResponse, RadarTimeseriesPoint[], ClassificationDaysBreakdown] = await Promise.all([
           fetch("/api/air/inea/latest").then(r => r.json()),
           fetch(`/api/air/inea/timeseries?stationId=${stationId}&metricType=GENERAL_AQI`).then(r => r.json()),
           fetch(`/api/air/inea/classification-days?stationId=${stationId}`).then(r => r.json())
@@ -90,7 +95,7 @@ export function IneaStationPage() {
         setTimeseries(resTimeseries);
         setBreakdown(resBreakdown);
 
-      } catch (err: any) {
+      } catch (err) {
         console.error("Failed to load station details:", err);
         setError("Não foi possível carregar as informações detalhadas desta estação.");
       } finally {
@@ -225,7 +230,7 @@ export function IneaStationPage() {
             </span>
             <div className="flex items-baseline gap-2">
               <strong className="text-4xl font-black text-slate-800 leading-none">
-                {generalAqi?.value !== undefined ? Math.round(generalAqi.value) : "--"}
+                {typeof generalAqi?.value === "number" ? Math.round(generalAqi.value) : "--"}
               </strong>
             </div>
             <span className={`inline-block rounded-full border px-2.5 py-0.5 text-[10px] font-bold mt-2 ${badgeStyle}`}>
@@ -283,7 +288,7 @@ export function IneaStationPage() {
           <div className="grid gap-4 sm:grid-cols-2">
             {Object.entries(POLLUTANTS_INFO).map(([poll, info]) => {
               const matchedSub = subindices.find(s => s.pollutant === poll);
-              const value = matchedSub?.value !== undefined ? Math.round(matchedSub.value) : null;
+              const value = typeof matchedSub?.value === "number" ? Math.round(matchedSub.value) : null;
               const classification = classifySubindex(value);
 
               return (

@@ -1,6 +1,12 @@
 import * as fs from 'node:fs';
 import * as path from 'node:path';
 
+import {
+  AIR_PUBLIC_DATA_BASE_PATH,
+  AIR_PUBLIC_FILES,
+  type AirPublicManifest
+} from '../src/data/air/public-downloads';
+
 // Define structures for our checks
 interface CheckResult {
   name: string;
@@ -85,8 +91,9 @@ async function performCheck(
       responseTimeMs,
       notes
     };
-  } catch (err: any) {
+  } catch (err: unknown) {
     const responseTimeMs = Date.now() - startTime;
+    const message = err instanceof Error ? err.message : String(err);
     return {
       name,
       url,
@@ -95,7 +102,7 @@ async function performCheck(
       actualStatus: 0,
       ok: false,
       responseTimeMs,
-      notes: `Connection failed: ${err.message}`
+      notes: `Connection failed: ${message}`
     };
   }
 }
@@ -112,7 +119,7 @@ async function main() {
   results.push(await performCheck('Portal - Dados Gerais', `${targetHost}/dados`, 'page', 'text/html'));
 
   // 2. Manifest Check
-  const manifestResult = await performCheck('Dataset Manifest', `${targetHost}/data/air/manifest.json`, 'manifest', 'application/json');
+  const manifestResult = await performCheck('Dataset Manifest', `${targetHost}${AIR_PUBLIC_DATA_BASE_PATH}/manifest.json`, 'manifest', 'application/json');
   results.push(manifestResult);
 
   // 3. API Checks
@@ -130,35 +137,15 @@ async function main() {
   results.push(await performCheck('CSV: Dicionário de Dados Sociais', `${targetHost}/data/social/social-data-dictionary.csv`, 'csv', 'text/csv'));
 
   // 4. CSV Dataset Checks (dynamically extracted from Manifest if manifest succeeded, else fallback)
-  let datasetsToTest = [
-    { file: 'pm10-2020-station-summary.csv', title: 'Resumo PM10 2020' },
-    { file: 'pm10-2021-station-summary.csv', title: 'Resumo PM10 2021' },
-    { file: 'pm25-2021-station-summary.csv', title: 'Resumo PM2.5 2021' },
-    { file: 'pm25-2022-station-summary.csv', title: 'Resumo PM2.5 2022' },
-    { file: 'pm25-2023-station-summary.csv', title: 'Resumo PM2.5 2023' },
-    { file: 'pm10-2024-station-summary.csv', title: 'Resumo PM10 2024' },
-    { file: 'pm25-2024-station-summary.csv', title: 'Resumo PM2.5 2024' },
-    { file: 'so2-2024-station-summary.csv', title: 'Resumo SO2 2024' },
-    { file: 'co-2024-station-summary.csv', title: 'Resumo CO 2024' },
-    { file: 'pm10-2025-station-summary.csv', title: 'Resumo PM10 2025' },
-    { file: 'pm25-2025-station-summary.csv', title: 'Resumo PM2.5 2025' },
-    { file: 'pm10-2026-partial-station-summary.csv', title: 'Resumo PM10 2026 Parcial' },
-    { file: 'pm25-2026-partial-station-summary.csv', title: 'Resumo PM2.5 2026 Parcial' },
-    { file: 'particulate-timeline-2020-2026.csv', title: 'Linha do Tempo 2020-2026' },
-    { file: 'pm10-timeline-2013-2026.csv', title: 'Linha do Tempo PM10 2013-2026' },
-    { file: 'so2-timeline-2013-2026.csv', title: 'Linha do Tempo SO2 2013-2026' },
-    { file: 'co-timeline-2013-2026.csv', title: 'Linha do Tempo CO 2013-2026' },
-    { file: 'weather/weather-vr-2013-2026.csv', title: 'Dataset Meteorologico' },
-    { file: 'weather/weather-dictionary.csv', title: 'Dicionario Meteorologico' },
-    { file: 'attention-episodes-2020-2026.csv', title: 'Episódios de Atenção' },
-    { file: 'data-dictionary.csv', title: 'Dicionário de Dados' }
-  ];
+  let datasetsToTest = AIR_PUBLIC_FILES
+    .filter((item) => item.format === 'CSV')
+    .map((item) => ({ file: item.file, title: item.file }));
 
   if (manifestResult.ok) {
     try {
-      const res = await fetch(`${targetHost}/data/air/manifest.json`);
-      const manifest = await res.json();
-      datasetsToTest = manifest.datasets.map((d: any) => ({
+      const res = await fetch(`${targetHost}${AIR_PUBLIC_DATA_BASE_PATH}/manifest.json`);
+      const manifest = (await res.json()) as AirPublicManifest;
+      datasetsToTest = (manifest.datasets || []).map((d) => ({
         file: d.filename,
         title: d.title
       }));
@@ -168,7 +155,7 @@ async function main() {
   }
 
   for (const ds of datasetsToTest) {
-    const csvUrl = `${targetHost}/data/air/${ds.file}`;
+    const csvUrl = `${targetHost}${AIR_PUBLIC_DATA_BASE_PATH}/${ds.file}`;
     results.push(await performCheck(`CSV: ${ds.title}`, csvUrl, 'csv', 'text/csv'));
   }
 

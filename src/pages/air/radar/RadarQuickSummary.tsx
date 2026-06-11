@@ -3,7 +3,7 @@ import { getIneaClassificationStyle } from "./RadarTypes";
 import { RadarVisualNotice } from "./RadarVisualNotice";
 
 type RadarDataNotice =
-  | { kind: "homologation"; message: string }
+  | { kind: "validation"; message: string }
   | { kind: "partial"; message: string }
   | null;
 
@@ -33,12 +33,12 @@ export function RadarQuickSummary({
       {notice && (
         <div className="rounded-2xl">
           <RadarVisualNotice
-            type={notice.kind === "homologation" ? "info" : "warning"}
-            title={notice.kind === "homologation" ? "Ambiente de Homologação" : "Atualização Parcial da Base"}
+            type={notice.kind === "validation" ? "info" : "warning"}
+            title={notice.kind === "validation" ? "Ambiente de Validação" : "Atualização Parcial da Base"}
             description={notice.message}
             nextStep={
-              notice.kind === "homologation"
-                ? "Use mapa, histórico e metodologia para validar o shell visual antes da publicação."
+              notice.kind === "validation"
+                ? "Use mapa, histórico e metodologia para validar o shell visual antes da publicação pública."
                 : "Consulte mapa, séries históricas e metodologia enquanto a atualização completa não retorna."
             }
             action={onRetry}
@@ -83,7 +83,7 @@ export function RadarQuickSummary({
             {latestData.map((d) => {
               const latestAqi = d.measurements.find((m) => m.metric_type === "GENERAL_AQI");
               const classification = latestAqi?.air_quality_classification || "Sem Leitura";
-              const value = latestAqi?.value !== undefined ? Math.round(latestAqi.value) : "-";
+              const value = typeof latestAqi?.value === "number" ? Math.round(latestAqi.value) : "-";
               const colorClass = getIneaClassificationStyle(classification);
 
               return (

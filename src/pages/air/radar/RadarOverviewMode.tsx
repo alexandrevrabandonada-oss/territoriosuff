@@ -290,7 +290,7 @@ export function RadarOverviewMode({
                   {latestData.map((d) => {
                     const latestAqi = d.measurements.find((m) => m.metric_type === "GENERAL_AQI");
                     const classification = latestAqi?.air_quality_classification || "Sem Leitura";
-                    const value = latestAqi?.value !== undefined ? Math.round(latestAqi.value) : "-";
+                    const value = typeof latestAqi?.value === "number" ? Math.round(latestAqi.value) : "-";
                     const colorClass = getIneaClassificationStyle(classification);
 
                     return (

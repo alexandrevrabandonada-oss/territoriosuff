@@ -3,7 +3,7 @@ import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 
-import { loadIneaSummaryYear } from '../../lib/inea/summaryLoader';
+import { loadIneaSummaryYear, type SummaryPayload } from '../../lib/inea/summaryLoader';
 import { SITES, PARAMETERS } from '../../lib/inea/weblakesDictionary';
 
 // Fix Leaflet icons
@@ -11,7 +11,7 @@ import markerIcon2x from 'leaflet/dist/images/marker-icon-2x.png';
 import markerIcon from 'leaflet/dist/images/marker-icon.png';
 import markerShadow from 'leaflet/dist/images/marker-shadow.png';
 
-delete (L.Icon.Default.prototype as any)._getIconUrl;
+delete (L.Icon.Default.prototype as { _getIconUrl?: unknown })._getIconUrl;
 L.Icon.Default.mergeOptions({
   iconUrl: markerIcon,
   iconRetinaUrl: markerIcon2x,
@@ -56,7 +56,7 @@ export function AirAtlasMap() {
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [selectedStation, setSelectedStation] = useState<string>("70"); // Default station is Retiro
   const [showLegend, setShowLegend] = useState<boolean>(true); // For collapsible legend
-  const [loadedSummary, setLoadedSummary] = useState<Record<string, any> | null>(null);
+  const [loadedSummary, setLoadedSummary] = useState<SummaryPayload | null>(null);
   const [isLoadingSummary, setIsLoadingSummary] = useState<boolean>(true);
   const [summaryLoadError, setSummaryLoadError] = useState<boolean>(false);
 
@@ -184,11 +184,9 @@ export function AirAtlasMap() {
       tier: string;
     }> = {};
 
-    const summaryCast = loadedSummary as any;
-
     for (const stationId of ["69", "70", "71", "72"]) {
       const coords = STATION_COORDINATES[stationId] || { lat: -22.5, lng: -44.1, desc: "" };
-      const stationSummary = summaryCast[stationId]?.pollutants[selectedPollutant];
+      const stationSummary = loadedSummary?.[stationId]?.pollutants[selectedPollutant];
 
       let value: number | null = null;
       let coveragePct = 0;

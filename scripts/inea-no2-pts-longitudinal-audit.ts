@@ -186,7 +186,7 @@ async function run() {
 ### 3.3. Belmonte e Santa Cecília seguem padrões coerentes?
 *(Comparação com as linhas de base de 2024)*
 
-### 3.4. Veredito final de Homologação: O parâmetro pode ser recuperado parcialmente ou deve ficar bloqueado?
+### 3.4. Veredito final de auditoria: O parâmetro pode ser recuperado parcialmente ou deve ficar bloqueado?
 *(Veredito final)*
 `;
 
@@ -252,7 +252,7 @@ async function run() {
 ### 3.3. Belmonte e Santa Cecília seguem padrões coerentes?
 *(Comparação com as linhas de base de 2024)*
 
-### 3.4. Veredito final de Homologação: O parâmetro pode ser recuperado parcialmente ou deve ficar bloqueado?
+### 3.4. Veredito final de auditoria: O parâmetro pode ser recuperado parcialmente ou deve ficar bloqueado?
 *(Veredito final)*
 `;
 
