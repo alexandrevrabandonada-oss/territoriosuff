@@ -19,7 +19,8 @@ Passada técnica no fluxo de upload e organização de mídia/acervo, sem altera
 - Ajustado limite de upload por tipo: imagens seguem limitadas a 15MB e PDFs administrativos passam a aceitar até 30MB, pensando em relatórios e documentos escaneados do Acervo.
 - Melhorada a fila admin com orientação contextual por recorte: sem link, sem fonte, órfãos e prontos para preservar agora indicam a próxima ação editorial.
 - Substituído vazio genérico da fila por um card pedagógico com retorno para todos os uploads ou envio de novo arquivo.
-- Criado relatório operacional `uploads:report:curation`, que cruza `media_assets` com Acervo, Blog, Relatórios e Agenda e gera a fila semanal em `reports/estado-da-nacao-upload-acervo-fila-curadoria.md`.
+- Criado relatório operacional `uploads:report:curation`, que cruza `media_assets` com Acervo, Blog, Relatórios e Agenda e gera a fila semanal em Markdown e CSV.
+- O CSV `reports/estado-da-nacao-upload-acervo-fila-curadoria.csv` classifica cada asset como `sem_link_origem`, `sem_nome_fonte`, `orfao`, `pronto_preservar` ou `qualificado`.
 
 ## Verificações
 

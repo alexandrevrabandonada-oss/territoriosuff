@@ -42,6 +42,7 @@ type Reference = {
 
 const ENV_FILE = fs.existsSync(".env.local") ? ".env.local" : ".env";
 const REPORT_PATH = path.join(process.cwd(), "reports", "estado-da-nacao-upload-acervo-fila-curadoria.md");
+const CSV_PATH = path.join(process.cwd(), "reports", "estado-da-nacao-upload-acervo-fila-curadoria.csv");
 
 function parseEnvFile(filePath: string): Record<string, string> {
   if (!fs.existsSync(filePath)) return {};
@@ -95,6 +96,24 @@ function formatAssetLine(asset: MediaAsset, references: Reference[]) {
     `  - Link: ${sourceUrl}`,
     `  - Uso: ${usage}`,
   ].join("\n");
+}
+
+function csvEscape(value: string | number | null | undefined) {
+  const text = value === null || value === undefined ? "" : String(value);
+  return `"${text.replace(/"/g, '""')}"`;
+}
+
+function getUsageSummary(references: Reference[]) {
+  return references.length > 0 ? references.map((ref) => `${ref.area}:${ref.role}`).join("; ") : "sem uso";
+}
+
+function getQueueCategory(asset: MediaAsset, references: Reference[]) {
+  const alreadyPress = references.some((ref) => ref.area === "acervo" && isPressType(ref.contentType));
+  if (!asset.source_url?.trim()) return "sem_link_origem";
+  if (!asset.source_name?.trim()) return "sem_nome_fonte";
+  if (references.length === 0) return "orfao";
+  if (!alreadyPress) return "pronto_preservar";
+  return "qualificado";
 }
 
 async function main() {
@@ -217,7 +236,37 @@ async function main() {
   ].join("\n");
 
   fs.writeFileSync(REPORT_PATH, report, "utf8");
+  const csvRows = [
+    [
+      "categoria",
+      "asset_id",
+      "titulo",
+      "bucket",
+      "mime_type",
+      "source_name",
+      "source_url",
+      "uso",
+      "created_at",
+    ],
+    ...mediaAssets.map((asset) => {
+      const assetReferences = references.get(asset.id) || [];
+      return [
+        getQueueCategory(asset, assetReferences),
+        asset.id,
+        asset.title || asset.file_name || "",
+        asset.bucket,
+        asset.mime_type || "",
+        asset.source_name || "",
+        asset.source_url || "",
+        getUsageSummary(assetReferences),
+        asset.created_at || "",
+      ];
+    }),
+  ].map((row) => row.map(csvEscape).join(","));
+
+  fs.writeFileSync(CSV_PATH, `${csvRows.join("\n")}\n`, "utf8");
   console.log(`Relatório salvo em ${REPORT_PATH}`);
+  console.log(`CSV salvo em ${CSV_PATH}`);
 }
 
 main().catch((error) => {
