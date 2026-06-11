@@ -10,6 +10,17 @@ const STATUSES = [
   { value: "cancelled", label: "Cancelado" },
 ];
 
+type RecentAgendaAsset = {
+  id: string;
+  title: string;
+  public_url: string;
+  mime_type: string;
+};
+
+function getErrorMessage(error: unknown, fallback = "Erro desconhecido") {
+  return error instanceof Error ? error.message : fallback;
+}
+
 export function AdminAgendaEditPage() {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -18,7 +29,7 @@ export function AdminAgendaEditPage() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
-  const [recentAssets, setRecentAssets] = useState<any[]>([]);
+  const [recentAssets, setRecentAssets] = useState<RecentAgendaAsset[]>([]);
   const [assetSearch, setAssetSearch] = useState("");
 
   // Form State
@@ -91,8 +102,8 @@ export function AdminAgendaEditPage() {
       
       setCoverAssetId(asset.id);
       loadData();
-    } catch (err: any) {
-      alert("Erro no upload: " + err.message);
+    } catch (err) {
+      alert("Erro no upload: " + getErrorMessage(err));
     } finally {
       setIsUploading(false);
     }
@@ -127,12 +138,14 @@ export function AdminAgendaEditPage() {
       }
       alert("Evento salvo com sucesso!");
       navigate("/admin/agenda");
-    } catch (err: any) {
-      alert("Erro ao salvar: " + err.message);
+    } catch (err) {
+      alert("Erro ao salvar: " + getErrorMessage(err));
     } finally {
       setSaving(false);
     }
   };
+
+  const selectedCoverAsset = recentAssets.find((asset) => asset.id === coverAssetId);
 
   if (loading) return <div className="p-20 text-center text-slate-400 italic font-medium">Carregando editor...</div>;
 
@@ -302,10 +315,10 @@ export function AdminAgendaEditPage() {
             </div>
             
             <div className="aspect-video bg-slate-50 rounded-2xl border-2 border-dashed border-slate-100 overflow-hidden relative group">
-              {coverAssetId && recentAssets.find(a => a.id === coverAssetId) ? (
+              {coverAssetId && selectedCoverAsset ? (
                 <>
                   <img 
-                    src={recentAssets.find(a => a.id === coverAssetId).public_url} 
+                    src={selectedCoverAsset.public_url} 
                     alt="Capa" 
                     className="w-full h-full object-cover"
                   />

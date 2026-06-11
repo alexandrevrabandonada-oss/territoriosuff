@@ -12,6 +12,11 @@ interface Registration {
   created_at: string;
 }
 
+interface AgendaInscriptionsEvent {
+  title: string;
+  capacity: number | null;
+}
+
 const REG_STATUS_LABELS: Record<string, string> = {
   confirmed: "Confirmado",
   attended: "Presente",
@@ -19,10 +24,19 @@ const REG_STATUS_LABELS: Record<string, string> = {
   waiting: "Fila de Espera",
 };
 
+function escapeCSVField(value: string | number | null | undefined) {
+  if (value === null || value === undefined) return "";
+  const strValue = String(value);
+  if (strValue.includes('"') || strValue.includes(",") || strValue.includes("\n") || strValue.includes("\r")) {
+    return `"${strValue.replace(/"/g, '""')}"`;
+  }
+  return strValue;
+}
+
 export function AdminAgendaInscriptionsPage() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const [event, setEvent] = useState<any>(null);
+  const [event, setEvent] = useState<AgendaInscriptionsEvent | null>(null);
   const [registrations, setRegistrations] = useState<Registration[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -90,8 +104,8 @@ export function AdminAgendaInscriptionsPage() {
     ]);
 
     const csvContent = [
-      headers.join(","),
-      ...rows.map(row => row.map(cell => `"${cell}"`).join(","))
+      headers.map(escapeCSVField).join(","),
+      ...rows.map(row => row.map(escapeCSVField).join(","))
     ].join("\n");
 
     const blob = new Blob(["\uFEFF" + csvContent], { type: "text/csv;charset=utf-8;" });
