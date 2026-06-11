@@ -57,6 +57,7 @@ export interface UpdateMediaAssetOptions {
 }
 
 type ContentKind = "acervo" | "blog" | "reports";
+type EmbeddedMediaReference = { id?: unknown };
 
 export const ADMIN_ALLOWED_BUCKETS = ["acervo", "media", "blog", "reports", "transparency"] as const;
 export const ADMIN_ALLOWED_MIME_TYPES = [
@@ -109,6 +110,12 @@ export function validateAdminUploadFile(file: File, options: UploadValidationOpt
   if (file.size > maxFileSize) {
     throw new Error(`Arquivo muito grande. Limite de ${Math.round(maxFileSize / 1024 / 1024)}MB.`);
   }
+}
+
+function getEmbeddedMediaAssetId(item: unknown) {
+  if (!item || typeof item !== "object") return null;
+  const id = (item as EmbeddedMediaReference).id;
+  return typeof id === "string" && id ? id : null;
 }
 
 export async function getMediaAssetById(assetId: string): Promise<MediaAssetRecord | null> {
@@ -291,10 +298,9 @@ export async function getLinkedMediaAssetIdsForContent(contentKind: ContentKind,
       ids.add(data.cover_asset_id);
     }
     if (Array.isArray(data.media)) {
-      data.media.forEach((item: any) => {
-        if (typeof item?.id === "string" && item.id) {
-          ids.add(item.id);
-        }
+      data.media.forEach((item) => {
+        const assetId = getEmbeddedMediaAssetId(item);
+        if (assetId) ids.add(assetId);
       });
     }
     return Array.from(ids);

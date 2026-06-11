@@ -87,6 +87,48 @@ type AssetReferenceMap = Record<string, AssetReference[]>;
 type UploadWorkflowMode = "general" | "editorial";
 type UploadQueueFilter = "all" | "without_origin" | "without_source_name" | "orphan" | "ready_to_preserve";
 type UploadQueueSort = "recent" | "missing_origin" | "orphan_first" | "ready_first";
+type UploadStatus = "draft" | "published" | "archived";
+type EmbeddedMediaReference = { id?: unknown };
+type AcervoReferenceRow = {
+  id: string;
+  title?: string | null;
+  slug?: string | null;
+  type?: string | null;
+  cover_asset_id?: string | null;
+  media?: unknown;
+};
+type BlogReferenceRow = {
+  id: string;
+  title?: string | null;
+  slug?: string | null;
+  cover_asset_id?: string | null;
+};
+type ReportReferenceRow = {
+  id: string;
+  title?: string | null;
+  slug?: string | null;
+  cover_asset_id?: string | null;
+  pdf_asset_id?: string | null;
+};
+type EventReferenceRow = {
+  id: string;
+  title?: string | null;
+  cover_asset_id?: string | null;
+};
+
+function getErrorMessage(error: unknown, fallback: string) {
+  return error instanceof Error ? error.message : fallback;
+}
+
+function getEmbeddedMediaAssetId(item: unknown) {
+  if (!item || typeof item !== "object") return null;
+  const id = (item as EmbeddedMediaReference).id;
+  return typeof id === "string" && id ? id : null;
+}
+
+function asUploadStatus(status: string): UploadStatus {
+  return status === "published" || status === "archived" ? status : "draft";
+}
 
 const UPLOAD_QUEUE_FILTER_LABELS: Record<UploadQueueFilter, string> = {
   all: "Tudo",
@@ -194,7 +236,7 @@ export function AdminUploadsPage() {
       supabase.from("events").select("id, title, cover_asset_id"),
     ]);
 
-    (acervoRows || []).forEach((row: any) => {
+    ((acervoRows || []) as AcervoReferenceRow[]).forEach((row) => {
       if (row.cover_asset_id && references[row.cover_asset_id]) {
         references[row.cover_asset_id].push({
           area: "acervo",
@@ -206,8 +248,8 @@ export function AdminUploadsPage() {
       }
 
       if (Array.isArray(row.media)) {
-        row.media.forEach((item: any) => {
-          const assetId = typeof item?.id === "string" ? item.id : null;
+        row.media.forEach((item) => {
+          const assetId = getEmbeddedMediaAssetId(item);
           if (assetId && references[assetId]) {
             references[assetId].push({
               area: "acervo",
@@ -221,7 +263,7 @@ export function AdminUploadsPage() {
       }
     });
 
-    (blogRows || []).forEach((row: any) => {
+    ((blogRows || []) as BlogReferenceRow[]).forEach((row) => {
       if (row.cover_asset_id && references[row.cover_asset_id]) {
         references[row.cover_asset_id].push({
           area: "blog",
@@ -232,7 +274,7 @@ export function AdminUploadsPage() {
       }
     });
 
-    (reportRows || []).forEach((row: any) => {
+    ((reportRows || []) as ReportReferenceRow[]).forEach((row) => {
       if (row.cover_asset_id && references[row.cover_asset_id]) {
         references[row.cover_asset_id].push({
           area: "relatorios",
@@ -251,7 +293,7 @@ export function AdminUploadsPage() {
       }
     });
 
-    (eventRows || []).forEach((row: any) => {
+    ((eventRows || []) as EventReferenceRow[]).forEach((row) => {
       if (row.cover_asset_id && references[row.cover_asset_id]) {
         references[row.cover_asset_id].push({
           area: "agenda",
@@ -387,8 +429,8 @@ export function AdminUploadsPage() {
     if (selectedFile) {
       try {
         validateAdminUploadFile(selectedFile);
-      } catch (err: any) {
-        setError(err.message || "Arquivo inválido para upload.");
+      } catch (err) {
+        setError(getErrorMessage(err, "Arquivo inválido para upload."));
         return;
       }
       setFile(selectedFile);
@@ -471,7 +513,7 @@ export function AdminUploadsPage() {
         acervoContentType: asset.bucket === "acervo" ? assetAcervoType : null,
         contentCategory: asset.content_category || (asset.bucket === "acervo" ? "acervo" : asset.bucket),
         tags: assetTags.split(",").map((tag) => tag.trim()).filter(Boolean),
-        status: assetStatus as "draft" | "published" | "archived",
+        status: asUploadStatus(assetStatus),
       });
 
       setRecentAssets((current) => current.map((item) => item.id === updatedAsset.id ? updatedAsset : item));
@@ -479,8 +521,8 @@ export function AdminUploadsPage() {
         setSuccessAsset(updatedAsset);
       }
       cancelEditingAsset();
-    } catch (err: any) {
-      setError(err.message || "Falha ao salvar metadados do asset.");
+    } catch (err) {
+      setError(getErrorMessage(err, "Falha ao salvar metadados do asset."));
     } finally {
       setIsSavingAsset(false);
     }
@@ -504,7 +546,7 @@ export function AdminUploadsPage() {
         acervoContentType: asset.bucket === "acervo" ? (asset.acervo_content_type || "artigo_cientifico") : null,
         contentCategory: asset.content_category || (asset.bucket === "acervo" ? "acervo" : asset.bucket),
         tags: asset.tags || [],
-        status: (asset.status as "draft" | "published" | "archived") || "draft",
+        status: asUploadStatus(asset.status || "draft"),
       });
 
       setRecentAssets((current) => current.map((item) => item.id === updatedAsset.id ? updatedAsset : item));
@@ -512,8 +554,8 @@ export function AdminUploadsPage() {
         setSuccessAsset(updatedAsset);
       }
       cancelQuickEditingProvenance();
-    } catch (err: any) {
-      setError(err.message || "Falha ao salvar procedência rápida.");
+    } catch (err) {
+      setError(getErrorMessage(err, "Falha ao salvar procedência rápida."));
     } finally {
       setIsSavingQuickProvenance(false);
     }
@@ -571,7 +613,7 @@ export function AdminUploadsPage() {
             acervoContentType: asset.bucket === "acervo" ? (asset.acervo_content_type || "artigo_cientifico") : null,
             contentCategory: asset.content_category || (asset.bucket === "acervo" ? "acervo" : asset.bucket),
             tags: asset.tags || [],
-            status: (asset.status as "draft" | "published" | "archived") || "draft",
+            status: asUploadStatus(asset.status || "draft"),
           }),
         ),
       );
@@ -586,8 +628,8 @@ export function AdminUploadsPage() {
       setSelectedAssetIds((current) => current.filter((assetId) => !visibleSelectedAssetIds.includes(assetId)));
       setBulkSourceName("");
       setBulkSourceUrl("");
-    } catch (err: any) {
-      setError(err.message || "Falha ao aplicar procedência em lote.");
+    } catch (err) {
+      setError(getErrorMessage(err, "Falha ao aplicar procedência em lote."));
     } finally {
       setIsApplyingBulkProvenance(false);
     }
@@ -626,7 +668,7 @@ export function AdminUploadsPage() {
         acervoContentType: bucket === "acervo" ? acervoContentType : undefined,
         contentCategory: bucket === "acervo" ? "acervo" : bucket,
         tags: tags.split(",").map(t => t.trim()).filter(Boolean),
-        status: status as any
+        status: asUploadStatus(status)
       });
 
       setUploadProgress(100);
@@ -646,9 +688,9 @@ export function AdminUploadsPage() {
       setAcervoContentType("artigo_cientifico");
       
       await loadRecentAssets();
-    } catch (err: any) {
+    } catch (err) {
       console.error("[Upload] Falha:", err);
-      setError(err.message || "Falha no upload.");
+      setError(getErrorMessage(err, "Falha no upload."));
     } finally {
       setIsUploading(false);
       setTimeout(() => setUploadProgress(0), 1000);
