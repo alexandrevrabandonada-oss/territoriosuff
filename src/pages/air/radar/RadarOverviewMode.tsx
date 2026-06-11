@@ -31,6 +31,8 @@ export function RadarOverviewMode({
 }: RadarOverviewModeProps) {
   const topStation = sortedRankings[0];
   const topPollutant = displaySummary.mostFrequentControllingPollutant;
+  const hasRanking = sortedRankings.length > 0;
+  const hasSummaryMeasurements = displaySummary.totalMeasurements > 0;
   const topPollutantShort = topPollutant.includes("Dióxido de Enxofre")
     ? "SO₂"
     : topPollutant.includes("Particulado")
@@ -71,11 +73,13 @@ export function RadarOverviewMode({
               <div>
                 <span className="text-[10px] font-black uppercase tracking-[0.18em] text-[#d97706]">Estação com Mais Atenção</span>
                 <h3 className="mt-3 text-3xl font-black leading-tight tracking-tight text-[#78350f] md:text-4xl">
-                  {topStation?.name || "VR-Belmonte"}
+                  {topStation?.name || "Ranking em atualização"}
                 </h3>
               </div>
               <p className="max-w-md text-[13px] font-semibold leading-relaxed text-[#92400e]">
-                Registrou {topStation?.moderateOrWorseDays || 0} dias com classificação Moderada ou pior na base pública consolidada.
+                {hasRanking
+                  ? `Registrou ${topStation.moderateOrWorseDays} dias com classificação Moderada ou pior na base pública consolidada.`
+                  : "Quando a API pública responder, este bloco volta a indicar a estação que exige leitura prioritária."}
               </p>
               <RadarEvidenceBadge
                 level="interpretive"
@@ -87,8 +91,12 @@ export function RadarOverviewMode({
             <div className="grid gap-3 sm:grid-cols-2">
               <div className="rounded-2xl border border-[#d97706]/15 bg-white/80 p-4">
                 <div className="text-[10px] font-black uppercase tracking-[0.18em] text-[#92400e]">Base consolidada</div>
-                <div className="mt-2 text-3xl font-black tracking-tight text-[#78350f]">{displaySummary.totalMeasurements.toLocaleString("pt-BR")}</div>
-                <div className="mt-1 text-[11px] font-semibold text-[#92400e]/80">leituras históricas tratadas</div>
+                <div className="mt-2 text-3xl font-black tracking-tight text-[#78350f]">
+                  {hasSummaryMeasurements ? displaySummary.totalMeasurements.toLocaleString("pt-BR") : "Consulte o manifesto"}
+                </div>
+                <div className="mt-1 text-[11px] font-semibold text-[#92400e]/80">
+                  {hasSummaryMeasurements ? "leituras históricas tratadas" : "CSV e metodologia seguem disponíveis"}
+                </div>
               </div>
               <div className="rounded-2xl border border-[#d97706]/15 bg-white/80 p-4">
                 <div className="text-[10px] font-black uppercase tracking-[0.18em] text-[#92400e]">Próximo passo</div>
@@ -106,11 +114,13 @@ export function RadarOverviewMode({
               className="mt-3 text-4xl font-black tracking-tight text-white"
               title={displaySummary.mostFrequentControllingPollutant}
             >
-              {topPollutantShort}
+              {hasSummaryMeasurements ? topPollutantShort : "Em atualização"}
             </div>
           </div>
           <p className="text-[12px] font-semibold leading-relaxed text-slate-300">
-            Poluente que mais frequentemente determina a classificação diária final do IQAr.
+            {hasSummaryMeasurements
+              ? "Poluente que mais frequentemente determina a classificação diária final do IQAr."
+              : "Sem resumo de API neste momento. Use as séries históricas, mapa e metodologia enquanto a atualização retorna."}
           </p>
         </div>
 
@@ -136,7 +146,7 @@ export function RadarOverviewMode({
               </div>
             </div>
             <div className="rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-[10px] font-bold text-slate-600">
-              Controlador recorrente: <strong className="text-[#0e2c45]">{displaySummary.mostFrequentControllingPollutant}</strong>
+              Controlador recorrente: <strong className="text-[#0e2c45]">{hasSummaryMeasurements ? displaySummary.mostFrequentControllingPollutant : "em atualização"}</strong>
             </div>
           </div>
 

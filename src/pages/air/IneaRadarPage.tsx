@@ -226,11 +226,11 @@ export function IneaRadarPage() {
   );
 
   const displaySummary: SummaryStats = summary || {
-    totalStations: 4,
-    totalMeasurements: 15696,
-    timeRange: { minDate: "2022-01-02", maxDate: "2025-02-13" },
+    totalStations: latestData.length,
+    totalMeasurements: 0,
+    timeRange: { minDate: "", maxDate: "" },
     moderateOrWorseDaysCount: 0,
-    mostFrequentControllingPollutant: "Dióxido de Enxofre (SO₂)",
+    mostFrequentControllingPollutant: "Base pública temporariamente indisponível",
     latest_ingested_at: null
   };
 
