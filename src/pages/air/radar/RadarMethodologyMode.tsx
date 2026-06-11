@@ -462,7 +462,7 @@ export function RadarMethodologyMode({ onNavigate, onOpenLai, onTop }: RadarMeth
               </p>
             </div>
             <div className="shrink-0 rounded-full border border-emerald-300 bg-emerald-100 px-3 py-1.5 text-center text-[9px] font-black uppercase tracking-widest text-emerald-800">
-              v1.1.0 Homologado
+              Manifesto público versionado
             </div>
           </div>
 
@@ -509,7 +509,7 @@ export function RadarMethodologyMode({ onNavigate, onOpenLai, onTop }: RadarMeth
                 className="inline-flex items-center gap-1.5 rounded-full border border-emerald-500/20 bg-emerald-50 px-2.5 py-1 text-[10px] font-black uppercase tracking-wider text-emerald-600 shadow-sm transition-colors hover:bg-emerald-100"
               >
                 <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-500" />
-                Dados abertos v1.1.0 · Healthcheck saudável
+                Dados abertos versionados · verificação operacional registrada
               </Link>
             </div>
             <p className="text-xs font-semibold leading-relaxed text-slate-500">
