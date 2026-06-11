@@ -25,7 +25,7 @@
     "ship:all": "npm run ship:infra && npm run ship:content",
     "simulate:sensor": "node tools/simulate-sensor.mjs",
     "simulate:sensor:retry": "node tools/simulate-sensor.mjs --retry",
-    "smoke": "node tools/db-smoke.mjs && node tools/route-smoke.mjs && node tools/no-demo-content-smoke.mjs && node tools/security-smoke.mjs && node tools/admin-routes-smoke.mjs && node tools/admin-upload-flow-smoke.mjs && node tools/admin-upload-acervo-type-smoke.mjs && node tools/admin-storage-contract-smoke.mjs && node tools/admin-preserved-story-upload-smoke.mjs && node tools/admin-acervo-flow-smoke.mjs && node tools/admin-reports-flow-smoke.mjs && node tools/admin-blog-flow-smoke.mjs && node tools/admin-activities-flow-smoke.mjs",
+    "smoke": "node tools/db-smoke.mjs && node tools/route-smoke.mjs && node tools/no-demo-content-smoke.mjs && node tools/security-smoke.mjs && node tools/admin-routes-smoke.mjs && node tools/admin-upload-flow-smoke.mjs && node tools/admin-upload-acervo-type-smoke.mjs && node tools/admin-storage-contract-smoke.mjs && node tools/upload-curation-report-smoke.mjs && node tools/admin-preserved-story-upload-smoke.mjs && node tools/admin-acervo-flow-smoke.mjs && node tools/admin-reports-flow-smoke.mjs && node tools/admin-blog-flow-smoke.mjs && node tools/admin-activities-flow-smoke.mjs",
     "test:smoke:ui": "playwright test --grep @smoke",
     "test:a11y": "playwright test --grep @a11y",
     "snapshot": "node tools/snapshot.mjs",
@@ -61,7 +61,8 @@
     "press:report:stale": "tsx scripts/press-preservation-stale-report.ts",
     "press:report:snapshot-gap": "tsx scripts/press-preservation-snapshot-gap-report.ts",
     "press:report:pending-review": "tsx scripts/press-preservation-pending-review-report.ts",
-    "press:report:executive": "tsx scripts/press-preservation-executive-report.ts"
+    "press:report:executive": "tsx scripts/press-preservation-executive-report.ts",
+    "uploads:report:curation": "tsx scripts/upload-curation-queue-report.ts"
   },
   "dependencies": {
     "@sentry/react": "^10.45.0",

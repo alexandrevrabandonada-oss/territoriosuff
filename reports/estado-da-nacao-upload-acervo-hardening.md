@@ -19,13 +19,16 @@ Passada técnica no fluxo de upload e organização de mídia/acervo, sem altera
 - Ajustado limite de upload por tipo: imagens seguem limitadas a 15MB e PDFs administrativos passam a aceitar até 30MB, pensando em relatórios e documentos escaneados do Acervo.
 - Melhorada a fila admin com orientação contextual por recorte: sem link, sem fonte, órfãos e prontos para preservar agora indicam a próxima ação editorial.
 - Substituído vazio genérico da fila por um card pedagógico com retorno para todos os uploads ou envio de novo arquivo.
+- Criado relatório operacional `uploads:report:curation`, que cruza `media_assets` com Acervo, Blog, Relatórios e Agenda e gera a fila semanal em `reports/estado-da-nacao-upload-acervo-fila-curadoria.md`.
 
 ## Verificações
 
 - `node tools/admin-upload-flow-smoke.mjs`
 - `node tools/admin-upload-acervo-type-smoke.mjs`
 - `node tools/admin-storage-contract-smoke.mjs`
+- `node tools/upload-curation-report-smoke.mjs`
 - `node tools/admin-preserved-story-upload-smoke.mjs`
+- `npm run uploads:report:curation`
 - `npm run smoke`
 - `npm run typecheck`
 
@@ -33,4 +36,4 @@ Passada técnica no fluxo de upload e organização de mídia/acervo, sem altera
 
 1. Mapear políticas reais de retenção e backup dos buckets `acervo`, `media`, `blog`, `reports` e `transparency` no painel Supabase.
 2. Avaliar compressão/otimização automática futura para PDFs muito grandes antes do upload.
-3. Criar relatório periódico de pendências da fila admin para curadoria semanal.
+3. Transformar o relatório de fila em automação semanal se a rotina editorial se consolidar.
