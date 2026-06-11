@@ -721,7 +721,7 @@ export function DadosPage() {
               Abrir mapa do INEA
             </Link>
             <Link
-              to="/qualidade-ar/inea#historia"
+              to="/qualidade-ar/inea/historia"
               className="px-4 py-2 border border-slate-200 bg-white text-slate-700 font-bold rounded-xl hover:bg-slate-50 transition-colors text-xs"
             >
               Ver história dos dados

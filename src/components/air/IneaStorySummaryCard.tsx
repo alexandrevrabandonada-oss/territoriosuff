@@ -30,8 +30,8 @@ export function IneaStorySummaryCard() {
         <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
           <div className="p-3 bg-white/60 border border-slate-100 rounded-xl space-y-0.5">
             <span className="text-[9px] font-black text-slate-400 uppercase block tracking-wider">Período</span>
-            <strong className="text-xs font-black text-slate-700 block">2022–2025</strong>
-            <span className="text-[9px] text-slate-400 font-bold block">Base pública</span>
+            <strong className="text-xs font-black text-slate-700 block">2013–2026</strong>
+            <span className="text-[9px] text-slate-400 font-bold block">Camadas em revisão</span>
           </div>
 
           <div className="p-3 bg-white/60 border border-slate-100 rounded-xl space-y-0.5">
@@ -41,9 +41,9 @@ export function IneaStorySummaryCard() {
           </div>
 
           <div className="p-3 bg-white/60 border border-slate-100 rounded-xl space-y-0.5">
-            <span className="text-[9px] font-black text-slate-400 uppercase block tracking-wider">Principal Controlador</span>
-            <strong className="text-xs font-black text-slate-700 block">SO₂ e Material Particulado</strong>
-            <span className="text-[9px] text-slate-400 font-bold block">Maior peso no IQAr</span>
+            <span className="text-[9px] font-black text-slate-400 uppercase block tracking-wider">Memória 2013-2015</span>
+            <strong className="text-xs font-black text-slate-700 block">PM10 convergente</strong>
+            <span className="text-[9px] text-slate-400 font-bold block">PTS técnico, O3 em auditoria</span>
           </div>
 
           <div className="p-3 bg-white/60 border border-slate-100 rounded-xl space-y-0.5">
@@ -56,7 +56,7 @@ export function IneaStorySummaryCard() {
         {/* Description & CTA */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pt-2 border-t border-slate-100">
           <p className="text-xs text-slate-500 font-semibold leading-relaxed max-w-xl">
-            Entenda como a base de dados de Volta Redonda foi estruturada pelo INEA, onde o ar foi medido, quando houve alertas de atenção e por que o silêncio nas lacunas de dados também é uma informação pública relevante.
+            Entenda como a base pública recente se conecta à memória histórica recuperada, onde o ar foi medido e por que lacunas, métricas em auditoria e evidências científicas precisam aparecer juntas.
           </p>
           <Link
             to="/qualidade-ar/inea/historia"

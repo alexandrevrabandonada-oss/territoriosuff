@@ -122,7 +122,7 @@ export function RadarTimeMode({
               <div className="space-y-2">
                 <div className="flex flex-wrap items-center gap-3">
                   <h2 className="text-lg font-black text-slate-800">Série histórica ampliada 2013–2026</h2>
-                  <span className="inline-flex items-center gap-1 rounded-full border border-amber-500/20 bg-amber-50 px-2.5 py-0.5 text-[10px] font-black uppercase tracking-wider text-amber-850 shadow-xs">
+                  <span className="inline-flex items-center gap-1 rounded-full border border-amber-500/20 bg-amber-50 px-2.5 py-0.5 text-[10px] font-black uppercase tracking-wider text-amber-900 shadow-xs">
                     Alguns anos possuem cobertura insuficiente para comparação anual plena.
                   </span>
                   <RadarEvidenceBadge level="experimental" detail="série pública ampliada, ainda dependente da cobertura instrumental disponível" />
@@ -221,7 +221,7 @@ export function RadarTimeMode({
                       <div key={m.month} className="space-y-2 rounded-xl border border-slate-200 bg-slate-50/50 p-4 shadow-xs">
                         <div className="flex items-center justify-between text-xs">
                           <strong className="font-extrabold text-slate-800">{m.month_name}</strong>
-                          <span className="rounded border border-amber-200/40 bg-amber-50 px-2 py-0.5 text-[10px] font-black text-amber-850">
+                          <span className="rounded border border-amber-200/40 bg-amber-50 px-2 py-0.5 text-[10px] font-black text-amber-900">
                             {m.degraded_percent_of_measured_days}%
                           </span>
                         </div>

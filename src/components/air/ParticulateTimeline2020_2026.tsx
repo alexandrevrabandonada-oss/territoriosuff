@@ -172,7 +172,7 @@ export function ParticulateTimeline2020_2026() {
 
       {/* Historical Caution Warning */}
       {parseInt(activeYear) < 2020 && (
-        <div className="bg-amber-50/60 border border-amber-200/60 text-amber-850 text-xs rounded-xl p-3.5 flex items-start gap-2.5">
+        <div className="bg-amber-50/60 border border-amber-200/60 text-amber-900 text-xs rounded-xl p-3.5 flex items-start gap-2.5">
           <span className="text-amber-500 font-bold shrink-0 mt-0.5">⚠️</span>
           <div>
             <strong>Série Histórica Reconstruída (2013–2019):</strong> Dados obtidos da plataforma histórica WebLakes do INEA. Recomenda-se a publicação com cautela. A comparação com limites de saúde pública diários é experimental e deve considerar a cobertura de dados da estação escolhida.
