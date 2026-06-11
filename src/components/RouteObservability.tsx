@@ -6,7 +6,7 @@ import { trackNavigation } from "../lib/observability";
 function getRouteAnnouncement(pathname: string): string {
   const routeLabels: Record<string, string> = {
     "/": "Página inicial",
-    "/dados": "Dados ao vivo",
+    "/dados": "Leituras SEMEAR",
     "/acervo": "Acervo",
     "/acervo/linha": "Linha do tempo do acervo",
     "/relatorios": "Relatórios",

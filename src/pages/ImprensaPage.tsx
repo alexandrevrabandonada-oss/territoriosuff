@@ -60,7 +60,7 @@ export function ImprensaPage() {
         <h2 className="text-lg font-black text-text-primary">Resumo institucional</h2>
         <div className="mt-3 space-y-3 text-sm leading-relaxed text-text-secondary md:text-base">
           <p>{INSTITUTIONAL_SUMMARY}</p>
-          <p>{INSTITUTIONAL_TAGLINE}. O portal combina dados ambientais em tempo quase real, biblioteca oficial de relatórios, acervo histórico, agenda de atividades e prestação de contas em linguagem acessível.</p>
+          <p>{INSTITUTIONAL_TAGLINE}. O portal combina dados ambientais com atualização frequente quando há transmissão ativa, biblioteca oficial de relatórios, acervo histórico, agenda de atividades e prestação de contas em linguagem acessível.</p>
           <p className="seed-badge w-fit">{INSTITUTIONAL_COORDINATION} · {INSTITUTIONAL_FUNDING}</p>
         </div>
         </BrandWatermarkPanel>

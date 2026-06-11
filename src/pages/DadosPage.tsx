@@ -681,7 +681,7 @@ export function DadosPage() {
       />
       <div className="grid gap-4 md:grid-cols-3">
         <div className="p-5 bg-white border-2 border-brand-primary rounded-2xl shadow-sm transition-all">
-          <strong className="text-sm font-black text-brand-primary block">Dados ao vivo SEMEAR</strong>
+          <strong className="text-sm font-black text-brand-primary block">Leituras SEMEAR</strong>
           <p className="text-xs text-slate-500 mt-1">Leituras da estação piloto e rede cidadã.</p>
           <span className="inline-block mt-3 text-[10px] bg-brand-primary/10 text-brand-primary font-bold uppercase px-2 py-0.5 rounded-full">Ativo</span>
         </div>
@@ -776,11 +776,11 @@ export function DadosPage() {
               </IconShell>
               <div className="space-y-1">
                 <AxisEyebrow axis="dados">Painel ambiental</AxisEyebrow>
-                <h1 className="data-hero-title">Dados ao vivo</h1>
+                <h1 className="data-hero-title">Leituras SEMEAR</h1>
               </div>
             </div>
             <p className="data-hero-lede">
-              Monitoramento ambiental em tempo quase real, com leitura pública, recortes comparáveis e exportação para auditoria cidadã.
+              Monitoramento ambiental com atualização frequente quando há transmissão ativa, leitura pública, recortes comparáveis e exportação para auditoria cidadã.
             </p>
             <div className="data-hero-strip" aria-label="Indicadores rápidos">
               {!isComparing ? (

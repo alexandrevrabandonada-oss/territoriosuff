@@ -65,7 +65,7 @@ export function SobrePage() {
             </div>
             <h3 className="text-lg font-bold text-text-primary">Ciência Aberta</h3>
             <p className="mt-2 text-sm text-text-secondary">
-              Dados científicos acessíveis em tempo real, metodologia transparente e resultados de pesquisa compartilhados publicamente para o bem comum.
+              Dados científicos acessíveis, metodologia transparente e resultados de pesquisa compartilhados publicamente para o bem comum.
             </p>
           </div>
 
@@ -113,7 +113,7 @@ export function SobrePage() {
             <div>
               <h3 className="font-bold text-text-primary">Monitoramento da Qualidade do Ar</h3>
               <p className="mt-1 text-sm text-text-secondary">
-                Estações de medição em tempo real de material particulado (MP2.5 e MP10), disponibilizando dados científicos para a população e órgãos públicos.
+                Estações de medição de material particulado (MP2.5 e MP10), com atualização frequente quando há transmissão ativa e dados científicos disponíveis para a população e órgãos públicos.
               </p>
             </div>
           </div>

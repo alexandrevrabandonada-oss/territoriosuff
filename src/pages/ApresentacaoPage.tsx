@@ -114,7 +114,7 @@ export function ApresentacaoPage() {
       <SurfaceCard className="portal-list-panel border-brand-primary/15 bg-brand-primary-soft p-6">
         <h2 className="text-lg font-black text-brand-primary">Como usar</h2>
         <ul className="mt-3 list-disc space-y-2 pl-5 text-sm text-text-primary md:text-base">
-          <li>Comece pelos dados da estacao piloto para mostrar operacao em tempo quase real.</li>
+          <li>Comece pelas leituras da estacao piloto para mostrar atualizacao frequente quando ha transmissao ativa.</li>
           <li>Em seguida, abra um dossie e um relatorio para demonstrar memoria e producao editorial.</li>
           <li>Finalize com o boletim mensal e a transparencia filtrada para reforcar prestacao de contas.</li>
         </ul>

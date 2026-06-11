@@ -41,11 +41,11 @@ export function RadarLandingPage() {
             </div>
             <h2 className="text-xl font-black text-text-primary">Rede Cidadã SEMEAR UFF</h2>
             <p className="mt-3 text-sm text-text-secondary leading-relaxed">
-              Monitore sensores complementares instalados em Volta Redonda com leituras instantâneas minuto a minuto. Mede concentrações físicas brutas de partículas PM2.5 e PM10 em µg/m³.
+              Consulte sensores complementares instalados em Volta Redonda, com atualização frequente quando a estação está transmitindo. Mede concentrações físicas brutas de partículas PM2.5 e PM10 em µg/m³.
             </p>
             <ul className="mt-4 space-y-2 text-xs text-text-secondary list-disc pl-4 leading-relaxed">
               <li>Leitura de concentração física bruta (µg/m³)</li>
-              <li>Dados atualizados minuto a minuto</li>
+              <li>Atualização frequente quando há transmissão ativa</li>
               <li>Histórico de 24h, 7 dias e buscas personalizadas</li>
             </ul>
           </div>
