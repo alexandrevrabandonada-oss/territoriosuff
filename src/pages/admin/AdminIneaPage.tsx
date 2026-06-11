@@ -9,7 +9,7 @@ interface IngestRun {
   rows_read: number;
   rows_inserted: number;
   error_message: string | null;
-  report_json: any;
+  report_json: Record<string, unknown> | null;
 }
 
 interface AirStation {
@@ -38,6 +38,10 @@ interface AirMeasurement {
   raw_column: string;
 }
 
+type AirMeasurementRow = Omit<AirMeasurement, "station_name"> & {
+  air_stations?: { name?: string | null } | null;
+};
+
 const CLASSIFICATION_COLORS: Record<string, string> = {
   BOA: "bg-emerald-100 text-emerald-800 border-emerald-200",
   MODERADA: "bg-yellow-100 text-yellow-800 border-yellow-200",
@@ -46,6 +50,10 @@ const CLASSIFICATION_COLORS: Record<string, string> = {
   "PÉSSIMA": "bg-purple-100 text-purple-800 border-purple-200",
   INDISPONÍVEL: "bg-slate-100 text-slate-500 border-slate-200"
 };
+
+function getErrorMessage(error: unknown, fallback = "Erro desconhecido") {
+  return error instanceof Error ? error.message : fallback;
+}
 
 export function AdminIneaPage() {
   const [lastRun, setLastRun] = useState<IngestRun | null>(null);
@@ -110,7 +118,7 @@ export function AdminIneaPage() {
 
       if (measError) throw measError;
 
-      const formattedMeas = (measData || []).map((m: any) => ({
+      const formattedMeas = ((measData || []) as AirMeasurementRow[]).map((m) => ({
         id: m.id,
         station_id: m.station_id,
         station_name: m.air_stations?.name || "Desconhecida",
@@ -128,8 +136,8 @@ export function AdminIneaPage() {
 
       setRecentMeasurements(formattedMeas);
 
-    } catch (err: any) {
-      alert("Erro ao carregar dados do INEA: " + err.message);
+    } catch (err) {
+      alert("Erro ao carregar dados do INEA: " + getErrorMessage(err));
     } finally {
       setLoading(false);
     }
