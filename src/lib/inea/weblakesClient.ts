@@ -215,13 +215,19 @@ function delay(ms: number) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
+function logVerbose(message: string) {
+  if (process.env.WEBLAKES_VERBOSE === "1") {
+    console.info(message);
+  }
+}
+
 export async function fetchWebLakesDataSafe(
   host = DEFAULT_HOST,
   params: FetchParams,
   userAgent = DEFAULT_USER_AGENT
 ): Promise<RawCellRow[]> {
   const mode = (process.env.WEBLAKES_COLLECTION_MODE || "daily_validated") as "daily_validated" | "monthly_fast";
-  console.log(`[Safe Client] Collection Mode: ${mode} for Station ${params.stationId}, Parameter ${params.parameterId}`);
+  logVerbose(`[Safe Client] Collection Mode: ${mode} for Station ${params.stationId}, Parameter ${params.parameterId}`);
 
   if (mode === "monthly_fast") {
     const cookies = await initPublicSession(host, userAgent);
@@ -241,12 +247,12 @@ export async function fetchWebLakesDataSafe(
     days.push(`${yyyy}-${mm}-${dd}`);
   }
 
-  console.log(`[Safe Client] Splitting request into ${days.length} daily validated queries.`);
+  logVerbose(`[Safe Client] Splitting request into ${days.length} daily validated queries.`);
   const allRows: RawCellRow[] = [];
 
   for (let i = 0; i < days.length; i++) {
     const dayStr = days[i];
-    console.log(`[Safe Client] [${i + 1}/${days.length}] Fetching ${dayStr}...`);
+    logVerbose(`[Safe Client] [${i + 1}/${days.length}] Fetching ${dayStr}...`);
     
     // Always initialize a fresh session for each day to completely isolate state
     const cookies = await initPublicSession(host, userAgent);
@@ -267,13 +273,13 @@ export async function fetchWebLakesDataSafe(
         const dayRows = parseJqGridRows(result.body);
         allRows.push(...dayRows);
         success = true;
-        console.log(`[Safe Client] Successfully fetched ${dayRows.length} rows for ${dayStr}.`);
+        logVerbose(`[Safe Client] Successfully fetched ${dayRows.length} rows for ${dayStr}.`);
       } catch (err) {
         attempt++;
         const message = err instanceof Error ? err.message : String(err);
         console.warn(`[Safe Client] Attempt ${attempt} failed for ${dayStr}: ${message}`);
         if (attempt < maxAttempts) {
-          console.log(`[Safe Client] Backoff waiting 5s before retry...`);
+          logVerbose(`[Safe Client] Backoff waiting 5s before retry...`);
           await delay(5000);
         }
       }
@@ -286,7 +292,7 @@ export async function fetchWebLakesDataSafe(
     // Politeness pause between requests
     if (i < days.length - 1) {
       const pauseTime = 10000 + Math.floor(Math.random() * 10000);
-      console.log(`[Safe Client] Pausing for ${(pauseTime / 1000).toFixed(1)}s before next day query...`);
+      logVerbose(`[Safe Client] Pausing for ${(pauseTime / 1000).toFixed(1)}s before next day query...`);
       await delay(pauseTime);
     }
   }

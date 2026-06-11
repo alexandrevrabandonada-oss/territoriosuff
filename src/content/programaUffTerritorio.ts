@@ -341,7 +341,7 @@ export const budgetSlices: BudgetSlice[] = [
   }
 ];
 
-export const legacyItems = [
+export const publicLegacyItems = [
   {
     title: "Metodologia integrada",
     body: "Um modelo replicável que cruza dados públicos, monitoramento comunitário, formação e memória territorial em uma mesma arquitetura de ação."

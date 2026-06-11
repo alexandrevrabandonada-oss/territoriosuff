@@ -11,7 +11,7 @@ import {
   executiveNarrative,
   expansionBlocks,
   governanceActors,
-  legacyItems,
+  publicLegacyItems,
   programFronts,
   programHeroMetrics,
   programReasons,
@@ -319,7 +319,7 @@ export function ProgramaUffTerritorioPage() {
           </SurfaceCard>
 
           <div className="grid gap-4 md:grid-cols-2">
-            {legacyItems.map((item, index) => (
+            {publicLegacyItems.map((item, index) => (
               <SurfaceCard
                 key={item.title}
                 className={[
