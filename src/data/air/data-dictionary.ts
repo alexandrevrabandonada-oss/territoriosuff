@@ -47,7 +47,7 @@ export const DATA_DICTIONARY: DataDictionaryEntry[] = [
     description: "Nome do poluente medido. Valores possíveis: PM10, PM2.5, SO2, CO, NO2, O3, PTS.",
     unit: "N/A",
     source: "INEA/WebLakes",
-    caveat: "PM10 = partículas inaláveis; PM2.5 = partículas finas; SO2 = dióxido de enxofre; CO = monóxido de carbono (em ppm nativo). NO2, O3 e PTS bloqueados/quarentenados.",
+    caveat: "PM10 = partículas inaláveis; PM2.5 = partículas finas; SO2 = dióxido de enxofre; CO = monóxido de carbono (em ppm nativo). NO2 permanece bloqueado por salvaguarda editorial; O3 e PTS aparecem apenas como memória histórica/auditoria, fora dos painéis consolidados.",
     files: "timelines",
     status: "published"
   },

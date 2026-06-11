@@ -386,8 +386,8 @@ export function AirAtlasMap() {
           >
             <option value="18">PM10 (Material Particulado)</option>
             <option value="20" disabled={selectedYear === "2020"}>PM2.5 (Material Particulado Fino){selectedYear === "2020" ? " (Não disponível em 2020)" : ""}</option>
-            <option value="3" disabled>CO (Em Auditoria)</option>
-            <option value="23" disabled>SO2 (Em Auditoria)</option>
+            <option value="3" disabled>CO (Ver no modo Tempo)</option>
+            <option value="23" disabled>SO2 (Ver no modo Tempo)</option>
             <option value="1465" disabled>NO2 (Em Auditoria)</option>
             <option value="1955" disabled>PTS (Em Auditoria)</option>
             <option value="2130" disabled>O3 (Em Auditoria)</option>
