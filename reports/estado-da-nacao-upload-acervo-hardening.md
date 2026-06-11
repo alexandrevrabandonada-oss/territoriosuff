@@ -17,6 +17,8 @@ Passada técnica no fluxo de upload e organização de mídia/acervo, sem altera
 - Adicionado smoke dedicado para proteger o caminho upload editorial -> link/fonte -> item de Acervo com autocaptura.
 - Adicionado smoke de contrato de storage para manter alinhados buckets permitidos, MIME types, limite de upload, policies admin e regra de alt text entre app e migração.
 - Ajustado limite de upload por tipo: imagens seguem limitadas a 15MB e PDFs administrativos passam a aceitar até 30MB, pensando em relatórios e documentos escaneados do Acervo.
+- Melhorada a fila admin com orientação contextual por recorte: sem link, sem fonte, órfãos e prontos para preservar agora indicam a próxima ação editorial.
+- Substituído vazio genérico da fila por um card pedagógico com retorno para todos os uploads ou envio de novo arquivo.
 
 ## Verificações
 
@@ -30,5 +32,5 @@ Passada técnica no fluxo de upload e organização de mídia/acervo, sem altera
 ## Próximas frentes recomendadas
 
 1. Mapear políticas reais de retenção e backup dos buckets `acervo`, `media`, `blog`, `reports` e `transparency` no painel Supabase.
-2. Criar checklist editorial para assets órfãos, sem procedência e prontos para preservação.
-3. Avaliar compressão/otimização automática futura para PDFs muito grandes antes do upload.
+2. Avaliar compressão/otimização automática futura para PDFs muito grandes antes do upload.
+3. Criar relatório periódico de pendências da fila admin para curadoria semanal.

@@ -145,6 +145,34 @@ const UPLOAD_QUEUE_SORT_LABELS: Record<UploadQueueSort, string> = {
   ready_first: "Prontos primeiro",
 };
 
+const UPLOAD_QUEUE_GUIDANCE: Record<UploadQueueFilter, { title: string; body: string; action: string }> = {
+  all: {
+    title: "Leitura geral da fila",
+    body: "Use os filtros para separar problemas de procedência, assets ainda sem uso e uploads prontos para virar item preservado.",
+    action: "Comece pelos sem link e sem fonte.",
+  },
+  without_origin: {
+    title: "Falta o link original",
+    body: "Esses arquivos ainda não têm URL de origem. Para notícia, matéria ou documento externo, preencha o link antes de publicar ou preservar.",
+    action: "Use Origem rápida ou qualificação em lote.",
+  },
+  without_source_name: {
+    title: "Falta nome da fonte",
+    body: "Aqui entram arquivos sem veículo, instituição, acervo ou autoria institucional. Esse campo ajuda auditoria e leitura pública.",
+    action: "Registre o nome da fonte antes de encaminhar.",
+  },
+  orphan: {
+    title: "Asset ainda não conectado",
+    body: "Órfãos são arquivos enviados, mas ainda sem referência em acervo, blog, relatório ou agenda. Eles podem ser rascunhos úteis ou lixo operacional.",
+    action: "Conectar, qualificar ou revisar descarte futuro.",
+  },
+  ready_to_preserve: {
+    title: "Pronto para preservação editorial",
+    body: "Esses uploads já têm link e fonte, mas ainda não viraram notícia/matéria no Acervo. É a fila principal para guardar cópia caso o site original saia do ar.",
+    action: "Clique em Preservar para abrir com autocaptura.",
+  },
+};
+
 export function AdminUploadsPage() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [recentAssets, setRecentAssets] = useState<MediaAssetRecord[]>([]);
@@ -1419,6 +1447,15 @@ export function AdminUploadsPage() {
             ))}
           </div>
 
+          <div className="rounded-[1.5rem] border border-slate-200 bg-white p-4 shadow-sm">
+            <p className="text-[10px] font-black uppercase tracking-[0.22em] text-slate-400">Próxima ação</p>
+            <h3 className="mt-2 text-lg font-black text-slate-950">{UPLOAD_QUEUE_GUIDANCE[queueFilter].title}</h3>
+            <p className="mt-2 text-sm font-semibold leading-relaxed text-slate-600">{UPLOAD_QUEUE_GUIDANCE[queueFilter].body}</p>
+            <p className="mt-3 rounded-2xl bg-slate-50 px-4 py-3 text-xs font-black uppercase tracking-widest text-slate-700">
+              {UPLOAD_QUEUE_GUIDANCE[queueFilter].action}
+            </p>
+          </div>
+
           <div className="rounded-[1.75rem] border border-violet-200 bg-violet-50/80 p-4">
             <div className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
               <div>
@@ -1478,7 +1515,29 @@ export function AdminUploadsPage() {
             {loading ? (
               <div className="py-20 text-center text-slate-400 italic font-medium">Carregando mídias...</div>
             ) : filteredAssets.length === 0 ? (
-              <div className="admin-panel py-20 text-center font-medium italic text-slate-400">Nenhum upload encontrado para esse recorte.</div>
+              <div className="admin-panel p-8 text-center">
+                <p className="text-[10px] font-black uppercase tracking-[0.22em] text-slate-400">Fila vazia</p>
+                <h3 className="mt-3 text-2xl font-black text-slate-950">Nenhum upload neste recorte</h3>
+                <p className="mx-auto mt-3 max-w-md text-sm font-semibold leading-relaxed text-slate-600">
+                  Esse filtro não encontrou pendências agora. Volte para Tudo, revise outro recorte ou envie um novo arquivo pelo formulário principal.
+                </p>
+                <div className="mt-5 flex flex-wrap justify-center gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setQueueFilter("all")}
+                    className="rounded-full bg-slate-900 px-4 py-2 text-[10px] font-black uppercase tracking-widest text-white"
+                  >
+                    Ver tudo
+                  </button>
+                  <button
+                    type="button"
+                    onClick={focusUploadForm}
+                    className="rounded-full border border-slate-200 bg-white px-4 py-2 text-[10px] font-black uppercase tracking-widest text-slate-700"
+                  >
+                    Enviar arquivo
+                  </button>
+                </div>
+              </div>
             ) : (
               filteredAssets.map((asset) => {
                 const pressReference = getPressReference(asset.id);
