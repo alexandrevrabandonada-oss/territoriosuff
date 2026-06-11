@@ -7,6 +7,10 @@ function getRouteAnnouncement(pathname: string): string {
   const routeLabels: Record<string, string> = {
     "/": "Página inicial",
     "/dados": "Leituras SEMEAR",
+    "/qualidade-ar/inea": "Radar INEA",
+    "/qualidade-ar/inea/historia": "Memória histórica INEA",
+    "/qualidade-ar/inea/analises": "Análises INEA",
+    "/qualidade-ar/inea/metodologia": "Metodologia INEA",
     "/acervo": "Acervo",
     "/acervo/linha": "Linha do tempo do acervo",
     "/relatorios": "Relatórios",
@@ -16,6 +20,10 @@ function getRouteAnnouncement(pathname: string): string {
     "/transparencia": "Transparência",
     "/sobre": "Guias"
   };
+
+  if (pathname.startsWith("/qualidade-ar/inea/estacoes/")) {
+    return "Estação INEA";
+  }
 
   return routeLabels[pathname] ?? "Página carregada";
 }
