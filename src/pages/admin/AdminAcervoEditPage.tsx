@@ -630,7 +630,7 @@ export function AdminAcervoEditPage() {
   };
 
   useEffect(() => {
-    if (!autoCaptureFromUrl || autoCaptureTriggered || loading || isNew) return;
+    if (!autoCaptureFromUrl || autoCaptureTriggered || loading) return;
     if (!isNewsType || !sourceUrl.trim() || isCapturingArticle) return;
     setAutoCaptureTriggered(true);
     void handleCaptureArticle();
@@ -638,7 +638,6 @@ export function AdminAcervoEditPage() {
     autoCaptureFromUrl,
     autoCaptureTriggered,
     loading,
-    isNew,
     isNewsType,
     sourceUrl,
     isCapturingArticle,
