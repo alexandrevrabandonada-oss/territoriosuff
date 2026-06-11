@@ -269,6 +269,12 @@ export function IneaMethodologyPage() {
               <p className="text-sm text-slate-600 font-medium leading-relaxed">
                 <strong>Diferença de Sistemas:</strong> Enquanto a plataforma WebLakes disponibiliza dados horários de concentração (µg/m³), as planilhas oficiais consolidadas de qualidade do ar do INEA (Dados Abertos RJ) apresentam médias de índices adimensionalizados (IQAr) em escala diária. O Observatório do Ar reconcilia essas bases para oferecer uma leitura pública integrada de qualidade do ar e prioridade territorial.
               </p>
+              <div className="rounded-2xl border border-emerald-200 bg-emerald-50/70 p-4">
+                <strong className="block text-xs font-black uppercase tracking-wider text-emerald-800">Fonte oficial atual e trilhas históricas</strong>
+                <p className="mt-1 text-xs font-semibold leading-relaxed text-emerald-900/80">
+                  O portal de Dados Abertos RJ identifica o arquivo <code>qualidade_ar.xlsx</code> como recurso público do conjunto "Segurança hídrica, qualidade ambiental do ar, água e solo", com extração semestral da plataforma Ambiente+. Estudos acadêmicos e relatórios técnicos também citam séries antigas do INEA, especialmente entre 2007 e 2015. Essas referências orientam a pesquisa histórica, mas não entram automaticamente nos painéis: primeiro precisam de fonte recuperável, unidade conferida, cobertura mínima e relatório de auditoria.
+                </p>
+              </div>
             </SurfaceCard>
           </section>
 
@@ -464,6 +470,7 @@ export function IneaMethodologyPage() {
                 <li><strong>Dependência Técnica:</strong> O Observatório compila dados fornecidos por canais públicos. Avarias em sensores ou ausência de leituras no site original geram lacunas de dados que fogem ao nosso controle.</li>
                 <li><strong>Sem QA/QC explícito por registro:</strong> Os dados horários brutos são capturados como exibidos, sem tratamento regulatório por linha. Podem ocorrer leituras anômalas não auditadas.</li>
                 <li><strong>Acesso Pleno a Séries Completas:</strong> O resgate de microdados brutos históricos completos depende de requisições externas e minutas da Lei de Acesso à Informação (LAI) para períodos de silêncio do sinal público.</li>
+                <li><strong>Fontes históricas externas:</strong> Artigos científicos, relatórios anuais do INEA e bases de terceiros podem indicar existência de dados anteriores ou consolidados, mas só são usados como validação cruzada e roteiro de busca. O Radar não incorpora números de literatura como se fossem microdados horários oficiais sem reprocessamento auditável.</li>
                 <li><strong>Início do Monitoramento de PM2.5 (2021):</strong> A série histórica do material particulado fino (PM2.5) em Volta Redonda inicia-se em 2021. No ano de 2020, o monitoramento público do INEA limitou-se ao PM10 (particulado inalável). Como não há dados públicos disponíveis na plataforma INEA/WebLakes antes de 2021 no recorte validado, a ausência de PM2.5 em 2020 não deve ser interpretada como conformidade de níveis de poluição.</li>
                 <li><strong>Mapeamento Experimental:</strong> Todos os cruzamentos de excedências servem como indicação didática de eventos de atenção, não devendo ser utilizados para fundamentar penalidades ou litígios de forma direta.</li>
               </ul>

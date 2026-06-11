@@ -65,6 +65,16 @@ const PUBLIC_SOURCES = [
     detail: "Portal público do Sistema Integrado de Gestão da Qualidade do Ar."
   },
   {
+    label: "Dados Abertos RJ / qualidade_ar.xlsx",
+    href: "https://dadosabertos.rj.gov.br/pt_PT/dataset/seguranca-hidrica-qualidade-ambiental-do-ar-agua-e-solo",
+    detail: "Base oficial declarada como extração semestral da plataforma Ambiente+, usada como referência pública atual."
+  },
+  {
+    label: "Literatura e relatórios históricos",
+    href: "/reports/estado-da-nacao-radar-inea-fontes-historicas-metodologia-20260610.md",
+    detail: "Registro de artigos, relatórios INEA citados e trilhas que podem orientar novas coletas sem publicar dado não auditado."
+  },
+  {
     label: "Dados abertos do portal",
     href: "/data/air/manifest.json",
     detail: "Manifesto local dos CSVs publicados pelo SEMEAR."
@@ -90,7 +100,8 @@ export function RadarHistoricalResearchPanel() {
         </div>
         <p className="max-w-4xl text-xs font-semibold leading-relaxed text-slate-500">
           O Radar já reúne séries históricas relevantes, mas nem todo poluente tem a mesma maturidade. A ampliação deve começar pela disponibilidade
-          demonstrável no SIGQAr/AQMIS, passar por cache local e só depois virar visualização pública.
+          demonstrável no SIGQAr/AQMIS e no Dados Abertos RJ, cruzar literatura e relatórios históricos como validação externa, passar por cache local
+          e só depois virar visualização pública.
         </p>
       </div>
 
@@ -148,7 +159,7 @@ export function RadarHistoricalResearchPanel() {
       <RadarVisualNotice
         type="info"
         title="Princípio de publicação"
-        description="Nova raspagem histórica só deve virar interface quando houver disponibilidade amostral, unidade esperada, cobertura mínima e relatório de auditoria. O que não passar por esses filtros permanece como pesquisa, não como dado público consolidado."
+        description="Nova raspagem histórica só deve virar interface quando houver fonte rastreável, disponibilidade amostral, unidade esperada, cobertura mínima e relatório de auditoria. O que não passar por esses filtros permanece como pesquisa, não como dado público consolidado."
       />
     </section>
   );
