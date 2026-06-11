@@ -20,6 +20,33 @@ type PressItem = {
   meta?: Record<string, unknown> | null;
 };
 
+type AcervoPressRow = {
+  id: string;
+  title: string;
+  slug: string;
+  type: string;
+  status: string;
+  source_name: string | null;
+  source_url: string | null;
+  content_md: string | null;
+  published_at: string | null;
+  updated_at: string | null;
+  meta: Record<string, unknown> | null;
+  cover_asset_id: string | null;
+  media: Array<{ id?: unknown }> | null;
+};
+
+type PressMediaAssetRow = {
+  id: string;
+  title: string | null;
+  file_name: string | null;
+  acervo_content_type: string | null;
+  status: string | null;
+  source_name: string | null;
+  source_url: string | null;
+  created_at: string | null;
+};
+
 type PreservationState = "preserved" | "link_only" | "manual_text" | "no_source" | "candidate";
 type Priority = "alta" | "media" | "baixa";
 type QueueFilter = "all" | "backlog" | "stale" | "preserved" | "preserved_without_snapshot" | "no_source" | "manual_text" | "upload_candidates" | "recapture_ready" | "mixed_batch";
@@ -278,7 +305,10 @@ export function AdminPressPreservationPage() {
       console.error("[AdminPressPreservation] Erro ao carregar:", acervoError || mediaError);
       setItems([]);
     } else {
-      const pressItems = (acervoData || []).map((row: any) => ({
+      const acervoRows = (acervoData || []) as AcervoPressRow[];
+      const mediaRows = (mediaData || []) as PressMediaAssetRow[];
+
+      const pressItems: PressItem[] = acervoRows.map((row) => ({
         id: row.id,
         title: row.title,
         slug: row.slug,
@@ -295,21 +325,21 @@ export function AdminPressPreservationPage() {
       }));
 
       const linkedAssetIds = new Set<string>();
-      (acervoData || []).forEach((row: any) => {
+      acervoRows.forEach((row) => {
         if (typeof row.cover_asset_id === "string" && row.cover_asset_id) {
           linkedAssetIds.add(row.cover_asset_id);
         }
         if (Array.isArray(row.media)) {
-          row.media.forEach((entry: any) => {
+          row.media.forEach((entry) => {
             const assetId = typeof entry?.id === "string" ? entry.id : null;
             if (assetId) linkedAssetIds.add(assetId);
           });
         }
       });
 
-      const mediaCandidates = (mediaData || [])
-        .filter((asset: any) => !linkedAssetIds.has(asset.id))
-        .map((asset: any) => ({
+      const mediaCandidates: PressItem[] = mediaRows
+        .filter((asset) => !linkedAssetIds.has(asset.id))
+        .map((asset) => ({
           id: `asset:${asset.id}`,
           asset_id: asset.id,
           title: asset.title || asset.file_name || "Asset editorial",
@@ -326,7 +356,7 @@ export function AdminPressPreservationPage() {
           meta: null,
         }));
 
-      setItems([...(pressItems as PressItem[]), ...(mediaCandidates as PressItem[])]);
+      setItems([...pressItems, ...mediaCandidates]);
     }
 
     setLoading(false);
