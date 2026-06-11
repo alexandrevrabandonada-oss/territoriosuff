@@ -28,6 +28,20 @@ type AcervoMediaAsset = MediaAssetRecord & {
   type: string;
 };
 
+type AcervoStoredMediaInput = Partial<MediaAssetRecord> & {
+  id: string;
+  title: string;
+  public_url?: string;
+  url?: string;
+  mime_type?: string;
+  type?: string;
+};
+
+type AdminCollectionOption = {
+  id: string;
+  title: string;
+};
+
 type AcervoMeta = {
   journal_or_institution?: string;
   thematic_area?: string;
@@ -139,7 +153,11 @@ function normalizeAcervoType(value: string | null | undefined, asset?: Partial<M
   return value;
 }
 
-function normalizeMediaAsset(asset: Partial<MediaAssetRecord> & { id: string; title: string; public_url?: string; url?: string; mime_type?: string; type?: string }): AcervoMediaAsset {
+function getErrorMessage(error: unknown, fallback = "Erro desconhecido") {
+  return error instanceof Error ? error.message : fallback;
+}
+
+function normalizeMediaAsset(asset: AcervoStoredMediaInput): AcervoMediaAsset {
   return {
     id: asset.id,
     bucket: asset.bucket || "",
@@ -173,7 +191,7 @@ export function AdminAcervoEditPage() {
 
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
-  const [collections, setCollections] = useState<any[]>([]);
+  const [collections, setCollections] = useState<AdminCollectionOption[]>([]);
   const [recentAssets, setRecentAssets] = useState<MediaAssetRecord[]>([]);
   const [assetSearch, setAssetSearch] = useState("");
 
@@ -271,7 +289,7 @@ export function AdminAcervoEditPage() {
         setTags(data.tags?.join(", ") || "");
         setCollectionId(data.related_collection_id || "");
         setCoverAssetId(data.cover_asset_id || "");
-        setMedia((data.media || []).map((item: any) => normalizeMediaAsset(item)));
+        setMedia(((data.media || []) as AcervoStoredMediaInput[]).map((item) => normalizeMediaAsset(item)));
         setMeta((data.meta && typeof data.meta === "object") ? data.meta : {});
       }
     }
@@ -401,9 +419,9 @@ export function AdminAcervoEditPage() {
         alert("🎉 Alterações salvas como rascunho!");
         navigate("/admin/acervo");
       }
-    } catch (err: any) {
+    } catch (err) {
       console.error("[Acervo] Erro ao salvar:", err);
-      alert("❌ Erro ao salvar: " + err.message);
+      alert("❌ Erro ao salvar: " + getErrorMessage(err));
     } finally {
       setSaving(false);
     }
@@ -429,14 +447,14 @@ export function AdminAcervoEditPage() {
       addMediaAsset(asset);
       // Reload recent assets to show the new one
       loadData();
-    } catch (err: any) {
-      alert("Erro no upload: " + err.message);
+    } catch (err) {
+      alert("Erro no upload: " + getErrorMessage(err));
     } finally {
       setIsUploading(false);
     }
   };
 
-  const addMediaAsset = (asset: Partial<MediaAssetRecord> & { id: string; title: string; public_url?: string; url?: string; mime_type?: string; type?: string }) => {
+  const addMediaAsset = (asset: AcervoStoredMediaInput) => {
     const normalizedAsset = normalizeMediaAsset(asset);
     if (media.some((mediaItem) => mediaItem.id === normalizedAsset.id)) return;
     setMedia((currentMedia) => [...currentMedia, normalizedAsset]);
@@ -566,8 +584,8 @@ export function AdminAcervoEditPage() {
       }));
 
       setCaptureFeedback("Matéria capturada e preservada no corpo do item.");
-    } catch (error: any) {
-      setCaptureFeedback(error?.message || "Falha ao capturar a matéria.");
+    } catch (error) {
+      setCaptureFeedback(getErrorMessage(error, "Falha ao capturar a matéria."));
     } finally {
       setIsCapturingArticle(false);
     }

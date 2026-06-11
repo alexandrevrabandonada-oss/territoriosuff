@@ -2,7 +2,7 @@ import * as fs from 'node:fs';
 import * as path from 'node:path';
 
 // Helper to escape CSV values
-function escapeCsv(val: any): string {
+function escapeCsv(val: unknown): string {
   if (val === null || val === undefined) return '';
   const str = String(val);
   if (str.includes(',') || str.includes('"') || str.includes('\n')) {

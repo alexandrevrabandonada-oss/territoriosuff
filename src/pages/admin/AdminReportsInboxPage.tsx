@@ -229,7 +229,7 @@ export function AdminReportsInboxPage() {
         "Notas do Administrador"
       ];
 
-      const escapeCSVField = (val: any) => {
+      const escapeCSVField = (val: unknown) => {
         if (val === null || val === undefined) return "";
         const strVal = String(val);
         if (strVal.includes('"') || strVal.includes(',') || strVal.includes('\n') || strVal.includes('\r')) {

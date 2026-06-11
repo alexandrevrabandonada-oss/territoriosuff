@@ -10,13 +10,25 @@ const RELEVANCE_LEVELS = [
   { value: "tecnico", label: "Técnico" },
 ];
 
+type AdminCollectionOption = {
+  id: string;
+  title: string;
+};
+
+type RecentPaperAsset = {
+  id: string;
+  title: string;
+  public_url: string;
+  mime_type: string;
+};
+
 export function AdminPaperWizardPage() {
   const navigate = useNavigate();
   const [step, setStep] = useState(1);
   const [loading, setLoading] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
-  const [collections, setCollections] = useState<any[]>([]);
-  const [recentAssets, setRecentAssets] = useState<any[]>([]);
+  const [collections, setCollections] = useState<AdminCollectionOption[]>([]);
+  const [recentAssets, setRecentAssets] = useState<RecentPaperAsset[]>([]);
   const [duplicateWarning, setDuplicateWarning] = useState<string | null>(null);
 
   // Form State
@@ -94,8 +106,8 @@ export function AdminPaperWizardPage() {
       
       setFormData({ ...formData, cover_asset_id: asset.id });
       await loadData();
-    } catch (err: any) {
-      alert("Erro no upload: " + err.message);
+    } catch (err) {
+      alert("Erro no upload: " + (err instanceof Error ? err.message : "Erro desconhecido"));
     } finally {
       setIsUploading(false);
     }
