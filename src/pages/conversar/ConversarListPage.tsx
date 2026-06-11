@@ -148,6 +148,12 @@ export function ConversarListPage() {
                                                 <span>{activity.meta?.activity_date ? new Date(activity.meta.activity_date).toLocaleDateString("pt-BR") : new Date(activity.created_at).toLocaleDateString("pt-BR")}</span>
                                                 {activity.meta?.location ? <span>{activity.meta.location}</span> : null}
                                             </div>
+                                            <Link
+                                                className="inline-flex w-fit items-center rounded-full bg-brand-primary px-4 py-2 text-xs font-black uppercase tracking-widest text-white transition-colors hover:bg-brand-primary-dark"
+                                                to={`/conversar/${activity.slug}`}
+                                            >
+                                                Ler matéria
+                                            </Link>
                                         </div>
                                     </article>
                                 ))}

@@ -9,6 +9,7 @@ import {
     ConversationComment
 } from "../../lib/api";
 import { IconShell, SurfaceCard } from "../../components/BrandSystem";
+import { InstagramEmbed } from "../../components/InstagramEmbed";
 import { SafeMarkdown } from "../../components/SafeMarkdown";
 
 function SimpleMarkdown({ text }: { text: string }) {
@@ -120,6 +121,8 @@ export function ConversarDetailPage() {
         );
     }
 
+    const isActivity = conversation.meta?.kind === "activity";
+
     return (
         <main className="portal-stage mx-auto max-w-5xl space-y-8 md:space-y-10">
             <Link to="/conversar" className="mb-6 inline-flex items-center text-sm font-semibold text-brand-primary hover:underline">
@@ -128,8 +131,10 @@ export function ConversarDetailPage() {
 
             <SurfaceCard className="portal-detail-article p-5 md:p-8">
                 <div className="mb-5 flex items-center gap-3">
-                    <IconShell tone="seed" className="h-12 w-12 rounded-2xl"><span aria-hidden="true">💬</span></IconShell>
-                    <span className="text-xs font-black uppercase tracking-[0.2em] text-brand-primary">Conversa pública</span>
+                    <IconShell tone="seed" className="h-12 w-12 rounded-2xl"><span aria-hidden="true">{isActivity ? "◎" : "💬"}</span></IconShell>
+                    <span className="text-xs font-black uppercase tracking-[0.2em] text-brand-primary">
+                        {isActivity ? "Matéria de atividade" : "Conversa pública"}
+                    </span>
                 </div>
                 <h1 className="mb-6 text-3xl font-black tracking-[-0.045em] text-text-primary md:text-5xl">{conversation.title}</h1>
                 {conversation.excerpt && (
@@ -137,6 +142,17 @@ export function ConversarDetailPage() {
                         {conversation.excerpt}
                     </p>
                 )}
+                {isActivity && conversation.meta?.instagram_url ? (
+                    <div className="mb-8 overflow-hidden rounded-2xl border border-brand-primary/10 bg-white">
+                        <InstagramEmbed title={conversation.title} url={conversation.meta.instagram_url} />
+                    </div>
+                ) : null}
+                {isActivity ? (
+                    <div className="mb-8 flex flex-wrap items-center gap-3 text-xs font-bold uppercase tracking-wider text-text-secondary">
+                        <span>{conversation.meta?.activity_date ? new Date(conversation.meta.activity_date).toLocaleDateString("pt-BR") : new Date(conversation.created_at).toLocaleDateString("pt-BR")}</span>
+                        {conversation.meta?.location ? <span>{conversation.meta.location}</span> : null}
+                    </div>
+                ) : null}
                 <div className="prose prose-lg max-w-none">
                     {conversation.body_md ? (
                         <SimpleMarkdown text={conversation.body_md} />

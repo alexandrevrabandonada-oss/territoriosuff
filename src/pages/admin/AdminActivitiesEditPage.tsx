@@ -13,6 +13,30 @@ function slugify(value: string): string {
     .replace(/(^-|-$)+/g, "");
 }
 
+function parseInstagramPostUrl(value: string): { permalink: string; shortcode: string; kind: string } | null {
+  try {
+    const parsed = new URL(value.trim());
+    const hostname = parsed.hostname.toLowerCase();
+    if (hostname !== "instagram.com" && hostname !== "www.instagram.com") return null;
+
+    const match = parsed.pathname.match(/\/(p|reel|tv)\/([^/?#]+)/);
+    if (!match) return null;
+
+    return {
+      permalink: `https://www.instagram.com/${match[1]}/${match[2]}/`,
+      shortcode: match[2],
+      kind: match[1] === "reel" ? "reel" : "post"
+    };
+  } catch {
+    return null;
+  }
+}
+
+function formatDateForTitle(value: string): string {
+  if (!value) return "";
+  return new Date(`${value}T12:00:00`).toLocaleDateString("pt-BR");
+}
+
 export function AdminActivitiesEditPage() {
   const { id } = useParams();
   const isNew = !id;
@@ -58,6 +82,37 @@ export function AdminActivitiesEditPage() {
     if (isNew && title) setSlug(slugify(title));
   }, [isNew, title]);
 
+  const handleGenerateArticle = () => {
+    const post = parseInstagramPostUrl(instagramUrl);
+    if (!post) {
+      alert("Informe um link válido de post, reel ou TV do Instagram.");
+      return;
+    }
+
+    const nextDate = activityDate || new Date().toISOString().slice(0, 10);
+    const dateLabel = formatDateForTitle(nextDate);
+    const nextTitle = title.trim() || `Registro de atividade SEMEAR${dateLabel ? ` em ${dateLabel}` : ""}`;
+    const nextLocation = location.trim() || "território";
+
+    setActivityDate(nextDate);
+    setTitle(nextTitle);
+    setSlug(slug || slugify(nextTitle));
+    setExcerpt(excerpt.trim() || `Matéria produzida a partir de publicação do Instagram sobre atividade do SEMEAR em ${nextLocation}.`);
+    setBodyMd(bodyMd.trim() || [
+      `Esta matéria registra uma atividade do SEMEAR realizada em ${nextLocation}.`,
+      "",
+      "O post original no Instagram documenta momentos, participantes e registros visuais da ação. Use este espaço para complementar a publicação com contexto territorial, objetivos da atividade, pessoas envolvidas e principais encaminhamentos.",
+      "",
+      "## O que aconteceu",
+      "",
+      "- Contextualize a atividade.",
+      "- Descreva quem participou.",
+      "- Registre aprendizados, demandas e próximos passos.",
+      "",
+      `Publicação original: ${post.permalink}`
+    ].join("\n"));
+  };
+
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     const supabase = await getSupabaseClientOrNull();
@@ -71,6 +126,8 @@ export function AdminActivitiesEditPage() {
       return;
     }
 
+    const instagramPost = parseInstagramPostUrl(instagramUrl);
+
     setSaving(true);
     const payload = {
       title: title.trim(),
@@ -81,6 +138,8 @@ export function AdminActivitiesEditPage() {
       meta: {
         kind: "activity",
         instagram_url: instagramUrl.trim(),
+        instagram_shortcode: instagramPost?.shortcode || null,
+        instagram_kind: instagramPost?.kind || null,
         activity_date: activityDate || null,
         location: location.trim() || null
       }
@@ -135,7 +194,19 @@ export function AdminActivitiesEditPage() {
           </div>
           <div>
             <label>Link do post no Instagram</label>
-            <input value={instagramUrl} onChange={(event) => setInstagramUrl(event.target.value)} placeholder="https://www.instagram.com/p/..." type="url" />
+            <div className="flex flex-col gap-3 md:flex-row">
+              <input className="flex-1" value={instagramUrl} onChange={(event) => setInstagramUrl(event.target.value)} placeholder="https://www.instagram.com/p/..." type="url" />
+              <button
+                className="rounded-xl border border-emerald-200 bg-emerald-50 px-5 py-3 text-xs font-black uppercase tracking-widest text-emerald-800 transition-colors hover:bg-emerald-100"
+                onClick={handleGenerateArticle}
+                type="button"
+              >
+                Transformar em matéria
+              </button>
+            </div>
+            <p className="mt-2 text-xs font-medium text-slate-500">
+              O botão cria um rascunho editorial a partir do link e mantém o post incorporado na matéria pública.
+            </p>
           </div>
           <div className="grid gap-4 md:grid-cols-2">
             <div>

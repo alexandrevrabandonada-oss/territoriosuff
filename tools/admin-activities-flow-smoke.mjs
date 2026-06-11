@@ -18,6 +18,8 @@ assertAll(editPage, [
   "InstagramEmbed",
   'kind: "activity"',
   "instagram_url",
+  "Transformar em matéria",
+  "parseInstagramPostUrl",
 ], label);
 
 assertAll(publicPage, [
@@ -25,6 +27,7 @@ assertAll(publicPage, [
   "InstagramEmbed",
   'item.meta?.kind === "activity"',
   'item.meta?.kind !== "activity"',
+  "Ler matéria",
 ], label);
 
 assertAll(embed, [
