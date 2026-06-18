@@ -201,7 +201,7 @@ export function AgendaPage() {
               Agenda de Ações
             </span>
             <h2 className="mt-5 max-w-xl text-3xl font-black tracking-[-0.04em] md:text-5xl">
-              Atendimentos territoriais nos CRAS em 2026
+              Ações territoriais nos CRAS em 2026
             </h2>
             <p className="mt-4 max-w-xl text-base leading-relaxed text-white/82">
               Programação organizada por data, horário e endereço para facilitar planejamento comunitário,
