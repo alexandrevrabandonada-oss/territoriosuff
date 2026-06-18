@@ -12,6 +12,7 @@ const HomePage = lazy(() => import("./pages/HomePage").then((m) => ({ default: m
 const DadosPage = lazy(() => import("./pages/DadosPage").then((m) => ({ default: m.DadosPage })));
 const SobrePage = lazy(() => import("./pages/SobrePage").then((m) => ({ default: m.SobrePage })));
 const AgendaPage = lazy(() => import("./pages/AgendaPage").then((m) => ({ default: m.AgendaPage })));
+const AgendaDetailPage = lazy(() => import("./pages/AgendaDetailPage").then((m) => ({ default: m.AgendaDetailPage })));
 const InscricoesPage = lazy(() => import("./pages/InscricoesPage").then((m) => ({ default: m.InscricoesPage })));
 const TransparenciaPage = lazy(() => import("./pages/TransparenciaPage").then((m) => ({ default: m.TransparenciaPage })));
 const AlertasPage = lazy(() => import("./pages/AlertasPage").then((m) => ({ default: m.AlertasPage })));
@@ -81,6 +82,7 @@ export default function App() {
                   <Route path="/qualidade-ar/inea/metodologia" element={<IneaMethodologyPage />} />
                   <Route path="/qualidade-ar/inea/estacoes/:stationId" element={<IneaStationPage />} />
                   <Route path="/agenda" element={<AgendaPage />} />
+                  <Route path="/agenda/:eventId" element={<AgendaDetailPage />} />
                   <Route path="/conversar" element={<ConversarListPage />} />
                   <Route path="/conversar/:slug" element={<ConversarDetailPage />} />
                   <Route path="/mapa" element={<MapaPage />} />

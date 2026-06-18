@@ -105,7 +105,7 @@ export async function listUpcomingEvents(): Promise<Event[]> {
       .select("*")
       .eq("status", "published")
       .order("start_at", { ascending: true })
-      .limit(20);
+      .limit(100);
     if (error) throw error;
     return (data ?? []) as Event[];
   } catch (error) {
@@ -125,6 +125,21 @@ export async function getEventSummary(eventId: string): Promise<EventSummary | n
     return (data as EventSummary | null) ?? null;
   } catch (error) {
     throw toAppError("Falha ao carregar dados do evento", error);
+  }
+}
+
+export async function getEventById(eventId: string): Promise<Event | null> {
+  try {
+    const supabase = await getSupabase();
+    const { data, error } = await supabase
+      .from("events")
+      .select("*")
+      .eq("id", eventId)
+      .maybeSingle();
+    if (error) throw error;
+    return (data as Event | null) ?? null;
+  } catch (error) {
+    throw toAppError("Falha ao carregar evento", error);
   }
 }
 

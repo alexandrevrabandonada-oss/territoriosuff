@@ -11,6 +11,7 @@ interface EventItem {
   capacity: number;
   location_name: string;
   bairro: string;
+  updated_at?: string;
   registrations: { count: number }[];
 }
 
@@ -58,10 +59,10 @@ export function AdminAgendaListPage() {
     loadEvents();
   }, [loadEvents]);
 
-  const copyLink = () => {
-    const url = `${window.location.origin}/agenda`; // In reality, we might have a slug for events too
+  const copyLink = (eventId: string) => {
+    const url = `${window.location.origin}/agenda/${eventId}`;
     navigator.clipboard.writeText(url);
-    alert("Link da agenda copiado!");
+    alert("Link público do evento copiado!");
   };
 
   return (
@@ -144,7 +145,7 @@ export function AdminAgendaListPage() {
                       <td className="px-8 py-6 text-right">
                         <div className="flex items-center justify-end gap-2">
                           <button 
-                            onClick={copyLink}
+                            onClick={() => copyLink(event.id)}
                             className="p-2 text-slate-400 hover:text-emerald-600 transition-colors"
                             title="Copiar Link Público"
                           >
