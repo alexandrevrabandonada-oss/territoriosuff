@@ -18,6 +18,18 @@ function formatDate(value: string) {
   });
 }
 
+function formatIcsDate(date: Date) {
+  return date.toISOString().replace(/[-:]/g, "").replace(/\.\d{3}Z$/, "Z");
+}
+
+function escapeIcsText(value: string) {
+  return value
+    .replace(/\\/g, "\\\\")
+    .replace(/\n/g, "\\n")
+    .replace(/,/g, "\\,")
+    .replace(/;/g, "\\;");
+}
+
 function getEventText(event: Event, key: string) {
   const value = event[key];
   return typeof value === "string" && value.trim() ? value.trim() : null;
@@ -40,6 +52,41 @@ function getEventStatusLabel(event: Event) {
 
 function getRegistrationEnabled(event: Event) {
   return event.registration_enabled !== false;
+}
+
+function downloadEventCalendar(event: Event) {
+  const start = new Date(String(event.start_at ?? ""));
+  if (Number.isNaN(start.getTime())) return;
+
+  const explicitEnd = getEventText(event, "end_at");
+  const endDate = explicitEnd ? new Date(explicitEnd) : null;
+  const end = endDate && !Number.isNaN(endDate.getTime()) ? endDate : new Date(start.getTime() + 90 * 60 * 1000);
+  const description = getEventText(event, "description") || "Evento publicado na agenda pública do SEMEAR.";
+  const lines = [
+    "BEGIN:VCALENDAR",
+    "VERSION:2.0",
+    "PRODID:-//SEMEAR//Agenda Publica//PT-BR",
+    "CALSCALE:GREGORIAN",
+    "BEGIN:VEVENT",
+    `UID:${event.id}@semear-pwa`,
+    `DTSTAMP:${formatIcsDate(new Date())}`,
+    `DTSTART:${formatIcsDate(start)}`,
+    `DTEND:${formatIcsDate(end)}`,
+    `SUMMARY:${escapeIcsText(event.title)}`,
+    `LOCATION:${escapeIcsText(getEventLocation(event))}`,
+    `DESCRIPTION:${escapeIcsText(description)}`,
+    "END:VEVENT",
+    "END:VCALENDAR"
+  ];
+  const blob = new Blob([lines.join("\r\n")], { type: "text/calendar;charset=utf-8" });
+  const url = URL.createObjectURL(blob);
+  const anchor = document.createElement("a");
+  anchor.href = url;
+  anchor.download = `agenda-semear-${event.id}.ics`;
+  document.body.appendChild(anchor);
+  anchor.click();
+  anchor.remove();
+  URL.revokeObjectURL(url);
 }
 
 export function AgendaDetailPage() {
@@ -157,6 +204,13 @@ export function AgendaDetailPage() {
                       Inscrever-se
                     </Link>
                   ) : null}
+                  <button
+                    type="button"
+                    className="rounded-full border border-white/25 bg-white/10 px-4 py-3 text-sm font-black text-white transition hover:bg-white/20"
+                    onClick={() => downloadEventCalendar(event)}
+                  >
+                    Adicionar ao calendário (.ics)
+                  </button>
                   <button
                     type="button"
                     className="rounded-full border border-white/25 bg-white/10 px-4 py-3 text-sm font-black text-white transition hover:bg-white/20"

@@ -118,7 +118,7 @@ export async function getEventSummary(eventId: string): Promise<EventSummary | n
     const supabase = await getSupabase();
     const { data, error } = await supabase
       .from("events")
-      .select("id, title, start_at, location, capacity")
+      .select("id, title, start_at, location, location_name, capacity, registration_enabled")
       .eq("id", eventId)
       .maybeSingle();
     if (error) throw error;
@@ -165,7 +165,10 @@ export async function createRegistration(payload: RegistrationPayload): Promise<
     const supabase = await getSupabase();
     const event = await getEventSummary(payload.event_id);
     if (!event) {
-      throw new Error("Evento nao encontrado para inscricao.");
+      throw new Error("Evento não encontrado para inscrição.");
+    }
+    if (event.registration_enabled === false) {
+      throw new Error("Este evento não está com inscrição pública aberta pelo portal.");
     }
 
     const capacity = parseCapacity(event.capacity);

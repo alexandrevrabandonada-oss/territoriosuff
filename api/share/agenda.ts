@@ -20,7 +20,7 @@ export default async function handler(req: any, res: any) {
     const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
     if (!supabaseUrl || !supabaseServiceKey) {
-        return res.redirect(`/inscricoes?eventId=${eventId}`);
+        return res.redirect(`/agenda/${encodeURIComponent(String(eventId))}`);
     }
 
     const supabase = createClient(supabaseUrl, supabaseServiceKey);

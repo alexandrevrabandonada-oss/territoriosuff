@@ -29,6 +29,10 @@ function formatDate(value: string) {
   return date.toLocaleString("pt-BR");
 }
 
+function getEventLocation(event: EventSummary) {
+  return event.location_name?.trim() || event.location?.trim() || "Local não informado.";
+}
+
 export function InscricoesPage() {
   const [searchParams] = useSearchParams();
   const eventId = useMemo(() => searchParams.get("eventId"), [searchParams]);
@@ -39,6 +43,7 @@ export function InscricoesPage() {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
+  const registrationBlocked = event?.registration_enabled === false;
 
   useEffect(() => {
     const safeEventId = eventId ?? "";
@@ -71,7 +76,10 @@ export function InscricoesPage() {
       setError(null);
       setSuccess(null);
       if (!event?.id) {
-        throw new Error("Selecione um evento valido na agenda antes de enviar a inscricao.");
+        throw new Error("Selecione um evento válido na agenda antes de enviar a inscrição.");
+      }
+      if (registrationBlocked) {
+        throw new Error("Este evento não está com inscrição pública aberta pelo portal.");
       }
 
       const result = await createRegistration({
@@ -83,13 +91,13 @@ export function InscricoesPage() {
         consent_lgpd: form.consent_lgpd
       });
       if (result.status === "waitlist") {
-        setSuccess("Inscricao recebida na lista de espera. A equipe confirmara por contato.");
+        setSuccess("Inscrição recebida na lista de espera. A equipe confirmará por contato.");
       } else {
-        setSuccess("Inscricao confirmada com sucesso. A equipe enviara as proximas orientacoes.");
+        setSuccess("Inscrição confirmada com sucesso. A equipe enviará as próximas orientações.");
       }
       setForm(initialForm);
     } catch (err) {
-      const message = err instanceof Error ? err.message : "Nao foi possivel concluir a inscricao.";
+      const message = err instanceof Error ? err.message : "Não foi possível concluir a inscrição.";
       setError(`${message}${ENV_HINT}`);
     } finally {
       setSubmitting(false);
@@ -119,7 +127,12 @@ export function InscricoesPage() {
             <p className="text-xs font-semibold uppercase tracking-wider text-brand-primary">Evento selecionado</p>
             <p className="mt-2 text-lg font-bold text-text-primary">{event.title}</p>
             <p className="mt-1 text-sm text-text-secondary">Início: {formatDate(event.start_at)}</p>
-            <p className="text-sm text-text-secondary">Local: {event.location?.trim() ? event.location : "Local não informado."}</p>
+            <p className="text-sm text-text-secondary">Local: {getEventLocation(event)}</p>
+            {registrationBlocked ? (
+              <div className="mt-3 rounded-lg border border-amber-300 bg-amber-50 p-3 text-sm font-semibold text-amber-900">
+                Este item é informativo ou tem confirmação operacional pela equipe. Consulte a agenda pública para acompanhar data, local e atualizações.
+              </div>
+            ) : null}
           </div>
         ) : eventId && !loadingEvent && !error ? (
           <p className="mb-6 text-base text-text-secondary">Evento não encontrado para o ID informado.</p>
@@ -219,7 +232,7 @@ export function InscricoesPage() {
 
           <button
             className="inline-flex min-h-[44px] w-full items-center justify-center rounded-lg bg-brand-primary px-6 py-3 text-base font-bold text-white transition-all hover:bg-brand-primary-dark disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:bg-brand-primary"
-            disabled={submitting || !event?.id}
+            disabled={submitting || !event?.id || registrationBlocked}
             type="submit"
             aria-busy={submitting}
           >

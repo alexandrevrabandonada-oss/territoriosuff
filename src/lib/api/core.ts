@@ -64,7 +64,9 @@ export type EventSummary = {
   title: string;
   start_at: string;
   location?: string | null;
+  location_name?: string | null;
   capacity?: number | null;
+  registration_enabled?: boolean | null;
 };
 
 export type RegistrationPayload = {
