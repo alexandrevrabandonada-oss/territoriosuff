@@ -1,5 +1,7 @@
 import { Link } from "react-router-dom";
 import { RADAR_NO_DATA_NOT_CLEAN_AIR, RADAR_EXPERIMENTAL_OBSERVATION_NOTE } from "../../../data/air/radar-copy";
+import { ATTENTION_EPISODES } from "../../../data/air/attention-episodes-2020-2026";
+import { PARTICULATE_TIMELINE } from "../../../data/air/particulate-timeline-2020-2026";
 
 import { summarizeStationGovernance } from "./RadarGovernanceModel";
 import { RadarEvidenceStateBlock } from "./RadarEvidenceStateBlock";
@@ -25,26 +27,67 @@ interface RadarOverviewModeProps {
   onScrollToRecommendations: () => void;
 }
 
+function buildHistoricalSynthesis() {
+  const rows = PARTICULATE_TIMELINE.filter((row) => row.coveragePct > 0);
+  const years = Array.from(new Set(rows.map((row) => row.year))).sort((a, b) => a - b);
+  const stations = Array.from(new Set(rows.map((row) => row.station_name)));
+  const pollutants = Array.from(new Set(rows.map((row) => row.pollutant))).sort();
+  const highCoverageRows = rows.filter((row) => row.coveragePct >= 75);
+  const totalWhoExceedances = rows.reduce((sum, row) => sum + row.exceedances_who, 0);
+  const totalConamaExceedances = rows.reduce((sum, row) => sum + row.exceedances_conama, 0);
+  const stationExceedances = new Map<string, { station: string; who: number; conama: number; rows: number }>();
+  const pollutantExceedances = new Map<string, number>();
+
+  for (const row of rows) {
+    const current = stationExceedances.get(row.station_name) ?? { station: row.station_name, who: 0, conama: 0, rows: 0 };
+    current.who += row.exceedances_who;
+    current.conama += row.exceedances_conama;
+    current.rows += 1;
+    stationExceedances.set(row.station_name, current);
+    pollutantExceedances.set(row.pollutant, (pollutantExceedances.get(row.pollutant) ?? 0) + row.exceedances_who);
+  }
+
+  const stationRanking = Array.from(stationExceedances.values()).sort((a, b) => b.who - a.who);
+  const pollutantRanking = Array.from(pollutantExceedances.entries()).sort((a, b) => b[1] - a[1]);
+  const peakRow = rows
+    .filter((row) => typeof row.max === "number")
+    .sort((a, b) => (b.max ?? 0) - (a.max ?? 0))[0];
+  const attentionMonths = ATTENTION_EPISODES.filter((episode) => episode.who_exceedance_days > 0 || episode.conama_exceedance_days > 0);
+  const lowCoverageMonths = ATTENTION_EPISODES.filter((episode) => episode.data_quality_tier === "LOW").length;
+
+  return {
+    startYear: years[0] ?? 2020,
+    endYear: years[years.length - 1] ?? 2026,
+    stationsCount: stations.length,
+    pollutantsLabel: pollutants.join(" e "),
+    highCoverageRows: highCoverageRows.length,
+    totalRows: rows.length,
+    totalWhoExceedances,
+    totalConamaExceedances,
+    topHistoricalStation: stationRanking[0],
+    topHistoricalPollutant: pollutantRanking[0]?.[0] ?? "MP2.5/MP10",
+    stationRanking: stationRanking.slice(0, 4),
+    peakRow,
+    attentionMonths: attentionMonths.length,
+    lowCoverageMonths
+  };
+}
+
+const historicalSynthesis = buildHistoricalSynthesis();
+
 export function RadarOverviewMode({
   latestData,
-  sortedRankings,
-  displaySummary,
   stationMetadata,
   onOpenLai,
   onNavigate,
   onTop,
   onScrollToRecommendations
 }: RadarOverviewModeProps) {
-  const topStation = sortedRankings[0];
-  const topPollutant = displaySummary.mostFrequentControllingPollutant;
-  const hasRanking = sortedRankings.length > 0;
-  const hasSummaryMeasurements = displaySummary.totalMeasurements > 0;
   const governance = summarizeStationGovernance(stationMetadata);
-  const topPollutantShort = topPollutant.includes("Dióxido de Enxofre")
-    ? "SO₂"
-    : topPollutant.includes("Particulado")
-      ? "MP10"
-      : topPollutant;
+  const topPollutantShort = historicalSynthesis.topHistoricalPollutant;
+  const primaryStationName = historicalSynthesis.topHistoricalStation?.station || "base histórica consolidada";
+  const primaryStationDays = historicalSynthesis.topHistoricalStation?.who ?? 0;
+  const historicalRange = `${historicalSynthesis.startYear}-${historicalSynthesis.endYear}${historicalSynthesis.endYear === 2026 ? " parcial" : ""}`;
 
   return (
     <div className="animate-fade-in space-y-8 pt-4">
@@ -53,18 +96,18 @@ export function RadarOverviewMode({
           <span>📊 Visão Geral do Monitoramento</span>
         </h2>
         <p className="text-sm font-medium text-slate-600">
-          Consulte o ranking de atenção das estações e as últimas medições consolidadas na base pública oficial.
+          Síntese didática da base histórica consolidada que o SEMEAR já organizou a partir de arquivos públicos, sem depender de API do INEA.
         </p>
         <div className="flex flex-wrap gap-2 pt-1">
           <RadarEvidenceBadge
             level="interpretive"
-            label="Painel de triagem"
-            detail="esta visão geral ajuda a priorizar leitura pública; ela não substitui a checagem de cobertura, séries e metodologia"
+            label="Síntese histórica"
+            detail="resume padrões de atenção, cobertura e excedências; não substitui auditoria completa por estação"
           />
           <RadarEvidenceBadge
             level="experimental"
-            label="Base pública processada"
-            detail="números consolidados a partir da base pública aberta com cautela metodológica"
+            label="Sem API do INEA"
+            detail="leitura baseada em arquivos históricos consolidados, dicionário de dados e metodologia pública"
           />
         </div>
       </div>
@@ -78,46 +121,42 @@ export function RadarOverviewMode({
                 Painel de situação
               </div>
               <div>
-                <span className="text-[10px] font-black uppercase tracking-[0.18em] text-[#d97706]">Estação com Mais Atenção</span>
+                <span className="text-[10px] font-black uppercase tracking-[0.18em] text-[#d97706]">Síntese histórica principal</span>
                 <h3 className="mt-3 text-3xl font-black leading-tight tracking-tight text-[#78350f] md:text-4xl">
-                  {topStation?.name || "Ranking em atualização"}
+                  {primaryStationName}
                 </h3>
               </div>
               <p className="max-w-md text-[13px] font-semibold leading-relaxed text-[#92400e]">
-                {hasRanking
-                  ? `Registrou ${topStation.moderateOrWorseDays} dias com classificação Moderada ou pior na base pública consolidada.`
-                  : "Quando a API pública responder, este bloco volta a indicar a estação que exige leitura prioritária."}
+                Na janela {historicalRange}, a base consolidada aponta {primaryStationDays.toLocaleString("pt-BR")} ocorrências/dias de atenção na estação com maior sinal histórico. Leia como prioridade de investigação pública, não como diagnóstico fechado.
               </p>
               <RadarEvidenceBadge
                 level="interpretive"
                 label="Onde olhar primeiro"
-                detail="priorização editorial baseada nos dias medidos e classificados, não diagnóstico fechado do território inteiro"
+                detail="priorização baseada na série histórica processada e na cobertura disponível, não em monitoramento em tempo real"
               />
             </div>
 
             <div className="grid gap-3 sm:grid-cols-2">
               <div className="rounded-2xl border border-[#d97706]/15 bg-white/80 p-4">
-                <div className="text-[10px] font-black uppercase tracking-[0.18em] text-[#92400e]">Base consolidada</div>
+                <div className="text-[10px] font-black uppercase tracking-[0.18em] text-[#92400e]">Janela histórica</div>
                 <div className="mt-2 text-3xl font-black tracking-tight text-[#78350f]">
-                  {hasSummaryMeasurements ? displaySummary.totalMeasurements.toLocaleString("pt-BR") : "Consulte o manifesto"}
+                  {historicalRange}
                 </div>
                 <div className="mt-1 text-[11px] font-semibold text-[#92400e]/80">
-                  {hasSummaryMeasurements ? "leituras históricas tratadas" : "CSV e metodologia seguem disponíveis"}
+                  {historicalSynthesis.pollutantsLabel || "MP10 e MP2.5"} por estação/ano
                 </div>
               </div>
               <div className="rounded-2xl border border-[#d97706]/15 bg-white/80 p-4">
-                <div className="text-[10px] font-black uppercase tracking-[0.18em] text-[#92400e]">Próximo passo</div>
-                <div className="mt-2 text-2xl font-black tracking-tight text-[#78350f]">Ler território</div>
-                <div className="mt-1 text-[11px] font-semibold text-[#92400e]/80">cruze ranking com vulnerabilidade social</div>
+                <div className="text-[10px] font-black uppercase tracking-[0.18em] text-[#92400e]">Excedências OMS</div>
+                <div className="mt-2 text-3xl font-black tracking-tight text-[#78350f]">{historicalSynthesis.totalWhoExceedances.toLocaleString("pt-BR")}</div>
+                <div className="mt-1 text-[11px] font-semibold text-[#92400e]/80">soma anual em linhas com cobertura disponível</div>
               </div>
             </div>
 
             <RadarEvidenceStateBlock
-              state={hasRanking ? "partial" : "missing"}
+              state="partial"
               description={
-                hasRanking
-                  ? "A visão geral já tem base pública consolidada para triagem, mas ainda depende de checagem posterior de cobertura, território e metodologia para fechar leitura forte."
-                  : "Sem ranking consolidado nesta carga, a triagem desta visão geral não deve ser tomada como base suficiente para conclusão pública."
+                "A visão geral resume a base histórica consolidada. Para concluir com força pública, cruze este resumo com cobertura, território, metodologia e documentos originais."
               }
             />
           </div>
@@ -125,29 +164,46 @@ export function RadarOverviewMode({
 
         <div className="card-tecnico flex min-h-[13rem] flex-col justify-between space-y-4 rounded-[2rem] p-6 transition-all duration-300 hover:scale-[1.01] hover:shadow-md">
           <div>
-            <span className="text-[10px] font-black uppercase tracking-[0.18em] text-emerald-300/80">Controlador recorrente</span>
+            <span className="text-[10px] font-black uppercase tracking-[0.18em] text-emerald-300/80">Cobertura forte</span>
             <div
               className="mt-3 text-4xl font-black tracking-tight text-white"
-              title={displaySummary.mostFrequentControllingPollutant}
+              title="Linhas estação-ano com cobertura igual ou superior a 75%"
             >
-              {hasSummaryMeasurements ? topPollutantShort : "Em atualização"}
+              {historicalSynthesis.highCoverageRows}/{historicalSynthesis.totalRows}
             </div>
           </div>
           <p className="text-[12px] font-semibold leading-relaxed text-slate-300">
-            {hasSummaryMeasurements
-              ? "Poluente que mais frequentemente determina a classificação diária final do IQAr."
-              : "Sem resumo de API neste momento. Use as séries históricas, mapa e metodologia enquanto a atualização retorna."}
+            Linhas estação-ano de MP10/MP2.5 com cobertura suficiente para leitura comparativa mais defensável. Lacunas continuam explícitas.
           </p>
         </div>
 
         <div className="card-social flex min-h-[13rem] flex-col justify-between space-y-4 rounded-[2rem] p-6 transition-all duration-300 hover:scale-[1.01] hover:shadow-md">
           <div>
-            <span className="text-[10px] font-black uppercase tracking-[0.18em] text-red-700">População exposta</span>
-            <div className="mt-3 text-4xl font-black tracking-tight text-[#7f1d1d]">60k+</div>
+            <span className="text-[10px] font-black uppercase tracking-[0.18em] text-red-700">Meses de atenção</span>
+            <div className="mt-3 text-4xl font-black tracking-tight text-[#7f1d1d]">{historicalSynthesis.attentionMonths}</div>
           </div>
           <p className="text-[12px] font-semibold leading-relaxed opacity-90">
-            Moradores em áreas que merecem atenção territorial reforçada pela proximidade industrial e pela leitura pública de dispersão atmosférica.
+            Meses em que a base mensal registrou excedência por referência OMS ou CONAMA. É um sinal histórico para priorizar leitura, prevenção e cobrança pública.
           </p>
+        </div>
+
+        <div className="rounded-[2rem] border border-emerald-200 bg-[linear-gradient(180deg,#ffffff,#ecfdf5)] p-5 shadow-[0_20px_45px_-34px_rgba(16,185,129,0.35)] xl:col-span-3">
+          <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+            <div>
+              <div className="text-[10px] font-black uppercase tracking-[0.18em] text-emerald-700">O que a base histórica permite dizer, de forma resumida</div>
+              <h3 className="mt-2 text-xl font-black tracking-tight text-emerald-950">Há sinal recorrente de atenção por particulados, mas a leitura precisa respeitar cobertura e lacunas.</h3>
+              <p className="mt-2 max-w-4xl text-sm font-semibold leading-relaxed text-emerald-900/80">
+                O recorte consolidado reúne {historicalSynthesis.stationsCount} estações, {historicalSynthesis.pollutantsLabel || "MP10 e MP2.5"}, anos de 2020 a 2026 parcial e soma {historicalSynthesis.totalWhoExceedances.toLocaleString("pt-BR")} excedências pela régua OMS, além de {historicalSynthesis.totalConamaExceedances.toLocaleString("pt-BR")} pela régua CONAMA. A ausência de dado em alguns meses não deve ser lida como ar limpo.
+              </p>
+            </div>
+            <button
+              type="button"
+              onClick={() => onNavigate("TIME", "EXCEEDANCE")}
+              className="rounded-full border border-emerald-300 bg-white px-4 py-2 text-xs font-black uppercase tracking-[0.14em] text-emerald-800 transition hover:bg-emerald-50"
+            >
+              Ver excedências
+            </button>
+          </div>
         </div>
 
         {governance.total > 0 && (
@@ -185,26 +241,23 @@ export function RadarOverviewMode({
         <div className="rounded-[2rem] border border-slate-200 bg-white p-5 shadow-[0_20px_45px_-34px_rgba(15,23,42,0.45)] xl:col-span-2">
           <div className="flex flex-wrap items-start justify-between gap-3 border-b border-slate-100 pb-4">
             <div>
-              <h2 className="text-[11px] font-black uppercase tracking-[0.2em] text-slate-400">Ranking por atenção</h2>
+              <h2 className="text-[11px] font-black uppercase tracking-[0.2em] text-slate-400">Ranking histórico por atenção</h2>
               <p className="mt-1 text-xs font-semibold text-slate-500">
-                Estações com mais dias com classificação Moderada ou pior na base.
+                Estações com maior soma de excedências OMS em MP10/MP2.5 na base consolidada 2020-2026 parcial.
               </p>
               <div className="mt-2">
-                <RadarEvidenceBadge level="experimental" detail="ranking depende da cobertura publicada e do histórico consolidado disponível" />
+                <RadarEvidenceBadge level="experimental" detail="ranking histórico depende da cobertura publicada e não representa exposição individual" />
               </div>
             </div>
             <div className="rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-[10px] font-bold text-slate-600">
-              Controlador recorrente: <strong className="text-[#0e2c45]">{hasSummaryMeasurements ? displaySummary.mostFrequentControllingPollutant : "em atualização"}</strong>
+              Cobertura cautelar: <strong className="text-[#0e2c45]">{historicalSynthesis.lowCoverageMonths.toLocaleString("pt-BR")} meses com baixa cobertura</strong>
             </div>
           </div>
 
           <div className="mt-4 grid gap-3 md:grid-cols-2">
-            {sortedRankings.length === 0 ? (
-              <p className="text-xs italic text-slate-400">Sem dados de classificação disponíveis.</p>
-            ) : (
-              sortedRankings.map((r, idx) => (
+            {historicalSynthesis.stationRanking.map((r, idx) => (
                 <div
-                  key={r.id}
+                  key={r.station}
                   className="flex items-center justify-between rounded-2xl border border-slate-100 bg-slate-50/80 px-4 py-3 transition-colors hover:border-slate-200 hover:bg-white"
                 >
                   <div className="flex items-center gap-3">
@@ -212,19 +265,16 @@ export function RadarOverviewMode({
                       #{idx + 1}
                     </span>
                     <div className="space-y-0.5">
-                      <Link to={`/qualidade-ar/inea/estacoes/${r.id}`} className="text-sm font-black text-slate-800 hover:text-[#0e2c45]">
-                        {r.name}
-                      </Link>
-                      <span className="block text-[10px] font-medium text-slate-400">{r.totalDays} dias auditados</span>
+                      <span className="text-sm font-black text-slate-800">{r.station}</span>
+                      <span className="block text-[10px] font-medium text-slate-400">{r.rows} linhas estação-ano auditadas</span>
                     </div>
                   </div>
                   <div className="text-right">
-                    <strong className="block text-sm font-extrabold text-amber-700">{r.moderateOrWorseDays}</strong>
-                    <span className="block text-[9px] font-semibold text-slate-450">dias críticos</span>
+                    <strong className="block text-sm font-extrabold text-amber-700">{r.who}</strong>
+                    <span className="block text-[9px] font-semibold text-slate-450">excedências OMS</span>
                   </div>
                 </div>
-              ))
-            )}
+              ))}
           </div>
         </div>
       </div>
@@ -235,7 +285,7 @@ export function RadarOverviewMode({
             <div className="text-[10px] font-black uppercase tracking-[0.18em] text-slate-400">Leitura rápida</div>
             <h3 className="text-xl font-black tracking-tight text-slate-900">Onde pressionar primeiro</h3>
             <p className="text-xs font-semibold leading-relaxed text-slate-600">
-              Use este painel como triagem: veja quem concentrou mais dias de atenção, compare a última base consolidada e só depois mergulhe em séries e territórios.
+              Use este painel como triagem: veja quem concentrou mais sinal histórico, compare cobertura e só depois mergulhe em séries e territórios.
             </p>
             <RadarEvidenceBadge level="interpretive" detail="use como porta de entrada; confirme a leitura nos modos Tempo, Território e Metodologia" />
           </div>
@@ -302,7 +352,7 @@ export function RadarOverviewMode({
             <div className="grid gap-3 border-b border-slate-100 px-5 py-4 md:grid-cols-3 md:px-6">
               <div className="rounded-2xl border border-slate-200 bg-white p-4">
                 <div className="text-[10px] font-black uppercase tracking-[0.16em] text-slate-400">Onde olhar primeiro</div>
-                <div className="mt-2 text-base font-black text-slate-900">{topStation?.name || "VR-Belmonte"}</div>
+                <div className="mt-2 text-base font-black text-slate-900">{primaryStationName}</div>
                 <p className="mt-1 text-[11px] font-semibold leading-relaxed text-slate-500">
                   Concentrou mais dias de atenção na base consolidada e deve abrir a leitura desta rodada.
                 </p>
