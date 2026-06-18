@@ -102,7 +102,7 @@ export function RadarHero({ onNavigate, summary, activeStations }: RadarHeroProp
             )}
           </div>
 
-          <div className="flex items-start gap-4">
+          <div className="flex min-w-0 flex-col gap-4 sm:flex-row sm:items-start">
             <div className="rounded-[1.6rem] border border-emerald-400/20 bg-emerald-400/10 p-1.5 shadow-[0_20px_40px_-26px_rgba(16,185,129,1)]">
               <IconShell tone="lab" className="portal-stage-icon border-0 bg-transparent shadow-none">
                 <svg className="h-6 w-6 text-emerald-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -110,10 +110,11 @@ export function RadarHero({ onNavigate, summary, activeStations }: RadarHeroProp
                 </svg>
               </IconShell>
             </div>
-            <div className="space-y-3">
+            <div className="min-w-0 space-y-3">
               <div className="text-[10px] font-black uppercase tracking-[0.22em] text-emerald-300/80">Justiça ambiental em dados públicos</div>
-              <h1 className="max-w-4xl text-4xl font-black leading-[0.95] tracking-tight text-white md:text-6xl">
-                Observatório do Ar
+              <h1 className="max-w-full text-[2rem] font-black leading-[0.92] tracking-[-0.035em] text-white min-[390px]:text-[2.35rem] sm:text-5xl md:text-6xl">
+                <span className="block">Observatório</span>
+                <span className="block">do Ar</span>
                 <span className="mt-2 block text-emerald-300">Volta Redonda</span>
               </h1>
             </div>
@@ -159,7 +160,7 @@ export function RadarHero({ onNavigate, summary, activeStations }: RadarHeroProp
 
             <button
               onClick={() => onNavigate("TIME", "TREND")}
-              className="inline-flex cursor-pointer items-center gap-1.5 rounded-2xl border border-white/12 bg-white/[0.07] px-4 py-2.5 text-xs font-bold text-slate-100 transition-colors hover:bg-white/[0.12]"
+              className="inline-flex min-h-11 cursor-pointer items-center gap-1.5 rounded-2xl border border-white/12 bg-white/[0.07] px-4 py-3 text-xs font-bold text-slate-100 transition-colors hover:bg-white/[0.12]"
             >
               <svg className="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -169,7 +170,7 @@ export function RadarHero({ onNavigate, summary, activeStations }: RadarHeroProp
 
             <button
               onClick={() => onNavigate("TERRITORY")}
-              className="inline-flex cursor-pointer items-center gap-1.5 rounded-2xl border border-white/12 bg-white/[0.07] px-4 py-2.5 text-xs font-bold text-slate-100 transition-colors hover:bg-white/[0.12]"
+              className="inline-flex min-h-11 cursor-pointer items-center gap-1.5 rounded-2xl border border-white/12 bg-white/[0.07] px-4 py-3 text-xs font-bold text-slate-100 transition-colors hover:bg-white/[0.12]"
             >
               <svg className="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
@@ -179,7 +180,7 @@ export function RadarHero({ onNavigate, summary, activeStations }: RadarHeroProp
 
             <button
               onClick={() => onNavigate("METHODOLOGY")}
-              className="inline-flex cursor-pointer items-center gap-1.5 rounded-2xl border border-white/12 bg-white/[0.07] px-4 py-2.5 text-xs font-bold text-slate-100 transition-colors hover:bg-white/[0.12]"
+              className="inline-flex min-h-11 cursor-pointer items-center gap-1.5 rounded-2xl border border-white/12 bg-white/[0.07] px-4 py-3 text-xs font-bold text-slate-100 transition-colors hover:bg-white/[0.12]"
             >
               <svg className="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />

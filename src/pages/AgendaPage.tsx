@@ -333,7 +333,36 @@ export function AgendaPage() {
               <p className="mt-2 text-sm font-bold text-text-primary">Locais e horários publicados para planejamento; confirmação final pela equipe.</p>
             </div>
           </div>
-          <div className="overflow-x-auto">
+          <div className="grid gap-3 md:hidden">
+            {filteredCrasActions.map((action, index) => (
+              <article
+                key={`${action.cras}-${action.date}-mobile`}
+                className="rounded-[1.35rem] border border-brand-primary/10 bg-white p-4 shadow-[0_14px_36px_rgba(17,38,59,0.06)]"
+              >
+                <div className="flex items-start justify-between gap-3">
+                  <div className="min-w-0">
+                    <p className="text-[10px] font-black uppercase tracking-[0.16em] text-brand-primary-dark">
+                      Ação {String(index + 1).padStart(2, "0")} · {action.territory}
+                    </p>
+                    <h3 className="mt-1 text-lg font-black leading-tight text-text-primary">{action.cras}</h3>
+                  </div>
+                  <div className="shrink-0 rounded-2xl bg-brand-primary px-3 py-2 text-center text-white shadow-[0_14px_28px_rgba(0,105,180,0.18)]">
+                    <div className="text-base font-black">{formatCrasDate(action.date).slice(0, 5)}</div>
+                    <div className="text-[10px] font-black uppercase tracking-[0.12em]">{action.time}</div>
+                  </div>
+                </div>
+                <div className="mt-4 grid gap-2 text-sm">
+                  <div className="rounded-2xl bg-slate-50 px-3 py-2 font-bold text-text-secondary">
+                    {action.weekday}
+                  </div>
+                  <div className="rounded-2xl bg-emerald-50 px-3 py-2 font-semibold leading-relaxed text-emerald-950">
+                    {action.address}
+                  </div>
+                </div>
+              </article>
+            ))}
+          </div>
+          <div className="hidden overflow-x-auto md:block">
             <table className="min-w-full border-separate border-spacing-y-2 text-left text-sm">
               <thead>
                 <tr className="text-[10px] font-black uppercase tracking-[0.16em] text-text-secondary">
