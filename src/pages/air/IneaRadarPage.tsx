@@ -369,7 +369,6 @@ export function IneaRadarPage() {
           onNavigate={navigateMode}
           summary={displaySummary}
           activeStations={latestData.filter((item) => item.measured_at !== null).length}
-          analyticsHealth={analyticsHealth}
         />
 
         <RadarQuickSummary

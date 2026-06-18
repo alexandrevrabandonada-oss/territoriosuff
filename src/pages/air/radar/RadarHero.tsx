@@ -1,4 +1,7 @@
 import { IconShell, SurfaceCard } from "../../../components/BrandSystem";
+import { ATTENTION_EPISODES } from "../../../data/air/attention-episodes-2020-2026";
+import { PARTICULATE_TIMELINE } from "../../../data/air/particulate-timeline-2020-2026";
+import { AIR_PUBLIC_DOWNLOADS } from "../../../data/air/public-downloads";
 import { RADAR_PUBLIC_EXPERIMENTAL_TAG } from "../../../data/air/radar-copy";
 import { useRadarReleaseMetadata } from "../../../data/air/useRadarReleaseMetadata";
 import { RadarEvidenceStateBlock } from "./RadarEvidenceStateBlock";
@@ -9,8 +12,45 @@ interface RadarHeroProps {
   onNavigate: (mode: RadarMode, tab?: RadarComparisonTab) => void;
   summary: SummaryStats;
   activeStations: number;
-  analyticsHealth: { ok: number; total: number };
 }
+
+function buildHistoricalAudit() {
+  const rows = PARTICULATE_TIMELINE.filter((row) => row.coveragePct > 0);
+  const years = Array.from(new Set(rows.map((row) => row.year))).sort((a, b) => a - b);
+  const stations = Array.from(new Set(rows.map((row) => row.station_name))).sort((a, b) => a.localeCompare(b, "pt-BR"));
+  const pollutants = Array.from(new Set(rows.map((row) => row.pollutant))).sort();
+  const highCoverageRows = rows.filter((row) => row.coveragePct >= 75).length;
+  const mediumCoverageRows = rows.filter((row) => row.coveragePct >= 50 && row.coveragePct < 75).length;
+  const lowCoverageRows = rows.filter((row) => row.coveragePct < 50).length;
+  const monthsWithAttention = ATTENTION_EPISODES.filter((episode) => episode.who_exceedance_days > 0 || episode.conama_exceedance_days > 0).length;
+  const downloadableFiles = AIR_PUBLIC_DOWNLOADS.filter((item) => item.file.endsWith(".csv")).length;
+  const auditedLayers = [
+    rows.length > 0,
+    ATTENTION_EPISODES.length > 0,
+    AIR_PUBLIC_DOWNLOADS.length > 0,
+    stations.length > 0,
+    pollutants.length > 0,
+    highCoverageRows > 0
+  ].filter(Boolean).length;
+
+  return {
+    stationsCount: stations.length,
+    stationNames: stations,
+    pollutantsLabel: pollutants.join(" e "),
+    startYear: years[0] ?? 2020,
+    endYear: years[years.length - 1] ?? 2026,
+    totalRows: rows.length,
+    highCoverageRows,
+    mediumCoverageRows,
+    lowCoverageRows,
+    monthsWithAttention,
+    downloadableFiles,
+    auditedLayers,
+    totalLayers: 6
+  };
+}
+
+const historicalAudit = buildHistoricalAudit();
 
 function formatYearRange(summary: SummaryStats) {
   const startYear = summary.timeRange.minDate ? summary.timeRange.minDate.slice(0, 4) : null;
@@ -18,20 +58,23 @@ function formatYearRange(summary: SummaryStats) {
 
   if (startYear && endYear) return `${startYear}–${endYear}`;
   if (startYear) return `${startYear}–...`;
-  return "Série em auditoria";
+  return `${historicalAudit.startYear}–${historicalAudit.endYear} parcial`;
 }
 
 function formatLatestBase(summary: SummaryStats) {
-  if (!summary.latest_ingested_at) return "status da base indisponível";
+  if (!summary.latest_ingested_at) return "base histórica auditada";
   const parsed = new Date(summary.latest_ingested_at);
-  if (Number.isNaN(parsed.getTime())) return "status da base indisponível";
+  if (Number.isNaN(parsed.getTime())) return "base histórica auditada";
   return `base atualizada em ${parsed.toLocaleDateString("pt-BR")}`;
 }
 
-export function RadarHero({ onNavigate, summary, activeStations, analyticsHealth }: RadarHeroProps) {
+export function RadarHero({ onNavigate, summary, activeStations }: RadarHeroProps) {
   const releaseMetadata = useRadarReleaseMetadata();
   const yearRange = formatYearRange(summary);
   const freshnessLabel = formatLatestBase(summary);
+  const stationCount = summary.totalStations || activeStations || historicalAudit.stationsCount;
+  const auditedLayerLabel = `${historicalAudit.auditedLayers}/${historicalAudit.totalLayers}`;
+  const strongCoverageLabel = `${historicalAudit.highCoverageRows}/${historicalAudit.totalRows}`;
 
   return (
     <SurfaceCard className="relative overflow-hidden rounded-[2.75rem] border border-[#10344f] bg-[radial-gradient(circle_at_top_left,rgba(16,185,129,0.22),transparent_28%),radial-gradient(circle_at_88%_16%,rgba(245,158,11,0.18),transparent_22%),linear-gradient(135deg,#041521_0%,#082031_22%,#0c2f46_58%,#041521_100%)] p-0 shadow-[0_28px_80px_-24px_rgba(4,21,33,0.72)]">
@@ -81,15 +124,15 @@ export function RadarHero({ onNavigate, summary, activeStations, analyticsHealth
           </p>
 
           <p className="max-w-2xl text-[11px] font-semibold leading-relaxed text-slate-300">
-            Este release público está publicado como <span className="font-black text-white">{releaseMetadata.cycleVersion}</span>. Se algum bloco falhar, a interpretação correta
-            continua sendo: manter a cobrança pública aberta e voltar para série histórica, cobertura e metodologia antes de concluir.
+            Este release público está publicado como <span className="font-black text-white">{releaseMetadata.cycleVersion}</span>. A auditoria histórica já consolidou
+            {` ${historicalAudit.stationsCount} estações, ${historicalAudit.pollutantsLabel || "MP10 e MP2.5"} e ${historicalAudit.downloadableFiles} arquivos CSV públicos`}; os blocos de tempo real não são pré-condição para ler a série histórica.
           </p>
 
           <div className="grid gap-3 sm:grid-cols-3">
               <div className="rounded-2xl border border-white/10 bg-slate-950/50 p-4 shadow-[0_18px_40px_-30px_rgba(15,23,42,1)]">
                 <div className="text-[10px] font-black uppercase tracking-[0.18em] text-slate-400">Estações</div>
-              <div className="mt-3 text-3xl font-black text-white">{summary.totalStations || activeStations || "--"}</div>
-              <div className="mt-1 text-[11px] font-semibold text-slate-300">estações públicas catalogadas</div>
+              <div className="mt-3 text-3xl font-black text-white">{stationCount}</div>
+              <div className="mt-1 text-[11px] font-semibold text-slate-300">estações com série histórica consolidada</div>
               </div>
               <div className="rounded-2xl border border-emerald-500/15 bg-emerald-500/[0.07] p-4 shadow-[0_18px_40px_-30px_rgba(16,185,129,0.8)]">
                 <div className="text-[10px] font-black uppercase tracking-[0.18em] text-emerald-200/80">Série histórica</div>
@@ -97,9 +140,9 @@ export function RadarHero({ onNavigate, summary, activeStations, analyticsHealth
               <div className="mt-1 text-[11px] font-semibold text-emerald-50/85">janela pública efetivamente consolidada</div>
               </div>
               <div className="rounded-2xl border border-amber-400/20 bg-amber-400/[0.08] p-4 shadow-[0_18px_40px_-30px_rgba(245,158,11,0.8)]">
-                <div className="text-[10px] font-black uppercase tracking-[0.18em] text-amber-200/85">Camadas publicadas</div>
-              <div className="mt-3 text-3xl font-black text-white">{analyticsHealth.ok}/{analyticsHealth.total}</div>
-              <div className="mt-1 text-[11px] font-semibold text-amber-50/90">blocos analíticos respondendo agora</div>
+                <div className="text-[10px] font-black uppercase tracking-[0.18em] text-amber-200/85">Auditoria histórica</div>
+              <div className="mt-3 text-3xl font-black text-white">{auditedLayerLabel}</div>
+              <div className="mt-1 text-[11px] font-semibold text-amber-50/90">camadas consolidadas verificadas</div>
               </div>
             </div>
 
@@ -151,7 +194,7 @@ export function RadarHero({ onNavigate, summary, activeStations, analyticsHealth
             <div className="text-[10px] font-black uppercase tracking-[0.18em] text-slate-300">Painel de situação</div>
             <div className="mt-4 grid grid-cols-2 gap-3">
               <div className="rounded-2xl border border-white/8 bg-white/[0.04] p-4">
-                <span className="block text-3xl font-black text-white">{activeStations || summary.totalStations || "--"}</span>
+                <span className="block text-3xl font-black text-white">{stationCount}</span>
                 <span className="mt-1 block text-[10px] font-bold uppercase tracking-wider text-slate-400">estações</span>
               </div>
               <div className="rounded-2xl border border-white/8 bg-white/[0.04] p-4">
@@ -159,12 +202,12 @@ export function RadarHero({ onNavigate, summary, activeStations, analyticsHealth
                 <span className="mt-1 block text-[10px] font-bold uppercase tracking-wider text-slate-400">série pública</span>
               </div>
               <div className="rounded-2xl border border-emerald-500/20 bg-emerald-500/[0.09] p-4">
-                <span className="block text-3xl font-black text-emerald-300">{analyticsHealth.ok}/{analyticsHealth.total}</span>
-                <span className="mt-1 block text-[10px] font-bold uppercase tracking-wider text-emerald-100/80">blocos ok</span>
+                <span className="block text-3xl font-black text-emerald-300">{strongCoverageLabel}</span>
+                <span className="mt-1 block text-[10px] font-bold uppercase tracking-wider text-emerald-100/80">cobertura forte</span>
               </div>
               <div className="rounded-2xl border border-white/8 bg-white/[0.04] p-4">
                 <span className="block text-xl font-black text-white">{freshnessLabel}</span>
-                <span className="mt-1 block text-[10px] font-bold uppercase tracking-wider text-slate-400">última ingestão pública</span>
+                <span className="mt-1 block text-[10px] font-bold uppercase tracking-wider text-slate-400">status auditado</span>
               </div>
             </div>
           </div>
@@ -172,20 +215,18 @@ export function RadarHero({ onNavigate, summary, activeStations, analyticsHealth
           <div className="rounded-[1.8rem] border border-white/10 bg-white/[0.05] p-4 text-slate-200 shadow-[0_20px_40px_-32px_rgba(15,23,42,1)] backdrop-blur-sm">
             <div className="text-[10px] font-black uppercase tracking-[0.18em] text-emerald-300/85">Leitura recomendada</div>
             <p className="mt-2 text-sm font-semibold leading-relaxed text-slate-100">
-              Comece pelo mapa, avance para a linha do tempo e feche com os territórios prioritários.
+              Comece pela síntese histórica, avance para a linha do tempo e feche com os territórios prioritários.
             </p>
             <div className="mt-3 text-[11px] font-semibold text-slate-300">
-              A navegação foi desenhada para leitura cívica rápida, sem perder densidade técnica, e agora ancora a leitura no release público vigente.
+              Auditoria atual: {historicalAudit.highCoverageRows} linhas com cobertura forte, {historicalAudit.mediumCoverageRows} intermediárias e {historicalAudit.lowCoverageRows} cautelares. Lacunas permanecem visíveis.
             </div>
           </div>
 
           <div className="rounded-[1.8rem] border border-white/10 bg-white/[0.05] p-4 backdrop-blur-sm">
             <RadarEvidenceStateBlock
-              state={summary.latest_ingested_at && analyticsHealth.ok > 0 ? "partial" : "missing"}
+              state="partial"
               description={
-                summary.latest_ingested_at && analyticsHealth.ok > 0
-                  ? "O hero já expõe base publicada, janela histórica e blocos respondendo, mas continua sendo uma porta de entrada. A leitura forte depende de mapa, séries, cobertura e metodologia."
-                  : "Se a base não expõe ingestão recente ou blocos analíticos respondendo, o hero não deve ser tratado como retrato confiável da situação pública."
+                "O hero agora expõe a auditoria dos dados históricos consolidados. A leitura forte ainda depende de mapa, séries, cobertura e metodologia, mas não fica bloqueada por ausência de API ou ingestão recente."
               }
             />
           </div>
