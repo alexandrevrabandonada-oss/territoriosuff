@@ -524,46 +524,46 @@ export function AlertasPage() {
                         </div>
                     </SurfaceCard>
 
-                    {/* HISTÓRICO DE ALERTAS RECENTES */}
+                    {/* EXEMPLOS DE ALERTAS */}
                     <SurfaceCard className="portal-list-panel p-6">
                         <PortalSectionHeader
-                            eyebrow="Sinais recentes"
-                            title="Alertas do sistema"
-                            subtitle="Exemplos de ocorrências e comunicados operacionais exibidos ao público."
-                            hint="Últimos 7 dias"
+                            eyebrow="Demonstração pública"
+                            title="Exemplos de alertas"
+                            subtitle="Modelos de ocorrências e comunicados operacionais que podem ser exibidos quando o serviço estiver ativo."
+                            hint="Simulação"
                         />
 
                         <div className="space-y-3">
                             <div className="p-3 rounded-xl bg-slate-50 dark:bg-slate-900/20 border border-slate-100 dark:border-slate-800/40">
                                 <div className="flex justify-between items-start">
                                     <span className="text-[10px] font-black uppercase tracking-wider text-red-500">Crítico</span>
-                                    <span className="text-[9px] text-text-secondary">Hoje às 14:32</span>
+                                    <span className="text-[9px] text-text-secondary">Exemplo</span>
                                 </div>
                                 <h4 className="text-xs font-bold text-text-primary mt-1">Estação Siderlândia</h4>
                                 <p className="text-[10px] text-text-secondary mt-0.5 leading-normal">
-                                    Média PM2.5 de 39 µg/m³ nas últimas 2h devido a inversão térmica regional.
+                                    Modelo de mensagem para PM2.5 acima do limiar configurado, com orientação de cautela para atividades externas.
                                 </p>
                             </div>
 
                             <div className="p-3 rounded-xl bg-slate-50 dark:bg-slate-900/20 border border-slate-100 dark:border-slate-800/40">
                                 <div className="flex justify-between items-start">
                                     <span className="text-[10px] font-black uppercase tracking-wider text-amber-500">Moderado</span>
-                                    <span className="text-[9px] text-text-secondary">Ontem às 10:15</span>
+                                    <span className="text-[9px] text-text-secondary">Exemplo</span>
                                 </div>
                                 <h4 className="text-xs font-bold text-text-primary mt-1">Estação Retiro</h4>
                                 <p className="text-[10px] text-text-secondary mt-0.5 leading-normal">
-                                    Temperatura atingiu 36.5°C com umidade relativa de 28% no meio-dia.
+                                    Modelo de aviso para condição de atenção ambiental, sem indicar ocorrência real não auditada.
                                 </p>
                             </div>
 
                             <div className="p-3 rounded-xl bg-slate-50 dark:bg-slate-900/20 border border-slate-100 dark:border-slate-800/40">
                                 <div className="flex justify-between items-start">
                                     <span className="text-[10px] font-black uppercase tracking-wider text-emerald-500">Informativo</span>
-                                    <span className="text-[9px] text-text-secondary">16 Mai às 09:00</span>
+                                    <span className="text-[9px] text-text-secondary">Exemplo</span>
                                 </div>
                                 <h4 className="text-xs font-bold text-text-primary mt-1">Todas as Estações</h4>
                                 <p className="text-[10px] text-text-secondary mt-0.5 leading-normal">
-                                    Manutenção agendada concluída com sucesso. Transmissão estabilizada.
+                                    Modelo de comunicado público sobre operação, manutenção ou estabilização do serviço.
                                 </p>
                             </div>
                         </div>

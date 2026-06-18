@@ -119,6 +119,7 @@ export default defineConfig({
         description: "Portal de transparência pública ambiental, dados de qualidade do ar, agenda territorial e controle social.",
         theme_color: "#0f766e",
         background_color: "#f8fafc",
+        lang: "pt-BR",
         display: "standalone",
         orientation: "portrait-primary",
         categories: ["education", "environment"],
