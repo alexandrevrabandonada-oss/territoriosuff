@@ -1,6 +1,7 @@
 type InstagramEmbedProps = {
   title: string;
   url: string;
+  variant?: "default" | "article";
 };
 
 function getInstagramEmbedUrl(url: string): string | null {
@@ -12,13 +13,13 @@ function getInstagramEmbedUrl(url: string): string | null {
     const match = parsed.pathname.match(/\/(p|reel|tv)\/([^/?#]+)/);
     if (!match) return null;
 
-    return `https://www.instagram.com/${match[1]}/${match[2]}/embed`;
+    return `https://www.instagram.com/${match[1]}/${match[2]}/embed/captioned/`;
   } catch {
     return null;
   }
 }
 
-export function InstagramEmbed({ title, url }: InstagramEmbedProps) {
+export function InstagramEmbed({ title, url, variant = "default" }: InstagramEmbedProps) {
   const embedUrl = getInstagramEmbedUrl(url);
 
   if (!embedUrl) {
@@ -30,10 +31,10 @@ export function InstagramEmbed({ title, url }: InstagramEmbedProps) {
   }
 
   return (
-    <div className="instagram-embed-shell">
+    <div className={`instagram-embed-shell ${variant === "article" ? "instagram-embed-shell-article" : ""}`}>
       <iframe
         allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
-        className="instagram-embed-frame"
+        className={`instagram-embed-frame ${variant === "article" ? "instagram-embed-frame-article" : ""}`}
         loading="lazy"
         referrerPolicy="strict-origin-when-cross-origin"
         sandbox="allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox"

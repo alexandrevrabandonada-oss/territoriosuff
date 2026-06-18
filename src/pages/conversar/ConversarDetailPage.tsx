@@ -143,8 +143,8 @@ export function ConversarDetailPage() {
                     </p>
                 )}
                 {isActivity && conversation.meta?.instagram_url ? (
-                    <div className="mb-8 overflow-hidden rounded-2xl border border-brand-primary/10 bg-white">
-                        <InstagramEmbed title={conversation.title} url={conversation.meta.instagram_url} />
+                    <div className="mb-8 overflow-hidden rounded-2xl border border-brand-primary/10 bg-white p-3 md:p-4">
+                        <InstagramEmbed title={conversation.title} url={conversation.meta.instagram_url} variant="article" />
                     </div>
                 ) : null}
                 {isActivity ? (

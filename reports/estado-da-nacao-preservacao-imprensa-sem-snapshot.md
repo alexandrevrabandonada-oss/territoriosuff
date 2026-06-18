@@ -1,6 +1,6 @@
 # Estado da Nação — Preservadas sem Snapshot HTML
 
-Data: 08/06/2026, 23:20:07
+Data: 17/06/2026, 08:01:18
 
 ## Resumo
 
