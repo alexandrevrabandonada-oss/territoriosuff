@@ -204,7 +204,7 @@ select,
   body,
   .site-topbar,
   .site-mobile-panel,
-  .home-mockup,
+  .home-shell,
   .home-hero-copy,
   .home-search,
   .home-feature-card,
@@ -1079,7 +1079,7 @@ select {
     @apply border-brand-primary/10 bg-white/[0.86] text-text-primary;
   }
 
-  .portal-demo-card {
+  .portal-shortcut-card {
     @apply flex min-h-[220px] flex-col justify-between rounded-[1.75rem] border border-brand-primary/10 bg-white/[0.9] p-6 shadow-[0_18px_55px_rgba(17,38,59,0.08)] backdrop-blur transition-all hover:-translate-y-1 hover:border-brand-primary/25 hover:shadow-[0_28px_70px_rgba(17,38,59,0.13)];
   }
 

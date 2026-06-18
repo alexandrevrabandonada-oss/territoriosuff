@@ -21,14 +21,6 @@ export function AlertasPage() {
     const [quietStart, setQuietStart] = useState("22:00");
     const [quietEnd, setQuietEnd] = useState("07:00");
 
-    // Local Test Simulation States
-    const [simulatedLevel, setSimulatedLevel] = useState<"mod" | "crit">("mod");
-    const [toastAlert, setToastAlert] = useState<{ title: string; body: string; active: boolean }>({
-        title: "",
-        body: "",
-        active: false,
-    });
-
     useEffect(() => {
         if ("Notification" in window) {
             setStatus(Notification.permission);
@@ -149,11 +141,11 @@ export function AlertasPage() {
             await saveSettingsLocally(true);
             setSuccessMessage("Configurações de alerta salvas e ativas com sucesso!");
         } catch (err) {
-            // Fallback: if VAPID is missing, let the user complete local simulation
+            // If remote push infrastructure is not configured, keep preferences local without emitting fake alerts.
             if (err instanceof Error && err.message.includes("VAPID")) {
                 setIsSubscribed(true);
                 await saveSettingsLocally(true);
-                setSuccessMessage("Alertas locais ativados! (Modo de simulação em desenvolvimento local)");
+                setSuccessMessage("Preferências salvas neste dispositivo. O envio remoto será ativado quando a infraestrutura de push estiver configurada.");
             } else {
                 setError(err instanceof Error ? err.message : "Erro ao ativar notificações.");
             }
@@ -185,78 +177,11 @@ export function AlertasPage() {
         }
     }
 
-    // Interactive Notification Simulator
-    function simulateNotification() {
-        const stationName = stationCodeFilter 
-            ? (stations.find(s => (s.code as string) === stationCodeFilter)?.name || "Estação Selecionada")
-            : "Volta Redonda (Central)";
-        
-        const pmValue = simulatedLevel === "mod" ? 38 : 56;
-        const alertTitle = simulatedLevel === "mod" ? "⚠️ Qualidade do Ar Moderada" : "🚨 ALERTA: Qualidade do Ar Crítica";
-        const alertBody = `Estação ${stationName}: PM2.5 atingiu ${pmValue} µg/m³ (limiar configurado: ${pm25Threshold} µg/m³). Evite atividades físicas externas nesta área.`;
-
-        // Trigger real browser notification if permitted
-        if (status === "granted") {
-            try {
-                if ("serviceWorker" in navigator) {
-                    navigator.serviceWorker.ready.then(reg => {
-                        reg.showNotification(alertTitle, {
-                            body: alertBody,
-                            icon: "/favicon.ico",
-                            badge: "/favicon.ico",
-                            tag: "semear-test-alert",
-                            requireInteraction: true
-                        });
-                    });
-                } else {
-                    new Notification(alertTitle, { body: alertBody });
-                }
-            } catch (e) {
-                console.warn("Erro ao disparar notificação nativa, fallback para toast:", e);
-            }
-        }
-
-        // Always show inside the PWA as a beautiful glassmorphic alert toast
-        setToastAlert({ title: alertTitle, body: alertBody, active: true });
-        
-        // Auto dismiss after 7s
-        setTimeout(() => {
-            setToastAlert(prev => ({ ...prev, active: false }));
-        }, 7000);
-    }
-
     return (
         <PortalPageShell className="alerts-stage pb-20">
             <a href="#alerts-form" className="inline-flex min-h-[44px] items-center rounded-full border border-brand-primary/20 bg-white/90 px-4 py-2 text-xs font-black uppercase tracking-[0.14em] text-brand-primary shadow-sm shadow-brand-primary/5 focus:fixed focus:left-4 focus:top-4 focus:z-50">
                 Pular cabeçalho e ir para o formulário
             </a>
-
-            {/* Simulation Toast Alert Banner */}
-            {toastAlert.active && (
-                <div 
-                    role="alert" 
-                    className="fixed bottom-4 right-4 z-50 max-w-sm rounded-[1.35rem] border border-accent-warm/30 bg-white/95 dark:bg-slate-900/95 p-4 shadow-[0_20px_50px_rgba(234,88,12,0.15)] backdrop-blur-md animate-in slide-in-from-bottom duration-300"
-                >
-                    <div className="flex items-start gap-3">
-                        <div className="h-8 w-8 shrink-0 rounded-full bg-accent-warm/10 flex items-center justify-center text-lg">
-                            {simulatedLevel === "crit" ? "🚨" : "⚠️"}
-                        </div>
-                        <div className="flex-1">
-                            <h4 className="text-xs font-bold text-text-primary tracking-tight">{toastAlert.title}</h4>
-                            <p className="text-[11px] text-text-secondary mt-1 leading-normal">{toastAlert.body}</p>
-                            <div className="mt-2 flex gap-2">
-                                <span className="text-[9px] uppercase font-black text-accent-warm tracking-wider bg-accent-warm/5 px-2 py-0.5 rounded">Simulação PWA</span>
-                                <button 
-                                    onClick={() => setToastAlert(prev => ({ ...prev, active: false }))} 
-                                    className="text-[9px] font-bold text-text-secondary hover:text-text-primary underline ml-auto"
-                                >
-                                    Fechar
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            )}
 
             <PortalHero
                 badge={<span className="badge-dados-abertos">Alerta cidadão</span>}
@@ -285,7 +210,7 @@ export function AlertasPage() {
                         <div className="rounded-2xl border border-white/30 bg-white/75 p-4 shadow-sm backdrop-blur">
                             <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-brand-primary/70">Como funciona</p>
                             <p className="mt-2 text-sm leading-relaxed text-slate-700">
-                                Configure limiares, teste o disparo no próprio dispositivo e acompanhe sinais recentes do sistema sem sair da página.
+                                Configure limiares e acompanhe sinais recentes do sistema sem sair da página. O portal não exibe alertas artificiais.
                             </p>
                         </div>
                     </div>
@@ -471,101 +396,15 @@ export function AlertasPage() {
                 </div>
             </div>
 
-                {/* INTERACTIVE SIMULATOR CARD */}
                 <div className="space-y-6">
-                    <SurfaceCard className="portal-alert-panel border-l-4 border-l-accent-warm p-6">
-                        <PortalSectionHeader
-                            eyebrow="Ambiente de testes PWA"
-                            title="Simulador de notificação"
-                            subtitle="Teste a recepção dos alertas no dispositivo atual sem depender de um episódio real de poluição."
-                        />
-
-                        <div className="space-y-4 pt-2">
-                            <div className="space-y-1">
-                                <span className="text-[10px] font-bold text-text-primary/60">Selecione o nível de poluição a simular:</span>
-                                <div className="grid grid-cols-2 gap-2 mt-1">
-                                    <button
-                                        type="button"
-                                        onClick={() => setSimulatedLevel("mod")}
-                                        className={`py-2 px-3 text-xs font-semibold rounded-lg border text-center transition-colors ${
-                                            simulatedLevel === "mod"
-                                                ? "bg-amber-500/10 border-amber-500 text-amber-700 dark:text-amber-400"
-                                                : "border-slate-200 dark:border-slate-800 text-text-secondary hover:bg-slate-50 dark:hover:bg-slate-900/30"
-                                        }`}
-                                    >
-                                        Moderado (38 µg/m³)
-                                    </button>
-                                    <button
-                                        type="button"
-                                        onClick={() => setSimulatedLevel("crit")}
-                                        className={`py-2 px-3 text-xs font-semibold rounded-lg border text-center transition-colors ${
-                                            simulatedLevel === "crit"
-                                                ? "bg-red-500/10 border-red-500 text-red-700 dark:text-red-400"
-                                                : "border-slate-200 dark:border-slate-800 text-text-secondary hover:bg-slate-50 dark:hover:bg-slate-900/30"
-                                        }`}
-                                    >
-                                        Crítico (56 µg/m³)
-                                    </button>
-                                </div>
-                            </div>
-
-                            <button
-                                type="button"
-                                onClick={simulateNotification}
-                                className="w-full py-2.5 rounded-xl bg-accent-warm text-white hover:bg-orange-600 text-xs font-black uppercase tracking-wider transition-all shadow-sm flex items-center justify-center gap-2"
-                            >
-                                <span>🔔</span> Disparar Teste
-                            </button>
-                            <p className="text-[9px] text-text-secondary text-center leading-normal italic">
-                                {status === "granted" 
-                                    ? "Disparará um alerta nativo no sistema operacional e um banner de notificação na tela." 
-                                    : "Como as notificações nativas estão desligadas, o alerta aparecerá como um banner interno (toast)."}
-                            </p>
-                        </div>
-                    </SurfaceCard>
-
-                    {/* EXEMPLOS DE ALERTAS */}
                     <SurfaceCard className="portal-list-panel p-6">
                         <PortalSectionHeader
-                            eyebrow="Demonstração pública"
-                            title="Exemplos de alertas"
-                            subtitle="Modelos de ocorrências e comunicados operacionais que podem ser exibidos quando o serviço estiver ativo."
-                            hint="Simulação"
+                            eyebrow="Transparência operacional"
+                            title="Alertas públicos reais"
+                            subtitle="Esta área exibirá somente comunicados operacionais ou ocorrências auditáveis quando o serviço estiver ativo."
                         />
-
-                        <div className="space-y-3">
-                            <div className="p-3 rounded-xl bg-slate-50 dark:bg-slate-900/20 border border-slate-100 dark:border-slate-800/40">
-                                <div className="flex justify-between items-start">
-                                    <span className="text-[10px] font-black uppercase tracking-wider text-red-500">Crítico</span>
-                                    <span className="text-[9px] text-text-secondary">Exemplo</span>
-                                </div>
-                                <h4 className="text-xs font-bold text-text-primary mt-1">Estação Siderlândia</h4>
-                                <p className="text-[10px] text-text-secondary mt-0.5 leading-normal">
-                                    Modelo de mensagem para PM2.5 acima do limiar configurado, com orientação de cautela para atividades externas.
-                                </p>
-                            </div>
-
-                            <div className="p-3 rounded-xl bg-slate-50 dark:bg-slate-900/20 border border-slate-100 dark:border-slate-800/40">
-                                <div className="flex justify-between items-start">
-                                    <span className="text-[10px] font-black uppercase tracking-wider text-amber-500">Moderado</span>
-                                    <span className="text-[9px] text-text-secondary">Exemplo</span>
-                                </div>
-                                <h4 className="text-xs font-bold text-text-primary mt-1">Estação Retiro</h4>
-                                <p className="text-[10px] text-text-secondary mt-0.5 leading-normal">
-                                    Modelo de aviso para condição de atenção ambiental, sem indicar ocorrência real não auditada.
-                                </p>
-                            </div>
-
-                            <div className="p-3 rounded-xl bg-slate-50 dark:bg-slate-900/20 border border-slate-100 dark:border-slate-800/40">
-                                <div className="flex justify-between items-start">
-                                    <span className="text-[10px] font-black uppercase tracking-wider text-emerald-500">Informativo</span>
-                                    <span className="text-[9px] text-text-secondary">Exemplo</span>
-                                </div>
-                                <h4 className="text-xs font-bold text-text-primary mt-1">Todas as Estações</h4>
-                                <p className="text-[10px] text-text-secondary mt-0.5 leading-normal">
-                                    Modelo de comunicado público sobre operação, manutenção ou estabilização do serviço.
-                                </p>
-                            </div>
+                        <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4 text-sm leading-relaxed text-text-secondary">
+                            Nenhum alerta público auditado está publicado neste momento. Enquanto não houver ocorrência validada, o portal mantém esta seção em estado vazio para evitar ruído informacional.
                         </div>
 
                         <Link 

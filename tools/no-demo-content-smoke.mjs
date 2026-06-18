@@ -17,6 +17,10 @@ const source = fs.readFileSync(apiPath, "utf8");
 const requiredPatterns = [
   "function isDemoRecord",
   "slug.startsWith(\"demo-\")",
+  "meta.mock === true",
+  "meta.fixture === true",
+  "meta.test === true",
+  "listUpcomingEvents",
   "meta.demo === true",
   "filter((row) => !isDemoRecord(row))",
   "if (isDemoRecord(data as Record<string, unknown>)) return null",

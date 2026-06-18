@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { IconShell, SurfaceCard } from "../components/BrandSystem";
 import type { AcervoCollection, ReportDocument, StationOverview } from "../lib/api";
 
-type DemoLink = {
+type NavigationShortcut = {
   title: string;
   description: string;
   href: string;
@@ -59,7 +59,7 @@ export function ApresentacaoPage() {
   const bulletinHref = `/status?year=${year}&month=${month}`;
   const transparencyHref = `/transparencia?year=${year}&month=${month}`;
 
-  const links: DemoLink[] = [
+  const links: NavigationShortcut[] = [
     {
       title: "Ver dados da estacao piloto",
       description: pilotStation
@@ -72,7 +72,7 @@ export function ApresentacaoPage() {
       title: "Abrir 1 dossie featured",
       description: featuredCollection
         ? `Vai direto para o dossie ${featuredCollection.title}.`
-        : "Abre a area de dossies para demonstracao publica.",
+        : "Abre a area de dossies quando houver destaque publicado.",
       href: featuredCollection ? `/dossies/${featuredCollection.slug}` : "/dossies",
       ready: Boolean(featuredCollection)
     },
@@ -92,7 +92,7 @@ export function ApresentacaoPage() {
       title: "Abrir relatorio featured",
       description: featuredReport
         ? `Abre o documento ${featuredReport.title}.`
-        : "Abre a biblioteca de relatorios para demonstracao.",
+        : "Abre a biblioteca de relatorios quando houver destaque publicado.",
       href: featuredReport ? `/relatorios/${featuredReport.slug}` : "/relatorios",
       ready: Boolean(featuredReport)
     }
@@ -104,10 +104,10 @@ export function ApresentacaoPage() {
         <div className="portal-stage-hero-inner">
           <div className="portal-stage-copy">
             <IconShell tone="brand" className="portal-stage-icon"><span aria-hidden="true">▶</span></IconShell>
-            <h1>Roteiro rápido para demonstração pública</h1>
+            <h1>Roteiro rápido de navegação pública</h1>
             <p>Atalhos para apresentar dados, acervo, boletins, relatórios e transparência sem depender de navegação manual.</p>
           </div>
-          <div className="portal-stage-stat"><span>{links.length}</span><small>pontos de demonstração</small></div>
+          <div className="portal-stage-stat"><span>{links.length}</span><small>atalhos públicos</small></div>
         </div>
       </SurfaceCard>
 
@@ -115,24 +115,24 @@ export function ApresentacaoPage() {
         <h2 className="text-lg font-black text-brand-primary">Como usar</h2>
         <ul className="mt-3 list-disc space-y-2 pl-5 text-sm text-text-primary md:text-base">
           <li>Comece pelas leituras da estacao piloto para mostrar atualizacao frequente quando ha transmissao ativa.</li>
-          <li>Em seguida, abra um dossie e um relatorio para demonstrar memoria e producao editorial.</li>
+          <li>Em seguida, abra um dossie e um relatorio para mostrar memoria e producao editorial.</li>
           <li>Finalize com o boletim mensal e a transparencia filtrada para reforcar prestacao de contas.</li>
         </ul>
       </SurfaceCard>
 
       <section>
-        <h2 className="sr-only">Atalhos de demonstracao</h2>
+        <h2 className="sr-only">Atalhos de navegação</h2>
         <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
           {links.map((item) => (
             <Link
               key={item.title}
               to={item.href}
-              className="portal-demo-card group"
+              className="portal-shortcut-card group"
             >
               <div>
                 <div className="flex items-center justify-between gap-3">
                   <span className="rounded-full bg-brand-primary/10 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.18em] text-brand-primary">
-                    {item.ready ? "Pronto" : "Fallback"}
+                    {item.ready ? "Publicado" : "Disponível"}
                   </span>
                   <span className="text-lg" aria-hidden="true">↗</span>
                 </div>
@@ -146,7 +146,7 @@ export function ApresentacaoPage() {
       </section>
 
       {loading ? (
-        <p className="text-sm text-text-secondary" role="status" aria-live="polite">Carregando atalhos de demonstracao...</p>
+        <p className="text-sm text-text-secondary" role="status" aria-live="polite">Carregando atalhos de navegação...</p>
       ) : null}
     </section>
   );

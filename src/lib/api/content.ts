@@ -90,11 +90,26 @@ function buildAssetUrlMap(rows: AssetPublicUrlRow[] | null | undefined) {
 
 function isDemoRecord(row: Record<string, unknown>): boolean {
   const slug = typeof row.slug === "string" ? row.slug : "";
+  const title = typeof row.title === "string" ? row.title : "";
+  const location = typeof row.location === "string" ? row.location : "";
+  const locationName = typeof row.location_name === "string" ? row.location_name : "";
   const meta = row.meta && typeof row.meta === "object" && !Array.isArray(row.meta)
     ? row.meta as Record<string, unknown>
     : {};
+  const text = `${slug} ${title} ${location} ${locationName}`.toLowerCase();
 
-  return slug.startsWith("demo-") || meta.demo === true || meta.demo === "true";
+  return (
+    slug.startsWith("demo-") ||
+    /(^|[-_\s])(demo|mock|fixture|teste)([-_\s]|$)/i.test(text) ||
+    meta.demo === true ||
+    meta.demo === "true" ||
+    meta.mock === true ||
+    meta.mock === "true" ||
+    meta.fixture === true ||
+    meta.fixture === "true" ||
+    meta.test === true ||
+    meta.test === "true"
+  );
 }
 
 export async function listUpcomingEvents(): Promise<Event[]> {
@@ -107,7 +122,8 @@ export async function listUpcomingEvents(): Promise<Event[]> {
       .order("start_at", { ascending: true })
       .limit(100);
     if (error) throw error;
-    return (data ?? []) as Event[];
+    return ((data ?? []) as Record<string, unknown>[])
+      .filter((row) => !isDemoRecord(row)) as Event[];
   } catch (error) {
     throw toAppError("Falha ao listar eventos", error);
   }
@@ -122,7 +138,9 @@ export async function getEventSummary(eventId: string): Promise<EventSummary | n
       .eq("id", eventId)
       .maybeSingle();
     if (error) throw error;
-    return (data as EventSummary | null) ?? null;
+    if (!data) return null;
+    if (isDemoRecord(data as Record<string, unknown>)) return null;
+    return data as EventSummary;
   } catch (error) {
     throw toAppError("Falha ao carregar dados do evento", error);
   }
@@ -137,7 +155,9 @@ export async function getEventById(eventId: string): Promise<Event | null> {
       .eq("id", eventId)
       .maybeSingle();
     if (error) throw error;
-    return (data as Event | null) ?? null;
+    if (!data) return null;
+    if (isDemoRecord(data as Record<string, unknown>)) return null;
+    return data as Event;
   } catch (error) {
     throw toAppError("Falha ao carregar evento", error);
   }
@@ -581,6 +601,7 @@ export async function listReports(params: ListReportsParams = {}): Promise<Repor
     if (error) throw error;
 
     const reports = ((data || []) as Record<string, unknown>[])
+      .filter((row) => !isDemoRecord(row))
       .map(rowToReportDocument)
       .filter((report) => !kind || report.kind === kind);
 
@@ -605,6 +626,7 @@ export async function getReportBySlug(slug: string): Promise<ReportDocument | nu
       .maybeSingle();
     if (error) throw error;
     if (!data) return null;
+    if (isDemoRecord(data as Record<string, unknown>)) return null;
     const report = rowToReportDocument(data as Record<string, unknown>);
     return hydrateReportDocumentAssets(report);
   } catch (error) {
@@ -624,7 +646,8 @@ export async function listCollections({ limit = 50 }: { limit?: number } = {}): 
       .limit(limit);
 
     if (error) throw error;
-    return (data || []) as AcervoCollection[];
+    return ((data || []) as Record<string, unknown>[])
+      .filter((row) => !isDemoRecord(row)) as AcervoCollection[];
   } catch (error) {
     throw toAppError("Falha ao listar dossiês", error);
   }
@@ -642,7 +665,8 @@ export async function listFeaturedCollections(limit = 6): Promise<AcervoCollecti
       .limit(limit);
 
     if (error) throw error;
-    return (data || []) as AcervoCollection[];
+    return ((data || []) as Record<string, unknown>[])
+      .filter((row) => !isDemoRecord(row)) as AcervoCollection[];
   } catch (error) {
     throw toAppError("Falha ao listar dossiês em destaque", error);
   }
@@ -676,7 +700,8 @@ export async function listCollectionsForItem(itemSlugOrId: string): Promise<Acer
     if (error) throw error;
     return ((data || []) as AcervoCollectionRelationRow[])
       .map((row) => row.acervo_collections)
-      .filter(Boolean) as AcervoCollection[];
+      .filter((collection): collection is Record<string, unknown> => !!collection && typeof collection === "object" && !Array.isArray(collection))
+      .filter((collection) => !isDemoRecord(collection)) as AcervoCollection[];
   } catch (error) {
     console.warn("Falha ao buscar coleções do item:", error);
     return [];
@@ -726,6 +751,7 @@ export async function getRelatedItemsByCollections(itemSlugOrId: string, limit =
     for (const row of (related || []) as AcervoItemRelationRow[]) {
       if (!row.acervo_items) continue;
       const itemPayload = Array.isArray(row.acervo_items) ? row.acervo_items[0] : row.acervo_items;
+      if (isDemoRecord(itemPayload as Record<string, unknown>)) continue;
       const item = rowToAcervoItem(itemPayload as Record<string, unknown>);
       if (!uniqueItems.has(item.id)) {
         uniqueItems.set(item.id, item);
@@ -761,9 +787,16 @@ export async function getCollectionBySlug(slug: string): Promise<CollectionWithI
 
     if (iError) throw iError;
 
+    if (isDemoRecord(collection as Record<string, unknown>)) {
+      throw toAppError("Falha ao carregar dossiê", new Error("Dossiê indisponível."));
+    }
+
     return {
       ...(collection as AcervoCollection),
-      items: ((items || []) as AcervoItemRelationRow[]).map((rel) => rowToAcervoItem(rel.acervo_items as Record<string, unknown>))
+      items: ((items || []) as AcervoItemRelationRow[])
+        .map((rel) => rel.acervo_items as Record<string, unknown>)
+        .filter((item) => !isDemoRecord(item))
+        .map((item) => rowToAcervoItem(item))
     };
   } catch (error) {
     throw toAppError("Falha ao carregar dossiê", error);

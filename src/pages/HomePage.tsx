@@ -144,7 +144,7 @@ export function HomePage() {
   }, [latestBlog, reports]);
 
   return (
-    <PortalPageShell className="home-mockup" aria-labelledby="home-title">
+    <PortalPageShell className="home-shell" aria-labelledby="home-title">
       <PortalHero
         badge={
           <>
