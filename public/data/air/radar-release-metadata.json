@@ -1,0 +1,15 @@
+{
+  "cycleVersion": "2026.06-a",
+  "datasetVersion": "1.6.2",
+  "methodologyVersion": "2026-06-16",
+  "plannedReviewDate": "30/06/2026",
+  "releaseStatus": "published",
+  "releaseScope": "Blindagem metodológica, governança comparável e transparência operacional do Radar INEA.",
+  "releaseHighlights": [
+    "Manifesto, exportação bruta, catálogo de partições e contratos públicos validados.",
+    "Régua comparável de governança por estação e por parâmetro publicada no módulo.",
+    "Defensabilidade projetada para visão geral, tempo, território, estações e metodologia."
+  ],
+  "generatedAt": "2026-06-17T00:55:23.067Z",
+  "commitHash": "49f0e3f"
+}

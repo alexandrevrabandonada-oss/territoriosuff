@@ -1,5 +1,8 @@
 import { Link } from "react-router-dom";
 import { SurfaceCard } from "../BrandSystem";
+import { RADAR_NO_DATA_NOT_CLEAN_AIR } from "../../data/air/radar-copy";
+import { useRadarReleaseMetadata } from "../../data/air/useRadarReleaseMetadata";
+import { RadarEvidenceStateBlock } from "../../pages/air/radar/RadarEvidenceStateBlock";
 
 const FINDINGS = [
   {
@@ -8,7 +11,7 @@ const FINDINGS = [
   },
   {
     icon: "📅",
-    text: "Setembro teve a maior proporção de dias registrados como MODERADA ou pior: 20,7% das medições mensais.",
+    text: "Setembro teve a maior proporção de dias medidos como MODERADA ou pior: 20,7% das medições mensais válidas.",
   },
   {
     icon: "🌫️",
@@ -29,7 +32,7 @@ const NOT_MEANS = [
   "Não mede concentração bruta de poluentes em µg/m³.",
   "Não é monitoramento minuto a minuto — a fonte é um arquivo público periódico.",
   "Não substitui análise técnica oficial ou laudos ambientais.",
-  "Ausência de dado não significa que o ar estava bom.",
+  RADAR_NO_DATA_NOT_CLEAN_AIR,
 ];
 
 const MEANS = [
@@ -41,6 +44,8 @@ const MEANS = [
 ];
 
 export function PublicLaunchBanner() {
+  const releaseMetadata = useRadarReleaseMetadata();
+
   return (
     <SurfaceCard className="overflow-hidden rounded-3xl border border-emerald-200 bg-gradient-to-br from-emerald-50 via-white to-teal-50 shadow-sm">
       {/* Header */}
@@ -54,6 +59,17 @@ export function PublicLaunchBanner() {
             <p className="mt-1 text-sm font-medium leading-relaxed text-emerald-100">
               Organizamos os dados públicos de qualidade do ar para que qualquer pessoa consiga enxergar padrões, lacunas e sinais de atenção.
             </p>
+            <div className="mt-3 flex flex-wrap gap-2">
+              <span className="inline-flex items-center rounded-full border border-emerald-200/60 bg-white/15 px-3 py-1 text-[10px] font-black uppercase tracking-[0.16em] text-white">
+                ciclo {releaseMetadata.cycleVersion}
+              </span>
+              <span className="inline-flex items-center rounded-full border border-emerald-200/60 bg-white/15 px-3 py-1 text-[10px] font-black uppercase tracking-[0.16em] text-white">
+                metodologia {releaseMetadata.methodologyVersion}
+              </span>
+              <span className="inline-flex items-center rounded-full border border-amber-200/70 bg-amber-50/90 px-3 py-1 text-[10px] font-black uppercase tracking-[0.16em] text-amber-900">
+                leitura pública guiada
+              </span>
+            </div>
           </div>
         </div>
       </div>
@@ -109,7 +125,7 @@ export function PublicLaunchBanner() {
       {/* Footer CTA */}
       <div className="flex flex-col items-start gap-3 border-t border-emerald-100 bg-emerald-50/60 px-6 py-4 sm:flex-row sm:items-center sm:justify-between md:px-8">
         <p className="text-[11px] font-semibold leading-relaxed text-slate-500">
-          Fonte: INEA · Dados Abertos RJ · qualidade_ar.xlsx · Atualização periódica (batch).{" "}
+          Fonte: INEA · Dados Abertos RJ · qualidade_ar.xlsx · Atualização periódica (batch) · revisão pública prevista para {releaseMetadata.plannedReviewDate}.{" "}
           <span className="font-bold text-slate-600">Não é monitoramento em tempo real.</span>
         </p>
         <Link
@@ -118,6 +134,14 @@ export function PublicLaunchBanner() {
         >
           Ver Análises Completas →
         </Link>
+      </div>
+
+      <div className="px-6 pb-6 md:px-8">
+        <RadarEvidenceStateBlock
+          state="partial"
+          title="Banner de entrada, não conclusão fechada"
+          description={`Este bloco apresenta os principais sinais públicos do release ${releaseMetadata.cycleVersion} e ajuda a orientar a leitura cidadã. Para uma conclusão pública forte, ainda é obrigatório cruzar metodologia, cobertura, histórico e metadados das estações.`}
+        />
       </div>
     </SurfaceCard>
   );

@@ -1,10 +1,13 @@
 import { IconShell, SurfaceCard } from "../BrandSystem";
+import { useRadarReleaseMetadata } from "../../data/air/useRadarReleaseMetadata";
+import { RadarEvidenceStateBlock } from "../../pages/air/radar/RadarEvidenceStateBlock";
 
 interface IneaHistoricalTimelineProps {
   lastIngestedAt?: string | null;
 }
 
 export function IneaHistoricalTimeline({ lastIngestedAt }: IneaHistoricalTimelineProps) {
+  const releaseMetadata = useRadarReleaseMetadata();
   const formattedIngestedAt = lastIngestedAt
     ? new Date(lastIngestedAt).toLocaleDateString("pt-BR", {
         day: "2-digit",
@@ -35,6 +38,14 @@ export function IneaHistoricalTimeline({ lastIngestedAt }: IneaHistoricalTimelin
               <p className="text-[11px] text-slate-400 font-bold uppercase">
                 Período Coberto e Processamento
               </p>
+              <div className="mt-2 flex flex-wrap gap-2">
+                <span className="inline-flex items-center rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-[10px] font-black uppercase tracking-[0.16em] text-emerald-800">
+                  ciclo {releaseMetadata.cycleVersion}
+                </span>
+                <span className="inline-flex items-center rounded-full border border-slate-200 bg-white px-3 py-1 text-[10px] font-black uppercase tracking-[0.16em] text-slate-700">
+                  metodologia {releaseMetadata.methodologyVersion}
+                </span>
+              </div>
             </div>
           </div>
           <div className="bg-emerald-100/60 border border-emerald-500/15 rounded-lg px-2.5 py-1 text-right">
@@ -92,9 +103,15 @@ export function IneaHistoricalTimeline({ lastIngestedAt }: IneaHistoricalTimelin
         {/* Informative Caveat Box */}
         <div className="p-3 bg-slate-100/80 border border-slate-200/50 rounded-xl">
           <p className="text-[11px] leading-relaxed text-slate-500 font-semibold italic text-center">
-            "A linha mostra o período coberto pela base pública disponível, não todo o histórico possível de monitoramento."
+            "A linha mostra o período coberto pela base pública disponível no release {releaseMetadata.cycleVersion}, não todo o histórico possível de monitoramento."
           </p>
         </div>
+
+        <RadarEvidenceStateBlock
+          state="partial"
+          title="Cobertura temporal publicada, não série integral"
+          description={`A linha do tempo ajuda a delimitar até onde a base pública aberta alcança no release ${releaseMetadata.cycleVersion}. Ela é uma referência de cobertura e processamento, não uma prova de completude histórica total do monitoramento.`}
+        />
       </div>
     </SurfaceCard>
   );

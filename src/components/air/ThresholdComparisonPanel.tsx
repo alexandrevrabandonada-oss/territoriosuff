@@ -5,8 +5,12 @@ import { THRESHOLDS } from '../../lib/air/thresholds';
 import { AUDIT_MODE_2024 } from '../../lib/inea/auditFlags';
 import seedFindings from '../../../data/inea_historical_sources/seed-public-findings.json';
 import { loadIneaSummaryYear, type SummaryPayload } from '../../lib/inea/summaryLoader';
+import { RADAR_EXPERIMENTAL_COMPARISON_NOTE } from '../../data/air/radar-copy';
+import { useRadarReleaseMetadata } from '../../data/air/useRadarReleaseMetadata';
+import { RadarEvidenceStateBlock } from '../../pages/air/radar/RadarEvidenceStateBlock';
 
 export function ThresholdComparisonPanel() {
+  const releaseMetadata = useRadarReleaseMetadata();
   const [selectedPollutantId, setSelectedPollutantId] = useState<string>("18"); // Default PM10
   const [selectedStationId, setSelectedStationId] = useState<string>("70"); // Default Retiro
   const [selectedYear, setSelectedYear] = useState<string>("2024"); // Default 2024
@@ -138,6 +142,17 @@ export function ThresholdComparisonPanel() {
         <p className="text-slate-400 text-sm mt-1">
           Selecione o poluente, a estação e o período para cruzar as leituras locais com os limites vigentes.
         </p>
+        <div className="mt-2 flex flex-wrap gap-2">
+          <span className="rounded-full border border-slate-700 bg-slate-900 px-2.5 py-0.5 text-[9px] font-black uppercase tracking-[0.16em] text-slate-100">
+            ciclo {releaseMetadata.cycleVersion}
+          </span>
+          <span className="rounded-full border border-emerald-900/40 bg-emerald-950/30 px-2.5 py-0.5 text-[9px] font-black uppercase tracking-[0.16em] text-emerald-300">
+            metodologia {releaseMetadata.methodologyVersion}
+          </span>
+          <span className="rounded-full border border-amber-900/40 bg-amber-950/30 px-2.5 py-0.5 text-[9px] font-black uppercase tracking-[0.16em] text-amber-300">
+            comparação pública
+          </span>
+        </div>
       </div>
 
       {/* Selectors card */}
@@ -305,6 +320,15 @@ export function ThresholdComparisonPanel() {
           </div>
 
         </SurfaceCard>
+        <div className="lg:col-span-3">
+          <RadarEvidenceStateBlock
+            state={observedData?.tier === 'HISTORICAL_AGGREGATE' ? "external" : "partial"}
+            title={observedData?.tier === 'HISTORICAL_AGGREGATE' ? "Memória técnica" : "Prova parcial"}
+            description={observedData?.tier === 'HISTORICAL_AGGREGATE'
+              ? `Este comparador cruza o release ${releaseMetadata.cycleVersion} com agregados históricos e literatura. O resultado serve como lastro de contexto, não como emissão operacional horária da base.`
+              : `Este comparador ajuda a confrontar a leitura pública com OMS e CONAMA no release ${releaseMetadata.cycleVersion}, mas continua dependente de comparação experimental. ${RADAR_EXPERIMENTAL_COMPARISON_NOTE}`}
+          />
+        </div>
 
         {/* WHO 2021 Limits Card */}
         <SurfaceCard className="bg-slate-900 border border-slate-800 p-6 rounded-2xl space-y-4">

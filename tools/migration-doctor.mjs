@@ -1,6 +1,7 @@
 import { execSync } from "node:child_process";
 import fs from "node:fs";
 import net from "node:net";
+import os from "node:os";
 import path from "node:path";
 
 const TIMEOUT_MS = 15000;
@@ -8,7 +9,7 @@ const MIGRATIONS_DIR = path.join(process.cwd(), "supabase", "migrations");
 const ARCHIVE_DIR = path.join(process.cwd(), "supabase", "_archive_migrations");
 const NPM_CACHE_DIR = path.join(process.cwd(), ".npm-cache");
 const SUPABASE_CLI = "supabase@2.82.0";
-const VERSION_REGEX = /\b\d{14}\b/g;
+const LOCAL_MIGRATION_PREFIX_REGEX = /^(\d{14}|\d{8})(?=_)/;
 
 function run(cmd) {
   try {
@@ -51,16 +52,11 @@ function checkPort(port, host = "127.0.0.1") {
   });
 }
 
-function extractVersions(text) {
-  const matches = text.match(VERSION_REGEX) ?? [];
-  return Array.from(new Set(matches)).sort();
-}
-
 function getLocalMigrationFiles() {
   if (!fs.existsSync(MIGRATIONS_DIR)) return [];
   return fs
     .readdirSync(MIGRATIONS_DIR)
-    .filter((file) => file.endsWith(".sql") && /^\d{14}_/.test(file));
+    .filter((file) => file.endsWith(".sql") && LOCAL_MIGRATION_PREFIX_REGEX.test(file));
 }
 
 function getArchivedMigrationFiles() {
@@ -73,12 +69,48 @@ function getLocalVersions(files) {
     new Set(
       files
         .map((file) => {
-          const match = file.match(/^(\d{14})/);
+          const match = file.match(LOCAL_MIGRATION_PREFIX_REGEX);
           return match ? match[1] : null;
         })
         .filter((value) => value !== null)
     )
   ).sort();
+}
+
+function getRemoteVersions() {
+  const query = [
+    "select version",
+    "from supabase_migrations.schema_migrations",
+    "order by version;"
+  ].join("\n");
+  const tempFile = path.join(os.tmpdir(), `semear-migration-doctor-${Date.now()}.sql`);
+
+  fs.writeFileSync(tempFile, query, "utf8");
+  const result = run(`npm exec --yes --package=${SUPABASE_CLI} -- supabase db query --linked --file "${tempFile}"`);
+  fs.rmSync(tempFile, { force: true });
+  if (!result.success) {
+    return result;
+  }
+
+  let parsed;
+  try {
+    parsed = JSON.parse(result.output);
+  } catch (error) {
+    return {
+      success: false,
+      error: `failed to parse remote migration JSON: ${error.message}`
+    };
+  }
+
+  const rows = Array.isArray(parsed.rows) ? parsed.rows : [];
+  const versions = rows
+    .map((row) => String(row.version || "").trim())
+    .filter(Boolean);
+
+  return {
+    success: true,
+    versions: Array.from(new Set(versions)).sort()
+  };
 }
 
 console.log("=== SUPABASE MIGRATION DOCTOR (Hardened) ===");
@@ -116,7 +148,7 @@ if (localListRes.success) {
 const localFiles = getLocalMigrationFiles();
 const archivedFiles = getArchivedMigrationFiles();
 if (fs.existsSync(MIGRATIONS_DIR)) {
-  console.log(`[OK] Filesystem Scan (14 digitos): ${localFiles.length} arquivos encontrados`);
+  console.log(`[OK] Filesystem Scan (8/14 digitos): ${localFiles.length} arquivos encontrados`);
   console.log(`      Arquivos arquivados: ${archivedFiles.length}`);
 
   const sorted = [...localFiles].sort().reverse();
@@ -128,30 +160,38 @@ if (fs.existsSync(MIGRATIONS_DIR)) {
 
 if (isLinked) {
   console.log("\n--- REMOTE STATE ---");
-  const linkedListRes = run(`npm exec --yes --package=${SUPABASE_CLI} -- supabase migration list --linked`);
-  if (linkedListRes.success) {
-    console.log("[OK] CLI remote list: Sucesso");
+  const remoteVersionsRes = getRemoteVersions();
+  if (remoteVersionsRes.success) {
+    console.log("[OK] Remote migration query: Sucesso");
 
-    const remoteVersions = extractVersions(linkedListRes.output);
+    const remoteVersions = remoteVersionsRes.versions;
     const localVersions = getLocalVersions(localFiles);
     const localSet = new Set(localVersions);
     const missingLocal = remoteVersions.filter((version) => !localSet.has(version));
+    const missingRemote = localVersions.filter((version) => !new Set(remoteVersions).has(version));
 
-    console.log(`      Total remoto (versoes 14 digitos): ${remoteVersions.length}`);
-    console.log(`      Total local (versoes 14 digitos): ${localVersions.length}`);
+    console.log(`      Total remoto (versoes 8/14 digitos): ${remoteVersions.length}`);
+    console.log(`      Total local (versoes 8/14 digitos): ${localVersions.length}`);
 
     if (missingLocal.length > 0) {
       console.log(`      Faltando localmente: ${missingLocal.length}`);
       missingLocal.forEach((version) => console.log(`      - ${version}`));
-    } else {
-      console.log("      [OK] Historico remoto/local alinhado (versoes 14 digitos).");
+    }
+
+    if (missingRemote.length > 0) {
+      console.log(`      Faltando remotamente: ${missingRemote.length}`);
+      missingRemote.forEach((version) => console.log(`      - ${version}`));
+    }
+
+    if (missingLocal.length === 0 && missingRemote.length === 0) {
+      console.log("      [OK] Historico remoto/local alinhado (versoes 8/14 digitos).");
     }
   } else {
-    console.log("[ERROR] CLI remote list: Falhou");
-    if (linkedListRes.error) {
-      const remoteError = linkedListRes.error.split("\n")[0];
+    console.log("[ERROR] Remote migration query: Falhou");
+    if (remoteVersionsRes.error) {
+      const remoteError = remoteVersionsRes.error.split("\n")[0];
       if (/SUPABASE_DB_PASSWORD|Forbidden resource|403/i.test(remoteError)) {
-        console.log("      [SKIP] Remote list requires SUPABASE_DB_PASSWORD or linked access.");
+        console.log("      [SKIP] Remote query requires SUPABASE_DB_PASSWORD or linked access.");
       } else {
         process.stdout.write(`      Erro: ${remoteError}\n`);
       }

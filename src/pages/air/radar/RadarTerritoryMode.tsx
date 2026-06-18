@@ -1,7 +1,11 @@
 import { Suspense, lazy } from "react";
 import { LoadingCard } from "../../../components/LoadingCard";
 import { RadarEvidenceBadge } from "./RadarEvidenceBadge";
-import type { RadarComparisonTab, RadarMode } from "./RadarTypes";
+import { RadarEvidenceStateBlock } from "./RadarEvidenceStateBlock";
+import { summarizeStationGovernance } from "./RadarGovernanceModel";
+import { RadarNextReadingCard } from "./RadarNextReadingCard";
+import { RadarPanelConfidenceNote } from "./RadarPanelConfidenceNote";
+import type { RadarComparisonTab, RadarMode, StationMetadataItem } from "./RadarTypes";
 import { RadarMicroguide } from "./RadarMicroguide";
 import { RadarModeFooter } from "./RadarModeFooter";
 
@@ -10,12 +14,15 @@ const SocialExposureMap = lazy(() =>
 );
 
 interface RadarTerritoryModeProps {
+  stationMetadata: StationMetadataItem[];
   onNavigate: (mode: RadarMode, tab?: RadarComparisonTab) => void;
   onTop: () => void;
   onScrollToSocialMap: () => void;
 }
 
-export function RadarTerritoryMode({ onNavigate, onTop, onScrollToSocialMap }: RadarTerritoryModeProps) {
+export function RadarTerritoryMode({ stationMetadata, onNavigate, onTop, onScrollToSocialMap }: RadarTerritoryModeProps) {
+  const governance = summarizeStationGovernance(stationMetadata);
+
   return (
     <div className="animate-fade-in space-y-8 rounded-[2.5rem] border border-[#0e344d] bg-[radial-gradient(circle_at_top_left,rgba(239,68,68,0.16),transparent_24%),radial-gradient(circle_at_85%_18%,rgba(16,185,129,0.18),transparent_22%),linear-gradient(160deg,#041521_0%,#081e2d_30%,#0b2538_62%,#041521_100%)] p-6 pt-6 text-slate-100 shadow-[0_28px_80px_-30px_rgba(4,21,33,0.95)] md:p-8">
       <div className="space-y-4 border-b border-[#0d2e46] pb-6">
@@ -52,6 +59,21 @@ export function RadarTerritoryMode({ onNavigate, onTop, onScrollToSocialMap }: R
         whyItMatters="Essencial para o planejamento cívico e de saúde pública, permitindo priorizar investimentos de infraestrutura verde e equipes de saúde da família nos bairros de maior exposição."
       />
 
+      <div className="grid gap-3 md:grid-cols-3">
+        <RadarEvidenceStateBlock
+          state="published"
+          description="O recorte espacial já usa setores censitários, equipamentos públicos e geografia urbana publicamente identificáveis."
+        />
+        <RadarEvidenceStateBlock
+          state="partial"
+          description="O cruzamento entre população, infraestrutura sensível e pressão ambiental orienta ação pública, mas ainda depende da robustez da malha de monitoramento para fechar leitura forte."
+        />
+        <RadarEvidenceStateBlock
+          state="missing"
+          description="Este modo não demonstra nexo individual de adoecimento nem mede dose pessoal respirada por morador, escola ou equipamento isolado."
+        />
+      </div>
+
       <div className="grid gap-4 lg:grid-cols-[1.25fr_0.9fr]">
         <div className="rounded-[2rem] border border-white/10 bg-white/[0.04] p-5 backdrop-blur-sm">
           <div className="text-[10px] font-black uppercase tracking-[0.18em] text-emerald-200/80">Leitura pública orientada</div>
@@ -74,8 +96,34 @@ export function RadarTerritoryMode({ onNavigate, onTop, onScrollToSocialMap }: R
         </div>
       </div>
 
+      {governance.total > 0 && (
+        <div className="grid gap-3 md:grid-cols-4">
+          <div className="rounded-[1.6rem] border border-white/10 bg-white/[0.05] p-4 backdrop-blur-sm md:col-span-2">
+            <div className="text-[10px] font-black uppercase tracking-[0.16em] text-slate-300">Lastro da leitura territorial</div>
+            <p className="mt-2 text-[11px] font-semibold leading-relaxed text-slate-200">
+              O mapa territorial ganha força quando a malha que o sustenta também é auditável. Nesta rodada, a rede tem score médio {governance.averageScore}/100.
+            </p>
+          </div>
+          <div className="rounded-[1.6rem] border border-emerald-400/20 bg-emerald-400/10 p-4">
+            <div className="text-[10px] font-black uppercase tracking-[0.16em] text-emerald-200">Malha forte</div>
+            <div className="mt-2 text-2xl font-black text-white">{governance.strong}</div>
+          </div>
+          <div className="rounded-[1.6rem] border border-amber-400/20 bg-amber-400/10 p-4">
+            <div className="text-[10px] font-black uppercase tracking-[0.16em] text-amber-100">Malha cautelar</div>
+            <div className="mt-2 text-2xl font-black text-white">{governance.experimental}</div>
+          </div>
+        </div>
+      )}
+
       <div className="space-y-8">
         <div id="social-map-section" className="scroll-mt-32">
+          <RadarPanelConfidenceNote
+            title="Força da inferência territorial"
+            summary="Este mapa é forte para priorização cívica e justiça ambiental porque organiza quem pode estar mais exposto onde o território é mais sensível. Ele não substitui monitoramento denso, série histórica por estação ou análise epidemiológica formal."
+            level="interpretive"
+            truncated={false}
+          />
+
           <Suspense fallback={<LoadingCard message="Carregando mapa territorial..." />}>
             <SocialExposureMap />
           </Suspense>
@@ -123,6 +171,17 @@ export function RadarTerritoryMode({ onNavigate, onTop, onScrollToSocialMap }: R
           </div>
         </div>
       </div>
+
+      <RadarNextReadingCard
+        eyebrow="Próxima leitura recomendada"
+        title="Agora desça do território para a infraestrutura concreta de monitoramento."
+        description="Depois de identificar quem está mais exposto, o passo seguinte é conferir quais estações sustentam essa leitura, quão explícitas são suas janelas operacionais e onde a malha pública ainda precisa ser fortalecida."
+        caution="Território prioritário sem monitoramento robusto deve virar cobrança por expansão, manutenção e transparência da rede."
+        primary={{ label: "Ver estações", mode: "STATIONS" }}
+        secondary={{ label: "Abrir metodologia", mode: "METHODOLOGY" }}
+        onNavigate={onNavigate}
+        dark
+      />
 
       <RadarModeFooter
         nextStep="Próximo passo recomendado: Consulte as coordenadas e status operacional das estações de Volta Redonda."

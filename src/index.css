@@ -103,11 +103,20 @@ button {
 }
 
 .instagram-embed-shell {
-  @apply min-h-[520px] overflow-hidden bg-slate-50;
+  @apply min-h-[520px] overflow-hidden rounded-[1.5rem] bg-slate-50;
 }
 
 .instagram-embed-frame {
   @apply h-[560px] w-full border-0;
+}
+
+.instagram-embed-shell-article {
+  @apply mx-auto min-h-[1260px] max-w-[760px] bg-white;
+  box-shadow: inset 0 0 0 1px rgba(0, 93, 170, 0.06);
+}
+
+.instagram-embed-frame-article {
+  height: 1380px;
 }
 
 .instagram-card-fallback {
@@ -2281,6 +2290,23 @@ body.reader-mode-active main {
 }
 
 @media (max-width: 720px) {
+  .instagram-embed-shell {
+    border-radius: 1rem;
+  }
+
+  .instagram-embed-shell-article {
+    min-height: 1040px;
+    max-width: 100%;
+  }
+
+  .instagram-embed-frame {
+    height: 600px;
+  }
+
+  .instagram-embed-frame-article {
+    height: 1140px;
+  }
+
   input:not([type="checkbox"]):not([type="radio"]),
   select,
   textarea {

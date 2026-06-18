@@ -3,6 +3,8 @@ import { Link, useLocation } from "react-router-dom";
 import { SurfaceCard, IconShell } from "../../components/BrandSystem";
 import { AIR_PUBLIC_DOWNLOADS, AIR_PUBLIC_FILES, type AirPublicManifest, getAirPublicDataPath } from "../../data/air/public-downloads";
 import type { DataDictionaryEntry } from "../../data/air/data-dictionary";
+import { RADAR_RELEASE_METADATA_FILE } from "../../data/air/radar-release-metadata";
+import { useRadarReleaseMetadata } from "../../data/air/useRadarReleaseMetadata";
 
 const DataAvailabilityMatrix = lazy(() =>
   import("../../components/air/DataAvailabilityMatrix").then((module) => ({ default: module.DataAvailabilityMatrix }))
@@ -47,6 +49,7 @@ export function IneaMethodologyPage() {
   const [activeSection, setActiveSection] = useState("origem");
   const [manifest, setManifest] = useState<AirPublicManifest | null>(null);
   const [dataDictionary, setDataDictionary] = useState<DataDictionaryEntry[]>([]);
+  const releaseMetadata = useRadarReleaseMetadata();
 
   useEffect(() => {
     fetch(getAirPublicDataPath("manifest.json"))
@@ -159,11 +162,17 @@ export function IneaMethodologyPage() {
             </span>
           </div>
         </div>
-        {manifest?.dataset_version && (
-          <div className="text-[10px] font-black uppercase tracking-wider bg-slate-200/50 px-2 py-0.5 rounded text-slate-500 self-start sm:self-center">
-            Versão do Dataset: {manifest.dataset_version}
+        <div className="flex flex-wrap gap-2 self-start sm:self-center">
+          <div className="text-[10px] font-black uppercase tracking-wider bg-white border border-slate-200 px-2 py-0.5 rounded text-slate-600">
+            Ciclo {releaseMetadata.cycleVersion}
           </div>
-        )}
+          <div className="text-[10px] font-black uppercase tracking-wider bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded text-emerald-700">
+            Metodologia {releaseMetadata.methodologyVersion}
+          </div>
+          <div className="text-[10px] font-black uppercase tracking-wider bg-slate-200/50 px-2 py-0.5 rounded text-slate-500">
+            Dataset {releaseMetadata.datasetVersion || manifest?.dataset_version || manifest?.version || "1.6.2"}
+          </div>
+        </div>
       </div>
 
       {/* Main Layout Grid */}
@@ -209,10 +218,22 @@ export function IneaMethodologyPage() {
                 </span>
               </div>
               <div className="flex justify-between items-center">
+                <span className="text-slate-400 font-bold">Ciclo público:</span>
+                <span className="font-bold text-slate-800">{releaseMetadata.cycleVersion}</span>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="text-slate-400 font-bold">Metodologia:</span>
+                <span className="font-bold text-slate-800">{releaseMetadata.methodologyVersion}</span>
+              </div>
+              <div className="flex justify-between items-center">
                 <span className="text-slate-400 font-bold">Versão do dataset:</span>
                 <span className="font-bold text-slate-800">
-                  {manifest?.version || manifest?.dataset_version || "1.6.0"}
+                  {releaseMetadata.datasetVersion || manifest?.version || manifest?.dataset_version || "1.6.2"}
                 </span>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="text-slate-400 font-bold">Próxima revisão:</span>
+                <span className="font-bold text-slate-800">{releaseMetadata.plannedReviewDate}</span>
               </div>
               <div className="flex justify-between items-center">
                 <span className="text-slate-400 font-bold">Datasets públicos:</span>
@@ -231,12 +252,20 @@ export function IneaMethodologyPage() {
                   Ver manifest.json
                 </a>
                 <a
+                  href={getAirPublicDataPath(RADAR_RELEASE_METADATA_FILE)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block text-center py-1.5 px-2 bg-emerald-50 hover:bg-emerald-100 rounded-xl text-[9px] font-black uppercase text-emerald-700 tracking-wider transition-colors"
+                >
+                  Ver release json
+                </a>
+                <a
                   href="#baixar-dados"
                   onClick={(e) => {
                     e.preventDefault();
                     handleScrollTo("baixar-dados");
                   }}
-                  className="block text-center py-1.5 px-2 bg-brand-primary/10 hover:bg-brand-primary/20 text-brand-primary rounded-xl text-[9px] font-black uppercase tracking-wider transition-colors"
+                className="block text-center py-1.5 px-2 bg-brand-primary/10 hover:bg-brand-primary/20 text-brand-primary rounded-xl text-[9px] font-black uppercase tracking-wider transition-colors"
                 >
                   Baixar dados
                 </a>
@@ -799,15 +828,25 @@ export function IneaMethodologyPage() {
                 </span>
               </div>
               <div className="p-3 bg-white rounded-2xl border border-slate-100/50 flex flex-col justify-between">
+                <span className="text-[10px] uppercase text-slate-400 tracking-wider">Ciclo Público</span>
+                <span className="font-bold text-slate-800 mt-1">{releaseMetadata.cycleVersion}</span>
+              </div>
+              <div className="p-3 bg-white rounded-2xl border border-slate-100/50 flex flex-col justify-between">
                 <span className="text-[10px] uppercase text-slate-400 tracking-wider">Versão Dataset</span>
                 <span className="font-bold text-slate-800 mt-1">
-                  {manifest?.version || manifest?.dataset_version || "1.6.0"}
+                  {releaseMetadata.datasetVersion || manifest?.version || manifest?.dataset_version || "1.6.2"}
                 </span>
               </div>
               <div className="p-3 bg-white rounded-2xl border border-slate-100/50 flex flex-col justify-between col-span-2">
                 <span className="text-[10px] uppercase text-slate-400 tracking-wider">Último Healthcheck</span>
                 <span className="font-bold text-slate-800 mt-1 text-[10px]">
                   {manifest ? formatDate(manifest.last_smoke_test_at || manifest.generated_at) : "Carregando..."}
+                </span>
+              </div>
+              <div className="p-3 bg-white rounded-2xl border border-slate-100/50 flex flex-col justify-between col-span-2">
+                <span className="text-[10px] uppercase text-slate-400 tracking-wider">Metodologia / Próxima revisão</span>
+                <span className="font-bold text-slate-800 mt-1 text-[10px]">
+                  {releaseMetadata.methodologyVersion} · {releaseMetadata.plannedReviewDate}
                 </span>
               </div>
             </div>
@@ -820,6 +859,14 @@ export function IneaMethodologyPage() {
                 className="block text-center py-2.5 px-4 bg-slate-200/50 hover:bg-slate-200 rounded-xl text-[10px] font-black uppercase text-slate-600 tracking-wider transition-colors"
               >
                 Ver manifest.json
+              </a>
+              <a
+                href={getAirPublicDataPath(RADAR_RELEASE_METADATA_FILE)}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block text-center py-2.5 px-4 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 rounded-xl text-[10px] font-black uppercase tracking-wider transition-colors"
+              >
+                Ver release json
               </a>
               <a
                 href="#baixar-dados"

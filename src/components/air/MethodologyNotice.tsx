@@ -1,6 +1,9 @@
 import { IconShell, SurfaceCard } from "../BrandSystem";
+import { useRadarReleaseMetadata } from "../../data/air/useRadarReleaseMetadata";
 
 export function MethodologyNotice() {
+  const releaseMetadata = useRadarReleaseMetadata();
+
   return (
     <SurfaceCard className="border border-amber-500/20 bg-amber-50/40 p-5 rounded-2xl md:p-6 transition-all hover:border-amber-500/35">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-start">
@@ -10,14 +13,25 @@ export function MethodologyNotice() {
           </svg>
         </IconShell>
         <div className="space-y-1.5">
-          <h3 className="font-black text-amber-950 uppercase tracking-wider text-xs">
-            Importante: Entendendo os Dados
-          </h3>
+          <div className="flex flex-wrap items-center gap-2">
+            <h3 className="font-black text-amber-950 uppercase tracking-wider text-xs">
+              Importante: Entendendo os Dados
+            </h3>
+            <span className="rounded-full border border-amber-200 bg-white/80 px-2.5 py-0.5 text-[9px] font-black uppercase tracking-[0.16em] text-amber-900">
+              ciclo {releaseMetadata.cycleVersion}
+            </span>
+            <span className="rounded-full border border-amber-200 bg-amber-100/80 px-2.5 py-0.5 text-[9px] font-black uppercase tracking-[0.16em] text-amber-900">
+              dataset {releaseMetadata.datasetVersion}
+            </span>
+          </div>
           <p className="text-sm leading-relaxed text-amber-900 font-semibold">
             Este painel não mostra a concentração bruta de poluentes. O arquivo público atual do INEA traz subíndices de qualidade do ar por poluente e o Índice IQAr geral. Eles são indicadores processados e adimensionais (sem unidade física de medida, como µg/m³ ou ppm).
           </p>
           <p className="text-xs text-amber-800 leading-relaxed">
             <strong>Subíndices vs Concentração Bruta:</strong> A concentração bruta é a quantidade física do poluente no ar. O subíndice é um valor de 0 a 500 calculado a partir dessa concentração para facilitar a compreensão pública de quão saudável o ar está.
+          </p>
+          <p className="text-[11px] text-amber-900/80 leading-relaxed font-semibold">
+            Esta interpretação vale para o release metodológico {releaseMetadata.methodologyVersion}, com revisão pública prevista para {releaseMetadata.plannedReviewDate}.
           </p>
         </div>
       </div>

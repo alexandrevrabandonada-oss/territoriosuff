@@ -1,10 +1,21 @@
 import { useEffect, useState } from 'react';
 import { SurfaceCard, Chip } from '../BrandSystem';
+import {
+  RADAR_EXPERIMENTAL_COMPARISON_NOTE,
+  RADAR_EXPERIMENTAL_OBSERVATION_NOTE,
+  RADAR_EXPERIMENTAL_OMS_CONAMA_LABEL,
+  RADAR_EXPERIMENTAL_WEBLAKES_SEAL,
+  RADAR_LOW_COVERAGE_WARNING,
+  RADAR_NO_DATA_NOT_CLEAN_AIR
+} from '../../data/air/radar-copy';
+import { useRadarReleaseMetadata } from '../../data/air/useRadarReleaseMetadata';
+import { RadarEvidenceStateBlock } from '../../pages/air/radar/RadarEvidenceStateBlock';
 import { SITES } from '../../lib/inea/weblakesDictionary';
 import { AUDIT_MODE_2024 } from '../../lib/inea/auditFlags';
 import { loadIneaSummaryYear, type IneaSummaryMetric, type SummaryPayload } from '../../lib/inea/summaryLoader';
 
 export function YearExplorer() {
+  const releaseMetadata = useRadarReleaseMetadata();
   const [selectedYear, setSelectedYear] = useState<string>("2024");
   const [summary, setSummary] = useState<SummaryPayload | null>(null);
   const [loadingSummary, setLoadingSummary] = useState(true);
@@ -49,14 +60,14 @@ export function YearExplorer() {
     if (stationId === "69") {
       return (
         <p>
-          A {coverageText} de PM10 de {coverage}% {periodText} {year} revelou média de {mean} µg/m³, com {whoExceed} dias com médias diárias superiores ao limite de saúde da OMS (45 µg/m³) e {brExceed} dias excedendo o padrão legal CONAMA 506/2024 (50 µg/m³), caracterizando eventos de atenção em comparação experimental com as réguas OMS e CONAMA.
+          A {coverageText} de PM10 de {coverage}% {periodText} {year} revelou média de {mean} µg/m³, com {whoExceed} dias com médias diárias superiores ao limite de saúde da OMS (45 µg/m³) e {brExceed} dias excedendo o padrão legal CONAMA 506/2024 (50 µg/m³), caracterizando eventos de atenção em {RADAR_EXPERIMENTAL_OMS_CONAMA_LABEL}.
         </p>
       );
     }
     if (stationId === "70") {
       return (
         <p>
-          Registrou {coverageText} de PM10 de {coverage}% {periodText} {year} com média de {mean} µg/m³. Identificaram-se {whoExceed} dias acima da referência OMS e {brExceed} dias de excedência CONAMA 506/2024, indicando múltiplos eventos de atenção em comparação experimental com as réguas OMS e CONAMA.
+          Registrou {coverageText} de PM10 de {coverage}% {periodText} {year} com média de {mean} µg/m³. Identificaram-se {whoExceed} dias acima da referência OMS e {brExceed} dias de excedência CONAMA 506/2024, indicando múltiplos eventos de atenção em {RADAR_EXPERIMENTAL_OMS_CONAMA_LABEL}.
         </p>
       );
     }
@@ -65,7 +76,7 @@ export function YearExplorer() {
       return (
         <div className="space-y-1.5">
           <p>
-            Apresentou a menor média registrada entre as três estações analisadas {periodText} {year}, com {coverageText} de {coverage}%, média de {mean} µg/m³, registrando {whoExceed} excedências diárias da OMS e {brExceed} excedências diárias do padrão CONAMA nesta comparação experimental.
+            Apresentou a menor média registrada entre as três estações analisadas {periodText} {year}, com {coverageText} de {coverage}%, média de {mean} µg/m³, registrando {whoExceed} excedências diárias da OMS e {brExceed} excedências diárias do padrão CONAMA em {RADAR_EXPERIMENTAL_OMS_CONAMA_LABEL}.
           </p>
           {isInsufficient && (
             <p className="text-amber-500 font-bold border-t border-slate-800/40 pt-1.5 mt-1.5">
@@ -181,12 +192,28 @@ export function YearExplorer() {
             <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
             Como ler esses números
           </p>
+          <div className="flex flex-wrap gap-2">
+            <span className="rounded-full border border-slate-700 bg-slate-900/60 px-2.5 py-0.5 text-[9px] font-black uppercase tracking-[0.16em] text-slate-200">
+              ciclo {releaseMetadata.cycleVersion}
+            </span>
+            <span className="rounded-full border border-emerald-900/40 bg-emerald-950/30 px-2.5 py-0.5 text-[9px] font-black uppercase tracking-[0.16em] text-emerald-300">
+              metodologia {releaseMetadata.methodologyVersion}
+            </span>
+            <span className="rounded-full border border-amber-900/40 bg-amber-950/30 px-2.5 py-0.5 text-[9px] font-black uppercase tracking-[0.16em] text-amber-300">
+              prova parcial
+            </span>
+          </div>
           <p>
-            Os valores vêm de dados horários públicos exibidos pela plataforma INEA/WebLakes. Como a tabela não traz uma flag oficial de QA/QC por registro, tratamos as comparações com OMS e CONAMA como experimentais. Ainda assim, a alta cobertura horária permite identificar sinais fortes de atenção.
+            Os valores vêm de dados horários públicos exibidos pela plataforma INEA/WebLakes. {RADAR_EXPERIMENTAL_COMPARISON_NOTE} Ainda assim, a alta cobertura horária permite identificar sinais fortes de atenção.
           </p>
           <div className="text-[10px] text-slate-400 border-t border-slate-800 pt-2.5 font-semibold">
-            Selo Metodológico: Dado horário público WebLakes — comparação experimental — sem QA/QC oficial explícito
+            Selo Metodológico: {RADAR_EXPERIMENTAL_WEBLAKES_SEAL}
           </div>
+          <RadarEvidenceStateBlock
+            state="partial"
+            title="Prova parcial"
+            description={`Este explorador anual organiza sinais fortes de atenção por cobertura e excedência dentro do release ${releaseMetadata.cycleVersion}, mas não substitui ${RADAR_EXPERIMENTAL_OBSERVATION_NOTE} nem fecha equivalência regulatória isolada.`}
+          />
         </div>
 
         <div className="space-y-6">
@@ -389,11 +416,11 @@ export function YearExplorer() {
                       O material particulado fino (PM2.5) representa as partículas mais finas em suspensão. Os dados foram recalculados a partir das leituras horárias públicas fornecidas pela plataforma INEA/WebLakes para o ano de {year}.
                     </p>
                     <p>
-                      Registrou-se a maior média anual de PM2.5 nesta camada analisada na estação <strong>Belmonte</strong>, enquanto a estação <strong>Santa Cecília</strong> registrou a menor média anual registrada entre as três estações analisadas em {year}. As comparações com as diretrizes da OMS e CONAMA 506/2024 são de caráter experimental e servem como indicativos de exposição por não possuírem flag de QA/QC oficial no banco original. Ausência de dado não representa ar de boa qualidade.
+                      Registrou-se a maior média anual de PM2.5 nesta camada analisada na estação <strong>Belmonte</strong>, enquanto a estação <strong>Santa Cecília</strong> registrou a menor média anual registrada entre as três estações analisadas em {year}. As comparações com as diretrizes da OMS e CONAMA 506/2024 são de caráter experimental e servem como indicativos de exposição por não possuírem flag de QA/QC oficial no banco original. {RADAR_NO_DATA_NOT_CLEAN_AIR}
                     </p>
                     {year === "2021" && (
                       <p className="text-amber-500 font-bold border-t border-slate-800/40 pt-1.5">
-                        ⚠️ **Nota sobre Santa Cecília em 2021:** Este recorte possui leituras públicas disponíveis, mas a cobertura anual ficou abaixo do patamar metodológico de 75%. Por isso, a média deve ser lida como média do período disponível, não como comparação anual plena.
+                        ⚠️ **Nota sobre Santa Cecília em 2021:** {RADAR_LOW_COVERAGE_WARNING} Por isso, a média deve ser lida como média do período disponível, não como comparação anual plena.
                       </p>
                     )}
                   </div>
@@ -434,6 +461,11 @@ export function YearExplorer() {
             Eles foram copilados a partir de relatórios anuais oficiais do INEA (RQAr) e estudos científicos revisados por pares. 
             Nível de confiança <strong>Alto</strong> devido ao processo de consolidação de publicações oficiais, porém não contêm as séries horárias abertas originais (as quais permanecem em silêncio governamental).
           </p>
+          <RadarEvidenceStateBlock
+            state="external"
+            title="Memória técnica"
+            description={`Este recorte histórico consolidado serve como memória técnica e lastro de contexto no release ${releaseMetadata.cycleVersion}. Ele não equivale à camada operacional horária aberta do Radar.`}
+          />
         </div>
 
         <SurfaceCard className="bg-slate-900 border border-slate-800 p-6 rounded-2xl space-y-6">

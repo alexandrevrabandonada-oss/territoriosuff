@@ -1,6 +1,8 @@
 import { Suspense, lazy } from "react";
 import { SurfaceCard } from "../../../components/BrandSystem";
 import { LoadingCard } from "../../../components/LoadingCard";
+import { RADAR_EXPERIMENTAL_COMPARISON_NOTE } from "../../../data/air/radar-copy";
+import { RadarNextReadingCard } from "./RadarNextReadingCard";
 import type { RadarComparisonTab, RadarMode } from "./RadarTypes";
 import { RadarMicroguide } from "./RadarMicroguide";
 import { RadarModeFooter } from "./RadarModeFooter";
@@ -47,7 +49,7 @@ export function RadarMapMode({ onNavigate, onTop }: RadarMapModeProps) {
               O que este mapa mostra
             </h4>
             <p className="font-semibold leading-relaxed text-slate-600">
-              Este mapa mostra PM10 em 2024 a partir de dados horários públicos exibidos pela plataforma INEA/WebLakes. As comparações com OMS e CONAMA 506 são experimentais porque a tabela não traz flag oficial de QA/QC por registro.
+              Este mapa mostra PM10 em 2024 a partir de dados horários públicos exibidos pela plataforma INEA/WebLakes. {RADAR_EXPERIMENTAL_COMPARISON_NOTE}
             </p>
           </SurfaceCard>
 
@@ -64,6 +66,16 @@ export function RadarMapMode({ onNavigate, onTop }: RadarMapModeProps) {
           </SurfaceCard>
         </div>
       </div>
+
+      <RadarNextReadingCard
+        eyebrow="Próxima leitura recomendada"
+        title="Agora confirme no tempo se o padrão espacial é persistente ou só um retrato pontual."
+        description="O mapa orienta onde olhar. O histórico temporal mostra se o sinal aparece de forma recorrente, sazonal ou episódica, evitando conclusões apressadas baseadas em uma única fotografia espacial."
+        caution="Distribuição no espaço sem confirmação temporal ainda não basta para afirmar padrão estável."
+        primary={{ label: "Ir para histórico temporal", mode: "TIME", tab: "TREND" }}
+        secondary={{ label: "Ver cobertura e silêncio", mode: "TIME", tab: "COVERAGE" }}
+        onNavigate={onNavigate}
+      />
 
       <RadarModeFooter
         nextStep="Próximo passo recomendado: Analise a evolução temporal no histórico e tendências."

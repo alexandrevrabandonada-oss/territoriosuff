@@ -1,8 +1,12 @@
 import { spawnSync } from "node:child_process";
 
-function runCommand(command, args) {
+const LEGACY_MIGRATION_VERSION = "20260305";
+const SUPABASE_CLI = "supabase@2.82.0";
+
+function runCommand(command, args, options = {}) {
   const result = spawnSync(command, args, {
     encoding: "utf8",
+    input: options.input,
     shell: process.platform === "win32"
   });
 
@@ -22,15 +26,32 @@ function summarizeLines(text, maxLines = 8) {
     .slice(-maxLines);
 }
 
-const repair = runCommand("npx", ["supabase", "migration", "repair", "--status", "reverted", "20260305"]);
+// Legacy note:
+// `20260305_170000_reports.sql` uses an 8-digit version prefix. The Supabase CLI
+// still shows a mirrored local/remote mismatch for this migration in `migration list`,
+// but the reliable apply path is to mark the remote entry as reverted and immediately
+// re-run `db push`. The migration is idempotent, so this keeps schema state correct.
+const repair = runCommand("npx", [
+  "npm",
+  "exec",
+  "--yes",
+  `--package=${SUPABASE_CLI}`,
+  "--",
+  "supabase",
+  "migration",
+  "repair",
+  "--status",
+  "reverted",
+  LEGACY_MIGRATION_VERSION
+]);
 const repairOutput = `${repair.stdout}\n${repair.stderr}`;
 const repairNotFound = /not found/i.test(repairOutput);
 const repairOk = repair.status === 0;
 
 if (repairOk) {
-  console.log("[db:push:safe] repair: applied legacy history fix for 20260305");
+  console.log(`[db:push:safe] repair: prepared legacy migration ${LEGACY_MIGRATION_VERSION} for replay`);
 } else if (repairNotFound) {
-  console.log("[db:push:safe] repair: version 20260305 not found remotely, continuing");
+  console.log(`[db:push:safe] repair: version ${LEGACY_MIGRATION_VERSION} not found remotely, continuing`);
 } else {
   console.log("[db:push:safe] repair: non-blocking failure, continuing to db push");
   const repairLines = summarizeLines(repairOutput, 6);
@@ -39,7 +60,19 @@ if (repairOk) {
   }
 }
 
-const push = runCommand("npx", ["supabase", "db", "push", "--include-all"]);
+const push = runCommand("npm", [
+  "exec",
+  "--yes",
+  `--package=${SUPABASE_CLI}`,
+  "--",
+  "supabase",
+  "db",
+  "push",
+  "--include-all",
+  "--yes"
+], {
+  input: "y\n"
+});
 const pushOutput = `${push.stdout}\n${push.stderr}`;
 const pushLines = summarizeLines(pushOutput, 12);
 

@@ -297,6 +297,6 @@ export const SO2_WIND_SECTOR_ROSE: So2WindSectorItem[] = [
 export const WEATHER_METADATA = {
   maxConsecutiveDryDays: 45.5,
   lowDispersionEventsTotal: 37381,
-  generatedAt: "2026-06-01T01:10:13.165Z",
+  generatedAt: "2026-06-17T00:55:22.456Z",
   period: "2013 - 2026 (Jan-Mai 2026 Parcial)"
 };

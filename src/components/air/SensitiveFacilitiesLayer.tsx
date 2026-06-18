@@ -2,6 +2,7 @@ import React from 'react';
 import { Marker, Popup } from 'react-leaflet';
 import L from 'leaflet';
 import type { Facility } from '../../data/social/sensitive-facilities';
+import { RADAR_RELEASE_METADATA } from '../../data/air/radar-release-metadata';
 
 // Create a custom styled marker icon for facilities
 function getFacilityIcon(type: Facility['type']) {
@@ -76,7 +77,7 @@ export function SensitiveFacilitiesLayer({ facilities, visible, selectedTypes }:
               </div>
 
               <div className="mt-2.5 p-1.5 bg-slate-50 border border-slate-200 rounded text-[9px] font-bold text-slate-500 leading-normal">
-                Nota: Equipamento que atende população de sensibilidade biológica relevante (crianças, idosos, enfermos).
+                Nota: Equipamento que atende população de sensibilidade biológica relevante (crianças, idosos, enfermos). No release {RADAR_RELEASE_METADATA.cycleVersion}, esta camada serve para priorização territorial e não mede exposição individual direta.
               </div>
             </div>
           </Popup>

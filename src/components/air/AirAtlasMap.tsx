@@ -5,6 +5,12 @@ import 'leaflet/dist/leaflet.css';
 
 import { loadIneaSummaryYear, type SummaryPayload } from '../../lib/inea/summaryLoader';
 import { SITES, PARAMETERS } from '../../lib/inea/weblakesDictionary';
+import {
+  RADAR_EXPERIMENTAL_COMPARISON_NOTE,
+  RADAR_EXPERIMENTAL_WEBLAKES_SEAL
+} from '../../data/air/radar-copy';
+import { useRadarReleaseMetadata } from '../../data/air/useRadarReleaseMetadata';
+import { RadarEvidenceStateBlock } from '../../pages/air/radar/RadarEvidenceStateBlock';
 
 // Fix Leaflet icons
 import markerIcon2x from 'leaflet/dist/images/marker-icon-2x.png';
@@ -48,6 +54,7 @@ function createCustomMarkerIcon(color: string, label: string, isSelected: boolea
 }
 
 export function AirAtlasMap() {
+  const releaseMetadata = useRadarReleaseMetadata();
   const [selectedYear, setSelectedYear] = useState<string>("2024");
   const [selectedPollutant, setSelectedPollutant] = useState<string>("18"); // PM10
   const [selectedMonth, setSelectedMonth] = useState<string>("ALL"); // Default ALL
@@ -365,6 +372,17 @@ export function AirAtlasMap() {
           <p className="text-slate-350 text-xs font-semibold mt-1">
             Navegue no tempo, altere as réguas de comparação e verifique o diagnóstico de cobertura.
           </p>
+          <div className="mt-2 flex flex-wrap gap-2">
+            <span className="rounded-full border border-slate-700 bg-[#061420] px-2.5 py-0.5 text-[9px] font-black uppercase tracking-[0.16em] text-slate-100">
+              ciclo {releaseMetadata.cycleVersion}
+            </span>
+            <span className="rounded-full border border-emerald-500/25 bg-emerald-500/10 px-2.5 py-0.5 text-[9px] font-black uppercase tracking-[0.16em] text-emerald-300">
+              metodologia {releaseMetadata.methodologyVersion}
+            </span>
+            <span className="rounded-full border border-amber-500/25 bg-amber-500/10 px-2.5 py-0.5 text-[9px] font-black uppercase tracking-[0.16em] text-amber-300">
+              prova parcial
+            </span>
+          </div>
         </div>
       </div>
 
@@ -518,7 +536,10 @@ export function AirAtlasMap() {
                         <div className="mt-3 p-1.5 bg-slate-50 border border-slate-200 rounded text-[9px] font-bold text-slate-655 leading-tight">
                           Selo Metodológico:
                           <div className="text-rose-800 font-semibold mt-0.5">
-                            Dado horário público WebLakes — comparação experimental — sem QA/QC oficial explícito
+                            {RADAR_EXPERIMENTAL_WEBLAKES_SEAL}
+                          </div>
+                          <div className="mt-1 text-slate-500">
+                            Release {releaseMetadata.cycleVersion} · revisão {releaseMetadata.plannedReviewDate}
                           </div>
                         </div>
                       </>
@@ -576,6 +597,9 @@ export function AirAtlasMap() {
                 <p className="text-[10px] text-slate-405 border-t border-slate-800/60 pt-1.5 leading-tight italic font-medium">
                   Cores indicam comparação experimental com a régua selecionada.
                 </p>
+                <div className="mt-2 text-[9px] font-black uppercase tracking-[0.16em] text-slate-500">
+                  ciclo {releaseMetadata.cycleVersion}
+                </div>
               </div>
             ) : (
               <button
@@ -691,6 +715,13 @@ export function AirAtlasMap() {
 
           <div className="mt-4 pt-3 border-t border-slate-800/60 text-[10px] text-slate-450 leading-relaxed italic font-medium">
             * Dados baseados na rede pública e comparações experimentais.
+          </div>
+          <div className="mt-3">
+            <RadarEvidenceStateBlock
+              state="partial"
+              title="Prova parcial"
+              description={`O atlas ajuda a comparar cobertura, média e excedência no release ${releaseMetadata.cycleVersion}, mas continua dependente de comparação experimental. ${RADAR_EXPERIMENTAL_COMPARISON_NOTE}`}
+            />
           </div>
         </div>
       </div>

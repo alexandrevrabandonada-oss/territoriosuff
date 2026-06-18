@@ -1,7 +1,10 @@
 import { SurfaceCard } from "../BrandSystem";
 import { RAIN_WASHING_STATS } from "../../data/air/weather-analytics-summary";
+import { useRadarReleaseMetadata } from "../../data/air/useRadarReleaseMetadata";
+import { RadarEvidenceStateBlock } from "../../pages/air/radar/RadarEvidenceStateBlock";
 
 export function RainWashEffectPanel() {
+  const releaseMetadata = useRadarReleaseMetadata();
   const { dry, rainy, washReductionPct } = RAIN_WASHING_STATS;
 
   return (
@@ -15,6 +18,17 @@ export function RainWashEffectPanel() {
           <span className="h-2 w-2 rounded-full bg-indigo-500" />
           <span className="uppercase tracking-[0.16em]">Condição estimada</span>
           <span className="hidden font-semibold normal-case text-indigo-800/80 md:inline">interpretação auxiliar; a leitura de chuva não deve ser tratada como medição local equivalente ao vento observado</span>
+        </div>
+        <div className="flex flex-wrap gap-2">
+          <span className="inline-flex items-center rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-[10px] font-black uppercase tracking-[0.16em] text-slate-700">
+            ciclo {releaseMetadata.cycleVersion}
+          </span>
+          <span className="inline-flex items-center rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-[10px] font-black uppercase tracking-[0.16em] text-slate-700">
+            metodologia {releaseMetadata.methodologyVersion}
+          </span>
+          <span className="inline-flex items-center rounded-full border border-sky-200 bg-sky-50 px-3 py-1 text-[10px] font-black uppercase tracking-[0.16em] text-sky-800">
+            evidência externa
+          </span>
         </div>
       </div>
 
@@ -91,7 +105,16 @@ export function RainWashEffectPanel() {
         <p>
           📉 <strong>Redução de picos como leitura auxiliar:</strong> Durante períodos chuvosos, a série sugere queda dos índices horários médios de poluição. Esta interpretação ajuda a entender a remoção hídrica de partículas, mas deve ser lida como apoio analítico, não como prova isolada de causa e efeito em cada episódio.
         </p>
+        <p className="text-slate-500">
+          No release {releaseMetadata.cycleVersion}, este quadro funciona como mecanismo pedagógico de deposição úmida e precisa ser lido junto da série principal, não como camada operacional equivalente.
+        </p>
       </div>
+
+      <RadarEvidenceStateBlock
+        state="external"
+        title="Chuva apoia explicação física, mas é camada auxiliar"
+        description={`A leitura de lavagem atmosférica acrescenta contexto físico relevante ao release ${releaseMetadata.cycleVersion}, porém segue como evidência externa de apoio. Ela não substitui observação horária consolidada, QA/QC oficial nem comparação operacional direta por estação.`}
+      />
     </SurfaceCard>
   );
 }

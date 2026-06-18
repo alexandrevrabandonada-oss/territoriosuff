@@ -1,4 +1,6 @@
 import type { AttentionEpisode } from '../../lib/air/attentionEpisodesLoader';
+import { useRadarReleaseMetadata } from '../../data/air/useRadarReleaseMetadata';
+import { RadarEvidenceStateBlock } from '../../pages/air/radar/RadarEvidenceStateBlock';
 
 interface SeasonalityHeatmapProps {
   episodes: AttentionEpisode[];
@@ -36,6 +38,7 @@ export function SeasonalityHeatmap({
   selectedRegime,
   selectedStation
 }: SeasonalityHeatmapProps) {
+  const releaseMetadata = useRadarReleaseMetadata();
   
   // Helpers to fetch data
   const getCellData = (stationId: string, monthId: string) => {
@@ -74,6 +77,18 @@ export function SeasonalityHeatmap({
 
   return (
     <div className="space-y-4">
+      <div className="flex flex-wrap gap-2">
+        <span className="inline-flex items-center rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-[10px] font-black uppercase tracking-[0.16em] text-slate-700">
+          ciclo {releaseMetadata.cycleVersion}
+        </span>
+        <span className="inline-flex items-center rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-[10px] font-black uppercase tracking-[0.16em] text-slate-700">
+          metodologia {releaseMetadata.methodologyVersion}
+        </span>
+        <span className="inline-flex items-center rounded-full border border-amber-200 bg-amber-50 px-3 py-1 text-[10px] font-black uppercase tracking-[0.16em] text-amber-800">
+          prova parcial
+        </span>
+      </div>
+
       {/* Visual Heatmap Grid */}
       <div className="overflow-x-auto rounded-2xl border border-slate-100 bg-white p-5 shadow-sm">
         <div className="min-w-[640px]">
@@ -159,7 +174,7 @@ export function SeasonalityHeatmap({
       <div className="flex flex-wrap items-center justify-between gap-4 bg-slate-50/50 p-4 rounded-xl border border-slate-100 text-[10px]">
         {/* Caption */}
         <p className="text-slate-500 font-semibold italic max-w-lg">
-          “Esta matriz ajuda a enxergar em quais meses os eventos de atenção se concentraram. A leitura é experimental e depende da cobertura pública disponível.”
+          “Esta matriz ajuda a enxergar em quais meses os eventos de atenção se concentraram no ciclo {releaseMetadata.cycleVersion}. A leitura é experimental e depende da cobertura pública disponível.”
         </p>
 
         {/* Legend Scale */}
@@ -202,6 +217,12 @@ export function SeasonalityHeatmap({
           </div>
         </div>
       </div>
+
+      <RadarEvidenceStateBlock
+        state="partial"
+        title="Sazonalidade orienta auditoria, não sentença isolada"
+        description={`A matriz mensal ajuda a localizar concentração temporal de excedências no release ${releaseMetadata.cycleVersion}, mas ainda depende de cobertura mínima, validação por estação e leitura do contexto meteorológico. Use como triagem pública e não como prova final independente.`}
+      />
     </div>
   );
 }

@@ -1,8 +1,11 @@
 import { Link } from "react-router-dom";
 import { IconShell, SurfaceCard } from "../../components/BrandSystem";
 import { MethodologyNotice } from "../../components/air/MethodologyNotice";
+import { useRadarReleaseMetadata } from "../../data/air/useRadarReleaseMetadata";
 
 export function RadarLandingPage() {
+  const releaseMetadata = useRadarReleaseMetadata();
+
   return (
     <section className="portal-stage space-y-8 md:space-y-10">
       {/* Hero Section */}
@@ -69,12 +72,13 @@ export function RadarLandingPage() {
             </div>
             <h2 className="text-xl font-black text-text-primary">Radar do Ar — INEA</h2>
             <p className="mt-3 text-sm text-text-secondary leading-relaxed">
-              Painel de dados históricos oficiais baseado no inventário de monitoramento público do INEA. Apresenta o Índice IQAr consolidado e os subíndices de poluentes.
+              Painel de dados históricos oficiais baseado no inventário de monitoramento público do INEA. No release {releaseMetadata.cycleVersion}, apresenta o Índice IQAr consolidado e os subíndices de poluentes com metodologia pública aberta.
             </p>
             <ul className="mt-4 space-y-2 text-xs text-text-secondary list-disc pl-4 leading-relaxed">
               <li>Leitura baseada nos subíndices oficiais do INEA (adimensional)</li>
               <li>Apresenta a classificação de qualidade oficial (BOA, MODERADA, etc.)</li>
               <li>Séries históricas e mapas das 4 estações em Volta Redonda</li>
+              <li>Leitura pública condicionada à cobertura, histórico e metodologia do ciclo vigente</li>
             </ul>
           </div>
           <div className="mt-6">

@@ -20,6 +20,9 @@ interface AirStation {
   lat: number | null;
   lng: number | null;
   active: boolean;
+  operation_start_date?: string | null;
+  operation_end_date?: string | null;
+  operation_window_source?: string | null;
 }
 
 interface AirMeasurement {
@@ -307,6 +310,7 @@ export function AdminIneaPage() {
                 <th scope="col" className="px-8 py-5 text-[10px] font-black uppercase tracking-widest text-slate-400">Índice IQAr</th>
                 <th scope="col" className="px-8 py-5 text-[10px] font-black uppercase tracking-widest text-slate-400">Classificação</th>
                 <th scope="col" className="px-8 py-5 text-[10px] font-black uppercase tracking-widest text-slate-400">Poluente Controlador</th>
+                <th scope="col" className="px-8 py-5 text-[10px] font-black uppercase tracking-widest text-slate-400">Janela Operacional</th>
                 <th scope="col" className="px-8 py-5 text-[10px] font-black uppercase tracking-widest text-slate-400">Última Atualização</th>
               </tr>
             </thead>
@@ -339,6 +343,20 @@ export function AdminIneaPage() {
                         </span>
                       ) : (
                         <span className="text-xs text-slate-400">-</span>
+                      )}
+                    </td>
+                    <td className="px-8 py-6 text-xs font-semibold text-slate-500">
+                      <div>
+                        {station.operation_start_date
+                          ? `${new Date(`${station.operation_start_date}T00:00:00`).toLocaleDateString("pt-BR")} - ${
+                              station.operation_end_date
+                                ? new Date(`${station.operation_end_date}T00:00:00`).toLocaleDateString("pt-BR")
+                                : "aberta"
+                            }`
+                          : "não cadastrada"}
+                      </div>
+                      {station.operation_window_source && (
+                        <div className="mt-1 text-[10px] text-slate-400">{station.operation_window_source}</div>
                       )}
                     </td>
                     <td className="px-8 py-6 text-xs font-semibold text-slate-500">

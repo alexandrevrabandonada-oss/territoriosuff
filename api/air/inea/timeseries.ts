@@ -1,4 +1,5 @@
 import { createClient } from "@supabase/supabase-js";
+import { applyPublicJsonHeaders, isValidDateInput, rejectNonGet } from "./_http";
 
 const SUPABASE_URL = process.env.SUPABASE_URL || process.env.VITE_SUPABASE_URL || "";
 const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.VITE_SUPABASE_ANON_KEY || "";
@@ -6,19 +7,35 @@ const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || proce
 const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
 
 export default async function handler(req: any, res: any) {
-  res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader("Content-Type", "application/json");
+  applyPublicJsonHeaders(res);
 
-  if (req.method !== "GET") {
-    return res.status(455).json({ error: "Method Not Allowed" });
-  }
+  if (rejectNonGet(req, res)) return;
 
   try {
     const { stationId, metricType, pollutant, from, to } = req.query;
+    const requestedLimit = Number.parseInt(String(req.query.limit ?? "5000"), 10);
+    const requestedOffset = Number.parseInt(String(req.query.offset ?? "0"), 10);
+    if (req.query.limit !== undefined && !Number.isFinite(requestedLimit)) {
+      return res.status(400).json({ error: "Invalid 'limit' value" });
+    }
+    if (req.query.offset !== undefined && (!Number.isFinite(requestedOffset) || requestedOffset < 0)) {
+      return res.status(400).json({ error: "Invalid 'offset' value" });
+    }
+    if (from && !isValidDateInput(String(from))) {
+      return res.status(400).json({ error: "Invalid 'from' date" });
+    }
+    if (to && !isValidDateInput(String(to))) {
+      return res.status(400).json({ error: "Invalid 'to' date" });
+    }
+    const limit = Number.isFinite(requestedLimit) ? Math.min(Math.max(requestedLimit, 1), 20000) : 5000;
+    const offset = Number.isFinite(requestedOffset) ? Math.max(requestedOffset, 0) : 0;
 
     let query = supabase
       .from("air_measurements")
-      .select("id, station_id, pollutant, value, unit, measured_at, averaging_period, quality_flag, metric_type, air_quality_index, air_quality_classification, controlling_pollutant, raw_column")
+      .select(
+        "id, station_id, pollutant, value, unit, measured_at, averaging_period, quality_flag, metric_type, air_quality_index, air_quality_classification, controlling_pollutant, raw_column",
+        { count: "exact" }
+      )
       .eq("source", "INEA");
 
     if (stationId) {
@@ -38,13 +55,26 @@ export default async function handler(req: any, res: any) {
     }
 
     // Default sorting by timestamp
-    const { data: timeseries, error } = await query
+    const { data: timeseries, error, count } = await query
       .order("measured_at", { ascending: true })
-      .limit(5000); // Cap at a reasonable limit for API performance
+      .range(offset, offset + limit - 1);
 
     if (error) throw error;
 
-    return res.status(200).json(timeseries || []);
+    const items = timeseries || [];
+    const total = count || items.length;
+    const nextOffset = offset + items.length;
+    const hasMore = nextOffset < total;
+
+    return res.status(200).json({
+      items,
+      total,
+      limit,
+      offset,
+      nextOffset: hasMore ? nextOffset : null,
+      hasMore,
+      truncated: total > offset + items.length
+    });
   } catch (err: any) {
     console.error("[api/air/inea/timeseries] Error:", err.message);
     return res.status(500).json({ error: err.message });

@@ -1,6 +1,8 @@
 import { useState, useMemo } from "react";
 import { SectionHeader, SurfaceCard, IconShell } from "../BrandSystem";
 import seedFindings from "../../../data/inea_historical_sources/seed-public-findings.json";
+import { useRadarReleaseMetadata } from "../../data/air/useRadarReleaseMetadata";
+import { RadarEvidenceStateBlock } from "../../pages/air/radar/RadarEvidenceStateBlock";
 
 interface RawFinding {
   source_id: string;
@@ -22,6 +24,7 @@ interface RawFinding {
 }
 
 export function HistoricalRawEvidenceBox() {
+  const releaseMetadata = useRadarReleaseMetadata();
   // Filters State
   const [pollutantFilter, setPollutantFilter] = useState<string>("");
   const [copiedLaiSummary, setCopiedLaiSummary] = useState<boolean>(false);
@@ -256,8 +259,20 @@ export function HistoricalRawEvidenceBox() {
       <SectionHeader
         eyebrow="Rastros dos Dados Físicos"
         title="Rastros dos dados brutos"
-        description="A série completa ainda não está aberta em CSV, XLSX ou API. Mas relatórios oficiais e pesquisas mostram que concentrações físicas foram medidas e usadas."
+        description={`A série completa ainda não está aberta em CSV, XLSX ou API no release ${releaseMetadata.cycleVersion}. Mas relatórios oficiais e pesquisas mostram que concentrações físicas foram medidas e usadas.`}
       />
+
+      <div className="flex flex-wrap gap-2">
+        <span className="inline-flex items-center rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-[10px] font-black uppercase tracking-[0.16em] text-slate-700">
+          ciclo {releaseMetadata.cycleVersion}
+        </span>
+        <span className="inline-flex items-center rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-[10px] font-black uppercase tracking-[0.16em] text-slate-700">
+          metodologia {releaseMetadata.methodologyVersion}
+        </span>
+        <span className="inline-flex items-center rounded-full border border-sky-200 bg-sky-50 px-3 py-1 text-[10px] font-black uppercase tracking-[0.16em] text-sky-800">
+          evidência externa
+        </span>
+      </div>
 
       <div className="p-4 bg-emerald-50/30 border border-emerald-500/10 rounded-2xl text-xs font-semibold text-emerald-900 leading-relaxed">
         ℹ️ Este mapeamento representa uma <strong>evidência pública forte de que medições físicas foram realizadas, agregadas e utilizadas</strong> no município de Volta Redonda nas últimas décadas, atestando a viabilidade de liberação das séries brutas completas pelo órgão ambiental.
@@ -627,6 +642,12 @@ export function HistoricalRawEvidenceBox() {
             </tbody>
           </table>
         </div>
+
+        <RadarEvidenceStateBlock
+          state="external"
+          title="Rastro documental robusto, ainda sem microdado integral aberto"
+          description={`Esta tabela prova que medições físicas e agregados históricos existiram e circularam em relatórios e estudos, fortalecendo a cobrança pública no release ${releaseMetadata.cycleVersion}. Ainda assim, ela permanece como evidência externa enquanto a série microdado completa não estiver aberta com contrato operacional explícito.`}
+        />
       </SurfaceCard>
     </section>
   );

@@ -11,7 +11,7 @@ npm run db:push
 
 Esse comando agora e seguro por padrao (`db-push-safe`):
 1. tenta reparar automaticamente o historico remoto legado `20260305`
-2. executa `npx supabase db push --include-all`
+2. executa `supabase db push --include-all` via CLI fixada do projeto
 3. imprime um resumo do fluxo
 4. falha apenas se o `db push` falhar de fato
 
@@ -52,7 +52,30 @@ Se voce optou por nao rodar o Supabase localmente, utilize os comandos remotos:
    ```bash
    npm run db:types:remote
    ```
-   Nota: requer `SUPABASE_PROJECT_REF` no `.env.local`.
+   Nota: requer `SUPABASE_PROJECT_REF` no `.env` ou `.env.local`.
+
+   Se o token vinculado nao tiver privilegio para gerar tipos remotamente, use:
+   ```bash
+   npm run db:types
+   ```
+   Esse comando tenta remoto primeiro e cai para `db:types:local` quando o Supabase local estiver disponivel.
+
+3. Faça deploy das Edge Functions com a mesma CLI fixada do projeto:
+   ```bash
+   npm run fn:deploy
+   ```
+
+## Portabilidade
+
+Os comandos abaixo agora sao portaveis entre Windows e shell Unix:
+
+- `npm run db:push`
+- `npm run db:status`
+- `npm run db:doctor`
+- `npm run db:sync`
+- `npm run db:types:local`
+- `npm run db:types:remote`
+- `npm run fn:deploy`
 
 ## Fluxo recomendado
 

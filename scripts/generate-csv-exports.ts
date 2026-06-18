@@ -4,11 +4,17 @@ import { execSync } from 'node:child_process';
 import { DATA_DICTIONARY } from '../src/data/air/data-dictionary.ts';
 import { ATTENTION_EPISODES } from '../src/data/air/attention-episodes-2020-2026.ts';
 import { AIR_PUBLIC_DATA_BASE_PATH } from '../src/data/air/public-downloads.ts';
+import { RADAR_RELEASE_METADATA, RADAR_RELEASE_METADATA_FILE } from '../src/data/air/radar-release-metadata.ts';
+import { RADAR_REVISION_HISTORY, RADAR_REVISION_HISTORY_FILE } from '../src/data/air/radar-revision-history.ts';
 
 const PUBLIC_DATA_ORIGIN = "https://semear-pwa.vercel.app";
 
 function publicDataUrl(file: string): string {
   return `${PUBLIC_DATA_ORIGIN}${AIR_PUBLIC_DATA_BASE_PATH}/${file}`;
+}
+
+function writeJsonFile(filepath: string, payload: unknown) {
+  fs.writeFileSync(filepath, `${JSON.stringify(payload, null, 2)}\n`, 'utf8');
 }
 
 // Helper to escape CSV values
@@ -347,6 +353,11 @@ async function main() {
   }
 
   const generatedAt = new Date().toISOString();
+  const releaseMetadataPayload = {
+    ...RADAR_RELEASE_METADATA,
+    generatedAt,
+    commitHash
+  };
 
   // Load timelines row counts for manifest
   const pm10TimelineLines = fs.readFileSync(path.join(publicDir, 'pm10-timeline-2013-2026.csv'), 'utf8').trim().split('\n').length - 1;
@@ -362,16 +373,36 @@ async function main() {
     : 8;
 
   const manifestData = {
-    version: "1.6.1",
-    dataset_version: "1.6.1",
+    version: "1.6.2",
+    dataset_version: "1.6.2",
     status: "saudável",
     generated_at: generatedAt,
     source_system: "WEBLAKES_CONCENTRATION_WITH_WIND",
     methodology_label: "Dado horário público WebLakes — comparação experimental — sem QA/QC oficial explícito.",
     commit_hash: commitHash,
-    coverage_notes: "Série histórica abrangendo de 2013 a 2026 para Volta Redonda. O ano de 2026 é parcial. Novos poluentes e dados históricos expandidos para PM10, SO2 e CO.",
+    coverage_notes: "Série histórica abrangendo de 2013 a 2026 para Volta Redonda. O ano de 2026 é parcial. Novos poluentes, histórico expandido e changelog público do Radar publicados.",
     last_smoke_test_at: generatedAt,
     datasets: [
+      {
+        filename: RADAR_RELEASE_METADATA_FILE,
+        title: "Metadados Públicos do Release do Radar INEA",
+        description: "Metadados do ciclo atual do Radar INEA, incluindo versão do dataset, metodologia, commit e data de geração do release público.",
+        rows_count: 1,
+        updated_at: generatedAt,
+        source_system: "SEMEAR (Governança do Produto)",
+        methodological_label: "Metadados operacionais do release público do Radar INEA.",
+        public_url: publicDataUrl(RADAR_RELEASE_METADATA_FILE)
+      },
+      {
+        filename: RADAR_REVISION_HISTORY_FILE,
+        title: "Histórico Público de Revisão do Radar INEA",
+        description: "Changelog versionado com ciclos, mudanças metodológicas, impactos públicos e provas associadas às revisões do Radar INEA.",
+        rows_count: RADAR_REVISION_HISTORY.length,
+        updated_at: generatedAt,
+        source_system: "SEMEAR (Governança do Produto)",
+        methodological_label: "Histórico editorial e metodológico do módulo Radar INEA para auditoria pública contínua.",
+        public_url: publicDataUrl(RADAR_REVISION_HISTORY_FILE)
+      },
       {
         filename: "pm10-2020-station-summary.csv",
         title: "Resumo de Estações PM10 (2020)",
@@ -585,11 +616,13 @@ async function main() {
     ]
   };
 
-  fs.writeFileSync(
-    path.join(publicDir, 'manifest.json'),
-    JSON.stringify(manifestData, null, 2),
-    'utf8'
-  );
+  writeJsonFile(path.join(publicDir, RADAR_RELEASE_METADATA_FILE), releaseMetadataPayload);
+  console.log(`  - Generated ${RADAR_RELEASE_METADATA_FILE}`);
+
+  writeJsonFile(path.join(publicDir, RADAR_REVISION_HISTORY_FILE), RADAR_REVISION_HISTORY);
+  console.log(`  - Generated ${RADAR_REVISION_HISTORY_FILE}`);
+
+  writeJsonFile(path.join(publicDir, 'manifest.json'), manifestData);
   console.log("  - Generated manifest.json");
 
   console.log("CSV generation completed successfully.");

@@ -1,6 +1,8 @@
 import { useEffect, useMemo, useState } from "react";
 import { loadAvailabilityMatrix, type AvailabilityEntry } from "../../lib/air/availabilityMatrixLoader";
 import { SurfaceCard } from "../BrandSystem";
+import { useRadarReleaseMetadata } from "../../data/air/useRadarReleaseMetadata";
+import { RadarEvidenceStateBlock } from "../../pages/air/radar/RadarEvidenceStateBlock";
 
 const STATIONS = [
   { id: "69", name: "VR - Belmonte" },
@@ -69,6 +71,7 @@ const STATUS_CONFIG: Record<string, { label: string; colorClass: string; bgClass
 };
 
 export function DataAvailabilityMatrix() {
+  const releaseMetadata = useRadarReleaseMetadata();
   const [selectedStation, setSelectedStation] = useState("70");
   const [selectedCell, setSelectedCell] = useState<AvailabilityEntry | null>(null);
   const [entries, setEntries] = useState<AvailabilityEntry[]>([]);
@@ -122,6 +125,17 @@ export function DataAvailabilityMatrix() {
           <p className="text-xs text-slate-400 mt-1 font-semibold">
             Status dos dados históricos exibidos na base pública INEA/WebLakes em testes de janelas pontuais.
           </p>
+          <div className="mt-2 flex flex-wrap gap-2">
+            <span className="inline-flex items-center rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-[10px] font-black uppercase tracking-[0.16em] text-slate-700">
+              ciclo {releaseMetadata.cycleVersion}
+            </span>
+            <span className="inline-flex items-center rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-[10px] font-black uppercase tracking-[0.16em] text-slate-700">
+              metodologia {releaseMetadata.methodologyVersion}
+            </span>
+            <span className="inline-flex items-center rounded-full border border-amber-200 bg-amber-50 px-3 py-1 text-[10px] font-black uppercase tracking-[0.16em] text-amber-800">
+              amostragem experimental
+            </span>
+          </div>
         </div>
         
         {/* Selector */}
@@ -273,8 +287,14 @@ export function DataAvailabilityMatrix() {
 
       {/* Warning text */}
       <div className="p-4 bg-blue-50/50 border border-blue-500/10 rounded-2xl text-xs text-blue-700 leading-relaxed font-semibold">
-        <strong>Nota Regulamentar:</strong> Esta matriz mostra disponibilidade amostral pontual de dados e foi estruturada apenas como indicação cívica experimental do portal. Não substitui e não invalida o processo de coleta histórica integral do Observatório do Ar.
+        <strong>Nota Regulamentar:</strong> Esta matriz mostra disponibilidade amostral pontual de dados no release {releaseMetadata.cycleVersion} e foi estruturada apenas como indicação cívica experimental do portal. Não substitui e não invalida o processo de coleta histórica integral do Observatório do Ar.
       </div>
+
+      <RadarEvidenceStateBlock
+        state="partial"
+        title="Disponibilidade testada por amostra, não inventário final"
+        description={`A matriz ajuda a tornar auditável onde a base pública respondeu, falhou ou ficou ambígua no release ${releaseMetadata.cycleVersion}. Ela é forte como instrumento de transparência operacional, mas continua parcial porque deriva de janelas amostrais e não de inventário oficial final de completude.`}
+      />
         </>
       )}
     </SurfaceCard>

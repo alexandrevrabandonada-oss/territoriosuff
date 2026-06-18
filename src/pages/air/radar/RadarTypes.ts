@@ -5,6 +5,8 @@ export interface StationSummary {
   lat: number | null;
   lng: number | null;
   active: boolean;
+  city?: string | null;
+  neighborhood?: string | null;
 }
 
 export interface RadarMeasurement {
@@ -35,6 +37,16 @@ export interface RadarTimeseriesPoint {
   controlling_pollutant?: string | null;
 }
 
+export interface RadarTimeseriesResponse {
+  items: RadarTimeseriesPoint[];
+  total: number;
+  limit: number;
+  offset: number;
+  nextOffset: number | null;
+  hasMore: boolean;
+  truncated: boolean;
+}
+
 export interface MonthlyProfileItem {
   month: number | string;
   month_name: string;
@@ -58,6 +70,10 @@ export interface DataGapItem {
   coverage_percent: number;
   gap_count: number;
   max_gap_hours: number;
+  expected_start_date?: string | null;
+  expected_end_date?: string | null;
+  window_is_inferred?: boolean;
+  operation_window_source?: string | null;
 }
 
 export interface SummaryStats {
@@ -66,7 +82,45 @@ export interface SummaryStats {
   totalMeasurements: number;
   moderateOrWorseDaysCount: number;
   mostFrequentControllingPollutant: string;
+  source_system?: string;
+  data_freshness_label?: string;
+  latest_measured_at?: string | null;
   latest_ingested_at?: string | null;
+  is_realtime?: boolean;
+}
+
+export interface StationMetadataItem {
+  station_id: string;
+  station_name: string;
+  station_code: string;
+  city: string | null;
+  neighborhood: string | null;
+  lat: number | null;
+  lng: number | null;
+  active: boolean;
+  operation_window: {
+    start_date: string | null;
+    end_date: string | null;
+    source: string | null;
+    is_inferred: boolean;
+  };
+  provenance: {
+    station_source_table: string;
+    measurement_source_filter: string;
+    methodology_version: string;
+    notes: string[];
+  };
+}
+
+export interface StationMetadataResponse {
+  dataset: string;
+  description: string;
+  filters: {
+    stationId: string;
+  };
+  items: StationMetadataItem[];
+  total: number;
+  version: string;
 }
 
 export interface BreakdownItem {
@@ -103,38 +157,6 @@ export const RADAR_TIME_TABS: Array<{ id: RadarComparisonTab; label: string; ico
   { id: "EXCEEDANCE", label: "Excedências & Sazonalidade", icon: "⚠️" },
   { id: "COVERAGE", label: "Cobertura & Silêncio", icon: "🔇" }
 ];
-
-export const STATIC_STATIONS_MAP = [
-  {
-    station: { id: "belmonte", name: "VR-Belmonte", code: "BEL", lat: -22.517677, lng: -44.13254, active: true },
-    measured_at: null,
-    measurements: [],
-    description: "Estação oficial presente na base pública do INEA localizada no bairro Belmonte."
-  },
-  {
-    station: { id: "retiro", name: "VR-Retiro", code: "RET", lat: -22.502349, lng: -44.12281, active: true },
-    measured_at: null,
-    measurements: [],
-    description: "Estação oficial fixa automática na Av. Jaraguá (Retiro), monitorando área residencial."
-  },
-  {
-    station: { id: "santa-cecilia", name: "VR-Santa Cecília", code: "SCE", lat: -22.52253, lng: -44.106564, active: true },
-    measured_at: null,
-    measurements: [],
-    description: "Estação oficial localizada na Vila Santa Cecília, importante ponto comercial."
-  },
-  {
-    station: { id: "nossa-sra-graças", name: "VR-Nossa Sra. das Graças (Van)", code: "NSG", lat: -22.50656, lng: -44.09669, active: true },
-    measured_at: null,
-    measurements: [],
-    description: "Estação móvel automática instalada no campus do IFRJ (Aterrado) em 27/10/2023."
-  }
-] satisfies Array<{
-  station: StationSummary;
-  measured_at: string | null;
-  measurements: RadarMeasurement[];
-  description: string;
-}>;
 
 export const LAI_TEMPLATE = `Prezados,
 

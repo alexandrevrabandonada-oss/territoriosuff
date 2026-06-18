@@ -1,5 +1,13 @@
 import { useEffect, useMemo, useState } from 'react';
 import { SurfaceCard } from '../BrandSystem';
+import {
+  RADAR_EXPERIMENTAL_COMPARISON_NOTE,
+  RADAR_EXPERIMENTAL_OBSERVATION_NOTE,
+  RADAR_EXPERIMENTAL_WEBLAKES_SEAL,
+  RADAR_NO_DATA_NOT_CLEAN_AIR
+} from '../../data/air/radar-copy';
+import { useRadarReleaseMetadata } from '../../data/air/useRadarReleaseMetadata';
+import { RadarEvidenceStateBlock } from '../../pages/air/radar/RadarEvidenceStateBlock';
 import { SeasonalityHeatmap } from './SeasonalityHeatmap';
 import { loadAttentionEpisodes, type AttentionEpisode } from '../../lib/air/attentionEpisodesLoader';
 
@@ -38,6 +46,7 @@ function formatDateTime(isoString: string | null): string {
 }
 
 export function AttentionEpisodesPanel() {
+  const releaseMetadata = useRadarReleaseMetadata();
   const [selectedPollutant, setSelectedPollutant] = useState<'PM10' | 'PM2.5'>('PM2.5');
   const [selectedYear, setSelectedYear] = useState<number>(2024);
   const [selectedStation, setSelectedStation] = useState<string>('all'); // 'all' | '69' | '70' | '71'
@@ -159,6 +168,17 @@ export function AttentionEpisodesPanel() {
           <p className="text-slate-500 text-xs mt-1">
             Explore os picos horários pontuais de concentração, a sazonalidade mensal e os períodos críticos na rede pública.
           </p>
+          <div className="mt-2 flex flex-wrap gap-2">
+            <span className="rounded-full border border-slate-200 bg-white px-2.5 py-0.5 text-[9px] font-black uppercase tracking-[0.16em] text-slate-700">
+              ciclo {releaseMetadata.cycleVersion}
+            </span>
+            <span className="rounded-full border border-emerald-200 bg-emerald-50 px-2.5 py-0.5 text-[9px] font-black uppercase tracking-[0.16em] text-emerald-700">
+              metodologia {releaseMetadata.methodologyVersion}
+            </span>
+            <span className="rounded-full border border-amber-200 bg-amber-50 px-2.5 py-0.5 text-[9px] font-black uppercase tracking-[0.16em] text-amber-800">
+              prova parcial
+            </span>
+          </div>
         </div>
 
         {/* Action controls selectors */}
@@ -353,7 +373,7 @@ export function AttentionEpisodesPanel() {
                   Cobertura em <span className="text-slate-900 font-bold">{formatMonthKey(lowestCoverageEpisode.month)}</span>
                   {selectedStation === 'all' && <> na estação <span className="text-slate-900 font-bold">{lowestCoverageEpisode.station_name.replace('VR - ', '')}</span></>}
                   <br/>
-                  <span className="text-rose-500 font-bold">Ausência de dado não representa ar bom.</span>
+                  <span className="text-rose-500 font-bold">{RADAR_NO_DATA_NOT_CLEAN_AIR}</span>
                 </div>
               </>
             ) : (
@@ -417,21 +437,26 @@ export function AttentionEpisodesPanel() {
         </div>
         <div className="grid gap-2.5 sm:grid-cols-2 text-[10px]">
           <div>
-            • <strong>Comparação Experimental:</strong> As comparações com OMS e CONAMA 506 são experimentais por natureza, servindo de indicação de episódios sob atenção em base de dados secundária.
+            • <strong>Comparação Experimental:</strong> {RADAR_EXPERIMENTAL_COMPARISON_NOTE}
           </div>
           <div>
             • <strong>sem QA/QC oficial explícito:</strong> Os dados públicos da plataforma WebLakes são disponibilizados sem flags técnicas explícitas detalhadas de controle de qualidade e calibração de sensores de monitoramento de origem.
           </div>
           <div>
-            • <strong>Ausência de Dado Não Representa Ar Bom:</strong> A integridade das medições varia mês a mês. Lacunas nas séries temporais impedem a avaliação em certos períodos (a ausência de dado não representa ar bom).
+            • <strong>Ausência de Dado Não Representa Ar Bom:</strong> A integridade das medições varia mês a mês. Lacunas nas séries temporais impedem a avaliação em certos períodos ({RADAR_NO_DATA_NOT_CLEAN_AIR.toLowerCase()}).
           </div>
           <div>
             • <strong>Exposição Periódica:</strong> As leituras resumem a exposição histórica acumulada no período e não representam monitoramento ao vivo ou leitura minuto a minuto.
           </div>
         </div>
         <div className="border-t border-slate-200/60 pt-2 font-mono text-[9px] text-slate-400 text-right">
-          Selo Metodológico: Dado horário público WebLakes — comparação experimental — sem QA/QC oficial explícito
+          Selo Metodológico: {RADAR_EXPERIMENTAL_WEBLAKES_SEAL}
         </div>
+        <RadarEvidenceStateBlock
+          state="partial"
+          title="Prova parcial"
+          description={`Este painel ajuda a localizar episódios de atenção no release ${releaseMetadata.cycleVersion}, mas continua dependente de cobertura mensal, comparação experimental e ${RADAR_EXPERIMENTAL_OBSERVATION_NOTE}.`}
+        />
       </div>
         </>
       )}

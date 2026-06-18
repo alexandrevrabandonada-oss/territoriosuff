@@ -1,7 +1,10 @@
 import { SurfaceCard } from "../BrandSystem";
 import { CALM_DAYS_STATS, WEATHER_METADATA } from "../../data/air/weather-analytics-summary";
+import { useRadarReleaseMetadata } from "../../data/air/useRadarReleaseMetadata";
+import { RadarEvidenceStateBlock } from "../../pages/air/radar/RadarEvidenceStateBlock";
 
 export function WeatherPollutionCorrelation() {
+  const releaseMetadata = useRadarReleaseMetadata();
   // Sort stats descending by year
   const sortedStats = [...CALM_DAYS_STATS].sort((a, b) => b.year - a.year);
 
@@ -16,6 +19,17 @@ export function WeatherPollutionCorrelation() {
           <span className="h-2 w-2 rounded-full bg-emerald-500" />
           <span className="uppercase tracking-[0.16em]">Vento observado</span>
           <span className="hidden font-semibold normal-case text-emerald-700/80 md:inline">calmaria e dispersão usam a camada de vento como base mais forte</span>
+        </div>
+        <div className="flex flex-wrap gap-2">
+          <span className="inline-flex items-center rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-[10px] font-black uppercase tracking-[0.16em] text-slate-700">
+            ciclo {releaseMetadata.cycleVersion}
+          </span>
+          <span className="inline-flex items-center rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-[10px] font-black uppercase tracking-[0.16em] text-slate-700">
+            metodologia {releaseMetadata.methodologyVersion}
+          </span>
+          <span className="inline-flex items-center rounded-full border border-amber-200 bg-amber-50 px-3 py-1 text-[10px] font-black uppercase tracking-[0.16em] text-amber-800">
+            prova parcial
+          </span>
         </div>
       </div>
 
@@ -53,6 +67,9 @@ export function WeatherPollutionCorrelation() {
         </p>
         <p>
           🌡️ <strong>Efeito noturno como hipótese física:</strong> Durante a noite e nas primeiras horas da manhã, a calmaria pode coincidir com condições favoráveis à inversão térmica, aprisionando material particulado perto do solo. Esta leitura deve ser entendida como interpretação atmosférica plausível, não como prova instrumental direta de cada episódio.
+        </p>
+        <p className="text-slate-500">
+          No ciclo {releaseMetadata.cycleVersion}, a utilidade pública deste quadro é indicar janela de maior risco de acúmulo e orientar checagem posterior em séries, episódios e documentação metodológica.
         </p>
       </div>
 
@@ -106,6 +123,12 @@ export function WeatherPollutionCorrelation() {
           </table>
         </div>
       </div>
+
+      <RadarEvidenceStateBlock
+        state="partial"
+        title="Calmaria é contexto atmosférico, não veredito emissor"
+        description={`A série de calmaria sustenta leitura meteorológica relevante no release ${releaseMetadata.cycleVersion}, mas não fecha sozinha causalidade, infração ou equivalência regulatória. Use junto com cobertura, estações e metodologia antes de qualquer conclusão pública forte.`}
+      />
     </SurfaceCard>
   );
 }

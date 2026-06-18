@@ -5,6 +5,7 @@ interface RadarVisualNoticeProps {
   nextStep?: string;
   action?: () => void;
   actionLabel?: string;
+  badges?: string[];
 }
 
 export function RadarVisualNotice({
@@ -13,7 +14,8 @@ export function RadarVisualNotice({
   description,
   nextStep,
   action,
-  actionLabel
+  actionLabel,
+  badges
 }: RadarVisualNoticeProps) {
   const icon = type === "error" ? "❌" : type === "warning" ? "⚠️" : type === "quarantine" ? "🔍" : "ℹ️";
   const colorClasses =
@@ -53,6 +55,18 @@ export function RadarVisualNotice({
         </div>
       </div>
       <p className="font-medium leading-normal text-slate-700">{description}</p>
+      {badges?.length ? (
+        <div className="flex flex-wrap gap-2">
+          {badges.map((badge) => (
+            <div
+              key={badge}
+              className={`rounded-full border px-2.5 py-1 text-[9px] font-black uppercase tracking-[0.16em] ${accentClasses}`}
+            >
+              {badge}
+            </div>
+          ))}
+        </div>
+      ) : null}
       {nextStep && (
         <div className="flex items-center justify-between border-t border-slate-900/5 pt-3 text-[10px] font-bold text-slate-600">
           <span>Próximo passo: {nextStep}</span>

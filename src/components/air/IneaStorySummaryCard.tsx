@@ -1,7 +1,11 @@
 import { Link } from "react-router-dom";
 import { IconShell, SurfaceCard } from "../BrandSystem";
+import { useRadarReleaseMetadata } from "../../data/air/useRadarReleaseMetadata";
+import { RadarEvidenceStateBlock } from "../../pages/air/radar/RadarEvidenceStateBlock";
 
 export function IneaStorySummaryCard() {
+  const releaseMetadata = useRadarReleaseMetadata();
+
   return (
     <SurfaceCard className="border border-brand-primary/15 bg-gradient-to-br from-indigo-50/10 via-slate-50 to-emerald-50/10 p-5 rounded-2xl relative overflow-hidden transition-all duration-300 hover:shadow-md hover:border-brand-primary/30">
       {/* Decorative colored glow */}
@@ -23,6 +27,17 @@ export function IneaStorySummaryCard() {
             <p className="text-[10px] text-slate-400 font-bold uppercase">
               Série Histórica INEA em Foco
             </p>
+            <div className="mt-2 flex flex-wrap gap-2">
+              <span className="inline-flex items-center rounded-full border border-slate-200 bg-white/80 px-3 py-1 text-[10px] font-black uppercase tracking-[0.16em] text-slate-700">
+                ciclo {releaseMetadata.cycleVersion}
+              </span>
+              <span className="inline-flex items-center rounded-full border border-slate-200 bg-white/80 px-3 py-1 text-[10px] font-black uppercase tracking-[0.16em] text-slate-700">
+                metodologia {releaseMetadata.methodologyVersion}
+              </span>
+              <span className="inline-flex items-center rounded-full border border-sky-200 bg-sky-50 px-3 py-1 text-[10px] font-black uppercase tracking-[0.16em] text-sky-800">
+                memória técnica
+              </span>
+            </div>
           </div>
         </div>
 
@@ -56,7 +71,7 @@ export function IneaStorySummaryCard() {
         {/* Description & CTA */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pt-2 border-t border-slate-100">
           <p className="text-xs text-slate-500 font-semibold leading-relaxed max-w-xl">
-            Entenda como a base pública recente se conecta à memória histórica recuperada, onde o ar foi medido e por que lacunas, métricas em auditoria e evidências científicas precisam aparecer juntas.
+            Entenda como a base pública recente se conecta à memória histórica recuperada no release {releaseMetadata.cycleVersion}, onde o ar foi medido e por que lacunas, métricas em auditoria e evidências científicas precisam aparecer juntas.
           </p>
           <Link
             to="/qualidade-ar/inea/historia"
@@ -68,6 +83,12 @@ export function IneaStorySummaryCard() {
             </svg>
           </Link>
         </div>
+
+        <RadarEvidenceStateBlock
+          state="external"
+          title="Resumo histórico como porta de auditoria"
+          description={`Este card organiza a memória técnica anterior ao ciclo operacional aberto e ajuda a ligar a base recente aos rastros históricos. Ele funciona como evidência externa de contexto no release ${releaseMetadata.cycleVersion}, não como publicação operacional equivalente.`}
+        />
       </div>
     </SurfaceCard>
   );

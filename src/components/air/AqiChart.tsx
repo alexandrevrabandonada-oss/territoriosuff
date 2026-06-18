@@ -1,6 +1,8 @@
 import { useEffect, useMemo, useRef } from "react";
 import uPlot from "uplot";
 import "uplot/dist/uPlot.min.css";
+import { useRadarReleaseMetadata } from "../../data/air/useRadarReleaseMetadata";
+import { RadarEvidenceStateBlock } from "../../pages/air/radar/RadarEvidenceStateBlock";
 
 type AqiChartPoint = {
   ts: string;
@@ -38,6 +40,7 @@ function formatAxisDate(value: number) {
 }
 
 export function AqiChart({ data }: AqiChartProps) {
+  const releaseMetadata = useRadarReleaseMetadata();
   const containerRef = useRef<HTMLDivElement | null>(null);
   const tooltipRef = useRef<HTMLDivElement | null>(null);
   const plotRef = useRef<uPlot | null>(null);
@@ -141,7 +144,7 @@ export function AqiChart({ data }: AqiChartProps) {
               }
 
               showTooltip(
-                `${formatTooltipDate(x)}\nIQAr: ${value.toFixed(0)}`,
+                `${formatTooltipDate(x)}\nIQAr: ${value.toFixed(0)}\nrelease ${releaseMetadata.cycleVersion}`,
                 (u.cursor.left ?? 0) + u.bbox.left + 12,
                 (u.cursor.top ?? 0) + u.bbox.top + 12
               );
@@ -171,7 +174,7 @@ export function AqiChart({ data }: AqiChartProps) {
       chart.destroy();
       plotRef.current = null;
     };
-  }, [alignedData]);
+  }, [alignedData, releaseMetadata.cycleVersion]);
 
   if (alignedData[0].length === 0) {
     return (
@@ -182,11 +185,31 @@ export function AqiChart({ data }: AqiChartProps) {
   }
 
   return (
-    <div ref={containerRef} className="relative h-[260px] w-full overflow-hidden rounded-lg">
-      <div
-        ref={tooltipRef}
-        aria-hidden="true"
-        className="pointer-events-none absolute z-10 hidden max-w-[200px] rounded-xl border border-slate-200/50 bg-white/95 px-3 py-2 text-xs leading-relaxed text-slate-800 shadow-xl backdrop-blur-md whitespace-pre-line"
+    <div className="space-y-4">
+      <div className="flex flex-wrap gap-2">
+        <span className="inline-flex items-center rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-[10px] font-black uppercase tracking-[0.16em] text-slate-700">
+          ciclo {releaseMetadata.cycleVersion}
+        </span>
+        <span className="inline-flex items-center rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-[10px] font-black uppercase tracking-[0.16em] text-slate-700">
+          metodologia {releaseMetadata.methodologyVersion}
+        </span>
+        <span className="inline-flex items-center rounded-full border border-amber-200 bg-amber-50 px-3 py-1 text-[10px] font-black uppercase tracking-[0.16em] text-amber-800">
+          série pública interpretada
+        </span>
+      </div>
+
+      <div ref={containerRef} className="relative h-[260px] w-full overflow-hidden rounded-lg">
+        <div
+          ref={tooltipRef}
+          aria-hidden="true"
+          className="pointer-events-none absolute z-10 hidden max-w-[200px] rounded-xl border border-slate-200/50 bg-white/95 px-3 py-2 text-xs leading-relaxed text-slate-800 shadow-xl backdrop-blur-md whitespace-pre-line"
+        />
+      </div>
+
+      <RadarEvidenceStateBlock
+        state="partial"
+        title="Série IQAr útil para ritmo, não suficiente sozinha"
+        description={`O gráfico organiza o comportamento temporal do índice oficial no release ${releaseMetadata.cycleVersion} e é forte para triagem histórica. Ainda assim, ele depende de cobertura adequada, janela operacional explícita e leitura conjunta da metodologia antes de sustentar conclusão pública forte.`}
       />
     </div>
   );

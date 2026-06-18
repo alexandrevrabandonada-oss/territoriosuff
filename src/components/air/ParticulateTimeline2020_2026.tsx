@@ -1,5 +1,14 @@
 import { useEffect, useState } from 'react';
 import { SurfaceCard } from '../BrandSystem';
+import {
+  RADAR_EXPERIMENTAL_COMPARISON_NOTE,
+  RADAR_EXPERIMENTAL_OMS_CONAMA_LABEL,
+  RADAR_EXPERIMENTAL_WEBLAKES_SEAL,
+  RADAR_LOW_COVERAGE_WARNING,
+  RADAR_NO_DATA_NOT_CLEAN_AIR
+} from '../../data/air/radar-copy';
+import { useRadarReleaseMetadata } from '../../data/air/useRadarReleaseMetadata';
+import { RadarEvidenceStateBlock } from '../../pages/air/radar/RadarEvidenceStateBlock';
 import { loadIneaSummaryYear, type SummaryPayload } from '../../lib/inea/summaryLoader';
 
 const STATIONS = [
@@ -16,6 +25,7 @@ const POLLUTANTS_INFO = {
 };
 
 export function ParticulateTimeline2020_2026() {
+  const releaseMetadata = useRadarReleaseMetadata();
   const [selectedYear, setSelectedYear] = useState<string>("2025");
   const [selectedPollutant, setSelectedPollutant] = useState<string>("18"); // 18 = PM10, 20 = PM2.5, 23 = SO2, 3 = CO
   const [selectedStation, setSelectedStation] = useState<string>("69"); // Highlighted station
@@ -113,8 +123,19 @@ export function ParticulateTimeline2020_2026() {
             Linha do Tempo Multianual
           </h3>
           <p className="text-slate-500 text-xs mt-1">
-            Histórico das estações de Volta Redonda, em comparação experimental com OMS e CONAMA 506.
+            Histórico das estações de Volta Redonda, em {RADAR_EXPERIMENTAL_OMS_CONAMA_LABEL}.
           </p>
+          <div className="mt-2 flex flex-wrap gap-2">
+            <span className="rounded-full border border-slate-200 bg-white px-2.5 py-0.5 text-[9px] font-black uppercase tracking-[0.16em] text-slate-700">
+              ciclo {releaseMetadata.cycleVersion}
+            </span>
+            <span className="rounded-full border border-emerald-200 bg-emerald-50 px-2.5 py-0.5 text-[9px] font-black uppercase tracking-[0.16em] text-emerald-700">
+              metodologia {releaseMetadata.methodologyVersion}
+            </span>
+            <span className="rounded-full border border-amber-200 bg-amber-50 px-2.5 py-0.5 text-[9px] font-black uppercase tracking-[0.16em] text-amber-800">
+              prova parcial
+            </span>
+          </div>
         </div>
 
         {/* Action Controls */}
@@ -439,7 +460,7 @@ export function ParticulateTimeline2020_2026() {
             {parseInt(activeYear) < 2020 ? (
               <><strong>VR - Santa Cecília no período histórico ({activeYear}):</strong> Registrou menor volume absoluto comparado ao Belmonte, porém com o comportamento de fundo típico de Volta Redonda.</>
             ) : activeYear === "2021" ? (
-              <><strong>Em 2021, Santa Cecília registrou cobertura insuficiente para comparação anual plena.</strong> Este recorte possui leituras públicas disponíveis, mas a cobertura anual ficou abaixo do patamar metodológico de 75%. Por isso, a média deve ser lida como média do período disponível, não como comparação anual plena.</>
+              <><strong>Em 2021, Santa Cecília registrou cobertura insuficiente para comparação anual plena.</strong> {RADAR_LOW_COVERAGE_WARNING} Por isso, a média deve ser lida como média do período disponível, não como comparação anual plena.</>
             ) : activeYear === "2025" ? (
               <><strong>Santa Cecília registrou menores índices em 2025, mas excede a OMS.</strong> A estação apresentou as menores médias do trio, contudo as diretrizes da OMS foram frequentemente ultrapassadas nos meses de seca.</>
             ) : activeYear === "2026" ? (
@@ -477,15 +498,24 @@ export function ParticulateTimeline2020_2026() {
             • <strong>Sem QA/QC Oficial Explícito:</strong> A plataforma WebLakes não fornece flags técnicas e detalhadas de controle de qualidade, sendo a limpeza de inconsistências realizada pela equipe SEMEAR de forma experimental.
           </div>
           <div>
-            • <strong>Ausência de Dado Não Representa Ar Bom:</strong> Períodos com falha de transmissão ou lacuna instrumental não representam qualidade do ar em conformidade com as diretrizes.
+            • <strong>Ausência de Dado Não Representa Ar Bom:</strong> {RADAR_NO_DATA_NOT_CLEAN_AIR} Períodos com falha de transmissão ou lacuna instrumental representam silêncio de monitoramento, não conformidade automática com as diretrizes.
           </div>
           <div>
             • <strong>Exposição Periódica:</strong> As leituras resumem a exposição histórica acumulada no período e não representam monitoramento ao vivo ou leitura minuto a minuto.
           </div>
         </div>
         <div className="border-t border-slate-200/60 pt-2 font-mono text-[9px] text-slate-400 text-right">
-          Selo Metodológico: Dado horário público WebLakes — comparação experimental — sem QA/QC oficial explícito
+          Selo Metodológico: {RADAR_EXPERIMENTAL_WEBLAKES_SEAL}
         </div>
+        <RadarEvidenceStateBlock
+          state={parseInt(activeYear) < 2020 ? "external" : "partial"}
+          title={parseInt(activeYear) < 2020 ? "Memória técnica" : "Prova parcial"}
+          description={
+            parseInt(activeYear) < 2020
+              ? `Os anos de 2013 a 2019 funcionam como reconstrução histórica útil para contexto e auditoria no release ${releaseMetadata.cycleVersion}, sem equivaler a publicação operacional consolidada.`
+              : `A linha do tempo plurianual sustenta leitura pública forte para tendência e recorrência, mas ainda depende de comparação experimental. ${RADAR_EXPERIMENTAL_COMPARISON_NOTE}`
+          }
+        />
       </div>
     </div>
   );

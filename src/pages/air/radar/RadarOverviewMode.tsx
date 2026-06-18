@@ -1,7 +1,11 @@
 import { Link } from "react-router-dom";
+import { RADAR_NO_DATA_NOT_CLEAN_AIR, RADAR_EXPERIMENTAL_OBSERVATION_NOTE } from "../../../data/air/radar-copy";
 
+import { summarizeStationGovernance } from "./RadarGovernanceModel";
+import { RadarEvidenceStateBlock } from "./RadarEvidenceStateBlock";
 import { RadarEvidenceBadge } from "./RadarEvidenceBadge";
-import type { BreakdownItem, LatestResult, SummaryStats, RadarComparisonTab, RadarMode } from "./RadarTypes";
+import { RadarNextReadingCard } from "./RadarNextReadingCard";
+import type { BreakdownItem, LatestResult, SummaryStats, RadarComparisonTab, RadarMode, StationMetadataItem } from "./RadarTypes";
 import { getIneaClassificationStyle } from "./RadarTypes";
 import { RadarModeFooter } from "./RadarModeFooter";
 
@@ -14,6 +18,7 @@ interface RadarOverviewModeProps {
   latestData: LatestResult[];
   sortedRankings: RankingRow[];
   displaySummary: SummaryStats;
+  stationMetadata: StationMetadataItem[];
   onOpenLai: () => void;
   onNavigate: (mode: RadarMode, tab?: RadarComparisonTab) => void;
   onTop: () => void;
@@ -24,6 +29,7 @@ export function RadarOverviewMode({
   latestData,
   sortedRankings,
   displaySummary,
+  stationMetadata,
   onOpenLai,
   onNavigate,
   onTop,
@@ -33,6 +39,7 @@ export function RadarOverviewMode({
   const topPollutant = displaySummary.mostFrequentControllingPollutant;
   const hasRanking = sortedRankings.length > 0;
   const hasSummaryMeasurements = displaySummary.totalMeasurements > 0;
+  const governance = summarizeStationGovernance(stationMetadata);
   const topPollutantShort = topPollutant.includes("Dióxido de Enxofre")
     ? "SO₂"
     : topPollutant.includes("Particulado")
@@ -104,6 +111,15 @@ export function RadarOverviewMode({
                 <div className="mt-1 text-[11px] font-semibold text-[#92400e]/80">cruze ranking com vulnerabilidade social</div>
               </div>
             </div>
+
+            <RadarEvidenceStateBlock
+              state={hasRanking ? "partial" : "missing"}
+              description={
+                hasRanking
+                  ? "A visão geral já tem base pública consolidada para triagem, mas ainda depende de checagem posterior de cobertura, território e metodologia para fechar leitura forte."
+                  : "Sem ranking consolidado nesta carga, a triagem desta visão geral não deve ser tomada como base suficiente para conclusão pública."
+              }
+            />
           </div>
         </div>
 
@@ -133,6 +149,38 @@ export function RadarOverviewMode({
             Moradores em áreas que merecem atenção territorial reforçada pela proximidade industrial e pela leitura pública de dispersão atmosférica.
           </p>
         </div>
+
+        {governance.total > 0 && (
+          <div className="rounded-[2rem] border border-sky-200 bg-[linear-gradient(180deg,#ffffff,#f0f9ff)] p-5 shadow-[0_20px_45px_-34px_rgba(14,165,233,0.35)] xl:col-span-3">
+            <div className="flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
+              <div className="space-y-2">
+                <div className="text-[10px] font-black uppercase tracking-[0.18em] text-sky-700">Defensabilidade operacional da rodada</div>
+                <h3 className="text-base font-black tracking-tight text-slate-900">Antes de concluir, veja a força pública da malha que sustenta esta triagem</h3>
+                <p className="max-w-3xl text-[11px] font-semibold leading-relaxed text-slate-600">
+                  A visão geral organiza prioridade, mas a força da prioridade depende do quanto a rede já publica janelas, fontes e proveniência operacional.
+                </p>
+              </div>
+              <div className="rounded-full border border-sky-200 bg-white px-3 py-1 text-[10px] font-black uppercase tracking-[0.16em] text-sky-800">
+                score médio da malha {governance.averageScore}/100
+              </div>
+            </div>
+
+            <div className="mt-4 grid gap-3 md:grid-cols-3">
+              <div className="rounded-2xl border border-emerald-200 bg-emerald-50 p-4">
+                <div className="text-[10px] font-black uppercase tracking-[0.16em] text-emerald-700">Estações fortes</div>
+                <div className="mt-2 text-2xl font-black text-emerald-950">{governance.strong}</div>
+              </div>
+              <div className="rounded-2xl border border-sky-200 bg-sky-50 p-4">
+                <div className="text-[10px] font-black uppercase tracking-[0.16em] text-sky-700">Estações em avanço</div>
+                <div className="mt-2 text-2xl font-black text-sky-950">{governance.advancing}</div>
+              </div>
+              <div className="rounded-2xl border border-amber-200 bg-amber-50 p-4">
+                <div className="text-[10px] font-black uppercase tracking-[0.16em] text-amber-700">Estações cautelares</div>
+                <div className="mt-2 text-2xl font-black text-amber-950">{governance.experimental}</div>
+              </div>
+            </div>
+          </div>
+        )}
 
         <div className="rounded-[2rem] border border-slate-200 bg-white p-5 shadow-[0_20px_45px_-34px_rgba(15,23,42,0.45)] xl:col-span-2">
           <div className="flex flex-wrap items-start justify-between gap-3 border-b border-slate-100 pb-4">
@@ -385,7 +433,7 @@ export function RadarOverviewMode({
                 Solicitar a expansão da malha operacional para novos setores e a inclusão de bairros desatendidos com dados certificados.
               </p>
               <div className="rounded-xl border border-emerald-200 bg-white/60 p-3 text-xs font-bold text-[#064e3b]">
-                🎯 <strong>Ação Direta:</strong> Protocolar pedidos formais no órgão fiscalizador cobrando a expansão da malha de sensores e a publicação de dados com QA/QC oficial.
+                🎯 <strong>Ação Direta:</strong> Protocolar pedidos formais no órgão fiscalizador cobrando a expansão da malha de sensores e a publicação de dados com {RADAR_EXPERIMENTAL_OBSERVATION_NOTE}.
               </div>
             </div>
             <button
@@ -401,7 +449,7 @@ export function RadarOverviewMode({
               <span className="block text-[9px] font-black uppercase tracking-wider text-emerald-700">Eixo 2 · Fiscalização</span>
               <h3 className="flex items-center gap-1.5 text-sm font-black text-[#064e3b]"><span>🔧</span> MANTER: Cobrar Calibração e Continuidade</h3>
               <p className="text-xs font-semibold leading-relaxed text-[#064e3b] opacity-90">
-                Evitar longos períodos de silêncio de dados e lacunas inexplicáveis nas séries oficiais, exigindo calibragem pública.
+                Evitar longos períodos de silêncio de dados e lacunas inexplicáveis nas séries oficiais. {RADAR_NO_DATA_NOT_CLEAN_AIR} Exigir calibragem pública.
               </p>
               <div className="rounded-xl border border-emerald-200 bg-white/60 p-3 text-xs font-bold text-[#064e3b]">
                 🎯 <strong>Ação Direta:</strong> Exigir a publicação transparente de relatórios de manutenção dos sensores e auditorias externas regulares nas estações.
@@ -539,6 +587,16 @@ export function RadarOverviewMode({
           </div>
         </div>
       </section>
+
+      <RadarNextReadingCard
+        eyebrow="Próxima leitura recomendada"
+        title="A visão geral só vale como triagem; agora confirme se o sinal resiste ao espaço, ao tempo e à cobertura."
+        description="Use este painel para decidir onde começar. Em seguida, valide o padrão no mapa, no histórico temporal e na cobertura da base antes de transformar a leitura em conclusão pública forte."
+        caution="Ranking e última leitura sem checagem de cobertura e metodologia podem induzir simplificação indevida."
+        primary={{ label: "Validar no mapa", mode: "MAP" }}
+        secondary={{ label: "Abrir histórico temporal", mode: "TIME", tab: "TREND" }}
+        onNavigate={onNavigate}
+      />
 
       <RadarModeFooter
         nextStep="Próximo passo recomendado: Explore a distribuição espacial no mapa de Volta Redonda."

@@ -14,6 +14,7 @@ import { getOpsKpisMonth, getSystemStatus } from "../lib/api/monitoring";
 import type { OpsKPI, SystemStatus } from "../lib/api/core";
 import { getContrastAuditResults } from "../lib/contrastAudit";
 import { getObservabilityErrorSummaryLast24h, trackCsvDownload, trackShare } from "../lib/observability";
+import { fetchRadarJson } from "./air/radar/radarApi";
 
 const MONTH_OPTIONS = [
   { value: 1, label: "Janeiro" },
@@ -42,6 +43,45 @@ const EMPTY_OPS_KPI: OpsKPI = {
   scheduled_acervo_items_count: 0,
   scheduled_blog_posts_count: 0,
   scheduled_content_items_count: 0
+};
+
+type IneaObservability = {
+  latest_measured_at: string | null;
+  latest_ingested_at: string | null;
+  total_stations: number;
+  stations_with_reading_count: number;
+  inferred_windows_count: number;
+  total_measurements: number;
+  moderate_or_worse_days_count: number;
+  most_frequent_controlling_pollutant: string;
+  historical_window: {
+    min_date: string;
+    max_date: string;
+  };
+  fragile_stations: Array<{
+    station_id: string;
+    station_name: string;
+    coverage_percent: number;
+    gap_count: number;
+    max_gap_hours: number;
+    window_is_inferred: boolean;
+  }>;
+};
+
+const EMPTY_INEA_OBSERVABILITY: IneaObservability = {
+  latest_measured_at: null,
+  latest_ingested_at: null,
+  total_stations: 0,
+  stations_with_reading_count: 0,
+  inferred_windows_count: 0,
+  total_measurements: 0,
+  moderate_or_worse_days_count: 0,
+  most_frequent_controlling_pollutant: "-",
+  historical_window: {
+    min_date: "",
+    max_date: ""
+  },
+  fragile_stations: []
 };
 
 function buildMonthlyBulletinText(monthLabel: string, year: number, kpis: OpsKPI) {
@@ -73,6 +113,9 @@ export function StatusPage() {
   const [monthlyError, setMonthlyError] = useState<string | null>(null);
   const [copyFeedback, setCopyFeedback] = useState<string | null>(null);
   const [filtersHydrated, setFiltersHydrated] = useState(false);
+  const [ineaObservability, setIneaObservability] = useState<IneaObservability>(EMPTY_INEA_OBSERVABILITY);
+  const [ineaLoading, setIneaLoading] = useState(true);
+  const [ineaError, setIneaError] = useState<string | null>(null);
 
   useEffect(() => {
     async function load() {
@@ -144,6 +187,36 @@ export function StatusPage() {
     };
   }, [selectedMonth, selectedYear]);
 
+  useEffect(() => {
+    let cancelled = false;
+
+    async function loadIneaObservability() {
+      try {
+        setIneaLoading(true);
+        setIneaError(null);
+
+        const snapshot = await fetchRadarJson<IneaObservability>("/api/air/inea/observability");
+
+        if (!cancelled) {
+          setIneaObservability(snapshot);
+        }
+      } catch (err) {
+        if (!cancelled) {
+          console.error("Erro ao carregar observabilidade INEA:", err);
+          setIneaError("Nao foi possivel carregar a observabilidade publica do Radar INEA.");
+          setIneaObservability(EMPTY_INEA_OBSERVABILITY);
+        }
+      } finally {
+        if (!cancelled) setIneaLoading(false);
+      }
+    }
+
+    void loadIneaObservability();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
   const formatCurrency = (cents: number) => {
     return (cents / 100).toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
   };
@@ -174,6 +247,11 @@ export function StatusPage() {
     () => buildMonthlyBulletinText(monthLabel, selectedYear, monthlyOps),
     [monthLabel, selectedYear, monthlyOps]
   );
+  const formatDateTime = (value: string | null | undefined) => {
+    if (!value) return "Sem registro";
+    return new Date(value).toLocaleString("pt-BR");
+  };
+  const fragileStations = ineaObservability.fragile_stations.slice(0, 3);
 
   const handleDownloadMonthlyCsv = () => {
     const rows = [
@@ -486,6 +564,117 @@ export function StatusPage() {
               <EditorialCardActions>
                 <Link to="/transparencia" className="ui-btn-ghost">Detalhes financeiros</Link>
               </EditorialCardActions>
+            </EditorialCardBody>
+          </EditorialCard>
+        </div>
+
+        <div className="mt-5">
+          <EditorialCard variant="standard">
+            <EditorialCardBody className="justify-between p-5">
+              <div className="space-y-4">
+                <div className="flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
+                  <div className="space-y-2">
+                    <EditorialCardMeta><span>Observabilidade INEA</span></EditorialCardMeta>
+                    <EditorialCardTitle className="text-2xl">Frescor e cobertura pública do radar</EditorialCardTitle>
+                    <EditorialCardExcerpt>
+                      Leitura pública da rede INEA a partir dos mesmos endpoints abertos usados no portal.
+                    </EditorialCardExcerpt>
+                  </div>
+                  <Link to="/qualidade-ar/inea" className="ui-btn-ghost">
+                    Abrir radar INEA
+                  </Link>
+                </div>
+
+                {ineaError ? (
+                  <div className="rounded-2xl border border-acento/20 bg-acento/5 p-4 text-sm text-acento">{ineaError}</div>
+                ) : (
+                  <>
+                    <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-4">
+                      <div className="rounded-2xl bg-surface-2 p-4">
+                        <p className="text-xs font-semibold uppercase tracking-[0.18em] text-text-secondary">Ultima medicao publica</p>
+                        <p className="mt-2 text-lg font-black text-text-primary">
+                          {ineaLoading ? "..." : formatDateTime(ineaObservability.latest_measured_at)}
+                        </p>
+                      </div>
+                      <div className="rounded-2xl bg-surface-2 p-4">
+                        <p className="text-xs font-semibold uppercase tracking-[0.18em] text-text-secondary">Ultima ingestao</p>
+                        <p className="mt-2 text-lg font-black text-text-primary">
+                          {ineaLoading ? "..." : formatDateTime(ineaObservability.latest_ingested_at)}
+                        </p>
+                      </div>
+                      <div className="rounded-2xl bg-surface-2 p-4">
+                        <p className="text-xs font-semibold uppercase tracking-[0.18em] text-text-secondary">Estacoes com leitura</p>
+                        <p className="mt-2 text-3xl font-black text-primaria">
+                          {ineaLoading ? "..." : `${ineaObservability.stations_with_reading_count}/${ineaObservability.total_stations}`}
+                        </p>
+                      </div>
+                      <div className="rounded-2xl bg-surface-2 p-4">
+                        <p className="text-xs font-semibold uppercase tracking-[0.18em] text-text-secondary">Janelas inferidas</p>
+                        <p className="mt-2 text-3xl font-black text-acento">{ineaLoading ? "..." : formatNumber(ineaObservability.inferred_windows_count)}</p>
+                      </div>
+                    </div>
+
+                    <div className="grid gap-5 xl:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
+                      <div className="space-y-3">
+                        <p className="text-xs font-semibold uppercase tracking-[0.18em] text-text-secondary">Estacoes mais frageis</p>
+                        <div className="space-y-2">
+                          {ineaLoading ? (
+                            <p className="text-sm text-text-secondary">Carregando diagnostico...</p>
+                          ) : fragileStations.length > 0 ? (
+                            fragileStations.map((station) => (
+                              <div key={station.station_id} className="flex items-center justify-between rounded-2xl bg-surface-2 px-4 py-3 text-sm">
+                                <div>
+                                  <p className="font-semibold text-text-primary">{station.station_name}</p>
+                                  <p className="text-xs text-text-secondary">
+                                    {station.coverage_percent.toFixed(1)}% de cobertura, {station.gap_count} lacunas, maximo de {station.max_gap_hours}h
+                                  </p>
+                                </div>
+                                <span className="rounded-full bg-acento/10 px-3 py-1 text-xs font-bold uppercase tracking-wide text-acento">
+                                  {station.window_is_inferred ? "janela inferida" : "janela declarada"}
+                                </span>
+                              </div>
+                            ))
+                          ) : (
+                            <p className="text-sm text-text-secondary">Sem diagnostico de lacunas disponivel.</p>
+                          )}
+                        </div>
+                      </div>
+
+                      <div className="space-y-3">
+                        <p className="text-xs font-semibold uppercase tracking-[0.18em] text-text-secondary">Base pública</p>
+                        <div className="space-y-2">
+                          <div className="flex items-center justify-between rounded-2xl bg-surface-2 px-4 py-3 text-sm">
+                            <span className="text-text-secondary">Medições consolidadas</span>
+                            <span className="font-black text-text-primary">
+                              {ineaLoading ? "..." : formatNumber(ineaObservability.total_measurements)}
+                            </span>
+                          </div>
+                          <div className="flex items-center justify-between rounded-2xl bg-surface-2 px-4 py-3 text-sm">
+                            <span className="text-text-secondary">Dias moderados ou piores</span>
+                            <span className="font-black text-text-primary">
+                              {ineaLoading ? "..." : formatNumber(ineaObservability.moderate_or_worse_days_count)}
+                            </span>
+                          </div>
+                          <div className="flex items-center justify-between rounded-2xl bg-surface-2 px-4 py-3 text-sm">
+                            <span className="text-text-secondary">Poluente controlador mais frequente</span>
+                            <span className="font-black text-text-primary">
+                              {ineaLoading ? "..." : (ineaObservability.most_frequent_controlling_pollutant || "Sem registro")}
+                            </span>
+                          </div>
+                          <div className="flex items-center justify-between rounded-2xl bg-surface-2 px-4 py-3 text-sm">
+                            <span className="text-text-secondary">Janela histórica</span>
+                            <span className="font-black text-text-primary">
+                              {ineaLoading
+                                ? "..."
+                                : `${ineaObservability.historical_window.min_date || "?"} a ${ineaObservability.historical_window.max_date || "?"}`}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </>
+                )}
+              </div>
             </EditorialCardBody>
           </EditorialCard>
         </div>

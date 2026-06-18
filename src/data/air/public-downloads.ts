@@ -46,6 +46,18 @@ export const AIR_PUBLIC_DOWNLOADS: AirPublicDownload[] = [
     desc: "Lista versionada de todos os arquivos públicos, datas, origem e rótulos metodológicos."
   },
   {
+    title: "Changelog do Radar",
+    file: "radar-revision-history-2026-06.json",
+    format: ".JSON",
+    desc: "Histórico público versionado das revisões metodológicas, ciclos e mudanças estruturais do Radar INEA."
+  },
+  {
+    title: "Metadados do release",
+    file: "radar-release-metadata.json",
+    format: ".JSON",
+    desc: "Metadados públicos do ciclo atual do Radar INEA, incluindo versão de dataset, metodologia e estado operacional do release."
+  },
+  {
     title: "PM10 2013-2026",
     file: "pm10-timeline-2013-2026.csv",
     format: ".CSV",
@@ -75,6 +87,18 @@ export const AIR_PUBLIC_FILES: AirPublicFile[] = [
   {
     file: "manifest.json",
     desc: "Manifesto público versionado com lista de arquivos, datas, origem e rótulos metodológicos.",
+    format: "JSON",
+    updated: "Junho de 2026"
+  },
+  {
+    file: "radar-revision-history-2026-06.json",
+    desc: "Changelog público das revisões metodológicas, ciclos e entregas estruturais do Radar INEA.",
+    format: "JSON",
+    updated: "Junho de 2026"
+  },
+  {
+    file: "radar-release-metadata.json",
+    desc: "Metadados públicos do ciclo atual do Radar INEA, com versão do dataset, metodologia e referência do release.",
     format: "JSON",
     updated: "Junho de 2026"
   },

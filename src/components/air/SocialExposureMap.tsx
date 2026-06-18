@@ -7,6 +7,8 @@ import { SensitiveFacilitiesLayer } from './SensitiveFacilitiesLayer';
 import { VulnerabilityLegend } from './VulnerabilityLegend';
 import type { CensusSector } from '../../data/social/census-sectors';
 import type { Facility } from '../../data/social/sensitive-facilities';
+import { useRadarReleaseMetadata } from '../../data/air/useRadarReleaseMetadata';
+import { RadarEvidenceStateBlock } from '../../pages/air/radar/RadarEvidenceStateBlock';
 
 // Fix default Leaflet icon paths
 import markerIcon2x from 'leaflet/dist/images/marker-icon-2x.png';
@@ -50,6 +52,7 @@ function createCsnIcon() {
 }
 
 export function SocialExposureMap() {
+  const releaseMetadata = useRadarReleaseMetadata();
   type DemographicFilter = 'ALL' | 'CHILDREN' | 'ELDERLY' | 'INCOME' | 'INDUSTRIAL';
 
   const [selectedSector, setSelectedSector] = useState<CensusSector | null>(null);
@@ -160,6 +163,9 @@ export function SocialExposureMap() {
             <div className="inline-flex items-center gap-2 rounded-full border border-amber-400/20 bg-amber-400/10 px-3 py-1 text-[10px] font-black text-amber-100">
               <span className="h-2 w-2 rounded-full bg-amber-400" />
               <span className="uppercase tracking-[0.16em]">Não é laudo causal</span>
+            </div>
+            <div className="inline-flex items-center gap-2 rounded-full border border-slate-700 bg-[#061420] px-3 py-1 text-[10px] font-black text-slate-100">
+              <span className="uppercase tracking-[0.16em]">ciclo {releaseMetadata.cycleVersion}</span>
             </div>
           </div>
         </div>
@@ -310,6 +316,9 @@ export function SocialExposureMap() {
           {/* Floating Map Safeguard Warning */}
           <div className="absolute bottom-4 left-4 right-4 md:right-auto md:max-w-md bg-[#061420]/95 backdrop-blur-md border border-slate-800 p-3 rounded-xl z-[1000] text-[10px] leading-relaxed text-slate-350 shadow-xl">
             <span className="text-amber-400 font-bold">⚠️ Índice Experimental:</span> Este mapa organiza dados socioeconômicos e sinais territoriais de pressão ambiental para priorização de políticas públicas. Não mede risco individual de adoecimento nem prova causalidade direta.
+            <div className="mt-2 text-[9px] font-black uppercase tracking-[0.16em] text-slate-500">
+              metodologia {releaseMetadata.methodologyVersion} · revisão {releaseMetadata.plannedReviewDate}
+            </div>
           </div>
         </div>
 
@@ -384,6 +393,11 @@ export function SocialExposureMap() {
 
           {/* Render the legend sidebar */}
           <VulnerabilityLegend />
+          <RadarEvidenceStateBlock
+            state="partial"
+            title="Prova parcial"
+            description={`O mapa territorial organiza prioridade pública no release ${releaseMetadata.cycleVersion} a partir de sensibilidade social e proximidade industrial, mas não representa dose individual nem prova causal de adoecimento.`}
+          />
         </div>
       </div>
       

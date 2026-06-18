@@ -6,7 +6,10 @@ import { PublicInterpretationBox } from "../../components/air/PublicInterpretati
 import { WindRosePanel } from "../../components/air/WindRosePanel";
 import { WeatherPollutionCorrelation } from "../../components/air/WeatherPollutionCorrelation";
 import { RainWashEffectPanel } from "../../components/air/RainWashEffectPanel";
+import { RADAR_CONTROLLER_NOTE, RADAR_NO_DATA_NOT_CLEAN_AIR } from "../../data/air/radar-copy";
 import { RadarEvidenceBadge } from "./radar/RadarEvidenceBadge";
+import { RadarVisualNotice } from "./radar/RadarVisualNotice";
+import { useRadarReleaseMetadata } from "../../data/air/useRadarReleaseMetadata";
 import { fetchRadarJson } from "./radar/radarApi";
 import type { ControllerFrequencyItem, DataGapItem, MonthlyProfileItem } from "./radar/RadarTypes";
 
@@ -37,6 +40,7 @@ interface ClassificationDayItem {
 type ClassificationDaysResponse = Record<string, ClassificationDayItem>;
 
 export function IneaAnalyticsPage() {
+  const releaseMetadata = useRadarReleaseMetadata();
   const [degradedDays, setDegradedDays] = useState<DegradedDayItem[]>([]);
   const [controllerFreq, setControllerFreq] = useState<ControllerFrequencyItem[]>([]);
   const [monthlyProfile, setMonthlyProfile] = useState<MonthlyProfileItem[]>([]);
@@ -45,41 +49,70 @@ export function IneaAnalyticsPage() {
   const [classificationDays, setClassificationDays] = useState<Record<string, ClassificationDayItem>>({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [failedBlocks, setFailedBlocks] = useState<string[]>([]);
 
   useEffect(() => {
+    let cancelled = false;
+
     async function fetchAnalytics() {
       try {
-        const [
-          resDegraded,
-          resController,
-          resMonthly,
-          resRanking,
-          resGaps,
-          resClassif
-        ] = await Promise.all([
-          fetchRadarJson<DegradedDayItem[]>("/api/air/inea/analytics/degraded-days"),
-          fetchRadarJson<ControllerFrequencyItem[]>("/api/air/inea/analytics/controller-frequency"),
-          fetchRadarJson<MonthlyProfileItem[]>("/api/air/inea/analytics/monthly-profile"),
-          fetchRadarJson<StationRankingItem[]>("/api/air/inea/analytics/station-ranking"),
-          fetchRadarJson<DataGapItem[]>("/api/air/inea/analytics/data-gaps"),
-          fetchRadarJson<ClassificationDaysResponse>("/api/air/inea/classification-days")
-        ]);
+        setLoading(true);
+        setError(null);
+        setFailedBlocks([]);
 
-        setDegradedDays(resDegraded);
-        setControllerFreq(resController);
-        setMonthlyProfile(resMonthly);
-        setStationRanking(resRanking);
-        setDataGaps(resGaps);
-        setClassificationDays(resClassif);
-        setLoading(false);
+        const endpoints = [
+          { key: "degraded", label: "dias degradados", url: "/api/air/inea/analytics/degraded-days" },
+          { key: "controller", label: "poluente controlador", url: "/api/air/inea/analytics/controller-frequency" },
+          { key: "monthly", label: "perfil mensal", url: "/api/air/inea/analytics/monthly-profile" },
+          { key: "ranking", label: "ranking das estações", url: "/api/air/inea/analytics/station-ranking" },
+          { key: "gaps", label: "lacunas de dados", url: "/api/air/inea/analytics/data-gaps" },
+          { key: "classification", label: "dias por classificação", url: "/api/air/inea/classification-days" }
+        ] as const;
+
+        const responses = await Promise.allSettled(
+          endpoints.map(async (endpoint) => ({
+            key: endpoint.key,
+            payload: await fetchRadarJson<unknown>(endpoint.url)
+          }))
+        );
+
+        if (cancelled) return;
+
+        const resultMap = new Map<string, unknown>();
+        const failed: string[] = [];
+
+        responses.forEach((result, index) => {
+          if (result.status === "fulfilled") {
+            resultMap.set(result.value.key, result.value.payload);
+          } else {
+            failed.push(endpoints[index].label);
+          }
+        });
+
+        setDegradedDays((resultMap.get("degraded") as DegradedDayItem[]) || []);
+        setControllerFreq((resultMap.get("controller") as ControllerFrequencyItem[]) || []);
+        setMonthlyProfile((resultMap.get("monthly") as MonthlyProfileItem[]) || []);
+        setStationRanking((resultMap.get("ranking") as StationRankingItem[]) || []);
+        setDataGaps((resultMap.get("gaps") as DataGapItem[]) || []);
+        setClassificationDays((resultMap.get("classification") as ClassificationDaysResponse) || {});
+        setFailedBlocks(failed);
+
+        if (failed.length === endpoints.length) {
+          setError("Não foi possível carregar as análises públicas do Radar INEA.");
+        }
       } catch (err) {
+        if (cancelled) return;
         console.error("Error loading analytics data:", err);
         setError("Não foi possível carregar as análises. Verifique a conexão com o banco de dados.");
-        setLoading(false);
+      } finally {
+        if (!cancelled) setLoading(false);
       }
     }
 
-    fetchAnalytics();
+    void fetchAnalytics();
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   if (loading) {
@@ -157,7 +190,7 @@ export function IneaAnalyticsPage() {
           <div>
             <h1 className="text-3xl font-extrabold text-slate-800 tracking-tight">O que os dados oficiais mostram?</h1>
             <p className="text-slate-500 text-sm font-medium mt-1">
-              Camada analítica e diagnóstico das medições históricas de qualidade do ar em Volta Redonda.
+              Camada analítica e diagnóstico público das medições históricas de qualidade do ar em Volta Redonda, condicionados ao release vigente e à cobertura respondida.
             </p>
             <div className="mt-3 flex flex-wrap gap-2">
               <RadarEvidenceBadge
@@ -170,6 +203,12 @@ export function IneaAnalyticsPage() {
                 label="Meteorologia mista"
                 detail="vento observado; demais condições atmosféricas devem ser lidas como camada auxiliar"
               />
+              <span className="inline-flex items-center rounded-full border border-slate-200 bg-white px-3 py-1 text-[10px] font-black uppercase tracking-[0.16em] text-slate-700">
+                ciclo {releaseMetadata.cycleVersion}
+              </span>
+              <span className="inline-flex items-center rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-[10px] font-black uppercase tracking-[0.16em] text-emerald-700">
+                metodologia {releaseMetadata.methodologyVersion}
+              </span>
             </div>
           </div>
           <div className="flex flex-wrap items-center gap-2">
@@ -201,11 +240,25 @@ export function IneaAnalyticsPage() {
           <div className="space-y-1">
             <h4 className="font-bold text-amber-800 text-xs uppercase tracking-wider">Aviso de Integridade Analítica</h4>
             <p className="text-xs leading-relaxed text-amber-700 font-bold">
-              Estações com baixa cobertura não devem ser interpretadas como regiões de ar melhor. Ausência de dado não é qualidade boa.
+              Estações com baixa cobertura não devem ser interpretadas como regiões de ar melhor. {RADAR_NO_DATA_NOT_CLEAN_AIR}
             </p>
           </div>
         </SurfaceCard>
       </div>
+
+      {failedBlocks.length > 0 && (
+        <RadarVisualNotice
+          type="warning"
+          title="Carga analítica parcial"
+          description={`Alguns blocos não responderam nesta carga: ${failedBlocks.join(", ")}. Os indicadores abaixo refletem apenas os dados que responderam, ainda dentro do release público vigente.`}
+          badges={[
+            `ciclo ${releaseMetadata.cycleVersion}`,
+            `dataset ${releaseMetadata.datasetVersion}`,
+            `revisão ${releaseMetadata.plannedReviewDate}`
+          ]}
+          nextStep="Use esta leitura como triagem analítica e confirme no painel principal, no histórico e na metodologia antes de fechar conclusão pública forte."
+        />
+      )}
 
       {/* Analytics Cards Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
@@ -218,11 +271,11 @@ export function IneaAnalyticsPage() {
               {worstStationByDegraded ? worstStationByDegraded.station_name : "-"}
             </h3>
             <p className="text-xs text-slate-500 font-semibold">
-              {worstStationByDegraded ? `${worstStationByDegraded.degraded_percent_of_measured_days}% dos dias registrados como MODERADA ou pior` : "-"}
+              {worstStationByDegraded ? `${worstStationByDegraded.degraded_percent_of_measured_days}% dos dias medidos classificados como MODERADA ou pior` : "-"}
             </p>
           </div>
           <div className="text-[11px] font-bold text-amber-600 bg-amber-50 px-2.5 py-1 rounded-lg self-start">
-            Mais dias registrados como MODERADA ou pior
+            Mais dias medidos como MODERADA ou pior
           </div>
         </SurfaceCard>
 
@@ -234,7 +287,7 @@ export function IneaAnalyticsPage() {
               {topController ? topController.pollutant : "-"}
             </h3>
             <p className="text-xs text-slate-500 font-semibold">
-              {topController ? `${topController.percentage}% das leituras controladas por ele` : "-"}
+              {topController ? `${topController.percentage}% das leituras respondidas controladas por ele` : "-"}
             </p>
           </div>
           <div className="text-[11px] font-bold text-slate-600 bg-slate-50 px-2.5 py-1 rounded-lg self-start">
@@ -250,7 +303,7 @@ export function IneaAnalyticsPage() {
               {worstIndexAqi}
             </h3>
             <p className="text-xs text-slate-500 font-semibold">
-              Registrado na estação {worstIndexStation} ({worstIndexClass})
+              Maior valor encontrado na base pública respondida: {worstIndexStation} ({worstIndexClass})
             </p>
           </div>
           <div className="text-[11px] font-bold text-purple-600 bg-purple-50 px-2.5 py-1 rounded-lg self-start">
@@ -266,7 +319,7 @@ export function IneaAnalyticsPage() {
               {worstMonthName}
             </h3>
             <p className="text-xs text-slate-500 font-semibold">
-              {worstMonthPct}% das medições mensais degradadas
+              {worstMonthPct}% das medições mensais válidas classificadas como MODERADA ou pior
             </p>
           </div>
           <div className="text-[11px] font-bold text-rose-600 bg-rose-50 px-2.5 py-1 rounded-lg self-start">
@@ -297,7 +350,7 @@ export function IneaAnalyticsPage() {
         <div className="space-y-1">
           <h2 className="text-lg font-bold text-slate-800">Ranking Comparativo de Estações (Cobertura Mínima de 30%)</h2>
           <p className="text-xs text-slate-500 font-medium">
-            Mapeamento comparativo e classificação baseada em dados consistentes.
+            Mapeamento comparativo baseado em dados minimamente consistentes para leitura pública inicial, não em equivalência regulatória fechada.
           </p>
         </div>
 
@@ -358,7 +411,7 @@ export function IneaAnalyticsPage() {
                 <div key={sId} className="space-y-2">
                   <div className="flex justify-between items-center text-xs font-bold text-slate-700">
                     <span>{stationName}</span>
-                    <span className="text-slate-400 font-medium">{total} dias registrados</span>
+                    <span className="text-slate-400 font-medium">{total} dias medidos ou sinalizados</span>
                   </div>
                   {/* Stacked Progress Bar */}
                   <div className="h-6 w-full rounded-lg overflow-hidden flex bg-slate-100 shadow-inner">
@@ -478,7 +531,7 @@ export function IneaAnalyticsPage() {
           </div>
 
           <div className="p-3 bg-slate-50 rounded-xl text-[10px] leading-relaxed text-slate-500 font-semibold border border-slate-100">
-            💡 <strong>Nota Técnica:</strong> O poluente controlador é aquele que apresenta o maior subíndice em uma leitura específica, definindo o índice consolidado geral (IQAr) da estação naquele instante.
+            💡 <strong>Nota Técnica:</strong> O poluente controlador é aquele que apresenta o maior subíndice em uma leitura específica, definindo o índice consolidado geral (IQAr) da estação naquele instante. {RADAR_CONTROLLER_NOTE}
           </div>
         </SurfaceCard>
 
@@ -489,7 +542,7 @@ export function IneaAnalyticsPage() {
         <div className="space-y-1">
           <h2 className="text-lg font-bold text-slate-800">Perfil Mensal de Qualidade do Ar Degradada</h2>
           <p className="text-xs text-slate-500 font-medium">
-            Proporção mensal de dias registrados como MODERADA ou pior com base nos registros válidos.
+            Proporção mensal de dias registrados como MODERADA ou pior com base apenas nos registros válidos que responderam na base pública.
           </p>
         </div>
 
@@ -545,7 +598,7 @@ export function IneaAnalyticsPage() {
         <div className="space-y-1">
           <h2 className="text-lg font-bold text-slate-800">Lacunas e Cobertura de Dados por Estação</h2>
           <p className="text-xs text-slate-500 font-medium">
-            Auditoria de integridade dos registros oficiais do INEA integrados ao banco de dados.
+            Auditoria de integridade dos registros oficiais integrados ao portal, essencial para evitar superinterpretação comparativa.
           </p>
         </div>
 
@@ -558,6 +611,7 @@ export function IneaAnalyticsPage() {
                 <th className="p-4 text-center">Dias Esperados</th>
                 <th className="p-4 text-center">Dias Insuficientes</th>
                 <th className="p-4 text-center">Cobertura (%)</th>
+                <th className="p-4 text-center">Janela Esperada</th>
                 <th className="p-4 text-center">Lacunas (&gt; 24h)</th>
                 <th className="p-4 text-center">Maior Interrupção</th>
               </tr>
@@ -577,6 +631,24 @@ export function IneaAnalyticsPage() {
                       }`}>
                         {item.coverage_percent}%
                       </span>
+                    </td>
+                    <td className="p-4 text-center text-[11px] leading-relaxed text-slate-500">
+                      <div>
+                        {item.expected_start_date && item.expected_end_date
+                          ? `${new Date(`${item.expected_start_date}T00:00:00`).toLocaleDateString("pt-BR")} - ${new Date(`${item.expected_end_date}T00:00:00`).toLocaleDateString("pt-BR")}`
+                          : "-"}
+                      </div>
+                      <div className="mt-1">
+                        {item.window_is_inferred ? (
+                          <span className="rounded-full border border-amber-200 bg-amber-50 px-2 py-0.5 text-[9px] font-black uppercase tracking-wide text-amber-800">
+                            inferida
+                          </span>
+                        ) : (
+                          <span className="rounded-full border border-emerald-200 bg-emerald-50 px-2 py-0.5 text-[9px] font-black uppercase tracking-wide text-emerald-800">
+                            documentada
+                          </span>
+                        )}
+                      </div>
                     </td>
                     <td className="p-4 text-center">
                       <span className={`font-bold ${item.gap_count > 0 ? "text-amber-600" : "text-slate-400"}`}>

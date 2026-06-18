@@ -1,6 +1,9 @@
 import { Link } from "react-router-dom";
 
 import { SurfaceCard } from "../../components/BrandSystem";
+import { useRadarReleaseMetadata } from "../../data/air/useRadarReleaseMetadata";
+import { RadarEvidenceStateBlock } from "./radar/RadarEvidenceStateBlock";
+import { RadarEvidenceBadge } from "./radar/RadarEvidenceBadge";
 import {
   historicalMemoryPollutants,
   historicalMemoryReports,
@@ -19,6 +22,8 @@ function formatNumber(value: number | null) {
 }
 
 export function IneaHistoryPage() {
+  const releaseMetadata = useRadarReleaseMetadata();
+
   return (
     <main className="min-h-screen bg-[linear-gradient(180deg,#f8fafc_0%,#eef7f5_45%,#ffffff_100%)] pb-16">
       <section className="mx-auto max-w-7xl px-4 pt-10 md:px-6 md:pt-16">
@@ -26,15 +31,27 @@ export function IneaHistoryPage() {
           <div className="relative overflow-hidden rounded-[2.25rem] bg-slate-950 p-7 text-white shadow-[0_28px_70px_-42px_rgba(15,23,42,0.75)] md:p-10">
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_15%_20%,rgba(16,185,129,0.28),transparent_34%),radial-gradient(circle_at_85%_15%,rgba(14,165,233,0.24),transparent_30%)]" />
             <div className="relative z-10 max-w-3xl space-y-6">
-              <div className="inline-flex rounded-full border border-emerald-300/20 bg-emerald-300/10 px-4 py-2 text-[10px] font-black uppercase tracking-[0.2em] text-emerald-200">
-                Memoria historica em auditoria
+              <div className="flex flex-wrap gap-2">
+                <div className="inline-flex rounded-full border border-emerald-300/20 bg-emerald-300/10 px-4 py-2 text-[10px] font-black uppercase tracking-[0.2em] text-emerald-200">
+                  Memoria historica em auditoria
+                </div>
+                <div className="inline-flex rounded-full border border-white/12 bg-white/8 px-4 py-2 text-[10px] font-black uppercase tracking-[0.16em] text-slate-100">
+                  ciclo {releaseMetadata.cycleVersion}
+                </div>
+                <div className="inline-flex rounded-full border border-cyan-300/20 bg-cyan-300/10 px-4 py-2 text-[10px] font-black uppercase tracking-[0.16em] text-cyan-100">
+                  metodologia {releaseMetadata.methodologyVersion}
+                </div>
+              </div>
+              <div className="flex flex-wrap gap-2">
+                <RadarEvidenceBadge level="experimental" label="Preview histórico" detail="memória técnica útil para auditoria e comparação, ainda fora da camada operacional consolidada" />
+                <RadarEvidenceBadge level="interpretive" label="Leitura de reconstrução" detail="comparação com literatura e lastro histórico, não nova base oficial liberada" />
               </div>
               <div className="space-y-3">
                 <h1 className="text-4xl font-black leading-[0.95] tracking-tight md:text-6xl">
                   Qualidade do ar em Volta Redonda, 2013-2015
                 </h1>
                 <p className="max-w-2xl text-base font-semibold leading-relaxed text-slate-250 md:text-lg">
-                  Uma leitura publica do periodo recuperado a partir de dados horarios INEA/WebLakes, comparado com evidencias cientificas.
+                  Uma leitura pública do período recuperado a partir de dados horários INEA/WebLakes, comparada com evidências científicas.
                 </p>
               </div>
               <div className="grid gap-3 sm:grid-cols-3">
@@ -57,10 +74,15 @@ export function IneaHistoryPage() {
           <SurfaceCard className="flex flex-col justify-between rounded-[2.25rem] border border-slate-200 bg-white p-6 shadow-[0_22px_52px_-40px_rgba(15,23,42,0.45)] md:p-8">
             <div className="space-y-4">
               <div className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Como ler</div>
-              <h2 className="text-2xl font-black tracking-tight text-slate-900">Esta pagina nao publica nova base oficial.</h2>
+              <h2 className="text-2xl font-black tracking-tight text-slate-900">Esta página não publica nova base oficial.</h2>
               <p className="text-sm font-semibold leading-relaxed text-slate-600">
-                Ela organiza uma evidencia tecnica em revisao: PM10 esta consistente com o artigo cientifico; PTS aparece como memoria tecnica; O3 permanece em auditoria de metrica.
+                Ela organiza uma evidência técnica em revisão: PM10 está consistente com o artigo científico; PTS aparece como memória técnica; O3 permanece em auditoria de métrica.
               </p>
+              <RadarEvidenceStateBlock
+                state="external"
+                title="Memória técnica em revisão"
+                description={`O conteúdo desta página é uma reconstrução editorial apoiada em literatura, dados históricos INEA/WebLakes e checagem metodológica do release ${releaseMetadata.cycleVersion}. Ele não equivale a nova publicação operacional consolidada do Radar.`}
+              />
             </div>
             <div className="mt-6 flex flex-wrap gap-3">
               <Link
@@ -119,6 +141,17 @@ export function IneaHistoryPage() {
 
               <div className="mt-4 rounded-2xl border border-slate-200 bg-white p-4 text-[11px] font-bold leading-relaxed text-slate-600">
                 {item.decision}
+              </div>
+              <div className="mt-3">
+                <RadarEvidenceStateBlock
+                  state={item.status === "ready" ? "published" : item.status === "technical" ? "external" : "partial"}
+                  title={item.status === "ready" ? "Prova publicada" : item.status === "technical" ? "Memória técnica" : "Prova parcial"}
+                  description={item.status === "ready"
+                    ? "A memória histórica já sustenta leitura pública mais forte neste parâmetro, ainda sob o enquadramento de preview histórico."
+                    : item.status === "technical"
+                      ? "Este parâmetro permanece como memória técnica útil para contexto, mas não deve ser confundido com liberação operacional consolidada."
+                      : "A reconstrução ainda depende de validação adicional antes de sustentar publicação histórica forte."}
+                />
               </div>
             </SurfaceCard>
           ))}

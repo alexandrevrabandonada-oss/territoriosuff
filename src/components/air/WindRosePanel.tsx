@@ -1,6 +1,9 @@
 import { useState } from "react";
 import { SurfaceCard, IconShell } from "../BrandSystem";
 import { WIND_ROSE_DATA, SO2_WIND_SECTOR_ROSE } from "../../data/air/weather-analytics-summary";
+import { RADAR_EXPERIMENTAL_OBSERVATION_NOTE } from "../../data/air/radar-copy";
+import { useRadarReleaseMetadata } from "../../data/air/useRadarReleaseMetadata";
+import { RadarEvidenceStateBlock } from "../../pages/air/radar/RadarEvidenceStateBlock";
 
 const QUADRANTS_ANGLE_MAP: Record<string, number> = {
   N: 0,
@@ -22,6 +25,7 @@ const QUADRANTS_ANGLE_MAP: Record<string, number> = {
 };
 
 export function WindRosePanel() {
+  const releaseMetadata = useRadarReleaseMetadata();
   const [mode, setMode] = useState<"frequency" | "so2">("frequency");
   const [hoveredSector, setHoveredSector] = useState<{
     quadrant: string;
@@ -98,6 +102,17 @@ export function WindRosePanel() {
             <span className="h-2 w-2 rounded-full bg-emerald-500" />
             <span className="uppercase tracking-[0.16em]">Vento observado</span>
             <span className="hidden font-semibold normal-case text-emerald-700/80 md:inline">setores de direção e velocidade vêm da camada de vento mais confiável do sistema</span>
+          </div>
+          <div className="flex flex-wrap gap-2">
+            <span className="inline-flex items-center rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-[10px] font-black uppercase tracking-[0.16em] text-slate-700">
+              ciclo {releaseMetadata.cycleVersion}
+            </span>
+            <span className="inline-flex items-center rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-[10px] font-black uppercase tracking-[0.16em] text-slate-700">
+              metodologia {releaseMetadata.methodologyVersion}
+            </span>
+            <span className="inline-flex items-center rounded-full border border-amber-200 bg-amber-50 px-3 py-1 text-[10px] font-black uppercase tracking-[0.16em] text-amber-800">
+              prova parcial
+            </span>
           </div>
         </div>
         <div className="flex bg-slate-100 p-1 rounded-xl self-start">
@@ -229,8 +244,17 @@ export function WindRosePanel() {
               <p className="text-[11px] leading-relaxed font-bold text-amber-800">
                 Os dados indicam condições favoráveis ou desfavoráveis à dispersão atmosférica. Correlação meteorológica não prova fonte emissora isolada.
               </p>
+              <p className="text-[10px] leading-relaxed font-semibold text-amber-700">
+                Interprete este painel no contexto do release {releaseMetadata.cycleVersion}, conferindo cobertura, série histórica e revisão pública prevista para {releaseMetadata.plannedReviewDate}.
+              </p>
             </div>
           </div>
+
+          <RadarEvidenceStateBlock
+            state="partial"
+            title="Leitura física útil, sem equivalência causal isolada"
+            description={`A rosa dos ventos fortalece a leitura de dispersão e transporte no release ${releaseMetadata.cycleVersion}, mas continua como evidência parcial. Ela apoia hipótese territorial e auditoria pública, sem substituir ${RADAR_EXPERIMENTAL_OBSERVATION_NOTE} nem atribuição única de fonte.`}
+          />
         </div>
       </div>
     </SurfaceCard>

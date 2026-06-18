@@ -1,6 +1,11 @@
 import { IconShell, SurfaceCard } from "../BrandSystem";
+import { RADAR_EXPERIMENTAL_OBSERVATION_NOTE } from "../../data/air/radar-copy";
+import { useRadarReleaseMetadata } from "../../data/air/useRadarReleaseMetadata";
+import { RadarEvidenceStateBlock } from "../../pages/air/radar/RadarEvidenceStateBlock";
 
 export function PublicInterpretationBox() {
+  const releaseMetadata = useRadarReleaseMetadata();
+
   return (
     <SurfaceCard className="border border-amber-200 bg-amber-50/50 p-6 rounded-2xl transition-all shadow-sm">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-start">
@@ -10,9 +15,17 @@ export function PublicInterpretationBox() {
           </svg>
         </IconShell>
         <div className="space-y-3">
-          <h3 className="font-bold text-amber-900 text-sm uppercase tracking-wider">
-            Como Interpretar estes Achados Cidadãos?
-          </h3>
+          <div className="flex flex-wrap items-center gap-2">
+            <h3 className="font-bold text-amber-900 text-sm uppercase tracking-wider">
+              Como Interpretar estes Achados Cidadãos?
+            </h3>
+            <span className="rounded-full border border-amber-300 bg-white/70 px-2.5 py-0.5 text-[9px] font-black uppercase tracking-[0.16em] text-amber-900">
+              ciclo {releaseMetadata.cycleVersion}
+            </span>
+            <span className="rounded-full border border-amber-300 bg-amber-100/80 px-2.5 py-0.5 text-[9px] font-black uppercase tracking-[0.16em] text-amber-900">
+              metodologia {releaseMetadata.methodologyVersion}
+            </span>
+          </div>
           <div className="inline-flex items-center gap-2 rounded-full border border-amber-300 bg-white/70 px-3 py-1 text-[10px] font-black text-amber-900">
             <span className="h-2 w-2 rounded-full bg-amber-500" />
             <span className="uppercase tracking-[0.16em]">Leitura pública de atenção</span>
@@ -41,6 +54,11 @@ export function PublicInterpretationBox() {
               </li>
             </ul>
           </div>
+          <RadarEvidenceStateBlock
+            state="partial"
+            title="Prova parcial"
+            description={`Este quadro serve para leitura pública, cobrança e priorização territorial dentro do release ${releaseMetadata.cycleVersion}, mas não substitui laudo causal, perícia ambiental ou ${RADAR_EXPERIMENTAL_OBSERVATION_NOTE}.`}
+          />
         </div>
       </div>
     </SurfaceCard>
