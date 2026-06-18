@@ -114,11 +114,11 @@ export default defineConfig({
         type: "module"
       },
       manifest: {
-        name: "SEMEAR Portal",
+        name: "SEMEAR UFF - Transparência Pública Ambiental",
         short_name: "SEMEAR",
-        description: "Portal de Monitoramento Ambiental e Engajamento Comunitário",
-        theme_color: "#00e5ff",
-        background_color: "#0a0a0a",
+        description: "Portal de transparência pública ambiental, dados de qualidade do ar, agenda territorial e controle social.",
+        theme_color: "#0f766e",
+        background_color: "#f8fafc",
         display: "standalone",
         orientation: "portrait-primary",
         categories: ["education", "environment"],

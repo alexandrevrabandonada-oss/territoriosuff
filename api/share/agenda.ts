@@ -9,6 +9,12 @@ function escapeHtml(value: string) {
         .replace(/'/g, '&#39;');
 }
 
+function getHostUrl(req: any) {
+    const host = req.headers['x-forwarded-host'] || req.headers.host || 'semear-pwa.vercel.app';
+    const protocol = req.headers['x-forwarded-proto'] || 'https';
+    return `${protocol}://${host}`;
+}
+
 export default async function handler(req: any, res: any) {
     const { eventId } = req.query;
 
@@ -39,9 +45,10 @@ export default async function handler(req: any, res: any) {
     const title = `${event.title} | Agenda SEMEAR`;
     const location = event.location_name || event.location || 'Local a definir';
     const description = `${date} em ${location}. ${event.description || ''}`.slice(0, 160);
-    const image = 'https://semear-pwa.vercel.app/icons/icon-512.png';
+    const hostUrl = getHostUrl(req);
+    const image = `${hostUrl}/icons/icon-512.png`;
     const targetPath = `/agenda/${encodeURIComponent(String(eventId))}`;
-    const url = `https://semear-pwa.vercel.app${targetPath}`;
+    const url = `${hostUrl}${targetPath}`;
 
     const html = `
 <!DOCTYPE html>

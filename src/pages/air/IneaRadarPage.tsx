@@ -2,7 +2,11 @@ import { Suspense, lazy, useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 
 import { RadarHero } from "./radar/RadarHero";
+import { RadarGuidedJourneys } from "./radar/RadarGuidedJourneys";
+import { RadarEvidenceDictionary } from "./radar/RadarEvidenceDictionary";
+import { RadarEvidenceActionGuide } from "./radar/RadarEvidenceActionGuide";
 import { RadarLaiModal } from "./radar/RadarLaiModal";
+import { RadarMaturityScorecard } from "./radar/RadarMaturityScorecard";
 import { RadarModeNav } from "./radar/RadarModeNav";
 import { RadarOverviewMode } from "./radar/RadarOverviewMode";
 import { RadarQuickSummary } from "./radar/RadarQuickSummary";
@@ -17,10 +21,14 @@ import {
   type RadarChartPoint,
   type RadarComparisonTab,
   type RadarMode,
+  type StationMetadataResponse,
+  type StationMetadataItem,
+  type RadarTimeseriesResponse,
   type RadarTimeseriesPoint,
   type SummaryStats,
   getIneaClassificationStyle
 } from "./radar/RadarTypes";
+import { fetchRadarJson } from "./radar/radarApi";
 
 export { getIneaClassificationStyle };
 
@@ -39,7 +47,7 @@ const RadarMethodologyMode = lazy(() =>
 
 type RadarDataNotice =
   | { kind: "validation"; message: string }
-  | { kind: "partial"; message: string }
+  | { kind: "partial"; message: string; failedBlocks?: string[] }
   | null;
 
 type LatestResponse = {
@@ -70,6 +78,8 @@ export function IneaRadarPage() {
   const [monthlyProfile, setMonthlyProfile] = useState<MonthlyProfileItem[]>([]);
   const [controllerFreq, setControllerFreq] = useState<ControllerFrequencyItem[]>([]);
   const [dataGaps, setDataGaps] = useState<DataGapItem[]>([]);
+  const [stationMetadata, setStationMetadata] = useState<StationMetadataResponse["items"]>([]);
+  const [timeseriesMeta, setTimeseriesMeta] = useState<{ total: number; limit: number; truncated: boolean } | null>(null);
   const [loading, setLoading] = useState(true);
   const [notice, setNotice] = useState<RadarDataNotice>(null);
   const [retryTrigger, setRetryTrigger] = useState(0);
@@ -79,21 +89,58 @@ export function IneaRadarPage() {
   const [comparisonTab, setComparisonTab] = useState<RadarComparisonTab>("TREND");
 
   useEffect(() => {
+    let cancelled = false;
+
     async function fetchData() {
       try {
         setLoading(true);
         setNotice(null);
+        setSummary(null);
+        setLatestData([]);
+        setRankings({});
+        setMonthlyProfile([]);
+        setControllerFreq([]);
+        setDataGaps([]);
+        setStationMetadata([]);
 
-        const [resSummary, resLatest, resRankings, resMonthly, resController, resGaps] = await Promise.all([
-          fetch("/api/air/inea/summary").then((r) => (r.ok ? r.json() : null)),
-          fetch("/api/air/inea/latest").then((r) => (r.ok ? r.json() : null)),
-          fetch("/api/air/inea/classification-days").then((r) => (r.ok ? r.json() : null)),
-          fetch("/api/air/inea/analytics/monthly-profile").then((r) => (r.ok ? r.json() : null)),
-          fetch("/api/air/inea/analytics/controller-frequency").then((r) => (r.ok ? r.json() : null)),
-          fetch("/api/air/inea/analytics/data-gaps").then((r) => (r.ok ? r.json() : null))
-        ]);
+        const endpoints = [
+          { key: "summary", label: "resumo geral", url: "/api/air/inea/summary" },
+          { key: "latest", label: "últimas leituras", url: "/api/air/inea/latest" },
+          { key: "rankings", label: "ranking por classificação", url: "/api/air/inea/classification-days" },
+          { key: "monthly", label: "perfil mensal", url: "/api/air/inea/analytics/monthly-profile" },
+          { key: "controller", label: "frequência do controlador", url: "/api/air/inea/analytics/controller-frequency" },
+          { key: "gaps", label: "lacunas de dados", url: "/api/air/inea/analytics/data-gaps" },
+          { key: "stationsMetadata", label: "metadados das estações", url: "/api/air/inea/stations-metadata" }
+        ] as const;
 
-        if (resSummary) setSummary(resSummary);
+        const responses = await Promise.allSettled(
+          endpoints.map(async (endpoint) => {
+            return { key: endpoint.key, payload: await fetchRadarJson<unknown>(endpoint.url) };
+          })
+        );
+
+        if (cancelled) return;
+
+        const resultMap = new Map<string, unknown>();
+        const failedBlocks: string[] = [];
+
+        responses.forEach((result, index) => {
+          if (result.status === "fulfilled") {
+            resultMap.set(result.value.key, result.value.payload);
+          } else {
+            failedBlocks.push(endpoints[index].label);
+          }
+        });
+
+        const resSummary = resultMap.get("summary");
+        const resLatest = resultMap.get("latest");
+        const resRankings = resultMap.get("rankings");
+        const resMonthly = resultMap.get("monthly");
+        const resController = resultMap.get("controller");
+        const resGaps = resultMap.get("gaps");
+        const resStationsMetadata = resultMap.get("stationsMetadata");
+
+        if (resSummary) setSummary(resSummary as SummaryStats);
         if (resLatest) {
           const list = ((resLatest as LatestResponse).stations || []);
           setLatestData(list);
@@ -104,12 +151,13 @@ export function IneaRadarPage() {
             setSelectedStationChart(list[0].station.id);
           }
         }
-        if (resRankings) setRankings(resRankings);
-        if (resMonthly) setMonthlyProfile(resMonthly);
-        if (resController) setControllerFreq(resController);
-        if (resGaps) setDataGaps(resGaps);
+        if (resRankings) setRankings(resRankings as Record<string, BreakdownItem>);
+        if (resMonthly) setMonthlyProfile(resMonthly as MonthlyProfileItem[]);
+        if (resController) setControllerFreq(resController as ControllerFrequencyItem[]);
+        if (resGaps) setDataGaps(resGaps as DataGapItem[]);
+        if (resStationsMetadata) setStationMetadata((resStationsMetadata as StationMetadataResponse).items || []);
 
-        if (!resSummary || !resLatest) {
+        if (!resSummary || !resLatest || failedBlocks.length > 0) {
           const isLocalValidation =
             typeof window !== "undefined" &&
             (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1");
@@ -122,11 +170,19 @@ export function IneaRadarPage() {
           } else if (!resSummary && !resLatest) {
             setNotice({
               kind: "partial",
-              message: "Parte das leituras públicas está temporariamente indisponível. A experiência segue com contexto editorial e dados de apoio."
+              message: "Parte das leituras públicas está temporariamente indisponível. A experiência segue com contexto editorial e dados de apoio.",
+              failedBlocks
+            });
+          } else if (failedBlocks.length > 0) {
+            setNotice({
+              kind: "partial",
+              message: `Alguns blocos analíticos não responderam nesta carga: ${failedBlocks.join(", ")}.`,
+              failedBlocks
             });
           }
         }
       } catch (err) {
+        if (cancelled) return;
         console.error("Failed to load official INEA data:", err);
         const isLocalValidation =
           typeof window !== "undefined" &&
@@ -144,11 +200,14 @@ export function IneaRadarPage() {
               }
         );
       } finally {
-        setLoading(false);
+        if (!cancelled) setLoading(false);
       }
     }
 
     void fetchData();
+    return () => {
+      cancelled = true;
+    };
   }, [retryTrigger]);
 
   useEffect(() => {
@@ -157,16 +216,27 @@ export function IneaRadarPage() {
 
     async function loadChartData() {
       try {
-        const data = await fetch(`/api/air/inea/timeseries?stationId=${selectedStationChart}&metricType=GENERAL_AQI`).then((r) => {
-          if (!r.ok) throw new Error("HTTP " + r.status);
-          return r.json();
-        });
+        setTimeseries([]);
+        setTimeseriesMeta(null);
+
+        const encodedStationId = encodeURIComponent(selectedStationChart);
+        const data = await fetchRadarJson<RadarTimeseriesResponse>(
+          `/api/air/inea/timeseries?stationId=${encodedStationId}&metricType=GENERAL_AQI`
+        );
 
         if (!cancelled) {
-          setTimeseries(data);
+          setTimeseries(data.items || []);
+          setTimeseriesMeta({
+            total: data.total,
+            limit: data.limit,
+            truncated: data.truncated
+          });
         }
       } catch (err) {
         console.error("Failed to load chart timeseries:", err);
+        if (!cancelled) {
+          setTimeseriesMeta(null);
+        }
       }
     }
 
@@ -236,13 +306,34 @@ export function IneaRadarPage() {
     [timeseries]
   );
 
+  const selectedStationMetadata = useMemo<StationMetadataItem | null>(
+    () => stationMetadata.find((item) => item.station_id === selectedStationChart) || null,
+    [selectedStationChart, stationMetadata]
+  );
+
   const displaySummary: SummaryStats = summary || {
     totalStations: latestData.length,
     totalMeasurements: 0,
     timeRange: { minDate: "", maxDate: "" },
     moderateOrWorseDaysCount: 0,
     mostFrequentControllingPollutant: "Base pública temporariamente indisponível",
-    latest_ingested_at: null
+    source_system: "CKAN_XLSX",
+    data_freshness_label: "Última base pública disponível",
+    latest_measured_at: null,
+    latest_ingested_at: null,
+    is_realtime: false
+  };
+
+  const analyticsHealth = {
+    ok: [
+      summary !== null,
+      latestData.length > 0,
+      Object.keys(rankings).length > 0,
+      monthlyProfile.length > 0,
+      controllerFreq.length > 0,
+      dataGaps.length > 0
+    ].filter(Boolean).length,
+    total: 6
   };
 
   if (loading) {
@@ -274,15 +365,35 @@ export function IneaRadarPage() {
           <span className="text-slate-800">Radar INEA</span>
         </div>
 
-        <RadarHero onNavigate={navigateMode} />
+        <RadarHero
+          onNavigate={navigateMode}
+          summary={displaySummary}
+          activeStations={latestData.filter((item) => item.measured_at !== null).length}
+          analyticsHealth={analyticsHealth}
+        />
 
         <RadarQuickSummary
           notice={notice}
           latestData={latestData}
           sortedRankings={sortedRankings}
           displaySummary={displaySummary}
+          stationMetadata={stationMetadata}
           onRetry={() => setRetryTrigger((prev) => prev + 1)}
         />
+
+        <RadarGuidedJourneys
+          onNavigate={navigateMode}
+          onScrollToRecommendations={() => {
+            setCurrentMode("OVERVIEW");
+            setTimeout(() => scrollToId("encaminhamentos"), 120);
+          }}
+        />
+
+        <RadarMaturityScorecard summary={displaySummary} stationMetadata={stationMetadata} compact />
+
+        <RadarEvidenceDictionary compact />
+
+        <RadarEvidenceActionGuide compact onNavigate={navigateMode} onOpenLai={() => setIsLaiModalOpen(true)} />
 
         <div id="subnav-anchor" className="scroll-mt-28" />
         <RadarModeNav currentMode={currentMode} onSelectMode={navigateMode} />
@@ -292,6 +403,7 @@ export function IneaRadarPage() {
             latestData={latestData}
             sortedRankings={sortedRankings}
             displaySummary={displaySummary}
+            stationMetadata={stationMetadata}
             onOpenLai={() => setIsLaiModalOpen(true)}
             onNavigate={navigateMode}
             onTop={() => scrollToId("top-anchor")}
@@ -316,8 +428,10 @@ export function IneaRadarPage() {
               latestData={latestData}
               latestIngestedAt={displaySummary.latest_ingested_at}
               monthlyProfile={monthlyProfile}
+              selectedStationMetadata={selectedStationMetadata}
               selectedStationChart={selectedStationChart}
               setSelectedStationChart={setSelectedStationChart}
+              timeseriesMeta={timeseriesMeta}
               onNavigate={navigateMode}
               onTop={() => scrollToId("top-anchor")}
             />
@@ -327,6 +441,7 @@ export function IneaRadarPage() {
         {currentMode === "TERRITORY" && (
           <Suspense fallback={<RadarModeLoadingFallback />}>
             <RadarTerritoryMode
+              stationMetadata={stationMetadata}
               onNavigate={navigateMode}
               onTop={() => scrollToId("top-anchor")}
               onScrollToSocialMap={() => scrollToId("social-map-section")}
@@ -335,14 +450,21 @@ export function IneaRadarPage() {
         )}
 
         {currentMode === "STATIONS" && (
-          <RadarStationsMode latestData={latestData} onNavigate={navigateMode} onTop={() => scrollToId("top-anchor")} />
+          <RadarStationsMode
+            latestData={latestData}
+            stationMetadata={stationMetadata}
+            onNavigate={navigateMode}
+            onTop={() => scrollToId("top-anchor")}
+          />
         )}
 
         {currentMode === "METHODOLOGY" && (
           <Suspense fallback={<RadarModeLoadingFallback />}>
             <RadarMethodologyMode
+              displaySummary={displaySummary}
               onNavigate={navigateMode}
               onOpenLai={() => setIsLaiModalOpen(true)}
+              stationMetadata={stationMetadata}
               onTop={() => scrollToId("top-anchor")}
             />
           </Suspense>

@@ -6,7 +6,10 @@ import { DataFreshnessNotice } from "../../components/air/DataFreshnessNotice";
 import { AqiChart } from "../../components/air/AqiChart";
 import { getIneaClassificationStyle } from "./IneaRadarPage";
 import { fetchRadarJson } from "./radar/radarApi";
-import type { RadarMeasurement, RadarTimeseriesPoint } from "./radar/RadarTypes";
+import { RadarStationConfidenceCard } from "./radar/RadarStationConfidenceCard";
+import { RadarVisualNotice } from "./radar/RadarVisualNotice";
+import { useRadarReleaseMetadata } from "../../data/air/useRadarReleaseMetadata";
+import type { RadarMeasurement, RadarTimeseriesPoint, RadarTimeseriesResponse, StationMetadataResponse, SummaryStats } from "./radar/RadarTypes";
 
 interface StationSummary {
   id: string;
@@ -39,6 +42,52 @@ interface ClassificationDaysBreakdown {
   totalDays: number;
 }
 
+type StationTimeWindow = "90D" | "365D" | "ALL";
+
+const TIME_WINDOW_OPTIONS: Array<{ id: StationTimeWindow; label: string; description: string }> = [
+  { id: "90D", label: "90 dias", description: "janela curta para leitura recente" },
+  { id: "365D", label: "12 meses", description: "comparação anual sem sobrecarga visual" },
+  { id: "ALL", label: "série ampla", description: "busca a série histórica até o limite público da API" }
+];
+
+function getIsoDateDaysAgo(days: number) {
+  const date = new Date();
+  date.setDate(date.getDate() - days);
+  return date.toISOString();
+}
+
+function buildTimeseriesParams(stationId: string, timeWindow: StationTimeWindow, limit: number, offset = 0) {
+  const params = new URLSearchParams({
+    stationId: encodeURIComponent(stationId),
+    metricType: "GENERAL_AQI",
+    limit: String(limit),
+    offset: String(offset)
+  });
+
+  if (timeWindow === "90D") {
+    params.set("from", getIsoDateDaysAgo(90));
+  } else if (timeWindow === "365D") {
+    params.set("from", getIsoDateDaysAgo(365));
+  }
+
+  return params;
+}
+
+function buildExportParams(stationId: string, timeWindow: StationTimeWindow) {
+  const params = new URLSearchParams({
+    stationId: encodeURIComponent(stationId),
+    metricType: "GENERAL_AQI"
+  });
+
+  if (timeWindow === "90D") {
+    params.set("from", getIsoDateDaysAgo(90));
+  } else if (timeWindow === "365D") {
+    params.set("from", getIsoDateDaysAgo(365));
+  }
+
+  return params;
+}
+
 function classifySubindex(value: number | null | undefined): { label: string; color: string } {
   if (value === null || value === undefined) return { label: "Sem dados", color: "text-slate-400 border-slate-200 bg-slate-50" };
   if (value <= 40) return { label: "BOA", color: "text-emerald-800 border-emerald-500/20 bg-emerald-50" };
@@ -59,53 +108,159 @@ const POLLUTANTS_INFO: Record<string, { name: string; desc: string }> = {
 
 export function IneaStationPage() {
   const { stationId } = useParams<{ stationId: string }>();
+  const releaseMetadata = useRadarReleaseMetadata();
 
   const [stationInfo, setStationInfo] = useState<StationSummary | null>(null);
+  const [latestMeasuredAt, setLatestMeasuredAt] = useState<string | null>(null);
   const [latestMeasurements, setLatestMeasurements] = useState<RadarMeasurement[]>([]);
   const [timeseries, setTimeseries] = useState<RadarTimeseriesPoint[]>([]);
+  const [timeseriesMeta, setTimeseriesMeta] = useState<Pick<RadarTimeseriesResponse, "total" | "limit" | "offset" | "nextOffset" | "hasMore" | "truncated"> | null>(null);
   const [breakdown, setBreakdown] = useState<ClassificationDaysBreakdown | null>(null);
+  const [latestIngestedAt, setLatestIngestedAt] = useState<string | null>(null);
+  const [stationMetadata, setStationMetadata] = useState<StationMetadataResponse["items"][number] | null>(null);
+  const [partialFailures, setPartialFailures] = useState<string[]>([]);
+  const [timeWindow, setTimeWindow] = useState<StationTimeWindow>("365D");
+  const [timeseriesLoading, setTimeseriesLoading] = useState<boolean>(true);
+  const [timeseriesError, setTimeseriesError] = useState<string | null>(null);
+  const [exportingCsv, setExportingCsv] = useState<boolean>(false);
+  const [exportError, setExportError] = useState<string | null>(null);
 
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     if (!stationId) return;
+    const safeStationId = stationId;
+    let cancelled = false;
 
     async function loadData() {
       try {
         setLoading(true);
         setError(null);
+        setPartialFailures([]);
+        setStationInfo(null);
+        setLatestMeasuredAt(null);
+        setLatestMeasurements([]);
+        setTimeseries([]);
+        setTimeseriesMeta(null);
+        setBreakdown(null);
+        setLatestIngestedAt(null);
+        setStationMetadata(null);
 
-        // Fetch API endpoints
-        const [resLatest, resTimeseries, resBreakdown]: [LatestResponse, RadarTimeseriesPoint[], ClassificationDaysBreakdown] = await Promise.all([
-          fetchRadarJson<LatestResponse>("/api/air/inea/latest"),
-          fetchRadarJson<RadarTimeseriesPoint[]>(`/api/air/inea/timeseries?stationId=${stationId}&metricType=GENERAL_AQI`),
-          fetchRadarJson<ClassificationDaysBreakdown>(`/api/air/inea/classification-days?stationId=${stationId}`)
-        ]);
+        const encodedStationId = encodeURIComponent(safeStationId);
+        const endpoints = [
+          { key: "latest", label: "última leitura pública", url: "/api/air/inea/latest" },
+          { key: "summary", label: "metadata de ingestão", url: "/api/air/inea/summary" },
+          { key: "breakdown", label: "dias por classificação", url: `/api/air/inea/classification-days?stationId=${encodedStationId}` },
+          { key: "stationMetadata", label: "metadados operacionais", url: `/api/air/inea/stations-metadata?stationId=${encodedStationId}` }
+        ] as const;
 
-        const stationsList = resLatest.stations || [];
-        const stationMatch = stationsList.find((l: LatestResult) => l.station.id === stationId);
+        const responses = await Promise.allSettled(
+          endpoints.map(async (endpoint) => ({
+            key: endpoint.key,
+            payload: await fetchRadarJson<unknown>(endpoint.url)
+          }))
+        );
+
+        if (cancelled) return;
+
+        const resultMap = new Map<string, unknown>();
+        const failed: string[] = [];
+
+        responses.forEach((result, index) => {
+          if (result.status === "fulfilled") {
+            resultMap.set(result.value.key, result.value.payload);
+          } else {
+            failed.push(endpoints[index].label);
+          }
+        });
+
+        const resLatest = resultMap.get("latest") as LatestResponse | undefined;
+        const resSummary = resultMap.get("summary") as SummaryStats | undefined;
+        const resBreakdown = resultMap.get("breakdown") as ClassificationDaysBreakdown | undefined;
+        const resStationMetadata = resultMap.get("stationMetadata") as StationMetadataResponse | undefined;
+
+        const stationsList = resLatest?.stations || [];
+        const stationMatch = stationsList.find((l: LatestResult) => l.station.id === safeStationId);
 
         if (!stationMatch) {
-          setError("Estação não encontrada.");
+          setError(
+            failed.includes("última leitura pública")
+              ? "Não foi possível localizar a estação porque a leitura pública principal não respondeu."
+              : "Estação não encontrada."
+          );
           return;
         }
 
         setStationInfo(stationMatch.station);
+        setLatestMeasuredAt(stationMatch.measured_at);
         setLatestMeasurements(stationMatch.measurements);
-        setTimeseries(resTimeseries);
-        setBreakdown(resBreakdown);
+        setLatestIngestedAt(resSummary?.latest_ingested_at || null);
+        setStationMetadata(resStationMetadata?.items?.[0] || null);
+        if (resBreakdown) {
+          setBreakdown(resBreakdown);
+        }
+        setPartialFailures(failed.filter((label) => label !== "última leitura pública"));
 
       } catch (err) {
+        if (cancelled) return;
         console.error("Failed to load station details:", err);
         setError("Não foi possível carregar as informações detalhadas desta estação.");
       } finally {
-        setLoading(false);
+        if (!cancelled) setLoading(false);
       }
     }
 
     void loadData();
+    return () => {
+      cancelled = true;
+    };
   }, [stationId]);
+
+  useEffect(() => {
+    if (!stationId || !stationInfo) return;
+    const safeStationId = stationId;
+    let cancelled = false;
+
+    async function loadTimeseries() {
+      try {
+        setTimeseriesLoading(true);
+        setTimeseriesError(null);
+        setTimeseries([]);
+        setTimeseriesMeta(null);
+
+        const params = buildTimeseriesParams(
+          safeStationId,
+          timeWindow,
+          timeWindow === "ALL" ? 20000 : timeWindow === "365D" ? 9000 : 3000
+        );
+        const response = await fetchRadarJson<RadarTimeseriesResponse>(`/api/air/inea/timeseries?${params.toString()}`);
+
+        if (cancelled) return;
+
+        setTimeseries(response.items || []);
+        setTimeseriesMeta({
+          total: response.total,
+          limit: response.limit,
+          offset: response.offset,
+          nextOffset: response.nextOffset,
+          hasMore: response.hasMore,
+          truncated: response.truncated
+        });
+      } catch (err) {
+        if (cancelled) return;
+        console.error("Failed to load station timeseries:", err);
+        setTimeseriesError("Não foi possível carregar a série histórica para a janela selecionada.");
+      } finally {
+        if (!cancelled) setTimeseriesLoading(false);
+      }
+    }
+
+    void loadTimeseries();
+    return () => {
+      cancelled = true;
+    };
+  }, [stationId, stationInfo, timeWindow]);
 
   // Extract general AQI record
   const generalAqi = useMemo(() => {
@@ -193,6 +348,60 @@ export function IneaStationPage() {
   }
 
   const badgeStyle = getIneaClassificationStyle(generalAqi?.air_quality_classification);
+  const rawExportUrl = stationId ? `/api/air/inea/export?${buildExportParams(stationId, timeWindow).toString()}` : "#";
+
+  const handleExportCsv = async () => {
+    if (!stationId || !stationInfo) return;
+
+    try {
+      setExportingCsv(true);
+      setExportError(null);
+
+      const batchSize = 5000;
+      let offset = 0;
+      let hasMore = true;
+      const rows: RadarTimeseriesPoint[] = [];
+
+      while (hasMore) {
+        const params = buildTimeseriesParams(stationId, timeWindow, batchSize, offset);
+        const response = await fetchRadarJson<RadarTimeseriesResponse>(`/api/air/inea/timeseries?${params.toString()}`);
+        rows.push(...(response.items || []));
+        hasMore = response.hasMore;
+        offset = response.nextOffset ?? 0;
+      }
+
+      const csvRows = [
+        ["station_id", "station_name", "measured_at", "air_quality_index", "controlling_pollutant"],
+        ...rows.map((row) => [
+          stationId,
+          stationInfo.name,
+          row.measured_at,
+          String(row.air_quality_index ?? ""),
+          row.controlling_pollutant ?? ""
+        ])
+      ];
+
+      const csv = csvRows
+        .map((row) => row.map((value) => `"${String(value).replace(/"/g, "\"\"")}"`).join(","))
+        .join("\n");
+
+      const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      const windowLabel = TIME_WINDOW_OPTIONS.find((option) => option.id === timeWindow)?.label.replace(/\s+/g, "-").toLowerCase() || "janela";
+      link.href = url;
+      link.download = `inea-${stationInfo.code || stationId}-${windowLabel}.csv`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+    } catch (err) {
+      console.error("Failed to export station CSV:", err);
+      setExportError("Não foi possível exportar a série CSV da janela selecionada.");
+    } finally {
+      setExportingCsv(false);
+    }
+  };
 
   return (
     <section className="portal-stage space-y-8 md:space-y-10">
@@ -218,6 +427,12 @@ export function IneaStationPage() {
               {stationInfo.neighborhood && (
                 <span className="text-xs text-slate-400 font-semibold">• {stationInfo.neighborhood}</span>
               )}
+              <span className="rounded-full border border-slate-200 bg-white px-2.5 py-1 text-[10px] font-black uppercase tracking-[0.16em] text-slate-700">
+                ciclo {releaseMetadata.cycleVersion}
+              </span>
+              <span className="rounded-full border border-emerald-200 bg-emerald-50 px-2.5 py-1 text-[10px] font-black uppercase tracking-[0.16em] text-emerald-700">
+                metodologia {releaseMetadata.methodologyVersion}
+              </span>
             </div>
             <h1 className="mt-2">{stationInfo.name}</h1>
             <p className="text-xs text-slate-500 font-bold">
@@ -237,45 +452,194 @@ export function IneaStationPage() {
             <span className={`inline-block rounded-full border px-2.5 py-0.5 text-[10px] font-bold mt-2 ${badgeStyle}`}>
               {generalAqi?.air_quality_classification || "Sem Leitura"}
             </span>
+            <span className="mt-2 text-[10px] font-semibold text-slate-400">
+              leitura pública do release {releaseMetadata.cycleVersion}
+            </span>
           </div>
         </div>
       </SurfaceCard>
 
       <MethodologyNotice />
-      <DataFreshnessNotice />
+      <DataFreshnessNotice
+        latestMeasuredAt={latestMeasuredAt}
+        latestIngestedAt={latestIngestedAt}
+        truncatedLabel={
+          timeseriesMeta?.truncated
+            ? `Esta visualização mostra ${timeseriesMeta.limit.toLocaleString("pt-BR")} pontos de ${timeseriesMeta.total.toLocaleString("pt-BR")} disponíveis para a estação.`
+            : null
+        }
+      />
+
+      <RadarStationConfidenceCard stationMetadata={stationMetadata} />
+
+      {partialFailures.length > 0 && (
+        <RadarVisualNotice
+          type="warning"
+          title="Carga parcial da estação"
+          description={`Alguns blocos desta estação não responderam nesta carga: ${partialFailures.join(", ")}. A leitura abaixo permanece pública, mas incompleta.`}
+          badges={[
+            `ciclo ${releaseMetadata.cycleVersion}`,
+            `dataset ${releaseMetadata.datasetVersion}`,
+            `revisão ${releaseMetadata.plannedReviewDate}`
+          ]}
+          nextStep="Use a última leitura pública como referência inicial, mas confirme a interpretação no histórico, no manifesto da API e na metodologia."
+        />
+      )}
 
       <div className="grid gap-6 md:grid-cols-3">
         {/* Timeseries graph */}
         <SurfaceCard className="p-5 md:p-6 bg-white border border-slate-100 rounded-2xl md:col-span-2">
-          <h2 className="text-lg font-black text-slate-800">Série Histórica do Índice Geral IQAr</h2>
-          <p className="text-xs text-slate-400 mt-1 mb-4">Acompanhe a variação do índice geral ao longo do tempo nesta estação.</p>
-          <AqiChart data={chartPoints} />
+          <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+            <div>
+              <h2 className="text-lg font-black text-slate-800">Série Histórica do Índice Geral IQAr</h2>
+              <p className="text-xs text-slate-400 mt-1">Acompanhe a variação do índice geral ao longo do tempo nesta estação, sempre condicionada à janela pública disponível e à cobertura respondida.</p>
+            </div>
+            <div className="flex flex-wrap gap-2">
+              {TIME_WINDOW_OPTIONS.map((option) => (
+                <button
+                  key={option.id}
+                  type="button"
+                  onClick={() => setTimeWindow(option.id)}
+                  className={`rounded-full border px-3 py-2 text-[11px] font-black uppercase tracking-wide transition-colors ${
+                    timeWindow === option.id
+                      ? "border-brand-primary bg-brand-primary text-white"
+                      : "border-slate-200 bg-white text-slate-600 hover:border-slate-300"
+                  }`}
+                  title={option.description}
+                >
+                  {option.label}
+                </button>
+              ))}
+              <button
+                type="button"
+                onClick={() => { void handleExportCsv(); }}
+                disabled={exportingCsv}
+                className="rounded-full border border-emerald-200 bg-emerald-50 px-3 py-2 text-[11px] font-black uppercase tracking-wide text-emerald-800 transition-colors hover:border-emerald-300 disabled:cursor-not-allowed disabled:opacity-60"
+              >
+                {exportingCsv ? "Exportando CSV..." : "Baixar CSV"}
+              </button>
+              <a
+                href={rawExportUrl}
+                className="rounded-full border border-sky-200 bg-sky-50 px-3 py-2 text-[11px] font-black uppercase tracking-wide text-sky-800 transition-colors hover:border-sky-300"
+              >
+                Exportação bruta
+              </a>
+              <a
+                href="/api/air/inea/export-manifest"
+                target="_blank"
+                rel="noreferrer"
+                className="rounded-full border border-slate-200 bg-slate-50 px-3 py-2 text-[11px] font-black uppercase tracking-wide text-slate-700 transition-colors hover:border-slate-300"
+              >
+                Manifesto da API
+              </a>
+            </div>
+          </div>
+          <p className="mb-4 mt-3 text-[11px] font-semibold text-slate-500">
+            Janela ativa: {TIME_WINDOW_OPTIONS.find((option) => option.id === timeWindow)?.description}.
+          </p>
+          <p className="mb-4 text-[11px] font-semibold text-slate-500">
+            Este gráfico é uma leitura histórica pública do release {releaseMetadata.cycleVersion}; use exportação e metodologia quando a análise exigir auditoria forte.
+          </p>
+          {exportError && (
+            <div className="mb-4">
+              <RadarVisualNotice
+                type="warning"
+                title="Falha na exportação"
+                description={exportError}
+                badges={[`ciclo ${releaseMetadata.cycleVersion}`]}
+              />
+            </div>
+          )}
+          {timeseriesLoading ? (
+            <div className="rounded-xl border border-dashed border-slate-200 bg-slate-50/50 p-8 text-center text-sm text-slate-400 italic">
+              Carregando série histórica da janela selecionada...
+            </div>
+          ) : timeseriesError ? (
+            <RadarVisualNotice
+              type="warning"
+              title="Histórico indisponível nesta carga"
+              description={timeseriesError}
+              badges={[
+                `ciclo ${releaseMetadata.cycleVersion}`,
+                `revisão ${releaseMetadata.plannedReviewDate}`
+              ]}
+            />
+          ) : chartPoints.length > 0 ? (
+            <>
+              <AqiChart data={chartPoints} />
+              {timeseriesMeta?.truncated && (
+                <div className="mt-4">
+                  <RadarVisualNotice
+                    type="warning"
+                    title="Histórico parcial nesta página"
+                    description={`A API retornou ${timeseriesMeta.limit.toLocaleString("pt-BR")} pontos de ${timeseriesMeta.total.toLocaleString("pt-BR")} disponíveis para a janela selecionada. Esta leitura ainda não equivale a uma exportação integral da base.`}
+                    badges={[
+                      `ciclo ${releaseMetadata.cycleVersion}`,
+                      `dataset ${releaseMetadata.datasetVersion}`
+                    ]}
+                    nextStep="Se precisar de auditoria integral, use a exportação CSV da janela ou a exportação bruta da API antes de publicar comparação forte."
+                  />
+                </div>
+              )}
+            </>
+          ) : (
+            <RadarVisualNotice
+              type="warning"
+              title="Histórico indisponível nesta carga"
+              description="A série temporal da estação não respondeu ou retornou vazia. A identificação da estação e a última leitura pública seguem disponíveis."
+              badges={[
+                `ciclo ${releaseMetadata.cycleVersion}`,
+                `revisão ${releaseMetadata.plannedReviewDate}`
+              ]}
+            />
+          )}
         </SurfaceCard>
 
         {/* Classification Breakdown progress bars */}
         <SurfaceCard className="p-5 md:p-6 bg-white border border-slate-100 rounded-2xl flex flex-col justify-between">
-          <div>
-            <h2 className="text-lg font-black text-slate-800">Dias por Classificação</h2>
-            <p className="text-xs text-slate-400 mt-1">Frequência acumulada das faixas de qualidade de ar nesta estação.</p>
-            
-            <div className="space-y-4 mt-6">
-              {classificationList.map(item => (
-                <div key={item.name} className="space-y-1.5">
-                  <div className="flex items-center justify-between text-[11px] font-bold text-slate-500">
-                    <span className={item.text}>{item.name}</span>
-                    <span>{item.count} dias ({item.percentage.toFixed(0)}%)</span>
-                  </div>
-                  <div className="h-2 w-full bg-slate-100 rounded-full overflow-hidden">
-                    <div className={`h-full rounded-full ${item.color}`} style={{ width: `${item.percentage}%` }} />
-                  </div>
+          {breakdown ? (
+            <>
+              <div>
+                <h2 className="text-lg font-black text-slate-800">Dias por Classificação</h2>
+                <p className="text-xs text-slate-400 mt-1">Frequência acumulada das faixas de qualidade de ar nesta estação entre os dias com resposta pública válida.</p>
+                
+                <div className="space-y-4 mt-6">
+                  {classificationList.map(item => (
+                    <div key={item.name} className="space-y-1.5">
+                      <div className="flex items-center justify-between text-[11px] font-bold text-slate-500">
+                        <span className={item.text}>{item.name}</span>
+                        <span>{item.count} dias ({item.percentage.toFixed(0)}%)</span>
+                      </div>
+                      <div className="h-2 w-full bg-slate-100 rounded-full overflow-hidden">
+                        <div className={`h-full rounded-full ${item.color}`} style={{ width: `${item.percentage}%` }} />
+                      </div>
+                    </div>
+                  ))}
                 </div>
-              ))}
-            </div>
-          </div>
+              </div>
 
-          <div className="mt-6 border-t border-slate-100 pt-4 text-[10px] text-slate-400 leading-relaxed font-semibold">
-            Total de dias auditados nesta estação: <strong className="text-slate-600">{breakdown?.totalDays} dias</strong>.
-          </div>
+              <div className="mt-6 border-t border-slate-100 pt-4 text-[10px] text-slate-400 leading-relaxed font-semibold">
+                Total de dias auditados nesta estação: <strong className="text-slate-600">{breakdown.totalDays} dias</strong>. Silêncio de base e ausência de resposta não equivalem a ar bom.
+              </div>
+            </>
+          ) : (
+            <div className="space-y-4">
+              <div>
+                <h2 className="text-lg font-black text-slate-800">Dias por Classificação</h2>
+                <p className="text-xs text-slate-400 mt-1">Frequência acumulada das faixas de qualidade de ar nesta estação.</p>
+              </div>
+              <RadarVisualNotice
+                type="warning"
+                title="Classificação acumulada indisponível"
+                description="O bloco de dias por classificação não respondeu nesta carga. Isso impede uma leitura histórica completa da estação, mas não invalida a última leitura pública exibida."
+                badges={[
+                  `ciclo ${releaseMetadata.cycleVersion}`,
+                  `metodologia ${releaseMetadata.methodologyVersion}`
+                ]}
+                nextStep="Se a leitura depender de frequência histórica por faixa, trate esta página como parcial e confirme o contexto no painel principal."
+              />
+            </div>
+          )}
         </SurfaceCard>
       </div>
 
@@ -284,7 +648,7 @@ export function IneaStationPage() {
         {/* Pollutant Subindices Grid */}
         <div className="md:col-span-2 space-y-4">
           <h2 className="text-lg font-black text-slate-800">Subíndices Detalhados por Poluente</h2>
-          <p className="text-xs text-slate-400 mt-1">Últimos subíndices de qualidade do ar computados por tipo de partícula ou gás poluente.</p>
+          <p className="text-xs text-slate-400 mt-1">Últimos subíndices de qualidade do ar computados por tipo de partícula ou gás poluente, úteis para leitura normativa e não para concentração física bruta direta.</p>
           
           <div className="grid gap-4 sm:grid-cols-2">
             {Object.entries(POLLUTANTS_INFO).map(([poll, info]) => {
@@ -315,7 +679,7 @@ export function IneaStationPage() {
         {/* Controlling pollutant list */}
         <SurfaceCard className="p-5 md:p-6 bg-white border border-slate-100 rounded-2xl">
           <h2 className="text-lg font-black text-slate-800">Frequência do Controlador</h2>
-          <p className="text-xs text-slate-400 mt-1">Poluente responsável por definir a classificação da qualidade nesta estação.</p>
+          <p className="text-xs text-slate-400 mt-1">Poluente que mais frequentemente definiu a classificação nesta estação dentro da janela pública selecionada.</p>
           
           <div className="mt-6 space-y-4">
             {controllingPollutantFrequency.length === 0 ? (
@@ -334,6 +698,9 @@ export function IneaStationPage() {
                 </div>
               ))
             )}
+          </div>
+          <div className="mt-5 rounded-xl border border-slate-100 bg-slate-50 p-3 text-[10px] font-semibold leading-relaxed text-slate-500">
+            O controlador ajuda a entender qual subíndice mais pesou no IQAr desta janela. Ele não prova, sozinho, a origem emissora específica nem substitui leitura territorial, cobertura e metodologia.
           </div>
         </SurfaceCard>
       </div>

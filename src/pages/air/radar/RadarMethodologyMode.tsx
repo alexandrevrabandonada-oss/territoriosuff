@@ -1,20 +1,67 @@
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 import { AqiExplainer } from "../../../components/air/AqiExplainer";
 import { HistoricalRawEvidenceBox } from "../../../components/air/HistoricalRawEvidenceBox";
 import { AIR_PUBLIC_DOWNLOADS, getAirPublicDataPath } from "../../../data/air/public-downloads";
+import {
+  RADAR_EXPERIMENTAL_COMPARISON_NOTE,
+  RADAR_OFFICIAL_RECORD_QAQC_NOTE,
+  RADAR_EXPERIMENTAL_WEBLAKES_SEAL,
+  RADAR_NO_DATA_NOT_CLEAN_AIR
+} from "../../../data/air/radar-copy";
 import { gases2024StationSummary } from "../../../data/air/gases-2024-station-summary";
+import { RadarConfidenceSnapshot } from "./RadarConfidenceSnapshot";
+import { getEvidenceStateLabel, RadarEvidenceStateBlock } from "./RadarEvidenceStateBlock";
 import { RadarEvidenceBadge } from "./RadarEvidenceBadge";
+import { RadarEvidenceActionGuide } from "./RadarEvidenceActionGuide";
+import { RadarEvidenceDictionary } from "./RadarEvidenceDictionary";
+import { RadarGovernanceBoard } from "./RadarGovernanceBoard";
+import { PARAMETER_GOVERNANCE_ITEMS } from "./RadarGovernanceModel";
+import { RadarGovernanceScoreboard } from "./RadarGovernanceScoreboard";
 import { RadarHistoricalResearchPanel } from "./RadarHistoricalResearchPanel";
-import type { RadarComparisonTab, RadarMode } from "./RadarTypes";
+import { RadarMaturityScorecard } from "./RadarMaturityScorecard";
+import { RadarNextReadingCard } from "./RadarNextReadingCard";
+import { RadarImplementationStatus } from "./RadarImplementationStatus";
+import { RadarPublicPendingLedger } from "./RadarPublicPendingLedger";
+import { RadarRevisionHistory } from "./RadarRevisionHistory";
+import { RadarTransparencyRoadmap } from "./RadarTransparencyRoadmap";
+import { fetchRadarJson } from "./radarApi";
+import type { RadarComparisonTab, RadarMode, StationMetadataItem, SummaryStats } from "./RadarTypes";
 import { RadarModeFooter } from "./RadarModeFooter";
 import { RadarVisualNotice } from "./RadarVisualNotice";
 
 interface RadarMethodologyModeProps {
+  displaySummary: SummaryStats;
   onNavigate: (mode: RadarMode, tab?: RadarComparisonTab) => void;
   onOpenLai: () => void;
+  stationMetadata: StationMetadataItem[];
   onTop: () => void;
 }
+
+interface ExportCatalogYearPartition {
+  year: number;
+  from: string;
+  to: string;
+  url: string;
+}
+
+interface ExportCatalogStationPartition {
+  station_id: string;
+  station_name: string;
+  city: string | null;
+  neighborhood: string | null;
+  url: string;
+}
+
+interface ExportCatalogResponse {
+  available_years?: {
+    partitions?: ExportCatalogYearPartition[];
+  };
+  available_stations?: ExportCatalogStationPartition[];
+}
+
+type RadarEvidenceBadgeLevel = "strong" | "experimental" | "interpretive" | "insufficient";
 
 const FAQ_ITEMS = [
   {
@@ -55,66 +102,62 @@ const FAQ_ITEMS = [
   }
 ];
 
-const PARAMETER_STATUS = [
+const AUDIT_STEPS = [
   {
-    parameter: "PM10",
-    scope: "Série histórica principal",
-    status: "Liberado com cautela experimental",
-    level: "experimental" as const,
-    description: "É a camada mais madura do Radar em série pública, com leitura plurianual, cobertura por estação e comparação OMS/CONAMA.",
-    releaseRule: "Pode sustentar triagem pública e leitura histórica, sem se apresentar como QA/QC oficial por registro."
+    step: "1. Identifique o recorte",
+    description: "Defina se sua pergunta é espacial, temporal, territorial ou operacional antes de abrir o painel."
   },
   {
-    parameter: "PM2.5",
-    scope: "Série histórica desde 2021",
-    status: "Liberado com cautela experimental",
-    level: "experimental" as const,
-    description: "Sustenta leitura relevante de exposição respiratória fina, mas a série pública começa depois do PM10 e tem janelas de cobertura mais curtas.",
-    releaseRule: "Pode sustentar leitura pública comparativa, sempre com aviso de cobertura e experimentalidade."
+    step: "2. Verifique a cobertura",
+    description: "Confirme se a estação e o período possuem dados suficientes e se a janela operacional é explícita ou inferida."
   },
   {
-    parameter: "SO₂",
-    scope: "Expansão plurianual publicada",
-    status: "Experimental expandido",
-    level: "experimental" as const,
-    description: "Já possui série no portal e ajuda a identificar episódios ligados a combustão industrial, mas ainda em regime de publicação cautelosa.",
-    releaseRule: "Usar como observação experimental; não superdimensionar causalidade nem equivalência com validação oficial fechada."
+    step: "3. Separe observação de interpretação",
+    description: "Diferencie dado observado, processamento do portal e hipótese pública que você está formulando."
   },
   {
-    parameter: "CO",
-    scope: "Expansão plurianual publicada",
-    status: "Experimental expandido",
-    level: "experimental" as const,
-    description: "É útil para leitura complementar da mistura atmosférica, inclusive em janela móvel de 8 horas.",
-    releaseRule: "Usar como camada complementar experimental, não como eixo isolado de conclusão pública."
-  },
-  {
-    parameter: "NO₂",
-    scope: "Base retida",
-    status: "Bloqueado em auditoria crítica",
-    level: "insufficient" as const,
-    description: "Foi segurado corretamente por provável anomalia de linha de base e não deve reentrar na UI antes de auditoria concluída.",
-    releaseRule: "Só liberar com critério técnico público, relatório de auditoria e regra clara de correção ou exclusão."
-  },
-  {
-    parameter: "PTS",
-    scope: "Memória técnica",
-    status: "Histórico técnico em auditoria",
-    level: "interpretive" as const,
-    description: "Tem valor para memória de engenharia e debate público histórico, mas não deve ser confundido com a lógica atual do IQAr e dos particulados finos.",
-    releaseRule: "Manter fora da camada operacional do Radar até revisão técnica específica."
-  },
-  {
-    parameter: "Meteorologia",
-    scope: "Camada auxiliar",
-    status: "Mista: vento observado, demais variáveis estimadas",
-    level: "interpretive" as const,
-    description: "O manifesto já diferencia ventos reais de variáveis simuladas por médias locais, o que exige leitura separada.",
-    releaseRule: "Separar visualmente vento observado de condições atmosféricas estimadas."
+    step: "4. Só então pressione por ação",
+    description: "Depois da checagem, transforme a leitura em cobrança por manutenção, expansão da rede, saúde territorial ou transparência adicional."
   }
 ];
 
-export function RadarMethodologyMode({ onNavigate, onOpenLai, onTop }: RadarMethodologyModeProps) {
+function toEvidenceBadgeLevel(level: string): RadarEvidenceBadgeLevel {
+  return level === "advancing" ? "strong" : (level as RadarEvidenceBadgeLevel);
+}
+
+export function RadarMethodologyMode({ displaySummary, onNavigate, onOpenLai, stationMetadata, onTop }: RadarMethodologyModeProps) {
+  const [exportCatalog, setExportCatalog] = useState<ExportCatalogResponse | null>(null);
+  const [catalogError, setCatalogError] = useState<string | null>(null);
+
+  useEffect(() => {
+    let active = true;
+
+    const loadCatalog = async () => {
+      try {
+        setCatalogError(null);
+        const response = await fetchRadarJson<ExportCatalogResponse>("/api/air/inea/export-catalog");
+        if (!active) {
+          return;
+        }
+        setExportCatalog(response);
+      } catch (error) {
+        if (!active) {
+          return;
+        }
+        setCatalogError(error instanceof Error ? error.message : "Nao foi possivel carregar o catalogo publico de particoes.");
+      }
+    };
+
+    void loadCatalog();
+
+    return () => {
+      active = false;
+    };
+  }, []);
+
+  const topYearPartitions = exportCatalog?.available_years?.partitions?.slice(0, 6) ?? [];
+  const topStationPartitions = exportCatalog?.available_stations?.slice(0, 6) ?? [];
+
   return (
     <div className="animate-fade-in space-y-8 pt-4">
       <div className="space-y-3 rounded-[2rem] border border-slate-200 bg-[linear-gradient(180deg,#ffffff,#f8fafc)] p-6 shadow-[0_20px_45px_-34px_rgba(15,23,42,0.45)]">
@@ -140,7 +183,37 @@ export function RadarMethodologyMode({ onNavigate, onOpenLai, onTop }: RadarMeth
       </div>
 
       <div className="space-y-10">
+        <section className="space-y-4 rounded-[2rem] border border-sky-200 bg-[linear-gradient(180deg,#ffffff,#f0f9ff)] p-5 shadow-[0_20px_45px_-34px_rgba(14,165,233,0.35)]">
+          <div className="space-y-2">
+            <div className="text-[10px] font-black uppercase tracking-[0.18em] text-sky-700">Roteiro de auditoria pública</div>
+            <h3 className="text-lg font-black tracking-tight text-slate-900">Como usar o Radar sem pular etapas de confiança</h3>
+            <p className="max-w-3xl text-xs font-semibold leading-relaxed text-slate-600">
+              Esta metodologia não existe só para consulta. Ela organiza a ordem mínima de auditoria para qualquer leitura pública séria do monitoramento.
+            </p>
+          </div>
+
+          <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-4">
+            {AUDIT_STEPS.map((item) => (
+              <div key={item.step} className="rounded-[1.5rem] border border-sky-100 bg-white p-4 shadow-[0_14px_30px_-26px_rgba(15,23,42,0.22)]">
+                <div className="text-[10px] font-black uppercase tracking-[0.16em] text-sky-700">{item.step}</div>
+                <p className="mt-2 text-[11px] font-semibold leading-relaxed text-slate-600">{item.description}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
         <section id="governanca-parametros" className="space-y-6">
+          <RadarGovernanceBoard summary={displaySummary} stationMetadata={stationMetadata} />
+          <RadarGovernanceScoreboard stationMetadata={stationMetadata} />
+          <RadarConfidenceSnapshot summary={displaySummary} stationMetadata={stationMetadata} />
+          <RadarMaturityScorecard summary={displaySummary} stationMetadata={stationMetadata} />
+          <RadarEvidenceDictionary />
+          <RadarEvidenceActionGuide onNavigate={onNavigate} onOpenLai={onOpenLai} />
+          <RadarTransparencyRoadmap />
+          <RadarImplementationStatus />
+          <RadarRevisionHistory stationMetadata={stationMetadata} />
+          <RadarPublicPendingLedger onNavigate={onNavigate} onOpenLai={onOpenLai} />
+
           <div className="space-y-2">
             <h3 className="text-lg font-black text-slate-800">Quadro público de governança por parâmetro</h3>
             <p className="max-w-4xl text-xs font-semibold leading-relaxed text-slate-600">
@@ -150,7 +223,7 @@ export function RadarMethodologyMode({ onNavigate, onOpenLai, onTop }: RadarMeth
           </div>
 
           <div className="grid gap-4 lg:grid-cols-2">
-            {PARAMETER_STATUS.map((item) => (
+            {PARAMETER_GOVERNANCE_ITEMS.map((item) => (
               <div
                 key={item.parameter}
                 className="space-y-4 rounded-[1.75rem] border border-slate-200 bg-[linear-gradient(180deg,#ffffff,#f8fafc)] p-5 shadow-[0_16px_34px_-28px_rgba(15,23,42,0.35)]"
@@ -160,7 +233,7 @@ export function RadarMethodologyMode({ onNavigate, onOpenLai, onTop }: RadarMeth
                     <div className="text-[10px] font-black uppercase tracking-[0.18em] text-slate-400">{item.scope}</div>
                     <h4 className="mt-1 text-base font-black tracking-tight text-slate-900">{item.parameter}</h4>
                   </div>
-                  <RadarEvidenceBadge level={item.level} label={item.status} detail={item.scope} />
+                  <RadarEvidenceBadge level={toEvidenceBadgeLevel(item.level)} label={item.status} detail={item.scope} />
                 </div>
 
                 <p className="text-xs font-semibold leading-relaxed text-slate-600">{item.description}</p>
@@ -169,6 +242,12 @@ export function RadarMethodologyMode({ onNavigate, onOpenLai, onTop }: RadarMeth
                   <div className="text-[10px] font-black uppercase tracking-[0.16em] text-slate-500">Regra de liberação pública</div>
                   <p className="mt-1 text-[11px] font-semibold leading-relaxed text-slate-700">{item.releaseRule}</p>
                 </div>
+
+                <RadarEvidenceStateBlock
+                  state={item.evidenceState}
+                  title={getEvidenceStateLabel(item.evidenceState)}
+                  description={item.evidenceDescription}
+                />
               </div>
             ))}
           </div>
@@ -228,9 +307,9 @@ export function RadarMethodologyMode({ onNavigate, onOpenLai, onTop }: RadarMeth
             </div>
             <p className="max-w-3xl text-xs font-semibold leading-relaxed text-slate-500">
               Publicação controlada de novos gases atmosféricos para o ano de 2024. As comparações com OMS e CONAMA 506 são experimentais.{" "}
-              <span className="font-black text-slate-700">Dado horário público WebLakes — comparação experimental — sem QA/QC oficial explícito.</span>
+              <span className="font-black text-slate-700">{RADAR_EXPERIMENTAL_WEBLAKES_SEAL}.</span>
             </p>
-            <RadarEvidenceBadge level="experimental" label="Expansão cautelosa" detail="dados úteis para observação pública, ainda sem cadeia oficial explícita de QA/QC por registro" />
+            <RadarEvidenceBadge level="experimental" label="Expansão cautelosa" detail={`dados úteis para observação pública, ainda sem cadeia oficial explícita de ${RADAR_OFFICIAL_RECORD_QAQC_NOTE}`} />
           </div>
 
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
@@ -444,6 +523,119 @@ export function RadarMethodologyMode({ onNavigate, onOpenLai, onTop }: RadarMeth
         </section>
 
         <div className="space-y-4 border-t border-slate-100 pt-4">
+          <div className="rounded-[1.8rem] border border-sky-200 bg-[linear-gradient(180deg,#ffffff,#f0f9ff)] p-5 shadow-[0_20px_45px_-34px_rgba(14,165,233,0.35)]">
+            <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+              <div className="space-y-2">
+                <div className="text-[10px] font-black uppercase tracking-[0.16em] text-sky-700">Contrato público da exportação</div>
+                <h3 className="text-base font-black tracking-tight text-slate-900">Manifesto, CSV bruto e rota paginada</h3>
+                <p className="max-w-3xl text-[11px] font-semibold leading-relaxed text-slate-600">
+                  O Radar já publica um manifesto legível por máquina com colunas, filtros, limites e sinalização de truncamento, além da rota de exportação CSV
+                  bruta e da série paginada via `offset`.
+                </p>
+              </div>
+              <div className="flex flex-wrap gap-2">
+                <a
+                  href="/api/air/inea/export-manifest"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex min-h-[38px] items-center justify-center rounded-2xl border border-sky-200 bg-white px-4 text-[10px] font-black uppercase tracking-[0.16em] text-sky-800 transition-colors hover:border-sky-300"
+                >
+                  Abrir manifesto
+                </a>
+                <a
+                  href="/api/air/inea/export?metricType=GENERAL_AQI"
+                  className="inline-flex min-h-[38px] items-center justify-center rounded-2xl bg-slate-950 px-4 text-[10px] font-black uppercase tracking-[0.16em] text-white transition-colors hover:bg-sky-700"
+                >
+                  Baixar CSV bruto
+                </a>
+                <a
+                  href="/api/air/inea/export-catalog"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex min-h-[38px] items-center justify-center rounded-2xl border border-slate-200 bg-slate-50 px-4 text-[10px] font-black uppercase tracking-[0.16em] text-slate-700 transition-colors hover:border-slate-300"
+                >
+                  Ver catálogo de partições
+                </a>
+                <a
+                  href="/api/air/inea/stations-metadata"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex min-h-[38px] items-center justify-center rounded-2xl border border-emerald-200 bg-emerald-50 px-4 text-[10px] font-black uppercase tracking-[0.16em] text-emerald-800 transition-colors hover:border-emerald-300"
+                >
+                  Metadados das estações
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <div className="rounded-[1.8rem] border border-slate-200 bg-white p-5 shadow-[0_18px_40px_-34px_rgba(15,23,42,0.35)]">
+            <div className="space-y-2">
+              <div className="text-[10px] font-black uppercase tracking-[0.16em] text-slate-500">Centro de downloads particionados</div>
+              <h3 className="text-base font-black tracking-tight text-slate-900">Recortes prontos para auditoria reproduzível</h3>
+              <p className="max-w-3xl text-[11px] font-semibold leading-relaxed text-slate-600">
+                Em vez de depender de uma exportação massiva única, o catálogo público já organiza fatias anuais e por estação. Isso reduz atrito para
+                jornalistas, pesquisadores e controle social repetirem a análise.
+              </p>
+            </div>
+
+            {catalogError ? (
+              <div className="pt-4">
+                <RadarVisualNotice
+                  type="warning"
+                  title="Catálogo público temporariamente indisponível"
+                  description={catalogError}
+                  nextStep="Enquanto isso, use o manifesto da API e a exportação bruta direta para manter a auditoria ativa."
+                />
+              </div>
+            ) : (
+              <div className="grid gap-4 pt-4 lg:grid-cols-2">
+                <div className="rounded-[1.4rem] border border-slate-200 bg-slate-50 p-4">
+                  <div className="text-[10px] font-black uppercase tracking-[0.16em] text-slate-500">Partições anuais</div>
+                  <div className="mt-3 space-y-2">
+                    {topYearPartitions.length > 0 ? (
+                      topYearPartitions.map((partition) => (
+                        <a
+                          key={partition.year}
+                          href={partition.url}
+                          className="flex items-center justify-between rounded-2xl border border-slate-200 bg-white px-3 py-2 text-[11px] font-bold text-slate-700 transition-colors hover:border-sky-300 hover:text-sky-800"
+                        >
+                          <span>{partition.year}</span>
+                          <span>
+                            {partition.from} a {partition.to}
+                          </span>
+                        </a>
+                      ))
+                    ) : (
+                      <p className="text-[11px] font-semibold leading-relaxed text-slate-500">O catálogo ainda não publicou partições anuais disponíveis.</p>
+                    )}
+                  </div>
+                </div>
+
+                <div className="rounded-[1.4rem] border border-slate-200 bg-slate-50 p-4">
+                  <div className="text-[10px] font-black uppercase tracking-[0.16em] text-slate-500">Partições por estação</div>
+                  <div className="mt-3 space-y-2">
+                    {topStationPartitions.length > 0 ? (
+                      topStationPartitions.map((partition) => (
+                        <a
+                          key={partition.station_id}
+                          href={partition.url}
+                          className="flex items-center justify-between gap-3 rounded-2xl border border-slate-200 bg-white px-3 py-2 text-[11px] font-bold text-slate-700 transition-colors hover:border-emerald-300 hover:text-emerald-800"
+                        >
+                          <span>{partition.station_name}</span>
+                          <span className="text-right text-[10px] uppercase tracking-[0.12em] text-slate-500">
+                            {[partition.neighborhood, partition.city].filter(Boolean).join(" · ") || partition.station_id}
+                          </span>
+                        </a>
+                      ))
+                    ) : (
+                      <p className="text-[11px] font-semibold leading-relaxed text-slate-500">O catálogo ainda não publicou partições por estação disponíveis.</p>
+                    )}
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+
           <div className="flex flex-col justify-between gap-4 rounded-2xl border-2 border-emerald-500/30 bg-emerald-50 p-4 text-emerald-950 sm:flex-row sm:items-center">
             <div className="space-y-1">
               <div className="flex items-center gap-2">
@@ -527,14 +719,14 @@ export function RadarMethodologyMode({ onNavigate, onOpenLai, onTop }: RadarMeth
             <div className="card-leitura space-y-3 rounded-2xl p-5">
               <h4 className="text-xs font-black uppercase tracking-widest text-slate-400">Limitações do WebLakes</h4>
               <p className="text-xs font-semibold leading-relaxed text-slate-600">
-                Os dados brutos coletados da plataforma do INEA não contam com sinalização técnica de validação (QA/QC) explícita. Valores picos ou sequências de zeros persistentes podem representar anomalias instrumentais sem verificação oficial. Por isso, todas as ultrapassagens são tratadas como <strong>comparação experimental</strong>.
+                Os dados brutos coletados da plataforma do INEA não contam com sinalização técnica de validação (QA/QC) explícita. Valores picos ou sequências de zeros persistentes podem representar anomalias instrumentais sem verificação oficial. Por isso, {RADAR_EXPERIMENTAL_COMPARISON_NOTE.toLowerCase()}
               </p>
             </div>
 
             <div className="card-leitura space-y-3 rounded-2xl p-5">
               <h4 className="text-xs font-black uppercase tracking-widest text-slate-400">Regras de Cálculo</h4>
               <p className="text-xs font-semibold leading-relaxed text-slate-600">
-                <strong>Validade diária:</strong> Para calcular a média diária de um poluente, exige-se no mínimo 18 horas válidas (75% de representatividade). <strong>Cobertura:</strong> Mede a quantidade de leituras válidas recebidas em relação à cadência esperada do sensor no período. Ausência de dados nunca é interpretada como qualidade boa do ar.
+                <strong>Validade diária:</strong> Para calcular a média diária de um poluente, exige-se no mínimo 18 horas válidas (75% de representatividade). <strong>Cobertura:</strong> Mede a quantidade de leituras válidas recebidas em relação à cadência esperada do sensor no período. {RADAR_NO_DATA_NOT_CLEAN_AIR}
               </p>
             </div>
           </div>
@@ -594,6 +786,16 @@ export function RadarMethodologyMode({ onNavigate, onOpenLai, onTop }: RadarMeth
           </div>
         </div>
       </div>
+
+      <RadarNextReadingCard
+        eyebrow="Próxima leitura recomendada"
+        title="Com a regra metodológica clara, volte ao Radar para testar se cada painel está sendo lido com a cautela correta."
+        description="A metodologia fecha o circuito de confiança. O melhor uso agora é retornar à visão geral ou à cobertura das estações e reler os achados já sabendo distinguir evidência forte, interpretação e limite operacional."
+        caution="Metodologia lida e não reaplicada nos painéis vira documentação decorativa, não transparência efetiva."
+        primary={{ label: "Voltar à visão geral", mode: "OVERVIEW" }}
+        secondary={{ label: "Reabrir cobertura", mode: "TIME", tab: "COVERAGE" }}
+        onNavigate={onNavigate}
+      />
 
       <RadarModeFooter
         nextStep="Próximo passo recomendado: Volte à Visão Geral para ver as atualizações e rankings de atenção."

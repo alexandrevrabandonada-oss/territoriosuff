@@ -8,6 +8,12 @@ const VITE_PROJECT_NAME = process.env.VITE_PROJECT_NAME || "SEMEAR SF";
 
 const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
 
+function getHostUrl(req: any): string {
+    const host = req.headers["x-forwarded-host"] || req.headers.host || "semear-pwa.vercel.app";
+    const protocol = req.headers["x-forwarded-proto"] || "https";
+    return `${protocol}://${host}`;
+}
+
 function hashIp(ip: string, userAgent: string): string {
     return crypto
         .createHash("sha256")
@@ -71,11 +77,12 @@ export default async function handler(req: any, res: any) {
 
         // 3. Mount HTML with Open Graph
         const title = `Qualidade do ar agora — ${station.name} | ${VITE_PROJECT_NAME}`;
-        const finalUrl = `https://${req.headers.host || "localhost"}/dados?station=${station.code}`;
+        const hostUrl = getHostUrl(req);
+        const finalUrl = `${hostUrl}/dados?station=${station.code}`;
         const safeTitle = encodeURIComponent(station.name);
         const safeSubtitle = encodeURIComponent(desc);
 
-        let fallbackImage = `https://${req.headers.host || "localhost"}/api/og/card?kind=dados&title=${safeTitle}&subtitle=${safeSubtitle}`;
+        let fallbackImage = `${hostUrl}/api/og/card?kind=dados&title=${safeTitle}&subtitle=${safeSubtitle}`;
         if (meas) {
             const timeStr = new Date(meas.ts).toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" });
             fallbackImage += `&pm25=${meas.pm25.toFixed(1)}&pm10=${meas.pm10.toFixed(1)}&time=${encodeURIComponent(timeStr)}`;

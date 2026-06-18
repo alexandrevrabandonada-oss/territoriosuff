@@ -1,5 +1,11 @@
 import { createClient } from '@supabase/supabase-js';
 
+function getHostUrl(req: any) {
+  const host = req.headers['x-forwarded-host'] || req.headers.host || 'semear-pwa.vercel.app';
+  const protocol = req.headers['x-forwarded-proto'] || 'https';
+  return `${protocol}://${host}`;
+}
+
 export default async function handler(req: any, res: any) {
   const { slug } = req.query;
 
@@ -46,7 +52,7 @@ export default async function handler(req: any, res: any) {
     return res.redirect(`/acervo/item/${slug}`);
   }
 
-  const hostUrl = req.headers.host ? `https://${req.headers.host}` : 'https://semear-pwa.vercel.app';
+  const hostUrl = getHostUrl(req);
   const title = `${item.title} | Acervo SEMEAR`;
   const description = item.excerpt || 'Consulte este item no Acervo Digital SEMEAR.';
 
