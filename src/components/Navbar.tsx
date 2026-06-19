@@ -23,7 +23,6 @@ const mobileGroups = [
       { href: "/", label: "Home" },
       { href: "/dados", label: "Dados" },
       { href: "/qualidade-ar/inea", label: "Radar INEA" },
-      { href: "/qualidade-ar/inea/historia", label: "História INEA" },
       { href: "/qualidade-ar/inea/analises", label: "Análises INEA" },
       { href: "/agenda", label: "Agenda" },
       { href: "/conversar", label: "Conversas e atividades" }

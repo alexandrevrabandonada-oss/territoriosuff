@@ -131,8 +131,8 @@ function IneaAnalyticsFallback({ failedBlocks }: { failedBlocks: string[] }) {
                 <Link to="/qualidade-ar/inea" className="rounded-2xl bg-slate-950 px-5 py-3 text-xs font-black uppercase tracking-[0.12em] text-white transition-colors hover:bg-emerald-700">
                   Voltar ao Radar
                 </Link>
-                <Link to="/qualidade-ar/inea/historia" className="rounded-2xl border border-slate-200 bg-white px-5 py-3 text-xs font-black uppercase tracking-[0.12em] text-slate-700 transition-colors hover:bg-slate-50">
-                  Ver história INEA
+                <Link to="/qualidade-ar/inea/metodologia" className="rounded-2xl border border-slate-200 bg-white px-5 py-3 text-xs font-black uppercase tracking-[0.12em] text-slate-700 transition-colors hover:bg-slate-50">
+                  Ver metodologia
                 </Link>
               </div>
             </div>
@@ -178,7 +178,7 @@ function IneaAnalyticsFallback({ failedBlocks }: { failedBlocks: string[] }) {
             </div>
             <div className="rounded-2xl bg-slate-50 p-4 text-sm font-semibold leading-relaxed text-slate-700">
               <strong className="block text-slate-950">3. Feche com ação pública.</strong>
-              Use o Radar, a História INEA e a metodologia para formular cobrança, reunião ou pedido de informação.
+              Use o Radar, as Análises INEA e a metodologia para formular cobrança, reunião ou pedido de informação.
             </div>
           </div>
         </SurfaceCard>
@@ -348,10 +348,10 @@ export function IneaAnalyticsPage() {
           </div>
           <div className="flex flex-wrap items-center gap-2">
             <Link 
-              to="/qualidade-ar/inea/historia"
+              to="/qualidade-ar/inea/analises"
               className="inline-flex items-center gap-2 px-4 py-2 border border-slate-200 bg-white text-slate-700 rounded-xl text-xs font-bold hover:bg-slate-50 transition-all shadow-sm"
             >
-              Ver explicação didática
+              Ver síntese histórica
             </Link>
             <Link 
               to="/qualidade-ar/inea"

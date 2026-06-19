@@ -8,7 +8,6 @@ function getRouteAnnouncement(pathname: string): string {
     "/": "Página inicial",
     "/dados": "Leituras SEMEAR",
     "/qualidade-ar/inea": "Radar INEA",
-    "/qualidade-ar/inea/historia": "Memória histórica INEA",
     "/qualidade-ar/inea/analises": "Análises INEA",
     "/qualidade-ar/inea/metodologia": "Metodologia INEA",
     "/acervo": "Acervo",

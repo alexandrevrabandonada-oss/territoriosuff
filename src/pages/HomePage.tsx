@@ -348,7 +348,7 @@ export function HomePage() {
         </div>
       </div>
 
-      {/* Banner de Destaque da História INEA */}
+      {/* Banner de Destaque das Análises INEA */}
       <div className="home-inea-history-banner my-8 p-6 md:p-8 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 border border-slate-700/50 rounded-[2rem] text-white shadow-xl relative overflow-hidden flex flex-col md:flex-row md:items-center gap-6 justify-between animate-fade-in">
         <div className="absolute top-0 right-0 w-80 h-80 bg-brand-primary/10 rounded-full blur-3xl pointer-events-none" />
         <div className="absolute bottom-0 left-0 w-60 h-60 bg-emerald-500/5 rounded-full blur-3xl pointer-events-none" />
@@ -372,7 +372,7 @@ export function HomePage() {
             to="/qualidade-ar/inea"
             className="inline-flex items-center justify-center min-h-[44px] px-6 py-3 bg-brand-primary hover:bg-brand-primary-dark text-white font-black uppercase tracking-[0.14em] text-xs rounded-xl shadow-lg shadow-brand-primary/20 transition-all hover:-translate-y-0.5"
           >
-            Acessar história do ar &rarr;
+            Acessar Radar do Ar &rarr;
           </Link>
         </div>
       </div>

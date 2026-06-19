@@ -54,7 +54,6 @@ const RadarLandingPage = lazy(() => import("./pages/air/RadarLandingPage").then(
 const IneaRadarPage = lazy(() => import("./pages/air/IneaRadarPage").then((m) => ({ default: m.IneaRadarPage })));
 const IneaStationPage = lazy(() => import("./pages/air/IneaStationPage").then((m) => ({ default: m.IneaStationPage })));
 const IneaAnalyticsPage = lazy(() => import("./pages/air/IneaAnalyticsPage").then((m) => ({ default: m.IneaAnalyticsPage })));
-const IneaHistoryPage = lazy(() => import("./pages/air/IneaHistoryPage").then((m) => ({ default: m.IneaHistoryPage })));
 const IneaMethodologyPage = lazy(() => import("./pages/air/IneaMethodologyPage").then((m) => ({ default: m.IneaMethodologyPage })));
 
 export default function App() {
@@ -77,7 +76,7 @@ export default function App() {
                   <Route path="/dados" element={<DadosPage />} />
                   <Route path="/qualidade-ar" element={<RadarLandingPage />} />
                   <Route path="/qualidade-ar/inea" element={<IneaRadarPage />} />
-                  <Route path="/qualidade-ar/inea/historia" element={<IneaHistoryPage />} />
+                  <Route path="/qualidade-ar/inea/historia" element={<Navigate to="/qualidade-ar/inea" replace />} />
                   <Route path="/qualidade-ar/inea/analises" element={<IneaAnalyticsPage />} />
                   <Route path="/qualidade-ar/inea/metodologia" element={<IneaMethodologyPage />} />
                   <Route path="/qualidade-ar/inea/estacoes/:stationId" element={<IneaStationPage />} />
