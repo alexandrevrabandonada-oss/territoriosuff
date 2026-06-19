@@ -7,6 +7,9 @@ import { WindRosePanel } from "../../components/air/WindRosePanel";
 import { WeatherPollutionCorrelation } from "../../components/air/WeatherPollutionCorrelation";
 import { RainWashEffectPanel } from "../../components/air/RainWashEffectPanel";
 import { RADAR_CONTROLLER_NOTE, RADAR_NO_DATA_NOT_CLEAN_AIR } from "../../data/air/radar-copy";
+import { ATTENTION_EPISODES } from "../../data/air/attention-episodes-2020-2026";
+import { PARTICULATE_TIMELINE } from "../../data/air/particulate-timeline-2020-2026";
+import { AIR_PUBLIC_DOWNLOADS } from "../../data/air/public-downloads";
 import { RadarEvidenceBadge } from "./radar/RadarEvidenceBadge";
 import { RadarVisualNotice } from "./radar/RadarVisualNotice";
 import { useRadarReleaseMetadata } from "../../data/air/useRadarReleaseMetadata";
@@ -38,6 +41,151 @@ interface ClassificationDayItem {
 }
 
 type ClassificationDaysResponse = Record<string, ClassificationDayItem>;
+
+function buildStaticAnalyticsSummary() {
+  const timelineRows = PARTICULATE_TIMELINE.filter((row) => row.coveragePct > 0);
+  const stations = Array.from(new Set(timelineRows.map((row) => row.station_name))).sort((a, b) => a.localeCompare(b, "pt-BR"));
+  const years = Array.from(new Set(timelineRows.map((row) => row.year))).sort((a, b) => a - b);
+  const pollutants = Array.from(new Set(timelineRows.map((row) => row.pollutant))).sort();
+  const strongCoverageRows = timelineRows.filter((row) => row.coveragePct >= 75).length;
+  const partialCoverageRows = timelineRows.filter((row) => row.coveragePct > 0 && row.coveragePct < 75).length;
+  const attentionMonths = ATTENTION_EPISODES.filter((episode) => episode.who_exceedance_days > 0 || episode.conama_exceedance_days > 0);
+  const worstAttentionMonth = attentionMonths.reduce<(typeof ATTENTION_EPISODES)[number] | null>((current, episode) => {
+    const episodeScore = episode.who_exceedance_days + episode.conama_exceedance_days + episode.peak_pm10 + episode.peak_pm25;
+    const currentScore = current ? current.who_exceedance_days + current.conama_exceedance_days + current.peak_pm10 + current.peak_pm25 : -1;
+    return episodeScore > currentScore ? episode : current;
+  }, null);
+
+  return {
+    stations,
+    years,
+    pollutants,
+    strongCoverageRows,
+    partialCoverageRows,
+    attentionMonths,
+    worstAttentionMonth,
+    csvDownloads: AIR_PUBLIC_DOWNLOADS.filter((item) => item.file.endsWith(".csv")).length
+  };
+}
+
+const staticAnalyticsSummary = buildStaticAnalyticsSummary();
+
+function IneaAnalyticsFallback({ failedBlocks }: { failedBlocks: string[] }) {
+  const releaseMetadata = useRadarReleaseMetadata();
+  const yearStart = staticAnalyticsSummary.years[0] ?? 2020;
+  const yearEnd = staticAnalyticsSummary.years[staticAnalyticsSummary.years.length - 1] ?? 2026;
+  const worstMonthLabel = staticAnalyticsSummary.worstAttentionMonth
+    ? `${staticAnalyticsSummary.worstAttentionMonth.month}/${staticAnalyticsSummary.worstAttentionMonth.year}`
+    : "em consolidação";
+
+  return (
+    <main className="min-h-screen bg-[linear-gradient(180deg,#f8fafc_0%,#eef7f5_48%,#ffffff_100%)] pb-16">
+      <section className="mx-auto max-w-7xl px-4 pt-10 md:px-6 md:pt-16">
+        <div className="grid gap-6 lg:grid-cols-[1.05fr_0.95fr]">
+          <div className="relative overflow-hidden rounded-[2.25rem] bg-slate-950 p-7 text-white shadow-[0_28px_70px_-42px_rgba(15,23,42,0.78)] md:p-10">
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_12%_20%,rgba(16,185,129,0.28),transparent_32%),radial-gradient(circle_at_88%_20%,rgba(14,165,233,0.24),transparent_34%)]" />
+            <div className="relative z-10 space-y-6">
+              <div className="inline-flex rounded-full border border-emerald-300/20 bg-emerald-300/10 px-4 py-2 text-[10px] font-black uppercase tracking-[0.18em] text-emerald-200">
+                Análise histórica sem API
+              </div>
+              <div className="space-y-3">
+                <h1 className="max-w-3xl text-4xl font-black leading-[0.92] tracking-tight md:text-6xl">
+                  Análises INEA a partir da base histórica consolidada
+                </h1>
+                <p className="max-w-2xl text-base font-semibold leading-relaxed text-slate-200 md:text-lg">
+                  Esta rota não deve depender de endpoint em tempo real. Quando a camada analítica automática não responde,
+                  o portal mostra a síntese pública já auditada: anos, estações, poluentes, cobertura e episódios de atenção.
+                </p>
+              </div>
+              <div className="grid gap-3 sm:grid-cols-3">
+                <div className="rounded-2xl border border-white/10 bg-white/10 p-4">
+                  <div className="text-[10px] font-black uppercase tracking-[0.16em] text-slate-300">Janela</div>
+                  <div className="mt-2 text-3xl font-black">{yearStart}-{yearEnd}</div>
+                </div>
+                <div className="rounded-2xl border border-white/10 bg-white/10 p-4">
+                  <div className="text-[10px] font-black uppercase tracking-[0.16em] text-slate-300">Estações</div>
+                  <div className="mt-2 text-3xl font-black">{staticAnalyticsSummary.stations.length}</div>
+                </div>
+                <div className="rounded-2xl border border-white/10 bg-white/10 p-4">
+                  <div className="text-[10px] font-black uppercase tracking-[0.16em] text-slate-300">CSVs públicos</div>
+                  <div className="mt-2 text-3xl font-black">{staticAnalyticsSummary.csvDownloads}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <SurfaceCard className="rounded-[2.25rem] border border-slate-200 bg-white p-6 shadow-[0_22px_52px_-40px_rgba(15,23,42,0.45)] md:p-8">
+            <div className="space-y-4">
+              <div className="text-[10px] font-black uppercase tracking-[0.18em] text-slate-400">Status da camada automática</div>
+              <h2 className="text-2xl font-black tracking-tight text-slate-950">Endpoint analítico indisponível, rota preservada.</h2>
+              <p className="text-sm font-semibold leading-relaxed text-slate-600">
+                A ausência de resposta automática não torna a página morta. Ela passa a operar como painel pedagógico
+                baseado nos artefatos históricos versionados do ciclo {releaseMetadata.cycleVersion}.
+              </p>
+              {failedBlocks.length > 0 ? (
+                <div className="rounded-2xl border border-amber-200 bg-amber-50 p-4 text-xs font-bold leading-relaxed text-amber-900">
+                  Blocos automáticos sem resposta: {failedBlocks.join(", ")}.
+                </div>
+              ) : null}
+              <div className="flex flex-wrap gap-3">
+                <Link to="/qualidade-ar/inea" className="rounded-2xl bg-slate-950 px-5 py-3 text-xs font-black uppercase tracking-[0.12em] text-white transition-colors hover:bg-emerald-700">
+                  Voltar ao Radar
+                </Link>
+                <Link to="/qualidade-ar/inea/historia" className="rounded-2xl border border-slate-200 bg-white px-5 py-3 text-xs font-black uppercase tracking-[0.12em] text-slate-700 transition-colors hover:bg-slate-50">
+                  Ver história INEA
+                </Link>
+              </div>
+            </div>
+          </SurfaceCard>
+        </div>
+      </section>
+
+      <section className="mx-auto mt-8 grid max-w-7xl gap-4 px-4 md:grid-cols-4 md:px-6">
+        <SurfaceCard className="rounded-[1.6rem] border border-emerald-200 bg-emerald-50 p-5">
+          <div className="text-[10px] font-black uppercase tracking-[0.16em] text-emerald-700">Cobertura forte</div>
+          <div className="mt-3 text-3xl font-black text-emerald-950">{staticAnalyticsSummary.strongCoverageRows}</div>
+          <p className="mt-2 text-xs font-bold leading-relaxed text-emerald-900">linhas ano-estação-poluente com cobertura igual ou superior a 75%.</p>
+        </SurfaceCard>
+        <SurfaceCard className="rounded-[1.6rem] border border-amber-200 bg-amber-50 p-5">
+          <div className="text-[10px] font-black uppercase tracking-[0.16em] text-amber-700">Cobertura cautelar</div>
+          <div className="mt-3 text-3xl font-black text-amber-950">{staticAnalyticsSummary.partialCoverageRows}</div>
+          <p className="mt-2 text-xs font-bold leading-relaxed text-amber-900">linhas úteis para contexto, mas insuficientes para ranking forte.</p>
+        </SurfaceCard>
+        <SurfaceCard className="rounded-[1.6rem] border border-rose-200 bg-rose-50 p-5">
+          <div className="text-[10px] font-black uppercase tracking-[0.16em] text-rose-700">Meses de atenção</div>
+          <div className="mt-3 text-3xl font-black text-rose-950">{staticAnalyticsSummary.attentionMonths.length}</div>
+          <p className="mt-2 text-xs font-bold leading-relaxed text-rose-900">meses com excedência OMS ou CONAMA na base de episódios.</p>
+        </SurfaceCard>
+        <SurfaceCard className="rounded-[1.6rem] border border-sky-200 bg-sky-50 p-5">
+          <div className="text-[10px] font-black uppercase tracking-[0.16em] text-sky-700">Pico pedagógico</div>
+          <div className="mt-3 text-3xl font-black text-sky-950">{worstMonthLabel}</div>
+          <p className="mt-2 text-xs font-bold leading-relaxed text-sky-900">mês recomendado para iniciar leitura crítica de episódios.</p>
+        </SurfaceCard>
+      </section>
+
+      <section className="mx-auto mt-8 max-w-7xl px-4 md:px-6">
+        <SurfaceCard className="rounded-[1.8rem] border border-slate-200 bg-white p-6">
+          <div className="text-[10px] font-black uppercase tracking-[0.18em] text-slate-400">Como interpretar</div>
+          <h2 className="mt-2 text-2xl font-black tracking-tight text-slate-950">Esta análise é uma triagem pública, não laudo individual.</h2>
+          <div className="mt-5 grid gap-4 md:grid-cols-3">
+            <div className="rounded-2xl bg-slate-50 p-4 text-sm font-semibold leading-relaxed text-slate-700">
+              <strong className="block text-slate-950">1. Comece pela cobertura.</strong>
+              Estação sem dado não é estação com ar limpo. Lacuna deve ser lida como problema de transparência e continuidade.
+            </div>
+            <div className="rounded-2xl bg-slate-50 p-4 text-sm font-semibold leading-relaxed text-slate-700">
+              <strong className="block text-slate-950">2. Compare PM10 e PM2.5.</strong>
+              Picos simultâneos ou recorrentes em material particulado merecem leitura territorial prioritária.
+            </div>
+            <div className="rounded-2xl bg-slate-50 p-4 text-sm font-semibold leading-relaxed text-slate-700">
+              <strong className="block text-slate-950">3. Feche com ação pública.</strong>
+              Use o Radar, a História INEA e a metodologia para formular cobrança, reunião ou pedido de informação.
+            </div>
+          </div>
+        </SurfaceCard>
+      </section>
+    </main>
+  );
+}
 
 export function IneaAnalyticsPage() {
   const releaseMetadata = useRadarReleaseMetadata();
@@ -127,20 +275,7 @@ export function IneaAnalyticsPage() {
   }
 
   if (error) {
-    return (
-      <div className="container mx-auto px-4 py-12 max-w-7xl">
-        <div className="bg-red-50 border border-red-200 text-red-800 p-6 rounded-2xl">
-          <h2 className="font-bold text-lg mb-2">Erro de Carregamento</h2>
-          <p className="text-sm">{error}</p>
-          <button 
-            onClick={() => window.location.reload()} 
-            className="mt-4 px-4 py-2 bg-red-600 text-white rounded-lg text-xs font-semibold hover:bg-red-700 transition-all"
-          >
-            Tentar Novamente
-          </button>
-        </div>
-      </div>
-    );
+    return <IneaAnalyticsFallback failedBlocks={failedBlocks.length ? failedBlocks : ["todos os blocos analíticos"]} />;
   }
 
   // Calculate high-level metrics cards

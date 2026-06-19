@@ -44,10 +44,14 @@ const mobileGroups = [
         links: [
       { href: "/como-ler-dados", label: "Guias" },
       { href: "/como-participar", label: "Como participar" },
-          { href: "/transparencia", label: "Transparência" }
+      { href: "/transparencia", label: "Transparência" }
         ]
       }
 ];
+
+function shouldMatchMobileLinkExactly(href: string) {
+  return href === "/" || href === "/qualidade-ar/inea" || href === "/acervo";
+}
 
 export function Navbar() {
   const { prompt, clearPrompt } = useInstallPrompt();
@@ -172,7 +176,12 @@ export function Navbar() {
                 <h2 id={`mobile-nav-${group.label}`}>{group.label}</h2>
                 <div>
                   {group.links.map((link) => (
-                    <NavLink key={link.href} to={link.href} className={({ isActive }) => (isActive ? "is-active" : undefined)}>
+                    <NavLink
+                      key={link.href}
+                      to={link.href}
+                      end={shouldMatchMobileLinkExactly(link.href)}
+                      className={({ isActive }) => (isActive ? "is-active" : undefined)}
+                    >
                       {link.label}
                     </NavLink>
                   ))}
