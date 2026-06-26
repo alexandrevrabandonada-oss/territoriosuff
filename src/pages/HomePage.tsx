@@ -1,10 +1,9 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 import "../styles/home.css";
 import type {
   AcervoItem,
-  BlogPost,
   Event,
   ReportDocument,
   StationOverview
@@ -24,15 +23,6 @@ const navCards = [
   { to: "/relatorios", label: "Relatórios", copy: "Relatórios, notas técnicas, boletins e anexos oficiais.", tone: "blue", icon: "file" },
   { to: "/agenda", label: "Agenda", copy: "Eventos, reuniões e atividades do projeto.", tone: "green", icon: "calendar" },
   { to: "/conversar", label: "Conversas e atividades", copy: "Registros de campo, escuta pública e ações no território.", tone: "blue", icon: "chat" }
-];
-
-const timeline = [
-  { year: "2019", label: "Início do projeto SEMEAR na UFF" },
-  { year: "2020", label: "Expansão da rede de monitoramento" },
-  { year: "2021", label: "Primeiros relatórios e boletins públicos" },
-  { year: "2022", label: "Modelagens ambientais e recortes territoriais" },
-  { year: "2023", label: "Integração de dados e novos parceiros" },
-  { year: "2024+", label: "Inovação contínua e impacto social" }
 ];
 
 function Icon({ name }: { name: string }) {
@@ -86,7 +76,6 @@ export function HomePage() {
   const [stations, setStations] = useState<StationOverview[]>([]);
   const [events, setEvents] = useState<Event[]>([]);
   const [, setAcervo] = useState<AcervoItem[]>([]);
-  const [latestBlog, setLatestBlog] = useState<BlogPost | null>(null);
   const [reports, setReports] = useState<ReportDocument[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -98,17 +87,15 @@ export function HomePage() {
           import("../lib/api/monitoring"),
           import("../lib/api/content")
         ]);
-        const [stationsData, eventsData, acervoData, blogData, reportsData] = await Promise.all([
+        const [stationsData, eventsData, acervoData, reportsData] = await Promise.all([
           monitoringApi.getStationOverview(),
           contentApi.listUpcomingEvents(),
           contentApi.listAcervoItems({ featured: true, limit: 6 }),
-          contentApi.listBlogPosts({ limit: 1 }),
           contentApi.listLatestReports(3)
         ]);
         setStations(stationsData);
         setEvents(eventsData.slice(0, 3));
         setAcervo(acervoData);
-        setLatestBlog(blogData[0] || null);
         setReports(reportsData.slice(0, 3));
       } catch (err) {
         console.error("Erro ao carregar dados da home:", err);
@@ -123,25 +110,14 @@ export function HomePage() {
   const temperature = latestValue(stations, "temp");
   const humidity = latestValue(stations, "humidity");
 
-  const news = useMemo(() => {
-    const reportNews = reports.map((report) => ({
-      key: report.id,
-      to: `/relatorios/${report.slug}`,
-      type: REPORT_KIND_LABEL[report.kind],
-      date: formatDate(report.published_at) || String(report.year ?? ""),
-      title: report.title
-    }));
-    if (latestBlog) {
-      reportNews.push({
-        key: latestBlog.id,
-        to: `/blog/${latestBlog.slug}`,
-        type: "Novidade",
-        date: formatDate(latestBlog.published_at),
-        title: latestBlog.title
-      });
-    }
-    return reportNews.slice(0, 3);
-  }, [latestBlog, reports]);
+  const news = reports.map((report) => ({
+    key: report.id,
+    to: `/relatorios/${report.slug}`,
+    type: REPORT_KIND_LABEL[report.kind],
+    date: formatDate(report.published_at) || String(report.year ?? ""),
+    title: report.title
+  }))
+    .slice(0, 3);
 
   return (
     <PortalPageShell className="home-shell" aria-labelledby="home-title">
@@ -456,24 +432,10 @@ export function HomePage() {
       </nav>
 
       <div className="home-lower-grid">
-        <section className="home-timeline">
-          <h2>Linha do Tempo</h2>
-          <p>Acompanhe a evolução do projeto SEMEAR.</p>
-          <div className="home-timeline-track">
-            {timeline.map((item, index) => (
-              <div key={item.year} className="home-timeline-item">
-                <strong className={index === timeline.length - 1 ? "is-current" : ""}>{item.year}</strong>
-                <span />
-                <small>{item.label}</small>
-              </div>
-            ))}
-          </div>
-        </section>
-
         <section className="home-news">
           <div className="home-section-head">
-            <h2>Destaques &amp; Novidades</h2>
-            <Link to="/blog">Ver todas</Link>
+            <h2>Relatórios recentes</h2>
+            <Link to="/relatorios">Ver todos</Link>
           </div>
           {(loading ? Array.from({ length: 3 }, () => null) : news).map((item, index) => {
             if (!item) {
@@ -489,7 +451,7 @@ export function HomePage() {
             );
           })}
           {!loading && news.length === 0 && (
-            <p className="home-empty">Novidades em preparação.</p>
+            <p className="home-empty">Nenhum relatório publicado no momento.</p>
           )}
         </section>
       </div>
@@ -515,3 +477,4 @@ export function HomePage() {
     </PortalPageShell>
   );
 }
+

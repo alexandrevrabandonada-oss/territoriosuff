@@ -76,7 +76,6 @@ export default function App() {
                   <Route path="/dados" element={<DadosPage />} />
                   <Route path="/qualidade-ar" element={<RadarLandingPage />} />
                   <Route path="/qualidade-ar/inea" element={<IneaRadarPage />} />
-                  <Route path="/qualidade-ar/inea/historia" element={<Navigate to="/qualidade-ar/inea" replace />} />
                   <Route path="/qualidade-ar/inea/analises" element={<IneaAnalyticsPage />} />
                   <Route path="/qualidade-ar/inea/metodologia" element={<IneaMethodologyPage />} />
                   <Route path="/qualidade-ar/inea/estacoes/:stationId" element={<IneaStationPage />} />
@@ -117,3 +116,4 @@ export default function App() {
     </>
   );
 }
+

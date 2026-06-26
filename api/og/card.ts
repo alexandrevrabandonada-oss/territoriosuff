@@ -1,4 +1,6 @@
 import { createElement } from "react";
+import { readFileSync } from "fs";
+import path from "path";
 
 type OgKind = "dados" | "blog" | "acervo" | "relatorios" | "dossies" | "boletim" | string;
 
@@ -15,6 +17,9 @@ type OgParams = {
 const DEFAULT_FOOTER = "SEMEAR • UFF • EMENDA PARLAMENTAR";
 const WIDTH = 1200;
 const HEIGHT = 630;
+const LOGO_DATA_URI = `data:image/jpeg;base64,${readFileSync(
+  path.join(process.cwd(), "public", "brand", "semear-preview-logo.jpg")
+).toString("base64")}`;
 
 function escapeHtml(value: string) {
   return value
@@ -117,10 +122,8 @@ function buildSvg(params: OgParams) {
     <text x="24" y="35" font-family="Inter, Arial, sans-serif" font-size="20" font-weight="800" fill="#005DAA" letter-spacing="2">${safeKind}</text>
   </g>
   <g transform="translate(1000, 74)">
-    <circle cx="34" cy="34" r="34" fill="rgba(255,255,255,0.72)" stroke="rgba(0,93,170,0.2)" />
-    <circle cx="34" cy="34" r="26" fill="url(#coreA)" />
-    <circle cx="34" cy="34" r="16" fill="none" stroke="rgba(0,93,170,0.28)" stroke-width="2" />
-    <circle cx="34" cy="34" r="8" fill="rgba(163,216,50,0.44)" />
+    <rect x="-14" y="-14" width="96" height="96" rx="28" fill="rgba(255,255,255,0.82)" stroke="rgba(0,93,170,0.18)" />
+    <image href="${LOGO_DATA_URI}" x="-6" y="-6" width="80" height="80" preserveAspectRatio="xMidYMid meet" />
   </g>
   <foreignObject x="86" y="170" width="1030" height="120">
     <div xmlns="http://www.w3.org/1999/xhtml" style="font-family: Inter, Arial, sans-serif; display: flex; flex-direction: column; gap: 12px;">
@@ -306,15 +309,28 @@ async function tryBuildPng(params: OgParams): Promise<Uint8Array | null> {
           createElement("div", {
             style: {
               position: "absolute",
-              right: 82,
-              top: 68,
-              width: 72,
-              height: 72,
-              borderRadius: 999,
-              background: "radial-gradient(circle at center, rgba(0,93,170,0.22), rgba(0,93,170,0) 64%), radial-gradient(circle at center, rgba(163,216,50,0.32) 0 12%, rgba(163,216,50,0) 16%)",
-              border: "1px solid rgba(0,93,170,0.2)"
+              right: 68,
+              top: 54,
+              width: 96,
+              height: 96,
+              borderRadius: 28,
+              background: "rgba(255,255,255,0.82)",
+              border: "1px solid rgba(0,93,170,0.18)",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              overflow: "hidden"
             }
-          })
+          },
+          createElement("img", {
+            src: LOGO_DATA_URI,
+            alt: "Logo do projeto SEMEAR",
+            width: 80,
+            height: 80,
+            style: {
+              objectFit: "contain"
+            }
+          }))
         )
       ),
       {
