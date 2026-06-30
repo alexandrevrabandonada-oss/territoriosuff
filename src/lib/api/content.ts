@@ -113,7 +113,7 @@ function isDemoRecord(row: Record<string, unknown>): boolean {
     text.includes("semear pwa: inovacao no acesso") ||
     text.includes("semear pwa: inovação no acesso") ||
     text.includes("exemplo.com") ||
-    /(^|[-_\s])(demo|mock|fixture|teste)([-_\s]|$)/i.test(text) ||
+    /(^|[-_\s])(demo|mock|fixture|test|teste)([-_\s]|$)/i.test(text) ||
     meta.demo === true ||
     meta.demo === "true" ||
     meta.mock === true ||
