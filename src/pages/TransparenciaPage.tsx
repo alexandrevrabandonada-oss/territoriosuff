@@ -73,6 +73,41 @@ function formatShortMonth(value: string) {
   return date.toLocaleDateString("pt-BR", { month: "short", year: "2-digit" });
 }
 
+function formatPublishedPeriod(reports: LiveTransparencyMonthlyReport[]) {
+  if (reports.length === 0) return "Sem fechamento";
+  if (reports.length === 1) return reports[0].month_label;
+
+  const sorted = [...reports].sort((a, b) => a.month_key.localeCompare(b.month_key));
+  const first = sorted[0];
+  const last = sorted[sorted.length - 1];
+  const firstYear = first.month_label.match(/\d{4}/)?.[0];
+  const lastYear = last.month_label.match(/\d{4}/)?.[0];
+  const firstMonth = first.month_label.replace(/\s+de\s+\d{4}$/i, "");
+
+  if (firstYear && firstYear === lastYear) {
+    return `${firstMonth} e ${last.month_label}`;
+  }
+
+  return `${first.month_label} a ${last.month_label}`;
+}
+
+function mergeMonthlyReports(
+  primaryReports: LiveTransparencyMonthlyReport[],
+  fallbackReports: LiveTransparencyMonthlyReport[]
+) {
+  const byMonth = new Map<string, LiveTransparencyMonthlyReport>();
+
+  fallbackReports.forEach((report) => {
+    byMonth.set(report.month_key, report);
+  });
+
+  primaryReports.forEach((report) => {
+    byMonth.set(report.month_key, report);
+  });
+
+  return Array.from(byMonth.values()).sort((a, b) => b.month_key.localeCompare(a.month_key));
+}
+
 function getLocationLabel(item: Conversation) {
   return typeof item.meta?.location === "string" ? item.meta.location.trim() : "";
 }
@@ -368,9 +403,9 @@ function MonthlyPulsePanel({
   return (
     <section className="grid gap-4 xl:grid-cols-[minmax(0,1.2fr)_repeat(3,minmax(0,1fr))]">
       <div className="rounded-[1.75rem] border-0 bg-slate-950 p-6 text-white shadow-none">
-        <p className="text-[11px] font-black uppercase tracking-[0.18em] text-emerald-300">Mês consolidado</p>
+        <p className="text-[11px] font-black uppercase tracking-[0.18em] text-emerald-300">Mês mais recente</p>
         <p className="mt-3 text-4xl font-black tracking-tight">{latest.month_label}</p>
-        <p className="mt-3 max-w-md text-sm leading-relaxed text-white/72">Fechamento mais recente disponível para leitura pública e devolutiva.</p>
+        <p className="mt-3 max-w-md text-sm leading-relaxed text-white/72">Fechamento mais recente dentro da série de devolutivas mensais já publicadas.</p>
       </div>
       <div className="rounded-[1.5rem] border border-slate-200 bg-white p-5 shadow-sm">
         <p className="text-[11px] font-black uppercase tracking-[0.18em] text-slate-500">Ritmo de escutas</p>
@@ -647,8 +682,8 @@ export function TransparenciaPage() {
           setConversations(conversationResult.value);
         }
 
-        if (monthlyResult.status === "fulfilled" && monthlyResult.value.length > 0) {
-          setMonthlyReports(monthlyResult.value);
+        if (monthlyResult.status === "fulfilled") {
+          setMonthlyReports(mergeMonthlyReports(monthlyResult.value, LIVE_TRANSPARENCIA_REPORTS));
         }
       } catch (err) {
         if (!cancelled) {
@@ -714,9 +749,7 @@ export function TransparenciaPage() {
   }, [conversations, monthlyReports]);
 
   const monthlyTransparency = useMemo(() => {
-    const reports = [...(monthlyReports.length > 0 ? monthlyReports : LIVE_TRANSPARENCIA_REPORTS)].sort((a, b) =>
-      b.month_key.localeCompare(a.month_key)
-    );
+    const reports = mergeMonthlyReports(monthlyReports, LIVE_TRANSPARENCIA_REPORTS);
     const latest = reports[0] ?? null;
     const previous = reports[1] ?? null;
 
@@ -851,9 +884,9 @@ export function TransparenciaPage() {
           tone="amber"
         />
         <MetricCard
-          label="Mês consolidado"
-          value={monthlyTransparency.latest?.month_label || "Sem fechamento"}
-          helper="Último fechamento publicado."
+          label="Fechamentos publicados"
+          value={formatPublishedPeriod(monthlyTransparency.reports)}
+          helper={`${monthlyTransparency.reports.length} devolutiva(s) mensal(is) disponíveis para leitura.`}
           tone="default"
         />
       </section>

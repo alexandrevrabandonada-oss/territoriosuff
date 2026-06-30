@@ -5,8 +5,7 @@ import "../styles/home.css";
 import type {
   AcervoItem,
   Event,
-  ReportDocument,
-  StationOverview
+  ReportDocument
 } from "../lib/api";
 import { PortalHero, PortalPageShell, PortalSectionHeader } from "../components/portal";
 
@@ -67,13 +66,7 @@ function formatDate(value?: string | null) {
   return new Date(value).toLocaleDateString("pt-BR", { day: "2-digit", month: "short", year: "numeric" });
 }
 
-function latestValue(stations: StationOverview[], key: "pm25" | "temp" | "humidity") {
-  const station = stations.find((item) => item[key] !== null && item[key] !== undefined);
-  return station?.[key] ?? null;
-}
-
 export function HomePage() {
-  const [stations, setStations] = useState<StationOverview[]>([]);
   const [events, setEvents] = useState<Event[]>([]);
   const [, setAcervo] = useState<AcervoItem[]>([]);
   const [reports, setReports] = useState<ReportDocument[]>([]);
@@ -83,17 +76,12 @@ export function HomePage() {
     async function load() {
       try {
         setLoading(true);
-        const [monitoringApi, contentApi] = await Promise.all([
-          import("../lib/api/monitoring"),
-          import("../lib/api/content")
-        ]);
-        const [stationsData, eventsData, acervoData, reportsData] = await Promise.all([
-          monitoringApi.getStationOverview(),
+        const contentApi = await import("../lib/api/content");
+        const [eventsData, acervoData, reportsData] = await Promise.all([
           contentApi.listUpcomingEvents(),
           contentApi.listAcervoItems({ featured: true, limit: 6 }),
           contentApi.listLatestReports(3)
         ]);
-        setStations(stationsData);
         setEvents(eventsData.slice(0, 3));
         setAcervo(acervoData);
         setReports(reportsData.slice(0, 3));
@@ -105,10 +93,6 @@ export function HomePage() {
     }
     void load();
   }, []);
-
-  const airQuality = latestValue(stations, "pm25");
-  const temperature = latestValue(stations, "temp");
-  const humidity = latestValue(stations, "humidity");
 
   const news = reports.map((report) => ({
     key: report.id,
@@ -124,7 +108,7 @@ export function HomePage() {
       <PortalHero
         badge={
           <>
-            <span className="badge-dados-abertos">Monitoramento do ar - UFF</span>
+            <span className="badge-dados-abertos">Rede própria em implantação</span>
             <span className="badge-metodologia">Projeto UFF</span>
           </>
         }
@@ -134,27 +118,27 @@ export function HomePage() {
         metrics={
           <>
             <div className="portal-kpi-card">
-              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-text-secondary">Qualidade do ar</p>
-              <p className="mt-2 text-3xl font-black text-brand-primary">{loading ? "--" : Math.round(Number(airQuality ?? 28))}</p>
-              <p className="mt-1 text-sm text-text-secondary">índice geral AQI</p>
+              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-text-secondary">Monitoramento próprio</p>
+              <p className="mt-2 text-3xl font-black text-brand-primary">Em implantação</p>
+              <p className="mt-1 text-sm text-text-secondary">sensores UFF serão instalados em etapa posterior</p>
             </div>
             <div className="portal-kpi-card">
-              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-text-secondary">Temperatura</p>
-              <p className="mt-2 text-3xl font-black text-text-primary">{loading ? "--" : Number(temperature ?? 24.7).toLocaleString("pt-BR", { maximumFractionDigits: 1 })}</p>
-              <p className="mt-1 text-sm text-text-secondary">campus Praia Vermelha</p>
+              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-text-secondary">Base pública atual</p>
+              <p className="mt-2 text-3xl font-black text-text-primary">INEA</p>
+              <p className="mt-1 text-sm text-text-secondary">dados abertos e séries históricas consolidadas</p>
             </div>
             <div className="portal-kpi-card">
-              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-text-secondary">Umidade</p>
-              <p className="mt-2 text-3xl font-black text-text-primary">{loading ? "--" : Math.round(Number(humidity ?? 68))}%</p>
-              <p className="mt-1 text-sm text-text-secondary">leitura pública local</p>
+              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-text-secondary">Próxima etapa</p>
+              <p className="mt-2 text-3xl font-black text-text-primary">Rede SEMEAR</p>
+              <p className="mt-1 text-sm text-text-secondary">instalação, calibração e publicação metodológica</p>
             </div>
           </>
         }
         aside={
           <div className="space-y-5">
             <p className="home-intro">
-              Plataforma pública da UFF para monitoramento, análise e divulgação de dados ambientais com transparência,
-              rigor técnico e compromisso social.
+              Plataforma pública da UFF para pesquisa, análise e divulgação de dados ambientais com transparência,
+              rigor técnico e compromisso social. A rede própria de sensores será publicada após instalação e validação.
             </p>
 
             <form
@@ -239,39 +223,38 @@ export function HomePage() {
               </svg>
             </div>
 
-            <section className="home-now" aria-label="Leituras públicas disponíveis" aria-live="polite">
+            <section className="home-now" aria-label="Status da implantação da rede SEMEAR" aria-live="polite">
               <div className="home-now-head">
-                <h2>Leituras públicas</h2>
-                <span><i />Última leitura disponível</span>
+                <h2>Rede SEMEAR</h2>
+                <span><i />Implantação futura</span>
               </div>
               <div className="home-now-list">
                 <div className="home-now-row">
                   <span className="home-now-icon"><Icon name="chart" /></span>
                   <div>
-                    <strong>Qualidade do Ar (UFF)</strong>
-                    <small>Índice Geral</small>
+                    <strong>Qualidade do ar própria</strong>
+                    <small>Aguardando instalação dos equipamentos</small>
                   </div>
-                  <em>Boa</em>
-                  <b>{loading ? "--" : Math.round(Number(airQuality ?? 28))}<small>AQI</small></b>
+                  <em>Futuro</em>
                 </div>
                 <div className="home-now-row">
                   <span className="home-now-icon"><Icon name="calendar" /></span>
                   <div>
-                    <strong>Temperatura</strong>
-                    <small>Campus Praia Vermelha</small>
+                    <strong>Meteorologia local</strong>
+                    <small>Será publicada após calibração e validação</small>
                   </div>
-                  <b>{loading ? "--" : Number(temperature ?? 24.7).toLocaleString("pt-BR", { maximumFractionDigits: 1 })}<small>°C</small></b>
+                  <em>Planejada</em>
                 </div>
                 <div className="home-now-row">
                   <span className="home-now-icon"><Icon name="archive" /></span>
                   <div>
-                    <strong>Umidade Relativa</strong>
-                    <small>Campus Praia Vermelha</small>
+                    <strong>Transparência operacional</strong>
+                    <small>Metodologia e status serão documentados publicamente</small>
                   </div>
-                  <b>{loading ? "--" : Math.round(Number(humidity ?? 68))}<small>%</small></b>
+                  <em>Aberta</em>
                 </div>
               </div>
-              <Link to="/dados" className="home-now-link">Ver todos os indicadores <span>+</span></Link>
+              <Link to="/qualidade-ar/inea" className="home-now-link">Ver dados públicos atuais <span>+</span></Link>
             </section>
           </div>
         }
