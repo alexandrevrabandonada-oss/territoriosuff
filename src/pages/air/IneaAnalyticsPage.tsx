@@ -96,7 +96,7 @@ function IneaAnalyticsFallback({ failedBlocks }: { failedBlocks: string[] }) {
                   Análises INEA a partir da base histórica consolidada
                 </h1>
                 <p className="max-w-2xl text-base font-semibold leading-relaxed text-slate-200 md:text-lg">
-                  Esta rota não deve depender de endpoint em tempo real. Quando a camada analítica automática não responde,
+                  Esta rota não deve depender de endpoint dinâmico. Quando a camada analítica automática não responde,
                   o portal mostra a síntese pública já auditada: anos, estações, poluentes, cobertura e episódios de atenção.
                 </p>
               </div>

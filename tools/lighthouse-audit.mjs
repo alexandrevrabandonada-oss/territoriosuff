@@ -4,13 +4,9 @@ import path from "node:path";
 import process from "node:process";
 import { setTimeout as delay } from "node:timers/promises";
 
-import lighthouse from "lighthouse";
-import { chromium } from "playwright";
-
 const ROUTES = ["/", "/dados", "/relatorios", "/transparencia", "/mapa"];
 const BASE_URL = "http://127.0.0.1:4173";
 const PREVIEW_PORT = 4173;
-const DEBUG_PORT = 9222;
 
 function npmCommand() {
   return process.platform === "win32" ? "npm.cmd" : "npm";
@@ -51,6 +47,24 @@ async function waitForHttp(url, timeoutMs = 60_000) {
   throw new Error(`Timed out waiting for ${url}`);
 }
 
+async function runLighthouseCli(url, outputPath, outputFormat) {
+  const child = spawnLogged(npmCommand(), [
+    "exec",
+    "--yes",
+    "--package",
+    "lighthouse@latest",
+    "--",
+    "lighthouse",
+    url,
+    "--quiet",
+    "--chrome-flags=--headless=new --no-sandbox",
+    "--only-categories=performance,accessibility,best-practices,pwa",
+    `--output=${outputFormat}`,
+    `--output-path=${outputPath}`
+  ]);
+  await waitForExit(child);
+}
+
 function routeFileName(route) {
   if (route === "/") return "home";
   return route.replaceAll("/", "_").replaceAll("?", "_").replaceAll("&", "_").replaceAll("=", "_").replace(/^_+/, "");
@@ -81,39 +95,25 @@ async function run() {
     await fs.mkdir(outputDir, { recursive: true });
 
     const summary = [];
-    const browser = await chromium.launch({
-      headless: true,
-      args: [`--remote-debugging-port=${DEBUG_PORT}`]
-    });
 
-    try {
-      for (const route of ROUTES) {
-        const url = `${BASE_URL}${route}`;
-        const result = await lighthouse(url, {
-          port: DEBUG_PORT,
-          output: ["html", "json"],
-          onlyCategories: ["performance", "accessibility", "best-practices", "pwa"],
-          logLevel: "error"
-        });
+    for (const route of ROUTES) {
+      const url = `${BASE_URL}${route}`;
+      const reportBase = routeFileName(route);
+      const htmlPath = path.join(outputDir, `${reportBase}.html`);
+      const jsonPath = path.join(outputDir, `${reportBase}.json`);
 
-        const reportBase = routeFileName(route);
-        const htmlPath = path.join(outputDir, `${reportBase}.html`);
-        const jsonPath = path.join(outputDir, `${reportBase}.json`);
-        const [htmlReport, jsonReport] = Array.isArray(result.report) ? result.report : [String(result.report), ""];
-        await fs.writeFile(htmlPath, htmlReport, "utf8");
-        await fs.writeFile(jsonPath, jsonReport || JSON.stringify(result.lhr, null, 2), "utf8");
+      await runLighthouseCli(url, htmlPath, "html");
+      await runLighthouseCli(url, jsonPath, "json");
 
-        const categories = result.lhr.categories;
-        summary.push({
-          route,
-          performance: Math.round((categories.performance?.score ?? 0) * 100),
-          accessibility: Math.round((categories.accessibility?.score ?? 0) * 100),
-          bestPractices: Math.round((categories["best-practices"]?.score ?? 0) * 100),
-          pwa: Math.round((categories.pwa?.score ?? 0) * 100)
-        });
-      }
-    } finally {
-      await browser.close();
+      const lhr = JSON.parse(await fs.readFile(jsonPath, "utf8"));
+      const categories = lhr.categories;
+      summary.push({
+        route,
+        performance: Math.round((categories.performance?.score ?? 0) * 100),
+        accessibility: Math.round((categories.accessibility?.score ?? 0) * 100),
+        bestPractices: Math.round((categories["best-practices"]?.score ?? 0) * 100),
+        pwa: Math.round((categories.pwa?.score ?? 0) * 100)
+      });
     }
 
     const lines = [

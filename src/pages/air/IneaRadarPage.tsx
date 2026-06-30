@@ -325,18 +325,6 @@ export function IneaRadarPage() {
     is_realtime: false
   };
 
-  const analyticsHealth = {
-    ok: [
-      summary !== null,
-      latestData.length > 0,
-      Object.keys(rankings).length > 0,
-      monthlyProfile.length > 0,
-      controllerFreq.length > 0,
-      dataGaps.length > 0
-    ].filter(Boolean).length,
-    total: 6
-  };
-
   if (loading) {
     return (
       <div className="container mx-auto max-w-7xl animate-pulse space-y-8 px-4 py-8">

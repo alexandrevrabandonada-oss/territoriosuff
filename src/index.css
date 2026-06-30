@@ -247,6 +247,25 @@ select {
   @apply motion-input text-text-primary placeholder:text-text-secondary;
 }
 
+@media (pointer: coarse) {
+  :where(
+    button,
+    input,
+    select,
+    textarea,
+    [role="button"],
+    [role="tab"],
+    .ui-btn-primary,
+    .ui-btn-secondary,
+    .motion-tab,
+    .portal-nav-link,
+    .mobile-menu-link
+  ) {
+    min-height: 44px;
+    min-width: 44px;
+  }
+}
+
 @layer components {
   .portal-shell {
     @apply relative isolate overflow-x-hidden;

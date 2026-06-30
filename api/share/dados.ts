@@ -7,7 +7,19 @@ const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || "";
 const SHARE_HASH_SALT = process.env.SHARE_HASH_SALT || "semear_fallback_salt";
 const VITE_PROJECT_NAME = process.env.VITE_PROJECT_NAME || "SEMEAR SF";
 
-const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
+let supabaseClient: ReturnType<typeof createClient> | null = null;
+
+function getSupabaseClient() {
+    if (!SUPABASE_URL || !SUPABASE_SERVICE_ROLE_KEY) {
+        throw new Error("Missing Supabase server environment for share dados endpoint.");
+    }
+    if (!supabaseClient) {
+        supabaseClient = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, {
+            auth: { persistSession: false }
+        });
+    }
+    return supabaseClient;
+}
 
 function getHostUrl(req: any): string {
     const host = req.headers["x-forwarded-host"] || req.headers.host || "semear-pwa.vercel.app";
@@ -30,6 +42,8 @@ export default async function handler(req: any, res: any) {
     const safeStationCode = encodeURIComponent(String(station_code));
 
     try {
+        const supabase = getSupabaseClient();
+
         // 1. Fetch Station & Latest Measurement via Service Role
         const { data: station, error: stmtErr } = await supabase
             .from("stations")
@@ -53,7 +67,7 @@ export default async function handler(req: any, res: any) {
         }
 
         const meas = station.measurements?.[0];
-        let desc = "Confira os dados em tempo real desta estação de monitoramento no SEMEAR.";
+        let desc = "Confira a última leitura disponível desta estação de monitoramento no SEMEAR.";
         if (meas) {
             const timeStr = new Date(meas.ts).toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" });
             desc = `PM2.5: ${meas.pm25.toFixed(1)} | PM10: ${meas.pm10.toFixed(1)} | Atualizado: ${timeStr}`;
