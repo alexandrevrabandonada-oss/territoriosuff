@@ -2,11 +2,7 @@ import { Suspense, lazy, useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 
 import { RadarHero } from "./radar/RadarHero";
-import { RadarGuidedJourneys } from "./radar/RadarGuidedJourneys";
-import { RadarEvidenceDictionary } from "./radar/RadarEvidenceDictionary";
-import { RadarEvidenceActionGuide } from "./radar/RadarEvidenceActionGuide";
 import { RadarLaiModal } from "./radar/RadarLaiModal";
-import { RadarMaturityScorecard } from "./radar/RadarMaturityScorecard";
 import { RadarModeNav } from "./radar/RadarModeNav";
 import { RadarOverviewMode } from "./radar/RadarOverviewMode";
 import { RadarQuickSummary } from "./radar/RadarQuickSummary";
@@ -371,21 +367,12 @@ export function IneaRadarPage() {
               displaySummary={displaySummary}
               stationMetadata={stationMetadata}
               onRetry={() => setRetryTrigger((prev) => prev + 1)}
-            />
-
-            <RadarGuidedJourneys
               onNavigate={navigateMode}
               onScrollToRecommendations={() => {
                 setCurrentMode("OVERVIEW");
                 setTimeout(() => scrollToId("encaminhamentos"), 120);
               }}
             />
-
-            <RadarMaturityScorecard summary={displaySummary} stationMetadata={stationMetadata} compact />
-
-            <RadarEvidenceDictionary compact />
-
-            <RadarEvidenceActionGuide compact onNavigate={navigateMode} onOpenLai={() => setIsLaiModalOpen(true)} />
           </>
         )}
 

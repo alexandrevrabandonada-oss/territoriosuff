@@ -126,7 +126,7 @@ export function RadarHero({ onNavigate, summary, activeStations }: RadarHeroProp
 
           <p className="max-w-2xl text-[11px] font-semibold leading-relaxed text-slate-300">
             Este release público está publicado como <span className="font-black text-white">{releaseMetadata.cycleVersion}</span>. A auditoria histórica já consolidou
-            {` ${historicalAudit.stationsCount} estações, ${historicalAudit.pollutantsLabel || "MP10 e MP2.5"} e ${historicalAudit.downloadableFiles} arquivos CSV públicos`}; os blocos de tempo real não são pré-condição para ler a série histórica.
+            {` ${historicalAudit.stationsCount} estações, ${historicalAudit.pollutantsLabel || "MP10 e MP2.5"} e ${historicalAudit.downloadableFiles} arquivos CSV públicos`}; a leitura da série histórica não depende de atualização instantânea.
           </p>
 
           <div className="grid gap-3 sm:grid-cols-3">
