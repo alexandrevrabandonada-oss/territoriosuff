@@ -362,28 +362,32 @@ export function IneaRadarPage() {
 
         <PublicInterestProtocol />
 
-        <RadarQuickSummary
-          notice={notice}
-          latestData={latestData}
-          sortedRankings={sortedRankings}
-          displaySummary={displaySummary}
-          stationMetadata={stationMetadata}
-          onRetry={() => setRetryTrigger((prev) => prev + 1)}
-        />
+        {currentMode === "OVERVIEW" && (
+          <>
+            <RadarQuickSummary
+              notice={notice}
+              latestData={latestData}
+              sortedRankings={sortedRankings}
+              displaySummary={displaySummary}
+              stationMetadata={stationMetadata}
+              onRetry={() => setRetryTrigger((prev) => prev + 1)}
+            />
 
-        <RadarGuidedJourneys
-          onNavigate={navigateMode}
-          onScrollToRecommendations={() => {
-            setCurrentMode("OVERVIEW");
-            setTimeout(() => scrollToId("encaminhamentos"), 120);
-          }}
-        />
+            <RadarGuidedJourneys
+              onNavigate={navigateMode}
+              onScrollToRecommendations={() => {
+                setCurrentMode("OVERVIEW");
+                setTimeout(() => scrollToId("encaminhamentos"), 120);
+              }}
+            />
 
-        <RadarMaturityScorecard summary={displaySummary} stationMetadata={stationMetadata} compact />
+            <RadarMaturityScorecard summary={displaySummary} stationMetadata={stationMetadata} compact />
 
-        <RadarEvidenceDictionary compact />
+            <RadarEvidenceDictionary compact />
 
-        <RadarEvidenceActionGuide compact onNavigate={navigateMode} onOpenLai={() => setIsLaiModalOpen(true)} />
+            <RadarEvidenceActionGuide compact onNavigate={navigateMode} onOpenLai={() => setIsLaiModalOpen(true)} />
+          </>
+        )}
 
         <div id="subnav-anchor" className="scroll-mt-28" />
         <RadarModeNav currentMode={currentMode} onSelectMode={navigateMode} />

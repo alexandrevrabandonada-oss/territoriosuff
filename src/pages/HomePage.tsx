@@ -239,10 +239,10 @@ export function HomePage() {
               </svg>
             </div>
 
-            <section className="home-now" aria-label="Dados agora" aria-live="polite">
+            <section className="home-now" aria-label="Leituras públicas disponíveis" aria-live="polite">
               <div className="home-now-head">
-                <h2>Dados agora</h2>
-                <span><i />Atualizado há 2 min</span>
+                <h2>Leituras públicas</h2>
+                <span><i />Última leitura disponível</span>
               </div>
               <div className="home-now-list">
                 <div className="home-now-row">

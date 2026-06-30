@@ -22,6 +22,7 @@ export function RadarConfidenceSnapshot({
   compact = false
 }: RadarConfidenceSnapshotProps) {
   const releaseMetadata = useRadarReleaseMetadata();
+  const hasStationMetadata = stationMetadata.length > 0;
   const totalStations = stationMetadata.length || summary.totalStations || 0;
   const activeStations = stationMetadata.filter((item) => item.active).length;
   const explicitWindowStations = stationMetadata.filter((item) => !item.operation_window.is_inferred).length;
@@ -69,22 +70,32 @@ export function RadarConfidenceSnapshot({
         <div className="rounded-2xl border border-emerald-200 bg-emerald-50 p-4">
           <div className="text-[10px] font-black uppercase tracking-[0.16em] text-emerald-700">Janela explícita</div>
           <div className="mt-2 text-2xl font-black text-emerald-950">
-            {explicitWindowStations}/{totalStations || "--"}
+            {hasStationMetadata ? `${explicitWindowStations}/${totalStations || "--"}` : "indisponível"}
           </div>
           <p className="mt-1 text-[11px] font-semibold leading-relaxed text-emerald-800/80">
-            estações com lastro operacional suficiente para cobertura sem inferência.
+            {hasStationMetadata
+              ? "estações com lastro operacional suficiente para cobertura sem inferência."
+              : "metadados operacionais por estação não responderam nesta carga; a leitura segue pela base pública e metodologia."}
           </p>
         </div>
         <div className="rounded-2xl border border-amber-200 bg-amber-50 p-4">
           <div className="text-[10px] font-black uppercase tracking-[0.16em] text-amber-700">Janela inferida</div>
-          <div className="mt-2 text-2xl font-black text-amber-950">{inferredWindowStations}</div>
+          <div className="mt-2 text-2xl font-black text-amber-950">{hasStationMetadata ? inferredWindowStations : "indisponível"}</div>
           <p className="mt-1 text-[11px] font-semibold leading-relaxed text-amber-800/80">
-            estações que ainda dependem de inferência controlada em parte dos indicadores.
+            {hasStationMetadata
+              ? "estações que ainda dependem de inferência controlada em parte dos indicadores."
+              : "sem inventar inferência: quando a API de metadados falha, o Radar declara a lacuna em vez de preencher números."}
           </p>
         </div>
         <div className="rounded-2xl border border-sky-200 bg-sky-50 p-4">
           <div className="text-[10px] font-black uppercase tracking-[0.16em] text-sky-700">Recorte observável</div>
-          <div className="mt-2 text-sm font-black text-sky-950">{activeStations || totalStations || "--"} estações ativas</div>
+          <div className="mt-2 text-sm font-black text-sky-950">
+            {hasStationMetadata
+              ? `${activeStations || totalStations || "--"} estações ativas`
+              : totalStations
+                ? `${totalStations} estações na base pública`
+                : "recorte de estações indisponível"}
+          </div>
           <p className="mt-1 text-[11px] font-semibold leading-relaxed text-sky-800/80">
             {latestMeasuredAt ? `última medição pública em ${latestMeasuredAt}` : "última medição pública indisponível"}
             {latestIngestedAt ? ` · ingestão do portal em ${latestIngestedAt}` : ""}
@@ -102,15 +113,17 @@ export function RadarConfidenceSnapshot({
         <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
           <div className="text-[10px] font-black uppercase tracking-[0.16em] text-slate-500">Não pode sustentar sozinho</div>
           <p className="mt-2 text-[11px] font-semibold leading-relaxed text-slate-700">
-            diagnóstico clínico individual, nexo causal jurídico isolado, leitura em tempo real minuto a minuto ou equivalência automática com {RADAR_EXPERIMENTAL_OBSERVATION_NOTE}.
+            diagnóstico clínico individual, nexo causal jurídico isolado, leitura operacional minuto a minuto ou equivalência automática com {RADAR_EXPERIMENTAL_OBSERVATION_NOTE}.
           </p>
         </div>
         {!compact && (
           <RadarEvidenceStateBlock
-            state={inferredWindowStations > 0 ? "partial" : "published"}
-            title={inferredWindowStations > 0 ? "Prova parcial" : "Prova publicada"}
+            state={!hasStationMetadata || inferredWindowStations > 0 ? "partial" : "published"}
+            title={!hasStationMetadata || inferredWindowStations > 0 ? "Prova parcial" : "Prova publicada"}
             description={
-              inferredWindowStations > 0
+              !hasStationMetadata
+                ? "A rodada tem fonte, metodologia e dataset publicados, mas os metadados operacionais por estação não responderam nesta carga."
+                : inferredWindowStations > 0
                 ? "A rodada já tem rastreabilidade metodológica pública, mas ainda depende parcialmente de inferência operacional em parte da malha."
                 : "A rodada já tem rastreabilidade operacional explícita para a malha publicada nesta carga."
             }

@@ -70,7 +70,7 @@ export default async function handler(req: any, res: any) {
         let desc = "Confira a última leitura disponível desta estação de monitoramento no SEMEAR.";
         if (meas) {
             const timeStr = new Date(meas.ts).toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" });
-            desc = `PM2.5: ${meas.pm25.toFixed(1)} | PM10: ${meas.pm10.toFixed(1)} | Atualizado: ${timeStr}`;
+            desc = `PM2.5: ${meas.pm25.toFixed(1)} | PM10: ${meas.pm10.toFixed(1)} | Última leitura disponível: ${timeStr}`;
         }
 
         // 2. Log Share Event explicitly bypassing RLS via Service Role
@@ -92,7 +92,7 @@ export default async function handler(req: any, res: any) {
         }
 
         // 3. Mount HTML with Open Graph
-        const title = `Qualidade do ar agora — ${station.name} | ${VITE_PROJECT_NAME}`;
+        const title = `Qualidade do ar — ${station.name} | ${VITE_PROJECT_NAME}`;
         const hostUrl = getHostUrl(req);
         const finalUrl = `${hostUrl}/dados?station=${encodeURIComponent(String(station.code))}`;
         const safeTitle = encodeURIComponent(station.name);

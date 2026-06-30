@@ -78,6 +78,12 @@ type AcervoItemRelationRow = {
   acervo_items?: unknown;
 };
 
+const BLOCKED_DEMO_SLUGS = new Set([
+  "monitoramento-participativo-vr-2024",
+  "semear-pwa-inovacao-2025",
+  "tutorial-portal-semear"
+]);
+
 function buildAssetUrlMap(rows: AssetPublicUrlRow[] | null | undefined) {
   const assetUrlById = new Map<string, string>();
   (rows || []).forEach((asset) => {
@@ -93,13 +99,20 @@ function isDemoRecord(row: Record<string, unknown>): boolean {
   const title = typeof row.title === "string" ? row.title : "";
   const location = typeof row.location === "string" ? row.location : "";
   const locationName = typeof row.location_name === "string" ? row.location_name : "";
+  const sourceName = typeof row.source_name === "string" ? row.source_name : "";
+  const sourceUrl = typeof row.source_url === "string" ? row.source_url : "";
   const meta = row.meta && typeof row.meta === "object" && !Array.isArray(row.meta)
     ? row.meta as Record<string, unknown>
     : {};
-  const text = `${slug} ${title} ${location} ${locationName}`.toLowerCase();
+  const text = `${slug} ${title} ${location} ${locationName} ${sourceName} ${sourceUrl}`.toLowerCase();
 
   return (
+    BLOCKED_DEMO_SLUGS.has(slug) ||
     slug.startsWith("demo-") ||
+    text.includes("jornal do meio ambiente") ||
+    text.includes("semear pwa: inovacao no acesso") ||
+    text.includes("semear pwa: inovação no acesso") ||
+    text.includes("exemplo.com") ||
     /(^|[-_\s])(demo|mock|fixture|teste)([-_\s]|$)/i.test(text) ||
     meta.demo === true ||
     meta.demo === "true" ||
