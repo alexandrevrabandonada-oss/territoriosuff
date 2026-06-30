@@ -2,7 +2,7 @@
 
 import { precacheAndRoute, cleanupOutdatedCaches, createHandlerBoundToURL } from 'workbox-precaching';
 import { registerRoute, NavigationRoute } from 'workbox-routing';
-import { CacheFirst, NetworkFirst, StaleWhileRevalidate } from 'workbox-strategies';
+import { CacheFirst, NetworkFirst, NetworkOnly, StaleWhileRevalidate } from 'workbox-strategies';
 import { ExpirationPlugin } from 'workbox-expiration';
 import { CacheableResponsePlugin } from 'workbox-cacheable-response';
 
@@ -27,6 +27,21 @@ function isWindowClient(client: Client): client is WindowClient {
   return "focus" in client;
 }
 
+function getSafeNotificationUrl(rawUrl: unknown): URL {
+  try {
+    if (typeof rawUrl !== "string" || !rawUrl.trim()) {
+      return new URL("/", self.location.origin);
+    }
+    const targetUrl = new URL(rawUrl, self.location.origin);
+    if (targetUrl.origin !== self.location.origin) {
+      return new URL("/", self.location.origin);
+    }
+    return targetUrl;
+  } catch {
+    return new URL("/", self.location.origin);
+  }
+}
+
 // Clean up old caches
 cleanupOutdatedCaches();
 
@@ -42,22 +57,10 @@ try {
   console.error('Failed to register navigate fallback:', e);
 }
 
-// 1. API caching: NetworkFirst
+// 1. API requests are dynamic/public-interest data and must not be cached by the SW.
 registerRoute(
-  /^https?:\/\/.*\/api\/.*$/,
-  new NetworkFirst({
-    cacheName: 'api-runtime',
-    networkTimeoutSeconds: 3,
-    plugins: [
-      new ExpirationPlugin({
-        maxEntries: 80,
-        maxAgeSeconds: 24 * 60 * 60, // 24 hours
-      }),
-      new CacheableResponsePlugin({
-        statuses: [0, 200],
-      }),
-    ],
-  })
+  ({ url }) => url.origin === self.location.origin && url.pathname.startsWith("/api/"),
+  new NetworkOnly()
 );
 
 // 2. Lazy chunks and route CSS: cache on first use instead of precaching everything.
@@ -191,14 +194,13 @@ self.addEventListener('push', (event: PushEvent) => {
 
 self.addEventListener('notificationclick', (event: NotificationEvent) => {
   event.notification.close();
-  const urlToOpen = event.notification.data?.url || '/';
+  const targetUrl = getSafeNotificationUrl(event.notification.data?.url);
   
   event.waitUntil(
     self.clients.matchAll({ type: 'window', includeUncontrolled: true }).then((clientList) => {
       // Check if there is already a window open with this exact URL path
       for (const client of clientList) {
         const clientUrl = new URL(client.url, self.location.href);
-        const targetUrl = new URL(urlToOpen, self.location.href);
         if (clientUrl.pathname === targetUrl.pathname && isWindowClient(client)) {
           if (client.url !== targetUrl.href) {
             client.navigate(targetUrl.href);
@@ -211,12 +213,12 @@ self.addEventListener('notificationclick', (event: NotificationEvent) => {
         const client = clientList[0];
         if (isWindowClient(client)) {
           client.focus();
-          return client.navigate(urlToOpen);
+          return client.navigate(targetUrl.href);
         }
       }
       // Otherwise open a new window
       if (self.clients.openWindow) {
-        return self.clients.openWindow(urlToOpen);
+        return self.clients.openWindow(targetUrl.href);
       }
     })
   );

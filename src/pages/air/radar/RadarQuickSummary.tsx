@@ -171,13 +171,13 @@ export function RadarQuickSummary({
               href="/api/air/inea/export-manifest"
               target="_blank"
               rel="noreferrer"
-              className="rounded-full border border-slate-200 bg-slate-50 px-3 py-2 text-[10px] font-black uppercase tracking-[0.14em] text-slate-700 transition-colors hover:border-slate-300"
+              className="inline-flex min-h-11 items-center rounded-full border border-slate-200 bg-slate-50 px-3 py-2 text-[10px] font-black uppercase tracking-[0.14em] text-slate-700 transition-colors hover:border-slate-300"
             >
               Manifesto da API
             </a>
             <a
               href="/api/air/inea/export?metricType=GENERAL_AQI"
-              className="rounded-full border border-emerald-200 bg-emerald-50 px-3 py-2 text-[10px] font-black uppercase tracking-[0.14em] text-emerald-800 transition-colors hover:border-emerald-300"
+              className="inline-flex min-h-11 items-center rounded-full border border-emerald-200 bg-emerald-50 px-3 py-2 text-[10px] font-black uppercase tracking-[0.14em] text-emerald-800 transition-colors hover:border-emerald-300"
             >
               Exportação bruta
             </a>
@@ -185,7 +185,7 @@ export function RadarQuickSummary({
               href="/api/air/inea/export-catalog"
               target="_blank"
               rel="noreferrer"
-              className="rounded-full border border-sky-200 bg-sky-50 px-3 py-2 text-[10px] font-black uppercase tracking-[0.14em] text-sky-800 transition-colors hover:border-sky-300"
+              className="inline-flex min-h-11 items-center rounded-full border border-sky-200 bg-sky-50 px-3 py-2 text-[10px] font-black uppercase tracking-[0.14em] text-sky-800 transition-colors hover:border-sky-300"
             >
               Catálogo de partições
             </a>
@@ -193,7 +193,7 @@ export function RadarQuickSummary({
               href="/api/air/inea/stations-metadata"
               target="_blank"
               rel="noreferrer"
-              className="rounded-full border border-emerald-200 bg-emerald-50 px-3 py-2 text-[10px] font-black uppercase tracking-[0.14em] text-emerald-800 transition-colors hover:border-emerald-300"
+              className="inline-flex min-h-11 items-center rounded-full border border-emerald-200 bg-emerald-50 px-3 py-2 text-[10px] font-black uppercase tracking-[0.14em] text-emerald-800 transition-colors hover:border-emerald-300"
             >
               Metadados das estações
             </a>

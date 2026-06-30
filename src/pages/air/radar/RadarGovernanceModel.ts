@@ -65,7 +65,7 @@ export const PARAMETER_GOVERNANCE_ITEMS: ParameterGovernanceItem[] = [
     description: "Foi segurado corretamente por provável anomalia de linha de base e não deve reentrar na UI antes de auditoria concluída.",
     releaseRule: "Só liberar com critério técnico público, relatório de auditoria e regra clara de correção ou exclusão.",
     evidenceState: "missing",
-    evidenceDescription: "Não existe hoje prova pública suficiente para uso operacional responsável dessa camada no Radar."
+    evidenceDescription: "Não existe hoje evidência pública suficiente para uso operacional responsável dessa camada no Radar."
   },
   {
     parameter: "PTS",

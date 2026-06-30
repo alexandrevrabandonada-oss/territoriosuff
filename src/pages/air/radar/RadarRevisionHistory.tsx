@@ -53,7 +53,7 @@ export function RadarRevisionHistory({ stationMetadata }: RadarRevisionHistoryPr
       <div className="flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
         <div className="space-y-2">
           <div className="text-[10px] font-black uppercase tracking-[0.18em] text-slate-400">Histórico público de revisão</div>
-          <h3 className="text-lg font-black tracking-tight text-slate-900">O que mudou no Radar, em qual ciclo e com qual prova publicada</h3>
+          <h3 className="text-lg font-black tracking-tight text-slate-900">O que mudou no Radar, em qual ciclo e com qual evidência publicada</h3>
           <p className="max-w-3xl text-[11px] font-semibold leading-relaxed text-slate-600">
             Transparência de referência mundial também exige versionar o próprio observatório. Este quadro registra releases, mudanças metodológicas e o impacto público de cada rodada.
           </p>

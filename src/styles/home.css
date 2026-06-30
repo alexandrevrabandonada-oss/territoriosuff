@@ -917,6 +917,58 @@
     padding-inline: max(0.75rem, env(safe-area-inset-left)) max(0.75rem, env(safe-area-inset-right));
   }
 
+  .home-shell .portal-stage-hero {
+    border-radius: 1.25rem;
+  }
+
+  .home-shell .portal-stage-hero::before,
+  .home-shell .portal-stage-hero::after {
+    border-radius: 1.25rem;
+  }
+
+  .home-shell .portal-stage-hero-inner {
+    gap: 0.65rem;
+    padding: 0.75rem;
+  }
+
+  .home-shell .portal-stage-copy {
+    min-height: 0;
+    gap: 1rem;
+    border-radius: 1rem;
+    padding: 1rem;
+  }
+
+  .home-shell .portal-stage-copy h1 {
+    font-size: clamp(3.35rem, 17vw, 4.35rem);
+    line-height: 0.92;
+    letter-spacing: 0;
+  }
+
+  .home-shell .portal-stage-copy > .space-y-3 > p {
+    font-size: 1rem;
+    line-height: 1.42;
+  }
+
+  .home-shell .portal-hero-metrics {
+    gap: 0.55rem;
+  }
+
+  .home-shell .portal-kpi-card {
+    display: grid;
+    gap: 0.3rem;
+    border-radius: 1rem;
+    padding: 0.85rem 1rem;
+  }
+
+  .home-shell .portal-kpi-card p {
+    margin: 0;
+  }
+
+  .home-shell .portal-kpi-card p:nth-child(2) {
+    font-size: 1.65rem;
+    line-height: 1;
+  }
+
   .home-hero {
     padding: 1.25rem 0 1rem;
   }

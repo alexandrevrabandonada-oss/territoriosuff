@@ -1,5 +1,6 @@
 import { createClient } from "@supabase/supabase-js";
 import crypto from "node:crypto";
+import { escapeHtml } from "./_html";
 
 const SUPABASE_URL = process.env.SUPABASE_URL || "";
 const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || "";
@@ -26,6 +27,7 @@ export default async function handler(req: any, res: any) {
     if (!station_code) {
         return res.status(400).send("Bad Request: missing station_code");
     }
+    const safeStationCode = encodeURIComponent(String(station_code));
 
     try {
         // 1. Fetch Station & Latest Measurement via Service Role
@@ -44,10 +46,10 @@ export default async function handler(req: any, res: any) {
 
         if (stmtErr) {
             console.warn(`[share/dados] Could not find station for ${station_code}`, stmtErr.message);
-            return res.redirect(302, `/dados?station=${station_code}`);
+            return res.redirect(302, `/dados?station=${safeStationCode}`);
         }
         if (!station) {
-            return res.redirect(302, `/dados?station=${station_code}`);
+            return res.redirect(302, `/dados?station=${safeStationCode}`);
         }
 
         const meas = station.measurements?.[0];
@@ -78,7 +80,7 @@ export default async function handler(req: any, res: any) {
         // 3. Mount HTML with Open Graph
         const title = `Qualidade do ar agora — ${station.name} | ${VITE_PROJECT_NAME}`;
         const hostUrl = getHostUrl(req);
-        const finalUrl = `${hostUrl}/dados?station=${station.code}`;
+        const finalUrl = `${hostUrl}/dados?station=${encodeURIComponent(String(station.code))}`;
         const safeTitle = encodeURIComponent(station.name);
         const safeSubtitle = encodeURIComponent(desc);
 
@@ -93,26 +95,26 @@ export default async function handler(req: any, res: any) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>${title}</title>
+    <title>${escapeHtml(title)}</title>
 
     <!-- Open Graph / Meta -->
     <meta property="og:type" content="website">
-    <meta property="og:url" content="${finalUrl}">
-    <meta property="og:title" content="${title}">
-    <meta property="og:description" content="${desc}">
-    <meta property="og:image" content="${fallbackImage}">
+    <meta property="og:url" content="${escapeHtml(finalUrl)}">
+    <meta property="og:title" content="${escapeHtml(title)}">
+    <meta property="og:description" content="${escapeHtml(desc)}">
+    <meta property="og:image" content="${escapeHtml(fallbackImage)}">
 
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:url" content="${finalUrl}">
-    <meta name="twitter:title" content="${title}">
-    <meta name="twitter:description" content="${desc}">
-    <meta name="twitter:image" content="${fallbackImage}">
+    <meta name="twitter:url" content="${escapeHtml(finalUrl)}">
+    <meta name="twitter:title" content="${escapeHtml(title)}">
+    <meta name="twitter:description" content="${escapeHtml(desc)}">
+    <meta name="twitter:image" content="${escapeHtml(fallbackImage)}">
 
-    <meta http-equiv="refresh" content="0; url=${finalUrl}">
+    <meta http-equiv="refresh" content="0; url=${escapeHtml(finalUrl)}">
 </head>
 <body>
-    <p>Redirecionando para a estação... <a href="${finalUrl}">Clique aqui</a> se demorar.</p>
+    <p>Redirecionando para a estação... <a href="${escapeHtml(finalUrl)}">Clique aqui</a> se demorar.</p>
 </body>
 </html>`;
 
@@ -122,6 +124,6 @@ export default async function handler(req: any, res: any) {
 
     } catch (err: any) {
         console.error("[share/dados] Fatal Error:", err);
-        return res.redirect(302, `/dados?station=${station_code}`);
+        return res.redirect(302, `/dados?station=${safeStationCode}`);
     }
 }

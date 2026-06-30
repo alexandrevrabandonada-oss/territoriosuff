@@ -176,7 +176,7 @@ export function AttentionEpisodesPanel() {
               metodologia {releaseMetadata.methodologyVersion}
             </span>
             <span className="rounded-full border border-amber-200 bg-amber-50 px-2.5 py-0.5 text-[9px] font-black uppercase tracking-[0.16em] text-amber-800">
-              prova parcial
+              evidência parcial
             </span>
           </div>
         </div>

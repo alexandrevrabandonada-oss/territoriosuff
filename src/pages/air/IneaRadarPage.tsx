@@ -11,6 +11,7 @@ import { RadarModeNav } from "./radar/RadarModeNav";
 import { RadarOverviewMode } from "./radar/RadarOverviewMode";
 import { RadarQuickSummary } from "./radar/RadarQuickSummary";
 import { RadarStationsMode } from "./radar/RadarStationsMode";
+import { PublicInterestProtocol } from "../../components/air/PublicInterestProtocol";
 import {
   type BreakdownItem,
   type ControllerFrequencyItem,
@@ -351,7 +352,7 @@ export function IneaRadarPage() {
   }
 
   return (
-    <div className="relative min-h-screen w-full overflow-hidden bg-ambient-zen bg-dot-grid py-8">
+    <div className="inea-radar-page relative min-h-screen w-full overflow-hidden bg-ambient-zen bg-dot-grid py-8">
       <div className="pointer-events-none absolute left-1/4 top-1/4 h-[35rem] w-[35rem] rounded-full bg-emerald-400/5 blur-3xl" />
       <div className="pointer-events-none absolute right-1/4 top-2/3 h-[40rem] w-[40rem] rounded-full bg-blue-500/5 blur-3xl" />
       <div className="pointer-events-none absolute bottom-10 left-10 h-[30rem] w-[30rem] rounded-full bg-rose-500/5 blur-3xl" />
@@ -370,6 +371,8 @@ export function IneaRadarPage() {
           summary={displaySummary}
           activeStations={latestData.filter((item) => item.measured_at !== null).length}
         />
+
+        <PublicInterestProtocol />
 
         <RadarQuickSummary
           notice={notice}

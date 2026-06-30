@@ -1,10 +1,4 @@
-import { createClient } from "@supabase/supabase-js";
-import { isValidDateInput, rejectNonGet } from "./_http";
-
-const SUPABASE_URL = process.env.SUPABASE_URL || process.env.VITE_SUPABASE_URL || "";
-const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.VITE_SUPABASE_ANON_KEY || "";
-
-const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
+import { getIneaSupabaseClient, isValidDateInput, rejectNonGet, sendPublicError } from "./_http";
 
 function applyCsvHeaders(res: any, filename: string, truncated: boolean) {
   res.setHeader("Access-Control-Allow-Origin", "*");
@@ -22,6 +16,7 @@ export default async function handler(req: any, res: any) {
   if (rejectNonGet(req, res)) return;
 
   try {
+    const supabase = getIneaSupabaseClient();
     const { stationId, metricType, pollutant, from, to } = req.query;
     const requestedBatchSize = Number.parseInt(String(req.query.batchSize ?? "5000"), 10);
 
@@ -132,7 +127,6 @@ export default async function handler(req: any, res: any) {
 
     return res.status(200).send(csv);
   } catch (err: any) {
-    console.error("[api/air/inea/export] Error:", err.message);
-    return res.status(500).json({ error: err.message });
+    return sendPublicError(res, "api/air/inea/export", err);
   }
 }

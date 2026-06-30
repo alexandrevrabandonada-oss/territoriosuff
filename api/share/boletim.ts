@@ -1,5 +1,6 @@
 import { createClient } from "@supabase/supabase-js";
 import crypto from "node:crypto";
+import { escapeHtml } from "./_html";
 
 const MONTH_LABELS = [
   "Janeiro",
@@ -118,19 +119,19 @@ export default async function handler(req: any, res: any) {
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>${title}</title>
-  <meta name="description" content="${description}">
+  <title>${escapeHtml(title)}</title>
+  <meta name="description" content="${escapeHtml(description)}">
   <meta property="og:type" content="article">
-  <meta property="og:url" content="${canonicalUrl}">
-  <meta property="og:title" content="${title}">
-  <meta property="og:description" content="${description}">
-  <meta property="og:image" content="${image}">
+  <meta property="og:url" content="${escapeHtml(canonicalUrl)}">
+  <meta property="og:title" content="${escapeHtml(title)}">
+  <meta property="og:description" content="${escapeHtml(description)}">
+  <meta property="og:image" content="${escapeHtml(image)}">
   <meta property="twitter:card" content="summary_large_image">
-  <meta property="twitter:url" content="${canonicalUrl}">
-  <meta property="twitter:title" content="${title}">
-  <meta property="twitter:description" content="${description}">
-  <meta property="twitter:image" content="${image}">
-  <meta http-equiv="refresh" content="0; url=${redirectUrl}">
+  <meta property="twitter:url" content="${escapeHtml(canonicalUrl)}">
+  <meta property="twitter:title" content="${escapeHtml(title)}">
+  <meta property="twitter:description" content="${escapeHtml(description)}">
+  <meta property="twitter:image" content="${escapeHtml(image)}">
+  <meta http-equiv="refresh" content="0; url=${escapeHtml(redirectUrl)}">
 </head>
 <body>
   <p>Redirecionando para o boletim mensal...</p>

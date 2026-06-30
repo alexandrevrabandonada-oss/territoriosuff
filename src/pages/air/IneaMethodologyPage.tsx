@@ -5,6 +5,7 @@ import { AIR_PUBLIC_DOWNLOADS, AIR_PUBLIC_FILES, type AirPublicManifest, getAirP
 import type { DataDictionaryEntry } from "../../data/air/data-dictionary";
 import { RADAR_RELEASE_METADATA_FILE } from "../../data/air/radar-release-metadata";
 import { useRadarReleaseMetadata } from "../../data/air/useRadarReleaseMetadata";
+import { PublicInterestProtocol } from "../../components/air/PublicInterestProtocol";
 
 const DataAvailabilityMatrix = lazy(() =>
   import("../../components/air/DataAvailabilityMatrix").then((module) => ({ default: module.DataAvailabilityMatrix }))
@@ -138,6 +139,8 @@ export function IneaMethodologyPage() {
           Entenda de onde vêm os dados, como calculamos médias e episódios de atenção, quais são as limitações e como baixar os arquivos para auditoria cidadã.
         </p>
       </header>
+
+      <PublicInterestProtocol className="mb-8" />
 
       {/* Dynamic Data Updates Info Banner */}
       <div className="mb-8 p-4 bg-slate-50 border border-slate-200/65 rounded-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-4 text-xs font-semibold text-slate-600 shadow-sm animate-fade-in">

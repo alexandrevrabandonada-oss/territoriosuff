@@ -90,7 +90,7 @@ export function RadarStationsMode({ latestData, stationMetadata, onNavigate, onT
           description={
             stations.length > 0
               ? "A malha de estações, coordenadas, status e páginas individuais já está publicada para escrutínio cívico e técnico."
-              : "Sem estações carregadas, este modo não consegue comprovar cobertura instrumental mínima nesta consulta."
+              : "Sem estações carregadas, este modo não consegue demonstrar cobertura instrumental mínima nesta consulta."
           }
         />
         <RadarEvidenceStateBlock

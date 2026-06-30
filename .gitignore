@@ -32,6 +32,7 @@ vapid.json
 test-results/
 playwright-report/
 playwright/.cache/
+output/
 reports/relatorio_*.md
 reeports/
 scratch/

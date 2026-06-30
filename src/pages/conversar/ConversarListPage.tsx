@@ -1,18 +1,9 @@
-import { useEffect, useState, useRef, useCallback } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { IconShell, SurfaceCard } from "../../components/BrandSystem";
 import { PortalEmptyState, PortalHero, PortalPageShell, PortalSectionHeader } from "../../components/portal";
 import { InstagramEmbed } from "../../components/InstagramEmbed";
 import { Conversation, listConversations, createEnvironmentalReport } from "../../lib/api";
-
-let supabaseClientPromise: Promise<typeof import("../../lib/supabase/client")> | null = null;
-
-async function loadSupabaseClient() {
-    if (!supabaseClientPromise) {
-        supabaseClientPromise = import("../../lib/supabase/client");
-    }
-    return supabaseClientPromise;
-}
 
 export function ConversarListPage() {
     const [conversations, setConversations] = useState<Conversation[]>([]);
@@ -149,7 +140,7 @@ export function ConversarListPage() {
                                                 {activity.meta?.location ? <span>{activity.meta.location}</span> : null}
                                             </div>
                                             <Link
-                                                className="inline-flex w-fit items-center rounded-full bg-brand-primary px-4 py-2 text-xs font-black uppercase tracking-widest text-white transition-colors hover:bg-brand-primary-dark"
+                                                className="inline-flex min-h-11 w-fit items-center rounded-full bg-brand-primary px-4 py-2 text-xs font-black uppercase tracking-widest text-white transition-colors hover:bg-brand-primary-dark"
                                                 to={`/conversar/${activity.slug}`}
                                             >
                                                 Ler matéria
@@ -193,92 +184,6 @@ export function ConversarListPage() {
     );
 }
 
-const compressImage = (file: File): Promise<Blob> => {
-    return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onload = (event) => {
-            const img = new Image();
-            img.src = event.target?.result as string;
-            img.onload = () => {
-                const canvas = document.createElement("canvas");
-                const MAX_WIDTH = 1200;
-                const MAX_HEIGHT = 1200;
-                let width = img.width;
-                let height = img.height;
-
-                if (width > height) {
-                    if (width > MAX_WIDTH) {
-                        height *= MAX_WIDTH / width;
-                        width = MAX_WIDTH;
-                    }
-                } else {
-                    if (height > MAX_HEIGHT) {
-                        width *= MAX_HEIGHT / height;
-                        height = MAX_HEIGHT;
-                    }
-                }
-                canvas.width = width;
-                canvas.height = height;
-                const ctx = canvas.getContext("2d");
-                ctx?.drawImage(img, 0, 0, width, height);
-                canvas.toBlob(
-                    (blob) => {
-                        if (blob) {
-                            resolve(blob);
-                        } else {
-                            reject(new Error("Canvas toBlob failed"));
-                        }
-                    },
-                    "image/jpeg",
-                    0.8
-                );
-            };
-            img.onerror = (err) => reject(err);
-        };
-        reader.onerror = (err) => reject(err);
-    });
-};
-
-interface QueuedReport {
-    id: string;
-    reporter_name: string;
-    reporter_email: string | null;
-    reporter_phone: string | null;
-    category: string;
-    location: string;
-    description: string;
-    imageBase64: string | null;
-    imageName: string | null;
-    imageType: string | null;
-    created_at: string;
-}
-
-const blobToBase64 = (blob: Blob | File): Promise<string> => {
-    return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onloadend = () => {
-            if (typeof reader.result === "string") {
-                resolve(reader.result);
-            } else {
-                reject(new Error("FileReader did not return a string"));
-            }
-        };
-        reader.onerror = reject;
-        reader.readAsDataURL(blob);
-    });
-};
-
-const base64ToBlob = (base64: string, type: string): Blob => {
-    const byteString = atob(base64.split(',')[1]);
-    const ab = new ArrayBuffer(byteString.length);
-    const ia = new Uint8Array(ab);
-    for (let i = 0; i < byteString.length; i++) {
-        ia[i] = byteString.charCodeAt(i);
-    }
-    return new Blob([ab], { type });
-};
-
 function EnvironmentalReportSection() {
     const [isOpen, setIsOpen] = useState(false);
     const [reporterName, setReporterName] = useState("");
@@ -287,123 +192,12 @@ function EnvironmentalReportSection() {
     const [category, setCategory] = useState("");
     const [location, setLocation] = useState("");
     const [description, setDescription] = useState("");
-    const [imageFile, setImageFile] = useState<File | null>(null);
-    const [imagePreview, setImagePreview] = useState<string | null>(null);
+    const [website, setWebsite] = useState("");
     const [submitting, setSubmitting] = useState(false);
     const [success, setSuccess] = useState(false);
     const [error, setError] = useState<string | null>(null);
-    const fileInputRef = useRef<HTMLInputElement>(null);
 
-    const [queuedCount, setQueuedCount] = useState(0);
-    const [syncing, setSyncing] = useState(false);
-    const [offlineFeedback, setOfflineFeedback] = useState<string | null>(null);
     const [isOnline, setIsOnline] = useState(navigator.onLine);
-
-    const syncOfflineReports = useCallback(async () => {
-        if (!navigator.onLine || syncing) return;
-
-        const stored = localStorage.getItem("semear_pending_reports");
-        if (!stored) return;
-
-        let queue: QueuedReport[];
-        try {
-            queue = JSON.parse(stored);
-        } catch (err) {
-            console.error("Fila corrompida:", err);
-            localStorage.removeItem("semear_pending_reports");
-            setQueuedCount(0);
-            return;
-        }
-
-        if (queue.length === 0) return;
-
-        setSyncing(true);
-        setError(null);
-        setOfflineFeedback("Sincronizando relatos salvos offline...");
-
-        const remainingQueue: QueuedReport[] = [];
-        let successCount = 0;
-
-        for (const report of queue) {
-            try {
-                let imageUrl = null;
-                if (report.imageBase64 && report.imageType) {
-                    const { supabase } = await loadSupabaseClient();
-                    if (!supabase) {
-                        throw new Error("Conexão com o banco de dados não configurada.");
-                    }
-                    const imageBlob = base64ToBlob(report.imageBase64, report.imageType);
-                    const fileExt = report.imageName?.split(".").pop() || "jpg";
-                    const uniqueName = `relato_${Date.now()}_${Math.random().toString(36).substring(2, 7)}.${fileExt}`;
-
-                    const { error: uploadError } = await supabase.storage
-                        .from("environmental_reports")
-                        .upload(uniqueName, imageBlob, {
-                            cacheControl: "3600",
-                            contentType: report.imageType,
-                            upsert: false
-                        });
-
-                    if (uploadError) throw uploadError;
-
-                    const { data: { publicUrl } } = supabase.storage
-                        .from("environmental_reports")
-                        .getPublicUrl(uniqueName);
-
-                    imageUrl = publicUrl;
-                }
-
-                await createEnvironmentalReport({
-                    reporter_name: report.reporter_name,
-                    reporter_email: report.reporter_email,
-                    reporter_phone: report.reporter_phone,
-                    category: report.category,
-                    location: report.location,
-                    description: report.description,
-                    image_url: imageUrl,
-                    created_at: report.created_at
-                });
-
-                successCount++;
-            } catch (err) {
-                console.error(`Erro ao sincronizar relato ${report.id}:`, err);
-                const isNetworkError = !navigator.onLine ||
-                    (err instanceof Error && (
-                        err.message.includes("Failed to fetch") ||
-                        err.message.includes("NetworkError") ||
-                        err.message.includes("network")
-                    ));
-
-                if (isNetworkError) {
-                    remainingQueue.push(report);
-                    const currentIndex = queue.indexOf(report);
-                    remainingQueue.push(...queue.slice(currentIndex + 1));
-                    break;
-                } else {
-                    console.warn(`Descartando relato ${report.id} devido a falha permanente no servidor:`, err);
-                }
-            }
-        }
-
-        try {
-            if (remainingQueue.length > 0) {
-                localStorage.setItem("semear_pending_reports", JSON.stringify(remainingQueue));
-            } else {
-                localStorage.removeItem("semear_pending_reports");
-            }
-            setQueuedCount(remainingQueue.length);
-        } catch (err) {
-            console.error("Erro ao atualizar fila offline:", err);
-        }
-
-        setSyncing(false);
-        if (successCount > 0) {
-            setOfflineFeedback(`Sincronização concluída! ${successCount} relato(s) enviado(s) com sucesso.`);
-            setTimeout(() => setOfflineFeedback(null), 5000);
-        } else {
-            setOfflineFeedback(null);
-        }
-    }, [syncing]);
 
     useEffect(() => {
         const handleOnline = () => setIsOnline(true);
@@ -418,25 +212,6 @@ function EnvironmentalReportSection() {
         };
     }, []);
 
-    useEffect(() => {
-        const checkQueue = () => {
-            try {
-                const stored = localStorage.getItem("semear_pending_reports");
-                if (stored) {
-                    const queue: QueuedReport[] = JSON.parse(stored);
-                    setQueuedCount(queue.length);
-                }
-            } catch (err) {
-                console.error("Erro ao ler fila offline:", err);
-            }
-        };
-        checkQueue();
-
-        if (isOnline) {
-            syncOfflineReports();
-        }
-    }, [isOnline, syncOfflineReports]);
-
     const categories = [
         { id: "ar_fumaca", label: "Ar / Fumaça", icon: "💨", desc: "Queimadas, fumaça industrial, fuligem, poeira intensa" },
         { id: "residuos_lixo", label: "Lixo / Resíduos", icon: "🗑️", desc: "Descarte irregular de lixo, entulho, focos de contaminação" },
@@ -445,51 +220,42 @@ function EnvironmentalReportSection() {
         { id: "outros", label: "Outros", icon: "🛡️", desc: "Outros problemas e ocorrências ambientais não categorizados" }
     ];
 
-    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        if (e.target.files && e.target.files[0]) {
-            const file = e.target.files[0];
-            if (!file.type.startsWith("image/")) {
-                setError("O arquivo selecionado deve ser uma imagem.");
-                setImageFile(null);
-                setImagePreview(null);
-                if (fileInputRef.current) fileInputRef.current.value = "";
-                return;
-            }
-            if (file.size > 5 * 1024 * 1024) {
-                setError("O arquivo da foto não deve exceder 5MB.");
-                setImageFile(null);
-                setImagePreview(null);
-                if (fileInputRef.current) fileInputRef.current.value = "";
-                return;
-            }
-            setImageFile(file);
-            setImagePreview(URL.createObjectURL(file));
-            setError(null);
-        }
-    };
-
-    const handleRemoveImage = () => {
-        setImageFile(null);
-        setImagePreview(null);
-        if (fileInputRef.current) {
-            fileInputRef.current.value = "";
-        }
-    };
-
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (!reporterName.trim() || !category || !location.trim() || !description.trim()) {
+        const name = reporterName.trim();
+        const email = reporterEmail.trim();
+        const phone = reporterPhone.trim();
+        const reportLocation = location.trim();
+        const reportDescription = description.trim();
+
+        if (website.trim()) {
+            setSuccess(true);
+            setError(null);
+            return;
+        }
+
+        if (!name || !category || !reportLocation || !reportDescription) {
             setError("Por favor, preencha todos os campos obrigatórios (*).");
             return;
         }
 
-        if (reporterEmail.trim() && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(reporterEmail.trim())) {
+        if (name.length > 120 || reportLocation.length > 240 || reportDescription.length > 1500) {
+            setError("Revise o tamanho dos campos: nome até 120 caracteres, localização até 240 e descrição até 1500.");
+            return;
+        }
+
+        if (reportDescription.length < 20) {
+            setError("Descreva a ocorrência com pelo menos 20 caracteres para permitir triagem responsável.");
+            return;
+        }
+
+        if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
             setError("Por favor, informe um endereço de e-mail válido.");
             return;
         }
 
-        if (reporterPhone.trim()) {
-            const digits = reporterPhone.replace(/\D/g, "");
+        if (phone) {
+            const digits = phone.replace(/\D/g, "");
             if (digits.length < 10 || digits.length > 11) {
                 setError("Por favor, informe um telefone de contato válido com DDD (ex: 21 99999-9999).");
                 return;
@@ -500,118 +266,21 @@ function EnvironmentalReportSection() {
         setError(null);
         setSuccess(false);
 
-        // Check if offline first
         if (!navigator.onLine) {
-            try {
-                let imageBase64: string | null = null;
-                let imageName: string | null = null;
-                let imageType: string | null = null;
-
-                if (imageFile) {
-                    imageName = imageFile.name;
-                    imageType = "image/jpeg";
-                    try {
-                        const compressedBlob = await compressImage(imageFile);
-                        imageBase64 = await blobToBase64(compressedBlob);
-                    } catch (compressErr) {
-                        console.warn("Failed to compress image for offline storage, using original:", compressErr);
-                        imageBase64 = await blobToBase64(imageFile);
-                        imageType = imageFile.type;
-                    }
-                }
-
-                const newReport: QueuedReport = {
-                    id: `local_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`,
-                    reporter_name: reporterName,
-                    reporter_email: reporterEmail || null,
-                    reporter_phone: reporterPhone || null,
-                    category,
-                    location,
-                    description,
-                    imageBase64,
-                    imageName,
-                    imageType,
-                    created_at: new Date().toISOString()
-                };
-
-                const stored = localStorage.getItem("semear_pending_reports");
-                const queue: QueuedReport[] = stored ? JSON.parse(stored) : [];
-                queue.push(newReport);
-                localStorage.setItem("semear_pending_reports", JSON.stringify(queue));
-                setQueuedCount(queue.length);
-
-                setSuccess(true);
-                setOfflineFeedback("Você está offline. Seu relato foi salvo e será enviado automaticamente assim que a conexão retornar!");
-                setReporterName("");
-                setReporterEmail("");
-                setReporterPhone("");
-                setCategory("");
-                setLocation("");
-                setDescription("");
-                setImageFile(null);
-                setImagePreview(null);
-                if (fileInputRef.current) {
-                    fileInputRef.current.value = "";
-                }
-            } catch (err) {
-                console.error("Failed to save report offline:", err);
-                setError("Falha ao salvar relato offline: " + (err instanceof Error ? err.message : "Erro desconhecido"));
-            } finally {
-                setSubmitting(false);
-            }
+            setError("Por privacidade, relatos com dados pessoais e fotos não são salvos offline neste dispositivo. Conecte-se à internet e envie novamente.");
+            setSubmitting(false);
             return;
         }
 
         try {
-            let imageUrl = null;
-            if (imageFile) {
-                const { supabase } = await loadSupabaseClient();
-                if (!supabase) {
-                    throw new Error("Conexão com o banco de dados não configurada.");
-                }
-
-                // Compress the image before uploading to save storage & bandwidth
-                let uploadData: Blob | File = imageFile;
-                let finalName = imageFile.name;
-
-                try {
-                    const compressedBlob = await compressImage(imageFile);
-                    uploadData = compressedBlob;
-                    // Change extension to .jpg since canvas.toBlob uses image/jpeg
-                    const dotIndex = imageFile.name.lastIndexOf('.');
-                    const baseName = dotIndex !== -1 ? imageFile.name.substring(0, dotIndex) : imageFile.name;
-                    finalName = `${baseName}.jpg`;
-                } catch (compressErr) {
-                    console.warn("Failed to compress image, uploading original instead:", compressErr);
-                }
-
-                const fileExt = finalName.split(".").pop();
-                const uniqueName = `relato_${Date.now()}_${Math.random().toString(36).substring(2, 7)}.${fileExt}`;
-                const { error: uploadError } = await supabase.storage
-                    .from("environmental_reports")
-                    .upload(uniqueName, uploadData, {
-                        cacheControl: "3600",
-                        contentType: uploadData instanceof Blob ? "image/jpeg" : imageFile.type,
-                        upsert: false
-                    });
-
-                if (uploadError) throw uploadError;
-
-                const { data: { publicUrl } } = supabase.storage
-                    .from("environmental_reports")
-                    .getPublicUrl(uniqueName);
-
-                imageUrl = publicUrl;
-            }
-
             await createEnvironmentalReport({
-                reporter_name: reporterName,
-                reporter_email: reporterEmail || null,
-                reporter_phone: reporterPhone || null,
+                reporter_name: name,
+                reporter_email: email || null,
+                reporter_phone: phone || null,
                 category,
-                location,
-                description,
-                image_url: imageUrl
+                location: reportLocation,
+                description: reportDescription,
+                image_url: null
             });
 
             setSuccess(true);
@@ -621,11 +290,7 @@ function EnvironmentalReportSection() {
             setCategory("");
             setLocation("");
             setDescription("");
-            setImageFile(null);
-            setImagePreview(null);
-            if (fileInputRef.current) {
-                fileInputRef.current.value = "";
-            }
+            setWebsite("");
         } catch (err) {
             const isNetworkErr = err instanceof Error && (
                 err.message.includes("Failed to fetch") ||
@@ -634,62 +299,7 @@ function EnvironmentalReportSection() {
             );
 
             if (isNetworkErr) {
-                console.warn("Erro de conexão detectado ao enviar relato online, salvando na fila offline:", err);
-                try {
-                    let imageBase64: string | null = null;
-                    let imageName: string | null = null;
-                    let imageType: string | null = null;
-
-                    if (imageFile) {
-                        imageName = imageFile.name;
-                        imageType = "image/jpeg";
-                        try {
-                            const compressedBlob = await compressImage(imageFile);
-                            imageBase64 = await blobToBase64(compressedBlob);
-                        } catch (compressErr) {
-                            console.warn("Failed to compress image before offline storage, using original:", compressErr);
-                            imageBase64 = await blobToBase64(imageFile);
-                            imageType = imageFile.type;
-                        }
-                    }
-
-                    const newReport: QueuedReport = {
-                        id: `local_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`,
-                        reporter_name: reporterName,
-                        reporter_email: reporterEmail || null,
-                        reporter_phone: reporterPhone || null,
-                        category,
-                        location,
-                        description,
-                        imageBase64,
-                        imageName,
-                        imageType,
-                        created_at: new Date().toISOString()
-                    };
-
-                    const stored = localStorage.getItem("semear_pending_reports");
-                    const queue: QueuedReport[] = stored ? JSON.parse(stored) : [];
-                    queue.push(newReport);
-                    localStorage.setItem("semear_pending_reports", JSON.stringify(queue));
-                    setQueuedCount(queue.length);
-
-                    setSuccess(true);
-                    setOfflineFeedback("Erro temporário de conexão. Seu relato foi salvo offline e será enviado automaticamente assim que a conexão estabilizar!");
-                    setReporterName("");
-                    setReporterEmail("");
-                    setReporterPhone("");
-                    setCategory("");
-                    setLocation("");
-                    setDescription("");
-                    setImageFile(null);
-                    setImagePreview(null);
-                    if (fileInputRef.current) {
-                        fileInputRef.current.value = "";
-                    }
-                } catch (saveErr) {
-                    console.error("Failed to save report offline after network error:", saveErr);
-                    setError("Erro ao enviar relato e falha ao salvar na fila offline.");
-                }
+                setError("Não foi possível enviar por instabilidade de conexão. Por privacidade, o relato não foi salvo neste dispositivo; revise e tente novamente quando a conexão estabilizar.");
             } else {
                 setError(err instanceof Error ? err.message : "Falha ao enviar relato.");
             }
@@ -727,39 +337,9 @@ function EnvironmentalReportSection() {
                 </button>
             </div>
 
-            {/* Banner de Sincronização / Modo Offline */}
-            {(queuedCount > 0 || offlineFeedback) && (
-                <div className={`mt-4 p-4 rounded-xl border flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 text-sm font-semibold transition-all ${
-                    syncing 
-                        ? "bg-blue-50 border-blue-200 text-blue-800" 
-                        : !isOnline 
-                            ? "bg-amber-50 border-amber-200 text-amber-800" 
-                            : "bg-emerald-50 border-emerald-200 text-emerald-800"
-                }`}>
-                    <div className="flex items-center gap-2">
-                        {syncing ? (
-                            <span className="h-4 w-4 animate-spin rounded-full border-2 border-blue-600 border-t-transparent" />
-                        ) : !isOnline ? (
-                            <span>📡</span>
-                        ) : (
-                            <span>✅</span>
-                        )}
-                        <span>
-                            {offlineFeedback || (
-                                !isOnline 
-                                    ? `Você está offline. Há ${queuedCount} relato(s) salvos na fila aguardando conexão.`
-                                    : `Há ${queuedCount} relato(s) pendente(s) de envio.`
-                            )}
-                        </span>
-                    </div>
-                    {isOnline && queuedCount > 0 && !syncing && (
-                        <button
-                            onClick={syncOfflineReports}
-                            className="text-xs px-3 py-1 bg-white border border-border-subtle rounded-lg shadow-sm hover:bg-slate-50 transition-colors self-start sm:self-auto text-text-primary"
-                        >
-                            Enviar Agora ↗
-                        </button>
-                    )}
+            {!isOnline && (
+                <div className="mt-4 rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm font-semibold text-amber-900">
+                    Você está offline. Por privacidade, este formulário não salva relatos, contatos ou fotos no dispositivo. Conecte-se à internet antes de enviar.
                 </div>
             )}
 
@@ -769,15 +349,14 @@ function EnvironmentalReportSection() {
                         <div className="rounded-2xl border-2 border-emerald-500 bg-emerald-50 p-6 text-center space-y-3">
                             <span className="text-4xl">🎉</span>
                             <h4 className="text-lg font-bold text-emerald-800">
-                                {offlineFeedback ? "Relato Salvo Offline!" : "Relato Enviado com Sucesso!"}
+                                Relato enviado com sucesso!
                             </h4>
                             <p className="text-sm text-emerald-700 max-w-md mx-auto">
-                                {offlineFeedback || "Agradecemos a sua colaboração. Seu relato foi registrado na nossa caixa de entrada e será avaliado pela equipe do projeto SEMEAR."}
+                                Agradecemos a sua colaboração. Seu relato foi registrado na nossa caixa de entrada e será avaliado pela equipe do projeto SEMEAR.
                             </p>
                             <button
                                 onClick={() => {
                                     setSuccess(false);
-                                    setOfflineFeedback(null);
                                 }}
                                 className="ui-btn-secondary mt-2"
                             >
@@ -793,6 +372,21 @@ function EnvironmentalReportSection() {
                                     </p>
                                 </div>
                             )}
+
+                            <div className="rounded-2xl border border-sky-200 bg-sky-50 p-4 text-xs font-semibold leading-relaxed text-sky-900">
+                                <strong className="block text-[10px] uppercase tracking-[0.16em] text-sky-700">Privacidade do relato</strong>
+                                Seus dados de contato são usados apenas para acompanhamento pela equipe do projeto. Evite incluir dados pessoais de terceiros no relato. Por segurança, o portal não salva relatos ambientais offline no navegador.
+                            </div>
+
+                            <input
+                                type="text"
+                                tabIndex={-1}
+                                autoComplete="off"
+                                value={website}
+                                onChange={(event) => setWebsite(event.target.value)}
+                                className="hidden"
+                                aria-hidden="true"
+                            />
 
                             {/* Informações Pessoais */}
                             <div className="space-y-4">
@@ -811,6 +405,7 @@ function EnvironmentalReportSection() {
                                             placeholder="Seu nome"
                                             value={reporterName}
                                             onChange={(e) => setReporterName(e.target.value)}
+                                            maxLength={120}
                                             required
                                         />
                                     </div>
@@ -825,6 +420,7 @@ function EnvironmentalReportSection() {
                                             placeholder="seuemail@exemplo.com"
                                             value={reporterEmail}
                                             onChange={(e) => setReporterEmail(e.target.value)}
+                                            maxLength={160}
                                         />
                                     </div>
                                     <div className="space-y-1.5">
@@ -838,6 +434,7 @@ function EnvironmentalReportSection() {
                                             placeholder="(21) 99999-9999"
                                             value={reporterPhone}
                                             onChange={(e) => setReporterPhone(e.target.value)}
+                                            maxLength={20}
                                         />
                                     </div>
                                 </div>
@@ -898,6 +495,7 @@ function EnvironmentalReportSection() {
                                         placeholder="Ex: Bairro São Domingos, próximo ao mercado X, rua tal..."
                                         value={location}
                                         onChange={(e) => setLocation(e.target.value)}
+                                        maxLength={240}
                                         required
                                     />
                                     <p className="text-xs text-text-secondary">
@@ -916,55 +514,17 @@ function EnvironmentalReportSection() {
                                         placeholder="Descreva detalhadamente o problema ambiental..."
                                         value={description}
                                         onChange={(e) => setDescription(e.target.value)}
+                                        minLength={20}
+                                        maxLength={1500}
                                         required
                                     />
                                 </div>
                             </div>
 
-                            {/* Foto / Anexo */}
-                            <div className="space-y-2">
-                                <label className="text-xs font-bold text-text-primary block">
-                                    Anexar Foto (Opcional)
-                                </label>
-                                <div className="flex flex-wrap items-center gap-4">
-                                    <button
-                                        type="button"
-                                        onClick={() => fileInputRef.current?.click()}
-                                        className="flex items-center justify-center gap-2 px-5 py-3 border-2 border-dashed border-border-subtle hover:border-brand-primary/45 rounded-xl bg-white hover:bg-slate-50 transition-all cursor-pointer text-sm font-semibold text-text-secondary"
-                                    >
-                                        📷 Selecionar Imagem
-                                    </button>
-                                    <input
-                                        type="file"
-                                        ref={fileInputRef}
-                                        onChange={handleFileChange}
-                                        accept="image/*"
-                                        className="hidden"
-                                    />
-                                    <p className="text-xs text-text-secondary">
-                                        Formatos aceitos: JPEG, PNG. Limite de tamanho: 5MB.
-                                    </p>
-                                </div>
-
-                                {imagePreview && (
-                                    <div className="relative mt-2 inline-block rounded-xl overflow-hidden border border-border-subtle group">
-                                        <img
-                                            src={imagePreview}
-                                            alt="Preview do relato"
-                                            className="h-28 w-28 object-cover"
-                                        />
-                                        <button
-                                            type="button"
-                                            onClick={handleRemoveImage}
-                                            className="absolute top-1 right-1 bg-red-600 text-white rounded-full p-1 shadow-md hover:bg-red-700 transition-colors"
-                                            title="Remover imagem"
-                                        >
-                                            <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M6 18L18 6M6 6l12 12" />
-                                            </svg>
-                                        </button>
-                                    </div>
-                                )}
+                            {/* Anexos ficam fora do formulário público até existir armazenamento privado auditável. */}
+                            <div className="rounded-2xl border border-amber-200 bg-amber-50 p-4 text-xs font-semibold leading-relaxed text-amber-900">
+                                <strong className="block text-[10px] uppercase tracking-[0.16em] text-amber-700">Anexos desabilitados nesta versão pública</strong>
+                                Fotos podem conter rostos, placas, localização e outros dados pessoais. O envio de imagens será reativado somente com armazenamento privado, controle de acesso e política de retenção definida.
                             </div>
 
                             <button

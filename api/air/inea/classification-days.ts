@@ -1,10 +1,4 @@
-import { createClient } from "@supabase/supabase-js";
-import { applyPublicJsonHeaders, isValidDateInput, rejectNonGet } from "./_http";
-
-const SUPABASE_URL = process.env.SUPABASE_URL || process.env.VITE_SUPABASE_URL || "";
-const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.VITE_SUPABASE_ANON_KEY || "";
-
-const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
+import { applyPublicJsonHeaders, getIneaSupabaseClient, isValidDateInput, rejectNonGet, sendPublicError } from "./_http";
 
 export default async function handler(req: any, res: any) {
   applyPublicJsonHeaders(res);
@@ -12,6 +6,7 @@ export default async function handler(req: any, res: any) {
   if (rejectNonGet(req, res)) return;
 
   try {
+    const supabase = getIneaSupabaseClient();
     const { stationId, from, to } = req.query;
     if (from && !isValidDateInput(String(from))) {
       return res.status(400).json({ error: "Invalid 'from' date" });
@@ -55,7 +50,6 @@ export default async function handler(req: any, res: any) {
 
     return res.status(200).json(breakdown);
   } catch (err: any) {
-    console.error("[api/air/inea/classification-days] Error:", err.message);
-    return res.status(500).json({ error: err.message });
+    return sendPublicError(res, "api/air/inea/classification-days", err);
   }
 }

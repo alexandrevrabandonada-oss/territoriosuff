@@ -27,3 +27,13 @@ export const RADAR_OFFICIAL_RECORD_QAQC_NOTE =
 
 export const RADAR_EXPERIMENTAL_OMS_CONAMA_LABEL =
   "comparação experimental com as diretrizes da OMS e padrões da CONAMA 506";
+
+export const RADAR_PUBLIC_INTEREST_PROTOCOL = [
+  "Fonte: dados públicos do INEA/WebLakes e arquivos derivados auditáveis do SEMEAR.",
+  "Escopo: leitura cívica, histórica e territorial para transparência pública.",
+  "Limite: não é laudo pericial, diagnóstico clínico, imputação de responsabilidade ou prova de causalidade individual.",
+  "Uso responsável: confirme cobertura, janela temporal, unidade, régua aplicada e metodologia antes de citar qualquer número fora do portal."
+];
+
+export const RADAR_PUBLIC_INTEREST_SUMMARY =
+  "Use como evidência pública para auditoria, priorização e cobrança institucional. Não use isoladamente como laudo, perícia, diagnóstico de saúde, imputação de fonte emissora específica ou conclusão jurídica final.";

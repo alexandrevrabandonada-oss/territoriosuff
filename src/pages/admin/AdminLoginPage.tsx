@@ -2,10 +2,17 @@ import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { getSupabaseClientOrNull } from "../../lib/supabase/runtime";
 
-type AuthMode = "login" | "signup" | "forgot" | "otp";
+type AuthMode = "login" | "forgot" | "otp";
 
-function getErrorMessage(error: unknown, fallback = "Ocorreu um erro inesperado.") {
-  return error instanceof Error ? error.message : fallback;
+function getPublicAuthError(mode: AuthMode, error: unknown) {
+  console.error(`[Auth ${mode}] Erro:`, error);
+  if (mode === "forgot") {
+    return "Não foi possível processar a recuperação agora. Verifique o e-mail informado e tente novamente.";
+  }
+  if (mode === "otp") {
+    return "Não foi possível enviar o link de acesso agora. Verifique o e-mail informado e tente novamente.";
+  }
+  return "Não foi possível entrar. Verifique suas credenciais e confirme que seu acesso administrativo está autorizado.";
 }
 
 export function AdminLoginPage() {
@@ -53,17 +60,6 @@ export function AdminLoginPage() {
         if (otpError) throw otpError;
         setMessage("Link de acesso enviado! Verifique seu e-mail para entrar no painel.");
       }
-      else if (mode === "signup") {
-        const { error: signUpError } = await supabase.auth.signUp({
-          email,
-          password,
-          options: {
-            emailRedirectTo: `${window.location.origin}/admin/login`,
-          }
-        });
-        if (signUpError) throw signUpError;
-        setMessage("Conta criada! Verifique seu e-mail para confirmar o cadastro. Após confirmar, um administrador precisará aprovar seu acesso.");
-      }
       else if (mode === "forgot") {
         const { error: resetError } = await supabase.auth.resetPasswordForEmail(email, {
           redirectTo: `${window.location.origin}/admin/reset-password`,
@@ -72,8 +68,7 @@ export function AdminLoginPage() {
         setMessage("Link de recuperação enviado! Verifique sua caixa de entrada.");
       }
     } catch (err) {
-      console.error(`[Auth ${mode}] Erro:`, err);
-      setError(getErrorMessage(err));
+      setError(getPublicAuthError(mode, err));
     } finally {
       setLoading(false);
     }
@@ -100,13 +95,11 @@ export function AdminLoginPage() {
             <h2 className="mt-4 text-4xl font-black tracking-tight text-slate-950">
               {mode === "login" && "Bem-vindo"}
               {mode === "otp" && "Entrar sem Senha"}
-              {mode === "signup" && "Criar Conta"}
               {mode === "forgot" && "Recuperar Senha"}
             </h2>
             <p className="mt-3 text-slate-500 font-medium">
               {mode === "login" && "Acesso Administrativo SEMEAR"}
               {mode === "otp" && "Enviaremos um link de acesso por e-mail"}
-              {mode === "signup" && "Junte-se à equipe de gestão"}
               {mode === "forgot" && "Enviaremos um link seguro"}
             </p>
           </div>
@@ -128,7 +121,7 @@ export function AdminLoginPage() {
               />
             </div>
 
-            {mode !== "forgot" && mode !== "otp" && (
+            {mode === "login" && (
               <div>
                 <div className="flex items-center justify-between mb-2">
                   <label className="block text-xs font-black text-slate-400 uppercase tracking-widest" htmlFor="password">
@@ -150,7 +143,7 @@ export function AdminLoginPage() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
-                  autoComplete={mode === "login" ? "current-password" : "new-password"}
+                  autoComplete="current-password"
                   className="w-full rounded-2xl border border-slate-200 bg-white/80 px-5 py-4 font-medium text-slate-900 transition-all focus:border-emerald-500 focus:outline-none focus:ring-4 focus:ring-emerald-500/10"
                   placeholder="••••••••"
                 />
@@ -186,7 +179,6 @@ export function AdminLoginPage() {
                 <>
                   {mode === "login" && "Entrar no Painel"}
                   {mode === "otp" && "Enviar Link de Acesso"}
-                  {mode === "signup" && "Confirmar Cadastro"}
                   {mode === "forgot" && "Enviar Link"}
                 </>
               )}
@@ -197,13 +189,7 @@ export function AdminLoginPage() {
             {mode === "login" ? (
               <div className="space-y-3">
                 <p className="text-slate-500 text-sm font-medium">
-                  Não tem uma conta?{" "}
-                  <button 
-                    onClick={() => setMode("signup")}
-                    className="text-emerald-600 font-bold hover:underline"
-                  >
-                    Cadastre-se aqui
-                  </button>
+                  Acesso restrito a contas previamente autorizadas pela equipe SEMEAR.
                 </p>
                 <div className="pt-2 border-t border-slate-100">
                   <button 

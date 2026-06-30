@@ -647,7 +647,7 @@ export async function listCollections({ limit = 50 }: { limit?: number } = {}): 
 
     if (error) throw error;
     return ((data || []) as Record<string, unknown>[])
-      .filter((row) => !isDemoRecord(row)) as AcervoCollection[];
+      .filter((row) => !isDemoRecord(row)) as unknown as AcervoCollection[];
   } catch (error) {
     throw toAppError("Falha ao listar dossiês", error);
   }
@@ -666,7 +666,7 @@ export async function listFeaturedCollections(limit = 6): Promise<AcervoCollecti
 
     if (error) throw error;
     return ((data || []) as Record<string, unknown>[])
-      .filter((row) => !isDemoRecord(row)) as AcervoCollection[];
+      .filter((row) => !isDemoRecord(row)) as unknown as AcervoCollection[];
   } catch (error) {
     throw toAppError("Falha ao listar dossiês em destaque", error);
   }
@@ -701,7 +701,7 @@ export async function listCollectionsForItem(itemSlugOrId: string): Promise<Acer
     return ((data || []) as AcervoCollectionRelationRow[])
       .map((row) => row.acervo_collections)
       .filter((collection): collection is Record<string, unknown> => !!collection && typeof collection === "object" && !Array.isArray(collection))
-      .filter((collection) => !isDemoRecord(collection)) as AcervoCollection[];
+      .filter((collection) => !isDemoRecord(collection)) as unknown as AcervoCollection[];
   } catch (error) {
     console.warn("Falha ao buscar coleções do item:", error);
     return [];
@@ -963,14 +963,29 @@ export async function createEnvironmentalReport(
   payload: CreateEnvironmentalReportPayload
 ): Promise<EnvironmentalReport> {
   try {
-    const supabase = await getSupabase();
-    const { data, error } = await supabase
-      .from("environmental_reports")
-      .insert(payload)
-      .select("*")
-      .single();
+    const response = await fetch("/api/environmental-reports", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        reporter_name: payload.reporter_name,
+        reporter_email: payload.reporter_email ?? null,
+        reporter_phone: payload.reporter_phone ?? null,
+        category: payload.category,
+        location: payload.location,
+        description: payload.description
+      })
+    });
 
-    if (error) throw error;
+    const result = (await response.json().catch(() => null)) as { data?: unknown; error?: string } | null;
+    if (!response.ok) {
+      throw new Error(result?.error || "Falha ao criar relato ambiental");
+    }
+    const data = result?.data;
+    if (!data || typeof data !== "object") {
+      throw new Error("Resposta invalida ao criar relato ambiental");
+    }
     return data as EnvironmentalReport;
   } catch (error) {
     throw toAppError("Falha ao criar relato ambiental", error);

@@ -29,7 +29,7 @@ const EVIDENCE_ITEMS: EvidenceDictionaryItem[] = [
   },
   {
     state: "missing",
-    definition: "Ainda não existe prova pública suficiente para liberar a leitura como camada confiável de uso operacional ou institucional.",
+    definition: "Ainda não existe evidência pública suficiente para liberar a leitura como camada confiável de uso operacional ou institucional.",
     whenToUse: "Use quando faltam artefatos mínimos de verificação, como QA/QC por observação, resposta institucional ou metadata crítica.",
     example: "Exemplo no Radar: NO₂ bloqueado operacionalmente e accountability institucional ainda não publicada."
   }
@@ -44,13 +44,13 @@ export function RadarEvidenceDictionary({ compact = false }: RadarEvidenceDictio
     <section className="rounded-[2rem] border border-slate-200 bg-[linear-gradient(180deg,#ffffff,#f8fafc)] p-5 shadow-[0_20px_45px_-34px_rgba(15,23,42,0.35)]">
       <div className="flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
         <div className="space-y-2">
-          <div className="text-[10px] font-black uppercase tracking-[0.18em] text-slate-400">Dicionário de prova pública</div>
+          <div className="text-[10px] font-black uppercase tracking-[0.18em] text-slate-400">Dicionário de evidência pública</div>
           <h3 className="text-lg font-black tracking-tight text-slate-900">
-            {compact ? "Como o Radar nomeia a força da prova" : "Taxonomia operacional de prova para ler o Radar sem ambiguidade"}
+            {compact ? "Como o Radar nomeia a força da evidência" : "Taxonomia operacional de evidência para ler o Radar sem ambiguidade"}
           </h3>
           <p className="max-w-3xl text-[11px] font-semibold leading-relaxed text-slate-600">
             Estes quatro estados são a gramática oficial do Radar. Eles dizem se um painel já está pronto para auditoria forte, se ainda depende de cautela, se
-            só possui memória externa ou se ainda não tem prova pública suficiente.
+            só possui memória externa ou se ainda não tem evidência pública suficiente.
           </p>
         </div>
         <div className="rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-[10px] font-black uppercase tracking-[0.16em] text-slate-700">

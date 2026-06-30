@@ -380,7 +380,7 @@ export function AirAtlasMap() {
               metodologia {releaseMetadata.methodologyVersion}
             </span>
             <span className="rounded-full border border-amber-500/25 bg-amber-500/10 px-2.5 py-0.5 text-[9px] font-black uppercase tracking-[0.16em] text-amber-300">
-              prova parcial
+              evidência parcial
             </span>
           </div>
         </div>

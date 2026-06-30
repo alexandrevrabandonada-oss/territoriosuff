@@ -628,8 +628,7 @@ function PublishedMonthsStrip({
 
 export function TransparenciaPage() {
   const [conversations, setConversations] = useState<Conversation[]>([]);
-  const [monthlyReports, setMonthlyReports] = useState<LiveTransparencyMonthlyReport[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [monthlyReports, setMonthlyReports] = useState<LiveTransparencyMonthlyReport[]>(LIVE_TRANSPARENCIA_REPORTS);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
@@ -637,22 +636,24 @@ export function TransparenciaPage() {
 
     async function fetchData() {
       try {
-        setLoading(true);
-        const [conversationData, monthlyData] = await Promise.all([
+        const [conversationResult, monthlyResult] = await Promise.allSettled([
           listConversations(),
-          listLiveTransparencyReports().catch(() => LIVE_TRANSPARENCIA_REPORTS)
+          listLiveTransparencyReports()
         ]);
 
         if (cancelled) return;
 
-        setConversations(conversationData);
-        setMonthlyReports(monthlyData.length > 0 ? monthlyData : LIVE_TRANSPARENCIA_REPORTS);
+        if (conversationResult.status === "fulfilled") {
+          setConversations(conversationResult.value);
+        }
+
+        if (monthlyResult.status === "fulfilled" && monthlyResult.value.length > 0) {
+          setMonthlyReports(monthlyResult.value);
+        }
       } catch (err) {
         if (!cancelled) {
           setError(err instanceof Error ? err.message : "Falha ao carregar dados.");
         }
-      } finally {
-        if (!cancelled) setLoading(false);
       }
     }
 
@@ -770,16 +771,6 @@ export function TransparenciaPage() {
       helper: "Publicações que já trazem território informado no registro bruto."
     };
   }, [conversations.length, liveTransparency.withLocation.length, monthlyTransparency.latest]);
-
-  if (loading) {
-    return (
-      <div className="grid gap-4 md:grid-cols-3">
-        <SkeletonCard />
-        <SkeletonCard />
-        <SkeletonCard />
-      </div>
-    );
-  }
 
   if (error) {
     return (
@@ -1052,7 +1043,7 @@ export function TransparenciaPage() {
                   {item.excerpt ? <p className="mt-3 text-sm leading-relaxed text-slate-700">{item.excerpt}</p> : null}
                   {!item.excerpt && item.body_md ? <p className="mt-3 line-clamp-5 text-sm leading-relaxed text-slate-700">{item.body_md}</p> : null}
                   <div className="mt-4">
-                    <Link to="/conversar" className="text-sm font-black text-emerald-700 hover:underline">
+                    <Link to="/conversar" className="inline-flex min-h-11 items-center text-sm font-black text-emerald-700 hover:underline">
                       Ver fluxo completo das publicações
                     </Link>
                   </div>

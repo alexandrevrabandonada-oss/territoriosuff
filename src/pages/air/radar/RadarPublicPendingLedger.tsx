@@ -67,7 +67,7 @@ export function buildPendingItems(releaseMetadata: RadarReleaseMetadata = RADAR_
       status: "open",
       referenceDate: "16/06/2026",
       cycleVersion: `release ${releaseMetadata.cycleVersion}`,
-      lastMovement: "Lacuna institucional formalizada no roadmap, no quadro metodológico e no guia de ação por estado de prova.",
+      lastMovement: "Lacuna institucional formalizada no roadmap, no quadro metodológico e no guia de ação por estado de evidência.",
       nextReviewDate: releaseMetadata.plannedReviewDate,
       responsible: "Órgão produtor da base pública",
       missingArtifact: "Flags por registro, regra pública de revisão e histórico versionado de correções.",

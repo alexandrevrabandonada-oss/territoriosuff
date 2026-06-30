@@ -6,6 +6,7 @@ import { PublicInterpretationBox } from "../../components/air/PublicInterpretati
 import { WindRosePanel } from "../../components/air/WindRosePanel";
 import { WeatherPollutionCorrelation } from "../../components/air/WeatherPollutionCorrelation";
 import { RainWashEffectPanel } from "../../components/air/RainWashEffectPanel";
+import { PublicInterestProtocol } from "../../components/air/PublicInterestProtocol";
 import { RADAR_CONTROLLER_NOTE, RADAR_NO_DATA_NOT_CLEAN_AIR } from "../../data/air/radar-copy";
 import { ATTENTION_EPISODES } from "../../data/air/attention-episodes-2020-2026";
 import { PARTICULATE_TIMELINE } from "../../data/air/particulate-timeline-2020-2026";
@@ -51,8 +52,10 @@ function buildStaticAnalyticsSummary() {
   const partialCoverageRows = timelineRows.filter((row) => row.coveragePct > 0 && row.coveragePct < 75).length;
   const attentionMonths = ATTENTION_EPISODES.filter((episode) => episode.who_exceedance_days > 0 || episode.conama_exceedance_days > 0);
   const worstAttentionMonth = attentionMonths.reduce<(typeof ATTENTION_EPISODES)[number] | null>((current, episode) => {
-    const episodeScore = episode.who_exceedance_days + episode.conama_exceedance_days + episode.peak_pm10 + episode.peak_pm25;
-    const currentScore = current ? current.who_exceedance_days + current.conama_exceedance_days + current.peak_pm10 + current.peak_pm25 : -1;
+    const episodeScore = episode.who_exceedance_days + episode.conama_exceedance_days + (episode.max_hourly_value ?? 0);
+    const currentScore = current
+      ? current.who_exceedance_days + current.conama_exceedance_days + (current.max_hourly_value ?? 0)
+      : -1;
     return episodeScore > currentScore ? episode : current;
   }, null);
 
@@ -138,6 +141,8 @@ function IneaAnalyticsFallback({ failedBlocks }: { failedBlocks: string[] }) {
             </div>
           </SurfaceCard>
         </div>
+
+        <PublicInterestProtocol className="mt-6" />
       </section>
 
       <section className="mx-auto mt-8 grid max-w-7xl gap-4 px-4 md:grid-cols-4 md:px-6">
@@ -361,6 +366,8 @@ export function IneaAnalyticsPage() {
             </Link>
           </div>
         </div>
+
+        <PublicInterestProtocol className="mt-6" />
       </div>
 
       {/* Freshness Disclaimer & Coverage Warning Alert */}

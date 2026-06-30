@@ -13,23 +13,23 @@ type GuideItem = {
 const GUIDE_ITEMS: GuideItem[] = [
   {
     state: "published",
-    goal: "Quando a prova já está publicada, o foco deixa de ser descobrir e passa a ser reproduzir, comparar e cobrar resposta institucional.",
+    goal: "Quando a evidência já está publicada, o foco deixa de ser descobrir e passa a ser reproduzir, comparar e cobrar resposta institucional.",
     action: "Refaça a leitura fora da interface, baixe os dados e converta o achado em cobrança documentada.",
-    caution: "Prova publicada não elimina contexto metodológico; elimina a desculpa de ausência de base auditável.",
+    caution: "Evidência publicada não elimina contexto metodológico; reduz a ambiguidade sobre a existência de base auditável.",
     primary: { label: "Abrir metodologia", mode: "METHODOLOGY" },
     secondary: { label: "Voltar à visão geral", mode: "OVERVIEW" }
   },
   {
     state: "partial",
-    goal: "Quando a prova é parcial, o foco é fortalecer a leitura com cobertura, séries, estações e regra metodológica antes de fechar conclusão forte.",
+    goal: "Quando a evidência é parcial, o foco é fortalecer a leitura com cobertura, séries, estações e regra metodológica antes de fechar conclusão forte.",
     action: "Cruze a leitura com lacunas, janelas operacionais e territórios sensíveis antes de transformar o painel em afirmação pública dura.",
-    caution: "Prova parcial é útil para triagem e pressão inicial, mas ainda não basta para fechamento técnico isolado.",
+    caution: "Evidência parcial é útil para triagem e pressão inicial, mas ainda não basta para fechamento técnico isolado.",
     primary: { label: "Checar cobertura", mode: "TIME", tab: "COVERAGE" },
     secondary: { label: "Ver estações", mode: "STATIONS" }
   },
   {
     state: "external",
-    goal: "Quando a prova é externa, o foco é separar memória técnica e pesquisa de dado operacional consolidado.",
+    goal: "Quando a evidência é externa, o foco é separar memória técnica e pesquisa de dado operacional consolidado.",
     action: "Use a referência como trilha de investigação e peça publicação rastreável antes de reintegrar a camada à interface operacional.",
     caution: "Memória externa sem reprocessamento auditável não deve ser promovida a evidência operacional do Radar.",
     primary: { label: "Abrir metodologia", mode: "METHODOLOGY" },
@@ -37,9 +37,9 @@ const GUIDE_ITEMS: GuideItem[] = [
   },
   {
     state: "missing",
-    goal: "Quando a prova está ausente, o foco é protocolar cobrança específica pelo artefato que falta: QA/QC, metadado, série histórica ou resposta institucional.",
+    goal: "Quando a evidência está ausente, o foco é protocolar cobrança específica pelo artefato que falta: QA/QC, metadado, série histórica ou resposta institucional.",
     action: "Transforme a lacuna em pedido público verificável, com protocolo, objeto claro e prazo institucional rastreável.",
-    caution: "Prova ausente não autoriza preencher a lacuna com suposição otimista nem com silêncio administrativo.",
+    caution: "Evidência ausente não autoriza preencher a lacuna com suposição otimista nem com silêncio administrativo.",
     primary: { label: "Abrir minuta de LAI", lai: true },
     secondary: { label: "Ver roadmap", mode: "METHODOLOGY" }
   }
@@ -56,9 +56,9 @@ export function RadarEvidenceActionGuide({ compact = false, onNavigate, onOpenLa
     <section className="rounded-[2rem] border border-slate-200 bg-[linear-gradient(180deg,#ffffff,#f8fafc)] p-5 shadow-[0_20px_45px_-34px_rgba(15,23,42,0.35)]">
       <div className="flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
         <div className="space-y-2">
-          <div className="text-[10px] font-black uppercase tracking-[0.18em] text-slate-400">Ação por estado de prova</div>
+          <div className="text-[10px] font-black uppercase tracking-[0.18em] text-slate-400">Ação por estado de evidência</div>
           <h3 className="text-lg font-black tracking-tight text-slate-900">
-            {compact ? "O que fazer quando a prova muda" : "Como cada estado de prova deve virar auditoria, prudência ou cobrança pública"}
+            {compact ? "O que fazer quando a evidência muda" : "Como cada estado de evidência deve virar auditoria, prudência ou cobrança pública"}
           </h3>
           <p className="max-w-3xl text-[11px] font-semibold leading-relaxed text-slate-600">
             O Radar não usa a taxonomia só para classificar painéis. Cada estado exige uma resposta pública diferente: reproduzir, aprofundar, investigar ou cobrar.

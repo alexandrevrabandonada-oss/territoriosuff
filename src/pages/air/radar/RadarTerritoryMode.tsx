@@ -48,7 +48,7 @@ export function RadarTerritoryMode({ stationMetadata, onNavigate, onTop, onScrol
           <RadarEvidenceBadge
             level="insufficient"
             label="Não é prova causal"
-            detail="o mapa não mede risco individual nem comprova nexo isolado de adoecimento"
+            detail="o mapa não mede risco individual nem demonstra nexo isolado de adoecimento"
           />
         </div>
       </div>

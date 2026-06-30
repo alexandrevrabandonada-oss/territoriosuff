@@ -1,10 +1,4 @@
-import { createClient } from "@supabase/supabase-js";
-import { applyPublicJsonHeaders, isValidDateInput, rejectNonGet } from "./_http";
-
-const SUPABASE_URL = process.env.SUPABASE_URL || process.env.VITE_SUPABASE_URL || "";
-const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.VITE_SUPABASE_ANON_KEY || "";
-
-const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
+import { applyPublicJsonHeaders, getIneaSupabaseClient, isValidDateInput, rejectNonGet, sendPublicError } from "./_http";
 
 export default async function handler(req: any, res: any) {
   applyPublicJsonHeaders(res);
@@ -12,6 +6,7 @@ export default async function handler(req: any, res: any) {
   if (rejectNonGet(req, res)) return;
 
   try {
+    const supabase = getIneaSupabaseClient();
     const { stationId, metricType, pollutant, from, to } = req.query;
     const requestedLimit = Number.parseInt(String(req.query.limit ?? "5000"), 10);
     const requestedOffset = Number.parseInt(String(req.query.offset ?? "0"), 10);
@@ -76,7 +71,6 @@ export default async function handler(req: any, res: any) {
       truncated: total > offset + items.length
     });
   } catch (err: any) {
-    console.error("[api/air/inea/timeseries] Error:", err.message);
-    return res.status(500).json({ error: err.message });
+    return sendPublicError(res, "api/air/inea/timeseries", err);
   }
 }

@@ -200,7 +200,7 @@ export function YearExplorer() {
               metodologia {releaseMetadata.methodologyVersion}
             </span>
             <span className="rounded-full border border-amber-900/40 bg-amber-950/30 px-2.5 py-0.5 text-[9px] font-black uppercase tracking-[0.16em] text-amber-300">
-              prova parcial
+              evidência parcial
             </span>
           </div>
           <p>

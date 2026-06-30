@@ -85,7 +85,7 @@ export function SeasonalityHeatmap({
           metodologia {releaseMetadata.methodologyVersion}
         </span>
         <span className="inline-flex items-center rounded-full border border-amber-200 bg-amber-50 px-3 py-1 text-[10px] font-black uppercase tracking-[0.16em] text-amber-800">
-          prova parcial
+          evidência parcial
         </span>
       </div>
 
@@ -221,7 +221,7 @@ export function SeasonalityHeatmap({
       <RadarEvidenceStateBlock
         state="partial"
         title="Sazonalidade orienta auditoria, não sentença isolada"
-        description={`A matriz mensal ajuda a localizar concentração temporal de excedências no release ${releaseMetadata.cycleVersion}, mas ainda depende de cobertura mínima, validação por estação e leitura do contexto meteorológico. Use como triagem pública e não como prova final independente.`}
+        description={`A matriz mensal ajuda a localizar concentração temporal de excedências no release ${releaseMetadata.cycleVersion}, mas ainda depende de cobertura mínima, validação por estação e leitura do contexto meteorológico. Use como triagem pública e não como conclusão final independente.`}
       />
     </div>
   );

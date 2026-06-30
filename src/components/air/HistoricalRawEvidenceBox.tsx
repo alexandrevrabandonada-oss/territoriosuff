@@ -364,7 +364,7 @@ export function HistoricalRawEvidenceBox() {
               </div>
               
               <p className="text-[10px] text-text-tertiary pt-2 leading-relaxed">
-                *Nota: Os relatórios oficiais comprovam excedências aos limites nacionais, mas publicam apenas estatísticas anuais agregadas.
+                *Nota: Os relatórios oficiais registram excedências aos limites nacionais, mas publicam apenas estatísticas anuais agregadas.
               </p>
             </div>
           </div>
@@ -426,7 +426,7 @@ export function HistoricalRawEvidenceBox() {
               </p>
               <div className="mt-4 pt-4 border-t border-border-subtle space-y-2 text-xs">
                 <p className="text-text-secondary leading-relaxed">
-                  ✓ Dissertação de Jéssica G. I. de Oliveira comprova que dados de concentração diária bruta circularam ativamente para modelagem de regressão epidemiológica.
+                  ✓ Dissertação de Jéssica G. I. de Oliveira evidencia que dados de concentração diária bruta circularam ativamente para modelagem de regressão epidemiológica.
                 </p>
                 <p className="text-text-secondary leading-relaxed">
                   ✓ Demonstra correlação significativa entre picos de particulado e internações pediátricas e geriátricas no SUS.
@@ -646,7 +646,7 @@ export function HistoricalRawEvidenceBox() {
         <RadarEvidenceStateBlock
           state="external"
           title="Rastro documental robusto, ainda sem microdado integral aberto"
-          description={`Esta tabela prova que medições físicas e agregados históricos existiram e circularam em relatórios e estudos, fortalecendo a cobrança pública no release ${releaseMetadata.cycleVersion}. Ainda assim, ela permanece como evidência externa enquanto a série microdado completa não estiver aberta com contrato operacional explícito.`}
+          description={`Esta tabela documenta que medições físicas e agregados históricos existiram e circularam em relatórios e estudos, fortalecendo a cobrança pública no release ${releaseMetadata.cycleVersion}. Ainda assim, ela permanece como evidência externa enquanto a série microdado completa não estiver aberta com contrato operacional explícito.`}
         />
       </SurfaceCard>
     </section>

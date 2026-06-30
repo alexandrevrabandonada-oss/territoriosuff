@@ -61,7 +61,7 @@ export function RadarGovernanceScoreboard({ stationMetadata }: RadarGovernanceSc
         <div className="text-[10px] font-black uppercase tracking-[0.18em] text-slate-400">Régua comparável de governança</div>
         <h3 className="text-lg font-black tracking-tight text-slate-900">Quanto cada parte do Radar já está pronta para confiança pública forte</h3>
         <p className="max-w-3xl text-[11px] font-semibold leading-relaxed text-slate-600">
-          Esta matriz transforma governança em critério reproduzível. Cada estação recebe score por explicitude operacional e cada parâmetro recebe score por maturidade de uso e força da prova publicada.
+          Esta matriz transforma governança em critério reproduzível. Cada estação recebe score por explicitude operacional e cada parâmetro recebe score por maturidade de uso e força da evidência publicada.
         </p>
       </div>
 
@@ -183,7 +183,7 @@ export function RadarGovernanceScoreboard({ stationMetadata }: RadarGovernanceSc
                 {blockedParameters} parâmetros seguem fora da faixa operacional robusta e exigem blindagem metodológica antes de qualquer expansão pública.
               </div>
               <div className="rounded-2xl border border-white bg-white px-3 py-3 text-[11px] font-semibold leading-relaxed text-slate-700">
-                {cautionParameters} parâmetros estão em faixa intermediária: já ajudam a leitura pública, mas ainda pedem prova adicional ou regra de uso mais rígida.
+                {cautionParameters} parâmetros estão em faixa intermediária: já ajudam a leitura pública, mas ainda pedem evidência adicional ou regra de uso mais rígida.
               </div>
               {lowestStations.length > 0 && (
                 <div className="rounded-2xl border border-white bg-white px-3 py-3 text-[11px] font-semibold leading-relaxed text-slate-700">

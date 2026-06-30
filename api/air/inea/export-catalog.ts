@@ -1,10 +1,4 @@
-import { createClient } from "@supabase/supabase-js";
-import { applyPublicJsonHeaders, rejectNonGet } from "./_http";
-
-const SUPABASE_URL = process.env.SUPABASE_URL || process.env.VITE_SUPABASE_URL || "";
-const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.VITE_SUPABASE_ANON_KEY || "";
-
-const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
+import { applyPublicJsonHeaders, getIneaSupabaseClient, rejectNonGet, sendPublicError } from "./_http";
 
 function buildExportUrl(params: Record<string, string>) {
   const search = new URLSearchParams(params);
@@ -17,6 +11,7 @@ export default async function handler(req: any, res: any) {
   if (rejectNonGet(req, res)) return;
 
   try {
+    const supabase = getIneaSupabaseClient();
     const [{ data: summaryRows, error: summaryError }, { data: stations, error: stationsError }] = await Promise.all([
       supabase.rpc("get_inea_summary"),
       supabase.rpc("get_inea_public_stations")
@@ -84,7 +79,6 @@ export default async function handler(req: any, res: any) {
       version: "2026-06-16"
     });
   } catch (err: any) {
-    console.error("[api/air/inea/export-catalog] Error:", err.message);
-    return res.status(500).json({ error: err.message });
+    return sendPublicError(res, "api/air/inea/export-catalog", err);
   }
 }

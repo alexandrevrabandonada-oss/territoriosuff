@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 import { IconShell, SurfaceCard } from "../components/BrandSystem";
@@ -13,22 +13,13 @@ export function BlogListPage() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
-    const demoOrAdminMode = useMemo(() => {
-        const envMode = String(import.meta.env.VITE_PROJECT_MODE ?? "").toLowerCase();
-        const envFlag = String(import.meta.env.VITE_SHOW_SCHEDULED ?? "").toLowerCase() === "true";
-        const localFlag = typeof window !== "undefined"
-            ? ["admin", "demo", "true"].includes(String(window.localStorage.getItem("semear:show-scheduled") ?? "").toLowerCase())
-            : false;
-        return envFlag || envMode === "admin" || envMode === "demo" || localFlag;
-    }, []);
-
     useEffect(() => {
         let cancelled = false;
         async function run() {
             try {
                 setLoading(true);
                 setError(null);
-                const data = await listBlogPosts({ limit: 50, includeScheduled: demoOrAdminMode });
+                const data = await listBlogPosts({ limit: 50, includeScheduled: false });
                 if (!cancelled) setPosts(data);
             } catch (err) {
                 if (!cancelled)
@@ -39,9 +30,7 @@ export function BlogListPage() {
         }
         void run();
         return () => { cancelled = true; };
-    }, [demoOrAdminMode]);
-
-    const isScheduled = (post: BlogPost) => Boolean(post.publish_at) && new Date(post.publish_at as string).getTime() > Date.now();
+    }, []);
 
     return (
         <section className="portal-stage blog-stage space-y-8 md:space-y-10">
@@ -98,7 +87,7 @@ export function BlogListPage() {
                                     title={post.title}
                                     excerpt={post.excerpt}
                                     tags={post.tags}
-                                    scheduled={demoOrAdminMode && isScheduled(post)}
+                                    scheduled={false}
                                     cta="Ler artigo"
                                 />
                             </Link>

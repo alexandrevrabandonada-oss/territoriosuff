@@ -72,7 +72,7 @@ export function RadarTransparencyRoadmap() {
         <div className="text-[10px] font-black uppercase tracking-[0.18em] text-slate-400">Roadmap de transparência</div>
         <h3 className="text-lg font-black tracking-tight text-slate-900">Compromissos públicos para o Radar virar referência internacional</h3>
         <p className="max-w-3xl text-[11px] font-semibold leading-relaxed text-slate-600">
-          Cada etapa abaixo define o que ainda precisa ser publicado, qual evidência comprova a entrega e qual ganho real isso traz para a auditoria pública.
+          Cada etapa abaixo define o que ainda precisa ser publicado, qual evidência documenta a entrega e qual ganho real isso traz para a auditoria pública.
         </p>
       </div>
 

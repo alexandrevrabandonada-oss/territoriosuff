@@ -2666,6 +2666,17 @@ body.reader-mode-active main {
   background: #ffffff;
 }
 
+.inea-radar-page button,
+.inea-radar-page a[class*="rounded"] {
+  min-height: 44px;
+  align-items: center;
+  justify-content: center;
+}
+
+.inea-radar-page a[class*="rounded"] {
+  display: inline-flex;
+}
+
 .portal-stage-hero-social::before {
   background:
     radial-gradient(circle at 86% 16%, rgba(244, 63, 94, 0.34), transparent 14rem),

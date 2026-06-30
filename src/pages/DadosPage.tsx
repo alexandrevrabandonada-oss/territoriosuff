@@ -716,19 +716,19 @@ export function DadosPage() {
           <div className="flex flex-wrap gap-2 sm:self-center shrink-0">
             <Link
               to="/qualidade-ar/inea#mapa"
-              className="px-4 py-2 bg-brand-primary text-white font-bold rounded-xl hover:bg-brand-primary-dark transition-colors text-xs"
+              className="inline-flex min-h-11 items-center px-4 py-2 bg-brand-primary text-white font-bold rounded-xl hover:bg-brand-primary-dark transition-colors text-xs"
             >
               Abrir mapa do INEA
             </Link>
             <Link
               to="/qualidade-ar/inea/analises"
-              className="px-4 py-2 border border-slate-200 bg-white text-slate-700 font-bold rounded-xl hover:bg-slate-50 transition-colors text-xs"
+              className="inline-flex min-h-11 items-center px-4 py-2 border border-slate-200 bg-white text-slate-700 font-bold rounded-xl hover:bg-slate-50 transition-colors text-xs"
             >
               Ver síntese histórica
             </Link>
             <Link
               to="/qualidade-ar/inea#alertas"
-              className="px-4 py-2 border border-slate-200 bg-white text-slate-700 font-bold rounded-xl hover:bg-slate-50 transition-colors text-xs"
+              className="inline-flex min-h-11 items-center px-4 py-2 border border-slate-200 bg-white text-slate-700 font-bold rounded-xl hover:bg-slate-50 transition-colors text-xs"
             >
               Ver análises
             </Link>
