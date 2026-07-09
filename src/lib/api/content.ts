@@ -128,10 +128,12 @@ function isDemoRecord(row: Record<string, unknown>): boolean {
 export async function listUpcomingEvents(): Promise<Event[]> {
   try {
     const supabase = await getSupabase();
+    const now = new Date().toISOString();
     const { data, error } = await supabase
       .from("events")
       .select("*")
       .eq("status", "published")
+      .gte("start_at", now)
       .order("start_at", { ascending: true })
       .limit(100);
     if (error) throw error;
@@ -139,6 +141,26 @@ export async function listUpcomingEvents(): Promise<Event[]> {
       .filter((row) => !isDemoRecord(row)) as Event[];
   } catch (error) {
     throw toAppError("Falha ao listar eventos", error);
+  }
+}
+
+export async function listRecentPastEvents(limit = 3): Promise<Event[]> {
+  try {
+    const supabase = await getSupabase();
+    const now = new Date().toISOString();
+    const { data, error } = await supabase
+      .from("events")
+      .select("*")
+      .eq("status", "published")
+      .lt("start_at", now)
+      .order("start_at", { ascending: false })
+      .limit(Math.max(limit * 3, 12));
+    if (error) throw error;
+    return ((data ?? []) as Record<string, unknown>[])
+      .filter((row) => !isDemoRecord(row))
+      .slice(0, limit) as Event[];
+  } catch (error) {
+    throw toAppError("Falha ao listar atividades realizadas", error);
   }
 }
 

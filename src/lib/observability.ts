@@ -1,5 +1,3 @@
-import * as Sentry from "@sentry/react";
-
 const STORAGE_KEY = "semear_observability_events_v1";
 const MAX_EVENTS = 500;
 const MAX_TEXT_LENGTH = 120;
@@ -15,6 +13,9 @@ const ALLOWED_META_KEYS = new Set([
   "year",
   "month",
   "rows",
+  "name",
+  "value",
+  "rating",
   "label",
   "message",
   "reason"
@@ -26,6 +27,7 @@ type ObservabilityEventName =
   | "csv_download"
   | "api_error"
   | "runtime_error"
+  | "web_vital"
   | "offline_fallback";
 
 type AllowedMetaValue = string | number | boolean | null | undefined;
@@ -44,6 +46,12 @@ type ErrorSummary = {
 };
 
 let initialized = false;
+let sentryPromise: Promise<typeof import("@sentry/react")> | null = null;
+
+function loadSentry() {
+  sentryPromise ??= import("@sentry/react");
+  return sentryPromise;
+}
 
 function hasLocalStorage() {
   return typeof window !== "undefined" && typeof window.localStorage !== "undefined";
@@ -125,12 +133,13 @@ function pushStoredEvent(name: ObservabilityEventName, meta: Record<string, stri
 
 function addBreadcrumb(name: ObservabilityEventName, meta: Record<string, string | number | boolean>) {
   if (!import.meta.env.VITE_SENTRY_DSN) return;
-
-  Sentry.addBreadcrumb({
-    category: "observability",
-    message: name,
-    level: name === "runtime_error" || name === "api_error" ? "error" : "info",
-    data: meta
+  void loadSentry().then((Sentry) => {
+    Sentry.addBreadcrumb({
+      category: "observability",
+      message: name,
+      level: name === "runtime_error" || name === "api_error" ? "error" : "info",
+      data: meta
+    });
   });
 }
 
@@ -139,34 +148,36 @@ export function initObservability() {
   initialized = true;
 
   if (import.meta.env.VITE_SENTRY_DSN) {
-    Sentry.init({
-      dsn: import.meta.env.VITE_SENTRY_DSN,
-      environment: import.meta.env.MODE,
-      release: import.meta.env.VITE_SENTRY_RELEASE || import.meta.env.VITE_VERCEL_GIT_COMMIT_SHA || undefined,
-      sendDefaultPii: false,
-      beforeSend(event) {
-        if (event.user) {
-          event.user = undefined;
-        }
-        if (event.request) {
-          event.request = {
-            url: event.request.url,
-            method: event.request.method
-          };
-        }
-        if (event.extra) {
-          const sanitizedExtra: Record<string, unknown> = {};
-          for (const [key, value] of Object.entries(event.extra)) {
-            if (typeof value === "string") {
-              sanitizedExtra[key] = sanitizeText(value);
-            } else if (typeof value === "number" || typeof value === "boolean") {
-              sanitizedExtra[key] = value;
-            }
+    void loadSentry().then((Sentry) => {
+      Sentry.init({
+        dsn: import.meta.env.VITE_SENTRY_DSN,
+        environment: import.meta.env.MODE,
+        release: import.meta.env.VITE_SENTRY_RELEASE || import.meta.env.VITE_VERCEL_GIT_COMMIT_SHA || undefined,
+        sendDefaultPii: false,
+        beforeSend(event) {
+          if (event.user) {
+            event.user = undefined;
           }
-          event.extra = sanitizedExtra;
+          if (event.request) {
+            event.request = {
+              url: event.request.url,
+              method: event.request.method
+            };
+          }
+          if (event.extra) {
+            const sanitizedExtra: Record<string, unknown> = {};
+            for (const [key, value] of Object.entries(event.extra)) {
+              if (typeof value === "string") {
+                sanitizedExtra[key] = sanitizeText(value);
+              } else if (typeof value === "number" || typeof value === "boolean") {
+                sanitizedExtra[key] = value;
+              }
+            }
+            event.extra = sanitizedExtra;
+          }
+          return event;
         }
-        return event;
-      }
+      });
     });
   }
 
@@ -206,6 +217,15 @@ export function trackCsvDownload(source: string, rows?: number) {
 
 export function trackOfflineFallback(route: string) {
   logEvent("offline_fallback", { route });
+}
+
+export function trackWebVital(name: string, value: number, rating: string) {
+  logEvent("web_vital", {
+    name,
+    value: Math.round(value * 1000) / 1000,
+    rating,
+    route: typeof window === "undefined" ? "" : window.location.pathname
+  });
 }
 
 export function trackApiError(scope: string, error: unknown, meta?: ObservabilityMeta) {

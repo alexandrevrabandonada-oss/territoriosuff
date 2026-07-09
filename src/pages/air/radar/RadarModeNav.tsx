@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 import { RADAR_MODES, type RadarMode } from "./RadarTypes";
 
 interface RadarModeNavProps {
@@ -6,17 +8,29 @@ interface RadarModeNavProps {
 }
 
 export function RadarModeNav({ currentMode, onSelectMode }: RadarModeNavProps) {
+  const [copied, setCopied] = useState(false);
+
+  const copyCurrentView = async () => {
+    await navigator.clipboard.writeText(window.location.href);
+    setCopied(true);
+    window.setTimeout(() => setCopied(false), 1800);
+  };
+
   return (
     <div
-      className="sticky z-40 rounded-[1.6rem] border border-slate-200/70 bg-white/75 p-2 shadow-[0_18px_40px_-28px_rgba(15,23,42,0.6)] backdrop-blur-xl transition-all dark:border-slate-800/50 dark:bg-slate-900/80"
+      className="sticky z-40 flex items-center gap-2 rounded-[1.6rem] border border-slate-200/70 bg-white/90 p-2 shadow-[0_18px_40px_-28px_rgba(15,23,42,0.6)] backdrop-blur-xl transition-all dark:border-slate-800/50 dark:bg-slate-900/90"
       style={{ top: "5.45rem" }}
+      aria-label="Navegação analítica do Radar"
     >
-      <div className="no-scrollbar flex items-center gap-2 overflow-x-auto scroll-smooth px-0.5 py-0.5">
+      <div className="no-scrollbar flex min-w-0 flex-1 items-center gap-2 overflow-x-auto scroll-smooth px-0.5 py-0.5" role="tablist" aria-label="Modos de análise">
         {RADAR_MODES.map((mode) => {
           const isActive = currentMode === mode.id;
           return (
             <button
               key={mode.id}
+              type="button"
+              role="tab"
+              aria-selected={isActive}
               onClick={() => onSelectMode(mode.id)}
               className={`flex shrink-0 cursor-pointer items-center gap-2 rounded-2xl border px-4 py-3 text-xs font-extrabold transition-all ${
                 isActive
@@ -36,6 +50,14 @@ export function RadarModeNav({ currentMode, onSelectMode }: RadarModeNavProps) {
           );
         })}
       </div>
+      <button
+        type="button"
+        onClick={() => void copyCurrentView()}
+        className="hidden min-h-11 shrink-0 items-center rounded-2xl border border-slate-200 bg-white px-3 py-2 text-xs font-black text-slate-700 transition hover:border-emerald-200 hover:text-emerald-800 sm:inline-flex"
+        aria-live="polite"
+      >
+        {copied ? "Link copiado" : "Compartilhar visão"}
+      </button>
     </div>
   );
 }

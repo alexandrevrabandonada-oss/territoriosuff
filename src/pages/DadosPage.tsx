@@ -4,7 +4,6 @@ import { useSearchParams, Link } from "react-router-dom";
 import { IconShell, SectionHeader, SurfaceCard } from "../components/BrandSystem";
 import { AxisEyebrow } from "../components/AxisSystem";
 import { LoadingCard } from "../components/LoadingCard";
-import { OfflineBanner } from "../components/OfflineBanner";
 import { EmptyState } from "../components/EmptyState";
 import { TextToSpeechButton } from "../components/TextToSpeechButton";
 import { PortalPageShell, PortalSectionHeader } from "../components/portal";
@@ -497,7 +496,15 @@ export function DadosPage() {
       : activeTab === "custom"
       ? measurementsCustom
       : [];
-  const isOnline = selectedStation?.is_online ?? false;
+  const isStationOnline = selectedStation?.is_online ?? false;
+  const hasHistoricalMeasurements = measurements24h.length > 0 || measurements7d.length > 0 || measurementsCustom.length > 0;
+  const semearOperationalStatus = !selectedStation
+    ? "Em implantação"
+    : isStationOnline
+      ? "Operacional"
+      : hasHistoricalMeasurements
+        ? "Dados históricos disponíveis"
+        : "Sem transmissão atual";
 
   // Estatísticas
   const stats = useMemo(() => {
@@ -664,15 +671,6 @@ export function DadosPage() {
 
   return (
     <PortalPageShell className="data-dashboard">
-      {!isOnline && (
-        <div className="data-alert">
-          <OfflineBanner
-            description="Algumas leituras podem ficar desatualizadas até a conexão voltar. A lista da estação e o histórico carregado continuam disponíveis."
-            onRetry={() => window.location.reload()}
-          />
-        </div>
-      )}
-
       {/* Abas de Navegação de Dados */}
       <PortalSectionHeader
         eyebrow={<span className="badge-dados-abertos">Catálogo público de dados</span>}
@@ -682,8 +680,8 @@ export function DadosPage() {
       <div className="grid gap-4 md:grid-cols-3">
         <div className="p-5 bg-white border-2 border-brand-primary rounded-2xl shadow-sm transition-all">
           <strong className="text-sm font-black text-brand-primary block">Leituras SEMEAR</strong>
-          <p className="text-xs text-slate-500 mt-1">Leituras da estação piloto e rede cidadã.</p>
-          <span className="inline-block mt-3 text-[10px] bg-brand-primary/10 text-brand-primary font-bold uppercase px-2 py-0.5 rounded-full">Ativo</span>
+          <p className="text-xs text-slate-500 mt-1">Rede própria, com publicação condicionada à transmissão e à validação dos equipamentos.</p>
+          <span className="inline-block mt-3 rounded-full bg-brand-primary/10 px-2 py-0.5 text-[10px] font-bold uppercase text-brand-primary">{semearOperationalStatus}</span>
         </div>
 
         <Link to="/qualidade-ar/inea" className="p-5 bg-white border border-slate-100 rounded-2xl hover:border-slate-200 hover:shadow-sm transition-all block">
@@ -791,7 +789,7 @@ export function DadosPage() {
                   </div>
                   <div>
                     <span>Status</span>
-                    <strong>{selectedStationId ? (isOnline ? "Online" : "Offline") : "Sem estação"}</strong>
+                    <strong>{selectedStationId ? (isStationOnline ? "Operacional" : semearOperationalStatus) : "Sem estação"}</strong>
                   </div>
                   <div>
                     <span>Última leitura</span>
@@ -868,8 +866,8 @@ export function DadosPage() {
                 <div className="data-status-grid">
                   <div className="data-status-card">
                     <p>Status</p>
-                    <p className={`mt-1.5 inline-flex items-center rounded-full border px-2.5 py-1 text-xs font-bold ${selectedStationId ? (isOnline ? "border-emerald-500/20 bg-emerald-50 text-emerald-800" : "border-red-500/20 bg-red-50 text-red-900") : "border-slate-300 bg-slate-50 text-slate-700"}`}>
-                      {selectedStationId ? (isOnline ? "Online" : "Offline") : "Sem estação"}
+                    <p className={`mt-1.5 inline-flex items-center rounded-full border px-2.5 py-1 text-xs font-bold ${selectedStationId ? (isStationOnline ? "border-emerald-500/20 bg-emerald-50 text-emerald-800" : "border-amber-500/25 bg-amber-50 text-amber-900") : "border-slate-300 bg-slate-50 text-slate-700"}`}>
+                      {selectedStationId ? (isStationOnline ? "Operacional" : semearOperationalStatus) : "Sem estação"}
                     </p>
                   </div>
                   <div className="data-status-card">

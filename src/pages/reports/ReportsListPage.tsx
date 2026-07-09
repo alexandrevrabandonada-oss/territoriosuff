@@ -7,7 +7,7 @@ import { AxisEyebrow } from "../../components/AxisSystem";
 import { DocumentalCard } from "../../components/CardFamilies";
 import { PortalPageShell, PortalSectionHeader } from "../../components/portal";
 import { getOptimizedCover } from "../../lib/imageOptimization";
-import { listReports, type ReportDocument, type ReportKind } from "../../lib/api";
+import type { ReportDocument, ReportKind } from "../../lib/api";
 
 const KIND_LABEL: Record<ReportKind, string> = {
   relatorio: "Relatório",
@@ -17,7 +17,6 @@ const KIND_LABEL: Record<ReportKind, string> = {
 };
 
 export function ReportsListPage() {
-  const [reports, setReports] = useState<ReportDocument[]>([]);
   const [allReports, setAllReports] = useState<ReportDocument[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -31,11 +30,16 @@ export function ReportsListPage() {
     let cancelled = false;
     async function loadAll() {
       try {
+        setLoading(true);
+        setError(null);
+        const { listReports } = await import("../../lib/api/content");
         const data = await listReports({ limit: 500 });
         if (cancelled) return;
         setAllReports(data);
-      } catch {
-        // options fallback silently
+      } catch (err) {
+        if (!cancelled) setError(err instanceof Error ? err.message : "Falha ao carregar relatórios.");
+      } finally {
+        if (!cancelled) setLoading(false);
       }
     }
     void loadAll();
@@ -44,31 +48,16 @@ export function ReportsListPage() {
     };
   }, []);
 
-  useEffect(() => {
-    let cancelled = false;
-    async function run() {
-      try {
-        setLoading(true);
-        setError(null);
-        const data = await listReports({
-          limit: 500,
-          year: year === "all" ? undefined : Number(year),
-          kind: kind === "all" ? undefined : kind,
-          tag: tag === "all" ? undefined : tag,
-          q: q.trim() || undefined
-        });
-        if (!cancelled) setReports(data);
-      } catch (err) {
-        if (!cancelled) setError(err instanceof Error ? err.message : "Falha ao carregar relatórios.");
-      } finally {
-        if (!cancelled) setLoading(false);
-      }
-    }
-    void run();
-    return () => {
-      cancelled = true;
-    };
-  }, [year, kind, tag, q]);
+  const reports = useMemo(() => {
+    const term = q.trim().toLocaleLowerCase("pt-BR");
+    return allReports.filter((item) => {
+      if (year !== "all" && item.year !== Number(year)) return false;
+      if (kind !== "all" && item.kind !== kind) return false;
+      if (tag !== "all" && !item.tags.includes(tag)) return false;
+      if (!term) return true;
+      return `${item.title} ${item.summary ?? ""}`.toLocaleLowerCase("pt-BR").includes(term);
+    });
+  }, [allReports, kind, q, tag, year]);
 
   const yearOptions = useMemo(() => {
     const years = Array.from(new Set(allReports.map((item) => item.year).filter((v): v is number => typeof v === "number")));
@@ -84,6 +73,7 @@ export function ReportsListPage() {
   const featuredReports = useMemo(() => reports.filter((item) => item.featured).slice(0, 3), [reports]);
   const featuredIds = useMemo(() => new Set(featuredReports.map((item) => item.id)), [featuredReports]);
   const regularReports = useMemo(() => reports.filter((item) => !featuredIds.has(item.id)), [featuredIds, reports]);
+  const catalogIsEmpty = !loading && !error && allReports.length === 0;
 
   return (
     <PortalPageShell className="reports-stage">
@@ -97,13 +87,13 @@ export function ReportsListPage() {
             </p>
           </div>
           <div className="portal-stage-stat">
-            <span>{loading ? "..." : reports.length}</span>
-            <small>documento(s) filtrado(s)</small>
+            <span>{loading ? "..." : catalogIsEmpty ? "0" : reports.length}</span>
+            <small>{catalogIsEmpty ? "biblioteca em preparação" : "documento(s) filtrado(s)"}</small>
           </div>
         </div>
       </SurfaceCard>
 
-      <SurfaceCard className="portal-filter-panel p-5 md:p-6">
+      {!loading && !error && !catalogIsEmpty ? <SurfaceCard className="portal-filter-panel p-5 md:p-6">
         <PortalSectionHeader
           eyebrow={<span className="badge-dados-abertos">Catálogo público de evidências</span>}
           title="Filtrar por ano, tipo, tema e busca"
@@ -169,7 +159,7 @@ export function ReportsListPage() {
             />
           </label>
         </div>
-      </SurfaceCard>
+      </SurfaceCard> : null}
 
       {!loading && !error && featuredReports.length > 0 ? (
         <SurfaceCard className="signature-shell border-brand-primary/15 bg-gradient-to-br from-brand-primary-soft/60 via-surface-1 to-surface-1 p-6">
@@ -230,11 +220,24 @@ export function ReportsListPage() {
           <p aria-live="assertive" className="rounded-md border border-error bg-error/10 p-3 text-base text-error" role="alert">
             {error}
           </p>
+        ) : catalogIsEmpty ? (
+          <div className="space-y-5">
+            <BrandIllustratedEmptyState
+              title="A biblioteca oficial está sendo preparada"
+              description="Ainda não há relatórios publicados neste catálogo. Enquanto a curadoria documental avança, consulte os dados abertos, a metodologia e a transparência do projeto."
+              icon={<span className="text-2xl" aria-hidden="true">📄</span>}
+            />
+            <nav className="flex flex-wrap justify-center gap-3" aria-label="Outras fontes públicas do SEMEAR">
+              <Link className="cta-primary" to="/dados">Explorar dados abertos</Link>
+              <Link className="cta-secondary" to="/qualidade-ar/inea?modo=metodologia">Consultar metodologia</Link>
+              <Link className="cta-secondary" to="/transparencia">Ver transparência</Link>
+            </nav>
+          </div>
         ) : reports.length === 0 ? (
           <BrandIllustratedEmptyState
-            title="Nenhum documento encontrado para os filtros aplicados"
-            description="Ajuste ano, tipo, tag ou termo de busca para localizar relatórios oficiais do SEMEAR."
-            icon={<span className="text-2xl" aria-hidden="true">📄</span>}
+            title="Nenhum documento corresponde aos filtros"
+            description="Limpe a busca ou ajuste ano, tipo e tag para voltar ao catálogo completo."
+            icon={<span className="text-2xl" aria-hidden="true">🔎</span>}
           />
         ) : (
           <div className="grid gap-4 md:grid-cols-2">

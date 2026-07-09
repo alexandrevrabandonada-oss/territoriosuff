@@ -1,12 +1,11 @@
 import { expect, test } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
 
-const pagesToAudit = ["/", "/dados", "/agenda", "/conversar", "/acervo", "/blog", "/transparencia", "/mapa"];
+const pagesToAudit = ["/", "/dados", "/agenda", "/conversar", "/acervo", "/blog", "/transparencia", "/mapa", "/qualidade-ar/inea"];
 
 async function expectNoA11yViolations(page: import("@playwright/test").Page): Promise<void> {
   const results = await new AxeBuilder({ page })
     .withTags(["wcag2aa", "wcag21aa"])
-    .disableRules(["color-contrast"])
     .analyze();
 
   expect(results.violations).toHaveLength(0);
@@ -47,9 +46,11 @@ test.describe("Accessibility smoke @a11y", () => {
 
   test("keyboard focus should be visibly styled", async ({ page }) => {
     await page.goto("/");
+    await page.waitForLoadState("networkidle");
 
-    await page.keyboard.press("Tab");
-    await page.keyboard.press("Tab");
+    const brandLink = page.getByRole("link", { name: "SEMEAR - Início" });
+    await brandLink.focus();
+    await expect(brandLink).toBeFocused();
 
     const focusState = await page.evaluate(() => {
       const el = document.activeElement as HTMLElement | null;

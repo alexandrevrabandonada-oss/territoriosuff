@@ -241,7 +241,7 @@ export function RadarOverviewMode({
         <div className="rounded-[2rem] border border-slate-200 bg-white p-5 shadow-[0_20px_45px_-34px_rgba(15,23,42,0.45)] xl:col-span-2">
           <div className="flex flex-wrap items-start justify-between gap-3 border-b border-slate-100 pb-4">
             <div>
-              <h2 className="text-[11px] font-black uppercase tracking-[0.2em] text-slate-400">Ranking histórico por atenção</h2>
+              <h2 className="text-xs font-black uppercase tracking-[0.18em] text-slate-600">Ranking histórico por atenção</h2>
               <p className="mt-1 text-xs font-semibold text-slate-500">
                 Estações com maior soma de excedências OMS em MP10/MP2.5 na base consolidada 2020-2026 parcial.
               </p>
@@ -266,7 +266,7 @@ export function RadarOverviewMode({
                     </span>
                     <div className="space-y-0.5">
                       <span className="text-sm font-black text-slate-800">{r.station}</span>
-                      <span className="block text-[10px] font-medium text-slate-400">{r.rows} linhas estação-ano auditadas</span>
+                      <span className="block text-xs font-semibold text-slate-600">{r.rows} linhas estação-ano auditadas</span>
                     </div>
                   </div>
                   <div className="text-right">
@@ -477,7 +477,7 @@ export function RadarOverviewMode({
         <div className="grid gap-6 md:grid-cols-2">
           <div className="card-acao animate-scale-up flex flex-col justify-between space-y-4 rounded-2xl p-6">
             <div className="space-y-2">
-              <span className="block text-[9px] font-black uppercase tracking-wider text-emerald-700">Eixo 1 · Ação Coletiva</span>
+              <span className="block text-xs font-black uppercase tracking-wider text-emerald-800">Eixo 1 · Ação Coletiva</span>
               <h3 className="flex items-center gap-1.5 text-sm font-black text-[#064e3b]"><span>📡</span> MONITORAR: Ampliar a Rede de Estações</h3>
               <p className="text-xs font-semibold leading-relaxed text-[#064e3b] opacity-90">
                 Solicitar a expansão da malha operacional para novos setores e a inclusão de bairros desatendidos com dados certificados.
@@ -488,7 +488,7 @@ export function RadarOverviewMode({
             </div>
             <button
               onClick={onOpenLai}
-              className="inline-flex min-h-[38px] w-full cursor-pointer items-center justify-center rounded-xl bg-emerald-600 text-xs font-black uppercase text-white shadow-md shadow-emerald-700/20 transition-all hover:scale-[1.02] hover:bg-emerald-700"
+              className="inline-flex min-h-11 w-full cursor-pointer items-center justify-center rounded-xl bg-emerald-700 text-xs font-black uppercase text-white shadow-md shadow-emerald-800/20 transition-all hover:scale-[1.02] hover:bg-emerald-800"
             >
               Solicitar Ampliação via LAI
             </button>
@@ -496,7 +496,7 @@ export function RadarOverviewMode({
 
           <div className="card-acao animate-scale-up flex flex-col justify-between space-y-4 rounded-2xl p-6">
             <div className="space-y-2">
-              <span className="block text-[9px] font-black uppercase tracking-wider text-emerald-700">Eixo 2 · Fiscalização</span>
+              <span className="block text-xs font-black uppercase tracking-wider text-emerald-800">Eixo 2 · Fiscalização</span>
               <h3 className="flex items-center gap-1.5 text-sm font-black text-[#064e3b]"><span>🔧</span> MANTER: Cobrar Calibração e Continuidade</h3>
               <p className="text-xs font-semibold leading-relaxed text-[#064e3b] opacity-90">
                 Evitar longos períodos de silêncio de dados e lacunas inexplicáveis nas séries oficiais. {RADAR_NO_DATA_NOT_CLEAN_AIR} Exigir calibragem pública.
@@ -507,7 +507,7 @@ export function RadarOverviewMode({
             </div>
             <button
               onClick={() => onNavigate("TIME", "COVERAGE")}
-              className="inline-flex min-h-[38px] w-full cursor-pointer items-center justify-center rounded-xl bg-emerald-600 text-xs font-black uppercase text-white shadow-md shadow-emerald-700/20 transition-all hover:scale-[1.02] hover:bg-emerald-700"
+              className="inline-flex min-h-11 w-full cursor-pointer items-center justify-center rounded-xl bg-emerald-700 text-xs font-black uppercase text-white shadow-md shadow-emerald-800/20 transition-all hover:scale-[1.02] hover:bg-emerald-800"
             >
               Analisar Silêncio de Dados →
             </button>
@@ -515,7 +515,7 @@ export function RadarOverviewMode({
 
           <div className="card-acao animate-scale-up flex flex-col justify-between space-y-4 rounded-2xl p-6">
             <div className="space-y-2">
-              <span className="block text-[9px] font-black uppercase tracking-wider text-emerald-700">Eixo 3 · Saúde Coletiva</span>
+              <span className="block text-xs font-black uppercase tracking-wider text-emerald-800">Eixo 3 · Saúde Coletiva</span>
               <h3 className="flex items-center gap-1.5 text-sm font-black text-[#064e3b]"><span>🏥</span> CUIDAR: Reforçar UBS nos Territórios Críticos</h3>
               <p className="text-xs font-semibold leading-relaxed text-[#064e3b] opacity-90">
                 Reforçar equipes médicas e insumos respiratórios nas UBS e UPAs localizadas nos recortes urbanos de maior prioridade territorial.
@@ -526,7 +526,7 @@ export function RadarOverviewMode({
             </div>
             <button
               onClick={() => onNavigate("TERRITORY")}
-              className="inline-flex min-h-[38px] w-full cursor-pointer items-center justify-center rounded-xl bg-emerald-600 text-xs font-black uppercase text-white shadow-md shadow-emerald-700/20 transition-all hover:scale-[1.02] hover:bg-emerald-700"
+              className="inline-flex min-h-11 w-full cursor-pointer items-center justify-center rounded-xl bg-emerald-700 text-xs font-black uppercase text-white shadow-md shadow-emerald-800/20 transition-all hover:scale-[1.02] hover:bg-emerald-800"
             >
               Ver Bairros Prioritários →
             </button>
@@ -534,7 +534,7 @@ export function RadarOverviewMode({
 
           <div className="card-acao animate-scale-up flex flex-col justify-between space-y-4 rounded-2xl p-6">
             <div className="space-y-2">
-              <span className="block text-[9px] font-black uppercase tracking-wider text-emerald-700">Eixo 4 · Blindagem Física</span>
+              <span className="block text-xs font-black uppercase tracking-wider text-emerald-800">Eixo 4 · Blindagem Física</span>
               <h3 className="flex items-center gap-1.5 text-sm font-black text-[#064e3b]"><span>🌳</span> PROTEGER: Arborização e Cortinas Verdes</h3>
               <p className="text-xs font-semibold leading-relaxed text-[#064e3b] opacity-90">
                 Criar cinturões arbóreos e cortinas verdes para proteger fisicamente equipamentos sociais em áreas prioritárias.
@@ -545,7 +545,7 @@ export function RadarOverviewMode({
             </div>
             <button
               onClick={() => onNavigate("TERRITORY")}
-              className="inline-flex min-h-[38px] w-full cursor-pointer items-center justify-center rounded-xl bg-emerald-600 text-xs font-black uppercase text-white shadow-md shadow-emerald-700/20 transition-all hover:scale-[1.02] hover:bg-emerald-700"
+              className="inline-flex min-h-11 w-full cursor-pointer items-center justify-center rounded-xl bg-emerald-700 text-xs font-black uppercase text-white shadow-md shadow-emerald-800/20 transition-all hover:scale-[1.02] hover:bg-emerald-800"
             >
               Mapear Equipamentos Sensíveis →
             </button>
@@ -566,7 +566,7 @@ export function RadarOverviewMode({
           <div className="relative z-10 flex flex-wrap items-center gap-3 pt-2">
             <button
               onClick={onOpenLai}
-              className="cursor-pointer rounded-xl bg-emerald-600 px-5 py-2.5 text-xs font-black text-white shadow-md shadow-emerald-600/10 transition-all hover:scale-[1.02] hover:bg-emerald-500"
+              className="min-h-11 cursor-pointer rounded-xl bg-emerald-700 px-5 py-2.5 text-xs font-black text-white shadow-md shadow-emerald-800/10 transition-all hover:scale-[1.02] hover:bg-emerald-800"
             >
               Ver minuta de LAI
             </button>

@@ -1,6 +1,6 @@
 import fs from "node:fs";
 import path from "node:path";
-import { defineConfig } from "vite";
+import { defineConfig, type Plugin } from "vite";
 import react from "@vitejs/plugin-react";
 import { sentryVitePlugin } from "@sentry/vite-plugin";
 import { VitePWA } from "vite-plugin-pwa";
@@ -33,6 +33,55 @@ function buildChunksManifest() {
 
       walk(distDir);
       fs.writeFileSync(path.join(distDir, "manifest.json"), JSON.stringify(manifest, null, 2));
+    }
+  };
+}
+
+function routeAssetsPreloader(): Plugin {
+  const routeEntries = {
+    "/": "/src/pages/HomePage.tsx",
+    "/dados": "/src/pages/DadosPage.tsx",
+    "/relatorios": "/src/pages/reports/ReportsListPage.tsx",
+    "/qualidade-ar/inea": "/src/pages/air/IneaRadarPage.tsx"
+  } as const;
+
+  return {
+    name: "route-assets-preloader",
+    transformIndexHtml: {
+      order: "post",
+      handler(_html, context) {
+        if (!context.bundle) return [];
+
+        const assetsByRoute: Record<string, Array<{ href: string; kind: "script" | "style" }>> = {};
+        const chunks = Object.values(context.bundle).filter((entry) => entry.type === "chunk");
+
+        for (const [route, sourceSuffix] of Object.entries(routeEntries)) {
+          const expectedName = sourceSuffix.split("/").at(-1)?.replace(/\.tsx$/, "");
+          const chunk = chunks.find((entry) =>
+            entry.facadeModuleId?.replace(/\\/g, "/").endsWith(sourceSuffix) || entry.name === expectedName
+          );
+          if (!chunk) continue;
+
+          const assets: Array<{ href: string; kind: "script" | "style" }> = [
+            { href: `/${chunk.fileName}`, kind: "script" }
+          ];
+          const metadata = (chunk as typeof chunk & { viteMetadata?: { importedCss?: Set<string> } }).viteMetadata;
+          metadata?.importedCss?.forEach((fileName) => {
+            assets.push({ href: `/${fileName}`, kind: "style" });
+          });
+          assetsByRoute[route] = assets;
+        }
+
+        const routeMap = JSON.stringify(assetsByRoute).replace(/</g, "\\u003c");
+        return {
+          html: _html,
+          tags: [{
+            tag: "script",
+            injectTo: "head-prepend",
+            children: `(()=>{const routes=${routeMap};const path=location.pathname.replace(/\\/+$/,"")||"/";for(const asset of routes[path]||[]){const link=document.createElement("link");link.href=asset.href;link.crossOrigin="anonymous";if(asset.kind==="script"){link.rel="modulepreload";}else{link.rel="preload";link.as="style";}document.head.appendChild(link);}})();`
+          }]
+        };
+      }
     }
   };
 }
@@ -82,6 +131,7 @@ export default defineConfig({
   },
   plugins: [
     react(),
+    routeAssetsPreloader(),
     buildChunksManifest(),
     ...(process.env.SENTRY_AUTH_TOKEN && process.env.SENTRY_ORG && process.env.SENTRY_PROJECT
       ? sentryVitePlugin({
@@ -105,6 +155,7 @@ export default defineConfig({
           })
       : []),
     VitePWA({
+      injectRegister: "script-defer",
       registerType: "autoUpdate",
       strategies: "injectManifest",
       srcDir: "src",

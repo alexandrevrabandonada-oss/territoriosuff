@@ -59,15 +59,134 @@
 
 .home-shell {
   position: relative;
-  margin-inline: calc(50% - 50vw);
+  width: 100%;
+  margin-inline: 0;
   overflow: hidden;
-  padding: 3.8rem max(1rem, calc((100vw - 1360px) / 2)) 0;
+  padding: 3.8rem clamp(0.75rem, 2vw, 1.5rem) 0;
   background:
     radial-gradient(circle at 82% 18%, rgba(45, 169, 244, 0.24), transparent 24rem),
     radial-gradient(circle at 12% 80%, rgba(0, 93, 170, 0.13), transparent 18rem),
     radial-gradient(circle at 48% 10%, rgba(163, 216, 50, 0.13), transparent 18rem),
     linear-gradient(180deg, rgba(238, 248, 255, 0.72) 0%, rgba(248, 251, 255, 0.78) 42%, rgba(245, 248, 252, 0.92) 100%);
   border-radius: 0 0 2.4rem 2.4rem;
+}
+
+.home-observatory-hub {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(20rem, 0.95fr);
+  gap: clamp(1.5rem, 4vw, 4rem);
+  align-items: center;
+  overflow: hidden;
+  border: 1px solid rgba(52, 211, 153, 0.2);
+  border-radius: 2rem;
+  padding: clamp(1.5rem, 4vw, 3rem);
+  background:
+    radial-gradient(circle at 92% 8%, rgba(16, 185, 129, 0.2), transparent 18rem),
+    linear-gradient(135deg, #071f30, #0a3048 58%, #0b3d4a);
+  color: white;
+  box-shadow: 0 26px 70px -44px rgba(4, 21, 33, 0.9);
+}
+
+.home-observatory-hub::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+  background-size: 34px 34px;
+  mask-image: linear-gradient(90deg, rgba(0, 0, 0, 0.65), transparent);
+}
+
+.home-observatory-copy,
+.home-observatory-actions {
+  position: relative;
+  z-index: 1;
+}
+
+.home-observatory-copy > span {
+  display: block;
+  margin-bottom: 0.75rem;
+  color: #6ee7b7;
+  font-size: 0.75rem;
+  font-weight: 900;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.home-observatory-copy h2 {
+  max-width: 42rem;
+  margin: 0;
+  color: white;
+  font-size: clamp(1.9rem, 4vw, 3.4rem);
+  font-weight: 950;
+  letter-spacing: -0.035em;
+  line-height: 1;
+}
+
+.home-observatory-copy p {
+  max-width: 42rem;
+  margin: 1rem 0 0;
+  color: rgba(255, 255, 255, 0.82);
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.65;
+}
+
+.home-observatory-note {
+  margin-top: 1rem;
+  border-left: 3px solid rgba(110, 231, 183, 0.75);
+  padding-left: 0.9rem;
+  color: rgba(255, 255, 255, 0.68);
+  font-size: 0.78rem;
+  font-weight: 650;
+  line-height: 1.55;
+}
+
+.home-observatory-actions {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.home-observatory-actions a {
+  display: grid;
+  min-width: 0;
+  min-height: 4.75rem;
+  align-content: center;
+  gap: 0.25rem;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 1.25rem;
+  background: rgba(255, 255, 255, 0.07);
+  padding: 1rem 1.1rem;
+  color: white;
+  transition: transform 160ms ease, background 160ms ease, border-color 160ms ease;
+}
+
+.home-observatory-actions a:hover {
+  border-color: rgba(110, 231, 183, 0.46);
+  background: rgba(255, 255, 255, 0.12);
+  color: white;
+  transform: translateY(-2px);
+}
+
+.home-observatory-actions strong,
+.home-observatory-actions span {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.home-observatory-actions strong {
+  font-size: 1rem;
+  font-weight: 900;
+}
+
+.home-observatory-actions span {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.82rem;
+  font-weight: 600;
+  line-height: 1.45;
 }
 
 .home-shell::before {
@@ -580,6 +699,11 @@
   backdrop-filter: blur(12px);
 }
 
+.home-agenda-strip-past {
+  border-color: rgba(100, 116, 139, 0.22);
+  background: linear-gradient(135deg, rgba(248, 250, 252, 0.96), rgba(241, 245, 249, 0.9));
+}
+
 .home-timeline {
   padding: 1.35rem 1.55rem;
 }
@@ -910,11 +1034,34 @@
   .home-lower-grid {
     grid-template-columns: 1fr;
   }
+
+  .home-observatory-hub {
+    grid-template-columns: 1fr;
+  }
 }
 
 @media (max-width: 720px) {
   .home-shell {
     padding-inline: max(0.75rem, env(safe-area-inset-left)) max(0.75rem, env(safe-area-inset-right));
+  }
+
+  .home-observatory-hub {
+    gap: 1.25rem;
+    border-radius: 1.25rem;
+    padding: 1.25rem;
+  }
+
+  .home-observatory-copy h2 {
+    font-size: clamp(1.75rem, 9vw, 2.4rem);
+  }
+
+  .home-observatory-copy p {
+    font-size: 0.95rem;
+  }
+
+  .home-observatory-actions a {
+    min-height: 4.5rem;
+    border-radius: 1rem;
   }
 
   .home-shell .portal-stage-hero {
