@@ -172,7 +172,7 @@ export function RadarQuickSummary({
 
       {latestData.length > 0 && (
         <div className="space-y-3 pt-2">
-          <h2 className="pl-1 text-xs font-black uppercase tracking-widest text-slate-400">Últimas leituras consolidadas por estação</h2>
+          <h2 className="pl-1 text-xs font-black uppercase tracking-widest text-slate-700">Últimas leituras consolidadas por estação</h2>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {latestData.map((d) => {
               const latestAqi = d.measurements.find((m) => m.metric_type === "GENERAL_AQI");

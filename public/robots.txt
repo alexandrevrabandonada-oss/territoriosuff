@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://semearsf.org/sitemap.xml
+Sitemap: https://www.semearsf.org/sitemap.xml

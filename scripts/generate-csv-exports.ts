@@ -7,7 +7,7 @@ import { AIR_PUBLIC_DATA_BASE_PATH } from '../src/data/air/public-downloads.ts';
 import { RADAR_RELEASE_METADATA, RADAR_RELEASE_METADATA_FILE } from '../src/data/air/radar-release-metadata.ts';
 import { RADAR_REVISION_HISTORY, RADAR_REVISION_HISTORY_FILE } from '../src/data/air/radar-revision-history.ts';
 
-const PUBLIC_DATA_ORIGIN = "https://semear-pwa.vercel.app";
+const PUBLIC_DATA_ORIGIN = "https://www.semearsf.org";
 
 function publicDataUrl(file: string): string {
   return `${PUBLIC_DATA_ORIGIN}${AIR_PUBLIC_DATA_BASE_PATH}/${file}`;

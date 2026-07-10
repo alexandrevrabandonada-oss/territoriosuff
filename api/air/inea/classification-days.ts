@@ -1,4 +1,4 @@
-import { applyPublicJsonHeaders, getIneaSupabaseClient, isValidDateInput, rejectNonGet, sendPublicError } from "./_http";
+import { applyPublicJsonHeaders, getIneaSupabaseClient, isValidDateInput, rejectNonGet, sendPublicError } from "./_http.js";
 
 export default async function handler(req: any, res: any) {
   applyPublicJsonHeaders(res);

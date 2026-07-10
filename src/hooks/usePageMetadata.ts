@@ -1,85 +1,67 @@
 import { useEffect } from "react";
 
+import { DEFAULT_SOCIAL_IMAGE, getCanonicalUrl } from "../content/siteMetadata";
+
 interface MetadataProps {
-    title?: string;
-    description?: string;
-    image?: string;
-    url?: string;
-    type?: "website" | "article";
+  title?: string;
+  description?: string;
+  image?: string;
+  url?: string;
+  type?: "website" | "article";
+}
+
+function setMetaTag(attributeName: "name" | "property", attributeValue: string, content: string) {
+  let element = document.querySelector<HTMLMetaElement>(`meta[${attributeName}="${attributeValue}"]`);
+  if (!element) {
+    element = document.createElement("meta");
+    element.setAttribute(attributeName, attributeValue);
+    document.head.appendChild(element);
+  }
+  element.content = content;
 }
 
 export function usePageMetadata({
-    title,
-    description,
-    image,
-    url,
-    type = "website"
+  title,
+  description,
+  image,
+  url,
+  type = "website"
 }: MetadataProps) {
-    useEffect(() => {
-        if (!title) return;
+  useEffect(() => {
+    if (!title) return;
+    let cancelled = false;
 
-        const oldTitle = document.title;
-        document.title = title.includes("SEMEAR") ? title : `${title} | SEMEAR`;
+    queueMicrotask(() => {
+      if (cancelled) return;
 
-        const setMetaTag = (attributeName: string, attributeValue: string, content: string) => {
-            let element = document.querySelector(`meta[${attributeName}="${attributeValue}"]`);
-            let isNew = false;
-            if (!element) {
-                element = document.createElement("meta");
-                element.setAttribute(attributeName, attributeValue);
-                document.head.appendChild(element);
-                isNew = true;
-            }
-            const previousContent = element.getAttribute("content");
-            element.setAttribute("content", content);
-            return { element, isNew, previousContent };
-        };
+      const resolvedTitle = title.includes("SEMEAR") ? title : `${title} | SEMEAR`;
+      const resolvedUrl = url || getCanonicalUrl(window.location.pathname);
+      const resolvedImage = image || DEFAULT_SOCIAL_IMAGE;
 
-        const updates: { element: Element; isNew: boolean; previousContent: string | null }[] = [];
+      document.title = resolvedTitle;
+      if (description) setMetaTag("name", "description", description);
+      setMetaTag("property", "og:type", type);
+      setMetaTag("property", "og:title", resolvedTitle);
+      if (description) setMetaTag("property", "og:description", description);
+      setMetaTag("property", "og:image", resolvedImage);
+      setMetaTag("property", "og:url", resolvedUrl);
+      setMetaTag("name", "twitter:card", "summary_large_image");
+      setMetaTag("name", "twitter:title", resolvedTitle);
+      if (description) setMetaTag("name", "twitter:description", description);
+      setMetaTag("name", "twitter:image", resolvedImage);
+      setMetaTag("name", "twitter:url", resolvedUrl);
 
-        const applyUpdate = (attrName: string, attrVal: string, content: string) => {
-            updates.push(setMetaTag(attrName, attrVal, content));
-        };
+      let canonical = document.querySelector<HTMLLinkElement>('link[rel="canonical"]');
+      if (!canonical) {
+        canonical = document.createElement("link");
+        canonical.rel = "canonical";
+        document.head.appendChild(canonical);
+      }
+      canonical.href = resolvedUrl;
+    });
 
-        if (description) {
-            applyUpdate("name", "description", description);
-        }
-
-        applyUpdate("property", "og:type", type);
-        applyUpdate("property", "og:title", title.includes("SEMEAR") ? title : `${title} | SEMEAR`);
-        if (description) {
-            applyUpdate("property", "og:description", description);
-        }
-        if (image) {
-            applyUpdate("property", "og:image", image);
-        }
-        if (url) {
-            applyUpdate("property", "og:url", url);
-        }
-
-        applyUpdate("property", "twitter:card", "summary_large_image");
-        applyUpdate("property", "twitter:title", title.includes("SEMEAR") ? title : `${title} | SEMEAR`);
-        if (description) {
-            applyUpdate("property", "twitter:description", description);
-        }
-        if (image) {
-            applyUpdate("property", "twitter:image", image);
-        }
-        if (url) {
-            applyUpdate("property", "twitter:url", url);
-        }
-
-        return () => {
-            document.title = oldTitle;
-            for (const update of updates) {
-                if (update.isNew) {
-                    update.element.remove();
-                } else if (update.previousContent !== null) {
-                    update.element.setAttribute("content", update.previousContent);
-                } else {
-                    update.element.removeAttribute("content");
-                }
-            }
-        };
-    }, [title, description, image, url, type]);
+    return () => {
+      cancelled = true;
+    };
+  }, [title, description, image, url, type]);
 }

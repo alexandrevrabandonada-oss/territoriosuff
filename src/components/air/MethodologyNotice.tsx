@@ -1,8 +1,9 @@
 import { IconShell, SurfaceCard } from "../BrandSystem";
 import { useRadarReleaseMetadata } from "../../data/air/useRadarReleaseMetadata";
 
-export function MethodologyNotice() {
+export function MethodologyNotice({ headingLevel = 3 }: { headingLevel?: 2 | 3 }) {
   const releaseMetadata = useRadarReleaseMetadata();
+  const Heading = headingLevel === 2 ? "h2" : "h3";
 
   return (
     <SurfaceCard className="border border-amber-500/20 bg-amber-50/40 p-5 rounded-2xl md:p-6 transition-all hover:border-amber-500/35">
@@ -14,9 +15,9 @@ export function MethodologyNotice() {
         </IconShell>
         <div className="space-y-1.5">
           <div className="flex flex-wrap items-center gap-2">
-            <h3 className="font-black text-amber-950 uppercase tracking-wider text-xs">
+            <Heading className="font-black text-amber-950 uppercase tracking-wider text-xs">
               Importante: Entendendo os Dados
-            </h3>
+            </Heading>
             <span className="rounded-full border border-amber-200 bg-white/80 px-2.5 py-0.5 text-[9px] font-black uppercase tracking-[0.16em] text-amber-900">
               ciclo {releaseMetadata.cycleVersion}
             </span>

@@ -188,7 +188,7 @@ for (const dataset of manifest.datasets || []) {
 
   verifyAirFile(dataset.filename, "public/data/air/manifest.json");
 
-  const expectedUrl = `https://semear-pwa.vercel.app${AIR_PUBLIC_DATA_BASE_PATH}/${dataset.filename}`;
+  const expectedUrl = `https://www.semearsf.org${AIR_PUBLIC_DATA_BASE_PATH}/${dataset.filename}`;
   if (dataset.public_url !== expectedUrl) {
     failures.push(`manifest public_url mismatch for ${dataset.filename}: expected ${expectedUrl}, got ${dataset.public_url || "empty"}`);
   }

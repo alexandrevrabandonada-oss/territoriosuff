@@ -75,7 +75,7 @@ export function AdminLoginPage() {
   };
 
   return (
-    <div className="admin-auth-shell relative flex min-h-screen items-center justify-center overflow-hidden p-4">
+    <main className="admin-auth-shell relative flex min-h-screen items-center justify-center overflow-hidden p-4">
       {/* Background decorations */}
       <div className="absolute top-0 left-0 w-full h-full overflow-hidden -z-10">
         <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-emerald-500/10 rounded-full blur-[120px]" />
@@ -92,11 +92,11 @@ export function AdminLoginPage() {
           
           <div className="text-center mb-10">
             <p className="admin-eyebrow justify-center border-0 bg-transparent text-emerald-700">Área segura SEMEAR</p>
-            <h2 className="mt-4 text-4xl font-black tracking-tight text-slate-950">
+            <h1 className="mt-4 text-4xl font-black tracking-tight text-slate-950">
               {mode === "login" && "Bem-vindo"}
               {mode === "otp" && "Entrar sem Senha"}
               {mode === "forgot" && "Recuperar Senha"}
-            </h2>
+            </h1>
             <p className="mt-3 text-slate-500 font-medium">
               {mode === "login" && "Acesso Administrativo SEMEAR"}
               {mode === "otp" && "Enviaremos um link de acesso por e-mail"}
@@ -106,7 +106,7 @@ export function AdminLoginPage() {
 
           <form onSubmit={handleAuth} className="space-y-5">
             <div>
-              <label className="block text-xs font-black text-slate-400 uppercase tracking-widest mb-2" htmlFor="email">
+              <label className="block text-xs font-black text-slate-600 uppercase tracking-widest mb-2" htmlFor="email">
                 E-mail
               </label>
               <input
@@ -124,7 +124,7 @@ export function AdminLoginPage() {
             {mode === "login" && (
               <div>
                 <div className="flex items-center justify-between mb-2">
-                  <label className="block text-xs font-black text-slate-400 uppercase tracking-widest" htmlFor="password">
+                  <label className="block text-xs font-black text-slate-600 uppercase tracking-widest" htmlFor="password">
                     Senha
                   </label>
                   {mode === "login" && (
@@ -224,6 +224,6 @@ export function AdminLoginPage() {
           </button>
         </div>
       </div>
-    </div>
+    </main>
   );
 }

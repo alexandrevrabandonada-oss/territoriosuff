@@ -369,7 +369,6 @@ export function HomePage() {
         </section>
       ) : null}
 
-      <img className="home-logo-preload" src="/brand/semear-logo-full.jpeg" alt="" aria-hidden="true" />
       <span className="home-seed home-seed-a" aria-hidden="true" />
       <span className="home-seed home-seed-b" aria-hidden="true" />
     </PortalPageShell>

@@ -5,7 +5,7 @@ import { Chip, SurfaceCard } from "../../components/BrandSystem";
 import { BrandIllustratedEmptyState, BrandTextureSkeleton } from "../../components/BrandMicro";
 import { AxisEyebrow } from "../../components/AxisSystem";
 import { DocumentalCard } from "../../components/CardFamilies";
-import { PortalPageShell, PortalSectionHeader } from "../../components/portal";
+import { PortalSectionHeader } from "../../components/portal";
 import { getOptimizedCover } from "../../lib/imageOptimization";
 import type { ReportDocument, ReportKind } from "../../lib/api";
 
@@ -76,23 +76,7 @@ export function ReportsListPage() {
   const catalogIsEmpty = !loading && !error && allReports.length === 0;
 
   return (
-    <PortalPageShell className="reports-stage">
-      <SurfaceCard className="portal-stage-hero portal-stage-hero-documental overflow-hidden p-0">
-        <div className="portal-stage-hero-inner">
-          <div className="portal-stage-copy">
-            <AxisEyebrow axis="relatorio">Biblioteca oficial</AxisEyebrow>
-            <h1>Relatórios, notas técnicas e boletins para controle social.</h1>
-            <p>
-              Uma base documental em PDF para consulta pública, memória técnica e acompanhamento institucional do projeto SEMEAR.
-            </p>
-          </div>
-          <div className="portal-stage-stat">
-            <span>{loading ? "..." : catalogIsEmpty ? "0" : reports.length}</span>
-            <small>{catalogIsEmpty ? "biblioteca em preparação" : "documento(s) filtrado(s)"}</small>
-          </div>
-        </div>
-      </SurfaceCard>
-
+    <>
       {!loading && !error && !catalogIsEmpty ? <SurfaceCard className="portal-filter-panel p-5 md:p-6">
         <PortalSectionHeader
           eyebrow={<span className="badge-dados-abertos">Catálogo público de evidências</span>}
@@ -267,6 +251,6 @@ export function ReportsListPage() {
           </div>
         )}
       </SurfaceCard>
-    </PortalPageShell>
+    </>
   );
 }

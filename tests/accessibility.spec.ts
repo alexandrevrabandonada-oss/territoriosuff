@@ -1,7 +1,40 @@
 import { expect, test } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
 
-const pagesToAudit = ["/", "/dados", "/agenda", "/conversar", "/acervo", "/blog", "/transparencia", "/mapa", "/qualidade-ar/inea"];
+const pagesToAudit = [
+  "/",
+  "/alertas",
+  "/dados",
+  "/qualidade-ar",
+  "/qualidade-ar/inea",
+  "/qualidade-ar/inea/analises",
+  "/qualidade-ar/inea/metodologia",
+  "/agenda",
+  "/conversar",
+  "/mapa",
+  "/inscricoes",
+  "/sobre",
+  "/transparencia",
+  "/como-ler-dados",
+  "/como-participar",
+  "/privacidade-lgpd",
+  "/governanca",
+  "/imprensa",
+  "/apresentacao",
+  "/programa-uff-territorio",
+  "/acervo",
+  "/acervo/linha",
+  "/acervo/artigos",
+  "/dossies",
+  "/blog",
+  "/relatorios",
+  "/status",
+  "/buscar",
+  "/offline",
+  "/qualidade-ar/inea/estacoes/69",
+  "/conversar/banca-de-escuta-no-cras-monte-castelo",
+  "/admin/login"
+];
 
 async function expectNoA11yViolations(page: import("@playwright/test").Page): Promise<void> {
   const results = await new AxeBuilder({ page })
@@ -94,6 +127,14 @@ test.describe("Accessibility smoke @a11y", () => {
     for (let i = 1; i < levels.length; i += 1) {
       expect(levels[i] - levels[i - 1]).toBeLessThanOrEqual(1);
     }
+  });
+
+  test("mapa should load the third-party interactive layer only on request", async ({ page }) => {
+    await page.goto("/mapa");
+    await expect(page.locator(".leaflet-container")).toHaveCount(0);
+
+    await page.getByRole("button", { name: /carregar mapa interativo/i }).click();
+    await expect(page.locator(".leaflet-container")).toBeVisible({ timeout: 15_000 });
   });
 
   test("headings should keep non-skipping order", async ({ page }) => {

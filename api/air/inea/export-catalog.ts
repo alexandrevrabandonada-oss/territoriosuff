@@ -1,4 +1,4 @@
-import { applyPublicJsonHeaders, getIneaSupabaseClient, rejectNonGet, sendPublicError } from "./_http";
+import { applyPublicJsonHeaders, getIneaSupabaseClient, rejectNonGet, sendPublicError } from "./_http.js";
 
 function buildExportUrl(params: Record<string, string>) {
   const search = new URLSearchParams(params);

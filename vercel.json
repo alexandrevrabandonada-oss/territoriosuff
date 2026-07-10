@@ -21,7 +21,7 @@
         },
         {
           "key": "Content-Security-Policy",
-          "value": "default-src 'self'; base-uri 'self'; object-src 'none'; form-action 'self'; frame-ancestors 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: blob: https:; connect-src 'self' https://*.supabase.co https://*.ingest.sentry.io; frame-src 'self' https://www.instagram.com https://*.supabase.co; worker-src 'self' blob:; manifest-src 'self'; media-src 'self' blob: https:"
+          "value": "default-src 'self'; base-uri 'self'; object-src 'none'; form-action 'self'; frame-ancestors 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; font-src 'self' data:; img-src 'self' data: blob: https:; connect-src 'self' https://*.supabase.co https://*.ingest.sentry.io; frame-src 'self' https://www.instagram.com https://*.supabase.co; worker-src 'self' blob:; manifest-src 'self'; media-src 'self' blob: https:"
         }
       ]
     },
@@ -112,6 +112,114 @@
     {
       "source": "/s/dados/:code",
       "destination": "/api/share/dados?station_code=:code"
+    },
+    {
+      "source": "/alertas",
+      "destination": "/_seo/alertas.html"
+    },
+    {
+      "source": "/dados",
+      "destination": "/_seo/dados.html"
+    },
+    {
+      "source": "/qualidade-ar",
+      "destination": "/_seo/qualidade-ar.html"
+    },
+    {
+      "source": "/qualidade-ar/inea",
+      "destination": "/_seo/qualidade-ar--inea.html"
+    },
+    {
+      "source": "/qualidade-ar/inea/analises",
+      "destination": "/_seo/qualidade-ar--inea--analises.html"
+    },
+    {
+      "source": "/qualidade-ar/inea/metodologia",
+      "destination": "/_seo/qualidade-ar--inea--metodologia.html"
+    },
+    {
+      "source": "/agenda",
+      "destination": "/_seo/agenda.html"
+    },
+    {
+      "source": "/conversar",
+      "destination": "/_seo/conversar.html"
+    },
+    {
+      "source": "/mapa",
+      "destination": "/_seo/mapa.html"
+    },
+    {
+      "source": "/inscricoes",
+      "destination": "/_seo/inscricoes.html"
+    },
+    {
+      "source": "/sobre",
+      "destination": "/_seo/sobre.html"
+    },
+    {
+      "source": "/transparencia",
+      "destination": "/_seo/transparencia.html"
+    },
+    {
+      "source": "/como-ler-dados",
+      "destination": "/_seo/como-ler-dados.html"
+    },
+    {
+      "source": "/como-participar",
+      "destination": "/_seo/como-participar.html"
+    },
+    {
+      "source": "/privacidade-lgpd",
+      "destination": "/_seo/privacidade-lgpd.html"
+    },
+    {
+      "source": "/governanca",
+      "destination": "/_seo/governanca.html"
+    },
+    {
+      "source": "/imprensa",
+      "destination": "/_seo/imprensa.html"
+    },
+    {
+      "source": "/apresentacao",
+      "destination": "/_seo/apresentacao.html"
+    },
+    {
+      "source": "/programa-uff-territorio",
+      "destination": "/_seo/programa-uff-territorio.html"
+    },
+    {
+      "source": "/acervo",
+      "destination": "/_seo/acervo.html"
+    },
+    {
+      "source": "/acervo/linha",
+      "destination": "/_seo/acervo--linha.html"
+    },
+    {
+      "source": "/dossies",
+      "destination": "/_seo/dossies.html"
+    },
+    {
+      "source": "/blog",
+      "destination": "/_seo/blog.html"
+    },
+    {
+      "source": "/relatorios",
+      "destination": "/_seo/relatorios.html"
+    },
+    {
+      "source": "/status",
+      "destination": "/_seo/status.html"
+    },
+    {
+      "source": "/buscar",
+      "destination": "/_seo/buscar.html"
+    },
+    {
+      "source": "/offline",
+      "destination": "/_seo/offline.html"
     },
     {
       "source": "/api/(.*)",

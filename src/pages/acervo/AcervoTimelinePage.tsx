@@ -157,7 +157,7 @@ export function AcervoTimelinePage() {
           </SurfaceCard>
         </aside>
 
-        <main className="space-y-6">
+        <section className="space-y-6" aria-label="Itens da linha do tempo">
           {error && (
             <div className="rounded-md border border-red-500/50 bg-red-500/10 p-4 text-sm text-red-400">
               {error}
@@ -233,7 +233,7 @@ export function AcervoTimelinePage() {
               </div>
             )}
           </SurfaceCard>
-        </main>
+        </section>
       </div>
     </PortalPageShell>
   );

@@ -6,6 +6,7 @@ import { ACERVO_KIND_LABELS } from "../../lib/acervo";
 import { getOptimizedCover } from "../../lib/imageOptimization";
 import { trackShare } from "../../lib/observability";
 import { IconShell, SurfaceCard } from "../../components/BrandSystem";
+import { usePageMetadata } from "../../hooks/usePageMetadata";
 
 export function CollectionDetailPage() {
     const { slug } = useParams<{ slug: string }>();
@@ -14,6 +15,13 @@ export function CollectionDetailPage() {
     const [selectedYear, setSelectedYear] = useState<string>("");
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
+
+    usePageMetadata({
+        title: collection?.title,
+        description: collection?.excerpt || undefined,
+        image: getOptimizedCover(collection, "small") || undefined,
+        type: "article"
+    });
 
     useEffect(() => {
         async function load() {
@@ -171,7 +179,7 @@ export function CollectionDetailPage() {
                             <Link
                                 key={item.id}
                                 to={`/acervo/item/${item.slug}`}
-                                className="group flex flex-col gap-2 rounded-xl border border-ciano/20 bg-fundo/70 p-5 transition-all hover:border-ciano hover:bg-base/20 shadow-sm"
+                                className="group flex flex-col gap-2 rounded-xl border border-ciano/20 bg-fundo/70 p-5 transition-all hover:border-ciano hover:bg-legacy-base/20 shadow-sm"
                             >
                                 <span className="inline-block self-start rounded-full bg-ciano/10 px-2 py-0.5 text-[9px] font-bold uppercase tracking-widest text-ciano transition-colors group-hover:bg-ciano/20">
                                     {ACERVO_KIND_LABELS[item.kind as keyof typeof ACERVO_KIND_LABELS] ?? item.kind}

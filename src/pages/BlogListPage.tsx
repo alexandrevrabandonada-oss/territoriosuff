@@ -52,6 +52,8 @@ export function BlogListPage() {
                 </div>
             </SurfaceCard>
 
+            <h2 className="sr-only">Publicações do blog</h2>
+
             {loading ? (
                 <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
                     {Array.from({ length: 6 }).map((_, i) => (

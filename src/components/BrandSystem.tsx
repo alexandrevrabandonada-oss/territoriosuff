@@ -42,7 +42,7 @@ const iconToneClasses: Record<NonNullable<IconShellProps["tone"]>, string> = {
 const chipToneClasses: Record<NonNullable<ChipProps["tone"]>, string> = {
   default: "border-border-subtle bg-surface-2 text-text-secondary",
   active: "border-brand-primary/15 bg-brand-primary-soft text-brand-primary-dark",
-  seed: "border-accent-seed/20 bg-accent-seed/10 text-accent-seed",
+  seed: "border-accent-seed/20 bg-accent-seed/10 text-accent-green",
   lab: "border-accent-lab/20 bg-accent-lab/10 text-accent-lab"
 };
 

@@ -26,8 +26,9 @@ export function ConversarListPage() {
 
     if (loading) {
         return (
-            <div className="flex min-h-[50vh] items-center justify-center">
-                <div className="h-8 w-8 animate-spin rounded-full border-4 border-brand-primary border-t-transparent" />
+            <div className="flex min-h-[50vh] flex-col items-center justify-center gap-4 text-center" role="status" aria-live="polite">
+                <div className="h-8 w-8 animate-spin rounded-full border-4 border-brand-primary border-t-transparent" aria-hidden="true" />
+                <p className="text-sm font-bold text-slate-700">Carregando conversas e atividades…</p>
             </div>
         );
     }
@@ -67,7 +68,7 @@ export function ConversarListPage() {
                             <div className="mt-2 text-3xl font-black">{activities.length}</div>
                         </div>
                         <div className="rounded-2xl border border-white/10 bg-white/10 p-4 text-white">
-                            <div className="text-[10px] font-black uppercase tracking-[0.16em] text-white/70">Escuta pública</div>
+                            <div className="text-[10px] font-black uppercase tracking-[0.16em] text-white/70">Registros individuais de escuta</div>
                             <div className="mt-2 text-3xl font-black">{conversationTopics.length}</div>
                         </div>
                     </>
@@ -318,9 +319,9 @@ function EnvironmentalReportSection() {
                             Escuta Cidadã
                         </span>
                     </div>
-                    <h3 className="text-xl font-black tracking-tight text-text-primary flex items-center gap-2">
+                    <h2 className="text-xl font-black tracking-tight text-text-primary flex items-center gap-2">
                         <span>📢</span> Relato Ambiental
-                    </h3>
+                    </h2>
                     <p className="text-sm text-text-secondary max-w-2xl">
                         Viu alguma irregularidade, descarte de lixo, poluição ou queimada? Envie seu relato para a equipe do SEMEAR acompanhar e planejar ações coletivas.
                     </p>
@@ -348,9 +349,9 @@ function EnvironmentalReportSection() {
                     {success ? (
                         <div className="rounded-2xl border-2 border-emerald-500 bg-emerald-50 p-6 text-center space-y-3">
                             <span className="text-4xl">🎉</span>
-                            <h4 className="text-lg font-bold text-emerald-800">
+                            <h3 className="text-lg font-bold text-emerald-800">
                                 Relato enviado com sucesso!
-                            </h4>
+                            </h3>
                             <p className="text-sm text-emerald-700 max-w-md mx-auto">
                                 Agradecemos a sua colaboração. Seu relato foi registrado na nossa caixa de entrada e será avaliado pela equipe do projeto SEMEAR.
                             </p>
@@ -390,9 +391,9 @@ function EnvironmentalReportSection() {
 
                             {/* Informações Pessoais */}
                             <div className="space-y-4">
-                                <h4 className="text-xs font-black uppercase tracking-wider text-brand-primary">
+                                <h3 className="text-xs font-black uppercase tracking-wider text-brand-primary">
                                     1. Seus Dados de Contato
-                                </h4>
+                                </h3>
                                 <div className="grid gap-4 md:grid-cols-3">
                                     <div className="space-y-1.5">
                                         <label htmlFor="reporter-name" className="text-xs font-bold text-text-primary">
@@ -442,9 +443,9 @@ function EnvironmentalReportSection() {
 
                             {/* Categoria do Relato */}
                             <div className="space-y-3">
-                                <h4 className="text-xs font-black uppercase tracking-wider text-brand-primary">
+                                <h3 className="text-xs font-black uppercase tracking-wider text-brand-primary">
                                     2. Categoria da Ocorrência <span className="text-red-500">*</span>
-                                </h4>
+                                </h3>
                                 <div 
                                     className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3"
                                     role="radiogroup"

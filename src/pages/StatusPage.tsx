@@ -383,7 +383,7 @@ export function StatusPage() {
               <select
                 value={selectedMonth}
                 onChange={(e) => setSelectedMonth(Number(e.target.value))}
-                className="rounded-lg border border-ciano/20 bg-base/20 px-3 py-2 text-sm font-semibold text-texto"
+                className="rounded-lg border border-ciano/20 bg-legacy-base/20 px-3 py-2 text-sm font-semibold text-texto"
               >
                 {MONTH_OPTIONS.map((month) => (
                   <option key={month.value} value={month.value}>{month.label}</option>
@@ -395,7 +395,7 @@ export function StatusPage() {
               <select
                 value={selectedYear}
                 onChange={(e) => setSelectedYear(Number(e.target.value))}
-                className="rounded-lg border border-ciano/20 bg-base/20 px-3 py-2 text-sm font-semibold text-texto"
+                className="rounded-lg border border-ciano/20 bg-legacy-base/20 px-3 py-2 text-sm font-semibold text-texto"
               >
                 {yearOptions.map((year) => (
                   <option key={year} value={year}>{year}</option>
@@ -452,7 +452,7 @@ export function StatusPage() {
           </EditorialCard>
         </div>
 
-        <div className="mt-5 rounded-2xl border border-base/30 bg-base/10 p-4">
+        <div className="mt-5 rounded-2xl border border-legacy-base/30 bg-legacy-base/10 p-4">
           <div className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
             <div className="flex-1">
               <p className="text-[11px] font-bold uppercase tracking-wide text-ciano">Resumo gerado</p>
@@ -489,7 +489,7 @@ export function StatusPage() {
                 type="button"
                 onClick={() => { void handleCopySummary(); }}
                 disabled={monthlyLoading || Boolean(monthlyError)}
-                className="inline-flex min-h-11 items-center rounded-lg border border-base/30 bg-base/20 px-4 py-2 text-xs font-bold uppercase tracking-wide text-texto hover:bg-base/30 disabled:cursor-not-allowed disabled:opacity-60"
+                className="inline-flex min-h-11 items-center rounded-lg border border-legacy-base/30 bg-legacy-base/20 px-4 py-2 text-xs font-bold uppercase tracking-wide text-texto hover:bg-legacy-base/30 disabled:cursor-not-allowed disabled:opacity-60"
               >
                 Copiar resumo
               </button>
@@ -791,7 +791,7 @@ export function StatusPage() {
             </div>
             <div className="mt-4 space-y-2">
               {contrastAudit.map((item) => (
-                <div key={item.name} className="flex flex-col gap-1 rounded-lg border border-base/20 bg-base/10 px-4 py-3 text-xs sm:flex-row sm:items-center sm:justify-between">
+                <div key={item.name} className="flex flex-col gap-1 rounded-lg border border-legacy-base/20 bg-legacy-base/10 px-4 py-3 text-xs sm:flex-row sm:items-center sm:justify-between">
                   <div>
                     <p className="font-bold text-texto">{item.name}</p>
                     <p className="text-texto/60">{item.foreground} em {item.background}</p>

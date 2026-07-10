@@ -116,7 +116,7 @@ export function IneaMethodologyPage() {
   };
 
   return (
-    <div className="container mx-auto px-4 py-8 max-w-7xl">
+    <div className="inea-methodology-page container mx-auto px-4 py-8 max-w-7xl">
       {/* Back link */}
       <div className="mb-6">
         <Link 
@@ -182,7 +182,7 @@ export function IneaMethodologyPage() {
       <div className="grid grid-cols-1 lg:grid-cols-[250px_1fr] gap-8 items-start">
         {/* Floating Table of Contents Sidebar */}
         <aside className="hidden lg:block sticky top-6 bg-slate-50 border border-slate-100 rounded-3xl p-5 space-y-4">
-          <h3 className="text-xs font-black uppercase tracking-wider text-slate-400">Sumário</h3>
+          <h2 className="text-xs font-black uppercase tracking-wider text-slate-700">Sumário</h2>
           <nav className="flex flex-col gap-1" aria-label="Navegação interna da metodologia">
             {sections.map((sec) => (
               <button
@@ -200,7 +200,7 @@ export function IneaMethodologyPage() {
           </nav>
 
           <div className="pt-4 border-t border-slate-200/60 space-y-3">
-            <h4 className="text-[10px] font-black uppercase tracking-widest text-slate-400">Status Operacional</h4>
+            <p className="text-[10px] font-black uppercase tracking-widest text-slate-700">Status Operacional</p>
             
             <p className="text-[10px] text-slate-500 leading-relaxed font-semibold">
               O Observatório possui rotina de verificação automática. O status saudável indica que páginas, APIs e arquivos públicos responderam corretamente no último healthcheck.
@@ -208,38 +208,38 @@ export function IneaMethodologyPage() {
 
             <div className="space-y-2 text-xs font-medium text-slate-600 pt-1">
               <div className="flex justify-between items-center">
-                <span className="text-slate-400 font-bold">Status atual:</span>
+                <span className="text-slate-700 font-bold">Status atual:</span>
                 <span className="inline-flex items-center gap-1 font-bold text-emerald-600">
                   <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
                   {manifest?.status ? (manifest.status.charAt(0).toUpperCase() + manifest.status.slice(1)) : "Saudável"}
                 </span>
               </div>
               <div className="flex justify-between items-center col-span-2">
-                <span className="text-slate-400 font-bold text-[10px]">Último healthcheck:</span>
+                <span className="text-slate-700 font-bold text-[10px]">Último healthcheck:</span>
                 <span className="font-bold text-slate-800 text-[9px] truncate max-w-[120px]" title={manifest ? formatDate(manifest.last_smoke_test_at || manifest.generated_at) : ""}>
                   {manifest ? formatDate(manifest.last_smoke_test_at || manifest.generated_at) : "Carregando..."}
                 </span>
               </div>
               <div className="flex justify-between items-center">
-                <span className="text-slate-400 font-bold">Ciclo público:</span>
+                <span className="text-slate-700 font-bold">Ciclo público:</span>
                 <span className="font-bold text-slate-800">{releaseMetadata.cycleVersion}</span>
               </div>
               <div className="flex justify-between items-center">
-                <span className="text-slate-400 font-bold">Metodologia:</span>
+                <span className="text-slate-700 font-bold">Metodologia:</span>
                 <span className="font-bold text-slate-800">{releaseMetadata.methodologyVersion}</span>
               </div>
               <div className="flex justify-between items-center">
-                <span className="text-slate-400 font-bold">Versão do dataset:</span>
+                <span className="text-slate-700 font-bold">Versão do dataset:</span>
                 <span className="font-bold text-slate-800">
                   {releaseMetadata.datasetVersion || manifest?.version || manifest?.dataset_version || "1.6.2"}
                 </span>
               </div>
               <div className="flex justify-between items-center">
-                <span className="text-slate-400 font-bold">Próxima revisão:</span>
+                <span className="text-slate-700 font-bold">Próxima revisão:</span>
                 <span className="font-bold text-slate-800">{releaseMetadata.plannedReviewDate}</span>
               </div>
               <div className="flex justify-between items-center">
-                <span className="text-slate-400 font-bold">Datasets públicos:</span>
+                <span className="text-slate-700 font-bold">Datasets públicos:</span>
                 <span className="font-bold text-slate-800">
                   {manifest?.datasets ? manifest.datasets.length : 21}
                 </span>
@@ -444,7 +444,7 @@ export function IneaMethodologyPage() {
                   </ul>
                 </div>
               </div>
-              <p className="text-xs text-slate-400 italic mt-2">
+              <p className="text-xs text-slate-600 italic mt-2">
                 Nota: Todas as checagens com essas réguas são executadas como uma comparação experimental, já que o espelho original não conta com QA/QC oficial por linha.
               </p>
             </SurfaceCard>
@@ -561,7 +561,7 @@ export function IneaMethodologyPage() {
               {AIR_PUBLIC_DOWNLOADS.filter((item) => FEATURED_DOWNLOAD_FILES.includes(item.file)).map((item) => (
                 <SurfaceCard key={item.file} className="p-5 bg-white border border-slate-100 rounded-2xl flex flex-col justify-between space-y-4 shadow-sm">
                   <div>
-                    <h4 className="text-xs font-black uppercase text-slate-400">{item.title}</h4>
+                    <h3 className="text-xs font-black uppercase text-slate-700">{item.title}</h3>
                     <p className="text-[11px] text-slate-500 font-semibold mt-1">{item.desc}</p>
                   </div>
                   <a
@@ -581,7 +581,7 @@ export function IneaMethodologyPage() {
               <SurfaceCard className="p-0 bg-white border border-slate-100 rounded-3xl overflow-hidden shadow-sm">
                 <div className="overflow-x-auto">
                   <table className="min-w-full divide-y divide-slate-100 text-left">
-                    <thead className="bg-slate-50 text-[10px] font-black uppercase tracking-wider text-slate-400">
+                    <thead className="bg-slate-50 text-[10px] font-black uppercase tracking-wider text-slate-700">
                       <tr>
                         <th className="px-5 py-4">Arquivo</th>
                         <th className="px-5 py-4">O que contém</th>
@@ -639,7 +639,7 @@ export function IneaMethodologyPage() {
             <SurfaceCard className="p-0 bg-white border border-slate-100 rounded-3xl overflow-hidden shadow-sm">
               <div className="overflow-x-auto">
                 <table className="min-w-full divide-y divide-slate-100 text-left">
-                  <thead className="bg-slate-50 text-[10px] font-black uppercase tracking-wider text-slate-400">
+                  <thead className="bg-slate-50 text-[10px] font-black uppercase tracking-wider text-slate-700">
                     <tr>
                       <th className="px-5 py-4">Campo</th>
                       <th className="px-5 py-4">Rótulo</th>
@@ -669,7 +669,7 @@ export function IneaMethodologyPage() {
                         <td className="px-5 py-4">
                           {entry.source}
                         </td>
-                        <td className="px-5 py-4 italic text-slate-400 text-[11px] leading-relaxed">
+                        <td className="px-5 py-4 italic text-slate-600 text-[11px] leading-relaxed">
                           {entry.caveat}
                         </td>
                       </tr>
@@ -816,7 +816,7 @@ export function IneaMethodologyPage() {
 
           {/* Mobile Status Operacional (visible only on mobile viewports) */}
           <div className="block lg:hidden mt-8 p-6 bg-slate-50 border border-slate-100 rounded-3xl space-y-4">
-            <h4 className="text-xs font-black uppercase tracking-wider text-slate-400">Status Operacional</h4>
+            <h2 className="text-xs font-black uppercase tracking-wider text-slate-700">Status Operacional</h2>
             
             <p className="text-xs text-slate-500 leading-relaxed font-semibold">
               O Observatório possui rotina de verificação automática. O status saudável indica que páginas, APIs e arquivos públicos responderam corretamente no último healthcheck.
@@ -824,30 +824,30 @@ export function IneaMethodologyPage() {
 
             <div className="grid grid-cols-2 gap-3 text-xs font-semibold text-slate-600">
               <div className="p-3 bg-white rounded-2xl border border-slate-100/50 flex flex-col justify-between">
-                <span className="text-[10px] uppercase text-slate-400 tracking-wider">Status Atual</span>
+                <span className="text-[10px] uppercase text-slate-700 tracking-wider">Status Atual</span>
                 <span className="inline-flex items-center gap-1 font-bold text-emerald-600 mt-1">
                   <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
                   {manifest?.status ? (manifest.status.charAt(0).toUpperCase() + manifest.status.slice(1)) : "Saudável"}
                 </span>
               </div>
               <div className="p-3 bg-white rounded-2xl border border-slate-100/50 flex flex-col justify-between">
-                <span className="text-[10px] uppercase text-slate-400 tracking-wider">Ciclo Público</span>
+                <span className="text-[10px] uppercase text-slate-700 tracking-wider">Ciclo Público</span>
                 <span className="font-bold text-slate-800 mt-1">{releaseMetadata.cycleVersion}</span>
               </div>
               <div className="p-3 bg-white rounded-2xl border border-slate-100/50 flex flex-col justify-between">
-                <span className="text-[10px] uppercase text-slate-400 tracking-wider">Versão Dataset</span>
+                <span className="text-[10px] uppercase text-slate-700 tracking-wider">Versão Dataset</span>
                 <span className="font-bold text-slate-800 mt-1">
                   {releaseMetadata.datasetVersion || manifest?.version || manifest?.dataset_version || "1.6.2"}
                 </span>
               </div>
               <div className="p-3 bg-white rounded-2xl border border-slate-100/50 flex flex-col justify-between col-span-2">
-                <span className="text-[10px] uppercase text-slate-400 tracking-wider">Último Healthcheck</span>
+                <span className="text-[10px] uppercase text-slate-700 tracking-wider">Último Healthcheck</span>
                 <span className="font-bold text-slate-800 mt-1 text-[10px]">
                   {manifest ? formatDate(manifest.last_smoke_test_at || manifest.generated_at) : "Carregando..."}
                 </span>
               </div>
               <div className="p-3 bg-white rounded-2xl border border-slate-100/50 flex flex-col justify-between col-span-2">
-                <span className="text-[10px] uppercase text-slate-400 tracking-wider">Metodologia / Próxima revisão</span>
+                <span className="text-[10px] uppercase text-slate-700 tracking-wider">Metodologia / Próxima revisão</span>
                 <span className="font-bold text-slate-800 mt-1 text-[10px]">
                   {releaseMetadata.methodologyVersion} · {releaseMetadata.plannedReviewDate}
                 </span>

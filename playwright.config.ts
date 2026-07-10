@@ -13,6 +13,10 @@ const baseURL = process.env.PLAYWRIGHT_BASE_URL || (isCI ? `http://127.0.0.1:${c
 export default defineConfig({
   testDir: './tests',
 
+  expect: {
+    timeout: 10_000,
+  },
+
   /* Run tests in files in parallel */
   fullyParallel: true,
 

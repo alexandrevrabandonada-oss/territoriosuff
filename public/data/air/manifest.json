@@ -17,7 +17,7 @@
       "updated_at": "2026-06-17T00:55:23.067Z",
       "source_system": "SEMEAR (Governança do Produto)",
       "methodological_label": "Metadados operacionais do release público do Radar INEA.",
-      "public_url": "https://semear-pwa.vercel.app/data/air/radar-release-metadata.json"
+      "public_url": "https://www.semearsf.org/data/air/radar-release-metadata.json"
     },
     {
       "filename": "radar-revision-history-2026-06.json",
@@ -27,7 +27,7 @@
       "updated_at": "2026-06-17T00:55:23.067Z",
       "source_system": "SEMEAR (Governança do Produto)",
       "methodological_label": "Histórico editorial e metodológico do módulo Radar INEA para auditoria pública contínua.",
-      "public_url": "https://semear-pwa.vercel.app/data/air/radar-revision-history-2026-06.json"
+      "public_url": "https://www.semearsf.org/data/air/radar-revision-history-2026-06.json"
     },
     {
       "filename": "pm10-2020-station-summary.csv",
@@ -37,7 +37,7 @@
       "updated_at": "2026-06-17T00:55:23.067Z",
       "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
       "methodological_label": "Dado horário público WebLakes — comparação experimental — sem QA/QC oficial explícito.",
-      "public_url": "https://semear-pwa.vercel.app/data/air/pm10-2020-station-summary.csv"
+      "public_url": "https://www.semearsf.org/data/air/pm10-2020-station-summary.csv"
     },
     {
       "filename": "pm10-2021-station-summary.csv",
@@ -47,7 +47,7 @@
       "updated_at": "2026-06-17T00:55:23.067Z",
       "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
       "methodological_label": "Dado horário público WebLakes — comparação experimental — sem QA/QC oficial explícito.",
-      "public_url": "https://semear-pwa.vercel.app/data/air/pm10-2021-station-summary.csv"
+      "public_url": "https://www.semearsf.org/data/air/pm10-2021-station-summary.csv"
     },
     {
       "filename": "pm25-2021-station-summary.csv",
@@ -57,7 +57,7 @@
       "updated_at": "2026-06-17T00:55:23.067Z",
       "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
       "methodological_label": "Dado horário público WebLakes — comparação experimental — sem QA/QC oficial explícito.",
-      "public_url": "https://semear-pwa.vercel.app/data/air/pm25-2021-station-summary.csv"
+      "public_url": "https://www.semearsf.org/data/air/pm25-2021-station-summary.csv"
     },
     {
       "filename": "pm25-2022-station-summary.csv",
@@ -67,7 +67,7 @@
       "updated_at": "2026-06-17T00:55:23.067Z",
       "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
       "methodological_label": "Dado horário público WebLakes — comparação experimental — sem QA/QC oficial explícito.",
-      "public_url": "https://semear-pwa.vercel.app/data/air/pm25-2022-station-summary.csv"
+      "public_url": "https://www.semearsf.org/data/air/pm25-2022-station-summary.csv"
     },
     {
       "filename": "pm25-2023-station-summary.csv",
@@ -77,7 +77,7 @@
       "updated_at": "2026-06-17T00:55:23.067Z",
       "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
       "methodological_label": "Dado horário público WebLakes — comparação experimental — sem QA/QC oficial explícito.",
-      "public_url": "https://semear-pwa.vercel.app/data/air/pm25-2023-station-summary.csv"
+      "public_url": "https://www.semearsf.org/data/air/pm25-2023-station-summary.csv"
     },
     {
       "filename": "pm10-2024-station-summary.csv",
@@ -87,7 +87,7 @@
       "updated_at": "2026-06-17T00:55:23.067Z",
       "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
       "methodological_label": "Dado horário público WebLakes — comparação experimental — sem QA/QC oficial explícito.",
-      "public_url": "https://semear-pwa.vercel.app/data/air/pm10-2024-station-summary.csv"
+      "public_url": "https://www.semearsf.org/data/air/pm10-2024-station-summary.csv"
     },
     {
       "filename": "pm25-2024-station-summary.csv",
@@ -97,7 +97,7 @@
       "updated_at": "2026-06-17T00:55:23.067Z",
       "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
       "methodological_label": "Dado horário público WebLakes — comparação experimental — sem QA/QC oficial explícito.",
-      "public_url": "https://semear-pwa.vercel.app/data/air/pm25-2024-station-summary.csv"
+      "public_url": "https://www.semearsf.org/data/air/pm25-2024-station-summary.csv"
     },
     {
       "filename": "so2-2024-station-summary.csv",
@@ -107,7 +107,7 @@
       "updated_at": "2026-06-17T00:55:23.067Z",
       "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
       "methodological_label": "Dado horário público WebLakes — comparação experimental — sem QA/QC oficial explícito.",
-      "public_url": "https://semear-pwa.vercel.app/data/air/so2-2024-station-summary.csv"
+      "public_url": "https://www.semearsf.org/data/air/so2-2024-station-summary.csv"
     },
     {
       "filename": "co-2024-station-summary.csv",
@@ -117,7 +117,7 @@
       "updated_at": "2026-06-17T00:55:23.067Z",
       "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
       "methodological_label": "Dado horário público WebLakes — comparação experimental — sem QA/QC oficial explícito.",
-      "public_url": "https://semear-pwa.vercel.app/data/air/co-2024-station-summary.csv"
+      "public_url": "https://www.semearsf.org/data/air/co-2024-station-summary.csv"
     },
     {
       "filename": "pm10-2025-station-summary.csv",
@@ -127,7 +127,7 @@
       "updated_at": "2026-06-17T00:55:23.067Z",
       "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
       "methodological_label": "Dado horário público WebLakes — comparação experimental — sem QA/QC oficial explícito.",
-      "public_url": "https://semear-pwa.vercel.app/data/air/pm10-2025-station-summary.csv"
+      "public_url": "https://www.semearsf.org/data/air/pm10-2025-station-summary.csv"
     },
     {
       "filename": "pm25-2025-station-summary.csv",
@@ -137,7 +137,7 @@
       "updated_at": "2026-06-17T00:55:23.067Z",
       "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
       "methodological_label": "Dado horário público WebLakes — comparação experimental — sem QA/QC oficial explícito.",
-      "public_url": "https://semear-pwa.vercel.app/data/air/pm25-2025-station-summary.csv"
+      "public_url": "https://www.semearsf.org/data/air/pm25-2025-station-summary.csv"
     },
     {
       "filename": "pm10-2026-partial-station-summary.csv",
@@ -147,7 +147,7 @@
       "updated_at": "2026-06-17T00:55:23.067Z",
       "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
       "methodological_label": "Dado horário público WebLakes — comparação experimental — sem QA/QC oficial explícito. Ano Parcial.",
-      "public_url": "https://semear-pwa.vercel.app/data/air/pm10-2026-partial-station-summary.csv"
+      "public_url": "https://www.semearsf.org/data/air/pm10-2026-partial-station-summary.csv"
     },
     {
       "filename": "pm25-2026-partial-station-summary.csv",
@@ -157,7 +157,7 @@
       "updated_at": "2026-06-17T00:55:23.067Z",
       "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
       "methodological_label": "Dado horário público WebLakes — comparação experimental — sem QA/QC oficial explícito. Ano Parcial.",
-      "public_url": "https://semear-pwa.vercel.app/data/air/pm25-2026-partial-station-summary.csv"
+      "public_url": "https://www.semearsf.org/data/air/pm25-2026-partial-station-summary.csv"
     },
     {
       "filename": "particulate-timeline-2020-2026.csv",
@@ -167,7 +167,7 @@
       "updated_at": "2026-06-17T00:55:23.067Z",
       "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
       "methodological_label": "Dado horário público WebLakes — comparação experimental — sem QA/QC oficial explícito.",
-      "public_url": "https://semear-pwa.vercel.app/data/air/particulate-timeline-2020-2026.csv"
+      "public_url": "https://www.semearsf.org/data/air/particulate-timeline-2020-2026.csv"
     },
     {
       "filename": "weather/weather-vr-2013-2026.csv",
@@ -177,7 +177,7 @@
       "updated_at": "2026-06-17T00:55:23.067Z",
       "source_system": "INMET_A609_AND_INEA_WEBLAKES",
       "methodological_label": "Camada meteorológica experimental para Volta Redonda. Ventos reais; outras variáveis simuladas por médias locais.",
-      "public_url": "https://semear-pwa.vercel.app/data/air/weather/weather-vr-2013-2026.csv"
+      "public_url": "https://www.semearsf.org/data/air/weather/weather-vr-2013-2026.csv"
     },
     {
       "filename": "weather/weather-dictionary.csv",
@@ -187,7 +187,7 @@
       "updated_at": "2026-06-17T00:55:23.067Z",
       "source_system": "SEMEAR (Metadados)",
       "methodological_label": "Metadados descritivos da camada meteorológica experimental.",
-      "public_url": "https://semear-pwa.vercel.app/data/air/weather/weather-dictionary.csv"
+      "public_url": "https://www.semearsf.org/data/air/weather/weather-dictionary.csv"
     },
     {
       "filename": "pm10-timeline-2013-2026.csv",
@@ -197,7 +197,7 @@
       "updated_at": "2026-06-17T00:55:23.067Z",
       "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
       "methodological_label": "Dado horário público WebLakes — comparação experimental — sem QA/QC oficial explícito.",
-      "public_url": "https://semear-pwa.vercel.app/data/air/pm10-timeline-2013-2026.csv"
+      "public_url": "https://www.semearsf.org/data/air/pm10-timeline-2013-2026.csv"
     },
     {
       "filename": "so2-timeline-2013-2026.csv",
@@ -207,7 +207,7 @@
       "updated_at": "2026-06-17T00:55:23.067Z",
       "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
       "methodological_label": "Dado horário público WebLakes — comparação experimental — sem QA/QC oficial explícito.",
-      "public_url": "https://semear-pwa.vercel.app/data/air/so2-timeline-2013-2026.csv"
+      "public_url": "https://www.semearsf.org/data/air/so2-timeline-2013-2026.csv"
     },
     {
       "filename": "co-timeline-2013-2026.csv",
@@ -217,7 +217,7 @@
       "updated_at": "2026-06-17T00:55:23.067Z",
       "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
       "methodological_label": "Dado horário público WebLakes — comparação experimental — sem QA/QC oficial explícito.",
-      "public_url": "https://semear-pwa.vercel.app/data/air/co-timeline-2013-2026.csv"
+      "public_url": "https://www.semearsf.org/data/air/co-timeline-2013-2026.csv"
     },
     {
       "filename": "attention-episodes-2020-2026.csv",
@@ -227,7 +227,7 @@
       "updated_at": "2026-06-17T00:55:23.067Z",
       "source_system": "WEBLAKES_CONCENTRATION_WITH_WIND",
       "methodological_label": "Dado horário público WebLakes — comparação experimental — sem QA/QC oficial explícito.",
-      "public_url": "https://semear-pwa.vercel.app/data/air/attention-episodes-2020-2026.csv"
+      "public_url": "https://www.semearsf.org/data/air/attention-episodes-2020-2026.csv"
     },
     {
       "filename": "data-dictionary.csv",
@@ -237,7 +237,7 @@
       "updated_at": "2026-06-17T00:55:23.067Z",
       "source_system": "SEMEAR (Metadados)",
       "methodological_label": "Metadados descritivos da comparação experimental do Observatório do Ar.",
-      "public_url": "https://semear-pwa.vercel.app/data/air/data-dictionary.csv"
+      "public_url": "https://www.semearsf.org/data/air/data-dictionary.csv"
     }
   ]
 }

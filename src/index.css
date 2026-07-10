@@ -949,6 +949,8 @@ select {
 
   .portal-stage-hero {
     @apply relative border-0 bg-transparent shadow-none;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
   }
 
   .portal-stage-hero::before {
@@ -1002,7 +1004,7 @@ select {
   }
 
   .portal-stage-copy {
-    @apply flex min-h-[18rem] flex-col justify-between gap-6 rounded-[2rem] border border-white/10 bg-white/[0.055] p-5 text-white backdrop-blur md:p-7;
+    @apply flex min-h-[18rem] flex-col justify-between gap-6 rounded-[2rem] border border-white/10 bg-white/[0.075] p-5 text-white md:p-7;
     box-shadow: inset 0 1px 0 rgba(255,255,255,0.12);
   }
 
@@ -1028,12 +1030,12 @@ select {
     @apply flex min-h-[14rem] flex-col justify-between rounded-[2rem] border border-white/15 bg-white/95 p-5 text-text-primary shadow-[0_28px_70px_rgba(0,0,0,0.22)] md:p-6;
   }
 
-  .portal-stage-stat span {
+  .portal-stage-stat > span {
     @apply text-6xl font-black leading-none tracking-[-0.08em] text-brand-primary-dark;
   }
 
-  .portal-stage-stat small,
-  .portal-stage-actions span {
+  .portal-stage-stat > small,
+  .portal-stage-actions > span {
     @apply text-[11px] font-black uppercase tracking-[0.18em] text-text-secondary;
   }
 
@@ -1079,13 +1081,13 @@ select {
     @apply border-accent-lab/20 bg-gradient-to-br from-accent-lab/10 via-white to-white;
   }
 
-  .transparency-stage .portal-stage-stat span {
+  .transparency-stage .portal-stage-stat > span {
     @apply text-3xl tracking-[-0.06em] md:text-4xl;
   }
 
-  .about-stage .portal-stage-stat span,
-  .privacy-stage .portal-stage-stat span,
-  .alerts-stage .portal-stage-stat span {
+  .about-stage .portal-stage-stat > span,
+  .privacy-stage .portal-stage-stat > span,
+  .alerts-stage .portal-stage-stat > span {
     @apply text-3xl md:text-4xl;
   }
 
@@ -1115,7 +1117,7 @@ select {
     @apply relative z-10;
   }
 
-  .timeline-stage .portal-stage-stat span {
+  .timeline-stage .portal-stage-stat > span {
     @apply text-4xl md:text-5xl;
   }
 
@@ -2446,11 +2448,17 @@ body.reader-mode-active main {
     overflow-wrap: anywhere;
   }
 
+  .reports-stage .portal-stage-copy h1 {
+    font-size: 2rem;
+    line-height: 1.02;
+    overflow-wrap: normal;
+  }
+
   .portal-stage-copy p {
     font-size: 1rem;
   }
 
-  .portal-stage-stat span {
+  .portal-stage-stat > span {
     font-size: clamp(2.5rem, 14vw, 4rem);
   }
 
@@ -2773,6 +2781,16 @@ body.reader-mode-active main {
 
 .inea-radar-page a[class*="rounded"] {
   display: inline-flex;
+}
+
+/* Small methodology labels need stronger tones on pale data surfaces. */
+.inea-methodology-page .text-slate-400,
+.inea-methodology-page .text-slate-500 {
+  color: #334155;
+}
+
+.inea-methodology-page .text-emerald-600 {
+  color: #047857;
 }
 
 .portal-stage-hero-social::before {

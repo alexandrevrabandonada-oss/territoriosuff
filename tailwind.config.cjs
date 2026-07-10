@@ -36,7 +36,7 @@ module.exports = {
         warning: "#B7791F",
         danger: "#B3261E",
 
-        base: "#F7FAFC",
+        "legacy-base": "#F7FAFC",
         fundo: "#FFFFFF",
         "fundo-card": "#FFFFFF",
         primaria: "#005DAA",

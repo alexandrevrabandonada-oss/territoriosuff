@@ -10,7 +10,7 @@ function escapeHtml(value: string) {
 }
 
 function getHostUrl(req: any) {
-    const host = req.headers['x-forwarded-host'] || req.headers.host || 'semear-pwa.vercel.app';
+    const host = req.headers['x-forwarded-host'] || req.headers.host || 'www.semearsf.org';
     const protocol = req.headers['x-forwarded-proto'] || 'https';
     return `${protocol}://${host}`;
 }

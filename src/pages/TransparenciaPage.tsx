@@ -1,4 +1,4 @@
-import { Suspense, lazy, useEffect, useMemo, useState } from "react";
+import { Suspense, lazy, useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 
 import { EmptyState } from "../components/EmptyState";
@@ -352,9 +352,31 @@ function TerritoryMap({
 }: {
   territories: TerritoryCount[];
 }) {
+  const mapContainerRef = useRef<HTMLDivElement>(null);
+  const [shouldLoadMap, setShouldLoadMap] = useState(false);
   const mapped = territories.filter(
     (item): item is TerritoryCount & { coordinates: [number, number] } => Boolean(item.coordinates)
   );
+
+  useEffect(() => {
+    if (mapped.length === 0 || shouldLoadMap) return;
+    if (!("IntersectionObserver" in window)) {
+      setShouldLoadMap(true);
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry?.isIntersecting) return;
+        setShouldLoadMap(true);
+        observer.disconnect();
+      },
+      { rootMargin: "320px 0px" }
+    );
+
+    if (mapContainerRef.current) observer.observe(mapContainerRef.current);
+    return () => observer.disconnect();
+  }, [mapped.length, shouldLoadMap]);
 
   if (mapped.length === 0) {
     return (
@@ -378,10 +400,16 @@ function TerritoryMap({
           <span className="inline-flex items-center gap-2"><span className="h-3 w-3 rounded-full border-2 border-slate-900 bg-emerald-500/60" /> Posição aproximada por território</span>
         </div>
       </div>
-      <div className="h-[420px]">
-        <Suspense fallback={<SkeletonCard className="h-full rounded-none border-0 shadow-none" />}>
-          <TransparencyTerritoryMap territories={mapped} />
-        </Suspense>
+      <div ref={mapContainerRef} className="h-[420px]">
+        {shouldLoadMap ? (
+          <Suspense fallback={<SkeletonCard className="h-full rounded-none border-0 shadow-none" />}>
+            <TransparencyTerritoryMap territories={mapped} />
+          </Suspense>
+        ) : (
+          <div className="flex h-full items-center justify-center bg-slate-50 px-6 text-center text-sm font-semibold text-slate-600" role="status">
+            O mapa interativo será carregado ao se aproximar desta seção.
+          </div>
+        )}
       </div>
     </div>
   );
@@ -408,7 +436,7 @@ function MonthlyPulsePanel({
         <p className="mt-3 max-w-md text-sm leading-relaxed text-white/72">Fechamento mais recente dentro da série de devolutivas mensais já publicadas.</p>
       </div>
       <div className="rounded-[1.5rem] border border-slate-200 bg-white p-5 shadow-sm">
-        <p className="text-[11px] font-black uppercase tracking-[0.18em] text-slate-500">Ritmo de escutas</p>
+        <p className="text-[11px] font-black uppercase tracking-[0.18em] text-slate-500">Escutas consolidadas no mês</p>
         <p className="mt-3 text-3xl font-black tracking-tight text-slate-950">{latest.hearings_count}</p>
         <p className="mt-2 text-sm leading-relaxed text-slate-600">
           {hearingsDelta === null ? "Sem comparação com mês anterior." : `${hearingsDelta > 0 ? "+" : ""}${hearingsDelta} em relação ao fechamento anterior.`}
@@ -828,9 +856,9 @@ export function TransparenciaPage() {
         metrics={
           <>
             <div className="portal-kpi-card portal-kpi-card-lab">
-              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-text-secondary">Escutas publicadas</p>
+              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-text-secondary">Registros individuais de escuta</p>
               <p className="mt-2 text-3xl font-black text-brand-primary">{liveTransparency.hearings.length}</p>
-              <p className="mt-1 text-sm text-text-secondary">já visíveis no portal</p>
+              <p className="mt-1 text-sm text-text-secondary">publicações classificadas como escuta</p>
             </div>
             <div className="portal-kpi-card">
               <p className="text-xs font-semibold uppercase tracking-[0.2em] text-text-secondary">Atividades de campo</p>

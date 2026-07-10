@@ -16,7 +16,10 @@ const moreLinks = [
   { href: "/agenda", label: "Agenda" },
   { href: "/conversar", label: "Conversas e atividades" },
   { href: "/transparencia", label: "Transparência" },
-  { href: "/como-ler-dados", label: "Guias" }
+  { href: "/blog", label: "Blog" },
+  { href: "/dossies", label: "Dossiês" },
+  { href: "/como-ler-dados", label: "Guias" },
+  { href: "/buscar", label: "Buscar" }
 ];
 
 const mobileGroups = [
@@ -38,17 +41,19 @@ const mobileGroups = [
       { href: "/acervo/linha", label: "Linha do Tempo" },
       { href: "/relatorios", label: "Relatórios" },
       { href: "/mapa", label: "Mapa" },
-      { href: "/dossies", label: "Dossiês" }
+      { href: "/dossies", label: "Dossiês" },
+      { href: "/blog", label: "Blog" }
     ]
   },
-      {
-        label: "Institucional",
-        links: [
+  {
+    label: "Institucional",
+    links: [
       { href: "/como-ler-dados", label: "Guias" },
       { href: "/como-participar", label: "Como participar" },
-      { href: "/transparencia", label: "Transparência" }
-        ]
-      }
+      { href: "/transparencia", label: "Transparência" },
+      { href: "/buscar", label: "Buscar" }
+    ]
+  }
 ];
 
 function shouldMatchMobileLinkExactly(href: string) {
@@ -134,9 +139,9 @@ export function Navbar() {
     <header id="site-navigation" className="site-topbar">
       <div className="site-topbar-inner">
         <Link to="/" className="site-brand" aria-label="SEMEAR - Início">
-          <img src="/brand/uff-logo-vertical-blue.png" alt="Universidade Federal Fluminense" className="site-uff-logo" />
+          <img src="/brand/uff-logo.svg" alt="Universidade Federal Fluminense" className="site-uff-logo" width="64" height="64" />
           <span aria-hidden="true" />
-          <img src="/brand/semear-logo-full.jpeg" alt="Projeto UFF SEMEAR" className="site-semear-logo" />
+          <img src="/brand/semear-logo.svg" alt="Projeto UFF SEMEAR" className="site-semear-logo" width="72" height="72" />
           <small>Portal público</small>
         </Link>
 

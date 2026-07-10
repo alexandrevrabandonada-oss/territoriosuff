@@ -1,4 +1,4 @@
-import { useId, useState } from "react";
+import { useId, useRef, useState } from "react";
 
 import { Chip, IconShell, SurfaceCard } from "../BrandSystem";
 import type { ProgramFront } from "../../content/programaUffTerritorio";
@@ -45,6 +45,28 @@ function FrontIcon({ accent }: { accent: ProgramFront["accent"] }) {
 export function InteractiveFronts({ fronts }: InteractiveFrontsProps) {
   const tabGroupId = useId();
   const [activeIndex, setActiveIndex] = useState(0);
+  const tabRefs = useRef<Array<HTMLButtonElement | null>>([]);
+
+  const focusTab = (index: number) => {
+    const normalizedIndex = (index + fronts.length) % fronts.length;
+    setActiveIndex(normalizedIndex);
+    tabRefs.current[normalizedIndex]?.focus();
+  };
+
+  const handleTabKeyDown = (event: React.KeyboardEvent<HTMLButtonElement>, index: number) => {
+    const nextIndexByKey: Record<string, number> = {
+      ArrowRight: index + 1,
+      ArrowDown: index + 1,
+      ArrowLeft: index - 1,
+      ArrowUp: index - 1,
+      Home: 0,
+      End: fronts.length - 1
+    };
+    const nextIndex = nextIndexByKey[event.key];
+    if (nextIndex === undefined) return;
+    event.preventDefault();
+    focusTab(nextIndex);
+  };
 
   return (
     <div className="space-y-5">
@@ -57,6 +79,7 @@ export function InteractiveFronts({ fronts }: InteractiveFrontsProps) {
           return (
             <SurfaceCard
               key={front.id}
+              role="presentation"
               className={[
                 "group overflow-hidden rounded-[1.75rem] border p-0 transition-all duration-200",
                 isActive
@@ -65,6 +88,9 @@ export function InteractiveFronts({ fronts }: InteractiveFrontsProps) {
               ].join(" ")}
             >
               <button
+                ref={(node) => {
+                  tabRefs.current[index] = node;
+                }}
                 id={tabId}
                 type="button"
                 role="tab"
@@ -73,6 +99,7 @@ export function InteractiveFronts({ fronts }: InteractiveFrontsProps) {
                 aria-expanded={isActive}
                 tabIndex={isActive ? 0 : -1}
                 onClick={() => setActiveIndex(index)}
+                onKeyDown={(event) => handleTabKeyDown(event, index)}
                 className="w-full p-5 text-left md:p-6"
               >
                 <div className="flex items-start justify-between gap-4">
@@ -86,7 +113,7 @@ export function InteractiveFronts({ fronts }: InteractiveFrontsProps) {
 
                     <div className="space-y-2">
                       <h3 className="text-2xl font-black leading-tight text-text-primary">{front.title}</h3>
-                      <p className="max-w-[48ch] text-sm leading-relaxed text-text-secondary md:text-base">{front.objective}</p>
+                      <p className="max-w-[48ch] text-sm leading-relaxed text-slate-700 md:text-base">{front.objective}</p>
                     </div>
                   </div>
 
@@ -101,46 +128,53 @@ export function InteractiveFronts({ fronts }: InteractiveFrontsProps) {
                   </span>
                 </div>
 
-                <p className="mt-5 text-sm leading-relaxed text-text-secondary">{front.description}</p>
+                <p className="mt-5 text-sm leading-relaxed text-slate-700">{front.description}</p>
               </button>
-
-              <div
-                id={panelId}
-                role="tabpanel"
-                aria-labelledby={tabId}
-                className={[
-                  "grid overflow-hidden border-t border-divider-subtle transition-all duration-200 md:grid-cols-2",
-                  isActive ? "max-h-[480px] opacity-100" : "max-h-0 opacity-0 md:max-h-0"
-                ].join(" ")}
-              >
-                <div className="bg-brand-primary-soft/60 p-5 md:p-6">
-                  <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-brand-primary-dark">Entregas-chave</p>
-                  <ul className="mt-3 space-y-2.5 text-sm leading-relaxed text-text-primary">
-                    {front.deliveries.map((item) => (
-                      <li key={item} className="flex gap-2.5">
-                        <span className="mt-1 h-2.5 w-2.5 rounded-full bg-brand-primary" aria-hidden="true" />
-                        <span>{item}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-
-                <div className="bg-[#fff8ee] p-5 md:p-6">
-                  <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-accent-brown">Impacto esperado</p>
-                  <ul className="mt-3 space-y-2.5 text-sm leading-relaxed text-text-primary">
-                    {front.impact.map((item) => (
-                      <li key={item} className="flex gap-2.5">
-                        <span className="mt-1 h-2.5 w-2.5 rounded-full bg-accent-yellow" aria-hidden="true" />
-                        <span>{item}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
             </SurfaceCard>
           );
         })}
       </div>
+
+      {fronts.map((front, index) => {
+        const isActive = index === activeIndex;
+        const tabId = `${tabGroupId}-${front.id}-tab`;
+        const panelId = `${tabGroupId}-${front.id}-panel`;
+
+        return (
+          <SurfaceCard
+            key={panelId}
+            id={panelId}
+            role="tabpanel"
+            aria-labelledby={tabId}
+            hidden={!isActive}
+            className="grid overflow-hidden rounded-[1.75rem] border border-divider-subtle p-0 md:grid-cols-2"
+          >
+            <div className="bg-brand-primary-soft/60 p-5 md:p-6">
+              <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-brand-primary-dark">Entregas-chave</p>
+              <ul className="mt-3 space-y-2.5 text-sm leading-relaxed text-text-primary">
+                {front.deliveries.map((item) => (
+                  <li key={item} className="flex gap-2.5">
+                    <span className="mt-1 h-2.5 w-2.5 rounded-full bg-brand-primary" aria-hidden="true" />
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <div className="bg-[#fff8ee] p-5 md:p-6">
+              <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-accent-brown">Impacto esperado</p>
+              <ul className="mt-3 space-y-2.5 text-sm leading-relaxed text-text-primary">
+                {front.impact.map((item) => (
+                  <li key={item} className="flex gap-2.5">
+                    <span className="mt-1 h-2.5 w-2.5 rounded-full bg-accent-yellow" aria-hidden="true" />
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </SurfaceCard>
+        );
+      })}
     </div>
   );
 }
