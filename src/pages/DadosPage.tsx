@@ -687,13 +687,13 @@ export function DadosPage() {
         <Link to="/qualidade-ar/inea" className="p-5 bg-white border border-slate-100 rounded-2xl hover:border-slate-200 hover:shadow-sm transition-all block">
           <strong className="text-sm font-black text-slate-800 block">Dados oficiais INEA</strong>
           <p className="text-xs text-slate-500 mt-1">Estações oficiais de Volta Redonda na última base pública disponível.</p>
-          <span className="inline-block mt-3 text-[10px] text-slate-400 font-bold uppercase tracking-wider">Acessar painel &rarr;</span>
+          <span className="inline-block mt-3 text-[10px] text-slate-600 font-bold uppercase tracking-wider">Acessar painel &rarr;</span>
         </Link>
 
         <Link to="/qualidade-ar/inea/analises" className="p-5 bg-white border border-slate-100 rounded-2xl hover:border-slate-200 hover:shadow-sm transition-all block">
           <strong className="text-sm font-black text-slate-800 block">Análises do INEA</strong>
           <p className="text-xs text-slate-500 mt-1">Dias registrados como MODERADA ou pior, poluentes controladores e lacunas.</p>
-          <span className="inline-block mt-3 text-[10px] text-slate-400 font-bold uppercase tracking-wider">Ver análises &rarr;</span>
+          <span className="inline-block mt-3 text-[10px] text-slate-600 font-bold uppercase tracking-wider">Ver análises &rarr;</span>
         </Link>
       </div>
 
@@ -707,7 +707,7 @@ export function DadosPage() {
             <p className="text-sm text-slate-600 font-medium leading-relaxed">
               Veja no mapa as estações oficiais de qualidade do ar em Volta Redonda, a série histórica disponível e as lacunas de transparência da base pública.
             </p>
-            <p className="text-[10px] text-slate-400">
+            <p className="text-[10px] text-slate-600">
               Fonte: INEA / Dados Abertos RJ — dados oficiais disponíveis em lote, não minuto a minuto.
             </p>
           </div>
@@ -749,7 +749,7 @@ export function DadosPage() {
           <p className="text-sm text-slate-300 font-medium leading-relaxed">
             Explore a linha do tempo 2022–2024 e veja os meses, estações e poluentes com mais eventos de atenção.
           </p>
-          <p className="text-[10px] text-slate-400">
+          <p className="text-[10px] text-slate-600">
             * Dado horário público WebLakes — comparação experimental — sem QA/QC oficial explícito.
           </p>
         </div>

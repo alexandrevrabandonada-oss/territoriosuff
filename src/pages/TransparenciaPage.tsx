@@ -211,7 +211,7 @@ function MonthlyVolumeChart({
     <div className="grid gap-4">
       <div className="flex items-center justify-between gap-4">
         <div>
-          <p className="text-xs font-black uppercase tracking-[0.18em] text-slate-400">Volume mensal</p>
+          <p className="text-xs font-black uppercase tracking-[0.18em] text-slate-600">Volume mensal</p>
           <h3 className="mt-2 text-2xl font-black tracking-tight text-slate-950">Escutas e ações ao longo dos meses</h3>
         </div>
         <div className="flex flex-wrap gap-3 text-[11px] font-black uppercase tracking-widest text-slate-500">
@@ -237,7 +237,7 @@ function MonthlyVolumeChart({
                 </div>
               </div>
               <div className="mt-4 text-center">
-                <p className="text-[10px] font-black uppercase tracking-[0.18em] text-slate-400">{formatShortMonth(report.month_key)}</p>
+                <p className="text-[10px] font-black uppercase tracking-[0.18em] text-slate-600">{formatShortMonth(report.month_key)}</p>
                 <p className="mt-2 text-xs font-semibold text-slate-600">
                   {report.territorial_status === "critica"
                     ? "Cobertura crítica"
@@ -273,6 +273,7 @@ function CoverageMeter({
   return (
     <SurfaceCard className="overflow-hidden border-0 bg-slate-950 p-6 text-white shadow-none md:p-7">
       <PortalSectionHeader
+        tone="dark"
         eyebrow="Qualidade da leitura"
         title="Quanto desse ciclo já virou leitura territorial utilizável"
         subtitle="Cobertura territorial não mede participação total. Mede quanto do material publicado já permite localizar a escuta com utilidade pública."
@@ -322,7 +323,7 @@ function HorizontalCountList({
 
   return (
     <div className="rounded-[1.5rem] border border-slate-200 bg-white p-5 shadow-sm">
-      <p className="text-xs font-black uppercase tracking-[0.18em] text-slate-400">{subtitle}</p>
+      <p className="text-xs font-black uppercase tracking-[0.18em] text-slate-600">{subtitle}</p>
       <h3 className="mt-2 text-2xl font-black tracking-tight text-slate-950">{title}</h3>
       <div className="mt-5 space-y-3">
         {items.length === 0 ? (
@@ -390,7 +391,7 @@ function TerritoryMap({
   return (
     <div className="overflow-hidden rounded-[1.5rem] border border-slate-200 bg-white shadow-sm">
       <div className="border-b border-slate-100 px-5 py-4">
-        <p className="text-xs font-black uppercase tracking-[0.18em] text-slate-400">Mapa aproximado</p>
+        <p className="text-xs font-black uppercase tracking-[0.18em] text-slate-600">Mapa aproximado</p>
         <h3 className="mt-2 text-2xl font-black tracking-tight text-slate-950">Onde as escutas e atividades têm acontecido</h3>
         <p className="mt-2 text-sm font-medium leading-relaxed text-slate-600">
           Posicionamento aproximado por bairro ou território quando essa informação aparece nas publicações do portal.
@@ -567,6 +568,7 @@ function TerritorySpotlight({
   return (
     <SurfaceCard className="border-0 bg-slate-950 p-6 text-white shadow-none md:p-7">
       <PortalSectionHeader
+        tone="dark"
         eyebrow="Territórios em foco"
         title="Onde a leitura pública pede mais atenção"
         subtitle="Este bloco combina recorrência territorial e presença no fechamento mais recente para orientar a leitura de prioridade."
@@ -648,15 +650,15 @@ function PublishedMonthsStrip({
 
               <div className="mt-5 grid gap-3 sm:grid-cols-3">
                 <div className="rounded-[1.25rem] border border-slate-200 bg-white p-4">
-                  <p className="text-[10px] font-black uppercase tracking-[0.18em] text-slate-400">Escutas</p>
+                  <p className="text-[10px] font-black uppercase tracking-[0.18em] text-slate-600">Escutas</p>
                   <p className="mt-2 text-2xl font-black text-slate-950">{report.hearings_count}</p>
                 </div>
                 <div className="rounded-[1.25rem] border border-slate-200 bg-white p-4">
-                  <p className="text-[10px] font-black uppercase tracking-[0.18em] text-slate-400">Ações</p>
+                  <p className="text-[10px] font-black uppercase tracking-[0.18em] text-slate-600">Ações</p>
                   <p className="mt-2 text-2xl font-black text-slate-950">{report.actions_count}</p>
                 </div>
                 <div className="rounded-[1.25rem] border border-slate-200 bg-white p-4">
-                  <p className="text-[10px] font-black uppercase tracking-[0.18em] text-slate-400">Cobertura</p>
+                  <p className="text-[10px] font-black uppercase tracking-[0.18em] text-slate-600">Cobertura</p>
                   <p className="mt-2 text-2xl font-black text-slate-950">{formatPercent(report.territorial_coverage_pct)}%</p>
                 </div>
               </div>
@@ -972,7 +974,7 @@ export function TransparenciaPage() {
               />
               <div className="mt-5 space-y-4">
                 <div className="rounded-[1.25rem] border border-slate-100 bg-slate-50/80 p-4">
-                  <p className="text-xs font-black uppercase tracking-[0.18em] text-slate-400">Leitura executiva</p>
+                  <p className="text-xs font-black uppercase tracking-[0.18em] text-slate-600">Leitura executiva</p>
                   <p className="mt-2 text-sm leading-relaxed text-slate-700">{monthlyTransparency.latest.executive_summary}</p>
                 </div>
                 <div className="grid gap-4 lg:grid-cols-2">
@@ -1118,7 +1120,7 @@ export function TransparenciaPage() {
       <SurfaceCard className="border-slate-200 bg-slate-50 px-6 py-6 md:px-8">
         <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
           <div className="max-w-3xl">
-            <p className="text-xs font-black uppercase tracking-[0.18em] text-slate-400">Transparência financeira</p>
+            <p className="text-xs font-black uppercase tracking-[0.18em] text-slate-600">Transparência financeira</p>
             <h2 className="mt-2 text-2xl font-black tracking-tight text-slate-950">Prestação de contas financeira disponível no portal da FEC</h2>
             <p className="mt-2 text-sm leading-relaxed text-slate-600">
               A leitura principal desta página está focada em escutas, território e devolutiva pública. A prestação financeira oficial do projeto permanece disponível no Portal da Transparência da FEC.

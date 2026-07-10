@@ -48,6 +48,8 @@ function routeAssetsPreloader(): Plugin {
   const routeEntries = {
     "/": "/src/pages/HomePage.tsx",
     "/dados": "/src/pages/DadosPage.tsx",
+    "/mapa": "/src/pages/MapaLandingPage.tsx",
+    "/transparencia": "/src/pages/TransparenciaPage.tsx",
     "/qualidade-ar/inea": "/src/pages/air/IneaRadarPage.tsx"
   } as const;
 
@@ -71,10 +73,6 @@ function routeAssetsPreloader(): Plugin {
           const assets: Array<{ href: string; kind: "script" | "style" }> = [
             { href: `/${chunk.fileName}`, kind: "script" }
           ];
-          const metadata = (chunk as typeof chunk & { viteMetadata?: { importedCss?: Set<string> } }).viteMetadata;
-          metadata?.importedCss?.forEach((fileName) => {
-            assets.push({ href: `/${fileName}`, kind: "style" });
-          });
           assetsByRoute[route] = assets;
         }
 
@@ -150,6 +148,7 @@ function routeMetadataHtml(): Plugin {
 
 export default defineConfig({
   build: {
+    cssCodeSplit: false,
     sourcemap: process.env.SENTRY_AUTH_TOKEN ? "hidden" : false,
     rollupOptions: {
         output: {

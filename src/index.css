@@ -2423,8 +2423,33 @@ body.reader-mode-active main {
     gap: 1.25rem;
   }
 
+  .portal-stage::before {
+    display: none;
+  }
+
   .portal-stage-hero {
     border-radius: 1.25rem;
+  }
+
+  .portal-stage-hero::before,
+  .portal-stage-hero-warm::before,
+  .portal-stage-hero-seed::before,
+  .portal-stage-hero-documental::before,
+  .portal-stage-hero-lab::before,
+  .portal-stage-hero-social::before {
+    background: linear-gradient(145deg, #071d34 0%, #0a3a68 56%, #005daa 100%);
+  }
+
+  .portal-stage-hero::after {
+    display: none;
+  }
+
+  .reports-stage > .portal-stage-hero {
+    min-height: calc(100svh - 5rem);
+  }
+
+  .reports-stage > .portal-stage-hero .portal-stage-hero-inner {
+    min-height: inherit;
   }
 
   .portal-stage-hero-inner {

@@ -34,6 +34,7 @@ const manifest = JSON.parse(fs.readFileSync(path.join(distDir, "manifest.webmani
 };
 const vercelConfig = JSON.parse(fs.readFileSync(path.join(rootDir, "vercel.json"), "utf8")) as VercelConfig;
 const rewrites = vercelConfig.rewrites ?? [];
+const prerenderedRoutes = ["/", "/dados", "/relatorios", "/transparencia", "/mapa"];
 
 assert(fs.existsSync(path.join(distDir, "index.html")), "dist/index.html is missing; run the production build first");
 assert(robots.includes("Sitemap: https://www.semearsf.org/sitemap.xml"), "robots.txt must advertise the canonical sitemap");
@@ -55,12 +56,12 @@ for (const route of STATIC_ROUTE_METADATA) {
   const description = escapeHtmlAttribute(route.description);
 
   assert(html.includes(`<title>${title}</title>`), `${route.path} is missing its route title`);
-  assert(html.includes(`<meta name="description" content="${description}" />`), `${route.path} is missing its description`);
-  assert(html.includes(`<link rel="canonical" href="${canonicalUrl}" />`), `${route.path} has an invalid canonical URL`);
-  assert(html.includes(`<meta property="og:url" content="${canonicalUrl}" />`), `${route.path} has an invalid og:url`);
-  assert(html.includes(`<meta property="og:title" content="${title}" />`), `${route.path} is missing og:title`);
-  assert(html.includes(`<meta name="twitter:title" content="${title}" />`), `${route.path} must use name=twitter:title`);
-  assert(html.includes(`<meta property="og:image" content="${DEFAULT_SOCIAL_IMAGE}" />`), `${route.path} is missing the default social image`);
+  assert(html.includes(`<meta name="description" content="${description}"`), `${route.path} is missing its description`);
+  assert(html.includes(`<link rel="canonical" href="${canonicalUrl}"`), `${route.path} has an invalid canonical URL`);
+  assert(html.includes(`<meta property="og:url" content="${canonicalUrl}"`), `${route.path} has an invalid og:url`);
+  assert(html.includes(`<meta property="og:title" content="${title}"`), `${route.path} is missing og:title`);
+  assert(html.includes(`<meta name="twitter:title" content="${title}"`), `${route.path} must use name=twitter:title`);
+  assert(html.includes(`<meta property="og:image" content="${DEFAULT_SOCIAL_IMAGE}"`), `${route.path} is missing the default social image`);
   assert(!html.includes("semear-pwa.vercel.app"), `${route.path} still references the retired Vercel hostname`);
   assert(!html.includes("https://semearsf.org"), `${route.path} must use the canonical www hostname`);
   assert(sitemap.includes(`<loc>${canonicalUrl}</loc>`), `${route.path} is missing from sitemap.xml`);
@@ -74,4 +75,17 @@ for (const route of STATIC_ROUTE_METADATA) {
   }
 }
 
-console.log(`SEO static assertion passed: ${STATIC_ROUTE_METADATA.length} routes have server-visible metadata, canonicals, sitemap entries and rewrites.`);
+for (const route of prerenderedRoutes) {
+  const htmlPath = route === "/"
+    ? path.join(distDir, "index.html")
+    : path.join(distDir, "_seo", `${getStaticMetadataFileName(route)}.html`);
+  const html = fs.readFileSync(htmlPath, "utf8");
+
+  assert(html.includes('<div id="root" data-prerendered="true">'), `${route} is missing hydratable prerendered markup`);
+  assert(html.includes('<style data-prerender-critical="true">'), `${route} is missing its extracted render-critical stylesheet`);
+  assert(html.includes('data-deferred-stylesheet="true"'), `${route} must defer its non-critical stylesheet`);
+  assert(html.includes("<main"), `${route} prerendered markup is missing the main landmark`);
+  assert(html.includes("<h1"), `${route} prerendered markup is missing its primary heading`);
+}
+
+console.log(`SEO static assertion passed: ${STATIC_ROUTE_METADATA.length} routes have server-visible metadata and ${prerenderedRoutes.length} critical routes have hydratable content.`);

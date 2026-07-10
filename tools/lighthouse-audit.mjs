@@ -6,7 +6,6 @@ import { setTimeout as delay } from "node:timers/promises";
 
 const ROUTES = ["/", "/dados", "/relatorios", "/transparencia", "/mapa"];
 const BASE_URL = "http://127.0.0.1:4173";
-const PREVIEW_PORT = 4173;
 
 function npmCommand() {
   return process.platform === "win32" ? "npm.cmd" : "npm";
@@ -82,7 +81,7 @@ async function run() {
   const build = spawnNpm(["run", "build"]);
   await waitForExit(build);
 
-  const preview = spawnNpm(["run", "preview", "--", "--host", "127.0.0.1", "--port", String(PREVIEW_PORT)]);
+  const preview = spawnLogged(process.execPath, [path.join(process.cwd(), "tools", "prerender-preview.mjs")]);
   const cleanup = async () => {
     if (!preview.killed) {
       preview.kill("SIGTERM");
@@ -122,8 +121,10 @@ async function run() {
         bestPractices: Math.round((categories["best-practices"]?.score ?? 0) * 100),
         firstContentfulPaint: lhr.audits["first-contentful-paint"]?.displayValue ?? "n/a",
         largestContentfulPaint: lhr.audits["largest-contentful-paint"]?.displayValue ?? "n/a",
+        largestContentfulPaintMs: lhr.audits["largest-contentful-paint"]?.numericValue ?? Number.POSITIVE_INFINITY,
         totalBlockingTime: lhr.audits["total-blocking-time"]?.displayValue ?? "n/a",
-        cumulativeLayoutShift: lhr.audits["cumulative-layout-shift"]?.displayValue ?? "n/a"
+        cumulativeLayoutShift: lhr.audits["cumulative-layout-shift"]?.displayValue ?? "n/a",
+        cumulativeLayoutShiftValue: lhr.audits["cumulative-layout-shift"]?.numericValue ?? Number.POSITIVE_INFINITY
       });
     }
 
@@ -144,10 +145,23 @@ async function run() {
     await fs.writeFile(path.join(outputDir, "summary.md"), `${lines.join("\n")}\n`, "utf8");
     console.log(`Lighthouse reports written to ${outputDir}`);
 
-    const belowPerformanceBudget = summary.filter((item) => item.performance < 85);
-    if (belowPerformanceBudget.length > 0) {
+    const failures = summary.flatMap((item) => {
+      const routeFailures = [];
+      if (item.performance < 85) routeFailures.push(`Performance ${item.performance} < 85`);
+      if (item.accessibility < 100) routeFailures.push(`A11y ${item.accessibility} < 100`);
+      if (item.bestPractices < 100) routeFailures.push(`Best Practices ${item.bestPractices} < 100`);
+      if (item.largestContentfulPaintMs > 2_500) {
+        routeFailures.push(`LCP ${Math.round(item.largestContentfulPaintMs)}ms > 2500ms`);
+      }
+      if (item.cumulativeLayoutShiftValue > 0.1) {
+        routeFailures.push(`CLS ${item.cumulativeLayoutShiftValue.toFixed(3)} > 0.1`);
+      }
+      return routeFailures.map((failure) => `${item.route}: ${failure}`);
+    });
+
+    if (failures.length > 0) {
       throw new Error(
-        `Lighthouse performance budget failed: ${belowPerformanceBudget.map((item) => `${item.route}=${item.performance}`).join(", ")}`
+        `Lighthouse quality budget failed:\n${failures.map((failure) => `- ${failure}`).join("\n")}`
       );
     }
   } finally {

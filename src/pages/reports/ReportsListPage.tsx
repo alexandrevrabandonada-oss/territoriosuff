@@ -18,7 +18,7 @@ const KIND_LABEL: Record<ReportKind, string> = {
 
 export function ReportsListPage() {
   const [allReports, setAllReports] = useState<ReportDocument[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const [year, setYear] = useState<string>("all");
