@@ -5,7 +5,7 @@ import { PortalHero, PortalPageShell, PortalSectionHeader } from "../components/
 const quickLinks = [
   { href: "/dados", label: "Painel de dados", description: "Veja medições recentes por estação." },
   { href: "/qualidade-ar/inea", label: "Radar INEA", description: "Entenda séries históricas, lacunas e evidências." },
-  { href: "/linha-do-tempo", label: "Linha do tempo", description: "Compare contexto histórico e documentos." },
+  { href: "/acervo/linha", label: "Linha do tempo", description: "Compare contexto histórico e documentos." },
   { href: "/relatorios", label: "Relatórios", description: "Acesse leituras técnicas e sínteses públicas." },
   { href: "/conversar", label: "Conversas e atividades", description: "Leve dúvidas e evidências para escuta pública." },
   { href: "/agenda", label: "Agenda pública", description: "Participe das ações territoriais." }
