@@ -37,7 +37,8 @@ test.describe("Portal Hero and Radar smoke @smoke", () => {
 
   test("radar should switch lazy-loaded modes without blanking", async ({ page }) => {
     await page.goto("/qualidade-ar/inea", { waitUntil: "domcontentloaded" });
-    await expect(page.locator(".portal-stage-hero")).toBeVisible();
+    await expect(page.locator(".inea-radar-page")).toBeVisible();
+    await expect(page.getByRole("heading", { name: /Observatório do Ar Volta Redonda/i })).toBeVisible();
 
     const modes = [
       { label: /🗺️\s*Mapa/i, marker: /Onde o ar foi medido/i },
