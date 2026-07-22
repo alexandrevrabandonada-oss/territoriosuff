@@ -84,6 +84,11 @@ for (const route of prerenderedRoutes) {
   assert(html.includes('<div id="root" data-prerendered="true">'), `${route} is missing hydratable prerendered markup`);
   assert(html.includes('<style data-prerender-critical="true">'), `${route} is missing its extracted render-critical stylesheet`);
   assert(html.includes('data-deferred-stylesheet="true"'), `${route} must defer its non-critical stylesheet`);
+  assert(
+    /<script type="module" crossorigin src="\/assets\/index-[^"]+\.js"><\/script>/.test(html),
+    `${route} must load the application from a CSP-compatible external module`
+  );
+  assert(!html.includes("let interactive=false"), `${route} must not inject the blocked inline hydration loader`);
   assert(html.includes("<main"), `${route} prerendered markup is missing the main landmark`);
   assert(html.includes("<h1"), `${route} prerendered markup is missing its primary heading`);
 }
