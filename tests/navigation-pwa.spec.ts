@@ -74,8 +74,12 @@ test.describe("Navigation and PWA @smoke", () => {
 
     const footer = page.getByRole("contentinfo");
     await expect(footer.getByRole("navigation", { name: "Links úteis" })).toBeVisible();
-    await expect(footer.getByText("Siga-nos", { exact: true })).toHaveCount(0);
-    await expect(footer.locator('a[href="https://www.instagram.com/"]')).toHaveCount(0);
+    const instagram = footer.getByRole("link", { name: "Abrir Instagram oficial do SEMEAR" });
+    const tiktok = footer.getByRole("link", { name: "Abrir TikTok oficial do SEMEAR" });
+    await expect(instagram).toHaveAttribute("href", "https://www.instagram.com/sfsemear?igsh=MXF1ODdkemZlaHJrYg==");
+    await expect(tiktok).toHaveAttribute("href", "https://www.tiktok.com/@semear.uff?_r=1&_t=ZS-98FzuP81rtN");
+    await expect(instagram).toHaveAttribute("target", "_blank");
+    await expect(tiktok).toHaveAttribute("target", "_blank");
     await expect(footer.locator('a[href="https://www.youtube.com/"]')).toHaveCount(0);
   });
 });
