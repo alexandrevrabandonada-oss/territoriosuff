@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test';
 
 test.describe('Conversar Page @smoke', () => {
   test('should load conversar interface', async ({ page }) => {
-    await page.goto('/conversar');
+    await page.goto('/conversar', { waitUntil: 'domcontentloaded' });
     
     // Check main heading or title
     await expect(page.getByRole('heading', { name: "Conversas e atividades", level: 1 })).toBeVisible();
@@ -19,7 +19,7 @@ test.describe('Conversar Page @smoke', () => {
   });
 
   test('should be responsive and usable', async ({ page }) => {
-    await page.goto('/conversar');
+    await page.goto('/conversar', { waitUntil: 'domcontentloaded' });
     
     // Verify page renders without major errors
     await expect(page.locator('body')).toBeVisible();
@@ -30,7 +30,7 @@ test.describe('Conversar Page @smoke', () => {
   });
 
   test('should toggle the Relato Ambiental form and validate inputs', async ({ page }) => {
-    await page.goto('/conversar');
+    await page.goto('/conversar', { waitUntil: 'domcontentloaded' });
 
     // Find the toggle button
     const toggleBtn = page.getByRole('button', { name: /relatar ocorrência/i });

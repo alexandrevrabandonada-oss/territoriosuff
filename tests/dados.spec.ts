@@ -2,17 +2,13 @@ import { test, expect } from '@playwright/test';
 
 test.describe('Dados Page @smoke', () => {
   test('should load and display monitoring interface', async ({ page }) => {
-    await page.goto('/dados');
+    await page.goto('/dados', { waitUntil: 'domcontentloaded' });
     
     // Check page title/heading
     await expect(page.getByRole('heading', { name: /dados/i }).first()).toBeVisible();
     
-    // Verify station selector or station list is present
-    // Using a more flexible selector that works with different UI states
-    const hasStationDropdown = await page.locator('select, [role="combobox"], [aria-label*="estação" i]').count() > 0;
-    const hasStationList = await page.getByText(/estação/i).count() > 0;
-    
-    expect(hasStationDropdown || hasStationList).toBeTruthy();
+    // The station control is rendered after the lazy page module is ready.
+    await expect(page.locator('.data-control-label').filter({ hasText: 'Estação' }).first()).toBeVisible();
     
     // Check for data visualization or table (flexible - could be chart, table, or loading state)
     const hasDataDisplay = await page.locator('table, canvas, svg, [role="img"]').count() > 0;
@@ -23,7 +19,7 @@ test.describe('Dados Page @smoke', () => {
   });
 
   test('should be responsive', async ({ page }) => {
-    await page.goto('/dados');
+    await page.goto('/dados', { waitUntil: 'domcontentloaded' });
     
     // Verify page renders without errors
     await expect(page.locator('body')).toBeVisible();

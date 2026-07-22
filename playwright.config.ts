@@ -14,7 +14,7 @@ export default defineConfig({
   testDir: './tests',
 
   expect: {
-    timeout: 10_000,
+    timeout: isCI ? 20_000 : 10_000,
   },
 
   /* Run tests in files in parallel */
@@ -42,6 +42,10 @@ export default defineConfig({
 
     /* Screenshot on failure */
     screenshot: 'only-on-failure',
+
+    /* Production previews register the PWA worker. Blocking it keeps smoke
+       tests on the assets from the current build instead of a warming cache. */
+    serviceWorkers: 'block',
   },
 
   /* Configure projects for major browsers */

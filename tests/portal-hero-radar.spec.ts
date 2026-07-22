@@ -1,7 +1,8 @@
 import { expect, test } from "@playwright/test";
 
 async function expectHeroKpisReadable(page: import("@playwright/test").Page, route: string, heading: RegExp) {
-  await page.goto(route);
+  await page.goto(route, { waitUntil: "domcontentloaded" });
+  await expect(page.locator("main")).toBeVisible();
   await expect(page.locator(".portal-stage-hero")).toBeVisible();
   await expect(page.getByRole("heading", { name: heading })).toBeVisible();
 
@@ -35,8 +36,8 @@ test.describe("Portal Hero and Radar smoke @smoke", () => {
   });
 
   test("radar should switch lazy-loaded modes without blanking", async ({ page }) => {
-    await page.goto("/qualidade-ar/inea");
-    await expect(page.locator(".portal-stage-hero, h1")).toBeVisible();
+    await page.goto("/qualidade-ar/inea", { waitUntil: "domcontentloaded" });
+    await expect(page.locator(".portal-stage-hero")).toBeVisible();
 
     const modes = [
       { label: /🗺️\s*Mapa/i, marker: /Onde o ar foi medido/i },
