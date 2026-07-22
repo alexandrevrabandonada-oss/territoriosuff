@@ -8,6 +8,11 @@ jobs:
   build-and-test:
     runs-on: ubuntu-latest
     timeout-minutes: 30
+    env:
+      # Public frontend configuration required by Vite at build time.
+      # Values are stored as repository variables; privileged keys are never used here.
+      VITE_SUPABASE_URL: ${{ vars.VITE_SUPABASE_URL }}
+      VITE_SUPABASE_ANON_KEY: ${{ vars.VITE_SUPABASE_ANON_KEY }}
 
     steps:
       - name: Checkout
