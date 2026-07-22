@@ -6,7 +6,6 @@ import { setTimeout as delay } from "node:timers/promises";
 
 const ROUTES = ["/", "/dados", "/relatorios", "/transparencia", "/mapa"];
 const BASE_URL = "http://127.0.0.1:4173";
-const PREVIEW_PORT = 4173;
 
 function npmCommand() {
   return process.platform === "win32" ? "npm.cmd" : "npm";
@@ -18,6 +17,14 @@ function spawnLogged(command, args, options = {}) {
     shell: false,
     ...options
   });
+}
+
+function spawnNpm(args) {
+  if (process.env.npm_execpath) {
+    return spawnLogged(process.execPath, [process.env.npm_execpath, ...args]);
+  }
+
+  return spawnLogged(npmCommand(), args, { shell: process.platform === "win32" });
 }
 
 function waitForExit(child) {
@@ -48,7 +55,7 @@ async function waitForHttp(url, timeoutMs = 60_000) {
 }
 
 async function runLighthouseCli(url, outputPath, outputFormat) {
-  const child = spawnLogged(npmCommand(), [
+  const child = spawnNpm([
     "exec",
     "--yes",
     "--package",
@@ -58,7 +65,7 @@ async function runLighthouseCli(url, outputPath, outputFormat) {
     url,
     "--quiet",
     "--chrome-flags=--headless=new --no-sandbox",
-    "--only-categories=performance,accessibility,best-practices,pwa",
+    "--only-categories=performance,accessibility,best-practices",
     `--output=${outputFormat}`,
     `--output-path=${outputPath}`
   ]);
@@ -71,10 +78,10 @@ function routeFileName(route) {
 }
 
 async function run() {
-  const build = spawnLogged(npmCommand(), ["run", "build"]);
+  const build = spawnNpm(["run", "build"]);
   await waitForExit(build);
 
-  const preview = spawnLogged(npmCommand(), ["run", "preview", "--", "--host", "127.0.0.1", "--port", String(PREVIEW_PORT)]);
+  const preview = spawnLogged(process.execPath, [path.join(process.cwd(), "tools", "prerender-preview.mjs")]);
   const cleanup = async () => {
     if (!preview.killed) {
       preview.kill("SIGTERM");
@@ -112,7 +119,12 @@ async function run() {
         performance: Math.round((categories.performance?.score ?? 0) * 100),
         accessibility: Math.round((categories.accessibility?.score ?? 0) * 100),
         bestPractices: Math.round((categories["best-practices"]?.score ?? 0) * 100),
-        pwa: Math.round((categories.pwa?.score ?? 0) * 100)
+        firstContentfulPaint: lhr.audits["first-contentful-paint"]?.displayValue ?? "n/a",
+        largestContentfulPaint: lhr.audits["largest-contentful-paint"]?.displayValue ?? "n/a",
+        largestContentfulPaintMs: lhr.audits["largest-contentful-paint"]?.numericValue ?? Number.POSITIVE_INFINITY,
+        totalBlockingTime: lhr.audits["total-blocking-time"]?.displayValue ?? "n/a",
+        cumulativeLayoutShift: lhr.audits["cumulative-layout-shift"]?.displayValue ?? "n/a",
+        cumulativeLayoutShiftValue: lhr.audits["cumulative-layout-shift"]?.numericValue ?? Number.POSITIVE_INFINITY
       });
     }
 
@@ -126,12 +138,32 @@ async function run() {
 
     for (const item of summary) {
       lines.push(
-        `- ${item.route}: Performance ${item.performance}, A11y ${item.accessibility}, Best Practices ${item.bestPractices}, PWA ${item.pwa}`
+        `- ${item.route}: Performance ${item.performance}, A11y ${item.accessibility}, Best Practices ${item.bestPractices}, FCP ${item.firstContentfulPaint}, LCP ${item.largestContentfulPaint}, TBT ${item.totalBlockingTime}, CLS ${item.cumulativeLayoutShift}`
       );
     }
 
     await fs.writeFile(path.join(outputDir, "summary.md"), `${lines.join("\n")}\n`, "utf8");
     console.log(`Lighthouse reports written to ${outputDir}`);
+
+    const failures = summary.flatMap((item) => {
+      const routeFailures = [];
+      if (item.performance < 85) routeFailures.push(`Performance ${item.performance} < 85`);
+      if (item.accessibility < 100) routeFailures.push(`A11y ${item.accessibility} < 100`);
+      if (item.bestPractices < 100) routeFailures.push(`Best Practices ${item.bestPractices} < 100`);
+      if (item.largestContentfulPaintMs > 2_500) {
+        routeFailures.push(`LCP ${Math.round(item.largestContentfulPaintMs)}ms > 2500ms`);
+      }
+      if (item.cumulativeLayoutShiftValue > 0.1) {
+        routeFailures.push(`CLS ${item.cumulativeLayoutShiftValue.toFixed(3)} > 0.1`);
+      }
+      return routeFailures.map((failure) => `${item.route}: ${failure}`);
+    });
+
+    if (failures.length > 0) {
+      throw new Error(
+        `Lighthouse quality budget failed:\n${failures.map((failure) => `- ${failure}`).join("\n")}`
+      );
+    }
   } finally {
     await cleanup();
   }

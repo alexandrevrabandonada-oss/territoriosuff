@@ -14,13 +14,13 @@ export function RadarModeFooter({ nextStep, primaryLabel, onPrimary, onTop, dark
         <div className="flex items-center gap-2.5">
           <button
             onClick={onPrimary}
-            className="cursor-pointer rounded-xl bg-emerald-600 px-4 py-2 text-xs font-bold text-white shadow-sm transition-colors hover:bg-emerald-700"
+            className="min-h-11 cursor-pointer rounded-xl bg-emerald-700 px-4 py-2 text-xs font-bold text-white shadow-sm transition-colors hover:bg-emerald-800"
           >
             {primaryLabel}
           </button>
           <button
             onClick={onTop}
-            className={`inline-flex items-center gap-1.5 rounded-xl px-3 py-1.5 text-[10px] font-bold uppercase transition-colors ${
+            className={`inline-flex min-h-11 items-center gap-1.5 rounded-xl px-3 py-2 text-xs font-bold uppercase transition-colors ${
               dark
                 ? "border border-[#0d2e46] bg-[#0a2336] text-slate-350 hover:bg-[#0d2e46]"
                 : "bg-slate-100 text-slate-700 hover:bg-slate-200"

@@ -18,8 +18,8 @@ test.describe('Home Page @smoke', () => {
     await expect(page.getByRole('link', { name: /acervo/i }).first()).toBeVisible();
     await expect(page.getByRole('link', { name: /blog/i }).first()).toBeVisible();
     
-    // Check for data overview section (status/monitoring block)
-    await expect(page.getByRole('heading', { name: /dados agora/i })).toBeVisible();
+    // Check for the public-data overview section
+    await expect(page.getByRole('heading', { name: /dados públicos para localizar, compreender e agir/i })).toBeVisible();
     
     // Verify footer is present
     await expect(page.locator('footer')).toBeVisible();

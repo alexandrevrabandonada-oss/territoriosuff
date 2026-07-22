@@ -51,7 +51,7 @@ export function RadarVisualNotice({
           <div className={`w-fit rounded-full border px-2 py-0.5 text-[9px] font-black uppercase tracking-[0.18em] ${accentClasses}`}>
             {type === "error" ? "Alerta" : type === "warning" ? "Cautela" : type === "quarantine" ? "Metodologia" : "Ação guiada"}
           </div>
-          <h4 className="text-[11px] font-extrabold uppercase tracking-wider">{title}</h4>
+          <p className="text-[11px] font-extrabold uppercase tracking-wider">{title}</p>
         </div>
       </div>
       <p className="font-medium leading-normal text-slate-700">{description}</p>

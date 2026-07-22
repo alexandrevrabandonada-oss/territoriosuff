@@ -11,6 +11,7 @@ import {
 import { IconShell, SurfaceCard } from "../../components/BrandSystem";
 import { InstagramEmbed } from "../../components/InstagramEmbed";
 import { SafeMarkdown } from "../../components/SafeMarkdown";
+import { usePageMetadata } from "../../hooks/usePageMetadata";
 
 function SimpleMarkdown({ text }: { text: string }) {
     return <SafeMarkdown text={text} className="space-y-4 text-base leading-relaxed text-text-primary" />;
@@ -29,6 +30,12 @@ export function ConversarDetailPage() {
     const [submitting, setSubmitting] = useState(false);
     const [submitSuccess, setSubmitSuccess] = useState<{ msg: string; type: 'success' | 'warn' } | null>(null);
     const [reportedIds, setReportedIds] = useState<Set<string>>(new Set());
+
+    usePageMetadata({
+        title: conversation?.title,
+        description: conversation?.excerpt || undefined,
+        type: "article"
+    });
 
     useEffect(() => {
         if (!slug) return;
@@ -124,7 +131,7 @@ export function ConversarDetailPage() {
     const isActivity = conversation.meta?.kind === "activity";
 
     return (
-        <main className="portal-stage mx-auto max-w-5xl space-y-8 md:space-y-10">
+        <div className="portal-stage mx-auto max-w-5xl space-y-8 md:space-y-10">
             <Link to="/conversar" className="mb-6 inline-flex items-center text-sm font-semibold text-brand-primary hover:underline">
                 ← Voltar para conversas e atividades
             </Link>
@@ -258,6 +265,6 @@ export function ConversarDetailPage() {
                     </div>
                 </form>
             </SurfaceCard>
-        </main>
+        </div>
     );
 }

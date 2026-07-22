@@ -1,7 +1,7 @@
 import { Suspense, lazy, useEffect, useMemo, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 
-import { RadarHero } from "./radar/RadarHero";
+import { RadarHeroCompact } from "./radar/RadarHeroCompact";
 import { RadarLaiModal } from "./radar/RadarLaiModal";
 import { RadarModeNav } from "./radar/RadarModeNav";
 import { RadarOverviewMode } from "./radar/RadarOverviewMode";
@@ -51,6 +51,23 @@ type LatestResponse = {
   stations?: LatestResult[];
 };
 
+const MODE_TO_PARAM: Record<RadarMode, string> = {
+  OVERVIEW: "visao-geral",
+  MAP: "mapa",
+  TIME: "tempo",
+  TERRITORY: "territorio",
+  STATIONS: "estacoes",
+  METHODOLOGY: "metodologia"
+};
+
+const PARAM_TO_MODE = Object.fromEntries(
+  Object.entries(MODE_TO_PARAM).map(([mode, param]) => [param, mode])
+) as Record<string, RadarMode>;
+
+function modeFromParam(value: string | null): RadarMode {
+  return value ? PARAM_TO_MODE[value] ?? "OVERVIEW" : "OVERVIEW";
+}
+
 function RadarModeLoadingFallback() {
   return (
     <div className="rounded-[2rem] border border-divider-subtle bg-white/90 p-6 shadow-[0_24px_80px_rgba(15,23,42,0.08)] backdrop-blur">
@@ -67,6 +84,7 @@ function RadarModeLoadingFallback() {
 }
 
 export function IneaRadarPage() {
+  const [searchParams, setSearchParams] = useSearchParams();
   const [summary, setSummary] = useState<SummaryStats | null>(null);
   const [latestData, setLatestData] = useState<LatestResult[]>([]);
   const [timeseries, setTimeseries] = useState<RadarTimeseriesPoint[]>([]);
@@ -82,8 +100,12 @@ export function IneaRadarPage() {
   const [retryTrigger, setRetryTrigger] = useState(0);
   const [isLaiModalOpen, setIsLaiModalOpen] = useState(false);
   const [copiedLai, setCopiedLai] = useState(false);
-  const [currentMode, setCurrentMode] = useState<RadarMode>("OVERVIEW");
+  const [currentMode, setCurrentMode] = useState<RadarMode>(() => modeFromParam(searchParams.get("modo")));
   const [comparisonTab, setComparisonTab] = useState<RadarComparisonTab>("TREND");
+
+  useEffect(() => {
+    setCurrentMode(modeFromParam(searchParams.get("modo")));
+  }, [searchParams]);
 
   useEffect(() => {
     let cancelled = false;
@@ -265,7 +287,11 @@ export function IneaRadarPage() {
   const navigateMode = (mode: RadarMode, tab?: RadarComparisonTab) => {
     setCurrentMode(mode);
     if (tab) setComparisonTab(tab);
-    scrollToId("subnav-anchor");
+    const nextParams = new URLSearchParams(searchParams);
+    if (mode === "OVERVIEW") nextParams.delete("modo");
+    else nextParams.set("modo", MODE_TO_PARAM[mode]);
+    setSearchParams(nextParams, { replace: true });
+    requestAnimationFrame(() => scrollToId("subnav-anchor"));
   };
 
   const handleCopyLai = async () => {
@@ -321,27 +347,13 @@ export function IneaRadarPage() {
     is_realtime: false
   };
 
-  if (loading) {
-    return (
-      <div className="container mx-auto max-w-7xl animate-pulse space-y-8 px-4 py-8">
-        <div className="h-48 rounded-2xl bg-slate-200/40" />
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
-          {[...Array(5)].map((_, i) => (
-            <div key={i} className="h-24 rounded-2xl bg-slate-200/40" />
-          ))}
-        </div>
-        <div className="h-96 rounded-2xl bg-slate-200/40" />
-      </div>
-    );
-  }
-
   return (
     <div className="inea-radar-page relative min-h-screen w-full overflow-hidden bg-ambient-zen bg-dot-grid py-8">
       <div className="pointer-events-none absolute left-1/4 top-1/4 h-[35rem] w-[35rem] rounded-full bg-emerald-400/5 blur-3xl" />
       <div className="pointer-events-none absolute right-1/4 top-2/3 h-[40rem] w-[40rem] rounded-full bg-blue-500/5 blur-3xl" />
       <div className="pointer-events-none absolute bottom-10 left-10 h-[30rem] w-[30rem] rounded-full bg-rose-500/5 blur-3xl" />
 
-      <div id="top-anchor" className="relative z-10 container mx-auto max-w-7xl space-y-12 px-4">
+      <div id="top-anchor" className="relative z-10 container mx-auto max-w-7xl space-y-6 px-4">
         <div className="flex items-center gap-2 text-xs font-semibold text-slate-500">
           <Link to="/qualidade-ar" className="transition-colors hover:text-slate-800">
             Qualidade do Ar
@@ -350,17 +362,29 @@ export function IneaRadarPage() {
           <span className="text-slate-800">Radar INEA</span>
         </div>
 
-        <RadarHero
+        <RadarHeroCompact
           onNavigate={navigateMode}
           summary={displaySummary}
           activeStations={latestData.filter((item) => item.measured_at !== null).length}
         />
 
-        <PublicInterestProtocol />
+        <div id="subnav-anchor" className="scroll-mt-24" />
+        <RadarModeNav currentMode={currentMode} onSelectMode={navigateMode} />
+
+        <details className="group rounded-[1.5rem] border border-slate-200/80 bg-white/85 p-4 shadow-sm">
+          <summary className="cursor-pointer list-none text-sm font-black text-slate-900 marker:hidden">
+            Como usar estes dados com responsabilidade
+            <span className="ml-2 text-xs font-bold text-slate-500 group-open:hidden">Abrir orientação</span>
+          </summary>
+          <div className="mt-4">
+            <PublicInterestProtocol />
+          </div>
+        </details>
 
         {currentMode === "OVERVIEW" && (
           <>
             <RadarQuickSummary
+              compact
               notice={notice}
               latestData={latestData}
               sortedRankings={sortedRankings}
@@ -375,9 +399,6 @@ export function IneaRadarPage() {
             />
           </>
         )}
-
-        <div id="subnav-anchor" className="scroll-mt-28" />
-        <RadarModeNav currentMode={currentMode} onSelectMode={navigateMode} />
 
         {currentMode === "OVERVIEW" && (
           <RadarOverviewMode

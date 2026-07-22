@@ -6,6 +6,7 @@ import { IconShell, SurfaceCard } from "../../components/BrandSystem";
 import { BrandIllustratedEmptyState, BrandTextureSkeleton } from "../../components/BrandMicro";
 import { listAcervoItems, type AcervoItem, type AcervoKind } from "../../lib/api";
 import { ACERVO_KIND_LABELS, type AcervoArea, AREA_KINDS } from "../../lib/acervo";
+import { usePageMetadata } from "../../hooks/usePageMetadata";
 
 const AREA_ORDER: AcervoArea[] = ["artigos", "noticias", "midias", "documentos"];
 
@@ -100,6 +101,12 @@ export function AcervoListPage() {
   const [yearFilter, setYearFilter] = useState("");
   const [sourceTypeFilter, setSourceTypeFilter] = useState("");
   const [featuredOnly, setFeaturedOnly] = useState(false);
+  const areaMetadata = isAcervoArea(area) ? AREA_META[area] : null;
+
+  usePageMetadata({
+    title: areaMetadata?.label,
+    description: areaMetadata?.description
+  });
 
   useEffect(() => {
     if (!isAcervoArea(area)) return;

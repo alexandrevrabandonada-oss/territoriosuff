@@ -28,20 +28,22 @@ const CRAS_ACTIONS_2026: CrasAction[] = [
   { cras: "CRAS Açude", date: "2026-07-30", weekday: "Quinta-feira", time: "08:30", address: "Av. Francisco Antonio Francisco, s/nº - Bairro Açude", territory: "Açude" },
   { cras: "CRAS Monte Castelo", date: "2026-08-07", weekday: "Sexta-feira", time: "14:00", address: "Rua São Sebastião, nº 112 - Bairro Monte Castelo", territory: "Monte Castelo" },
   { cras: "CRAS Rústico", date: "2026-08-13", weekday: "Quinta-feira", time: "14:00", address: "Praça José Gonçalves Dias, nº 142 - Bairro Rústico", territory: "Rústico" },
+  { cras: "Pré-Vestibular", date: "2026-08-15", weekday: "Sábado", time: "11:30", address: "Rua Francisco Torres, 1473 - Candelária", territory: "Candelária" },
   { cras: "CRAS da Siderlândia", date: "2026-08-20", weekday: "Quinta-feira", time: "09:00", address: "Rua 10, nº 20 - Bairro Siderlândia", territory: "Siderlândia" },
   { cras: "CRAS São Carlos", date: "2026-08-24", weekday: "Segunda-feira", time: "14:30", address: "Rua Faria de Brito, s/nº - Bairro São Carlos", territory: "São Carlos" },
   { cras: "CRAS São Cristóvão", date: "2026-08-28", weekday: "Sexta-feira", time: "14:00", address: "Rua Leopoldina, nº 460 - Bairro São Cristóvão", territory: "São Cristóvão" },
   { cras: "CRAS Padre Josimo", date: "2026-09-01", weekday: "Terça-feira", time: "14:30", address: "Rua 7, nº 101 - Bairro Padre Josimo", territory: "Padre Josimo" },
   { cras: "CRAS da Siderlândia", date: "2026-09-17", weekday: "Quinta-feira", time: "09:00", address: "Rua 10, nº 20 - Bairro Siderlândia", territory: "Siderlândia" },
-  { cras: "CRAS Santa Rita de Cássia", date: "2026-09-18", weekday: "Sexta-feira", time: "09:00", address: "Rua da Granja, nº 40 - Bairro Santa Rita de Cássia", territory: "Santa Rita de Cássia" },
+  { cras: "CRAS Santa Rita de Cássia", date: "2026-09-11", weekday: "Sexta-feira", time: "09:00", address: "Rua da Granja, nº 40 - Bairro Santa Rita de Cássia", territory: "Santa Rita de Cássia" },
   { cras: "CRAS São Cristóvão", date: "2026-09-25", weekday: "Sexta-feira", time: "14:00", address: "Rua Leopoldina, nº 460 - Bairro São Cristóvão", territory: "São Cristóvão" },
   { cras: "CRAS Vila Rica (Igreja Viva Bem)", date: "2026-09-29", weekday: "Terça-feira", time: "09:00", address: "Rua 19, nº 135 - Bairro Vila Rica", territory: "Vila Rica" },
+  { cras: "Pré-Vestibular", date: "2026-10-03", weekday: "Sábado", time: "11:30", address: "Rua Francisco Torres, 1473 - Candelária", territory: "Candelária" },
   { cras: "CRAS Eucaliptal (Jovens)", date: "2026-10-07", weekday: "Quarta-feira", time: "09:00", address: "Rua Baltazar de Souza, nº 500 - Bairro Eucaliptal", territory: "Eucaliptal" },
   { cras: "CRAS Santa Rita de Cássia", date: "2026-10-16", weekday: "Sexta-feira", time: "09:00", address: "Rua da Granja, nº 40 - Bairro Santa Rita de Cássia", territory: "Santa Rita de Cássia" },
   { cras: "CRAS Eucaliptal (Jovens)", date: "2026-11-11", weekday: "Quarta-feira", time: "09:00", address: "Rua Baltazar de Souza, nº 500 - Bairro Eucaliptal", territory: "Eucaliptal" }
 ];
 
-const CRAS_SOURCE_UPDATED_AT = "18/06/2026";
+const CRAS_SOURCE_UPDATED_AT = "22/07/2026";
 
 function escapeIcsText(value: string) {
   return value
@@ -213,11 +215,11 @@ export function AgendaPage() {
                 <div className="mt-1 text-[10px] font-black uppercase tracking-[0.16em] text-white/70">ações</div>
               </div>
               <div className="rounded-2xl border border-white/15 bg-white/12 p-4">
-                <div className="text-3xl font-black">10</div>
+                <div className="text-3xl font-black">{territoryOptions.length}</div>
                 <div className="mt-1 text-[10px] font-black uppercase tracking-[0.16em] text-white/70">territórios</div>
               </div>
               <div className="rounded-2xl border border-white/15 bg-white/12 p-4">
-                <div className="text-3xl font-black">5</div>
+                <div className="text-3xl font-black">{monthOptions.length}</div>
                 <div className="mt-1 text-[10px] font-black uppercase tracking-[0.16em] text-white/70">meses</div>
               </div>
             </div>
@@ -238,7 +240,7 @@ export function AgendaPage() {
             <PortalSectionHeader
               eyebrow={<span className="badge-metodologia">Planejar hoje, transformar sempre</span>}
               title="Calendário completo"
-              subtitle="Lista validada a partir da agenda enviada, com a data de Padre Josimo ajustada para 21/07/2026 para preservar a sequência cronológica e o dia da semana."
+              subtitle="Lista validada a partir da agenda enviada, incluindo os encontros do Pré-Vestibular e a atualização de Santa Rita de Cássia para 11/09/2026."
             />
             <div className="mt-5 grid gap-3 rounded-[1.5rem] border border-brand-primary/10 bg-white/80 p-4 md:grid-cols-3">
               <label className="text-sm font-bold text-text-primary">

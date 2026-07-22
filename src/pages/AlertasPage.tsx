@@ -305,13 +305,16 @@ export function AlertasPage() {
 
                             {/* Quiet Mode */}
                             <div className="space-y-2">
-                                <label className="block text-xs font-bold text-text-primary/75">
+                                <p className="block text-xs font-bold text-text-primary/75">
                                     Período de Silêncio (Evitar alertas à noite)
-                                </label>
+                                </p>
                                 <div className="grid grid-cols-2 gap-3 rounded-xl bg-slate-50 border border-slate-200 dark:bg-slate-900/20 dark:border-slate-800 p-3">
                                     <div className="flex flex-col">
-                                        <span className="text-[9px] uppercase tracking-wider text-text-secondary font-bold mb-1">Início</span>
+                                        <label className="text-[9px] uppercase tracking-wider text-text-secondary font-bold mb-1" htmlFor="quiet-start">
+                                            Início
+                                        </label>
                                         <input
+                                            id="quiet-start"
                                             type="time"
                                             value={quietStart}
                                             onChange={(e) => setQuietStart(e.target.value)}
@@ -320,8 +323,11 @@ export function AlertasPage() {
                                         />
                                     </div>
                                     <div className="flex flex-col border-l border-slate-200 dark:border-slate-800 pl-4">
-                                        <span className="text-[9px] uppercase tracking-wider text-text-secondary font-bold mb-1">Término</span>
+                                        <label className="text-[9px] uppercase tracking-wider text-text-secondary font-bold mb-1" htmlFor="quiet-end">
+                                            Término
+                                        </label>
                                         <input
+                                            id="quiet-end"
                                             type="time"
                                             value={quietEnd}
                                             onChange={(e) => setQuietEnd(e.target.value)}

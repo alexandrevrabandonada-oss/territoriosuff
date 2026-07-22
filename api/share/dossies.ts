@@ -1,8 +1,8 @@
 import { createClient } from '@supabase/supabase-js';
-import { escapeHtml } from './_html';
+import { escapeHtml } from './_html.js';
 
 function getHostUrl(req: any) {
-    const host = req.headers['x-forwarded-host'] || req.headers.host || 'semear-pwa.vercel.app';
+    const host = req.headers['x-forwarded-host'] || req.headers.host || 'www.semearsf.org';
     const protocol = req.headers['x-forwarded-proto'] || 'https';
     return `${protocol}://${host}`;
 }

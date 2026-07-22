@@ -1,4 +1,4 @@
-import { applyPublicJsonHeaders, rejectNonGet } from "./_http";
+import { applyPublicJsonHeaders, rejectNonGet } from "./_http.js";
 
 export default function handler(req: any, res: any) {
   applyPublicJsonHeaders(res);

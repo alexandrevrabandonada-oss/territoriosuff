@@ -41,6 +41,8 @@ export function CollectionsListPage() {
         </div>
       </SurfaceCard>
 
+      <h2 className="sr-only">Dossiês publicados</h2>
+
       {loading ? (
         <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3" aria-live="polite" aria-busy="true">
           {Array.from({ length: 3 }).map((_, index) => (

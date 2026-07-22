@@ -108,7 +108,7 @@ async function performCheck(
 }
 
 async function main() {
-  const targetHost = process.env.OBSERVATORIO_BASE_URL || process.env.HEALTHCHECK_TARGET_URL || process.argv[2] || 'https://semear-pwa.vercel.app';
+  const targetHost = process.env.OBSERVATORIO_BASE_URL || process.env.HEALTHCHECK_TARGET_URL || process.argv[2] || 'https://www.semearsf.org';
   console.log(`Starting Observatório do Ar Healthcheck against: ${targetHost}`);
   
   const results: CheckResult[] = [];
@@ -123,10 +123,26 @@ async function main() {
   results.push(manifestResult);
 
   // 3. API Checks
-  results.push(await performCheck('API: Resumo Geral', `${targetHost}/api/air/inea/summary`, 'api', 'application/json'));
-  results.push(await performCheck('API: Últimas Leituras', `${targetHost}/api/air/inea/latest`, 'api', 'application/json'));
-  results.push(await performCheck('API: Classificação IQAr', `${targetHost}/api/air/inea/classification-days`, 'api', 'application/json'));
-  results.push(await performCheck('API: Lacunas (Gaps)', `${targetHost}/api/air/inea/analytics/data-gaps`, 'api', 'application/json'));
+  const criticalApiChecks = [
+    ['API: Resumo Geral', '/api/air/inea/summary'],
+    ['API: Estações', '/api/air/inea/stations'],
+    ['API: Últimas Leituras', '/api/air/inea/latest'],
+    ['API: Observabilidade', '/api/air/inea/observability'],
+    ['API: Catálogo de Exportação', '/api/air/inea/export-catalog'],
+    ['API: Classificação IQAr', '/api/air/inea/classification-days'],
+    ['API: Dias Degradados', '/api/air/inea/analytics/degraded-days'],
+    ['API: Poluente Controlador', '/api/air/inea/analytics/controller-frequency'],
+    ['API: Perfil Mensal', '/api/air/inea/analytics/monthly-profile'],
+    ['API: Ranking de Estações', '/api/air/inea/analytics/station-ranking'],
+    ['API: Lacunas (Gaps)', '/api/air/inea/analytics/data-gaps']
+  ] as const;
+
+  const criticalApiResults = await Promise.all(
+    criticalApiChecks.map(([name, pathname]) =>
+      performCheck(name, `${targetHost}${pathname}`, 'api', 'application/json')
+    )
+  );
+  results.push(...criticalApiResults);
 
   // 3.5. Social Layer Checks
   const socialManifestResult = await performCheck('Social Dataset Manifest', `${targetHost}/data/social/manifest.json`, 'manifest', 'application/json');

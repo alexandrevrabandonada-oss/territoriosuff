@@ -39,7 +39,7 @@ Consulte `docs/TWA.md` para o checklist completo.
 ### Inicializar projeto TWA
 ```bash
 cd twa
-bubblewrap init --manifest=https://semear-pwa.vercel.app/manifest.webmanifest
+bubblewrap init --manifest=https://www.semearsf.org/manifest.webmanifest
 ```
 
 ### Criar keystore (primeira vez)

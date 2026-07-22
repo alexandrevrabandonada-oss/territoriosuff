@@ -30,7 +30,7 @@ export function RadarLandingPage() {
       </SurfaceCard>
 
       {/* Information block */}
-      <MethodologyNotice />
+      <MethodologyNotice headingLevel={2} />
 
       {/* Selector Options */}
       <section className="grid gap-6 md:grid-cols-2">

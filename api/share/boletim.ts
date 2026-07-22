@@ -1,6 +1,6 @@
 import { createClient } from "@supabase/supabase-js";
 import crypto from "node:crypto";
-import { escapeHtml } from "./_html";
+import { escapeHtml } from "./_html.js";
 
 const MONTH_LABELS = [
   "Janeiro",
@@ -107,7 +107,7 @@ export default async function handler(req: any, res: any) {
     return res.redirect(redirectUrl);
   }
 
-  const host = req.headers["x-forwarded-host"] || req.headers.host || "semear-pwa.vercel.app";
+  const host = req.headers["x-forwarded-host"] || req.headers.host || "www.semearsf.org";
   const proto = req.headers["x-forwarded-proto"] || "https";
   const hostUrl = `${proto}://${host}`;
   const title = `Boletim SEMEAR — ${monthLabel}/${year}`;

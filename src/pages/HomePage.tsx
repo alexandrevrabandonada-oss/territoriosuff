@@ -1,9 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
-import "../styles/home.css";
 import type {
-  AcervoItem,
   Event,
   ReportDocument
 } from "../lib/api";
@@ -68,7 +66,7 @@ function formatDate(value?: string | null) {
 
 export function HomePage() {
   const [events, setEvents] = useState<Event[]>([]);
-  const [, setAcervo] = useState<AcervoItem[]>([]);
+  const [pastEvents, setPastEvents] = useState<Event[]>([]);
   const [reports, setReports] = useState<ReportDocument[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -77,13 +75,13 @@ export function HomePage() {
       try {
         setLoading(true);
         const contentApi = await import("../lib/api/content");
-        const [eventsData, acervoData, reportsData] = await Promise.all([
+        const [eventsData, pastEventsData, reportsData] = await Promise.all([
           contentApi.listUpcomingEvents(),
-          contentApi.listAcervoItems({ featured: true, limit: 6 }),
+          contentApi.listRecentPastEvents(3),
           contentApi.listLatestReports(3)
         ]);
         setEvents(eventsData.slice(0, 3));
-        setAcervo(acervoData);
+        setPastEvents(pastEventsData);
         setReports(reportsData.slice(0, 3));
       } catch (err) {
         console.error("Erro ao carregar dados da home:", err);
@@ -166,9 +164,17 @@ export function HomePage() {
 
             <div className="home-popular">
               <span>Buscas populares:</span>
-              <Link to="/relatorios">Relatórios 2024</Link>
-              <Link to="/relatorios">Boletins mensais</Link>
-              <Link to="/relatorios">Notas técnicas</Link>
+              {reports.length > 0 ? (
+                <>
+                  <Link to="/relatorios">Relatórios publicados</Link>
+                  <Link to="/relatorios">Notas e boletins</Link>
+                </>
+              ) : (
+                <>
+                  <Link to="/dados">Dados abertos</Link>
+                  <Link to="/qualidade-ar/inea">Radar do Ar</Link>
+                </>
+              )}
               <Link to="/conversar">Atividades recentes</Link>
             </div>
 
@@ -259,140 +265,33 @@ export function HomePage() {
           </div>
         }
       />
-      {/* Banner de Lançamento do Observatório do Ar - Tijolo 57 */}
-      <div className="home-inea-launch-banner my-8 p-6 md:p-8 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 border border-slate-700/50 rounded-[2rem] text-white shadow-xl relative overflow-hidden flex flex-col lg:flex-row lg:items-center gap-6 justify-between animate-fade-in">
-        <div className="absolute top-0 right-0 w-80 h-80 bg-brand-primary/10 rounded-full blur-3xl pointer-events-none" />
-        <div className="absolute bottom-0 left-0 w-60 h-60 bg-emerald-500/5 rounded-full blur-3xl pointer-events-none" />
-        
-        <div className="space-y-4 max-w-4xl relative z-10">
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest bg-emerald-500/10 text-emerald-400 border border-emerald-500/25">
-            Lançamento Oficial
-          </span>
-          <h2 className="text-xl md:text-2xl font-black text-white leading-tight">
-            Quem respira esse ar? Conheça o novo Observatório do Ar de Volta Redonda
-          </h2>
-          <p className="text-sm text-slate-300 font-medium leading-relaxed">
-            Volta Redonda agora tem um Observatório do Ar com dados públicos, mapas, séries históricas, meteorologia, exposição social e metodologia aberta. Uma ferramenta robusta para priorização territorial e cobrança pública de melhorias ambientais.
+      <section className="home-observatory-hub" aria-labelledby="home-observatory-title">
+        <div className="home-observatory-copy">
+          <span>Observatório do Ar de Volta Redonda</span>
+          <h2 id="home-observatory-title">Dados públicos para localizar, compreender e agir.</h2>
+          <p>
+            Reunimos mapa, séries históricas, cobertura da rede e leitura territorial em uma experiência única,
+            com metodologia aberta e limites de uso explícitos.
           </p>
-          
-          <div className="grid gap-3 sm:grid-cols-2 md:grid-cols-3 text-xs pt-1">
-            <div className="space-y-1">
-              <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wider block">Poluentes Monitorados</span>
-              <p className="text-slate-200 font-semibold">PM₁₀, PM₂.₅, SO₂ e CO</p>
-            </div>
-            <div className="space-y-1">
-              <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wider block">Análises e Recursos</span>
-              <p className="text-slate-200 font-semibold">Séries históricas, Meteorologia e dispersão de ventos</p>
-            </div>
-            <div className="space-y-1">
-              <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wider block">Dados e Metodologia</span>
-              <p className="text-slate-200 font-semibold">Dados abertos e Metodologia pública de justiça ambiental</p>
-            </div>
-          </div>
-
-          <div className="pt-2 border-t border-slate-700/50 flex flex-wrap gap-x-4 gap-y-1 text-[10px] text-slate-400 font-semibold">
-            <span>⚠️ *Esta ferramenta não representa monitoramento ao vivo ou leitura minuto a minuto.</span>
-            <span>*Não mede risco epidemiológico individual.</span>
-            <span>*Não prova causalidade direta isolada.</span>
+          <div className="home-observatory-note">
+            Base pública do INEA e WebLakes. Não representa monitoramento em tempo real, diagnóstico individual ou prova causal isolada.
           </div>
         </div>
-        
-        <div className="shrink-0 relative z-10 w-full lg:w-auto">
-          <Link
-            to="/qualidade-ar/inea"
-            className="inline-flex w-full lg:w-auto items-center justify-center min-h-[44px] px-6 py-3 bg-brand-primary hover:bg-brand-primary-dark text-white font-black uppercase tracking-[0.14em] text-xs rounded-xl shadow-lg shadow-brand-primary/20 transition-all hover:-translate-y-0.5"
-          >
-            Acesse o mapa: Quem respira esse ar? &rarr;
+        <nav className="home-observatory-actions" aria-label="Explorar o Observatório do Ar">
+          <Link to="/qualidade-ar/inea?modo=mapa">
+            <strong>Mapa e estações</strong>
+            <span>Veja onde há leitura e onde persistem lacunas.</span>
           </Link>
-        </div>
-      </div>
-
-      {/* Banner de Destaque das Análises INEA */}
-      <div className="home-inea-history-banner my-8 p-6 md:p-8 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 border border-slate-700/50 rounded-[2rem] text-white shadow-xl relative overflow-hidden flex flex-col md:flex-row md:items-center gap-6 justify-between animate-fade-in">
-        <div className="absolute top-0 right-0 w-80 h-80 bg-brand-primary/10 rounded-full blur-3xl pointer-events-none" />
-        <div className="absolute bottom-0 left-0 w-60 h-60 bg-emerald-500/5 rounded-full blur-3xl pointer-events-none" />
-        
-        <div className="space-y-3 max-w-3xl relative z-10">
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest bg-emerald-500/10 text-emerald-400 border border-emerald-500/25">
-            Análise Especial
-          </span>
-          <h2 className="text-xl md:text-2xl font-black text-white leading-tight">
-            O que os dados oficiais revelam — e escondem — sobre o ar de Volta Redonda?
-          </h2>
-          <p className="text-sm text-slate-300 font-medium leading-relaxed">
-            Organizamos a base pública do INEA de 2022 a fevereiro de 2025. Ela mostra onde há leitura, onde há alerta e onde há silêncio.
-          </p>
-          <p className="text-[10px] text-slate-400">
-            * Base pública de índices e subíndices IQAr. Não representa leitura instantânea do ar e não é monitoramento minuto a minuto.
-          </p>
-        </div>
-        <div className="shrink-0 relative z-10">
-          <Link
-            to="/qualidade-ar/inea"
-            className="inline-flex items-center justify-center min-h-[44px] px-6 py-3 bg-brand-primary hover:bg-brand-primary-dark text-white font-black uppercase tracking-[0.14em] text-xs rounded-xl shadow-lg shadow-brand-primary/20 transition-all hover:-translate-y-0.5"
-          >
-            Acessar Radar do Ar &rarr;
+          <Link to="/qualidade-ar/inea?modo=tempo">
+            <strong>Histórico e episódios</strong>
+            <span>Compare anos, sazonalidade e cobertura.</span>
           </Link>
-        </div>
-      </div>
-
-      {/* Banner de Destaque dos Episódios de Atenção */}
-      <div className="home-inea-episodes-banner my-8 p-6 md:p-8 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 border border-slate-700/50 rounded-[2rem] text-white shadow-xl relative overflow-hidden flex flex-col md:flex-row md:items-center gap-6 justify-between animate-fade-in">
-        <div className="absolute top-0 right-0 w-80 h-80 bg-brand-primary/10 rounded-full blur-3xl pointer-events-none" />
-        <div className="absolute bottom-0 left-0 w-60 h-60 bg-emerald-500/5 rounded-full blur-3xl pointer-events-none" />
-        
-        <div className="space-y-3 max-w-3xl relative z-10">
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest bg-emerald-500/10 text-emerald-400 border border-emerald-500/25">
-            Sazonalidade e Limiares
-          </span>
-          <h2 className="text-xl md:text-2xl font-black text-white leading-tight">
-            Quando o ar exige mais atenção?
-          </h2>
-          <p className="text-sm text-slate-300 font-medium leading-relaxed">
-            Explore a linha do tempo 2022–2024 e veja os meses, estações e poluentes com mais eventos de atenção.
-          </p>
-          <p className="text-[10px] text-slate-400">
-            * Dado horário público WebLakes — comparação experimental — sem QA/QC oficial explícito.
-          </p>
-        </div>
-        <div className="shrink-0 relative z-10">
-          <Link
-            to="/qualidade-ar/inea#episodios"
-            className="inline-flex items-center justify-center min-h-[44px] px-6 py-3 bg-brand-primary hover:bg-brand-primary-dark text-white font-black uppercase tracking-[0.14em] text-xs rounded-xl shadow-lg shadow-brand-primary/20 transition-all hover:-translate-y-0.5"
-          >
-            Ver episódios de atenção &rarr;
+          <Link to="/qualidade-ar/inea?modo=territorio">
+            <strong>Território e exposição</strong>
+            <span>Explore prioridades de justiça ambiental.</span>
           </Link>
-        </div>
-      </div>
-
-      {/* Banner de Destaque da Exposição Social */}
-      <div className="home-inea-social-banner my-8 p-6 md:p-8 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 border border-slate-700/50 rounded-[2rem] text-white shadow-xl relative overflow-hidden flex flex-col md:flex-row md:items-center gap-6 justify-between animate-fade-in">
-        <div className="absolute top-0 right-0 w-80 h-80 bg-brand-primary/10 rounded-full blur-3xl pointer-events-none" />
-        <div className="absolute bottom-0 left-0 w-60 h-60 bg-rose-500/5 rounded-full blur-3xl pointer-events-none" />
-        
-        <div className="space-y-3 max-w-3xl relative z-10">
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest bg-rose-500/10 text-rose-400 border border-rose-500/25">
-            Território e Justiça Ambiental
-          </span>
-          <h2 className="text-xl md:text-2xl font-black text-white leading-tight">
-            Quem respira esse ar? Exposição Social e Vulnerabilidade
-          </h2>
-          <p className="text-sm text-slate-300 font-medium leading-relaxed">
-            Consulte a nova camada do Observatório que cruza a demografia do Censo 2022 com a localização de escolas, creches, UBSFs, CRAS e a usina siderúrgica.
-          </p>
-          <p className="text-[10px] text-slate-400">
-            * Análise baseada em índice experimental de priorização territorial. Não mede risco epidemiológico individual.
-          </p>
-        </div>
-        <div className="shrink-0 relative z-10">
-          <Link
-            to="/qualidade-ar/inea#exposicao-social"
-            className="inline-flex items-center justify-center min-h-[44px] px-6 py-3 bg-rose-600 hover:bg-rose-700 text-white font-black uppercase tracking-[0.14em] text-xs rounded-xl shadow-lg shadow-rose-600/20 transition-all hover:-translate-y-0.5"
-          >
-            Ver mapa de exposição social &rarr;
-          </Link>
-        </div>
-      </div>
+        </nav>
+      </section>
 
       <PortalSectionHeader
         eyebrow={<span className="badge-dados-abertos">Hub público SEMEAR</span>}
@@ -439,22 +338,36 @@ export function HomePage() {
         </section>
       </div>
 
-      {events.length > 0 && (
+      {events.length > 0 ? (
         <section className="home-agenda-strip">
           <div>
             <h2>Agenda</h2>
             <p>Próximas atividades do projeto</p>
           </div>
-          {events.slice(0, 3).map((event) => (
+          {events.map((event) => (
             <Link key={event.id} to="/agenda">
               <strong>{event.title}</strong>
-              <small>{formatDate(event.start_at)}</small>
+              <small><time dateTime={event.start_at}>{formatDate(event.start_at)}</time></small>
             </Link>
           ))}
         </section>
-      )}
+      ) : null}
 
-      <img className="home-logo-preload" src="/brand/semear-logo-full.jpeg" alt="" aria-hidden="true" />
+      {pastEvents.length > 0 ? (
+        <section className="home-agenda-strip home-agenda-strip-past" aria-labelledby="home-past-events-title">
+          <div>
+            <h2 id="home-past-events-title">Atividades realizadas</h2>
+            <p>Registros recentes do projeto no território</p>
+          </div>
+          {pastEvents.map((event) => (
+            <Link key={event.id} to="/agenda">
+              <strong>{event.title}</strong>
+              <small>Realizada em <time dateTime={event.start_at}>{formatDate(event.start_at)}</time></small>
+            </Link>
+          ))}
+        </section>
+      ) : null}
+
       <span className="home-seed home-seed-a" aria-hidden="true" />
       <span className="home-seed home-seed-b" aria-hidden="true" />
     </PortalPageShell>

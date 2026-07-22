@@ -1,4 +1,4 @@
-import { getIneaSupabaseClient, isValidDateInput, rejectNonGet, sendPublicError } from "./_http";
+import { getIneaSupabaseClient, isValidDateInput, rejectNonGet, sendPublicError } from "./_http.js";
 
 function applyCsvHeaders(res: any, filename: string, truncated: boolean) {
   res.setHeader("Access-Control-Allow-Origin", "*");

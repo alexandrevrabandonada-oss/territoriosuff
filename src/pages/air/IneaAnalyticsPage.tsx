@@ -82,7 +82,7 @@ function IneaAnalyticsFallback({ failedBlocks }: { failedBlocks: string[] }) {
     : "em consolidação";
 
   return (
-    <main className="min-h-screen bg-[linear-gradient(180deg,#f8fafc_0%,#eef7f5_48%,#ffffff_100%)] pb-16">
+    <div className="min-h-screen bg-[linear-gradient(180deg,#f8fafc_0%,#eef7f5_48%,#ffffff_100%)] pb-16">
       <section className="mx-auto max-w-7xl px-4 pt-10 md:px-6 md:pt-16">
         <div className="grid gap-6 lg:grid-cols-[1.05fr_0.95fr]">
           <div className="relative overflow-hidden rounded-[2.25rem] bg-slate-950 p-7 text-white shadow-[0_28px_70px_-42px_rgba(15,23,42,0.78)] md:p-10">
@@ -119,7 +119,7 @@ function IneaAnalyticsFallback({ failedBlocks }: { failedBlocks: string[] }) {
 
           <SurfaceCard className="rounded-[2.25rem] border border-slate-200 bg-white p-6 shadow-[0_22px_52px_-40px_rgba(15,23,42,0.45)] md:p-8">
             <div className="space-y-4">
-              <div className="text-[10px] font-black uppercase tracking-[0.18em] text-slate-400">Status da camada automática</div>
+              <div className="text-[10px] font-black uppercase tracking-[0.18em] text-slate-600">Status da camada automática</div>
               <h2 className="text-2xl font-black tracking-tight text-slate-950">Endpoint analítico indisponível, rota preservada.</h2>
               <p className="text-sm font-semibold leading-relaxed text-slate-600">
                 A ausência de resposta automática não torna a página morta. Ela passa a operar como painel pedagógico
@@ -170,7 +170,7 @@ function IneaAnalyticsFallback({ failedBlocks }: { failedBlocks: string[] }) {
 
       <section className="mx-auto mt-8 max-w-7xl px-4 md:px-6">
         <SurfaceCard className="rounded-[1.8rem] border border-slate-200 bg-white p-6">
-          <div className="text-[10px] font-black uppercase tracking-[0.18em] text-slate-400">Como interpretar</div>
+          <div className="text-[10px] font-black uppercase tracking-[0.18em] text-slate-600">Como interpretar</div>
           <h2 className="mt-2 text-2xl font-black tracking-tight text-slate-950">Esta análise é uma triagem pública, não laudo individual.</h2>
           <div className="mt-5 grid gap-4 md:grid-cols-3">
             <div className="rounded-2xl bg-slate-50 p-4 text-sm font-semibold leading-relaxed text-slate-700">
@@ -188,7 +188,7 @@ function IneaAnalyticsFallback({ failedBlocks }: { failedBlocks: string[] }) {
           </div>
         </SurfaceCard>
       </section>
-    </main>
+    </div>
   );
 }
 
@@ -380,7 +380,7 @@ export function IneaAnalyticsPage() {
             </svg>
           </IconShell>
           <div className="space-y-1">
-            <h4 className="font-bold text-amber-800 text-xs uppercase tracking-wider">Aviso de Integridade Analítica</h4>
+            <h2 className="font-bold text-amber-800 text-xs uppercase tracking-wider">Aviso de Integridade Analítica</h2>
             <p className="text-xs leading-relaxed text-amber-700 font-bold">
               Estações com baixa cobertura não devem ser interpretadas como regiões de ar melhor. {RADAR_NO_DATA_NOT_CLEAN_AIR}
             </p>
@@ -408,7 +408,7 @@ export function IneaAnalyticsPage() {
         {/* Card 1: Worst Station */}
         <SurfaceCard className="p-5 border border-slate-100 rounded-2xl flex flex-col justify-between space-y-4 hover:shadow-md transition-all">
           <div className="space-y-2">
-            <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Estação Crítica</span>
+            <span className="text-[10px] font-bold text-slate-600 uppercase tracking-widest">Estação Crítica</span>
             <h3 className="text-base font-extrabold text-slate-800 leading-tight">
               {worstStationByDegraded ? worstStationByDegraded.station_name : "-"}
             </h3>
@@ -424,7 +424,7 @@ export function IneaAnalyticsPage() {
         {/* Card 2: Top Controller */}
         <SurfaceCard className="p-5 border border-slate-100 rounded-2xl flex flex-col justify-between space-y-4 hover:shadow-md transition-all">
           <div className="space-y-2">
-            <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Poluente Controlador</span>
+            <span className="text-[10px] font-bold text-slate-600 uppercase tracking-widest">Poluente Controlador</span>
             <h3 className="text-2xl font-extrabold text-slate-800 tracking-tight">
               {topController ? topController.pollutant : "-"}
             </h3>
@@ -440,7 +440,7 @@ export function IneaAnalyticsPage() {
         {/* Card 3: Worst AQI */}
         <SurfaceCard className="p-5 border border-slate-100 rounded-2xl flex flex-col justify-between space-y-4 hover:shadow-md transition-all">
           <div className="space-y-2">
-            <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Maior Índice IQAr registrado</span>
+            <span className="text-[10px] font-bold text-slate-600 uppercase tracking-widest">Maior Índice IQAr registrado</span>
             <h3 className="text-2xl font-extrabold text-slate-800 tracking-tight">
               {worstIndexAqi}
             </h3>
@@ -456,7 +456,7 @@ export function IneaAnalyticsPage() {
         {/* Card 4: Worst Month */}
         <SurfaceCard className="p-5 border border-slate-100 rounded-2xl flex flex-col justify-between space-y-4 hover:shadow-md transition-all">
           <div className="space-y-2">
-            <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Época Crítica</span>
+            <span className="text-[10px] font-bold text-slate-600 uppercase tracking-widest">Época Crítica</span>
             <h3 className="text-base font-extrabold text-slate-800 leading-tight">
               {worstMonthName}
             </h3>
@@ -472,7 +472,7 @@ export function IneaAnalyticsPage() {
         {/* Card 5: Gaps */}
         <SurfaceCard className="p-5 border border-slate-100 rounded-2xl flex flex-col justify-between space-y-4 hover:shadow-md transition-all">
           <div className="space-y-2">
-            <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Lacunas Temporais</span>
+            <span className="text-[10px] font-bold text-slate-600 uppercase tracking-widest">Lacunas Temporais</span>
             <h3 className="text-base font-extrabold text-slate-800 leading-tight">
               {worstStationGaps ? worstStationGaps.station_name : "-"}
             </h3>
@@ -498,10 +498,10 @@ export function IneaAnalyticsPage() {
 
         {validRankedStations.length === 0 ? (
           <div className="p-6 border border-dashed border-slate-200 bg-slate-50/50 rounded-2xl text-center space-y-2">
-            <svg className="mx-auto h-8 w-8 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="mx-auto h-8 w-8 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
-            <h4 className="font-extrabold text-slate-700 text-sm">Ausência de Cobertura para Ranking</h4>
+            <h3 className="font-extrabold text-slate-700 text-sm">Ausência de Cobertura para Ranking</h3>
             <p className="text-xs text-slate-500 font-semibold max-w-lg mx-auto">
               Não há cobertura suficiente para ranking comparativo robusto entre estações. 
               Nenhuma das estações atinge a cobertura mínima recomendada de 30% de dias medidos sobre os dias esperados.
@@ -514,13 +514,13 @@ export function IneaAnalyticsPage() {
                 <div className="flex items-center gap-3">
                   <span className="font-black text-lg text-emerald-600">#{index + 1}</span>
                   <div>
-                    <h4 className="font-bold text-slate-800">{station.station_name}</h4>
-                    <p className="text-slate-400 font-medium">Cobertura: {station.coverage_percent}%</p>
+                    <h3 className="font-bold text-slate-800">{station.station_name}</h3>
+                    <p className="text-slate-600 font-medium">Cobertura: {station.coverage_percent}%</p>
                   </div>
                 </div>
                 <div className="text-right">
                   <span className="font-extrabold text-slate-800">{station.degraded_percent_of_measured_days}%</span>
-                  <p className="text-slate-400 font-medium">dias MODERADA ou pior</p>
+                  <p className="text-slate-600 font-medium">dias MODERADA ou pior</p>
                 </div>
               </div>
             ))}
@@ -553,7 +553,7 @@ export function IneaAnalyticsPage() {
                 <div key={sId} className="space-y-2">
                   <div className="flex justify-between items-center text-xs font-bold text-slate-700">
                     <span>{stationName}</span>
-                    <span className="text-slate-400 font-medium">{total} dias medidos ou sinalizados</span>
+                    <span className="text-slate-600 font-medium">{total} dias medidos ou sinalizados</span>
                   </div>
                   {/* Stacked Progress Bar */}
                   <div className="h-6 w-full rounded-lg overflow-hidden flex bg-slate-100 shadow-inner">
@@ -793,7 +793,7 @@ export function IneaAnalyticsPage() {
                       </div>
                     </td>
                     <td className="p-4 text-center">
-                      <span className={`font-bold ${item.gap_count > 0 ? "text-amber-600" : "text-slate-400"}`}>
+                      <span className={`font-bold ${item.gap_count > 0 ? "text-amber-700" : "text-slate-600"}`}>
                         {item.gap_count}
                       </span>
                     </td>

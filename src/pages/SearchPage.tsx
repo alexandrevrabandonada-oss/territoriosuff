@@ -397,7 +397,7 @@ export function SearchPage() {
               <h2 className="text-xs font-black uppercase tracking-[0.3em] text-cta">Transparência</h2>
               <div className="grid gap-5 md:grid-cols-2">
                 {results.transparency.map((expense) => (
-                  <Link key={expense.id} to="/transparencia" className="group motion-list-item flex flex-col rounded-[1.35rem] border border-base/40 bg-fundo/60 p-5 motion-surface motion-surface-hover">
+                  <Link key={expense.id} to="/transparencia" className="group motion-list-item flex flex-col rounded-[1.35rem] border border-legacy-base/40 bg-fundo/60 p-5 motion-surface motion-surface-hover">
                     <div className="flex justify-between items-start">
                       <span className="text-[10px] font-bold uppercase tracking-widest text-texto/40">{expense.category}</span>
                       <span className="text-sm font-black text-primaria">{formatCurrency(expense.amount_cents ?? 0)}</span>

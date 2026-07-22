@@ -40,7 +40,7 @@ export function ProgramaUffTerritorioPage() {
           <div className="space-y-7">
             <div className="flex flex-wrap items-center gap-2.5">
               <Chip tone="active">Nova frente institucional</Chip>
-              <span className="text-[11px] font-semibold uppercase tracking-[0.2em] text-text-secondary">proposta integrada para o Médio Paraíba</span>
+              <span className="text-[11px] font-semibold uppercase tracking-[0.2em] text-slate-700">proposta integrada para o Médio Paraíba</span>
             </div>
 
             <div className="space-y-5">
@@ -48,7 +48,7 @@ export function ProgramaUffTerritorioPage() {
               <h1 className="max-w-4xl text-4xl font-black leading-[0.9] tracking-[-0.05em] text-text-primary md:text-6xl xl:text-[4.8rem]">
                 Observatório Popular do Médio Paraíba
               </h1>
-              <p className="max-w-3xl text-base leading-relaxed text-text-secondary md:text-lg xl:text-[1.15rem]">
+              <p className="max-w-3xl text-base leading-relaxed text-slate-700 md:text-lg xl:text-[1.15rem]">
                 Proposta institucional de R$ 1,5 milhão para enfrentar um problema real do território com uma solução integrada, factível e escalável, apoiada na infraestrutura digital, metodológica e institucional já em construção no SEMEAR.
               </p>
               <div className="max-w-3xl rounded-[1.5rem] border border-brand-primary/12 bg-white/80 p-4 backdrop-blur-sm md:p-5">
@@ -70,7 +70,7 @@ export function ProgramaUffTerritorioPage() {
             <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
               {programHeroMetrics.map((metric) => (
                 <div key={metric.label} className="rounded-[1.35rem] border border-border-subtle bg-white/85 p-4 shadow-sm backdrop-blur-sm transition-transform duration-200 hover:-translate-y-0.5">
-                  <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-text-secondary">{metric.label}</p>
+                  <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-700">{metric.label}</p>
                   <p className="mt-2 text-2xl font-black text-text-primary">{metric.value}</p>
                 </div>
               ))}
@@ -137,9 +137,9 @@ export function ProgramaUffTerritorioPage() {
                 index === 2 ? "bg-gradient-to-br from-[#fff8ee] via-white to-[#fff1d6]" : ""
               ].join(" ")}
             >
-              <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-text-secondary">{item.eyebrow}</p>
+              <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-slate-700">{item.eyebrow}</p>
               <h2 className="mt-3 text-2xl font-black leading-tight text-text-primary">{item.title}</h2>
-              <p className="mt-3 text-base leading-relaxed text-text-secondary">{item.body}</p>
+              <p className="mt-3 text-base leading-relaxed text-slate-700">{item.body}</p>
             </SurfaceCard>
           ))}
         </div>
@@ -162,7 +162,7 @@ export function ProgramaUffTerritorioPage() {
               ].join(" ")}
             >
               <h2 className="text-2xl font-black leading-tight text-text-primary">{reason.title}</h2>
-              <p className="mt-3 text-base leading-relaxed text-text-secondary">{reason.body}</p>
+              <p className="mt-3 text-base leading-relaxed text-slate-700">{reason.body}</p>
             </SurfaceCard>
           ))}
         </div>
@@ -186,9 +186,9 @@ export function ProgramaUffTerritorioPage() {
                 index === 2 ? "bg-gradient-to-br from-[#fff8ee] via-white to-[#fff1d6]" : ""
               ].join(" ")}
             >
-              <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-text-secondary">{item.eyebrow}</p>
+              <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-slate-700">{item.eyebrow}</p>
               <h2 className="mt-3 text-2xl font-black leading-tight text-text-primary">{item.title}</h2>
-              <p className="mt-3 text-base leading-relaxed text-text-secondary">{item.body}</p>
+              <p className="mt-3 text-base leading-relaxed text-slate-700">{item.body}</p>
             </SurfaceCard>
           ))}
         </div>
@@ -225,7 +225,7 @@ export function ProgramaUffTerritorioPage() {
                 {String(index + 1).padStart(2, "0")}
               </span>
               <h2 className="mt-4 text-xl font-black leading-tight text-text-primary">{item.title}</h2>
-              <p className="mt-3 text-sm leading-relaxed text-text-secondary md:text-base">{item.body}</p>
+              <p className="mt-3 text-sm leading-relaxed text-slate-700 md:text-base">{item.body}</p>
             </SurfaceCard>
           ))}
         </div>
@@ -262,7 +262,7 @@ export function ProgramaUffTerritorioPage() {
               ].join(" ")}
             >
               <h2 className="text-2xl font-black leading-tight text-text-primary">{item.title}</h2>
-              <p className="mt-3 text-base leading-relaxed text-text-secondary">{item.body}</p>
+              <p className="mt-3 text-base leading-relaxed text-slate-700">{item.body}</p>
             </SurfaceCard>
           ))}
         </div>
@@ -335,7 +335,7 @@ export function ProgramaUffTerritorioPage() {
                     0{index + 1}
                   </span>
                   <h2 className="text-xl font-black leading-tight text-text-primary">{item.title}</h2>
-                  <p className="text-sm leading-relaxed text-text-secondary">{item.body}</p>
+                  <p className="text-sm leading-relaxed text-slate-700">{item.body}</p>
                 </div>
               </SurfaceCard>
             ))}

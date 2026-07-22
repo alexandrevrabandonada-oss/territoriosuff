@@ -17,7 +17,7 @@
       "updated_at": "2026-06-01T14:41:00.000Z",
       "source_system": "IBGE_CENSO_2022",
       "methodological_label": "Fórmula ponderada combinando crianças, idosos e baixa renda. Não indica causalidade individual.",
-      "public_url": "https://semear-pwa.vercel.app/data/social/vr-vulnerabilidade-setores-2022.csv"
+      "public_url": "https://www.semearsf.org/data/social/vr-vulnerabilidade-setores-2022.csv"
     },
     {
       "filename": "equipamentos-sensiveis-vr.csv",
@@ -27,7 +27,7 @@
       "updated_at": "2026-06-01T14:41:00.000Z",
       "source_system": "CADASTRO_MUNICIPAL_AND_CNES",
       "methodological_label": "Coordenadas aproximadas para mapeamento de áreas escolares e de assistência médica/social expostas.",
-      "public_url": "https://semear-pwa.vercel.app/data/social/equipamentos-sensiveis-vr.csv"
+      "public_url": "https://www.semearsf.org/data/social/equipamentos-sensiveis-vr.csv"
     },
     {
       "filename": "social-data-dictionary.csv",
@@ -37,7 +37,7 @@
       "updated_at": "2026-06-01T14:41:00.000Z",
       "source_system": "SEMEAR (Metadados)",
       "methodological_label": "Metadados descritivos da camada de exposição social.",
-      "public_url": "https://semear-pwa.vercel.app/data/social/social-data-dictionary.csv"
+      "public_url": "https://www.semearsf.org/data/social/social-data-dictionary.csv"
     }
   ]
 }

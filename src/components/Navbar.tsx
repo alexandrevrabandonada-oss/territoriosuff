@@ -3,17 +3,23 @@ import { Link, NavLink, useLocation } from "react-router-dom";
 
 import { useInstallPrompt } from "../hooks/useInstallPrompt";
 
-const links = [
+const primaryLinks = [
   { href: "/", label: "Home" },
   { href: "/dados", label: "Dados" },
   { href: "/qualidade-ar/inea", label: "Radar INEA" },
-  { href: "/acervo", label: "Acervo" },
+  { href: "/acervo", label: "Acervo" }
+];
+
+const moreLinks = [
   { href: "/acervo/linha", label: "Linha do Tempo" },
   { href: "/relatorios", label: "Relatórios" },
   { href: "/agenda", label: "Agenda" },
   { href: "/conversar", label: "Conversas e atividades" },
   { href: "/transparencia", label: "Transparência" },
-  { href: "/como-ler-dados", label: "Guias" }
+  { href: "/blog", label: "Blog" },
+  { href: "/dossies", label: "Dossiês" },
+  { href: "/como-ler-dados", label: "Guias" },
+  { href: "/buscar", label: "Buscar" }
 ];
 
 const mobileGroups = [
@@ -35,17 +41,19 @@ const mobileGroups = [
       { href: "/acervo/linha", label: "Linha do Tempo" },
       { href: "/relatorios", label: "Relatórios" },
       { href: "/mapa", label: "Mapa" },
-      { href: "/dossies", label: "Dossiês" }
+      { href: "/dossies", label: "Dossiês" },
+      { href: "/blog", label: "Blog" }
     ]
   },
-      {
-        label: "Institucional",
-        links: [
+  {
+    label: "Institucional",
+    links: [
       { href: "/como-ler-dados", label: "Guias" },
       { href: "/como-participar", label: "Como participar" },
-      { href: "/transparencia", label: "Transparência" }
-        ]
-      }
+      { href: "/transparencia", label: "Transparência" },
+      { href: "/buscar", label: "Buscar" }
+    ]
+  }
 ];
 
 function shouldMatchMobileLinkExactly(href: string) {
@@ -56,12 +64,32 @@ export function Navbar() {
   const { prompt, clearPrompt } = useInstallPrompt();
   const location = useLocation();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isMoreOpen, setIsMoreOpen] = useState(false);
   const menuButtonRef = useRef<HTMLButtonElement>(null);
   const mobilePanelRef = useRef<HTMLDivElement>(null);
+  const moreMenuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     setIsMenuOpen(false);
+    setIsMoreOpen(false);
   }, [location.pathname]);
+
+  useEffect(() => {
+    if (!isMoreOpen) return;
+    const closeMoreMenu = (event: PointerEvent | KeyboardEvent) => {
+      if (event instanceof KeyboardEvent) {
+        if (event.key === "Escape") setIsMoreOpen(false);
+        return;
+      }
+      if (!moreMenuRef.current?.contains(event.target as Node)) setIsMoreOpen(false);
+    };
+    document.addEventListener("pointerdown", closeMoreMenu);
+    window.addEventListener("keydown", closeMoreMenu);
+    return () => {
+      document.removeEventListener("pointerdown", closeMoreMenu);
+      window.removeEventListener("keydown", closeMoreMenu);
+    };
+  }, [isMoreOpen]);
 
   useEffect(() => {
     if (!isMenuOpen) return;
@@ -111,18 +139,45 @@ export function Navbar() {
     <header id="site-navigation" className="site-topbar">
       <div className="site-topbar-inner">
         <Link to="/" className="site-brand" aria-label="SEMEAR - Início">
-          <img src="/brand/uff-logo-vertical-blue.png" alt="Universidade Federal Fluminense" className="site-uff-logo" />
+          <img src="/brand/uff-logo.svg" alt="Universidade Federal Fluminense" className="site-uff-logo" width="64" height="64" />
           <span aria-hidden="true" />
-          <img src="/brand/semear-logo-full.jpeg" alt="Projeto UFF SEMEAR" className="site-semear-logo" />
+          <img src="/brand/semear-logo.svg" alt="Projeto UFF SEMEAR" className="site-semear-logo" width="72" height="72" />
           <small>Portal público</small>
         </Link>
 
         <nav className="site-nav" aria-label="Navegação principal">
-          {links.map((link) => (
-            <NavLink key={link.href} to={link.href} className={({ isActive }) => (isActive ? "is-active" : undefined)}>
+          {primaryLinks.map((link) => (
+            <NavLink
+              key={link.href}
+              to={link.href}
+              end={shouldMatchMobileLinkExactly(link.href)}
+              className={({ isActive }) => (isActive ? "is-active" : undefined)}
+            >
               {link.label}
             </NavLink>
           ))}
+          <div ref={moreMenuRef} className={`site-nav-more ${moreLinks.some((link) => location.pathname.startsWith(link.href)) ? "is-active" : ""}`}>
+            <button
+              type="button"
+              aria-expanded={isMoreOpen}
+              aria-haspopup="menu"
+              onClick={() => setIsMoreOpen((open) => !open)}
+            >
+              Mais
+              <svg className="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="m6 9 6 6 6-6" />
+              </svg>
+            </button>
+            {isMoreOpen ? (
+              <div className="site-nav-more-panel" role="menu" aria-label="Mais áreas do portal">
+                {moreLinks.map((link) => (
+                  <NavLink key={link.href} to={link.href} role="menuitem">
+                    {link.label}
+                  </NavLink>
+                ))}
+              </div>
+            ) : null}
+          </div>
         </nav>
 
         <div className="site-actions">

@@ -5,9 +5,9 @@ export function Footer() {
     <footer className="site-footer" role="contentinfo">
       <div className="site-footer-inner">
         <div className="site-footer-brand">
-          <img src="/brand/uff-logo-vertical-blue.png" alt="Universidade Federal Fluminense" />
+          <img src="/brand/uff-logo.svg" alt="Universidade Federal Fluminense" width="64" height="64" loading="lazy" />
           <span aria-hidden="true" />
-          <img src="/brand/semear-logo-full.jpeg" alt="Projeto UFF SEMEAR" />
+          <img src="/brand/semear-logo.svg" alt="Projeto UFF SEMEAR" width="72" height="72" loading="lazy" />
         </div>
 
         <p>Plataforma pública-universitária de referência para monitoramento ambiental e climático.</p>
@@ -15,11 +15,14 @@ export function Footer() {
         <nav aria-label="Links úteis">
           <strong>Links úteis</strong>
           <Link to="/sobre">Sobre o projeto</Link>
-          <Link to="/governanca">Equipe</Link>
+          <Link to="/governanca">Governança</Link>
           <Link to="/transparencia">Transparência</Link>
           <Link to="/como-ler-dados">Guias</Link>
-          <Link to="/privacidade-lgpd">FAQ</Link>
+          <Link to="/privacidade-lgpd">Privacidade e LGPD</Link>
           <Link to="/conversar">Conversas e atividades</Link>
+          <Link to="/blog">Blog</Link>
+          <Link to="/dossies">Dossiês</Link>
+          <Link to="/buscar">Buscar no portal</Link>
         </nav>
 
         <div className="site-footer-social">

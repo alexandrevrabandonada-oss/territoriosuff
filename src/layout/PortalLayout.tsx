@@ -8,7 +8,9 @@ import { Navbar } from "../components/Navbar";
 import { trackOfflineFallback } from "../lib/observability";
 
 export function PortalLayout({ children }: PropsWithChildren) {
-  const [isOnline, setIsOnline] = useState(typeof navigator === "undefined" ? true : navigator.onLine);
+  const [isOnline, setIsOnline] = useState(
+    typeof window === "undefined" || typeof navigator === "undefined" ? true : navigator.onLine
+  );
   const location = useLocation();
 
   useEffect(() => {

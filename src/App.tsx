@@ -4,9 +4,10 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import { LoadingCard } from "./components/LoadingCard";
 import { RouteObservability } from "./components/RouteObservability";
 import { PortalLayout } from "./layout/PortalLayout";
+import { HomePage } from "./pages/HomePage";
+import { ReportsRoutePage } from "./pages/reports/ReportsRoutePage";
 
 const AdminRoutes = lazy(() => import("./admin/AdminRoutes"));
-const HomePage = lazy(() => import("./pages/HomePage").then((m) => ({ default: m.HomePage })));
 
 // Lazy-loaded (non-critical public)
 const DadosPage = lazy(() => import("./pages/DadosPage").then((m) => ({ default: m.DadosPage })));
@@ -18,6 +19,7 @@ const TransparenciaPage = lazy(() => import("./pages/TransparenciaPage").then((m
 const AlertasPage = lazy(() => import("./pages/AlertasPage").then((m) => ({ default: m.AlertasPage })));
 const SearchPage = lazy(() => import("./pages/SearchPage").then((m) => ({ default: m.SearchPage })));
 const StatusPage = lazy(() => import("./pages/StatusPage").then((m) => ({ default: m.StatusPage })));
+const OfflinePage = lazy(() => import("./pages/OfflinePage").then((m) => ({ default: m.OfflinePage })));
 const ComoLerDadosPage = lazy(() => import("./pages/ComoLerDadosPage").then((m) => ({ default: m.ComoLerDadosPage })));
 const ComoParticiparPage = lazy(() => import("./pages/ComoParticiparPage").then((m) => ({ default: m.ComoParticiparPage })));
 const PrivacidadeLgpdPage = lazy(() => import("./pages/PrivacidadeLgpdPage").then((m) => ({ default: m.PrivacidadeLgpdPage })));
@@ -39,7 +41,6 @@ const BlogListPage = lazy(() => import("./pages/BlogListPage").then((m) => ({ de
 const BlogPostPage = lazy(() => import("./pages/BlogPostPage").then((m) => ({ default: m.BlogPostPage })));
 
 // Relatorios lazy-loaded
-const ReportsListPage = lazy(() => import("./pages/reports/ReportsListPage").then((m) => ({ default: m.ReportsListPage })));
 const ReportDetailPage = lazy(() => import("./pages/reports/ReportDetailPage").then((m) => ({ default: m.ReportDetailPage })));
 
 // Conversar lazy-loaded
@@ -47,7 +48,7 @@ const ConversarListPage = lazy(() => import("./pages/conversar/ConversarListPage
 const ConversarDetailPage = lazy(() => import("./pages/conversar/ConversarDetailPage").then((m) => ({ default: m.ConversarDetailPage })));
 
 // Mapa lazy-loaded
-const MapaPage = lazy(() => import("./pages/MapaPage").then((m) => ({ default: m.MapaPage })));
+const MapaLandingPage = lazy(() => import("./pages/MapaLandingPage").then((m) => ({ default: m.MapaLandingPage })));
 
 // Qualidade do Ar INEA lazy-loaded
 const RadarLandingPage = lazy(() => import("./pages/air/RadarLandingPage").then((m) => ({ default: m.RadarLandingPage })));
@@ -83,7 +84,7 @@ export default function App() {
                   <Route path="/agenda/:eventId" element={<AgendaDetailPage />} />
                   <Route path="/conversar" element={<ConversarListPage />} />
                   <Route path="/conversar/:slug" element={<ConversarDetailPage />} />
-                  <Route path="/mapa" element={<MapaPage />} />
+                  <Route path="/mapa" element={<MapaLandingPage />} />
                   <Route path="/inscricoes" element={<InscricoesPage />} />
                   <Route path="/sobre" element={<SobrePage />} />
                   <Route path="/transparencia" element={<TransparenciaPage />} />
@@ -102,10 +103,11 @@ export default function App() {
                   <Route path="/dossies/:slug" element={<CollectionDetailPage />} />
                   <Route path="/blog" element={<BlogListPage />} />
                   <Route path="/blog/:slug" element={<BlogPostPage />} />
-                  <Route path="/relatorios" element={<ReportsListPage />} />
+                  <Route path="/relatorios" element={<ReportsRoutePage />} />
                   <Route path="/relatorios/:slug" element={<ReportDetailPage />} />
                   <Route path="/status" element={<StatusPage />} />
                   <Route path="/buscar" element={<SearchPage />} />
+                  <Route path="/offline" element={<OfflinePage />} />
                   <Route path="*" element={<Navigate to="/" replace />} />
                 </Routes>
               </PortalLayout>

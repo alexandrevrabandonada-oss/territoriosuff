@@ -17,7 +17,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '24'
           cache: 'npm'
 
       - name: Install Dependencies
@@ -25,7 +25,7 @@ jobs:
 
       - name: Run Healthcheck Script
         env:
-          OBSERVATORIO_BASE_URL: https://semear-pwa.vercel.app
+          OBSERVATORIO_BASE_URL: https://www.semearsf.org
         run: npx tsx scripts/observatorio-healthcheck.ts
 
       - name: Upload Healthcheck Report Artifact

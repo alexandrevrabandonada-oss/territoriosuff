@@ -1,20 +1,20 @@
-import { createClient } from "@supabase/supabase-js";
+import { createClient, type SupabaseClient } from "@supabase/supabase-js";
 import crypto from "node:crypto";
-import { escapeHtml } from "./_html";
+import { escapeHtml } from "./_html.js";
 
 const SUPABASE_URL = process.env.SUPABASE_URL || "";
 const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || "";
 const SHARE_HASH_SALT = process.env.SHARE_HASH_SALT || "semear_fallback_salt";
 const VITE_PROJECT_NAME = process.env.VITE_PROJECT_NAME || "SEMEAR SF";
 
-let supabaseClient: ReturnType<typeof createClient> | null = null;
+let supabaseClient: SupabaseClient<any> | null = null;
 
 function getSupabaseClient() {
     if (!SUPABASE_URL || !SUPABASE_SERVICE_ROLE_KEY) {
         throw new Error("Missing Supabase server environment for share dados endpoint.");
     }
     if (!supabaseClient) {
-        supabaseClient = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, {
+        supabaseClient = createClient<any>(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, {
             auth: { persistSession: false }
         });
     }
@@ -22,7 +22,7 @@ function getSupabaseClient() {
 }
 
 function getHostUrl(req: any): string {
-    const host = req.headers["x-forwarded-host"] || req.headers.host || "semear-pwa.vercel.app";
+    const host = req.headers["x-forwarded-host"] || req.headers.host || "www.semearsf.org";
     const protocol = req.headers["x-forwarded-proto"] || "https";
     return `${protocol}://${host}`;
 }
