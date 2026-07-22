@@ -54,4 +54,32 @@ test.describe("Navigation and PWA @smoke", () => {
     await expect(offlineRegion.getByRole("heading", { name: "Acesso offline ao SEMEAR", level: 1 })).toBeVisible();
     await expect(offlineRegion.getByRole("status")).toContainText(/conexão indisponível/i);
   });
+
+  test("retired and unknown paths never masquerade as the home page", async ({ page }) => {
+    await page.goto("/rota-que-nao-existe");
+
+    await expect(page).toHaveURL(/\/rota-que-nao-existe$/);
+    await expect(page.getByRole("heading", { name: "Página não encontrada", level: 1 })).toBeVisible();
+    await expect(page).toHaveTitle(/Página não encontrada \| SEMEAR/i);
+    await expect(page.getByRole("heading", { name: "Projeto UFF SEMEAR", level: 1 })).toHaveCount(0);
+  });
+
+  test("public guidance and footer expose only current destinations", async ({ page }) => {
+    await page.goto("/como-ler-dados");
+
+    const timelineLink = page.getByRole("link", { name: "Linha do tempo" });
+    await expect(timelineLink).toHaveAttribute("href", "/acervo/linha");
+    await timelineLink.click();
+    await expect(page).toHaveURL(/\/acervo\/linha$/);
+
+    const footer = page.getByRole("contentinfo");
+    await expect(footer.getByRole("navigation", { name: "Links úteis" })).toBeVisible();
+    const instagram = footer.getByRole("link", { name: "Abrir Instagram oficial do SEMEAR" });
+    const tiktok = footer.getByRole("link", { name: "Abrir TikTok oficial do SEMEAR" });
+    await expect(instagram).toHaveAttribute("href", "https://www.instagram.com/sfsemear?igsh=MXF1ODdkemZlaHJrYg==");
+    await expect(tiktok).toHaveAttribute("href", "https://www.tiktok.com/@semear.uff?_r=1&_t=ZS-98FzuP81rtN");
+    await expect(instagram).toHaveAttribute("target", "_blank");
+    await expect(tiktok).toHaveAttribute("target", "_blank");
+    await expect(footer.locator('a[href="https://www.youtube.com/"]')).toHaveCount(0);
+  });
 });

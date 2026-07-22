@@ -1,5 +1,5 @@
 import { lazy, Suspense } from "react";
-import { Navigate, Route, Routes } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 
 import { LoadingCard } from "./components/LoadingCard";
 import { RouteObservability } from "./components/RouteObservability";
@@ -20,6 +20,7 @@ const AlertasPage = lazy(() => import("./pages/AlertasPage").then((m) => ({ defa
 const SearchPage = lazy(() => import("./pages/SearchPage").then((m) => ({ default: m.SearchPage })));
 const StatusPage = lazy(() => import("./pages/StatusPage").then((m) => ({ default: m.StatusPage })));
 const OfflinePage = lazy(() => import("./pages/OfflinePage").then((m) => ({ default: m.OfflinePage })));
+const NotFoundPage = lazy(() => import("./pages/NotFoundPage").then((m) => ({ default: m.NotFoundPage })));
 const ComoLerDadosPage = lazy(() => import("./pages/ComoLerDadosPage").then((m) => ({ default: m.ComoLerDadosPage })));
 const ComoParticiparPage = lazy(() => import("./pages/ComoParticiparPage").then((m) => ({ default: m.ComoParticiparPage })));
 const PrivacidadeLgpdPage = lazy(() => import("./pages/PrivacidadeLgpdPage").then((m) => ({ default: m.PrivacidadeLgpdPage })));
@@ -108,7 +109,7 @@ export default function App() {
                   <Route path="/status" element={<StatusPage />} />
                   <Route path="/buscar" element={<SearchPage />} />
                   <Route path="/offline" element={<OfflinePage />} />
-                  <Route path="*" element={<Navigate to="/" replace />} />
+                  <Route path="*" element={<NotFoundPage />} />
                 </Routes>
               </PortalLayout>
             }
