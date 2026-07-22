@@ -70,7 +70,7 @@ function injectMarkup(documentHtml: string, markup: string) {
   return documentHtml.replace(rootPattern, `<div id="root" data-prerendered="true">${markup}</div>`);
 }
 
-async function optimizeCriticalCss(documentHtml: string, distDir: string, route: string) {
+async function optimizeCriticalCss(documentHtml: string, distDir: string) {
   const critters = new Critters({
     path: distDir,
     publicPath: "/",
@@ -89,15 +89,7 @@ async function optimizeCriticalCss(documentHtml: string, distDir: string, route:
       (_link, href: string) => `<style data-prerender-critical="true">${criticalStyle}</style><link crossorigin data-deferred-stylesheet="true" data-href="${href}">`
     )
     .replace(/\s*<link rel="modulepreload"[^>]*>\s*/g, "\n")
-    .replace(/<script>\(\(\)=>\{const routes=[\s\S]*?<\/script>\s*/, "")
-    .replace(
-      /<script type="module" crossorigin src="([^"]+)"><\/script>/,
-      (_script, source: string) => {
-        const serializedSource = JSON.stringify(source);
-        const serializedRoute = JSON.stringify(route);
-        return `<script>(()=>{const source=${serializedSource};const route=${serializedRoute};let started=false;let interactive=false;let replaying=false;let timer;const events=["pointerover","pointerdown","touchstart","focusin","keydown","wheel","scroll"];const activateStyles=()=>{for(const link of document.querySelectorAll("link[data-deferred-stylesheet]")){link.rel="stylesheet";link.href=link.dataset.href;delete link.dataset.deferredStylesheet;delete link.dataset.href;}};const load=()=>{if(started)return;started=true;clearTimeout(timer);for(const event of events)window.removeEventListener(event,load,true);activateStyles();import(source).then(()=>setTimeout(()=>{interactive=true;},750));};document.addEventListener("click",event=>{if(replaying||interactive)return;const target=event.target instanceof Element?event.target.closest("button,[role=button],[role=tab]"):null;if(!(target instanceof HTMLElement))return;event.preventDefault();event.stopImmediatePropagation();load();let attempts=0;const replay=()=>{if(interactive){replaying=true;target.click();queueMicrotask(()=>{replaying=false;});}else if(attempts++<400){setTimeout(replay,25);}};replay();},true);let current=location.pathname;while(current.length>1&&current.endsWith("/"))current=current.slice(0,-1);if(current!==route){load();return;}for(const event of events)window.addEventListener(event,load,{capture:true,passive:true});timer=setTimeout(load,30000);requestAnimationFrame(()=>requestAnimationFrame(()=>{const preload=document.createElement("link");preload.rel="modulepreload";preload.href=source;preload.crossOrigin="anonymous";document.head.appendChild(preload);}));})();</script>`;
-      }
-    );
+    .replace(/<script>\(\(\)=>\{const routes=[\s\S]*?<\/script>\s*/, "");
 }
 
 async function main() {
@@ -110,7 +102,7 @@ async function main() {
       : path.join(seoDir, `${getStaticMetadataFileName(route)}.html`);
     const sourceHtml = await fs.readFile(sourcePath, "utf8");
     const markup = await renderRoute(route);
-    const prerenderedHtml = await optimizeCriticalCss(injectMarkup(sourceHtml, markup), distDir, route);
+    const prerenderedHtml = await optimizeCriticalCss(injectMarkup(sourceHtml, markup), distDir);
 
     await fs.writeFile(sourcePath, prerenderedHtml, "utf8");
 
