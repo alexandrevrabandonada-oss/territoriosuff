@@ -110,7 +110,7 @@ export function HomePage() {
             <span className="badge-metodologia">Projeto UFF</span>
           </>
         }
-        title={<span id="home-title" aria-label="Projeto UFF SEMEAR"><span>SEME</span><span>AR</span></span>}
+        title={<span id="home-title"><span className="sr-only">Projeto UFF SEMEAR</span><span aria-hidden="true"><span>SEME</span><span>AR</span></span></span>}
         subtitle="Conhecimento que semeia ciência. Dados que cultivam soluções para o futuro."
         tone="social"
         metrics={

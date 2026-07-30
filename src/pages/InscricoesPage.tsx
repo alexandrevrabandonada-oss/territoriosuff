@@ -2,6 +2,7 @@ import { FormEvent, useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 
 import { IconShell, SurfaceCard } from "../components/BrandSystem";
+import { PortalHero } from "../components/portal";
 import { createRegistration, getEventSummary } from "../lib/api/content";
 import type { EventSummary } from "../lib/api/core";
 
@@ -106,19 +107,18 @@ export function InscricoesPage() {
 
   return (
     <section className="portal-stage inscriptions-stage space-y-8 md:space-y-10">
-      <SurfaceCard className="portal-stage-hero portal-stage-hero-warm overflow-hidden p-0">
-        <div className="portal-stage-hero-inner">
-          <div className="portal-stage-copy">
-            <IconShell tone="warm" className="portal-stage-icon"><span aria-hidden="true">📝</span></IconShell>
-            <h1>Inscrições em eventos</h1>
-            <p>Preencha o formulário para participar de oficinas, encontros públicos e atividades territoriais do projeto SEMEAR.</p>
-          </div>
+      <PortalHero
+        tone="warm"
+        badge={<IconShell tone="warm" className="portal-stage-icon"><span aria-hidden="true">📝</span></IconShell>}
+        title="Inscrições em eventos"
+        subtitle="Preencha o formulário para participar de oficinas, encontros públicos e atividades territoriais do projeto SEMEAR."
+        aside={
           <div className="portal-stage-stat">
             <span>{event ? "1" : "0"}</span>
             <small>evento selecionado</small>
           </div>
-        </div>
-      </SurfaceCard>
+        }
+      />
 
       <SurfaceCard className="portal-list-panel p-5 md:p-6">
         {loadingEvent ? <p className="text-base text-text-secondary">Carregando dados do evento...</p> : null}

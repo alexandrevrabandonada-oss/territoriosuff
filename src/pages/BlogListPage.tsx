@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
-import { IconShell, SurfaceCard } from "../components/BrandSystem";
+import { IconShell } from "../components/BrandSystem";
 import { BrandIllustratedEmptyState, BrandTextureSkeleton } from "../components/BrandMicro";
 import { EditorialFamilyCard } from "../components/CardFamilies";
+import { ErrorState } from "../components/ErrorState";
+import { PortalHero } from "../components/portal";
 import { listBlogPosts } from "../lib/api/content";
 import type { BlogPost } from "../lib/api/core";
 import { getOptimizedCover } from "../lib/imageOptimization";
@@ -34,23 +36,17 @@ export function BlogListPage() {
 
     return (
         <section className="portal-stage blog-stage space-y-8 md:space-y-10">
-            <SurfaceCard className="portal-stage-hero portal-stage-hero-seed overflow-hidden p-0">
-                <div className="portal-stage-hero-inner">
-                    <div className="portal-stage-copy">
-                        <IconShell tone="seed" className="portal-stage-icon">
-                            <span aria-hidden="true">✍️</span>
-                        </IconShell>
-                        <h1>Blog editorial do SEMEAR</h1>
-                        <p>
-                            Atualizações institucionais, bastidores de campo e textos de comunicação pública sobre monitoramento do ar e participação territorial.
-                        </p>
-                    </div>
-                    <div className="portal-stage-stat">
-                        <span>{loading ? "..." : posts.length}</span>
-                        <small>publicação(ões)</small>
-                    </div>
-                </div>
-            </SurfaceCard>
+            <PortalHero
+                tone="seed"
+                badge={
+                    <IconShell tone="seed" className="portal-stage-icon">
+                        <span aria-hidden="true">✍️</span>
+                    </IconShell>
+                }
+                title="Blog editorial do SEMEAR"
+                subtitle="Atualizações institucionais, bastidores de campo e textos de comunicação pública sobre monitoramento do ar e participação territorial."
+                aside={<div className="portal-stage-stat"><span>{loading ? "..." : posts.length}</span><small>publicação(ões)</small></div>}
+            />
 
             <h2 className="sr-only">Publicações do blog</h2>
 
@@ -61,9 +57,7 @@ export function BlogListPage() {
                     ))}
                 </div>
             ) : error ? (
-                <p aria-live="assertive" className="rounded-md border border-error bg-error/10 p-3 text-base text-error" role="alert">
-                    {error}
-                </p>
+                <ErrorState description={error} />
             ) : posts.length === 0 ? (
                 <BrandIllustratedEmptyState
                     title="Nenhum post publicado no momento"

@@ -7,26 +7,26 @@ import { ACERVO_KIND_LABELS, type AcervoArea, AREA_KINDS } from "../../lib/acerv
 import { getOptimizedCover } from "../../lib/imageOptimization";
 import { Chip, EditorialCard, EditorialCardActions, EditorialCardBody, EditorialCardExcerpt, EditorialCardMeta, EditorialCardTitle, IconShell, SurfaceCard } from "../../components/BrandSystem";
 import { AxisEyebrow } from "../../components/AxisSystem";
-import { PortalPageShell, PortalSectionHeader } from "../../components/portal";
+import { PortalHero, PortalPageShell, PortalSectionHeader } from "../../components/portal";
 
 const AREA_META: Record<AcervoArea, { label: string; emoji: string; description: string; color: string }> = {
   artigos: {
     label: "Artigos",
     emoji: "📄",
     description: "Publicações científicas, relatórios técnicos e papers acadêmicos.",
-    color: "border-ciano/60"
+    color: "border-brand-primary-dark/60"
   },
   noticias: {
     label: "Notícias",
     emoji: "📰",
     description: "Cobertura jornalística e links sobre qualidade do ar e meio ambiente.",
-    color: "border-acento/60"
+    color: "border-accent-brown/60"
   },
   midias: {
     label: "Mídias",
     emoji: "🎬",
     description: "Vídeos, fotorreportagens e materiais audiovisuais.",
-    color: "border-primaria/60"
+    color: "border-brand-primary/60"
   },
   documentos: {
     label: "Documentos",
@@ -112,16 +112,12 @@ export function AcervoTimelinePage() {
 
   return (
     <PortalPageShell className="timeline-stage">
-      <SurfaceCard className="portal-stage-hero portal-stage-hero-documental overflow-hidden p-0">
-        <div className="portal-stage-hero-inner">
-          <div className="portal-stage-copy">
-            <IconShell tone="warm" className="portal-stage-icon"><span aria-hidden="true">{meta.emoji}</span></IconShell>
-            <h1>Linha do tempo do acervo</h1>
-            <p>{meta.description} Navegue por ano para acompanhar a memória pública preservada pelo SEMEAR.</p>
-          </div>
-          <div className="portal-stage-stat"><span>{selectedYear ?? "—"}</span><small>ano selecionado</small></div>
-        </div>
-      </SurfaceCard>
+      <PortalHero
+        badge={<IconShell tone="warm" className="portal-stage-icon"><span aria-hidden="true">{meta.emoji}</span></IconShell>}
+        title="Linha do tempo do acervo"
+        subtitle={`${meta.description} Navegue por ano para acompanhar a memória pública preservada pelo SEMEAR.`}
+        aside={<div className="portal-stage-stat"><span>{selectedYear ?? "—"}</span><small>ano selecionado</small></div>}
+      />
 
       <div className="grid gap-6 md:grid-cols-[minmax(240px,280px)_minmax(0,1fr)]">
         <aside className="space-y-4 md:sticky md:top-24 md:self-start">
@@ -147,7 +143,7 @@ export function AcervoTimelinePage() {
                     }`}
                   >
                     <span className="font-mono text-lg font-black">{entry.year}</span>
-                    <span className="ml-4 text-[10px] font-bold uppercase tracking-widest opacity-60">
+                    <span className="ml-4 text-[10px] font-bold uppercase tracking-widest">
                       {entry.total} {entry.total === 1 ? "item" : "itens"}
                     </span>
                   </button>

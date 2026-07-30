@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { IconShell, SurfaceCard } from "../../components/BrandSystem";
+import { PortalHero } from "../../components/portal";
 import { MethodologyNotice } from "../../components/air/MethodologyNotice";
 import { useRadarReleaseMetadata } from "../../data/air/useRadarReleaseMetadata";
 
@@ -9,25 +10,19 @@ export function RadarLandingPage() {
   return (
     <section className="portal-stage space-y-8 md:space-y-10">
       {/* Hero Section */}
-      <SurfaceCard className="portal-stage-hero portal-stage-hero-lab overflow-hidden p-0">
-        <div className="portal-stage-hero-inner">
-          <div className="portal-stage-copy">
-            <IconShell tone="brand" className="portal-stage-icon">
-              <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z" />
-              </svg>
-            </IconShell>
-            <h1>Portal de Qualidade do Ar</h1>
-            <p>
-              Consulte as leituras de qualidade do ar em Volta Redonda-RJ por meio de redes oficiais e redes complementares de monitoramento cidadão.
-            </p>
-          </div>
-          <div className="portal-stage-stat">
-            <span>2 Redes</span>
-            <small>INEA & SEMEAR UFF</small>
-          </div>
-        </div>
-      </SurfaceCard>
+      <PortalHero
+        tone="lab"
+        badge={
+          <IconShell tone="brand" className="portal-stage-icon">
+            <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z" />
+            </svg>
+          </IconShell>
+        }
+        title="Portal de Qualidade do Ar"
+        subtitle="Consulte as leituras de qualidade do ar em Volta Redonda-RJ por meio de redes oficiais e redes complementares de monitoramento cidadão."
+        aside={<div className="portal-stage-stat"><span>2 Redes</span><small>INEA & SEMEAR UFF</small></div>}
+      />
 
       {/* Information block */}
       <MethodologyNotice headingLevel={2} />

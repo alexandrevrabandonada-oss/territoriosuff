@@ -5,6 +5,7 @@ import { Chip, SurfaceCard } from "../../components/BrandSystem";
 import { BrandIllustratedEmptyState, BrandTextureSkeleton } from "../../components/BrandMicro";
 import { AxisEyebrow } from "../../components/AxisSystem";
 import { DocumentalCard } from "../../components/CardFamilies";
+import { ErrorState } from "../../components/ErrorState";
 import { PortalSectionHeader } from "../../components/portal";
 import { getOptimizedCover } from "../../lib/imageOptimization";
 import type { ReportDocument, ReportKind } from "../../lib/api";
@@ -201,9 +202,7 @@ export function ReportsListPage() {
             ))}
           </div>
         ) : error ? (
-          <p aria-live="assertive" className="rounded-md border border-error bg-error/10 p-3 text-base text-error" role="alert">
-            {error}
-          </p>
+          <ErrorState description={error} />
         ) : catalogIsEmpty ? (
           <div className="space-y-5">
             <BrandIllustratedEmptyState

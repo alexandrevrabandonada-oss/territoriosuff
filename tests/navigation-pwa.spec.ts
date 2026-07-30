@@ -36,6 +36,31 @@ test.describe("Navigation and PWA @smoke", () => {
     await expect(tabs.nth(1)).toHaveAttribute("aria-selected", "true");
   });
 
+  test("dados tabs use roving tabindex with arrow activation", async ({ page }) => {
+    await page.goto("/dados", { waitUntil: "domcontentloaded" });
+
+    const tabList = page.getByRole("tablist", { name: "Período de visualização" }).first();
+    const tabs = tabList.getByRole("tab");
+    await expect(tabs).toHaveCount(4);
+
+    // roving tabindex: apenas a tab ativa ("24h" por padrão) entra na ordem de Tab
+    await expect(tabs.nth(0)).toHaveAttribute("tabindex", "-1");
+    await expect(tabs.nth(1)).toHaveAttribute("tabindex", "0");
+    await expect(tabs.nth(2)).toHaveAttribute("tabindex", "-1");
+
+    await tabs.nth(1).focus();
+    await tabs.nth(1).press("ArrowRight");
+    await expect(tabs.nth(2)).toHaveAttribute("aria-selected", "true");
+    await expect(tabs.nth(2)).toHaveAttribute("tabindex", "0");
+
+    await tabs.nth(2).press("Home");
+    await expect(tabs.nth(0)).toHaveAttribute("aria-selected", "true");
+    await expect(tabs.nth(0)).toHaveAttribute("tabindex", "0");
+
+    await tabs.nth(0).press("End");
+    await expect(tabs.nth(3)).toHaveAttribute("aria-selected", "true");
+  });
+
   test("manifest and offline route keep the installable fallback contract", async ({ page, request }) => {
     const manifestResponse = await request.get("/manifest.webmanifest");
     expect(manifestResponse.ok()).toBeTruthy();

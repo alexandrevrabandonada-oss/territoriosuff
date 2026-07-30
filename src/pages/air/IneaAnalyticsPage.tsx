@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { IconShell, SurfaceCard } from "../../components/BrandSystem";
+import { PortalHero } from "../../components/portal";
 import { DataFreshnessNotice } from "../../components/air/DataFreshnessNotice";
 import { PublicInterpretationBox } from "../../components/air/PublicInterpretationBox";
 import { WindRosePanel } from "../../components/air/WindRosePanel";
@@ -318,7 +319,7 @@ export function IneaAnalyticsPage() {
     <div className="container mx-auto px-4 py-8 max-w-7xl space-y-10">
       
       {/* Header and Breadcrumbs */}
-      <div className="space-y-3">
+      <div className="space-y-6">
         <div className="flex items-center gap-2 text-xs font-semibold text-slate-500">
           <Link to="/qualidade-ar" className="hover:text-slate-800 transition-colors">Radar do Ar</Link>
           <span>/</span>
@@ -326,13 +327,17 @@ export function IneaAnalyticsPage() {
           <span>/</span>
           <span className="text-slate-800">Análises</span>
         </div>
-        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-          <div>
-            <h1 className="text-3xl font-extrabold text-slate-800 tracking-tight">O que os dados oficiais mostram?</h1>
-            <p className="text-slate-500 text-sm font-medium mt-1">
-              Camada analítica e diagnóstico público das medições históricas de qualidade do ar em Volta Redonda, condicionados ao release vigente e à cobertura respondida.
-            </p>
-            <div className="mt-3 flex flex-wrap gap-2">
+        <PortalHero
+          tone="lab"
+          badge={
+            <IconShell tone="brand" className="portal-stage-icon">
+              <span aria-hidden="true">📊</span>
+            </IconShell>
+          }
+          title="O que os dados oficiais mostram?"
+          subtitle="Camada analítica e diagnóstico público das medições históricas de qualidade do ar em Volta Redonda, condicionados ao release vigente e à cobertura respondida."
+          metrics={
+            <div className="flex flex-wrap gap-2 min-[900px]:col-span-3">
               <RadarEvidenceBadge
                 level="experimental"
                 label="Leitura analítica pública"
@@ -350,24 +355,27 @@ export function IneaAnalyticsPage() {
                 metodologia {releaseMetadata.methodologyVersion}
               </span>
             </div>
-          </div>
-          <div className="flex flex-wrap items-center gap-2">
-            <Link 
-              to="/qualidade-ar/inea/analises"
-              className="inline-flex items-center gap-2 px-4 py-2 border border-slate-200 bg-white text-slate-700 rounded-xl text-xs font-bold hover:bg-slate-50 transition-all shadow-sm"
-            >
-              Ver síntese histórica
-            </Link>
-            <Link 
-              to="/qualidade-ar/inea"
-              className="inline-flex items-center gap-2 px-4 py-2 bg-emerald-600 text-white rounded-xl text-xs font-bold hover:bg-emerald-700 transition-all shadow-sm"
-            >
-              Voltar para o Painel Geral
-            </Link>
-          </div>
-        </div>
+          }
+          aside={<div className="portal-stage-stat"><span>{staticAnalyticsSummary.stations.length}</span><small>estações na base auditada</small></div>}
+          actions={
+            <>
+              <Link
+                to="/qualidade-ar/inea/analises"
+                className="inline-flex items-center gap-2 px-4 py-2 border border-slate-200 bg-white text-slate-700 rounded-xl text-xs font-bold hover:bg-slate-50 transition-all shadow-sm"
+              >
+                Ver síntese histórica
+              </Link>
+              <Link
+                to="/qualidade-ar/inea"
+                className="inline-flex items-center gap-2 px-4 py-2 bg-emerald-600 text-white rounded-xl text-xs font-bold hover:bg-emerald-700 transition-all shadow-sm"
+              >
+                Voltar para o Painel Geral
+              </Link>
+            </>
+          }
+        />
 
-        <PublicInterestProtocol className="mt-6" />
+        <PublicInterestProtocol />
       </div>
 
       {/* Freshness Disclaimer & Coverage Warning Alert */}

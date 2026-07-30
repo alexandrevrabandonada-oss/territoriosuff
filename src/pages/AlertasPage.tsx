@@ -179,7 +179,7 @@ export function AlertasPage() {
 
     return (
         <PortalPageShell className="alerts-stage pb-20">
-            <a href="#alerts-form" className="inline-flex min-h-[44px] items-center rounded-full border border-brand-primary/20 bg-white/90 px-4 py-2 text-xs font-black uppercase tracking-[0.14em] text-brand-primary shadow-sm shadow-brand-primary/5 focus:fixed focus:left-4 focus:top-4 focus:z-50">
+            <a href="#alerts-form" className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-lg focus:bg-brand-primary focus:px-6 focus:py-3 focus:text-base focus:font-bold focus:text-white focus:shadow-lg focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-brand-primary">
                 Pular cabeçalho e ir para o formulário
             </a>
 
@@ -318,7 +318,7 @@ export function AlertasPage() {
                                             type="time"
                                             value={quietStart}
                                             onChange={(e) => setQuietStart(e.target.value)}
-                                            className="bg-transparent text-sm font-semibold text-text-primary focus:outline-none"
+                                            className="rounded-md bg-transparent text-sm font-semibold text-text-primary focus:outline-none focus:ring-2 focus:ring-brand-primary/50"
                                             disabled={isSubscribed}
                                         />
                                     </div>
@@ -331,7 +331,7 @@ export function AlertasPage() {
                                             type="time"
                                             value={quietEnd}
                                             onChange={(e) => setQuietEnd(e.target.value)}
-                                            className="bg-transparent text-sm font-semibold text-text-primary focus:outline-none"
+                                            className="rounded-md bg-transparent text-sm font-semibold text-text-primary focus:outline-none focus:ring-2 focus:ring-brand-primary/50"
                                             disabled={isSubscribed}
                                         />
                                     </div>
@@ -415,7 +415,7 @@ export function AlertasPage() {
 
                         <Link 
                             to="/transparencia" 
-                            className="text-[10px] font-bold text-brand-primary hover:underline block text-center mt-4 uppercase tracking-wider"
+                            className="mt-2 flex min-h-[44px] items-center justify-center text-[10px] font-bold uppercase tracking-wider text-brand-primary hover:underline"
                         >
                             Ver relatórios e médias históricas →
                         </Link>

@@ -4,7 +4,7 @@ import changelogRaw from "../../data/changelog.md?raw";
 import { INSTITUTIONAL_CITATION, INSTITUTIONAL_COORDINATION, INSTITUTIONAL_FUNDING, INSTITUTIONAL_SUMMARY, INSTITUTIONAL_TAGLINE } from "../content/institucional";
 import { IconShell, SurfaceCard } from "../components/BrandSystem";
 import { BrandRadialDivider, BrandWatermarkPanel } from "../components/BrandMicro";
-import { PortalPageShell, PortalSectionHeader } from "../components/portal";
+import { PortalHero, PortalPageShell, PortalSectionHeader } from "../components/portal";
 
 function getLatestChangelogEntries(markdown: string, limit = 10): string[] {
   return markdown
@@ -28,23 +28,17 @@ const governanceLinks = [
 export function GovernancaPage() {
   return (
     <PortalPageShell>
-      <SurfaceCard className="portal-stage-hero portal-stage-hero-lab overflow-hidden p-0">
-        <div className="portal-stage-hero-inner">
-          <div className="portal-stage-copy">
-            <IconShell tone="lab" className="portal-stage-icon">
-              <span aria-hidden="true">⚖️</span>
-            </IconShell>
-            <h1>Governança e publicação</h1>
-            <p>
-              {INSTITUTIONAL_TAGLINE}. Regras públicas de publicação, correção, privacidade e transparência técnica do portal SEMEAR.
-            </p>
-          </div>
-          <div className="portal-stage-stat">
-            <span>{latestEntries.length}</span>
-            <small>itens recentes no changelog</small>
-          </div>
-        </div>
-      </SurfaceCard>
+      <PortalHero
+        tone="lab"
+        badge={
+          <IconShell tone="lab" className="portal-stage-icon">
+            <span aria-hidden="true">⚖️</span>
+          </IconShell>
+        }
+        title="Governança e publicação"
+        subtitle={`${INSTITUTIONAL_TAGLINE}. Regras públicas de publicação, correção, privacidade e transparência técnica do portal SEMEAR.`}
+        aside={<div className="portal-stage-stat"><span>{latestEntries.length}</span><small>itens recentes no changelog</small></div>}
+      />
 
       <SurfaceCard className="portal-list-panel p-6">
         <PortalSectionHeader

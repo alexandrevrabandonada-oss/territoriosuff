@@ -1,19 +1,16 @@
 import { Link } from "react-router-dom";
 import { IconShell, SurfaceCard } from "../components/BrandSystem";
+import { PortalHero } from "../components/portal";
 
 export function PrivacidadeLgpdPage() {
   return (
     <section className="portal-stage space-y-8 md:space-y-10">
-      <SurfaceCard className="portal-stage-hero portal-stage-hero-documental overflow-hidden p-0">
-        <div className="portal-stage-hero-inner">
-          <div className="portal-stage-copy">
-            <IconShell tone="brand" className="portal-stage-icon"><span aria-hidden="true">🔐</span></IconShell>
-            <h1>Privacidade e LGPD</h1>
-            <p>Compromissos públicos do SEMEAR com privacidade, minimização de dados, participação segura e transparência institucional.</p>
-          </div>
-          <div className="portal-stage-stat"><span>LGPD</span><small>direitos e contato</small></div>
-        </div>
-      </SurfaceCard>
+      <PortalHero
+        badge={<IconShell tone="brand" className="portal-stage-icon"><span aria-hidden="true">🔐</span></IconShell>}
+        title="Privacidade e LGPD"
+        subtitle="Compromissos públicos do SEMEAR com privacidade, minimização de dados, participação segura e transparência institucional."
+        aside={<div className="portal-stage-stat"><span>LGPD</span><small>direitos e contato</small></div>}
+      />
 
       <SurfaceCard className="portal-list-panel p-6">
         <h2 className="text-lg font-black text-text-primary">Como tratamos dados</h2>

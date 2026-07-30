@@ -7,9 +7,10 @@ type PortalSectionHeaderProps = {
   hint?: ReactNode;
   action?: ReactNode;
   tone?: "light" | "dark";
+  titleAs?: "h1" | "h2";
 };
 
-export function PortalSectionHeader({ eyebrow, title, subtitle, hint, action, tone = "light" }: PortalSectionHeaderProps) {
+export function PortalSectionHeader({ eyebrow, title, subtitle, hint, action, tone = "light", titleAs: TitleTag = "h2" }: PortalSectionHeaderProps) {
   const titleColor = tone === "dark" ? "text-white" : "text-slate-900";
   const subtitleColor = tone === "dark" ? "text-white/75" : "text-slate-600";
   const hintColor = tone === "dark" ? "text-white/65" : "text-slate-500";
@@ -18,7 +19,7 @@ export function PortalSectionHeader({ eyebrow, title, subtitle, hint, action, to
     <div className="portal-section-header">
       <div className="space-y-2.5">
         {eyebrow ? <div className="flex flex-wrap items-center gap-2.5">{eyebrow}</div> : null}
-        <h2 className={`text-xl font-black tracking-tight md:text-2xl ${titleColor}`}>{title}</h2>
+        <TitleTag className={`text-xl font-black tracking-tight md:text-2xl ${titleColor}`}>{title}</TitleTag>
         {subtitle ? <p className={`max-w-3xl text-sm font-medium leading-relaxed ${subtitleColor}`}>{subtitle}</p> : null}
         {hint ? <p className={`text-xs font-semibold ${hintColor}`}>{hint}</p> : null}
       </div>

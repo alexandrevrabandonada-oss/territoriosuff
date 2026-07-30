@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 
 import { Chip, IconShell, SurfaceCard } from "../components/BrandSystem";
 import { LoadingCard } from "../components/LoadingCard";
+import { PortalHero } from "../components/portal";
 
 const InteractiveMapPage = lazy(() =>
   import("./MapaPage").then((module) => ({ default: module.MapaPage }))
@@ -31,19 +32,18 @@ export function MapaLandingPage() {
         Pular mapa e ir para lista acessível
       </a>
 
-      <SurfaceCard className="portal-stage-hero portal-stage-hero-lab overflow-hidden p-0">
-        <div className="portal-stage-hero-inner">
-          <div className="portal-stage-copy">
-            <IconShell tone="brand" className="portal-stage-icon">
-              <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
-              </svg>
-            </IconShell>
-            <h1>Mapa de monitoramento</h1>
-            <p>
-              Consulte primeiro a lista acessível de estações públicas do INEA. O mapa operacional do SEMEAR usa tiles externos e dados dinâmicos, por isso é carregado somente quando você solicitar.
-            </p>
-          </div>
+      <PortalHero
+        tone="lab"
+        badge={
+          <IconShell tone="brand" className="portal-stage-icon">
+            <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
+            </svg>
+          </IconShell>
+        }
+        title="Mapa de monitoramento"
+        subtitle="Consulte primeiro a lista acessível de estações públicas do INEA. O mapa operacional do SEMEAR usa tiles externos e dados dinâmicos, por isso é carregado somente quando você solicitar."
+        aside={
           <div className="portal-stage-stat gap-4">
             <span>{INEA_REFERENCE_STATIONS.length}</span>
             <small>estações INEA de referência</small>
@@ -52,8 +52,8 @@ export function MapaLandingPage() {
               <Chip tone="seed">Leitura sem mapa</Chip>
             </div>
           </div>
-        </div>
-      </SurfaceCard>
+        }
+      />
 
       <SurfaceCard className="grid gap-5 border-brand-primary/10 bg-gradient-to-br from-white via-white to-brand-primary-soft/45 p-6 md:grid-cols-[minmax(0,1fr)_auto] md:items-center md:p-8">
         <div>

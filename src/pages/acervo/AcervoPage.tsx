@@ -15,7 +15,7 @@ import {
 } from "../../components/BrandSystem";
 import { BrandRadialDivider, BrandTextureSkeleton } from "../../components/BrandMicro";
 import { AxisEyebrow } from "../../components/AxisSystem";
-import { PortalPageShell, PortalSectionHeader } from "../../components/portal";
+import { PortalHero, PortalPageShell, PortalSectionHeader } from "../../components/portal";
 import { listFeaturedAcervo, type AcervoItem } from "../../lib/api";
 import { ACERVO_KIND_LABELS } from "../../lib/acervo";
 
@@ -78,34 +78,33 @@ export function AcervoPage() {
 
     return (
         <PortalPageShell className="acervo-hub">
-            <SurfaceCard className="acervo-hub-hero overflow-hidden p-0">
-                <div className="acervo-hub-hero-grid">
-                    <div className="acervo-hub-copy">
-                        <div className="flex flex-wrap items-center gap-2.5">
-                            <AxisEyebrow axis="acervo">Acervo vivo</AxisEyebrow>
-                            <span className="semear-core-disc h-6 w-6" aria-hidden="true" />
+            <PortalHero
+                tone="lab"
+                badge={
+                    <>
+                        <AxisEyebrow axis="acervo">Acervo vivo</AxisEyebrow>
+                        <span className="semear-core-disc h-6 w-6" aria-hidden="true" />
+                    </>
+                }
+                title="Curadoria de conteúdo para ciência aberta e memória pública."
+                subtitle="O Acervo SEMEAR organiza artigos, matérias, mídias e documentos em uma experiência de consulta mais clara para educação ambiental, transparência e engajamento comunitário."
+                metrics={
+                    <>
+                        <div className="portal-kpi-card">
+                            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-text-secondary">frentes curatoriais</p>
+                            <p className="mt-2 text-3xl font-black text-text-primary">4</p>
                         </div>
-                        <h1>Curadoria de conteúdo para ciência aberta e memória pública.</h1>
-                        <p>
-                            O Acervo SEMEAR organiza artigos, matérias, mídias e documentos em uma experiência de consulta
-                            mais clara para educação ambiental, transparência e engajamento comunitário.
-                        </p>
-                        <div className="acervo-hub-metrics" aria-label="Resumo do acervo">
-                            <div>
-                                <span>4</span>
-                                <small>frentes curatoriais</small>
-                            </div>
-                            <div>
-                                <span>{loading ? "..." : featured.length}</span>
-                                <small>destaques públicos</small>
-                            </div>
-                            <div>
-                                <span>histórico</span>
-                                <small>linha do tempo</small>
-                            </div>
+                        <div className="portal-kpi-card">
+                            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-text-secondary">destaques públicos</p>
+                            <p className="mt-2 text-3xl font-black text-text-primary">{loading ? "..." : featured.length}</p>
                         </div>
-                    </div>
-
+                        <div className="portal-kpi-card">
+                            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-text-secondary">linha do tempo</p>
+                            <p className="mt-2 text-3xl font-black text-text-primary">histórico</p>
+                        </div>
+                    </>
+                }
+                aside={
                     <Link to="/acervo/linha" className="acervo-timeline-brief group">
                         <IconShell tone="warm" className="h-14 w-14 shrink-0 rounded-full">
                             <svg className="h-7 w-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -121,8 +120,8 @@ export function AcervoPage() {
                         </div>
                         <span>Explorar história →</span>
                     </Link>
-                </div>
-            </SurfaceCard>
+                }
+            />
 
             {/* Áreas do acervo */}
             <div className="acervo-area-grid">

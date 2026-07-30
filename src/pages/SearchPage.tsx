@@ -312,19 +312,16 @@ export function SearchPage() {
                 title="Relatórios"
                 subtitle="Notas técnicas, relatórios e boletins relacionados ao termo pesquisado."
               />
-              <h2 className="flex items-center gap-2 text-xs font-black uppercase tracking-[0.3em] text-cta">
-                Relatórios <span className="rounded-full bg-cta/10 px-2 py-0.5 text-[10px] text-cta">{results.reports.length}</span>
-              </h2>
               <div className="grid gap-5 md:grid-cols-2">
                 {results.reports.map((report) => (
                   <Link
                     key={report.id}
                     to={`/relatorios/${report.slug}`}
-                    className="group motion-list-item flex flex-col rounded-[1.35rem] border border-brand-primary/25 bg-fundo/60 p-5 motion-surface motion-surface-hover"
+                    className="group motion-list-item flex flex-col rounded-[1.35rem] border border-brand-primary/25 bg-surface-1/60 p-5 motion-surface motion-surface-hover"
                   >
                     <span className="w-fit rounded-full bg-brand-primary/10 px-2 py-1 text-[10px] font-bold uppercase tracking-widest text-brand-primary">{REPORT_KIND_LABEL[report.kind]}</span>
-                    <h3 className="mt-2 font-bold text-texto group-hover:text-ciano">{report.title}</h3>
-                    {report.summary && <p className="mt-2 line-clamp-2 text-xs text-texto/60">{report.summary}</p>}
+                    <h3 className="mt-2 font-bold text-text-primary group-hover:text-brand-primary-dark">{report.title}</h3>
+                    {report.summary && <p className="mt-2 line-clamp-2 text-xs text-text-secondary">{report.summary}</p>}
                   </Link>
                 ))}
               </div>
@@ -338,12 +335,11 @@ export function SearchPage() {
                 title="Acervo"
                 subtitle="Itens históricos, documentos e registros relacionados ao tema."
               />
-              <h2 className="text-xs font-black uppercase tracking-[0.3em] text-cta">Acervo</h2>
               <div className="grid gap-5 md:grid-cols-2">
                 {results.acervo.map((item) => (
-                  <Link key={item.id} to={`/acervo/item/${item.slug}`} className="group motion-list-item flex flex-col rounded-[1.35rem] border border-ciano/20 bg-fundo/60 p-5 motion-surface motion-surface-hover">
-                    <span className="text-[10px] font-bold uppercase tracking-widest text-ciano">{item.kind}</span>
-                    <h3 className="mt-1 font-bold text-texto group-hover:text-ciano">{item.title}</h3>
+                  <Link key={item.id} to={`/acervo/item/${item.slug}`} className="group motion-list-item flex flex-col rounded-[1.35rem] border border-brand-primary-dark/20 bg-surface-1/60 p-5 motion-surface motion-surface-hover">
+                    <span className="text-[10px] font-bold uppercase tracking-widest text-brand-primary-dark">{item.kind}</span>
+                    <h3 className="mt-1 font-bold text-text-primary group-hover:text-brand-primary-dark">{item.title}</h3>
                   </Link>
                 ))}
               </div>
@@ -357,12 +353,11 @@ export function SearchPage() {
                 title="Blog"
                 subtitle="Textos editoriais e publicações recentes associados à busca."
               />
-              <h2 className="text-xs font-black uppercase tracking-[0.3em] text-cta">Blog</h2>
               <div className="grid gap-5 md:grid-cols-2">
                 {results.blog.map((post) => (
-                  <Link key={post.id} to={`/blog/${post.slug}`} className="group motion-list-item flex flex-col rounded-[1.35rem] border border-primaria/20 bg-fundo/60 p-5 motion-surface motion-surface-hover">
-                    <span className="text-[10px] font-bold uppercase tracking-widest text-primaria">Boletim</span>
-                    <h3 className="mt-1 font-bold text-texto group-hover:text-ciano">{post.title}</h3>
+                  <Link key={post.id} to={`/blog/${post.slug}`} className="group motion-list-item flex flex-col rounded-[1.35rem] border border-brand-primary/20 bg-surface-1/60 p-5 motion-surface motion-surface-hover">
+                    <span className="text-[10px] font-bold uppercase tracking-widest text-brand-primary">Boletim</span>
+                    <h3 className="mt-1 font-bold text-text-primary group-hover:text-brand-primary-dark">{post.title}</h3>
                   </Link>
                 ))}
               </div>
@@ -376,11 +371,10 @@ export function SearchPage() {
                 title="Agenda"
                 subtitle="Eventos, encontros e atividades públicas relacionados ao tema."
               />
-              <h2 className="text-xs font-black uppercase tracking-[0.3em] text-cta">Agenda</h2>
               <div className="grid gap-5 md:grid-cols-2">
                 {results.events.map((event) => (
-                  <Link key={event.id} to="/agenda" className="group motion-list-item flex flex-col rounded-[1.35rem] border border-acento/20 bg-fundo/60 p-5 motion-surface motion-surface-hover">
-                    <h3 className="mt-1 font-bold text-texto group-hover:text-cta">{event.title}</h3>
+                  <Link key={event.id} to="/agenda" className="group motion-list-item flex flex-col rounded-[1.35rem] border border-accent-brown/20 bg-surface-1/60 p-5 motion-surface motion-surface-hover">
+                    <h3 className="mt-1 font-bold text-text-primary group-hover:text-accent-yellow">{event.title}</h3>
                   </Link>
                 ))}
               </div>
@@ -394,15 +388,14 @@ export function SearchPage() {
                 title="Transparência"
                 subtitle="Lançamentos financeiros e registros públicos associados ao termo pesquisado."
               />
-              <h2 className="text-xs font-black uppercase tracking-[0.3em] text-cta">Transparência</h2>
               <div className="grid gap-5 md:grid-cols-2">
                 {results.transparency.map((expense) => (
-                  <Link key={expense.id} to="/transparencia" className="group motion-list-item flex flex-col rounded-[1.35rem] border border-legacy-base/40 bg-fundo/60 p-5 motion-surface motion-surface-hover">
+                  <Link key={expense.id} to="/transparencia" className="group motion-list-item flex flex-col rounded-[1.35rem] border border-surface-2/40 bg-surface-1/60 p-5 motion-surface motion-surface-hover">
                     <div className="flex justify-between items-start">
-                      <span className="text-[10px] font-bold uppercase tracking-widest text-texto/40">{expense.category}</span>
-                      <span className="text-sm font-black text-primaria">{formatCurrency(expense.amount_cents ?? 0)}</span>
+                      <span className="text-[10px] font-bold uppercase tracking-widest text-text-secondary">{expense.category}</span>
+                      <span className="text-sm font-black text-brand-primary">{formatCurrency(expense.amount_cents ?? 0)}</span>
                     </div>
-                    <h3 className="mt-1 font-bold text-texto group-hover:text-ciano">{expense.vendor}</h3>
+                    <h3 className="mt-1 font-bold text-text-primary group-hover:text-brand-primary-dark">{expense.vendor}</h3>
                   </Link>
                 ))}
               </div>

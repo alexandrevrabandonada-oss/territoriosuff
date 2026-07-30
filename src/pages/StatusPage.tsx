@@ -322,21 +322,21 @@ export function StatusPage() {
   if (loading) {
     return (
       <div className="flex min-h-[50vh] flex-col items-center justify-center space-y-4">
-        <div className="h-12 w-12 animate-spin rounded-full border-4 border-ciano border-t-transparent" />
-        <p className="text-sm font-bold uppercase tracking-widest text-ciano italic">Consultando sistemas...</p>
+        <div className="h-12 w-12 animate-spin rounded-full border-4 border-brand-primary-dark border-t-transparent" />
+        <p className="text-sm font-bold uppercase tracking-widest text-brand-primary-dark italic">Consultando sistemas...</p>
       </div>
     );
   }
 
   if (error || !status) {
     return (
-      <div className="flex min-h-[50vh] flex-col items-center justify-center rounded-2xl border border-dashed border-acento/30 p-8 text-center">
+      <div className="flex min-h-[50vh] flex-col items-center justify-center rounded-2xl border border-dashed border-accent-brown/30 p-8 text-center">
         <div className="text-4xl">⚠️</div>
-        <h2 className="mt-4 text-xl font-black text-acento uppercase">Falha na Conexao</h2>
-        <p className="mt-2 text-sm text-texto/60">{error || "Erro ao obter diagnostico."}</p>
+        <h2 className="mt-4 text-xl font-black text-accent-brown uppercase">Falha na Conexao</h2>
+        <p className="mt-2 text-sm text-text-primary/60">{error || "Erro ao obter diagnostico."}</p>
         <button
           onClick={() => window.location.reload()}
-          className="mt-6 rounded-lg bg-acento/10 px-6 py-2 text-xs font-bold uppercase tracking-wider text-acento hover:bg-acento/20"
+          className="mt-6 rounded-lg bg-accent-brown/10 px-6 py-2 text-xs font-bold uppercase tracking-wider text-accent-brown hover:bg-accent-brown/20"
         >
           Tentar novamente
         </button>
@@ -375,27 +375,27 @@ export function StatusPage() {
         />
         <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
           <div>
-            <p className="text-[10px] font-black uppercase tracking-[0.28em] text-ciano">Boletim Mensal</p>
+            <p className="text-[10px] font-black uppercase tracking-[0.28em] text-brand-primary-dark">Boletim Mensal</p>
           </div>
           <div className="grid gap-3 sm:grid-cols-2">
-            <label className="flex flex-col gap-1 text-xs font-bold uppercase tracking-wide text-texto/70">
+            <label className="flex flex-col gap-1 text-xs font-bold uppercase tracking-wide text-text-primary/70">
               Mes
               <select
                 value={selectedMonth}
                 onChange={(e) => setSelectedMonth(Number(e.target.value))}
-                className="rounded-lg border border-ciano/20 bg-legacy-base/20 px-3 py-2 text-sm font-semibold text-texto"
+                className="rounded-lg border border-brand-primary-dark/20 bg-surface-2/20 px-3 py-2 text-sm font-semibold text-text-primary"
               >
                 {MONTH_OPTIONS.map((month) => (
                   <option key={month.value} value={month.value}>{month.label}</option>
                 ))}
               </select>
             </label>
-            <label className="flex flex-col gap-1 text-xs font-bold uppercase tracking-wide text-texto/70">
+            <label className="flex flex-col gap-1 text-xs font-bold uppercase tracking-wide text-text-primary/70">
               Ano
               <select
                 value={selectedYear}
                 onChange={(e) => setSelectedYear(Number(e.target.value))}
-                className="rounded-lg border border-ciano/20 bg-legacy-base/20 px-3 py-2 text-sm font-semibold text-texto"
+                className="rounded-lg border border-brand-primary-dark/20 bg-surface-2/20 px-3 py-2 text-sm font-semibold text-text-primary"
               >
                 {yearOptions.map((year) => (
                   <option key={year} value={year}>{year}</option>
@@ -412,7 +412,7 @@ export function StatusPage() {
                 <EditorialCardMeta>
                   <span>Medições</span>
                 </EditorialCardMeta>
-                <EditorialCardTitle className="text-3xl text-ciano">{monthlyLoading ? "..." : formatNumber(monthlyOps.total_measurements)}</EditorialCardTitle>
+                <EditorialCardTitle className="text-3xl text-brand-primary-dark">{monthlyLoading ? "..." : formatNumber(monthlyOps.total_measurements)}</EditorialCardTitle>
                 <EditorialCardExcerpt>Linhas registradas em measurements.</EditorialCardExcerpt>
               </div>
             </EditorialCardBody>
@@ -423,7 +423,7 @@ export function StatusPage() {
                 <EditorialCardMeta>
                   <span>Ingest novo / duplicado</span>
                 </EditorialCardMeta>
-                <EditorialCardTitle className="text-2xl text-primaria">{monthlyLoading ? "..." : `${formatNumber(monthlyOps.inserted_count)} / ${formatNumber(monthlyOps.duplicated_count)}`}</EditorialCardTitle>
+                <EditorialCardTitle className="text-2xl text-brand-primary">{monthlyLoading ? "..." : `${formatNumber(monthlyOps.inserted_count)} / ${formatNumber(monthlyOps.duplicated_count)}`}</EditorialCardTitle>
                 <EditorialCardExcerpt>Novas gravações vs repetições bloqueadas.</EditorialCardExcerpt>
               </div>
             </EditorialCardBody>
@@ -434,7 +434,7 @@ export function StatusPage() {
                 <EditorialCardMeta>
                   <span>Alertas push</span>
                 </EditorialCardMeta>
-                <EditorialCardTitle className="text-3xl text-acento">{monthlyLoading ? "..." : formatNumber(monthlyOps.total_push_alerts)}</EditorialCardTitle>
+                <EditorialCardTitle className="text-3xl text-accent-brown">{monthlyLoading ? "..." : formatNumber(monthlyOps.total_push_alerts)}</EditorialCardTitle>
                 <EditorialCardExcerpt>Eventos com trigger ativo em push_events.</EditorialCardExcerpt>
               </div>
             </EditorialCardBody>
@@ -445,27 +445,27 @@ export function StatusPage() {
                 <EditorialCardMeta>
                   <span>Conteúdo publicado</span>
                 </EditorialCardMeta>
-                <EditorialCardTitle className="text-3xl text-texto">{monthlyLoading ? "..." : formatNumber(monthlyOps.published_content_items_count)}</EditorialCardTitle>
+                <EditorialCardTitle className="text-3xl text-text-primary">{monthlyLoading ? "..." : formatNumber(monthlyOps.published_content_items_count)}</EditorialCardTitle>
                 <EditorialCardExcerpt>Blog + acervo publicados no mês.</EditorialCardExcerpt>
               </div>
             </EditorialCardBody>
           </EditorialCard>
         </div>
 
-        <div className="mt-5 rounded-2xl border border-legacy-base/30 bg-legacy-base/10 p-4">
+        <div className="mt-5 rounded-2xl border border-surface-2/30 bg-surface-2/10 p-4">
           <div className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
             <div className="flex-1">
-              <p className="text-[11px] font-bold uppercase tracking-wide text-ciano">Resumo gerado</p>
+              <p className="text-[11px] font-bold uppercase tracking-wide text-brand-primary-dark">Resumo gerado</p>
               {monthlyError ? (
-                <p className="mt-2 text-sm text-acento">{monthlyError}</p>
+                <p className="mt-2 text-sm text-accent-brown">{monthlyError}</p>
               ) : (
-                <p className="mt-2 text-sm leading-6 text-texto/80">{monthlyLoading ? "Gerando resumo do periodo selecionado..." : monthlyBulletin}</p>
+                <p className="mt-2 text-sm leading-6 text-text-primary/80">{monthlyLoading ? "Gerando resumo do periodo selecionado..." : monthlyBulletin}</p>
               )}
             </div>
             <div className="flex flex-wrap gap-2 lg:justify-end">
               <Link
                 to={`/transparencia?month=${String(selectedMonth).padStart(2, "0")}&year=${selectedYear}`}
-                className="inline-flex min-h-11 items-center rounded-lg border border-primaria/20 bg-primaria/10 px-4 py-2 text-xs font-bold uppercase tracking-wide text-primaria hover:bg-primaria/20"
+                className="inline-flex min-h-11 items-center rounded-lg border border-brand-primary/20 bg-brand-primary/10 px-4 py-2 text-xs font-bold uppercase tracking-wide text-brand-primary hover:bg-brand-primary/20"
               >
                 Ver gastos do mes
               </Link>
@@ -481,7 +481,7 @@ export function StatusPage() {
                 type="button"
                 onClick={handleDownloadMonthlyCsv}
                 disabled={monthlyLoading || Boolean(monthlyError)}
-                className="inline-flex min-h-11 items-center rounded-lg border border-ciano/20 bg-ciano/10 px-4 py-2 text-xs font-bold uppercase tracking-wide text-ciano hover:bg-ciano/20 disabled:cursor-not-allowed disabled:opacity-60"
+                className="inline-flex min-h-11 items-center rounded-lg border border-brand-primary-dark/20 bg-brand-primary-dark/10 px-4 py-2 text-xs font-bold uppercase tracking-wide text-brand-primary-dark hover:bg-brand-primary-dark/20 disabled:cursor-not-allowed disabled:opacity-60"
               >
                 Baixar CSV do período
               </button>
@@ -489,13 +489,13 @@ export function StatusPage() {
                 type="button"
                 onClick={() => { void handleCopySummary(); }}
                 disabled={monthlyLoading || Boolean(monthlyError)}
-                className="inline-flex min-h-11 items-center rounded-lg border border-legacy-base/30 bg-legacy-base/20 px-4 py-2 text-xs font-bold uppercase tracking-wide text-texto hover:bg-legacy-base/30 disabled:cursor-not-allowed disabled:opacity-60"
+                className="inline-flex min-h-11 items-center rounded-lg border border-surface-2/30 bg-surface-2/20 px-4 py-2 text-xs font-bold uppercase tracking-wide text-text-primary hover:bg-surface-2/30 disabled:cursor-not-allowed disabled:opacity-60"
               >
                 Copiar resumo
               </button>
             </div>
           </div>
-          {copyFeedback && <p className="mt-3 text-xs font-bold text-ciano">{copyFeedback}</p>}
+          {copyFeedback && <p className="mt-3 text-xs font-bold text-brand-primary-dark">{copyFeedback}</p>}
         </div>
       </SurfaceCard>
 
@@ -510,7 +510,7 @@ export function StatusPage() {
             <EditorialCardBody className="justify-between p-5">
               <div className="space-y-3">
                 <EditorialCardMeta><span>Rede de monitoramento</span></EditorialCardMeta>
-                <EditorialCardTitle className="text-3xl text-primaria">{status.monitoring.stations_count}</EditorialCardTitle>
+                <EditorialCardTitle className="text-3xl text-brand-primary">{status.monitoring.stations_count}</EditorialCardTitle>
                 <EditorialCardExcerpt>Estações ativas no ar e {status.monitoring.measurements_24h} medições nas últimas 24h.</EditorialCardExcerpt>
                 {status.monitoring.latest_measurement ? (
                   <div className="rounded-2xl border border-divider-subtle bg-surface-2 p-4">
@@ -526,14 +526,14 @@ export function StatusPage() {
             <EditorialCardBody className="justify-between p-5">
               <div className="space-y-3">
                 <EditorialCardMeta><span>Alertas (7 dias)</span></EditorialCardMeta>
-                <EditorialCardTitle className="text-3xl text-acento">{status.alerts.total_7d}</EditorialCardTitle>
+                <EditorialCardTitle className="text-3xl text-accent-brown">{status.alerts.total_7d}</EditorialCardTitle>
                 <EditorialCardExcerpt>Triggers e sinais por estação ou poluente.</EditorialCardExcerpt>
                 <div className="space-y-2">
                   {status.alerts.top_stations.length > 0 ? (
                     status.alerts.top_stations.slice(0, 3).map((station, idx) => (
                       <div key={`${station.station_code}-${idx}`} className="flex items-center justify-between rounded-2xl bg-surface-2 px-3 py-2 text-xs">
                         <span className="font-mono text-text-secondary">{station.station_code}</span>
-                        <span className="font-black text-acento">{station.count}</span>
+                        <span className="font-black text-accent-brown">{station.count}</span>
                       </div>
                     ))
                   ) : (
@@ -548,7 +548,7 @@ export function StatusPage() {
             <EditorialCardBody className="justify-between p-5">
               <div className="space-y-3">
                 <EditorialCardMeta><span>Transparência</span></EditorialCardMeta>
-                <EditorialCardTitle className="text-[1.95rem] text-primaria">{formatCurrency(status.transparency.current_month_total_cents)}</EditorialCardTitle>
+                <EditorialCardTitle className="text-[1.95rem] text-brand-primary">{formatCurrency(status.transparency.current_month_total_cents)}</EditorialCardTitle>
                 <EditorialCardExcerpt>
                   {formatNumber(status.transparency.current_month_count)} lançamentos no mês atual e {formatNumber(status.transparency.last_7d_count)} nos últimos 7 dias.
                 </EditorialCardExcerpt>
@@ -586,7 +586,7 @@ export function StatusPage() {
                 </div>
 
                 {ineaError ? (
-                  <div className="rounded-2xl border border-acento/20 bg-acento/5 p-4 text-sm text-acento">{ineaError}</div>
+                  <div className="rounded-2xl border border-accent-brown/20 bg-accent-brown/5 p-4 text-sm text-accent-brown">{ineaError}</div>
                 ) : (
                   <>
                     <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-4">
@@ -604,13 +604,13 @@ export function StatusPage() {
                       </div>
                       <div className="rounded-2xl bg-surface-2 p-4">
                         <p className="text-xs font-semibold uppercase tracking-[0.18em] text-text-secondary">Estacoes com leitura</p>
-                        <p className="mt-2 text-3xl font-black text-primaria">
+                        <p className="mt-2 text-3xl font-black text-brand-primary">
                           {ineaLoading ? "..." : `${ineaObservability.stations_with_reading_count}/${ineaObservability.total_stations}`}
                         </p>
                       </div>
                       <div className="rounded-2xl bg-surface-2 p-4">
                         <p className="text-xs font-semibold uppercase tracking-[0.18em] text-text-secondary">Janelas inferidas</p>
-                        <p className="mt-2 text-3xl font-black text-acento">{ineaLoading ? "..." : formatNumber(ineaObservability.inferred_windows_count)}</p>
+                        <p className="mt-2 text-3xl font-black text-accent-brown">{ineaLoading ? "..." : formatNumber(ineaObservability.inferred_windows_count)}</p>
                       </div>
                     </div>
 
@@ -629,7 +629,7 @@ export function StatusPage() {
                                     {station.coverage_percent.toFixed(1)}% de cobertura, {station.gap_count} lacunas, maximo de {station.max_gap_hours}h
                                   </p>
                                 </div>
-                                <span className="rounded-full bg-acento/10 px-3 py-1 text-xs font-bold uppercase tracking-wide text-acento">
+                                <span className="rounded-full bg-accent-brown/10 px-3 py-1 text-xs font-bold uppercase tracking-wide text-accent-brown">
                                   {station.window_is_inferred ? "janela inferida" : "janela declarada"}
                                 </span>
                               </div>
@@ -684,7 +684,7 @@ export function StatusPage() {
             <EditorialCardBody className="justify-between p-5">
               <div className="space-y-3">
                 <EditorialCardMeta><span>Alcance social</span></EditorialCardMeta>
-                <EditorialCardTitle className="text-3xl text-ciano">{formatNumber(status.social.total_7d)}</EditorialCardTitle>
+                <EditorialCardTitle className="text-3xl text-brand-primary-dark">{formatNumber(status.social.total_7d)}</EditorialCardTitle>
                 <EditorialCardExcerpt>Compartilhamentos por tipo de conteúdo nos últimos 7 dias.</EditorialCardExcerpt>
                 <div className="space-y-2">
                   {socialKindsOrder.map((kind) => (
@@ -755,7 +755,7 @@ export function StatusPage() {
             <EditorialCardBody className="justify-between p-5">
               <div className="space-y-3">
                 <EditorialCardMeta><span>Erros nas últimas 24h</span></EditorialCardMeta>
-                <EditorialCardTitle className="text-3xl text-acento">{formatNumber(observabilityErrors.total)}</EditorialCardTitle>
+                <EditorialCardTitle className="text-3xl text-accent-brown">{formatNumber(observabilityErrors.total)}</EditorialCardTitle>
                 <EditorialCardExcerpt>Contagem agregada e sanitizada de eventos do navegador e APIs.</EditorialCardExcerpt>
                 <div className="grid gap-3 sm:grid-cols-3">
                   <div className="rounded-2xl bg-surface-2 p-4">
@@ -777,33 +777,33 @@ export function StatusPage() {
         </div>
 
         {isDevAccessibilityVisible && (
-          <div className="rounded-2xl border border-amber-500/30 bg-fundo/60 p-6 flex flex-col md:col-span-3">
-            <h2 className="text-xs font-black uppercase tracking-widest text-cta">Acessibilidade (dev)</h2>
+          <div className="rounded-2xl border border-amber-500/30 bg-surface-1/60 p-6 flex flex-col md:col-span-3">
+            <h2 className="text-xs font-black uppercase tracking-widest text-accent-yellow">Acessibilidade (dev)</h2>
             <div className="mt-4 flex flex-wrap items-end gap-6">
               <div>
-                <p className="text-3xl font-black text-texto">{formatNumber(contrastAudit.length)}</p>
-                <p className="text-[10px] font-bold uppercase tracking-wide text-texto/60">Combinacoes auditadas</p>
+                <p className="text-3xl font-black text-text-primary">{formatNumber(contrastAudit.length)}</p>
+                <p className="text-[10px] font-bold uppercase tracking-wide text-text-primary/60">Combinacoes auditadas</p>
               </div>
               <div>
                 <p className="text-3xl font-black text-amber-500">{formatNumber(contrastFailures.length)}</p>
-                <p className="text-[10px] font-bold uppercase tracking-wide text-texto/60">Abaixo do AA</p>
+                <p className="text-[10px] font-bold uppercase tracking-wide text-text-primary/60">Abaixo do AA</p>
               </div>
             </div>
             <div className="mt-4 space-y-2">
               {contrastAudit.map((item) => (
-                <div key={item.name} className="flex flex-col gap-1 rounded-lg border border-legacy-base/20 bg-legacy-base/10 px-4 py-3 text-xs sm:flex-row sm:items-center sm:justify-between">
+                <div key={item.name} className="flex flex-col gap-1 rounded-lg border border-surface-2/20 bg-surface-2/10 px-4 py-3 text-xs sm:flex-row sm:items-center sm:justify-between">
                   <div>
-                    <p className="font-bold text-texto">{item.name}</p>
-                    <p className="text-texto/60">{item.foreground} em {item.background}</p>
+                    <p className="font-bold text-text-primary">{item.name}</p>
+                    <p className="text-text-primary/60">{item.foreground} em {item.background}</p>
                   </div>
                   <div className="text-left sm:text-right">
                     <p className={item.passes ? "font-black text-green-600" : "font-black text-amber-500"}>{item.ratio.toFixed(2)}:1</p>
-                    <p className="text-texto/60">minimo {(item.minRatio ?? 4.5).toFixed(1)}:1</p>
+                    <p className="text-text-primary/60">minimo {(item.minRatio ?? 4.5).toFixed(1)}:1</p>
                   </div>
                 </div>
               ))}
             </div>
-            <p className="mt-3 text-xs text-texto/60">Este bloco aparece apenas fora de producao para revisar contraste do design system.</p>
+            <p className="mt-3 text-xs text-text-primary/60">Este bloco aparece apenas fora de producao para revisar contraste do design system.</p>
           </div>
         )}
 
@@ -812,15 +812,15 @@ export function StatusPage() {
       {showOpsHelp && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4" onClick={() => setShowOpsHelp(false)}>
           <div
-            className="w-full max-w-xl rounded-2xl border border-ciano/30 bg-fundo p-6 shadow-2xl"
+            className="w-full max-w-xl rounded-2xl border border-brand-primary-dark/30 bg-surface-1 p-6 shadow-2xl"
             role="dialog"
             aria-modal="true"
             aria-labelledby="ops-help-title"
             onClick={(ev) => ev.stopPropagation()}
           >
-            <h3 id="ops-help-title" className="text-lg font-black text-texto">Como ler estes numeros</h3>
-            <p className="mt-3 text-sm text-texto/70">Todos os indicadores cobrem os ultimos 7 dias corridos, em janela movel.</p>
-            <ul className="mt-4 space-y-2 text-sm text-texto/80">
+            <h3 id="ops-help-title" className="text-lg font-black text-text-primary">Como ler estes numeros</h3>
+            <p className="mt-3 text-sm text-text-primary/70">Todos os indicadores cobrem os ultimos 7 dias corridos, em janela movel.</p>
+            <ul className="mt-4 space-y-2 text-sm text-text-primary/80">
               <li><span className="font-bold">Medicoes:</span> total de linhas em measurements no periodo.</li>
               <li><span className="font-bold">Ingest inserido/duplicado:</span> contagem em ingest_logs da rotina hardenizada.</li>
               <li><span className="font-bold">Alertas disparados:</span> total de push_events com trigger verdadeiro.</li>
@@ -832,7 +832,7 @@ export function StatusPage() {
             <button
               type="button"
               onClick={() => setShowOpsHelp(false)}
-              className="mt-6 rounded-lg bg-ciano/15 px-4 py-2 text-xs font-bold uppercase tracking-wide text-ciano hover:bg-ciano/25"
+              className="mt-6 rounded-lg bg-brand-primary-dark/15 px-4 py-2 text-xs font-bold uppercase tracking-wide text-brand-primary-dark hover:bg-brand-primary-dark/25"
             >
               Fechar
             </button>

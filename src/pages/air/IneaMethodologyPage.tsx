@@ -1,6 +1,7 @@
 import { Suspense, lazy, useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { SurfaceCard, IconShell } from "../../components/BrandSystem";
+import { PortalHero } from "../../components/portal";
 import { AIR_PUBLIC_DOWNLOADS, AIR_PUBLIC_FILES, type AirPublicManifest, getAirPublicDataPath } from "../../data/air/public-downloads";
 import type { DataDictionaryEntry } from "../../data/air/data-dictionary";
 import { RADAR_RELEASE_METADATA_FILE } from "../../data/air/radar-release-metadata";
@@ -128,19 +129,24 @@ export function IneaMethodologyPage() {
       </div>
 
       {/* Hero Header */}
-      <header className="mb-10 text-center md:text-left space-y-3">
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest bg-brand-primary/10 text-brand-primary border border-brand-primary/25">
-          Transparência e Reprodutibilidade
-        </div>
-        <h1 className="text-3xl md:text-4xl font-black text-slate-900 tracking-tight leading-none">
-          Metodologia e Dados Abertos
-        </h1>
-        <p className="text-slate-600 text-sm md:text-base max-w-4xl font-medium leading-relaxed">
-          Entenda de onde vêm os dados, como calculamos médias e episódios de atenção, quais são as limitações e como baixar os arquivos para auditoria cidadã.
-        </p>
-      </header>
+      <PortalHero
+        tone="lab"
+        badge={
+          <>
+            <IconShell tone="brand" className="portal-stage-icon">
+              <span aria-hidden="true">🔬</span>
+            </IconShell>
+            <span className="inline-flex items-center rounded-full border border-white/20 bg-white/10 px-3 py-1 text-[10px] font-black uppercase tracking-[0.18em] text-white">
+              Transparência e Reprodutibilidade
+            </span>
+          </>
+        }
+        title="Metodologia e Dados Abertos"
+        subtitle="Entenda de onde vêm os dados, como calculamos médias e episódios de atenção, quais são as limitações e como baixar os arquivos para auditoria cidadã."
+        aside={<div className="portal-stage-stat"><span>{sections.length}</span><small>seções neste guia público</small></div>}
+      />
 
-      <PublicInterestProtocol className="mb-8" />
+      <PublicInterestProtocol className="mb-8 mt-10" />
 
       {/* Dynamic Data Updates Info Banner */}
       <div className="mb-8 p-4 bg-slate-50 border border-slate-200/65 rounded-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-4 text-xs font-semibold text-slate-600 shadow-sm animate-fade-in">

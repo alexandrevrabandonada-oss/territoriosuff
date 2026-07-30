@@ -20,6 +20,8 @@ export function PortalModeTabs({ tabs, active, onSelect }: PortalModeTabsProps) 
           return (
             <button
               key={tab.id}
+              type="button"
+              aria-pressed={isActive}
               onClick={() => onSelect(tab.id)}
               className={`flex shrink-0 cursor-pointer items-center gap-2 rounded-2xl border px-4 py-3 text-xs font-extrabold transition-all ${
                 isActive

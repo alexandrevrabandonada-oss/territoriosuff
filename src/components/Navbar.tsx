@@ -78,7 +78,10 @@ export function Navbar() {
     if (!isMoreOpen) return;
     const closeMoreMenu = (event: PointerEvent | KeyboardEvent) => {
       if (event instanceof KeyboardEvent) {
-        if (event.key === "Escape") setIsMoreOpen(false);
+        if (event.key === "Escape") {
+          setIsMoreOpen(false);
+          moreMenuRef.current?.querySelector("button")?.focus();
+        }
         return;
       }
       if (!moreMenuRef.current?.contains(event.target as Node)) setIsMoreOpen(false);
@@ -160,7 +163,6 @@ export function Navbar() {
             <button
               type="button"
               aria-expanded={isMoreOpen}
-              aria-haspopup="menu"
               onClick={() => setIsMoreOpen((open) => !open)}
             >
               Mais
@@ -169,9 +171,9 @@ export function Navbar() {
               </svg>
             </button>
             {isMoreOpen ? (
-              <div className="site-nav-more-panel" role="menu" aria-label="Mais áreas do portal">
+              <div className="site-nav-more-panel" aria-label="Mais áreas do portal">
                 {moreLinks.map((link) => (
-                  <NavLink key={link.href} to={link.href} role="menuitem">
+                  <NavLink key={link.href} to={link.href}>
                     {link.label}
                   </NavLink>
                 ))}

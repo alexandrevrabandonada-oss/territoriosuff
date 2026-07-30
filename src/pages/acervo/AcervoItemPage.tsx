@@ -6,6 +6,7 @@ import { getAcervoBySlug, listCollectionsForItem, getRelatedItemsByCollections, 
 import { ACERVO_KIND_LABELS } from "../../lib/acervo";
 import { trackShare } from "../../lib/observability";
 import { IconShell, SurfaceCard } from "../../components/BrandSystem";
+import { ErrorState } from "../../components/ErrorState";
 import { SafeMarkdown } from "../../components/SafeMarkdown";
 import { TextToSpeechButton } from "../../components/TextToSpeechButton";
 import { usePageMetadata } from "../../hooks/usePageMetadata";
@@ -181,6 +182,7 @@ export function AcervoItemPage() {
     const [activeMedia, setActiveMedia] = useState<{ url: string; type: string; title?: string } | null>(null);
     const [isOffline, setIsOffline] = useState(!navigator.onLine);
     const modalCloseButtonRef = useRef<HTMLButtonElement>(null);
+    const modalDialogRef = useRef<HTMLDivElement>(null);
     const previousActiveElementRef = useRef<HTMLElement | null>(null);
 
     // Reader Mode State
@@ -244,8 +246,24 @@ export function AcervoItemPage() {
         }
 
         const handleKeyDown = (e: KeyboardEvent) => {
-            if (e.key === "Escape" && activeMedia) {
+            if (!activeMedia) return;
+            if (e.key === "Escape") {
                 setActiveMedia(null);
+                return;
+            }
+            if (e.key !== "Tab") return;
+            const focusable = modalDialogRef.current?.querySelectorAll<HTMLElement>(
+                'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])'
+            );
+            if (!focusable?.length) return;
+            const first = focusable[0];
+            const last = focusable[focusable.length - 1];
+            if (e.shiftKey && document.activeElement === first) {
+                e.preventDefault();
+                last.focus();
+            } else if (!e.shiftKey && document.activeElement === last) {
+                e.preventDefault();
+                first.focus();
             }
         };
         document.addEventListener("keydown", handleKeyDown);
@@ -378,7 +396,7 @@ export function AcervoItemPage() {
                             <button
                                 onClick={() => setFontSize(Math.max(14, fontSize - 2))}
                                 disabled={fontSize <= 14}
-                                className={`h-8 w-8 rounded-full border text-xs font-bold transition-all flex items-center justify-center ${
+                                className={`h-11 w-11 rounded-full border text-xs font-bold transition-all flex items-center justify-center ${
                                     readerTheme === "escuro"
                                         ? "border-zinc-800 hover:bg-zinc-800 disabled:opacity-30"
                                         : "border-zinc-200 hover:bg-zinc-100 disabled:opacity-30"
@@ -391,7 +409,7 @@ export function AcervoItemPage() {
                             <button
                                 onClick={() => setFontSize(Math.min(28, fontSize + 2))}
                                 disabled={fontSize >= 28}
-                                className={`h-8 w-8 rounded-full border text-xs font-bold transition-all flex items-center justify-center ${
+                                className={`h-11 w-11 rounded-full border text-xs font-bold transition-all flex items-center justify-center ${
                                     readerTheme === "escuro"
                                         ? "border-zinc-800 hover:bg-zinc-800 disabled:opacity-30"
                                         : "border-zinc-200 hover:bg-zinc-100 disabled:opacity-30"
@@ -411,7 +429,7 @@ export function AcervoItemPage() {
                                     <button
                                         key={t}
                                         onClick={() => setReaderTheme(t)}
-                                        className={`rounded-full px-3 py-1.5 text-xs font-bold transition-all border ${
+                                        className={`rounded-full px-4 py-2.5 text-xs font-bold transition-all border ${
                                             active
                                                 ? "border-brand-primary bg-brand-primary text-white shadow-sm"
                                                 : readerTheme === "escuro"
@@ -559,7 +577,7 @@ export function AcervoItemPage() {
     return (
         <section className="portal-stage acervo-detail-stage space-y-8 md:space-y-10">
             <Link
-                className="inline-flex items-center gap-1 text-xs font-semibold text-brand-primary/70 hover:text-brand-primary"
+                className="inline-flex items-center gap-1 text-xs font-semibold text-brand-primary hover:text-brand-primary-dark"
                 to="/acervo"
             >
                 ← Voltar ao Acervo
@@ -568,9 +586,7 @@ export function AcervoItemPage() {
             {loading ? (
                 <p aria-live="polite" className="text-sm text-text-secondary" role="status">Carregando item...</p>
             ) : error ? (
-                <p aria-live="assertive" className="rounded-md border border-error/30 bg-error/10 p-3 text-sm text-error" role="alert">
-                    {error}
-                </p>
+                <ErrorState description={error} />
             ) : !item ? (
                 <div className="rounded-2xl border border-border-subtle bg-white p-10 text-center">
                     <p className="text-4xl">🔍</p>
@@ -600,14 +616,14 @@ export function AcervoItemPage() {
                             </span>
                         )}
                         <button
-                            className="inline-flex items-center gap-1 rounded-full bg-brand-primary/10 px-3 py-0.5 text-[10px] font-bold uppercase tracking-widest text-brand-primary hover:bg-brand-primary/20"
+                            className="inline-flex items-center gap-1 rounded-full bg-brand-primary/10 px-3 py-2 text-[10px] font-bold uppercase tracking-widest text-brand-primary hover:bg-brand-primary/20"
                             onClick={() => setReaderMode(true)}
                             type="button"
                         >
                             📖 Modo Leitura
                         </button>
                         <button
-                            className="inline-flex items-center gap-1 rounded-full bg-brand-primary/10 px-3 py-0.5 text-[10px] font-bold uppercase tracking-widest text-brand-primary hover:bg-brand-primary/20"
+                            className="inline-flex items-center gap-1 rounded-full bg-brand-primary/10 px-3 py-2 text-[10px] font-bold uppercase tracking-widest text-brand-primary hover:bg-brand-primary/20"
                             onClick={() => {
                                 const url = `${window.location.origin}/s/acervo/${item.slug}`;
                                 trackShare("acervo", item.slug, "item");
@@ -630,7 +646,7 @@ export function AcervoItemPage() {
                         {item.year && (
                             <Link
                                 to={`/acervo/linha?year=${item.year}`}
-                                className="inline-flex items-center gap-1 rounded-full bg-accent-green/10 px-3 py-0.5 text-[10px] font-bold uppercase tracking-widest text-accent-green hover:bg-accent-green/20 transition-colors"
+                                className="inline-flex items-center gap-1 rounded-full bg-accent-green/10 px-3 py-2 text-[10px] font-bold uppercase tracking-widest text-accent-green hover:bg-accent-green/20 transition-colors"
                             >
                                 ⏳ Ver na linha do tempo
                             </Link>
@@ -686,7 +702,7 @@ export function AcervoItemPage() {
                         <div className="mt-4 flex flex-wrap gap-1">
                             {item.tags.map((tag) => (
                                 <span
-                                    className="rounded-full border border-brand-primary/30 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-brand-primary/80"
+                                    className="rounded-full border border-brand-primary/30 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-brand-primary"
                                     key={tag}
                                 >
                                     {tag}
@@ -856,6 +872,7 @@ export function AcervoItemPage() {
             {/* Media Viewer Modal */}
             {activeMedia && (
                 <div
+                    ref={modalDialogRef}
                     className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-black/80 p-4 backdrop-blur-sm"
                     role="dialog"
                     aria-modal="true"

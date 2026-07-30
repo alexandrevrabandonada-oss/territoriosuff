@@ -9,6 +9,8 @@ import { getStationOverview, getStationHealth } from "../lib/api/monitoring";
 import type { StationOverview, StationHealth } from "../lib/api/core";
 
 import { OfflineBanner } from "../components/OfflineBanner";
+import { ErrorState } from "../components/ErrorState";
+import { PortalHero } from "../components/portal";
 import { Chip, IconShell, SurfaceCard } from "../components/BrandSystem";
 
 // Fix default marker icons in react-leaflet
@@ -209,35 +211,32 @@ export function MapaPage() {
         />
       )}
 
-      <SurfaceCard className="portal-stage-hero portal-stage-hero-lab overflow-hidden p-0">
-        <div className="portal-stage-hero-inner">
-          <div className="portal-stage-copy">
-              <IconShell tone="brand" className="portal-stage-icon">
-                <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
-                </svg>
-              </IconShell>
-              <h1>Mapa de monitoramento</h1>
-            <p>
-              Visualize a localização das estações de monitoramento em Volta Redonda e região. Se o mapa não carregar, use a lista acessível abaixo.
-            </p>
-          </div>
+      <PortalHero
+        tone="lab"
+        badge={
+          <IconShell tone="brand" className="portal-stage-icon">
+            <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
+            </svg>
+          </IconShell>
+        }
+        title="Mapa de monitoramento"
+        subtitle="Visualize a localização das estações de monitoramento em Volta Redonda e região. Se o mapa não carregar, use a lista acessível abaixo."
+        aside={
           <div className="portal-stage-stat gap-4">
             <span>{loading ? "..." : stations.length}</span>
             <small>estação(ões) no mapa</small>
             <div className="flex flex-wrap gap-2">
-            <Chip tone="active">Acessível</Chip>
-            <Chip tone="seed">Offline friendly</Chip>
+              <Chip tone="active">Acessível</Chip>
+              <Chip tone="seed">Offline friendly</Chip>
             </div>
           </div>
-        </div>
-      </SurfaceCard>
+        }
+      />
 
       {/* Error message */}
       {error && (
-        <p aria-live="assertive" className="rounded-md border border-error/30 bg-error/10 p-3 text-sm text-error" role="alert">
-          {error}
-        </p>
+        <ErrorState description={error} />
       )}
 
       {/* Map Section */}

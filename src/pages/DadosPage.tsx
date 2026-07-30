@@ -1,4 +1,4 @@
-import { lazy, Suspense, useCallback, useEffect, useMemo, useState } from "react";
+import { lazy, Suspense, useCallback, useEffect, useMemo, useState, type KeyboardEvent as ReactKeyboardEvent } from "react";
 import { useSearchParams, Link } from "react-router-dom";
 
 import { IconShell, SectionHeader, SurfaceCard } from "../components/BrandSystem";
@@ -669,12 +669,28 @@ export function DadosPage() {
     URL.revokeObjectURL(url);
   };
 
+  const handleTabsKeyDown = (event: ReactKeyboardEvent<HTMLDivElement>) => {
+    if (!["ArrowLeft", "ArrowRight", "Home", "End"].includes(event.key)) return;
+    const tabs = Array.from(event.currentTarget.querySelectorAll<HTMLButtonElement>('[role="tab"]'));
+    const current = tabs.indexOf(event.target as HTMLButtonElement);
+    if (current === -1) return;
+    event.preventDefault();
+    let next = current;
+    if (event.key === "ArrowRight") next = (current + 1) % tabs.length;
+    if (event.key === "ArrowLeft") next = (current - 1 + tabs.length) % tabs.length;
+    if (event.key === "Home") next = 0;
+    if (event.key === "End") next = tabs.length - 1;
+    tabs[next].focus();
+    tabs[next].click();
+  };
+
   return (
     <PortalPageShell className="data-dashboard">
       {/* Abas de Navegação de Dados */}
       <PortalSectionHeader
         eyebrow={<span className="badge-dados-abertos">Catálogo público de dados</span>}
         title="Dados abertos para ação pública"
+        titleAs="h1"
         subtitle="Use os atalhos abaixo para navegar entre leituras da rede SEMEAR, base oficial do INEA e análises consolidadas."
       />
       <div className="grid gap-4 md:grid-cols-3">
@@ -701,9 +717,9 @@ export function DadosPage() {
       <SurfaceCard className="border border-brand-primary/10 bg-slate-50/50 p-5 rounded-2xl md:p-6 transition-all hover:border-brand-primary/25">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
           <div className="space-y-1.5 max-w-2xl">
-            <h3 className="text-sm font-black text-slate-800 uppercase tracking-wider">
+            <h2 className="text-sm font-black text-slate-800 uppercase tracking-wider">
               Radar do Ar INEA
-            </h3>
+            </h2>
             <p className="text-sm text-slate-600 font-medium leading-relaxed">
               Veja no mapa as estações oficiais de qualidade do ar em Volta Redonda, a série histórica disponível e as lacunas de transparência da base pública.
             </p>
@@ -749,7 +765,7 @@ export function DadosPage() {
           <p className="text-sm text-slate-300 font-medium leading-relaxed">
             Explore a linha do tempo 2022–2024 e veja os meses, estações e poluentes com mais eventos de atenção.
           </p>
-          <p className="text-[10px] text-slate-600">
+          <p className="text-[10px] text-slate-400">
             * Dado horário público WebLakes — comparação experimental — sem QA/QC oficial explícito.
           </p>
         </div>
@@ -774,7 +790,7 @@ export function DadosPage() {
               </IconShell>
               <div className="space-y-1">
                 <AxisEyebrow axis="dados">Painel ambiental</AxisEyebrow>
-                <h1 className="data-hero-title">Leituras SEMEAR</h1>
+                <h2 className="data-hero-title">Leituras SEMEAR</h2>
               </div>
             </div>
             <p className="data-hero-lede">
@@ -1013,11 +1029,12 @@ export function DadosPage() {
         selectedStationId && (
           <>
             <SurfaceCard className="p-4 md:p-5">
-            <div className="flex flex-wrap gap-1.5" role="tablist" aria-label="Período de visualização">
+            <div className="flex flex-wrap gap-1.5" role="tablist" aria-label="Período de visualização" onKeyDown={handleTabsKeyDown}>
               <button
                 id="tab-now"
                 role="tab"
                 aria-selected={activeTab === "now"}
+                tabIndex={activeTab === "now" ? 0 : -1}
                 aria-controls="panel-now"
                 className={activeTab === "now" ? "ui-segment-tab ui-segment-tab-active" : "ui-segment-tab"}
                 onClick={() => setActiveTab("now")}
@@ -1029,6 +1046,7 @@ export function DadosPage() {
                 id="tab-24h"
                 role="tab"
                 aria-selected={activeTab === "24h"}
+                tabIndex={activeTab === "24h" ? 0 : -1}
                 aria-controls="panel-24h"
                 className={activeTab === "24h" ? "ui-segment-tab ui-segment-tab-active" : "ui-segment-tab"}
                 onClick={() => setActiveTab("24h")}
@@ -1040,6 +1058,7 @@ export function DadosPage() {
                 id="tab-7d"
                 role="tab"
                 aria-selected={activeTab === "7d"}
+                tabIndex={activeTab === "7d" ? 0 : -1}
                 aria-controls="panel-7d"
                 className={activeTab === "7d" ? "ui-segment-tab ui-segment-tab-active" : "ui-segment-tab"}
                 onClick={() => setActiveTab("7d")}
@@ -1051,6 +1070,7 @@ export function DadosPage() {
                 id="tab-custom"
                 role="tab"
                 aria-selected={activeTab === "custom"}
+                tabIndex={activeTab === "custom" ? 0 : -1}
                 aria-controls="panel-custom"
                 className={activeTab === "custom" ? "ui-segment-tab ui-segment-tab-active" : "ui-segment-tab"}
                 onClick={() => setActiveTab("custom")}
@@ -1351,7 +1371,7 @@ export function DadosPage() {
                     {riskAssessment.tone === "high" ? "🚨" : riskAssessment.tone === "medium" ? "⚠️" : "✨"}
                   </span>
                   <div className="space-y-1">
-                    <h4 className="text-xs font-black uppercase tracking-wider">Diretriz de Saúde Preventiva</h4>
+                    <h3 className="text-xs font-black uppercase tracking-wider">Diretriz de Saúde Preventiva</h3>
                     <p className="text-xs leading-relaxed opacity-90">
                       {riskAssessment.tone === "high"
                         ? "Pico de poluição projetado excede as diretrizes recomendadas pela OMS. Recomenda-se reduzir atividades físicas intensas ao ar livre. Manter janelas fechadas durante os horários críticos."
@@ -1520,11 +1540,12 @@ export function DadosPage() {
       ) : (
         <SurfaceCard className="p-4 md:p-5">
           {/* Seletor de Período para Comparação */}
-          <div className="flex flex-wrap gap-1.5" role="tablist" aria-label="Período de visualização">
+          <div className="flex flex-wrap gap-1.5" role="tablist" aria-label="Período de visualização" onKeyDown={handleTabsKeyDown}>
             <button
               id="tab-compare-24h"
               role="tab"
               aria-selected={activeTab === "24h"}
+              tabIndex={activeTab === "24h" ? 0 : -1}
               className={activeTab === "24h" ? "ui-segment-tab ui-segment-tab-active" : "ui-segment-tab"}
               onClick={() => setActiveTab("24h")}
               type="button"
@@ -1535,6 +1556,7 @@ export function DadosPage() {
               id="tab-compare-7d"
               role="tab"
               aria-selected={activeTab === "7d"}
+              tabIndex={activeTab === "7d" ? 0 : -1}
               className={activeTab === "7d" ? "ui-segment-tab ui-segment-tab-active" : "ui-segment-tab"}
               onClick={() => setActiveTab("7d")}
               type="button"
@@ -1545,6 +1567,7 @@ export function DadosPage() {
               id="tab-compare-custom"
               role="tab"
               aria-selected={activeTab === "custom"}
+              tabIndex={activeTab === "custom" ? 0 : -1}
               className={activeTab === "custom" ? "ui-segment-tab ui-segment-tab-active" : "ui-segment-tab"}
               onClick={() => setActiveTab("custom")}
               type="button"

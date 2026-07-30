@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 import { IconShell, SurfaceCard } from "../components/BrandSystem";
 import { BrandRadialDivider, BrandWatermarkPanel } from "../components/BrandMicro";
-import { PortalPageShell, PortalSectionHeader } from "../components/portal";
+import { PortalHero, PortalPageShell, PortalSectionHeader } from "../components/portal";
 import { INSTITUTIONAL_CITATION, INSTITUTIONAL_COORDINATION, INSTITUTIONAL_FUNDING, INSTITUTIONAL_SUMMARY, INSTITUTIONAL_TAGLINE } from "../content/institucional";
 
 const quickLinks = [
@@ -32,23 +32,16 @@ const downloads = [
 export function ImprensaPage() {
   return (
     <PortalPageShell>
-      <SurfaceCard className="portal-stage-hero portal-stage-hero-documental overflow-hidden p-0">
-        <div className="portal-stage-hero-inner">
-          <div className="portal-stage-copy">
-            <IconShell tone="brand" className="portal-stage-icon">
-              <span aria-hidden="true">🗞️</span>
-            </IconShell>
-            <h1>Imprensa e materiais institucionais</h1>
-            <p>
-              Apoio para jornalistas, assessorias, pesquisadores e parceiros com resumo institucional, orientação de citação e acesso rápido aos materiais públicos.
-            </p>
-          </div>
-          <div className="portal-stage-stat">
-            <span>UFF</span>
-            <small>coordenação institucional</small>
-          </div>
-        </div>
-      </SurfaceCard>
+      <PortalHero
+        badge={
+          <IconShell tone="brand" className="portal-stage-icon">
+            <span aria-hidden="true">🗞️</span>
+          </IconShell>
+        }
+        title="Imprensa e materiais institucionais"
+        subtitle="Apoio para jornalistas, assessorias, pesquisadores e parceiros com resumo institucional, orientação de citação e acesso rápido aos materiais públicos."
+        aside={<div className="portal-stage-stat"><span>UFF</span><small>coordenação institucional</small></div>}
+      />
 
       <SurfaceCard className="portal-list-panel logo-watermark-soft p-6 md:p-8">
         <PortalSectionHeader

@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 
 import { IconShell, SurfaceCard } from "../components/BrandSystem";
+import { PortalHero } from "../components/portal";
 import type { AcervoCollection, ReportDocument, StationOverview } from "../lib/api";
 
 type NavigationShortcut = {
@@ -100,16 +101,12 @@ export function ApresentacaoPage() {
 
   return (
     <section className="portal-stage presentation-stage space-y-8 md:space-y-10">
-      <SurfaceCard className="portal-stage-hero portal-stage-hero-documental overflow-hidden p-0">
-        <div className="portal-stage-hero-inner">
-          <div className="portal-stage-copy">
-            <IconShell tone="brand" className="portal-stage-icon"><span aria-hidden="true">▶</span></IconShell>
-            <h1>Roteiro rápido de navegação pública</h1>
-            <p>Atalhos para apresentar dados, acervo, boletins, relatórios e transparência sem depender de navegação manual.</p>
-          </div>
-          <div className="portal-stage-stat"><span>{links.length}</span><small>atalhos públicos</small></div>
-        </div>
-      </SurfaceCard>
+      <PortalHero
+        badge={<IconShell tone="brand" className="portal-stage-icon"><span aria-hidden="true">▶</span></IconShell>}
+        title="Roteiro rápido de navegação pública"
+        subtitle="Atalhos para apresentar dados, acervo, boletins, relatórios e transparência sem depender de navegação manual."
+        aside={<div className="portal-stage-stat"><span>{links.length}</span><small>atalhos públicos</small></div>}
+      />
 
       <SurfaceCard className="portal-list-panel border-brand-primary/15 bg-brand-primary-soft p-6">
         <h2 className="text-lg font-black text-brand-primary">Como usar</h2>

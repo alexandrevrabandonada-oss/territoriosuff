@@ -323,7 +323,7 @@ export function AcervoListPage() {
                     key={tag}
                     type="button"
                     onClick={() => setTagFilter(isActive ? "" : tag)}
-                    className={`rounded-full px-3 py-1 text-xs font-semibold border transition-all ${
+                    className={`rounded-full px-3 py-2 text-xs font-semibold border transition-all ${
                       isActive
                         ? "border-brand-primary bg-brand-primary text-white shadow-md shadow-brand-primary/10"
                         : "border-border-subtle bg-surface-2 text-text-secondary hover:border-brand-primary/30 hover:text-text-primary"
@@ -375,68 +375,66 @@ export function AcervoListPage() {
                 item.source_name ? `Fonte: ${item.source_name}` : null,
               ].filter(Boolean).join(" · ") || undefined;
               return (
-                <li key={item.slug}>
-                  <Link
-                    className="group motion-list-item block h-full"
-                    to={`/acervo/item/${item.slug}`}
-                  >
-                    <article className="relative flex h-full min-h-[17rem] overflow-hidden rounded-[1.65rem] border border-border-subtle bg-white shadow-[0_12px_30px_rgba(17,38,59,0.06)] transition-all duration-300 group-hover:-translate-y-1 group-hover:border-brand-primary/25 group-hover:shadow-[0_24px_55px_rgba(17,38,59,0.12)]">
-                      <div className={`absolute inset-x-0 top-0 h-1.5 bg-gradient-to-r ${meta.accent}`} aria-hidden="true" />
-                      <div className="absolute -right-14 -top-14 h-40 w-40 rounded-full bg-brand-primary-soft/70 transition-transform duration-500 group-hover:scale-125" aria-hidden="true" />
-                      <div className="absolute bottom-4 right-4 text-7xl font-black leading-none text-brand-primary/[0.035]" aria-hidden="true">
-                        {String(index + 1).padStart(2, "0")}
-                      </div>
-                      <div className="relative flex flex-1 flex-col gap-4 p-5">
-                        <div className="flex flex-wrap items-center justify-between gap-2">
-                          <span className={`inline-flex items-center rounded-full border border-brand-primary/15 bg-gradient-to-r ${meta.gradient} px-3 py-1 text-[10px] font-black uppercase tracking-[0.16em] text-brand-primary-dark`}>
-                            {ACERVO_KIND_LABELS[item.kind]}
-                          </span>
-                          <div className="flex items-center gap-2">
-                            {item.featured && (
-                              <span className="rounded-full border border-accent-yellow/35 bg-accent-yellow/15 px-2.5 py-1 text-[9px] font-black uppercase tracking-[0.14em] text-warning">
-                                Destaque
-                              </span>
-                            )}
-                            {dateStr && <span className="text-[11px] font-bold tabular-nums text-text-secondary">{dateStr}</span>}
-                          </div>
-                        </div>
-
-                        <div className="space-y-2">
-                          <h3 className="line-clamp-3 text-xl font-black leading-[1.05] tracking-[-0.025em] text-text-primary transition-colors group-hover:text-brand-primary-dark">
-                            {highlightText(item.title, search)}
-                          </h3>
-                          {summary && (
-                            <p className="line-clamp-3 text-sm leading-relaxed text-text-secondary">
-                              {highlightText(summary, search)}
-                            </p>
+                <li key={item.slug} className="motion-list-item h-full">
+                  <article className="group relative flex h-full min-h-[17rem] flex-col overflow-hidden rounded-[1.65rem] border border-border-subtle bg-white shadow-[0_12px_30px_rgba(17,38,59,0.06)] transition-all duration-300 hover:-translate-y-1 hover:border-brand-primary/25 hover:shadow-[0_24px_55px_rgba(17,38,59,0.12)]">
+                    <div className={`absolute inset-x-0 top-0 h-1.5 bg-gradient-to-r ${meta.accent}`} aria-hidden="true" />
+                    <div className="absolute -right-14 -top-14 h-40 w-40 rounded-full bg-brand-primary-soft/70 transition-transform duration-500 group-hover:scale-125" aria-hidden="true" />
+                    <div className="absolute bottom-4 right-4 text-7xl font-black leading-none text-brand-primary/[0.035]" aria-hidden="true">
+                      {String(index + 1).padStart(2, "0")}
+                    </div>
+                    <Link
+                      className="relative flex flex-1 flex-col gap-4 p-5"
+                      to={`/acervo/item/${item.slug}`}
+                    >
+                      <div className="flex flex-wrap items-center justify-between gap-2">
+                        <span className={`inline-flex items-center rounded-full border border-brand-primary/15 bg-gradient-to-r ${meta.gradient} px-3 py-1 text-[10px] font-black uppercase tracking-[0.16em] text-brand-primary-dark`}>
+                          {ACERVO_KIND_LABELS[item.kind]}
+                        </span>
+                        <div className="flex items-center gap-2">
+                          {item.featured && (
+                            <span className="rounded-full border border-accent-yellow/35 bg-accent-yellow/15 px-2.5 py-1 text-[9px] font-black uppercase tracking-[0.14em] text-warning">
+                              Destaque
+                            </span>
                           )}
-                        </div>
-
-                        {item.tags.length > 0 && (
-                          <div className="mt-auto flex flex-wrap gap-1.5">
-                            {item.tags.slice(0, 5).map((tag) => (
-                              <button
-                                key={tag}
-                                type="button"
-                                className="rounded-full border border-border-subtle bg-surface-2 px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.1em] text-text-secondary transition-colors hover:border-brand-primary/25 hover:bg-brand-primary-soft hover:text-brand-primary-dark"
-                                onClick={(e) => { e.preventDefault(); e.stopPropagation(); setTagFilter(tag); }}
-                                aria-label={`Filtrar por ${tag}`}
-                              >
-                                #{tag}
-                              </button>
-                            ))}
-                          </div>
-                        )}
-
-                        <div className="flex items-center justify-between gap-3 border-t border-border-subtle pt-4">
-                          <span className="text-xs font-black uppercase tracking-[0.16em] text-brand-primary-dark">Abrir item</span>
-                          <span className="grid h-10 w-10 place-items-center rounded-full bg-brand-primary text-white shadow-[0_12px_24px_rgba(0,93,170,0.22)] transition-transform group-hover:translate-x-1" aria-hidden="true">
-                            →
-                          </span>
+                          {dateStr && <span className="text-[11px] font-bold tabular-nums text-text-secondary">{dateStr}</span>}
                         </div>
                       </div>
-                    </article>
-                  </Link>
+
+                      <div className="space-y-2">
+                        <h3 className="line-clamp-3 text-xl font-black leading-[1.05] tracking-[-0.025em] text-text-primary transition-colors group-hover:text-brand-primary-dark">
+                          {highlightText(item.title, search)}
+                        </h3>
+                        {summary && (
+                          <p className="line-clamp-3 text-sm leading-relaxed text-text-secondary">
+                            {highlightText(summary, search)}
+                          </p>
+                        )}
+                      </div>
+
+                      <div className="mt-auto flex items-center justify-between gap-3 border-t border-border-subtle pt-4">
+                        <span className="text-xs font-black uppercase tracking-[0.16em] text-brand-primary-dark">Abrir item</span>
+                        <span className="grid h-10 w-10 place-items-center rounded-full bg-brand-primary text-white shadow-[0_12px_24px_rgba(0,93,170,0.22)] transition-transform group-hover:translate-x-1" aria-hidden="true">
+                          →
+                        </span>
+                      </div>
+                    </Link>
+
+                    {item.tags.length > 0 && (
+                      <div className="relative flex flex-wrap gap-1.5 px-5 pb-5">
+                        {item.tags.slice(0, 5).map((tag) => (
+                          <button
+                            key={tag}
+                            type="button"
+                            className="rounded-full border border-border-subtle bg-surface-2 px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.1em] text-text-secondary transition-colors hover:border-brand-primary/25 hover:bg-brand-primary-soft hover:text-brand-primary-dark"
+                            onClick={() => setTagFilter(tag)}
+                            aria-label={`Filtrar por ${tag}`}
+                          >
+                            #{tag}
+                          </button>
+                        ))}
+                      </div>
+                    )}
+                  </article>
                 </li>
               );
             })}

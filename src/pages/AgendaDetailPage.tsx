@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 
 import { IconShell, SurfaceCard } from "../components/BrandSystem";
+import { ErrorState } from "../components/ErrorState";
 import { PortalEmptyState, PortalHero, PortalPageShell, PortalSectionHeader } from "../components/portal";
 import { getEventById } from "../lib/api/content";
 import type { Event } from "../lib/api/core";
@@ -241,9 +242,7 @@ export function AgendaDetailPage() {
       ) : null}
 
       {error ? (
-        <p aria-live="assertive" className="rounded-md border border-error bg-error/10 p-3 text-base text-error" role="alert">
-          {error}
-        </p>
+        <ErrorState description={error} />
       ) : null}
     </PortalPageShell>
   );

@@ -1,25 +1,23 @@
 import { IconShell, SurfaceCard } from "../components/BrandSystem";
-import { PortalPageShell, PortalSectionHeader } from "../components/portal";
+import { PortalHero, PortalPageShell, PortalSectionHeader } from "../components/portal";
 import { INSTITUTIONAL_CITATION, INSTITUTIONAL_COORDINATION, INSTITUTIONAL_FUNDING, INSTITUTIONAL_SUMMARY, INSTITUTIONAL_TAGLINE, INSTITUTIONAL_UNIVERSITY_FULL_NAME } from "../content/institucional";
 
 export function SobrePage() {
   return (
     <PortalPageShell className="about-stage">
       {/* Hero Section */}
-      <SurfaceCard className="portal-stage-hero portal-stage-hero-lab overflow-hidden p-0">
-        <div className="portal-stage-hero-inner">
-          <div className="portal-stage-copy">
-            <IconShell tone="brand" className="portal-stage-icon"><span className="font-black" aria-hidden="true">UFF</span></IconShell>
-            <h1>Sistema de Monitoramento e Memória Socioambiental</h1>
-            <p>{INSTITUTIONAL_SUMMARY}</p>
-            <p className="!text-sm">{INSTITUTIONAL_CITATION}</p>
-          </div>
-          <div className="portal-stage-stat">
-            <span>SEMEAR</span>
-            <small>{INSTITUTIONAL_UNIVERSITY_FULL_NAME}</small>
-          </div>
-        </div>
-      </SurfaceCard>
+      <PortalHero
+        tone="lab"
+        badge={<IconShell tone="brand" className="portal-stage-icon"><span className="font-black" aria-hidden="true">UFF</span></IconShell>}
+        title="Sistema de Monitoramento e Memória Socioambiental"
+        subtitle={
+          <>
+            <span className="block">{INSTITUTIONAL_SUMMARY}</span>
+            <span className="mt-2 block text-sm">{INSTITUTIONAL_CITATION}</span>
+          </>
+        }
+        aside={<div className="portal-stage-stat"><span>SEMEAR</span><small>{INSTITUTIONAL_UNIVERSITY_FULL_NAME}</small></div>}
+      />
 
       {/* Institutional Framework */}
       <section className="grid gap-6 md:grid-cols-2">

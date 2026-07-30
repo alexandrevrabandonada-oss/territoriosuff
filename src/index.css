@@ -457,19 +457,6 @@ select {
       linear-gradient(115deg, rgba(0, 93, 170, 0.08), rgba(0, 183, 177, 0.05));
   }
 
-  .ui-nav-pill {
-    @apply motion-action inline-flex min-h-[40px] items-center justify-center rounded-full border border-transparent bg-transparent px-3.5 py-2 text-[13px] font-semibold uppercase tracking-[0.09em] leading-none text-text-secondary hover:border-border-subtle hover:bg-surface-2 hover:text-text-primary;
-  }
-
-  .ui-nav-pill-active {
-    @apply border-brand-primary/15 bg-brand-primary-soft text-brand-primary-dark shadow-[0_8px_22px_rgba(0,93,170,0.12)];
-  }
-
-  .ui-pill-institutional {
-    @apply inline-flex min-h-[32px] items-center rounded-full border border-brand-primary/20 bg-brand-primary-soft px-3.5 py-1.5 text-[10px] font-semibold uppercase tracking-[0.2em] leading-none text-brand-primary-dark;
-    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.62);
-  }
-
   .motion-dialog {
     animation: motion-soft-pop 220ms cubic-bezier(0.16, 1, 0.3, 1) both;
   }
@@ -579,7 +566,8 @@ select {
   }
 
   .section-badge {
-    @apply ui-pill-institutional;
+    @apply inline-flex min-h-[32px] items-center rounded-full border border-brand-primary/20 bg-brand-primary-soft px-3.5 py-1.5 text-[10px] font-semibold uppercase tracking-[0.2em] leading-none text-brand-primary-dark;
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.62);
   }
 
   .decorative-divider {
@@ -710,71 +698,6 @@ select {
       repeating-radial-gradient(circle at center, rgba(17, 38, 59, 0.1) 0 1px, transparent 1px 3px),
       linear-gradient(135deg, rgba(229, 240, 250, 0.95), rgba(255, 255, 255, 0.6));
     border: 1px solid rgba(0, 93, 170, 0.16);
-  }
-
-  .hero-semear-shell {
-    @apply relative overflow-hidden;
-  }
-
-  .hero-semear-shell::after {
-    content: "";
-    @apply pointer-events-none absolute -right-16 top-8 h-64 w-64 rounded-full opacity-60;
-    background:
-      radial-gradient(circle at center, rgba(0, 93, 170, 0.12) 0%, rgba(0, 93, 170, 0.03) 38%, transparent 72%),
-      repeating-radial-gradient(circle at center, rgba(17, 38, 59, 0.08) 0 1px, transparent 1px 4px),
-      radial-gradient(circle at 28% 72%, rgba(163, 216, 50, 0.1), transparent 42%);
-  }
-
-  .hero-title-shell {
-    @apply relative inline-flex flex-wrap items-center gap-3;
-  }
-
-  .hero-title-shell::after {
-    content: "";
-    @apply pointer-events-none absolute -bottom-2 left-0 h-1.5 w-40 rounded-full;
-    background: linear-gradient(90deg, rgba(163, 216, 50, 0.9), rgba(0, 93, 170, 0.92), rgba(0, 183, 177, 0.85));
-  }
-
-  .hero-search-shell {
-    @apply relative overflow-hidden rounded-[1.6rem] border border-brand-primary/15 bg-gradient-to-br from-surface-1 via-surface-1 to-brand-primary-soft/35 p-4 md:p-5;
-    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.7), 0 16px 38px rgba(17, 38, 59, 0.08);
-  }
-
-  .hero-search-shell::before {
-    content: "";
-    @apply pointer-events-none absolute right-2 top-2 h-20 w-20 rounded-full;
-    background:
-      radial-gradient(circle at center, rgba(0, 93, 170, 0.2) 0 2px, transparent 3px),
-      repeating-radial-gradient(circle at center, rgba(17, 38, 59, 0.1) 0 1px, transparent 1px 3px),
-      linear-gradient(140deg, rgba(255, 255, 255, 0.92), rgba(229, 240, 250, 0.78));
-    border: 1px solid rgba(0, 93, 170, 0.16);
-  }
-
-  .hero-shortcut-chip {
-    @apply ui-chip-editorial text-[10px] tracking-[0.14em];
-  }
-
-  /* ══════════════════════════════════════════════
-     SURFACE VARIATIONS — superfícies com personalidade
-     4 texturas de papel que distinguem seções e famílias
-     de card sem sacrificar legibilidade institucional.
-     surface-warm-paper  = arquivo/dossiê    (creme-âmbar)
-     surface-cool-paper  = análise/dados     (azul-frio)
-     surface-lab         = monitoramento     (teal/ciano)
-     surface-editorial   = blog/narrativa    (azul-brand)
-     ══════════════════════════════════════════════ */
-
-  .surface-warm-paper {
-    background: linear-gradient(155deg, #FEFCF6 0%, #FFFEF9 36%, #FEF9EA 70%, #FFFAED 100%);
-  }
-  .surface-cool-paper {
-    background: linear-gradient(155deg, #F6FAFD 0%, #FAFCFF 36%, #F1F7FC 70%, #EEF4FB 100%);
-  }
-  .surface-lab {
-    background: linear-gradient(155deg, #F4FDFC 0%, #FAFFFF 36%, #EBFAF9 70%, #F1FAFB 100%);
-  }
-  .surface-editorial {
-    background: linear-gradient(155deg, #F4F7FD 0%, #F8FBFF 36%, #EBF0FA 70%, #EDF3FD 100%);
   }
 
   .data-now-panel {
@@ -2216,8 +2139,8 @@ body.reader-mode-active main {
 
 .site-footer-social a {
   display: grid;
-  width: 2rem;
-  height: 2rem;
+  width: 2.75rem;
+  height: 2.75rem;
   place-items: center;
   border: 1px solid rgba(255, 255, 255, 0.22);
   border-radius: 50%;
@@ -2470,7 +2393,8 @@ body.reader-mode-active main {
     font-size: clamp(2.2rem, 12vw, 3rem);
     line-height: 0.98;
     letter-spacing: -0.035em;
-    overflow-wrap: anywhere;
+    overflow-wrap: break-word;
+    hyphens: auto;
   }
 
   .reports-stage .portal-stage-copy h1 {
@@ -2495,8 +2419,7 @@ body.reader-mode-active main {
   }
 
   .ui-segment-tab,
-  .motion-tab,
-  .ui-nav-pill {
+  .motion-tab {
     min-height: 44px;
   }
 

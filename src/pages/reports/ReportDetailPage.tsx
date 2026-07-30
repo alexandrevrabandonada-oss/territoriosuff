@@ -3,6 +3,7 @@ import { Link, useParams } from "react-router-dom";
 
 import { IconShell, SurfaceCard } from "../../components/BrandSystem";
 import { BrandIllustratedEmptyState, BrandRadialDivider, BrandTextureSkeleton } from "../../components/BrandMicro";
+import { ErrorState } from "../../components/ErrorState";
 import { OfflineBanner } from "../../components/OfflineBanner";
 import { TextToSpeechButton } from "../../components/TextToSpeechButton";
 import { getReportBySlug, type ReportDocument } from "../../lib/api";
@@ -122,9 +123,7 @@ export function ReportDetailPage() {
 
   if (error) {
     return (
-      <p aria-live="assertive" className="rounded-md border border-error bg-error/10 p-3 text-base text-error" role="alert">
-        {error}
-      </p>
+      <ErrorState description={error} />
     );
   }
 
