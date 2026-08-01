@@ -532,3 +532,30 @@ Medição instrumentada (`scratch/measure-touch-targets.mjs`, Playwright: 6 rota
 3. **CSS** (limite conhecido, baixa prioridade): 356 KB raw de entry CSS (Tailwind arbitrary-values + design system); split por família/tokenização exigiria refatoração ampla de markup
 
 A11y: encerrado também acima do AA — touch targets 44px (AAA de 2.5.8) em todas as larguras. Não restam itens práticos da auditoria original sem dependência editorial.
+
+---
+
+# Rodada 12 — Decisões editoriais: self-link de Análises e identidade da família air/ (2026-07-30)
+
+## O que mudou
+
+- **Self-link removido** (`IneaAnalyticsPage.tsx`): o hero de Análises tinha o botão "Ver síntese histórica" apontando para `/qualidade-ar/inea/analises` — a própria página (link funcionalmente morto). **Decisão editorial do usuário: remover.** A página de Análises já é a síntese histórica; resta o CTA real "Voltar para o Painel Geral". Nenhum teste dependia do botão (grep em `tests/`).
+- **Família `air/` — identidade própria confirmada como deliberada** (decisão editorial do usuário): RadarHeroCompact, modos do Radar e hero da `IneaStationPage` **não** migram ao `PortalHero`. A identidade dark-lab da família radar é intencional e permanece; o item sai da dívida sem mudança de código.
+
+## O que não mudou
+
+- Todo o restante: nenhuma outra página/componente tocado.
+
+## QA executada
+
+- `npm run typecheck` — PASS
+- `npm run lint` — PASS
+- `npx playwright test tests/dados.spec.ts tests/portal-hero-radar.spec.ts` — 5/5 PASS
+- `npm run test:a11y` — PASS (37/37; rerun com `--workers=3` após a 1ª execução falhar por timeouts de 30s de infraestrutura — máquina saturada, sem relação com a mudança)
+- `npm run verify` — PASS (lint + typecheck + inea:qa + functions smoke + build + prerender 5 rotas + seo:assert 28 rotas)
+
+## Dívida técnica restante (encerramento)
+
+- **CSS** (limite conhecido, baixa prioridade): 356 KB raw de entry CSS (Tailwind arbitrary-values + design system); split por família/tokenização exigiria refatoração ampla de markup.
+
+A auditoria de UI/UX de 2026-07-22 está **integralmente encerrada**: todos os itens práticos resolvidos (críticos → finos → AAA de touch targets), performance de bundle/precache/CSS no ótimo alcançável sem trocar dependências, e os dois últimos itens editoriais decididos pelo usuário. Resta apenas o limite de CSS acima, documentado como aceito.

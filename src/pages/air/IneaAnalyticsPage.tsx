@@ -358,20 +358,12 @@ export function IneaAnalyticsPage() {
           }
           aside={<div className="portal-stage-stat"><span>{staticAnalyticsSummary.stations.length}</span><small>estações na base auditada</small></div>}
           actions={
-            <>
-              <Link
-                to="/qualidade-ar/inea/analises"
-                className="inline-flex items-center gap-2 px-4 py-2 border border-slate-200 bg-white text-slate-700 rounded-xl text-xs font-bold hover:bg-slate-50 transition-all shadow-sm"
-              >
-                Ver síntese histórica
-              </Link>
-              <Link
-                to="/qualidade-ar/inea"
-                className="inline-flex items-center gap-2 px-4 py-2 bg-emerald-600 text-white rounded-xl text-xs font-bold hover:bg-emerald-700 transition-all shadow-sm"
-              >
-                Voltar para o Painel Geral
-              </Link>
-            </>
+            <Link
+              to="/qualidade-ar/inea"
+              className="inline-flex items-center gap-2 px-4 py-2 bg-emerald-600 text-white rounded-xl text-xs font-bold hover:bg-emerald-700 transition-all shadow-sm"
+            >
+              Voltar para o Painel Geral
+            </Link>
           }
         />
 
