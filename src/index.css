@@ -1886,7 +1886,7 @@ body.reader-mode-active main {
   position: relative;
   border-radius: 999px;
   color: #1a365d;
-  padding: 0.65rem 1.1rem;
+  padding: 0.8rem 1.1rem;
   font-size: 0.84rem;
   font-weight: 700;
   white-space: nowrap;
@@ -1957,7 +1957,7 @@ body.reader-mode-active main {
 
 .site-nav .site-nav-more-panel a {
   border-radius: 0.85rem;
-  padding: 0.72rem 0.85rem;
+  padding: 0.85rem;
   font-size: 0.82rem;
 }
 
@@ -2119,6 +2119,12 @@ body.reader-mode-active main {
   color: rgba(255, 255, 255, 0.86);
   font-size: 0.86rem;
   font-weight: 650;
+}
+
+.site-footer nav a {
+  display: inline-flex;
+  min-height: 2.75rem;
+  align-items: center;
 }
 
 .site-footer a:hover {
@@ -2421,14 +2427,6 @@ body.reader-mode-active main {
   .ui-segment-tab,
   .motion-tab {
     min-height: 44px;
-  }
-
-  .home-popular a,
-  .home-section-head a,
-  .site-footer a {
-    display: inline-flex;
-    min-height: 44px;
-    align-items: center;
   }
 
   .site-topbar-inner {

@@ -343,6 +343,7 @@
 
 .home-search input {
   min-width: 0;
+  min-height: 2.75rem;
   flex: 1;
   border: 0;
   background: transparent;
@@ -381,6 +382,9 @@
 }
 
 .home-popular a {
+  display: inline-flex;
+  min-height: 2.75rem;
+  align-items: center;
   border: 1px solid rgba(9, 45, 87, 0.28);
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.72);
@@ -801,6 +805,9 @@
 }
 
 .home-section-head a {
+  display: inline-flex;
+  min-height: 2.75rem;
+  align-items: center;
   border: 1px solid rgba(15, 55, 107, 0.14);
   border-radius: 999px;
   padding: 0.3rem 0.75rem;

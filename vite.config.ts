@@ -148,7 +148,9 @@ function routeMetadataHtml(): Plugin {
 
 export default defineConfig({
   build: {
-    cssCodeSplit: false,
+    // Split CSS per chunk so lazy routes (admin, mapa, acervo, leaflet/uplot vendors)
+    // ship their styles on demand; the entry CSS stays the only render-blocking one.
+    cssCodeSplit: true,
     sourcemap: process.env.SENTRY_AUTH_TOKEN ? "hidden" : false,
     rollupOptions: {
         output: {
@@ -257,9 +259,20 @@ export default defineConfig({
         ]
       },
       injectManifest: {
-        globPatterns: ["**/*.{js,css,html,ico,png,svg}"],
+        // Precache only the critical boot path (entry + react/router + CSS + static assets).
+        // Everything else is a lazy chunk cached on first use by the SW runtime route
+        // (see src/sw.ts "Lazy chunks and route CSS" — StaleWhileRevalidate on /assets/).
+        globPatterns: [
+          "**/*.{html,ico,png,svg}",
+          "assets/index-*.js",
+          "assets/vendor-react-*.js",
+          "assets/vendor-router-*.js",
+          "assets/*.css"
+        ],
         globIgnores: [
           "_seo/*.html",
+          // Install/splash icon: only requested online by the browser; push uses icon-192.
+          "icons/icon-512.png",
           "assets/Admin*.js",
           "assets/Admin*.css",
           "assets/acervo-*.css",

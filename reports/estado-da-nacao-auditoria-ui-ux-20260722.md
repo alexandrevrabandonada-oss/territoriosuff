@@ -400,3 +400,135 @@ Resolvida a "triplicação do hero escuro" apontada na auditoria (`.acervo-hub-h
 4. **Editorial**: definir alvo do botão "Ver síntese histórica" (self-link) no hero de Análises
 
 A11y: todos os itens práticos da auditoria (críticos, altos, médios e finos) estão resolvidos; restam apenas melhorias opcionais acima do AA.
+
+---
+
+# Rodada 9 — Bundle: precache do SW alinhado à filosofia "cache on first use" (2026-07-30)
+
+## Diagnóstico (o que mudou em relação à dívida registrada)
+
+Medição real do build mostrou que a dívida "lazy-load mais agressivo" já estava essencialmente paga na arquitetura de código:
+
+- **vendor-pdf (427.6 kB / gzip 127.3)**: `pdfjs-dist` carregado apenas por dynamic import em `lib/extractPdfText.ts`, usado somente pelo admin (`AdminTransparencyLiveEditPage`). Fora do precache. Máximo lazy possível sem trocar a lib — aceito.
+- **vendor-maps (161.2 kB / gzip 50.3)**: leaflet/react-leaflet já lazy em todos os 5 consumidores (`MapaPage` via `MapaLandingPage`, `TransparencyTerritoryMap`, `AirAtlasMap`, `SocialExposureMap`, `AdminReportLocationMap`). Fora do precache. Nada a fazer.
+- **vendor-supabase (170.7 kB / gzip 45.4)**: o entry (`index`, 74.3 kB) importa estaticamente apenas `vendor-react` (141.9) e `vendor-router` (38) — supabase carrega só quando uma rota lazy que usa `lib/api` é visitada, ou no admin. Fora do caminho crítico.
+- **RadarVisualNotice (164.7 kB / gzip 11.7)**: nome enganoso — é o shared chunk da família `/qualidade-ar` (componentes + copy compartilhados entre as 4 páginas air, extraídos pelo Rollup e nomeados pelo módulo representativo). Só baixa ao entrar na família; 11.7 kB gzip na rede. Aceito.
+
+## O que mudou
+
+O ponto cego real era o **precache do service worker**: 1563.73 KiB / 72 entries, incluindo ~50 chunks `/assets/` de features lazy (toda a família radar, mapas, gráficos, dados inline) — contradizendo a filosofia documentada no próprio `src/sw.ts` ("Lazy chunks and route CSS: cache on first use instead of precaching everything", via StaleWhileRevalidate 180 entries/14 dias).
+
+- `vite.config.ts` → `injectManifest.globPatterns`: de `**/*.{js,css,html,ico,png,svg}` para whitelist do boot path — `**/*.{html,ico,png,svg}` + `assets/index-*.js` + `assets/vendor-react-*.js` + `assets/vendor-router-*.js` + `assets/*.css`. `globIgnores` anteriores mantidos como defesa caso os patterns sejam ampliados no futuro.
+- `vite.config.ts` → `globIgnores`: `icons/icon-512.png` (368 KiB) fora do precache — só é requisitado online pelo navegador (install/splash; SO cacheia na instalação). Push notifications usam `icon-192.png` (48 KiB), que permanece.
+
+**Resultado: precache 1563.73 KiB / 72 entries → 723.15 KiB / 24 entries (−53.7%).** Composição final: JS crítico (254 KiB) + CSS único (408 KiB) + HTMLs prerendered das 5 rotas (316 KiB) + ícones/brand essenciais.
+
+## O que não mudou
+
+- Contrato offline: nenhum `*Page-*.js` já era precacheado (rotas sempre dependeram do runtime cache na primeira visita) — a mudança só estende a mesma regra aos sub-chunks de feature. `docs/OFFLINE.md` segue correto sem alterações.
+- `routeAssetsPreloader` (modulepreload por rota), `additionalManifestEntries` (12 rotas), estratégias runtime do `sw.ts` — intactos.
+- Nenhum código de aplicação tocado; mudança restrita a config de build/PWA.
+
+## QA executada
+
+- `npm run typecheck` — PASS
+- `npm run lint` — PASS
+- `npx playwright test tests/navigation-pwa.spec.ts tests/dados.spec.ts` — PASS (8/8)
+- Build ×3 para medição (baseline 1563.73 KiB → 1088.05 → 723.15 KiB), precache final inspecionado entry a entry
+- `npm run test:a11y` — PASS (37/37)
+- `npm run verify` — PASS (lint + typecheck + inea:qa + functions smoke + build com precache 24 entries/723.15 KiB + prerender 5 rotas + seo:assert 28 rotas)
+
+## Dívida técnica restante (atualizada)
+
+1. **Família `air/` — identidade própria restante**: RadarHeroCompact e modos do Radar, hero da `IneaStationPage`, hero do fallback analítico — rodada futura com decisão editorial
+2. **CSS**: `style-*.css` único de 408 KiB (`cssCodeSplit: false`, decisão deliberada) — avaliar purga/split por família; consolidação de border-radius/sombras (baixa prioridade)
+3. **Editorial**: definir alvo do botão "Ver síntese histórica" (self-link) no hero de Análises
+
+Bundle: encerrado no que é alcançável sem trocar dependências (pdfjs) ou repartir dados inline do radar (custo/benefício desfavorável: 11.7 kB gzip).
+
+---
+
+# Rodada 10 — CSS: split por rota (cssCodeSplit) no caminho crítico (2026-07-30)
+
+## Diagnóstico
+
+- `style-*.css` único: 416 KB raw / 57.2 KB gzip, `cssCodeSplit: false` (decisão do commit de prerender, sem documentação de motivo) — tudo render-blocking e precacheado.
+- Composição da fonte: `index.css` 89 KB (Tailwind + design system) e `home.css` 27.5 KB, ambos eager via `main.tsx`; `admin.css` 16.7 KB, `mapa.css` 3.8 KB, `acervo.css` 2.7 KB e vendors (leaflet, uPlot) importados por módulos lazy — mas tudo parava no arquivo único.
+- Contrato existente relevante: o CSS principal já é **deferred** por design — prerender injeta CSS crítico inline (`data-prerender-critical`) e o link completo ativa por interação/timeout 15s (`main.tsx`, testado em `seo.spec.ts` e exigido por `seo-static-assert.ts`). Ou seja, o custo real do CSS único era rede/parse/precache, não bloqueio de primeira pintura.
+
+## O que mudou
+
+- `vite.config.ts` → `cssCodeSplit: true` (com comentário registrando a decisão). O CSS do entry cai para 356.6 KB raw / **45.1 KB gzip (−12.1 KB gzip em toda página)**; cinco splits passam a carregar sob demanda com seus chunks: `AdminRoutes` 32.1 KB (gzip 4.2), `vendor-maps` 15.0 KB (gzip 6.4), `acervo` 7.9 KB (gzip 1.5), `MapaPage` 3.9 KB (gzip 1.2), `vendor-uplot` 1.7 KB (gzip 0.7).
+- Nenhum ajuste de `globIgnores` necessário: os patterns legados (`Admin*.css`, `acervo-*.css`, `MapaPage-*.css`, `vendor-maps-*.css`, `vendor-uplot-*.css`) já excluíam exatamente os splits novos do precache. **Precache: 723.15 → 665.14 KiB** (só `index-*.css` entra).
+- Runtime cache do SW (`StaleWhileRevalidate` em `/assets/*.css`, `sw.ts`) já cobria CSS lazy — nada a mudar.
+
+## O que não mudou
+
+- Contrato do CSS deferred: `seo.spec.ts` (5 testes de prerender, rodados contra preview de produção com `PLAYWRIGHT_EXPECT_PRERENDER=true`) — **5/5 PASS**, link deferred ativa por interação e hidratação sem erros React, com o split aplicado.
+- `index.css`/`home.css` continuam eager (são o design system + home, página mais visitada) — redução adicional exigiria repartir Tailwind por família ou refatorar classes arbitrary-value para tokens: custo/benefício desfavorável, registrado como limite desta frente.
+- Nenhum código de aplicação tocado; mudança restrita a config de build.
+
+## QA executada
+
+- Smoke produção (`scratch/smoke-css-split.mjs`, vite preview + Playwright, 4/4): home aplica entry CSS após ativação; `/acervo` carrega e aplica `acervo-*.css` (backdrop `::before`); `/mapa` prova lazy — `vendor-maps-*.css` ausente na landing e presente após opt-in, `.leaflet-container` com altura real; `/dados` sem CSS de feature extra
+- `npx playwright test tests/seo.spec.ts tests/navigation-pwa.spec.ts tests/dados.spec.ts` — 13/13 PASS (5 skips condicionais pré-existentes de prerender)
+- `tests/seo.spec.ts` com `PLAYWRIGHT_EXPECT_PRERENDER=true` contra preview — 5/5 PASS
+- `npm run test:a11y` — PASS (37/37)
+- `npm run verify` — PASS (lint + typecheck + inea:qa + functions smoke + build com entry CSS 356.6 KB/gzip 45.1 + prerender 5 rotas + seo:assert 28 rotas)
+
+## Dívida técnica restante (atualizada)
+
+1. **Família `air/` — identidade própria restante**: RadarHeroCompact e modos do Radar, hero da `IneaStationPage`, hero do fallback analítico — rodada futura com decisão editorial
+2. **Editorial**: definir alvo do botão "Ver síntese histórica" (self-link) no hero de Análises
+3. **CSS** (limite conhecido, baixa prioridade): 356 KB raw de entry CSS são Tailwind arbitrary-values + design system; split por família ou tokenização exigiria refatoração ampla de markup
+
+---
+
+# Rodada 11 — Touch targets: 44px em todas as larguras (2026-07-30)
+
+## Diagnóstico
+
+Medição instrumentada (`scratch/measure-touch-targets.mjs`, Playwright: 6 rotas × desktop 1280px/mobile 390px, todos os interativos visíveis < 44px):
+
+- **Mobile já estava limpo** — a regra de 44px existia mas apenas dentro de `@media (max-width: 720px)` (`index.css`), cobrindo `.home-popular a`, `.home-section-head a`, `.site-footer a`. As rodadas 1–2 já haviam corrigido os alvos críticos mobile.
+- **Desktop tinha 83 alvos reais < 44px**: nav primário 41px, dropdown "Mais" ~39px, input de busca da home 23px, "buscas populares" 37px, "Ver todos" 29px, links do nav do footer 21px (1 linha) / 41px (2 linhas), chips de filtro de `/buscar` 40px. (Os itens de 21px atribuídos na auditoria ao dropdown eram, na verdade, links do footer — o dropdown nem existia no DOM com o painel fechado.)
+- Skip links 1×1px: corretos por design (expandem ao foco) — não tocados.
+
+## O que mudou
+
+- `index.css`:
+  - `.site-nav a`: padding vertical 0.65rem → 0.8rem (41 → ~45px)
+  - `.site-nav .site-nav-more-panel a`: padding 0.72rem → 0.85rem (~39 → ~44px)
+  - nova regra `.site-footer nav a { display: inline-flex; min-height: 2.75rem; align-items: center }` (21/41 → 44px) — escopo `nav a` deliberado: `.site-footer a` genérico (0-1-1) quebraria o `display: grid` do `.site-footer-pwa` (0-1-0) por especificidade
+  - removido o bloco redundante da `@media (max-width: 720px)` (as três regras agora valem na origem, em todas as larguras)
+- `styles/home.css`:
+  - `.home-popular a`: + `inline-flex; min-height: 2.75rem; align-items: center` (37 → 44px)
+  - `.home-section-head a`: idem (29 → 44px)
+  - `.home-search input`: + `min-height: 2.75rem` (23 → 44px; área focável acompanha a altura do form)
+- `SearchPage.tsx`: chips de filtro `min-h-[40px]` → `min-h-[44px]` (40 → 44px; a classe `ui-segment-tab` já dava 44px no mobile via CSS)
+
+**Re-medição: 0 alvos reais < 44px nas 6 rotas × 2 viewports** (restam apenas os 2 skip links por página, deliberados). WCAG 2.5.8 agora atendido no tamanho-alvo **AAA** (44px), não só no mínimo AA (24px).
+
+## O que não mudou
+
+- Layout: footer cresce ~1 linha de ritmo vertical (links uniformes de 44px), hero da home com pills de busca popular mais altos — smoke visual desktop+mobile (`tmp/ui-audit-touch44/`) íntegro, incl. dropdown "Mais" aberto e chips de `/buscar`
+- Skip links 1×1px (padrão visually-hidden-until-focus)
+- `.site-footer-pwa` e `.site-footer-social a` (já 44px; protegidos da colisão de especificidade)
+
+## QA executada
+
+- Medição antes/depois com o mesmo instrumento: 107 → 24 ocorrências (24 = apenas skip links, 2 × 6 rotas × 2 viewports)
+- Smoke visual desktop + mobile (`tmp/ui-audit-touch44/`): hero, footer, dropdown "Mais", chips de busca — íntegros
+- `npm run typecheck` — PASS
+- `npm run lint` — PASS
+- `npx playwright test tests/navigation-pwa.spec.ts tests/home.spec.ts tests/seo.spec.ts` — 11/11 PASS (+5 skips condicionais pré-existentes)
+- `npm run test:a11y` — PASS (37/37)
+- `npm run verify` — PASS (lint + typecheck + inea:qa + functions smoke + build + prerender 5 rotas + seo:assert 28 rotas; rerun após órfão de dev server travar o teardown da 1ª execução — testes já haviam passado)
+
+## Dívida técnica restante (atualizada)
+
+1. **Família `air/` — identidade própria restante**: RadarHeroCompact e modos do Radar, hero da `IneaStationPage`, hero do fallback analítico — rodada futura com decisão editorial
+2. **Editorial**: definir alvo do botão "Ver síntese histórica" (self-link) no hero de Análises
+3. **CSS** (limite conhecido, baixa prioridade): 356 KB raw de entry CSS (Tailwind arbitrary-values + design system); split por família/tokenização exigiria refatoração ampla de markup
+
+A11y: encerrado também acima do AA — touch targets 44px (AAA de 2.5.8) em todas as larguras. Não restam itens práticos da auditoria original sem dependência editorial.

@@ -215,7 +215,7 @@ export function SearchPage() {
                 type="button"
                 key={t}
                 onClick={() => handleTipoChange(t)}
-                className={`ui-segment-tab motion-chip-action inline-flex min-h-[40px] items-center gap-2 px-3.5 py-2 ${
+                className={`ui-segment-tab motion-chip-action inline-flex min-h-[44px] items-center gap-2 px-3.5 py-2 ${
                   tipo === t ? "ui-segment-tab-active" : ""
                 }`}
                 aria-pressed={tipo === t}
