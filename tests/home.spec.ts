@@ -16,7 +16,6 @@ test.describe('Home Page @smoke', () => {
     // Verify main navigation links
     await expect(page.getByRole('link', { name: /dados/i }).first()).toBeVisible();
     await expect(page.getByRole('link', { name: /acervo/i }).first()).toBeVisible();
-    await expect(page.getByRole('link', { name: /blog/i }).first()).toBeVisible();
     
     // Check for the public-data overview section
     await expect(page.getByRole('heading', { name: /dados públicos para localizar, compreender e agir/i })).toBeVisible();
@@ -37,9 +36,5 @@ test.describe('Home Page @smoke', () => {
     await page.getByRole('link', { name: /acervo/i }).first().click();
     await expect(page).toHaveURL(/\/acervo/);
     await page.goBack();
-    
-    // Navigate to Blog
-    await page.getByRole('link', { name: /blog/i }).first().click();
-    await expect(page).toHaveURL(/\/blog/);
   });
 });

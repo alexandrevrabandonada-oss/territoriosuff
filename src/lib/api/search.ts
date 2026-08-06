@@ -1,5 +1,5 @@
 import { listReports } from "./content";
-import { AcervoItem, BlogPost, Event, getSupabase, isPublishTimeReached, ReportDocument, SearchResultItem, toAppError } from "./core";
+import { AcervoItem, Event, getSupabase, isPublishTimeReached, ReportDocument, SearchResultItem, toAppError } from "./core";
 
 export type TransparencySearchResult = {
   id: string;
@@ -25,26 +25,6 @@ export async function searchAcervo(q: string, limit = 10): Promise<AcervoItem[]>
     return (data as AcervoItem[]).filter((item) => isPublishTimeReached(item.publish_at ?? null));
   } catch (error) {
     throw toAppError("Falha ao buscar no acervo", error);
-  }
-}
-
-/**
- * Busca posts no blog pelo título ou conteúdo.
- */
-export async function searchBlog(q: string, limit = 10): Promise<BlogPost[]> {
-  try {
-    const supabase = await getSupabase();
-    const { data, error } = await supabase
-      .from("blog_posts")
-      .select("*")
-      .or(`title.ilike.%${q}%,content_md.ilike.%${q}%`)
-      .order("published_at", { ascending: false })
-      .limit(limit);
-
-    if (error) throw error;
-    return (data as BlogPost[]).filter((post) => isPublishTimeReached(post.publish_at ?? null));
-  } catch (error) {
-    throw toAppError("Falha ao buscar no blog", error);
   }
 }
 

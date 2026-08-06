@@ -72,9 +72,6 @@ export function ImprensaPage() {
           ))}
         </ul>
         <p className="mt-4 text-sm leading-relaxed text-text-secondary md:text-base">{INSTITUTIONAL_CITATION}</p>
-        <p className="mt-4 text-sm text-text-secondary">
-          Para contexto técnico adicional, consulte <Link className="font-semibold text-brand-primary underline" to="/como-ler-dados">Como ler os dados</Link>.
-        </p>
         <BrandRadialDivider className="radial-divider-subtle mt-4" />
       </SurfaceCard>
 

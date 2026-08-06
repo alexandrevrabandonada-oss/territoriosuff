@@ -703,12 +703,8 @@ export function StatusPage() {
               <div className="space-y-3">
                 <EditorialCardMeta><span>Sinais de conteúdo</span></EditorialCardMeta>
                 <EditorialCardTitle className="text-2xl">Sincronizado</EditorialCardTitle>
-                <EditorialCardExcerpt>Blog, acervo, agenda e relatórios publicados com leitura contínua.</EditorialCardExcerpt>
+                <EditorialCardExcerpt>Acervo, agenda e relatórios publicados com leitura contínua.</EditorialCardExcerpt>
                 <div className="grid gap-3 sm:grid-cols-2">
-                  <div className="rounded-2xl bg-surface-2 p-4">
-                    <p className="text-xs font-semibold uppercase tracking-[0.18em] text-text-secondary">Blog</p>
-                    <p className="mt-2 text-2xl font-black text-text-primary">{status.content.latest_blog.length}</p>
-                  </div>
                   <div className="rounded-2xl bg-surface-2 p-4">
                     <p className="text-xs font-semibold uppercase tracking-[0.18em] text-text-secondary">Acervo</p>
                     <p className="mt-2 text-2xl font-black text-text-primary">{status.content.latest_acervo.length}</p>
@@ -872,17 +868,11 @@ export function StatusPage() {
             <EditorialCardBody className="justify-between p-5">
               <div className="space-y-3">
                 <EditorialCardMeta><span>Memória digital</span></EditorialCardMeta>
-                <EditorialCardTitle className="text-2xl">Acervo e blog</EditorialCardTitle>
-                {status.content.latest_acervo.length === 0 && status.content.latest_blog.length === 0 ? (
+                <EditorialCardTitle className="text-2xl">Acervo</EditorialCardTitle>
+                {status.content.latest_acervo.length === 0 ? (
                   <EditorialCardExcerpt>Sem publicações recentes.</EditorialCardExcerpt>
                 ) : (
                   <div className="space-y-3">
-                    {status.content.latest_blog.slice(0, 2).map((post) => (
-                      <Link to={`/blog/${post.slug}`} key={post.id} className="group block rounded-2xl border border-divider-subtle bg-surface-2 px-4 py-3 motion-surface motion-surface-hover">
-                        <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-text-secondary">Blog</p>
-                        <p className="mt-1 text-sm font-semibold text-text-primary">{post.title}</p>
-                      </Link>
-                    ))}
                     {status.content.latest_acervo.slice(0, 2).map((item) => (
                       <Link to={`/acervo/item/${item.slug}`} key={item.id} className="group block rounded-2xl border border-divider-subtle bg-surface-2 px-4 py-3 motion-surface motion-surface-hover">
                         <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-text-secondary">{item.kind}</p>

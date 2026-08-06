@@ -9,7 +9,6 @@ test.describe("Navigation and PWA @smoke", () => {
     await menuButton.click();
 
     const dialog = page.getByRole("dialog", { name: "Menu de navegação" });
-    await expect(dialog.getByRole("link", { name: "Blog", exact: true })).toBeVisible();
     await expect(dialog.getByRole("link", { name: "Dossiês", exact: true })).toBeVisible();
     await expect(dialog.getByRole("link", { name: "Buscar", exact: true })).toBeVisible();
 
@@ -87,18 +86,20 @@ test.describe("Navigation and PWA @smoke", () => {
     await expect(page.getByRole("heading", { name: "Página não encontrada", level: 1 })).toBeVisible();
     await expect(page).toHaveTitle(/Página não encontrada \| SEMEAR/i);
     await expect(page.getByRole("heading", { name: "Projeto UFF SEMEAR", level: 1 })).toHaveCount(0);
+
+    for (const retiredPath of ["/blog", "/como-ler-dados"]) {
+      await page.goto(retiredPath);
+      await expect(page.getByRole("heading", { name: "Página não encontrada", level: 1 })).toBeVisible();
+    }
   });
 
   test("public guidance and footer expose only current destinations", async ({ page }) => {
-    await page.goto("/como-ler-dados");
-
-    const timelineLink = page.getByRole("link", { name: "Linha do tempo" });
-    await expect(timelineLink).toHaveAttribute("href", "/acervo/linha");
-    await timelineLink.click();
-    await expect(page).toHaveURL(/\/acervo\/linha$/);
+    await page.goto("/");
 
     const footer = page.getByRole("contentinfo");
     await expect(footer.getByRole("navigation", { name: "Links úteis" })).toBeVisible();
+    await expect(footer.locator('a[href="/blog"]')).toHaveCount(0);
+    await expect(footer.locator('a[href="/como-ler-dados"]')).toHaveCount(0);
     const instagram = footer.getByRole("link", { name: "Abrir Instagram oficial do SEMEAR" });
     const tiktok = footer.getByRole("link", { name: "Abrir TikTok oficial do SEMEAR" });
     await expect(instagram).toHaveAttribute("href", "https://www.instagram.com/sfsemear?igsh=MXF1ODdkemZlaHJrYg==");

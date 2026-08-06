@@ -18,7 +18,6 @@ function getLatestChangelogEntries(markdown: string, limit = 10): string[] {
 const latestEntries = getLatestChangelogEntries(changelogRaw, 10);
 
 const governanceLinks = [
-  { href: "/blog", label: "Blog" },
   { href: "/acervo", label: "Acervo" },
   { href: "/relatorios", label: "Relatórios" },
   { href: "/privacidade-lgpd", label: "Privacidade e LGPD" },

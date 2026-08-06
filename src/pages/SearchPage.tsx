@@ -9,23 +9,20 @@ import { SkeletonCard } from "../components/SkeletonCard";
 import {
   searchAcervo,
   searchAll,
-  searchBlog,
   searchEvents,
   searchReports,
   searchTransparency,
   type AcervoItem,
-  type BlogPost,
   type Event,
   type ReportDocument,
   type SearchResultItem,
   type TransparencySearchResult
 } from "../lib/api";
 
-type SearchType = "todos" | "acervo" | "blog" | "relatorios" | "transparencia" | "agenda";
+type SearchType = "todos" | "acervo" | "relatorios" | "transparencia" | "agenda";
 
 type SearchResults = {
   acervo: AcervoItem[];
-  blog: BlogPost[];
   reports: ReportDocument[];
   transparency: TransparencySearchResult[];
   events: Event[];
@@ -34,7 +31,6 @@ type SearchResults = {
 
 const EMPTY_RESULTS: SearchResults = {
   acervo: [],
-  blog: [],
   reports: [],
   transparency: [],
   events: [],
@@ -44,7 +40,6 @@ const EMPTY_RESULTS: SearchResults = {
 const TYPE_LABEL: Record<SearchType, string> = {
   todos: "Todos",
   acervo: "Acervo",
-  blog: "Blog",
   relatorios: "Relatórios",
   transparencia: "Transparência",
   agenda: "Agenda"
@@ -72,7 +67,8 @@ function reportToSearchResult(report: ReportDocument): SearchResultItem {
 export function SearchPage() {
   const [searchParams, setSearchParams] = useSearchParams();
   const query = searchParams.get("q") || "";
-  const tipo = (searchParams.get("tipo") as SearchType) || "todos";
+  const rawTipo = searchParams.get("tipo") as SearchType | null;
+  const tipo: SearchType = rawTipo && rawTipo in TYPE_LABEL ? rawTipo : "todos";
 
   const [results, setResults] = useState<SearchResults>(EMPTY_RESULTS);
   const [loading, setLoading] = useState(false);
@@ -96,7 +92,7 @@ export function SearchPage() {
             searchTransparency(query, 5),
             searchEvents(query, 5)
           ]);
-          const mixedWithReports = [...mixedRes];
+          const mixedWithReports = mixedRes.filter((item) => item.kind !== "blog");
           reportsRes.forEach((report) => {
             const reportResult = reportToSearchResult(report);
             if (!mixedWithReports.some((item) => item.url === reportResult.url)) {
@@ -106,21 +102,18 @@ export function SearchPage() {
 
           const isAll = tipo === "todos";
           const isAcervo = tipo === "acervo";
-          const isBlog = tipo === "blog";
           const isReports = tipo === "relatorios";
 
           setResults({
             acervo: isAcervo ? (mixedRes.filter((r) => r.kind === "acervo") as unknown as AcervoItem[]) : [],
-            blog: isBlog ? (mixedRes.filter((r) => r.kind === "blog") as unknown as BlogPost[]) : [],
             reports: isAll || isReports ? reportsRes : [],
             transparency: isAll || tipo === "transparencia" ? transRes : [],
             events: isAll || tipo === "agenda" ? eventsRes : [],
             mixed: isAll ? mixedWithReports : []
           });
         } else {
-          const [acervoRes, blogRes, reportsRes, transRes, eventsRes] = await Promise.all([
+          const [acervoRes, reportsRes, transRes, eventsRes] = await Promise.all([
             tipo === "todos" || tipo === "acervo" ? searchAcervo(query, 10) : Promise.resolve([] as AcervoItem[]),
-            tipo === "todos" || tipo === "blog" ? searchBlog(query, 10) : Promise.resolve([] as BlogPost[]),
             tipo === "todos" || tipo === "relatorios" ? searchReports(query, 10) : Promise.resolve([] as ReportDocument[]),
             tipo === "todos" || tipo === "transparencia" ? searchTransparency(query, 10) : Promise.resolve([] as TransparencySearchResult[]),
             tipo === "todos" || tipo === "agenda" ? searchEvents(query, 10) : Promise.resolve([] as Event[])
@@ -128,7 +121,6 @@ export function SearchPage() {
 
           setResults({
             acervo: acervoRes,
-            blog: blogRes,
             reports: reportsRes,
             transparency: transRes,
             events: eventsRes,
@@ -153,7 +145,6 @@ export function SearchPage() {
 
   const totalResults =
     results.acervo.length +
-    results.blog.length +
     results.reports.length +
     results.transparency.length +
     results.events.length +
@@ -162,7 +153,6 @@ export function SearchPage() {
   const countByType: Record<SearchType, number> = {
     todos: totalResults,
     acervo: results.acervo.length,
-    blog: results.blog.length,
     relatorios: results.reports.length,
     transparencia: results.transparency.length,
     agenda: results.events.length
@@ -177,12 +167,12 @@ export function SearchPage() {
       <PortalHero
         badge={<span className="badge-dados-abertos">Navegação transversal</span>}
         title="Busca no Portal"
-        subtitle="Encontre dados, acervo, blog, relatórios, transparência e agenda em uma busca única e acessível."
+        subtitle="Encontre dados, acervo, relatórios, transparência e agenda em uma busca única e acessível."
         metrics={
           <>
           <div className="portal-kpi-card">
             <p className="text-xs font-semibold uppercase tracking-[0.2em] text-text-secondary">Escopo</p>
-            <p className="mt-2 text-3xl font-black text-brand-primary">6</p>
+            <p className="mt-2 text-3xl font-black text-brand-primary">5</p>
             <p className="mt-1 text-sm text-text-secondary">frentes pesquisáveis</p>
           </div>
           <div className="portal-kpi-card">
@@ -210,7 +200,7 @@ export function SearchPage() {
         <div role="group" aria-label="Filtros de busca" className="space-y-2">
           <p className="text-xs font-semibold uppercase tracking-[0.2em] text-text-secondary">Refine a busca</p>
           <div className="flex flex-wrap gap-2">
-            {(["todos", "acervo", "blog", "relatorios", "transparencia", "agenda"] as SearchType[]).map((t) => (
+            {(["todos", "acervo", "relatorios", "transparencia", "agenda"] as SearchType[]).map((t) => (
               <button
                 type="button"
                 key={t}
@@ -292,7 +282,7 @@ export function SearchPage() {
                   >
                     <div className="flex items-center justify-between">
                       <span className="rounded-full px-3 py-1 text-xs font-semibold bg-brand-primary/10 text-brand-primary">
-                        {item.kind === "blog" ? "Blog" : item.kind === "report" ? (matchedReport ? REPORT_KIND_LABEL[matchedReport.kind] : "Relatório") : "Acervo"}
+                        {item.kind === "report" ? (matchedReport ? REPORT_KIND_LABEL[matchedReport.kind] : "Relatório") : "Acervo"}
                       </span>
                       <span className="text-xs text-text-secondary">Relevância: {item.score.toFixed(2)}</span>
                     </div>
@@ -346,24 +336,6 @@ export function SearchPage() {
             </div>
           )}
 
-          {results.blog.length > 0 && (
-            <div className="space-y-4">
-              <PortalSectionHeader
-                eyebrow="Leitura pública"
-                title="Blog"
-                subtitle="Textos editoriais e publicações recentes associados à busca."
-              />
-              <div className="grid gap-5 md:grid-cols-2">
-                {results.blog.map((post) => (
-                  <Link key={post.id} to={`/blog/${post.slug}`} className="group motion-list-item flex flex-col rounded-[1.35rem] border border-brand-primary/20 bg-surface-1/60 p-5 motion-surface motion-surface-hover">
-                    <span className="text-[10px] font-bold uppercase tracking-widest text-brand-primary">Boletim</span>
-                    <h3 className="mt-1 font-bold text-text-primary group-hover:text-brand-primary-dark">{post.title}</h3>
-                  </Link>
-                ))}
-              </div>
-            </div>
-          )}
-
           {results.events.length > 0 && (
             <div className="space-y-4">
               <PortalSectionHeader
@@ -401,6 +373,7 @@ export function SearchPage() {
               </div>
             </div>
           )}
+
         </div>
       )}
     </PortalPageShell>

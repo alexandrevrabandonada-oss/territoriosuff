@@ -21,7 +21,6 @@ export const STATIC_ROUTE_METADATA: SiteRouteMetadata[] = [
   { path: "/inscricoes", title: "Inscrições | SEMEAR", description: "Consulte e acompanhe inscrições vinculadas às atividades públicas promovidas pelo Projeto UFF SEMEAR." },
   { path: "/sobre", title: "Sobre o Projeto UFF SEMEAR", description: "Conheça objetivos, princípios, equipe, atuação territorial e compromissos públicos do Projeto UFF SEMEAR." },
   { path: "/transparencia", title: "Transparência e devolutiva pública | SEMEAR", description: "Acompanhe presença territorial, atividades, escutas, prioridades e devolutivas públicas organizadas pelo SEMEAR." },
-  { path: "/como-ler-dados", title: "Como ler os dados | SEMEAR", description: "Guia público para interpretar séries ambientais, cobertura, limites metodológicos e indicadores do portal SEMEAR." },
   { path: "/como-participar", title: "Como participar | SEMEAR", description: "Descubra como participar de atividades, enviar relatos, acompanhar dados e contribuir com o controle social ambiental." },
   { path: "/privacidade-lgpd", title: "Privacidade e LGPD | SEMEAR", description: "Saiba como o portal SEMEAR trata dados pessoais, inscrições, relatos, cookies e direitos previstos na LGPD." },
   { path: "/governanca", title: "Governança e publicação | SEMEAR", description: "Conheça responsabilidades, fluxos editoriais, critérios de publicação e mecanismos de governança do SEMEAR." },
@@ -31,10 +30,9 @@ export const STATIC_ROUTE_METADATA: SiteRouteMetadata[] = [
   { path: "/acervo", title: "Acervo público | SEMEAR", description: "Explore artigos, notícias, documentos, mídias e memórias públicas preservadas pelo Projeto UFF SEMEAR." },
   { path: "/acervo/linha", title: "Linha do tempo do acervo | SEMEAR", description: "Navegue cronologicamente pelos documentos, estudos e memórias públicas preservadas no acervo SEMEAR." },
   { path: "/dossies", title: "Dossiês temáticos | SEMEAR", description: "Consulte coleções curadas por tema, território e interesse público dentro do acervo do SEMEAR." },
-  { path: "/blog", title: "Blog editorial | SEMEAR", description: "Leia atualizações institucionais, bastidores de campo e comunicação pública produzida pelo Projeto UFF SEMEAR." },
   { path: "/relatorios", title: "Relatórios e boletins | SEMEAR", description: "Consulte relatórios, boletins e documentos técnicos publicados com metodologia e contexto de uso explícitos." },
   { path: "/status", title: "Status do sistema | SEMEAR", description: "Acompanhe integridade técnica, operação, conteúdo, observabilidade e disponibilidade dos serviços públicos do SEMEAR." },
-  { path: "/buscar", title: "Busca no portal | SEMEAR", description: "Pesquise dados, atividades, acervo, blog, dossiês e relatórios publicados no portal SEMEAR." },
+  { path: "/buscar", title: "Busca no portal | SEMEAR", description: "Pesquise dados, atividades, acervo, dossiês e relatórios publicados no portal SEMEAR." },
   { path: "/offline", title: "Acesso offline | SEMEAR", description: "Entenda o que permanece disponível sem conexão e como atualizar o aplicativo público SEMEAR." }
 ];
 
@@ -47,7 +45,6 @@ const dynamicMetadata: Array<{ prefix: string; title: string; description: strin
   { prefix: "/acervo/item/", title: "Item do acervo | SEMEAR", description: "Documento, estudo ou memória pública preservada no acervo do Projeto UFF SEMEAR." },
   { prefix: "/acervo/", title: "Área do acervo | SEMEAR", description: "Itens públicos organizados por área temática dentro do acervo do Projeto UFF SEMEAR." },
   { prefix: "/dossies/", title: "Dossiê temático | SEMEAR", description: "Coleção temática curada a partir do acervo público do Projeto UFF SEMEAR." },
-  { prefix: "/blog/", title: "Artigo do blog | SEMEAR", description: "Publicação editorial do Projeto UFF SEMEAR sobre território, ambiente, pesquisa e participação social." },
   { prefix: "/relatorios/", title: "Relatório público | SEMEAR", description: "Relatório ou boletim técnico publicado pelo Projeto UFF SEMEAR com contexto e metodologia explícitos." }
 ];
 

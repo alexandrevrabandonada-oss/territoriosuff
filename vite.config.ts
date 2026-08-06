@@ -295,7 +295,6 @@ export default defineConfig({
           { url: "/dados", revision: null },
           { url: "/acervo", revision: null },
           { url: "/acervo/linha", revision: null },
-          { url: "/blog", revision: null },
           { url: "/relatorios", revision: null },
           { url: "/transparencia", revision: null },
           { url: "/status", revision: null },

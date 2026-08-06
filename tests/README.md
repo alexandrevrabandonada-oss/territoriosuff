@@ -9,7 +9,6 @@ tests/
 ├── home.spec.ts       - Página inicial e navegação principal
 ├── dados.spec.ts      - Interface de monitoramento de estações
 ├── acervo.spec.ts     - Listagem e navegação do acervo
-├── blog.spec.ts       - Listagem de posts do blog
 ├── conversar.spec.ts  - Interface de conversas
 └── status.spec.ts     - Página de status do sistema
 ```

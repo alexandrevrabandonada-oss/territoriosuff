@@ -21,7 +21,6 @@ const SearchPage = lazy(() => import("./pages/SearchPage").then((m) => ({ defaul
 const StatusPage = lazy(() => import("./pages/StatusPage").then((m) => ({ default: m.StatusPage })));
 const OfflinePage = lazy(() => import("./pages/OfflinePage").then((m) => ({ default: m.OfflinePage })));
 const NotFoundPage = lazy(() => import("./pages/NotFoundPage").then((m) => ({ default: m.NotFoundPage })));
-const ComoLerDadosPage = lazy(() => import("./pages/ComoLerDadosPage").then((m) => ({ default: m.ComoLerDadosPage })));
 const ComoParticiparPage = lazy(() => import("./pages/ComoParticiparPage").then((m) => ({ default: m.ComoParticiparPage })));
 const PrivacidadeLgpdPage = lazy(() => import("./pages/PrivacidadeLgpdPage").then((m) => ({ default: m.PrivacidadeLgpdPage })));
 const GovernancaPage = lazy(() => import("./pages/GovernancaPage").then((m) => ({ default: m.GovernancaPage })));
@@ -36,10 +35,6 @@ const AcervoListPage = lazy(() => import("./pages/acervo/AcervoListPage").then((
 const AcervoItemPage = lazy(() => import("./pages/acervo/AcervoItemPage").then((m) => ({ default: m.AcervoItemPage })));
 const CollectionsListPage = lazy(() => import("./pages/acervo/CollectionsListPage").then((m) => ({ default: m.CollectionsListPage })));
 const CollectionDetailPage = lazy(() => import("./pages/acervo/CollectionDetailPage").then((m) => ({ default: m.CollectionDetailPage })));
-
-// Blog lazy-loaded
-const BlogListPage = lazy(() => import("./pages/BlogListPage").then((m) => ({ default: m.BlogListPage })));
-const BlogPostPage = lazy(() => import("./pages/BlogPostPage").then((m) => ({ default: m.BlogPostPage })));
 
 // Relatorios lazy-loaded
 const ReportDetailPage = lazy(() => import("./pages/reports/ReportDetailPage").then((m) => ({ default: m.ReportDetailPage })));
@@ -89,7 +84,6 @@ export default function App() {
                   <Route path="/inscricoes" element={<InscricoesPage />} />
                   <Route path="/sobre" element={<SobrePage />} />
                   <Route path="/transparencia" element={<TransparenciaPage />} />
-                  <Route path="/como-ler-dados" element={<ComoLerDadosPage />} />
                   <Route path="/como-participar" element={<ComoParticiparPage />} />
                   <Route path="/privacidade-lgpd" element={<PrivacidadeLgpdPage />} />
                   <Route path="/governanca" element={<GovernancaPage />} />
@@ -102,8 +96,6 @@ export default function App() {
                   <Route path="/acervo/item/:slug" element={<AcervoItemPage />} />
                   <Route path="/dossies" element={<CollectionsListPage />} />
                   <Route path="/dossies/:slug" element={<CollectionDetailPage />} />
-                  <Route path="/blog" element={<BlogListPage />} />
-                  <Route path="/blog/:slug" element={<BlogPostPage />} />
                   <Route path="/relatorios" element={<ReportsRoutePage />} />
                   <Route path="/relatorios/:slug" element={<ReportDetailPage />} />
                   <Route path="/status" element={<StatusPage />} />

@@ -162,10 +162,6 @@
       "destination": "/_seo/transparencia.html"
     },
     {
-      "source": "/como-ler-dados",
-      "destination": "/_seo/como-ler-dados.html"
-    },
-    {
       "source": "/como-participar",
       "destination": "/_seo/como-participar.html"
     },
@@ -200,10 +196,6 @@
     {
       "source": "/dossies",
       "destination": "/_seo/dossies.html"
-    },
-    {
-      "source": "/blog",
-      "destination": "/_seo/blog.html"
     },
     {
       "source": "/relatorios",

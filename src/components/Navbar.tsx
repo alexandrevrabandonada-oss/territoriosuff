@@ -16,9 +16,7 @@ const moreLinks = [
   { href: "/agenda", label: "Agenda" },
   { href: "/conversar", label: "Conversas e atividades" },
   { href: "/transparencia", label: "Transparência" },
-  { href: "/blog", label: "Blog" },
   { href: "/dossies", label: "Dossiês" },
-  { href: "/como-ler-dados", label: "Guias" },
   { href: "/buscar", label: "Buscar" }
 ];
 
@@ -41,14 +39,12 @@ const mobileGroups = [
       { href: "/acervo/linha", label: "Linha do Tempo" },
       { href: "/relatorios", label: "Relatórios" },
       { href: "/mapa", label: "Mapa" },
-      { href: "/dossies", label: "Dossiês" },
-      { href: "/blog", label: "Blog" }
+      { href: "/dossies", label: "Dossiês" }
     ]
   },
   {
     label: "Institucional",
     links: [
-      { href: "/como-ler-dados", label: "Guias" },
       { href: "/como-participar", label: "Como participar" },
       { href: "/transparencia", label: "Transparência" },
       { href: "/buscar", label: "Buscar" }
