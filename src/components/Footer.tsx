@@ -17,11 +17,8 @@ export function Footer() {
           <Link to="/sobre">Sobre o projeto</Link>
           <Link to="/governanca">Governança</Link>
           <Link to="/transparencia">Transparência</Link>
-          <Link to="/como-ler-dados">Guias</Link>
           <Link to="/privacidade-lgpd">Privacidade e LGPD</Link>
           <Link to="/conversar">Conversas e atividades</Link>
-          <Link to="/blog">Blog</Link>
-          <Link to="/dossies">Dossiês</Link>
           <Link to="/buscar">Buscar no portal</Link>
         </nav>
 
