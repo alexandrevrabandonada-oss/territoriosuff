@@ -1,17 +1,30 @@
 import { expect, test } from "@playwright/test";
 
 test.describe("Navigation and PWA @smoke", () => {
-  test("mobile menu exposes all primary content destinations and returns focus on Escape", async ({ page }) => {
+  test("desktop More menu hides retired entries", async ({ page }) => {
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await page.goto("/", { waitUntil: "domcontentloaded" });
+
+    await page.getByRole("button", { name: "Mais" }).click();
+    const moreMenu = page.getByRole("menu", { name: "Mais áreas do portal" });
+    await expect(moreMenu.getByRole("menuitem", { name: "Buscar", exact: true })).toBeVisible();
+    for (const retiredLabel of ["Blog", "Guias", "Dossiês"]) {
+      await expect(moreMenu.getByRole("menuitem", { name: retiredLabel, exact: true })).toHaveCount(0);
+    }
+  });
+
+  test("mobile menu hides retired entries and returns focus on Escape", async ({ page }) => {
     await page.setViewportSize({ width: 390, height: 844 });
-    await page.goto("/");
+    await page.goto("/", { waitUntil: "domcontentloaded" });
 
     const menuButton = page.getByRole("button", { name: "Abrir menu" });
     await menuButton.click();
 
     const dialog = page.getByRole("dialog", { name: "Menu de navegação" });
-    await expect(dialog.getByRole("link", { name: "Blog", exact: true })).toBeVisible();
-    await expect(dialog.getByRole("link", { name: "Dossiês", exact: true })).toBeVisible();
     await expect(dialog.getByRole("link", { name: "Buscar", exact: true })).toBeVisible();
+    for (const retiredLabel of ["Blog", "Guias", "Dossiês"]) {
+      await expect(dialog.getByRole("link", { name: retiredLabel, exact: true })).toHaveCount(0);
+    }
 
     await page.keyboard.press("Escape");
     await expect(dialog).toBeHidden();
@@ -74,6 +87,9 @@ test.describe("Navigation and PWA @smoke", () => {
 
     const footer = page.getByRole("contentinfo");
     await expect(footer.getByRole("navigation", { name: "Links úteis" })).toBeVisible();
+    for (const retiredPath of ["/blog", "/como-ler-dados", "/dossies"]) {
+      await expect(footer.locator(`a[href="${retiredPath}"]`)).toHaveCount(0);
+    }
     const instagram = footer.getByRole("link", { name: "Abrir Instagram oficial do SEMEAR" });
     const tiktok = footer.getByRole("link", { name: "Abrir TikTok oficial do SEMEAR" });
     await expect(instagram).toHaveAttribute("href", "https://www.instagram.com/sfsemear?igsh=MXF1ODdkemZlaHJrYg==");
