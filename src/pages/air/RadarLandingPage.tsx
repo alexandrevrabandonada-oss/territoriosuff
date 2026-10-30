@@ -91,6 +91,22 @@ export function RadarLandingPage() {
           </div>
         </SurfaceCard>
       </section>
+
+      {/* Public consolidated bulletin from complementary Aurassure sensors */}
+      <SurfaceCard className="portal-list-panel border border-border-subtle p-6 md:p-8">
+        <p className="text-xs font-black uppercase tracking-[0.12em] text-brand-primary">Boletim publicado · 29/10/2026</p>
+        <h2 className="mt-2 text-xl font-black text-text-primary">Três sensores Aurassure: consolidação diária em Volta Redonda</h2>
+        <p className="mt-3 text-sm leading-relaxed text-text-secondary">
+          Dados de PM2.5 e NO₂ de Vila Santa Cecília, Nossa Senhora das Graças e Vila Mury, com indicação de cobertura,
+          picos de 15 minutos e ressalvas de validação. Não confundir com os índices oficiais do INEA.
+        </p>
+        <a
+          href="/boletins/2026-10-29-aurassure.html"
+          className="mt-5 inline-flex min-h-[44px] items-center justify-center rounded-xl bg-brand-primary px-5 py-2 text-xs font-black uppercase tracking-[0.12em] text-white hover:bg-brand-primary-dark"
+        >
+          Ler boletim de 29/10
+        </a>
+      </SurfaceCard>
     </section>
   );
 }
