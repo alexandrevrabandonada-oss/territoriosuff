@@ -16,7 +16,7 @@ const errors = [];
 const seen = new Set();
 
 function requireValidTime(time, name) {
-  assert.match(time, /^([01]\\d|2[0-3]):[0-5]\\d$/, `${name}: horario invalido`);
+  assert.match(time, /^([01]\d|2[0-3]):[0-5]\d$/, `${name}: horario invalido`);
   const minute = Number(time.split(":")[1]);
   assert.equal(minute % 15, 0, `${name}: pico fora da grade de 15 min`);
 }
@@ -30,7 +30,7 @@ assert.equal(stationIds.length, 3);
 assert.ok(dataset.days.length >= 1);
 
 for (const day of dataset.days) {
-  assert.match(day.date, /^\\d{4}-\\d{2}-\\d{2}$/);
+  assert.match(day.date, /^\d{4}-\d{2}-\d{2}$/);
   assert.ok(!seen.has(day.date), `dia duplicado: ${day.date}`);
   seen.add(day.date);
   assert.deepEqual(Object.keys(day.readings).sort(), [...stationIds].sort());
