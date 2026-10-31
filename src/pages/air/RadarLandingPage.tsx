@@ -92,20 +92,29 @@ export function RadarLandingPage() {
         </SurfaceCard>
       </section>
 
-      {/* Public consolidated bulletin from complementary Aurassure sensors */}
+      {/* Daily bulletin archive for the complementary Aurassure sensors */}
       <SurfaceCard className="portal-list-panel border border-border-subtle p-6 md:p-8">
-        <p className="text-xs font-black uppercase tracking-[0.12em] text-brand-primary">Boletim publicado · 29/10/2026</p>
-        <h2 className="mt-2 text-xl font-black text-text-primary">Três sensores Aurassure: consolidação diária em Volta Redonda</h2>
+        <p className="text-xs font-black uppercase tracking-[0.12em] text-brand-primary">Boletins dos sensores · 29 e 30/10/2026</p>
+        <h2 className="mt-2 text-xl font-black text-text-primary">Monitoramento cidadão: consolidação de três sensores Aurassure</h2>
         <p className="mt-3 text-sm leading-relaxed text-text-secondary">
-          Dados de PM2.5 e NO₂ de Vila Santa Cecília, Nossa Senhora das Graças e Vila Mury, com indicação de cobertura,
-          picos de 15 minutos e ressalvas de validação. Não confundir com os índices oficiais do INEA.
+          Dados de PM2.5 e NO₂ de Vila Santa Cecília, Nossa Senhora das Graças e Vila Mury.
+          Compare médias, máximos de 15 minutos, disponibilidade e limitações metodológicas.
+          Estas leituras complementares não substituem os índices oficiais do INEA.
         </p>
-        <a
-          href="/boletins/2026-10-29-aurassure.html"
-          className="mt-5 inline-flex min-h-[44px] items-center justify-center rounded-xl bg-brand-primary px-5 py-2 text-xs font-black uppercase tracking-[0.12em] text-white hover:bg-brand-primary-dark"
-        >
-          Ler boletim de 29/10
-        </a>
+        <div className="mt-5 flex flex-wrap gap-3">
+          <a
+            href="/boletins/2026-10-30-aurassure.html"
+            className="inline-flex min-h-[44px] items-center justify-center rounded-xl bg-brand-primary px-5 py-2 text-xs font-black uppercase tracking-[0.12em] text-white hover:bg-brand-primary-dark"
+          >
+            Boletim 30/10
+          </a>
+          <a
+            href="/boletins/2026-10-29-aurassure.html"
+            className="inline-flex min-h-[44px] items-center justify-center rounded-xl border border-border-subtle bg-white px-5 py-2 text-xs font-black uppercase tracking-[0.12em] text-text-primary hover:bg-slate-50"
+          >
+            Boletim 29/10
+          </a>
+        </div>
       </SurfaceCard>
     </section>
   );
