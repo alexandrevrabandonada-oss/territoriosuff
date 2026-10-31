@@ -1,0 +1,163 @@
+{
+  "schema_version": "1.0",
+  "dataset_id": "semear-aurassure-2026-10",
+  "description": "Resumos dos sensores Aurassure recebidos por texto/imagem; NÃO são dados brutos ou janelas de 15 minutos",
+  "source_type": "daily_summary_user_supplied",
+  "raw_csv_files_received": false,
+  "verified_against_raw": false,
+  "air_quality_index_method": "not_documented",
+  "device_model": "not_provided",
+  "timezone_of_reported_peak_times": "not_independently_confirmed",
+  "expected_15min_windows_per_station_per_day": 96,
+  "stations": {
+    "uff": {
+      "site": "UFF — Vila Santa Cecília",
+      "manufacturer": "Aurassure"
+    },
+    "ifrj": {
+      "site": "IFRJ — Nossa Senhora das Graças",
+      "manufacturer": "Aurassure"
+    },
+    "criaad": {
+      "site": "CRIAAD — Vila Mury",
+      "manufacturer": "Aurassure"
+    }
+  },
+  "days": [
+    {
+      "date": "2026-10-29",
+      "csv_names_reported": [
+        "dados_15min_2026-10-29.csv",
+        "dados_brutos_2026-10-29.csv"
+      ],
+      "automatic_alert_open_reported": false,
+      "readings": {
+        "uff": {
+          "availability_percent": 100,
+          "pm25": {
+            "mean": 8.6,
+            "max": 37.1,
+            "max_time": "22:00",
+            "unit": "µg/m³"
+          },
+          "no2": {
+            "mean": 34.9,
+            "max": 48.9,
+            "max_time": "12:00",
+            "unit": "ppb"
+          },
+          "aqi_max_reported": 36,
+          "flags": []
+        },
+        "ifrj": {
+          "availability_percent": 100,
+          "pm25": {
+            "mean": 8.2,
+            "max": 39.9,
+            "max_time": "21:30",
+            "unit": "µg/m³"
+          },
+          "no2": {
+            "mean": 2.5,
+            "max": 13.3,
+            "max_time": "18:00",
+            "unit": "ppb"
+          },
+          "aqi_max_reported": 90,
+          "flags": []
+        },
+        "criaad": {
+          "availability_percent": 32,
+          "pm25": {
+            "mean": 18.6,
+            "max": 36.8,
+            "max_time": "21:00",
+            "unit": "µg/m³"
+          },
+          "no2": {
+            "mean": 37.4,
+            "max": 540.6,
+            "max_time": "16:30",
+            "unit": "ppb"
+          },
+          "aqi_max_reported": 3,
+          "flags": [
+            "PARTIAL_DAY_MEAN",
+            "NO2_SUSPECT_SPIKE",
+            "AQI_METHOD_PENDING"
+          ]
+        }
+      }
+    },
+    {
+      "date": "2026-10-30",
+      "csv_names_reported": [
+        "dados_15min_2026-10-30.csv",
+        "dados_brutos_2026-10-30.csv"
+      ],
+      "automatic_alert_open_reported": false,
+      "readings": {
+        "uff": {
+          "availability_percent": 100,
+          "pm25": {
+            "mean": 4.9,
+            "max": 17.7,
+            "max_time": "11:45",
+            "unit": "µg/m³"
+          },
+          "no2": {
+            "mean": 37.1,
+            "max": 52.1,
+            "max_time": "16:30",
+            "unit": "ppb"
+          },
+          "aqi_max_reported": 33,
+          "flags": [
+            "NO2_STATION_DISPARITY_UNEXPLAINED"
+          ]
+        },
+        "ifrj": {
+          "availability_percent": 100,
+          "pm25": {
+            "mean": 7.5,
+            "max": 31.1,
+            "max_time": "11:30",
+            "unit": "µg/m³"
+          },
+          "no2": {
+            "mean": 3,
+            "max": 10.1,
+            "max_time": "07:00",
+            "unit": "ppb"
+          },
+          "aqi_max_reported": 94,
+          "flags": []
+        },
+        "criaad": {
+          "availability_percent": 100,
+          "pm25": {
+            "mean": 6.6,
+            "max": 31.6,
+            "max_time": "11:30",
+            "unit": "µg/m³"
+          },
+          "no2": {
+            "mean": 4.6,
+            "max": 18.9,
+            "max_time": "14:30",
+            "unit": "ppb"
+          },
+          "aqi_max_reported": 80,
+          "flags": []
+        }
+      }
+    }
+  ],
+  "notes": [
+    "A unidade NO2 é ppb, PM2.5 em µg/m³; não misturar unidades nem comparar picos de 15 minutos com média OMS de 24 horas.",
+    "AQI máximo é dado reportado; não foi validada escala, poluente controlador, fórmula nem período de cálculo.",
+    "Disponibilidade de 32% em 29/10 implica média PARCIAL, não representação válida da jornada completa de 24 horas.",
+    "Nenhuma estação com alerta aberto é status declarado do sistema, não sinal de ausência de risco.",
+    "O pico de 540,6 ppb NO2 no CRIAAD em 29/10 é valor reportado e não evento atmosférico confirmado."
+  ]
+}
