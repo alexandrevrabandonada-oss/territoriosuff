@@ -1,0 +1,29 @@
+name: Aurassure | validação dos resumos diários
+
+on:
+  push:
+    paths:
+      - 'data/aurassure/**'
+      - 'scripts/aurassure-validate-summaries.mjs'
+      - '.github/workflows/aurassure-summaries-qc.yml'
+  pull_request:
+    paths:
+      - 'data/aurassure/**'
+      - 'scripts/aurassure-validate-summaries.mjs'
+      - '.github/workflows/aurassure-summaries-qc.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  validar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+      - name: Conferir runtime
+        run: node --version
+      - name: Validar resumos, cobertura, unidades e flags
+        run: node scripts/aurassure-validate-summaries.mjs
