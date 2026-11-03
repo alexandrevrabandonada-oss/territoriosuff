@@ -126,6 +126,10 @@
       "destination": "/_seo/qualidade-ar.html"
     },
     {
+      "source": "/qualidade-ar/uff",
+      "destination": "/_seo/qualidade-ar--uff.html"
+    },
+    {
       "source": "/qualidade-ar/inea",
       "destination": "/_seo/qualidade-ar--inea.html"
     },
