@@ -20,6 +20,10 @@ type PublicMeasurement = {
   temperature_c: number | null;
   relative_humidity_pct: number | null;
   published_at: string | null;
+  source_response_sha256: string;
+  reviewer_reference: string | null;
+  unit_validation_reference: string | null;
+  methodology_reference: string | null;
 };
 
 type Pollutant = "pm25_ug_m3" | "pm10_ug_m3";
@@ -139,7 +143,7 @@ async function fetchApproved(stationId: number, days: Days): Promise<PublicMeasu
     const start = page * PAGE_SIZE;
     const { data, error } = await supabase
       .from("aurassure_public_measurements")
-      .select("station_id,measured_at,averaging_period_seconds,pm25_ug_m3,pm10_ug_m3,temperature_c,relative_humidity_pct,published_at")
+      .select("station_id,measured_at,averaging_period_seconds,pm25_ug_m3,pm10_ug_m3,temperature_c,relative_humidity_pct,published_at,source_response_sha256,reviewer_reference,unit_validation_reference,methodology_reference")
       .eq("station_id", stationId)
       .eq("averaging_period_seconds", 900)
       .gte("measured_at", from)
@@ -189,10 +193,11 @@ export function AurassureUffPage() {
 
   function exportCsv() {
     if (!rows.length) return;
-    const header = ["estacao","medido_em_utc","periodo_segundos","pm25_ug_m3","pm10_ug_m3","temperatura_c","umidade_pct","publicado_em_utc"];
+    const header = ["estacao","medido_em_utc","periodo_segundos","pm25_ug_m3","pm10_ug_m3","temperatura_c","umidade_pct","publicado_em_utc","sha256_fonte","referencia_revisao","referencia_unidades","referencia_metodologia"];
     const values = rows.map((row) => [
       row.station_id,row.measured_at,row.averaging_period_seconds,row.pm25_ug_m3 ?? "",
-      row.pm10_ug_m3 ?? "",row.temperature_c ?? "",row.relative_humidity_pct ?? "",row.published_at ?? ""
+      row.pm10_ug_m3 ?? "",row.temperature_c ?? "",row.relative_humidity_pct ?? "",row.published_at ?? "",
+      row.source_response_sha256,row.reviewer_reference ?? "",row.unit_validation_reference ?? "",row.methodology_reference ?? ""
     ].join(","));
     const blob = new Blob(["\uFEFF" + [header.join(","), ...values].join("\r\n")], { type: "text/csv;charset=utf-8;" });
     const url = URL.createObjectURL(blob);
@@ -303,7 +308,9 @@ export function AurassureUffPage() {
           </div>
         </div>
         <div className="mt-5 flex flex-wrap items-center justify-between gap-4 text-xs text-slate-500">
-          <span>{rows.length.toLocaleString("pt-BR")} registros aprovados exibidos neste recorte.</span>
+          <span>{rows.length.toLocaleString("pt-BR")} registros aprovados exibidos neste recorte.
+            {latest ? " Origem auditável · SHA-256 " + latest.source_response_sha256.slice(0, 16) + "…" : ""}
+          </span>
           <button type="button" onClick={exportCsv} disabled={!rows.length}
             className="rounded-lg border border-slate-200 px-3 py-2 font-bold text-slate-700 disabled:cursor-not-allowed disabled:opacity-40 hover:bg-slate-50">
             Exportar CSV aprovado
