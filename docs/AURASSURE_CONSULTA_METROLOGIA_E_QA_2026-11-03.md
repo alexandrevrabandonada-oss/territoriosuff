@@ -1,10 +1,10 @@
 # CONSULTA TÉCNICA — Aurassure/UFF, Volta Redonda
 
 **Data:** 03/11/2026 · **Status:** minuta preparada, **não enviada**  
-**Destinatários sugeridos:** responsáveis técnicos da plataforma Aurassure e responsáveis pelo monitoramento UFF/SEMEAR.  
+**Destinatário prioritário para encaminhamento:** Daniel Rios De Rosa — Aurassure Brasil, indicado nominalmente na página 3 do manual de API disponibilizado ao SEMEAR. **Não há e-mail individual comprovado no manual.** Encaminhar por canal já estabelecido com a Aurassure Brasil ou solicitar direcionamento ao atendimento corporativo; envolver a coordenação técnica da UFF.  
 **Assunto:** Validação metrológica, unidades da API, AQI e interrupções nas estações UFF/IFRJ/CRIAAD.
 
-Prezadas equipes técnicas,
+Prezado Daniel Rios De Rosa e equipe técnica da Aurassure Brasil,
 
 O Projeto UFF SEMEAR está integrando a API Aurassure para acompanhamento de três estações de monitoramento em Volta Redonda, RJ, e preparando uma plataforma pública com rastreabilidade e informações metodológicas. Nossa primeira coleta e recuperação histórica foram concluídas com sucesso, mas a publicação dos valores permanece bloqueada até esclarecimento técnico.
 
@@ -57,6 +57,12 @@ A partir do histórico de médias de 15 minutos importado entre 20/10/2026 e 03/
 
 Todos os horários acima são BRT (`America/Sao_Paulo`).
 
+### Evidência adicional sobre retomadas
+
+A análise posterior à minuta inicial identificou **sete retomadas após intervalos sem registros de pelo menos cinco horas**, consideradas nas três estações. Em seis delas, SO₂ diminuiu mais de 50% e CO mais de 30% nos 30 minutos subsequentes; cinco das seis ocorrências foram no CRIAAD. Para o CRIAAD, o critério apareceu também em 23 de 694 outras janelas contínuas elegíveis (3,3%). Trata-se de **observação exploratória** com limiares definidos após análise e sem verificação metrológica das unidades. A hipótese de efeito de retomada ou estabilização não está comprovada. Solicitamos, se existirem, logs dos canais brutos e de cálculo/correção, flags de warm-up e eventos de manutenção ou energia para esses episódios.
+
+Na base privada, os **21 registros dos primeiros 30 minutos após as sete retomadas** foram marcados para **revisão técnica antes de qualquer publicação**, sem apagar ou modificar as medições originais.
+
 ## 5. Integração, propriedade e autorização de publicação
 
 Solicitamos esclarecimento de:
@@ -87,3 +93,8 @@ Atenciosamente,
 - https://aurassure.com/air-quality-monitoring/  
 - https://aurassure.com/aurassure-trust-air-quality-monitor/  
 - https://aurassure.com/wp-content/uploads/2026/03/Digital-Aurassure-Brochure-2026.pdf
+
+
+### Referência de encaminhamento (uso interno)
+
+A página 3 de `Manual_API_UFF_Volta_Redonda (1).pdf`, documento fornecido ao projeto, identifica **Daniel Rios De Rosa — Aurassure Brasil** para dúvidas de integração/credenciais. Um perfil profissional público informa vínculo com a empresa (https://br.linkedin.com/in/daniel-rios-de-rosa/en). Isso indica um contato direcionável, **não estabelece e-mail individual**. Manter o pedido como **não enviado** até revisão da assinatura e do canal de comunicação.
