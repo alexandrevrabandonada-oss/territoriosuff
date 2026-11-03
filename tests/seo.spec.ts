@@ -2,7 +2,7 @@ import { expect, test } from "@playwright/test";
 
 const routes = [
   { path: "/", title: /SEMEAR UFF \| Transparência pública ambiental/i },
-  { path: "/dados", title: /Leituras ambientais \| SEMEAR/i },
+  { path: "/dados", title: /Leituras SEMEAR UFF e Aurassure \| SEMEAR/i },
   { path: "/transparencia", title: /Transparência e devolutiva pública \| SEMEAR/i },
   { path: "/qualidade-ar/inea/metodologia", title: /Metodologia e dados abertos INEA \| SEMEAR/i },
   { path: "/offline", title: /Acesso offline \| SEMEAR/i }
