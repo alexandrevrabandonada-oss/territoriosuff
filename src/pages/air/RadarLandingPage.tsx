@@ -44,12 +44,12 @@ export function RadarLandingPage() {
             </div>
             <h2 className="text-xl font-black text-text-primary">Rede Cidadã SEMEAR UFF</h2>
             <p className="mt-3 text-sm text-text-secondary leading-relaxed">
-              Consulte sensores complementares instalados em Volta Redonda, com atualização frequente quando a estação está transmitindo. Mede concentrações físicas brutas de partículas PM2.5 e PM10 em µg/m³.
+              Consulte as três estações UFF, IFRJ e CRIAAD integradas à Aurassure. A cobertura e os horários de coleta já podem ser acompanhados; as concentrações só serão exibidas após validação técnica.
             </p>
             <ul className="mt-4 space-y-2 text-xs text-text-secondary list-disc pl-4 leading-relaxed">
-              <li>Leitura de concentração física bruta (µg/m³)</li>
-              <li>Atualização frequente quando há transmissão ativa</li>
-              <li>Histórico de 24h, 7 dias e buscas personalizadas</li>
+              <li>Disponibilidade real por estação e horários das medições</li>
+              <li>Integração com coleta automática e auditoria de lacunas</li>
+              <li>Concentrações e séries com publicação condicionada à aprovação</li>
             </ul>
           </div>
           <div className="mt-6">
@@ -57,7 +57,7 @@ export function RadarLandingPage() {
               to="/dados"
               className="inline-flex min-h-[44px] items-center justify-center rounded-xl bg-brand-primary px-5 py-2 text-xs font-black uppercase tracking-[0.12em] text-white hover:bg-brand-primary-dark transition-colors w-full sm:w-auto"
             >
-              Acessar Rede SEMEAR UFF
+              Abrir leituras da rede UFF
             </Link>
           </div>
         </SurfaceCard>
