@@ -18,6 +18,7 @@ const stationHealth = read("supabase/migrations/20261103165900_aurassure_station
 const retract = read("supabase/migrations/20261103172500_aurassure_retract_public_data_after_qa_or_source_change.sql");
 const healthHistory = read("supabase/migrations/20261103174000_aurassure_private_station_health_incident_history.sql");
 const postGap = read("supabase/migrations/20261103175000_aurassure_post_outage_correlated_gas_review.sql");
+const unresolvedReview = read("supabase/migrations/20261103175500_aurassure_fail_closed_unresolved_qa_post_gap_first_30m.sql");
 
 assert(app.includes('path="/qualidade-ar/uff"'), "UFF route missing from SPA router.");
 assert(landing.includes('to="/qualidade-ar/uff"'), "UFF route missing from network landing.");
@@ -53,4 +54,10 @@ assert(postGap.includes("aurassure_internal.post_gap_gas_review"), "Post-gap evi
 assert(postGap.includes("g.interval_hours >= 5"), "Post-gap review must require a sufficiently long observation gap.");
 assert(postGap.includes("'review_required'"), "Exploratory evidence must be review-only, not a proven sensor fault.");
 assert(postGap.includes("revoke all on aurassure_internal.post_gap_gas_review from public,anon,authenticated"), "Post-gap records must remain private.");
-console.log("Aurassure portal release contract: 34 checks passed.");
+assert(unresolvedReview.includes("aurassure_reject_unresolved_reviews"), "Unresolved QA review must block publication.");
+assert(unresolvedReview.includes("'review_required','block_release'"), "Both significant review severities must block publication.");
+assert(unresolvedReview.includes("create or replace function aurassure_internal.retract_on_new_qa_block"), "QA-driven retraction must be updated.");
+assert(unresolvedReview.includes("aurassure_internal.flag_post_gap_30m_reviews"), "Review 0/15/30 minutes after long gaps.");
+assert(unresolvedReview.includes("g.interval_hours>=5"), "Only interruptions >=5 hours trigger the conservative review window.");
+assert(unresolvedReview.includes("aurassure_internal.process_quality_cycle()"), "QA review must be scheduled alongside station monitoring.");
+console.log("Aurassure portal release contract: 40 checks passed.");
