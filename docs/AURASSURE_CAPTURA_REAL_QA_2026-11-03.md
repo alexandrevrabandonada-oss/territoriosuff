@@ -89,3 +89,34 @@ order by d.start_time desc limit 10;
 ```
 
 **Rotação de segurança:** as chaves de fornecedor e o token de operador foram inicialmente compartilhados na conversa. Planejar rotação posterior; manter sincronizados o segredo Edge Function e Vault e revogar os valores antigos. Nunca imprimir valores do Vault, inserir segredos em SQL de migração/versionamento ou adicionar prefixo `VITE_`.
+
+---
+
+## Atualização 03/11/2026 — primeiro ciclo automático, auditoria de unidade e interface preparada
+
+**Comprovação cron e HTTP.** 12h15 BRT: o job `semear-aurassure-capture-15min` executou com status `succeeded`, recebeu HTTP 200/`ok:true` da Edge Function e gravou novo snapshot às 12h15min03s. 12h20 BRT: `semear-aurassure-normalize-15min` executou com status `succeeded`. Às 12h21 a staging continha **532 observações únicas**, última medida às 11h45 BRT. A captura → armazenamento → normalização automática está comprovada na primeira rodada. A continuidade ao longo de vários dias ainda requer acompanhamento.
+
+**Unidades por estação confirmadas na configuração do endpoint /list.** Nas três estações, PM2,5 e PM10 exibem `μg/m3` e têm `default_unit=μg/m3`. Para gases existe divergência entre unidade de exibição e padrão interno:
+
+| Parâmetro | Unidade de exibição | Default interno |
+|---|---|---|
+| NO₂ / SO₂ / O₃ | ppb | μg/m3 |
+| CO | ppb | mg/m3 |
+| CO₂ | ppm | ppm |
+| Temperatura | DegC | °C |
+| Umidade | % | % |
+| TVOC | ppm | ppm |
+
+O endpoint /data não inclui unidade em cada leitura. **Perguntar à Aurassure qual das duas unidades é usada na resposta JSON, inclusive para histórico. Não converter ou publicar gases em unidade presumida.** PM1 não consta da relação ativa de parâmetros devolvida para essas estações; a ausência sistemática de PM1 nas leituras precisa de confirmação do fornecedor.
+
+**Anomalia CRIAAD 29/10, 16h30–17h00 BRT.** A leitura NO₂ caiu de 540,645 para 189,604 e 55,785; SO₂ de 723,91 para 319,60 e 102,62; CO de 3957,88 para 1630,48 e 711,28. PM2,5 permaneceu ~5 no mesmo intervalo. UFF/IFRJ não mostraram queda semelhante. As unidades de gases **não** estão confirmadas. Esse é o primeiro horário disponível na consulta do dia 29, mas a estação foi cadastrada com `first_data_time` de 20/10/2026: não afirmar que começou a funcionar no dia 29. Possíveis explicações incluem retomada, estabilização, calibração, conversão ou evento real; nenhuma foi confirmada.
+
+**Registro de pendência técnica.** Criada a tabela privada `aurassure_qa_annotations` com três anotações `block_release` para 16h30, 16h45 e 17h00, estado `open`, preservando todos os valores originais. Não confundir esse bloqueio editorial com prova de falha do sensor.
+
+**Fronteira pública de aprovação.** A tabela `aurassure_public_measurements` foi criada com RLS: apenas linhas com `publication_state='published'` e referências obrigatórias de QA, unidade e metodologia podem ser lidas por `anon`/`authenticated`. Nenhum cliente público tem permissão para escrever ou acessar as tabelas privadas. Na última consulta, **zero linhas públicas**: nenhuma medição foi aprovada para divulgação.
+
+**Painel preparado no GitHub, não publicado.** A nova página `src/pages/air/AurassureUffPage.tsx` com rota `/qualidade-ar/uff` permite selecionar UFF/IFRJ/CRIAAD, PM2,5/PM10, recortes 24h/7d/30d, visualização temporal e CSV; a página lê somente a tabela revisada, que está vazia até o aval técnico. Foram incluídos link na landing, SEO e sitemap. O teste estático de segurança do contrato do portal passou 16/16 verificações sobre os arquivos da branch; também se executaram com sucesso 10 testes do conector e 16 do operador (Node 22). A compilação e o preview da versão final ainda requerem verificação independente.
+
+**Publicação bloqueada na Vercel.** O projeto territorial `territoriosuff` continua com erro `exceeded_serverless_functions_per_deployment` no plano Hobby (máximo 12). É necessário reduzir com segurança o número de funções ou aprovar mudança de plano; nenhuma alteração desse tipo foi publicada. **O portal de produção não foi modificado.**
+
+**Pendências obrigatórias com Aurassure/UFF:** unidades das médias do endpoint /data; método AQI e ausências; modelo e calibração dos sensores, colocalização e limites; registros de reinício/manutenção do CRIAAD em 29/10; autorização para republicação, limites de consulta e histórico disponível. Somente depois liberar um conjunto de observações revisadas, sem classificá-las como IQAr oficial ou atribuir causalidade à CSN.
