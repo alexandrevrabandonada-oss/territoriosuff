@@ -76,7 +76,8 @@ export default function App() {
                 <Routes>
                   <Route path="/" element={<HomePage />} />
                   <Route path="/alertas" element={<AlertasPage />} />
-                  <Route path="/dados" element={<DadosPage />} />
+                  <Route path="/dados" element={<AurassureUffPage />} />
+                  <Route path="/dados/piloto" element={<DadosPage />} />
                   <Route path="/qualidade-ar" element={<RadarLandingPage />} />
                   <Route path="/qualidade-ar/uff" element={<AurassureUffPage />} />
                   <Route path="/qualidade-ar/inea" element={<IneaRadarPage />} />
