@@ -19,6 +19,10 @@ const retract = read("supabase/migrations/20261103172500_aurassure_retract_publi
 const healthHistory = read("supabase/migrations/20261103174000_aurassure_private_station_health_incident_history.sql");
 const postGap = read("supabase/migrations/20261103175000_aurassure_post_outage_correlated_gas_review.sql");
 const unresolvedReview = read("supabase/migrations/20261103175500_aurassure_fail_closed_unresolved_qa_post_gap_first_30m.sql");
+const operationalStatus = read("supabase/migrations/20261103181000_aurassure_publish_operational_station_status_only.sql");
+const stationStatusHook = read("src/hooks/useAurassureStationStatus.ts");
+const home = read("src/pages/HomePage.tsx");
+
 
 assert(app.includes('path="/qualidade-ar/uff"'), "UFF route missing from SPA router.");
 assert(landing.includes('to="/qualidade-ar/uff"'), "UFF route missing from network landing.");
@@ -60,4 +64,16 @@ assert(unresolvedReview.includes("create or replace function aurassure_internal.
 assert(unresolvedReview.includes("aurassure_internal.flag_post_gap_30m_reviews"), "Review 0/15/30 minutes after long gaps.");
 assert(unresolvedReview.includes("g.interval_hours>=5"), "Only interruptions >=5 hours trigger the conservative review window.");
 assert(unresolvedReview.includes("aurassure_internal.process_quality_cycle()"), "QA review must be scheduled alongside station monitoring.");
-console.log("Aurassure portal release contract: 40 checks passed.");
+assert(app.includes('<Route path="/dados" element={<AurassureUffPage />} />'), "Primary /dados route must use real UFF stations.");
+assert(app.includes('<Route path="/dados/piloto" element={<DadosPage />} />'), "Legacy pilot must remain separate.");
+assert(!home.includes("Rede própria em implantação"), "Homepage must not claim active network is uninstalled.");
+assert(home.includes("useAurassureStationStatus"), "Homepage should display current station operational data.");
+assert(page.includes("useAurassureStationStatus"), "Real UFF dashboard must display current station operational data.");
+assert(page.includes("Cobertura nas últimas 24h"), "Coverage metrics must be visible.");
+assert(stationStatusHook.includes('.from("aurassure_public_station_status")'), "Browser must query public operational summary.");
+assert(!stationStatusHook.includes("aurassure_measurements_staging") && !stationStatusHook.includes("aurassure_api_snapshots"), "Operational hook must not read private vendor data.");
+assert(operationalStatus.includes("enable row level security"), "Published operational table must have RLS.");
+assert(operationalStatus.includes("grant select on public.aurassure_public_station_status to anon,authenticated"), "Public read permission must be explicit.");
+assert(operationalStatus.includes("aurassure_internal.process_quality_cycle()"), "Operational status must refresh through the existing collection cycle.");
+assert(!operationalStatus.includes("pm25_ug_m3"), "Operational status must not leak unapproved concentrations.");
+console.log("Aurassure portal release contract: 52 checks passed.");
