@@ -120,3 +120,33 @@ O endpoint /data não inclui unidade em cada leitura. **Perguntar à Aurassure q
 **Publicação bloqueada na Vercel.** O projeto territorial `territoriosuff` continua com erro `exceeded_serverless_functions_per_deployment` no plano Hobby (máximo 12). É necessário reduzir com segurança o número de funções ou aprovar mudança de plano; nenhuma alteração desse tipo foi publicada. **O portal de produção não foi modificado.**
 
 **Pendências obrigatórias com Aurassure/UFF:** unidades das médias do endpoint /data; método AQI e ausências; modelo e calibração dos sensores, colocalização e limites; registros de reinício/manutenção do CRIAAD em 29/10; autorização para republicação, limites de consulta e histórico disponível. Somente depois liberar um conjunto de observações revisadas, sem classificá-las como IQAr oficial ou atribuir causalidade à CSN.
+
+---
+
+## Atualização 03/11/2026 — recuperação integral disponível desde 20/10 e auditoria de lacunas
+
+**Backfill real, sem interpolar valores.** Foram feitas 13 consultas históricas de até 24h no endpoint autenticado da Aurassure, por um processo interno do Supabase (`pg_net` + segredo no Vault, sem imprimir segredo). Datas 20–28/10, 31/10, 01–02/11 e início de 03/11. Todas as requisições receberam HTTP 200 com `ok=true`. As respostas JSON originais foram capturadas em snapshots privados com hash; a função privada de normalização eliminou duplicações entre janelas.
+
+**Base confirmada na auditoria:** 3.328 observações únicas com intervalos médios de 15 minutos, entre 20/10/2026 e 03/11/2026 12h30 BRT. Por estação: UFF 1.271 registros (primeira leitura 20/10 15h30), IFRJ 1.265 (20/10 15h30) e CRIAAD 792 (20/10 16h00). PM2,5 e PM10 não têm valores nulos nos registros presentes; isso não significa cobertura contínua.
+
+**Lacunas reais entre registros consecutivos:** criamos a visão privada `aurassure_internal.measurement_gaps`, `security_invoker=true`, sem acesso de `anon` ou `authenticated`. Não inventa amostras nem inclui automaticamente ausência anterior à primeira ou posterior à última leitura.
+
+| Estação | Lacunas entre registros | Intervalos de 15 min sem amostra dentro dessas lacunas | Maior intervalo entre registros |
+|---|---:|---:|---|
+| UFF | 2 | 62 | 15h15 |
+| IFRJ | 2 | 68 | 17h00 |
+| CRIAAD | 40 | 539 | 58h45 |
+
+**Achado central CRIAAD:** ficou sem leituras disponíveis entre **27/10/2026 05h45** e **29/10/2026 16h30** (BRT): 234 intervalos de 15 min sem registro entre as pontas. Não há nenhuma medição de 28/10. A primeira leitura da retomada em 29/10 às 16h30 coincide com os valores de NO₂, SO₂ e CO elevados e decrescentes já sinalizados. Essa coincidência é compatível com hipóteses instrumentais, mas não prova reinicialização ou invalida necessariamente episódio ambiental. Exige logs de energia, manutenção, calibração e diagnóstico com a Aurassure/UFF.
+
+**Outras lacunas relevantes CRIAAD:** 21/10 18h00 até 22/10 12h15; 26/10 07h45 até 18h00; 02/11 07h45 até 16h30; 03/11 05h30 até 10h45. Todos os horários em BRT.
+
+**Lacuna simultânea das três estações:** os três sensores têm última amostra antes de uma interrupção em 21/10 às 18h. A UFF retoma em 22/10 às 09h15, o IFRJ às 11h e o CRIAAD às 12h15. Investigar causa comum (plataforma, conectividade, operação ou outra) sem afirmar uma origem.
+
+**Governança:** nenhuma amostra foi liberada para `aurassure_public_measurements`; as séries continuam em revisão técnica, separadas do INEA. Na branch, a consolidação Vercel reduziu arquivos de função a 5 e o CI com testes de roteadores, painel, Playwright e acessibilidade terminou com sucesso. O preview Vercel continua indisponível devido à quota diária HTTP 402 `api-deployments-free-per-day`, não por falha de TypeScript.
+
+**Consulta privada para auditorias futuras:**
+
+```sql
+select station_id, last_measured_at at time zone 'America/Sao_Paulo' as anterior_brt, next_measured_at at time zone 'America/Sao_Paulo' as posterior_brt, missing_15min_slots, interval_hours from aurassure_internal.measurement_gaps order by interval_hours desc limit 20;
+```
