@@ -53,6 +53,7 @@ const MapaLandingPage = lazy(() => import("./pages/MapaLandingPage").then((m) =>
 
 // Qualidade do Ar INEA lazy-loaded
 const RadarLandingPage = lazy(() => import("./pages/air/RadarLandingPage").then((m) => ({ default: m.RadarLandingPage })));
+const AurassureUffPage = lazy(() => import("./pages/air/AurassureUffPage").then((m) => ({ default: m.AurassureUffPage })));
 const IneaRadarPage = lazy(() => import("./pages/air/IneaRadarPage").then((m) => ({ default: m.IneaRadarPage })));
 const IneaStationPage = lazy(() => import("./pages/air/IneaStationPage").then((m) => ({ default: m.IneaStationPage })));
 const IneaAnalyticsPage = lazy(() => import("./pages/air/IneaAnalyticsPage").then((m) => ({ default: m.IneaAnalyticsPage })));
@@ -77,6 +78,7 @@ export default function App() {
                   <Route path="/alertas" element={<AlertasPage />} />
                   <Route path="/dados" element={<DadosPage />} />
                   <Route path="/qualidade-ar" element={<RadarLandingPage />} />
+                  <Route path="/qualidade-ar/uff" element={<AurassureUffPage />} />
                   <Route path="/qualidade-ar/inea" element={<IneaRadarPage />} />
                   <Route path="/qualidade-ar/inea/analises" element={<IneaAnalyticsPage />} />
                   <Route path="/qualidade-ar/inea/metodologia" element={<IneaMethodologyPage />} />
