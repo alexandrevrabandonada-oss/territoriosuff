@@ -13,6 +13,8 @@ const vercel = JSON.parse(read("vercel.json"));
 const sitemap = read("public/sitemap.xml");
 const migration = read("supabase/migrations/20261103152500_aurassure_public_release_approval_gate.sql");
 const qa = read("supabase/migrations/20261103153500_aurassure_private_qa_annotations_first_gas_decay.sql");
+const provenance = read("supabase/migrations/20261103165300_aurassure_enforce_public_release_provenance.sql");
+const stationHealth = read("supabase/migrations/20261103165900_aurassure_station_level_operational_health.sql");
 
 assert(app.includes('path="/qualidade-ar/uff"'), "UFF route missing from SPA router.");
 assert(landing.includes('to="/qualidade-ar/uff"'), "UFF route missing from network landing.");
@@ -30,4 +32,10 @@ assert(migration.includes("publication_state='published'"), "Public table policy
 assert(migration.includes("grant select on public.aurassure_public_measurements to anon, authenticated"), "Public role needs read-only rights.");
 assert(!migration.includes("insert into public.aurassure_public_measurements"), "Migration must not release unreviewed data automatically.");
 assert(qa.includes("block_release") && qa.includes("cause', 'unconfirmed'"), "Anomaly must remain blocked and its cause explicitly unconfirmed.");
-console.log("Aurassure portal release contract: 16 checks passed.");
+assert(provenance.includes("create trigger aurassure_enforce_public_release_provenance"), "Publication trigger must remain installed.");
+assert(provenance.includes("source checksum mismatch"), "Public release must preserve original SHA-256.");
+assert(provenance.includes("qa_status <> 'approved_for_publication'"), "Publication must require QA approval.");
+assert(provenance.includes("qa.severity = 'block_release'"), "Open QA blockers must prevent release.");
+assert(stationHealth.includes("coverage_degraded"), "Per-station operational coverage must be tracked.");
+assert(stationHealth.includes("revoke all on aurassure_internal.station_health from public,anon,authenticated"), "Station health must remain private by default.");
+console.log("Aurassure portal release contract: 22 checks passed.");
