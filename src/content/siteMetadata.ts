@@ -12,6 +12,7 @@ export const STATIC_ROUTE_METADATA: SiteRouteMetadata[] = [
   { path: "/alertas", title: "Central de Alertas | SEMEAR", description: "Configure alertas públicos de qualidade do ar com limites, horários de silêncio e critérios transparentes de notificação." },
   { path: "/dados", title: "Leituras ambientais | SEMEAR", description: "Consulte estações, leituras ambientais, cobertura e contexto operacional dos dados públicos reunidos pelo SEMEAR." },
   { path: "/qualidade-ar", title: "Portal de Qualidade do Ar | SEMEAR", description: "Acesse o Radar INEA, conheça a rede própria em implantação e entenda como interpretar os dados de qualidade do ar." },
+  { path: "/qualidade-ar/uff", title: "Rede UFF / Aurassure | SEMEAR", description: "Conheça as três estações UFF integradas à plataforma Aurassure e consulte apenas séries de qualidade do ar revisadas e aprovadas para publicação." },
   { path: "/qualidade-ar/inea", title: "Radar INEA | SEMEAR", description: "Explore mapa, histórico, cobertura, território e metodologia da base pública de qualidade do ar do INEA em Volta Redonda." },
   { path: "/qualidade-ar/inea/analises", title: "Análises INEA | SEMEAR", description: "Sínteses históricas auditáveis sobre cobertura, classificação, estações, lacunas e poluentes da base pública do INEA." },
   { path: "/qualidade-ar/inea/metodologia", title: "Metodologia e dados abertos INEA | SEMEAR", description: "Conheça fontes, cálculos, critérios de validade, limitações, versões e downloads abertos usados no Radar INEA." },
