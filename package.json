@@ -34,7 +34,7 @@
     "audit:lighthouse": "node tools/lighthouse-audit.mjs",
     "seo:assert": "tsx scripts/seo-static-assert.ts",
     "prerender": "tsx scripts/prerender-routes.tsx",
-    "vercel:functions:imports": "tsx scripts/vercel-function-import-assert.ts && node scripts/vercel-consolidated-api-contract-test.mjs",
+    "vercel:functions:imports": "tsx scripts/vercel-function-import-assert.ts && node scripts/vercel-consolidated-api-contract-test.mjs && tsx scripts/vercel-router-runtime-smoke.ts",
     "vercel:functions:smoke": "tsx scripts/inea-vercel-function-smoke.ts",
     "admin:fixture:report": "node tools/admin-reports-fixture.mjs",
     "acervo:import": "node tools/acervo-import.mjs",
