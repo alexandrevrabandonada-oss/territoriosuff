@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { SurfaceCard } from "../../components/BrandSystem";
 import { usePageMetadata } from "../../hooks/usePageMetadata";
 import { supabase } from "../../lib/supabase/client";
+import { formatAurassureLocalTime, stationCollectionLabel, stationCollectionTone, useAurassureStationStatus } from "../../hooks/useAurassureStationStatus";
 
 const STATIONS = [
   { id: 46560, name: "UFF", neighborhood: "Vila Santa Cecília", detail: "Campus da UFF" },
@@ -165,9 +166,10 @@ async function fetchApproved(stationId: number, days: Days): Promise<PublicMeasu
 
 export function AurassureUffPage() {
   usePageMetadata({
-    title: "Estações UFF e Aurassure | SEMEAR",
+    title: "Leituras SEMEAR UFF e Aurassure | SEMEAR",
     description: "Acompanhe a rede complementar de três estações em Volta Redonda, o estágio de validação e, quando liberadas, as séries revisadas de qualidade do ar."
   });
+  const { stations: operationalStations, loading: statusLoading, error: statusError } = useAurassureStationStatus();
   const [stationId, setStationId] = useState<number>(46560);
   const [pollutant, setPollutant] = useState<Pollutant>("pm25_ug_m3");
   const [days, setDays] = useState<Days>(1);
@@ -191,6 +193,8 @@ export function AurassureUffPage() {
   }, [stationId, days, retry]);
 
   const selectedStation = STATIONS.find((station) => station.id === stationId) || STATIONS[0];
+  const selectedOperational = operationalStations.find((station) => station.station_id === stationId);
+  const lastStatusUpdate = operationalStations[0]?.last_checked_at ?? null;
   const latest = rows.length ? rows[rows.length - 1] : undefined;
   const valid = rows.filter((row) => row[pollutant] !== null);
   const peak = valid.length ? Math.max(...valid.map((row) => row[pollutant] || 0)) : null;
@@ -218,7 +222,7 @@ export function AurassureUffPage() {
     <section className="portal-stage space-y-8 md:space-y-10">
       <SurfaceCard className="relative overflow-hidden border border-emerald-900 bg-gradient-to-br from-slate-950 via-emerald-950 to-slate-900 p-7 text-white md:p-10">
         <div className="relative z-10 max-w-4xl space-y-5">
-          <p className="text-xs font-black uppercase tracking-[0.23em] text-emerald-200">SEMEAR UFF · REDE COMPLEMENTAR DE MONITORAMENTO</p>
+          <p className="text-xs font-black uppercase tracking-[0.23em] text-emerald-200">LEITURAS SEMEAR · UFF / AURASSURE · REDE COMPLEMENTAR</p>
           <h1 className="max-w-3xl text-3xl font-black leading-tight tracking-tight md:text-5xl">
             O ar do território, observado por três estações.
           </h1>
@@ -226,28 +230,62 @@ export function AurassureUffPage() {
             Conexão técnica entre SEMEAR, UFF e a plataforma Aurassure. Dados capturados e auditados por estação, com publicação condicionada à revisão das unidades, do método e da qualidade de cada leitura.
           </p>
           <div className="flex flex-wrap gap-2 text-xs font-semibold">
-            <span className="rounded-full border border-emerald-300/40 bg-white/10 px-3 py-2">Três pontos de observação</span>
-            <span className="rounded-full border border-emerald-300/40 bg-white/10 px-3 py-2">Médias a cada 15 min</span>
-            <span className="rounded-full border border-amber-200/40 bg-amber-300/10 px-3 py-2 text-amber-100">Publicação sob validação</span>
+            <span className="rounded-full border border-emerald-300/40 bg-white/10 px-3 py-2">Três estações com coleta integrada</span>
+            <span className="rounded-full border border-emerald-300/40 bg-white/10 px-3 py-2">Coleta programada a cada 15 min</span>
+            <span className="rounded-full border border-amber-200/40 bg-amber-300/10 px-3 py-2 text-amber-100">Concentrações em revisão técnica</span>
           </div>
         </div>
       </SurfaceCard>
 
-      <div className="grid gap-4 md:grid-cols-3" role="group" aria-label="Selecionar estação da rede UFF">
-        {STATIONS.map((station) => (
-          <button key={station.id} type="button" onClick={() => setStationId(station.id)}
-            aria-pressed={station.id === stationId}
-            className={"min-h-40 rounded-2xl border p-5 text-left shadow-sm transition-all focus-visible:outline focus-visible:outline-2 focus-visible:outline-emerald-600 " +
-              (station.id === stationId ? "border-emerald-700 bg-emerald-50 shadow-md" : "border-slate-200 bg-white hover:border-emerald-300")}>
-            <span className="mb-3 block text-xs font-black uppercase tracking-widest text-emerald-800">{station.name} · #{station.id}</span>
-            <strong className="block text-xl font-black text-slate-900">{station.neighborhood}</strong>
-            <span className="mt-1 block text-sm text-slate-500">{station.detail}</span>
-            <span className="mt-4 inline-flex rounded-full border border-amber-200 bg-amber-50 px-3 py-1 text-xs font-semibold text-amber-800">
-              Série em validação técnica
-            </span>
-          </button>
-        ))}
-      </div>
+      <section className="space-y-3" aria-label="Disponibilidade real das três estações">
+        <div className="flex flex-wrap items-center justify-between gap-2">
+          <div>
+            <h2 className="text-xl font-black text-slate-900">Disponibilidade da rede integrada</h2>
+            <p className="mt-1 text-sm text-slate-600">Informações operacionais do Supabase, atualizadas após a coleta. Não representam classificação da qualidade do ar.</p>
+          </div>
+          <p className="text-xs text-slate-500" role="status">
+            {lastStatusUpdate ? "Conferido em " + formatAurassureLocalTime(lastStatusUpdate) : statusLoading ? "Consultando estados da rede…" : "Sem atualização disponível"}
+          </p>
+        </div>
+        {statusError ? <p role="alert" className="rounded-xl border border-amber-200 bg-amber-50 p-3 text-sm text-amber-900">{statusError} Os dados de concentração permanecem sob revisão.</p> : null}
+        <div className="grid gap-4 md:grid-cols-3" role="group" aria-label="Selecionar estação da rede UFF">
+        {STATIONS.map((station) => {
+          const status = operationalStations.find((row) => row.station_id === station.id);
+          const coverage = typeof status?.coverage_24h_percent === "number" || typeof status?.coverage_24h_percent === "string"
+            ? Number(status.coverage_24h_percent) : null;
+          return (
+            <button key={station.id} type="button" onClick={() => setStationId(station.id)}
+              aria-pressed={station.id === stationId}
+              className={"min-h-56 rounded-2xl border p-5 text-left shadow-sm transition-all focus-visible:outline focus-visible:outline-2 focus-visible:outline-emerald-600 " +
+                (station.id === stationId ? "border-emerald-700 bg-emerald-50 shadow-md" : "border-slate-200 bg-white hover:border-emerald-300")}>
+              <span className="mb-2 block text-xs font-black uppercase tracking-widest text-emerald-800">{station.name} · #{station.id}</span>
+              <strong className="block text-xl font-black text-slate-900">{station.neighborhood}</strong>
+              <span className={"mt-3 inline-flex rounded-full border px-3 py-1 text-xs font-semibold " + stationCollectionTone(status)}>
+                {stationCollectionLabel(status)}
+              </span>
+              <div className="mt-4 flex items-baseline justify-between gap-2">
+                <span className="text-xs font-semibold text-slate-500">Cobertura nas últimas 24h</span>
+                <strong className="text-xl font-black tabular-nums text-slate-900">
+                  {coverage !== null && Number.isFinite(coverage) ? coverage.toLocaleString("pt-BR", { maximumFractionDigits: 1 }) + "%" : "—"}
+                </strong>
+              </div>
+              <div className="mt-2 h-2 overflow-hidden rounded-full bg-slate-200" aria-hidden="true">
+                <div className={"h-full rounded-full " + (status?.collection_status === "receiving" ? "bg-emerald-600" : "bg-amber-500")}
+                  style={{ width: Math.max(0, Math.min(100, coverage ?? 0)) + "%" }} />
+              </div>
+              <p className="mt-3 text-xs leading-relaxed text-slate-600">
+                {status ? status.readings_last_24h + " de 96 horários com medição" : "Aguardando consulta operacional"}
+              </p>
+              <p className="mt-1 text-xs text-slate-500">Última medição recebida: {formatAurassureLocalTime(status?.last_measured_at)}</p>
+            </button>
+          );
+        })}
+        </div>
+        <p className="text-xs leading-relaxed text-slate-600">
+          A cobertura mede a presença de registros de 15 minutos, não a confiabilidade metrológica nem a situação sanitária do ar.
+          Em caso de lacuna, não presumimos concentração zero.
+        </p>
+      </section>
 
       <SurfaceCard className="overflow-hidden border border-slate-200 bg-white p-5 md:p-8">
         <div className="flex flex-col gap-5 border-b border-slate-100 pb-6 lg:flex-row lg:items-start lg:justify-between">
@@ -255,7 +293,7 @@ export function AurassureUffPage() {
             <p className="text-xs font-black uppercase tracking-widest text-emerald-700">Série revisada · {selectedStation.neighborhood}</p>
             <h2 className="text-2xl font-black tracking-tight text-slate-900 md:text-3xl">Histórico das partículas</h2>
             <p className="max-w-xl text-sm leading-relaxed text-slate-600">
-              O gráfico apresenta exclusivamente registros que já passaram pela aprovação técnica para divulgação.
+              A rede está conectada e sua disponibilidade acima é consultada diretamente no banco. O gráfico apresenta exclusivamente concentrações que já passaram pela aprovação técnica para divulgação.
               A ausência de pontos não significa ausência de poluição.
             </p>
           </div>
