@@ -72,7 +72,7 @@
     "press:report:pending-review": "tsx scripts/press-preservation-pending-review-report.ts",
     "press:report:executive": "tsx scripts/press-preservation-executive-report.ts",
     "uploads:report:curation": "tsx scripts/upload-curation-queue-report.ts",
-    "aurassure:verify": "node --experimental-strip-types scripts/aurassure-bridge-contract-test.mjs && node scripts/aurassure-ops-test.mjs"
+    "aurassure:verify": "node --experimental-strip-types scripts/aurassure-bridge-contract-test.mjs && node scripts/aurassure-ops-test.mjs && node scripts/aurassure-public-release-contract-test.mjs"
   },
   "dependencies": {
     "@sentry/react": "^10.45.0",
