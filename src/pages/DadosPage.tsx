@@ -671,6 +671,11 @@ export function DadosPage() {
 
   return (
     <PortalPageShell className="data-dashboard">
+      <div className="mx-auto mb-6 max-w-5xl rounded-2xl border-2 border-amber-300 bg-amber-50 p-5 text-amber-950">
+        <strong className="block text-lg font-black">Painel piloto anterior — não corresponde às estações UFF/Aurassure</strong>
+        <p className="mt-2 text-sm">Este painel histórico de demonstração pode indicar estação offline. Para consultar a integração efetiva de UFF, IFRJ e CRIAAD, acesse o painel principal de dados.</p>
+        <Link to="/dados" className="mt-3 inline-flex rounded-lg bg-amber-900 px-4 py-2 text-sm font-bold text-white">Abrir as três estações integradas</Link>
+      </div>
       {/* Abas de Navegação de Dados */}
       <PortalSectionHeader
         eyebrow={<span className="badge-dados-abertos">Catálogo público de dados</span>}
