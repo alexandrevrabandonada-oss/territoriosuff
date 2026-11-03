@@ -50,6 +50,12 @@ function formatNumber(value: number | null | undefined) {
   return typeof value === "number" && Number.isFinite(value) ? NUMBER_FORMAT.format(value) : "—";
 }
 
+function csvCell(value: string | number | null | undefined) {
+  const literal = String(value ?? "");
+  const sanitized = /^[=+@\t\r]/.test(literal) ? "'" + literal : literal;
+  return '"' + sanitized.replace(/"/g, '""') + '"';
+}
+
 function buildSegments(points: PublicMeasurement[], pollutant: Pollutant, timeFrom: number, timeTo: number, maxValue: number) {
   const left = 62;
   const top = 24;
@@ -198,8 +204,8 @@ export function AurassureUffPage() {
       row.station_id,row.measured_at,row.averaging_period_seconds,row.pm25_ug_m3 ?? "",
       row.pm10_ug_m3 ?? "",row.temperature_c ?? "",row.relative_humidity_pct ?? "",row.published_at ?? "",
       row.source_response_sha256,row.reviewer_reference ?? "",row.unit_validation_reference ?? "",row.methodology_reference ?? ""
-    ].join(","));
-    const blob = new Blob(["\uFEFF" + [header.join(","), ...values].join("\r\n")], { type: "text/csv;charset=utf-8;" });
+     ].map(csvCell).join(","));
+    const blob = new Blob(["\uFEFF" + [header.map(csvCell).join(","), ...values].join("\r\n")], { type: "text/csv;charset=utf-8;" });
     const url = URL.createObjectURL(blob);
     const anchor = document.createElement("a");
     anchor.href = url;
