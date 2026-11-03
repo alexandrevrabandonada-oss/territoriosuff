@@ -102,6 +102,12 @@ export function RadarLandingPage() {
           Estas leituras complementares não substituem os índices oficiais do INEA.
         </p>
         <div className="mt-5 flex flex-wrap gap-3">
+          <Link
+            to="/qualidade-ar/uff"
+            className="inline-flex min-h-[44px] items-center justify-center rounded-xl border border-emerald-500 bg-emerald-50 px-5 py-2 text-xs font-black uppercase tracking-[0.12em] text-emerald-900 hover:bg-emerald-100"
+          >
+            Conhecer as três estações UFF · em validação
+          </Link>
           <a
             href="/boletins/2026-10-30-aurassure.html"
             className="inline-flex min-h-[44px] items-center justify-center rounded-xl bg-brand-primary px-5 py-2 text-xs font-black uppercase tracking-[0.12em] text-white hover:bg-brand-primary-dark"
