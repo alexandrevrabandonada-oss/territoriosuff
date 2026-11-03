@@ -10,8 +10,9 @@ export type SiteRouteMetadata = {
 export const STATIC_ROUTE_METADATA: SiteRouteMetadata[] = [
   { path: "/", title: "SEMEAR UFF | Transparência pública ambiental", description: "Portal público da UFF para dados ambientais, qualidade do ar, memória territorial, participação social e transparência em Volta Redonda." },
   { path: "/alertas", title: "Central de Alertas | SEMEAR", description: "Configure alertas públicos de qualidade do ar com limites, horários de silêncio e critérios transparentes de notificação." },
-  { path: "/dados", title: "Leituras ambientais | SEMEAR", description: "Consulte estações, leituras ambientais, cobertura e contexto operacional dos dados públicos reunidos pelo SEMEAR." },
-  { path: "/qualidade-ar", title: "Portal de Qualidade do Ar | SEMEAR", description: "Acesse o Radar INEA, conheça a rede própria em implantação e entenda como interpretar os dados de qualidade do ar." },
+  { path: "/dados", title: "Três estações UFF/Aurassure | Leituras SEMEAR", description: "Veja a disponibilidade real, a cobertura de coleta e os horários de UFF, IFRJ e CRIAAD. Concentrações de poluentes continuam sob validação técnica." },
+  { path: "/dados/piloto", title: "Painel piloto anterior | SEMEAR", description: "Arquivo da interface de monitoramento piloto anterior, não correspondente às três estações UFF/Aurassure atualmente integradas." },
+  { path: "/qualidade-ar", title: "Portal de Qualidade do Ar | SEMEAR", description: "Acesse o Radar INEA e a rede complementar UFF/Aurassure, com três estações integradas e concentrações ainda sob validação técnica." },
   { path: "/qualidade-ar/uff", title: "Rede UFF / Aurassure | SEMEAR", description: "Conheça as três estações UFF integradas à plataforma Aurassure e consulte apenas séries de qualidade do ar revisadas e aprovadas para publicação." },
   { path: "/qualidade-ar/inea", title: "Radar INEA | SEMEAR", description: "Explore mapa, histórico, cobertura, território e metodologia da base pública de qualidade do ar do INEA em Volta Redonda." },
   { path: "/qualidade-ar/inea/analises", title: "Análises INEA | SEMEAR", description: "Sínteses históricas auditáveis sobre cobertura, classificação, estações, lacunas e poluentes da base pública do INEA." },
