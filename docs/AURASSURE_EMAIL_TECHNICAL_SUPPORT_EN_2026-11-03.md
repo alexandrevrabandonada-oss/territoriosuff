@@ -1,11 +1,11 @@
 # Aurassure technical-support inquiry — English version
 
 **Status:** Draft prepared on 3 November 2026. **NOT SENT.**
-**To:** contact@aurassure.com (published by Aurassure).
+**Primary routing:** Daniel Rios De Rosa — Aurassure Brasil, named as the API integration contact in the UFF Volta Redonda manual (no verified individual email provided). **Corporate alternative:** contact@aurassure.com.
 **Technical support telephone:** +91 90780 32911.
 **Subject:** Validation request — Volta Redonda UFF monitoring stations (API units, AQI, QA, outages)
 
-Dear Aurassure Technical Support Team,
+Dear Daniel Rios De Rosa and Aurassure Brasil Technical Support Team,
 
 The UFF SEMEAR project in Volta Redonda, Rio de Janeiro, Brazil, is integrating Aurassure air-quality data for the following three stations:
 
@@ -46,3 +46,6 @@ UFF SEMEAR — Volta Redonda, Rio de Janeiro, Brazil
 - Aurassure's general AQI explanation: https://aurassure.com/air-quality-index/
 - Never attach API keys, bridge tokens, Vault exports or secret environment variables.
 - After receiving a reply, archive the correspondence in the canonical technical dossier and record what was explicitly verified versus pending.
+
+
+**Internal routing update:** The original three-page `Manual_API_UFF_Volta_Redonda (1).pdf` identifies Daniel Rios De Rosa as the Aurassure Brasil integration contact. A public professional profile corroborates the company relationship (https://br.linkedin.com/in/daniel-rios-de-rosa/en). Do not invent a direct email address; use an established UFF/Aurassure channel or forward via the corporate support inbox. The Portuguese inquiry is the preferred first-contact document for the Brazilian recipient. No message has been sent.
