@@ -17,6 +17,7 @@ const provenance = read("supabase/migrations/20261103165300_aurassure_enforce_pu
 const stationHealth = read("supabase/migrations/20261103165900_aurassure_station_level_operational_health.sql");
 const retract = read("supabase/migrations/20261103172500_aurassure_retract_public_data_after_qa_or_source_change.sql");
 const healthHistory = read("supabase/migrations/20261103174000_aurassure_private_station_health_incident_history.sql");
+const postGap = read("supabase/migrations/20261103175000_aurassure_post_outage_correlated_gas_review.sql");
 
 assert(app.includes('path="/qualidade-ar/uff"'), "UFF route missing from SPA router.");
 assert(landing.includes('to="/qualidade-ar/uff"'), "UFF route missing from network landing.");
@@ -48,4 +49,8 @@ assert(healthHistory.includes("aurassure_internal.station_incidents"), "Per-stat
 assert(healthHistory.includes("on conflict (observed_bucket,station_id) do nothing"), "Health snapshots must be idempotent.");
 assert(healthHistory.includes("'semear-aurassure-station-health-15min'"), "Health audit must be scheduled.");
 assert(healthHistory.includes("revoke all on aurassure_internal.station_health_history"), "Raw health history must not be anonymously readable.");
-console.log("Aurassure portal release contract: 30 checks passed.");
+assert(postGap.includes("aurassure_internal.post_gap_gas_review"), "Post-gap evidence must remain reproducible in private SQL.");
+assert(postGap.includes("g.interval_hours >= 5"), "Post-gap review must require a sufficiently long observation gap.");
+assert(postGap.includes("'review_required'"), "Exploratory evidence must be review-only, not a proven sensor fault.");
+assert(postGap.includes("revoke all on aurassure_internal.post_gap_gas_review from public,anon,authenticated"), "Post-gap records must remain private.");
+console.log("Aurassure portal release contract: 34 checks passed.");
