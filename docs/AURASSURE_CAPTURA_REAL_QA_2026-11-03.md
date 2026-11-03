@@ -184,3 +184,26 @@ select station_id, last_measured_at at time zone 'America/Sao_Paulo' as anterior
 **Nova evidência externa, com ressalva:** a página oficial de contato da Aurassure informa `contact@aurassure.com` e suporte técnico `+91 90780 32911` (https://aurassure.com/contact_aurassure/). Sua página explicativa de AQI destaca padrões diferentes por país e faz referência à metodologia indiana (https://aurassure.com/air-quality-index/). Isso **não** prova qual método a API usa nas três estações brasileiras. Preparado, mas **NÃO enviado**, um pedido de esclarecimentos em inglês em `docs/AURASSURE_EMAIL_TECHNICAL_SUPPORT_EN_2026-11-03.md`; existe uma versão em português.
 
 **Critérios de publicação permanecem inalterados:** sem concentrações públicas até confirmação de unidades, modelo/calibração, validação de sensor e autorização de redistribuição. Não classificar AQI do fabricante como IQAr do INEA; não preencher intervalos ausentes por interpolação.
+
+---
+
+## Atualização 03/11/2026 — padrão recorrente de gases em retomadas após grandes lacunas
+
+**Investigação exploratória adicional.** A auditoria privada cruzou a visão `aurassure_internal.measurement_gaps` com registros efetivamente presentes 0, 15 e 30 minutos depois da retomada. Considerou **somente interrupções com intervalo entre leituras de 5 horas ou mais**, todas com três amostras consecutivas presentes. Não houve interpolação.
+
+**Definição *exploratória* de queda conjunta:** SO₂ 30 minutos após a retomada inferior à metade da primeira leitura; CO inferior a 70% da primeira leitura. Essas frações são escolhas pós-inspeção, **não** limites legais, metrológicos ou testes confirmatórios.
+
+| Estação | Retomadas após lacuna de 5h+ | Atendem ao critério de queda conjunta | Janelas contínuas comuns com valores positivos que atendem ao critério |
+| --- | ---: | ---: | ---: |
+| UFF (46560) | 1 | 1 | 64 de 1.190 (5,4%) |
+| IFRJ (46561) | 1 | 0 | 13 de 1.270 (1,0%) |
+| CRIAAD (46562) | 5 | **5** | 23 de 694 (3,3%) |
+| **Total** | **7** | **6** | — |
+
+Nas cinco retomadas longas do CRIAAD as leituras de SO₂ e CO diminuíram, ambas acima do limiar exploratório, nos 30 minutos seguintes. No IFRJ em 22/10 os dois gases também diminuíram, mas a queda de SO₂ não alcançou 50%. A UFF, após a lacuna comum, alcançou o critério. O padrão não determina causalidade nem distingue sozinho reequilíbrio/estabilização do sensor, algoritmos de correção, comunicação, efeito meteorológico ou episódio ambiental real. Os valores dos gases **não foram convertidos ou classificados**, pois as unidades efetivas da API permanecem sem confirmação.
+
+**Limitações explícitas:** amostra de apenas sete episódios longos; 30 minutos é uma janela arbitrária; frações de 50%/30% escolhidas a posteriori; janelas comuns do mesmo sensor se sobrepõem e não são estatisticamente independentes; padrões de demanda/condições meteorológicas não controlados; sem fichas/calibração/logs do fornecedor. A diferença 5/5 versus 23/694 é **sinal de investigação**, não probabilidade de falha nem prova de que os picos são artificiais.
+
+**Trabalho implementado e verificado:** migração `20261103175000_aurassure_post_outage_correlated_gas_review.sql` cria a visão privada `aurassure_internal.post_gap_gas_review` para reproduzir as sete comparações com rastreabilidade. Sete anotações abertas `post_gap_30min_gas_pattern_review` foram inseridas com `severity=review_required`, uma por retomada. Os três bloqueios anteriores de 29/10 permanecem `block_release`. Nenhuma leitura passou à tabela pública, e `anon` não tem acesso às anotações de QA.
+
+**Consulta técnica ao fornecedor atualizada:** o pedido em inglês `docs/AURASSURE_EMAIL_TECHNICAL_SUPPORT_EN_2026-11-03.md` inclui os números e solicita logs de reinício, aquecimento, QA de canal, correção e diagnóstico para distinguir hipóteses; segue **não enviado**.
