@@ -15,6 +15,8 @@ const migration = read("supabase/migrations/20261103152500_aurassure_public_rele
 const qa = read("supabase/migrations/20261103153500_aurassure_private_qa_annotations_first_gas_decay.sql");
 const provenance = read("supabase/migrations/20261103165300_aurassure_enforce_public_release_provenance.sql");
 const stationHealth = read("supabase/migrations/20261103165900_aurassure_station_level_operational_health.sql");
+const retract = read("supabase/migrations/20261103172500_aurassure_retract_public_data_after_qa_or_source_change.sql");
+const healthHistory = read("supabase/migrations/20261103174000_aurassure_private_station_health_incident_history.sql");
 
 assert(app.includes('path="/qualidade-ar/uff"'), "UFF route missing from SPA router.");
 assert(landing.includes('to="/qualidade-ar/uff"'), "UFF route missing from network landing.");
@@ -38,4 +40,12 @@ assert(provenance.includes("qa_status <> 'approved_for_publication'"), "Publicat
 assert(provenance.includes("qa.severity = 'block_release'"), "Open QA blockers must prevent release.");
 assert(stationHealth.includes("coverage_degraded"), "Per-station operational coverage must be tracked.");
 assert(stationHealth.includes("revoke all on aurassure_internal.station_health from public,anon,authenticated"), "Station health must remain private by default.");
-console.log("Aurassure portal release contract: 22 checks passed.");
+assert(retract.includes("create trigger aurassure_retract_on_new_qa_block"), "New QA blocker must revoke published data.");
+assert(retract.includes("create trigger aurassure_retract_on_source_change"), "Source mutation must revoke published data.");
+assert(retract.includes("set publication_state='withheld'"), "Retraction must set publication withheld.");
+assert(retract.includes("publication_revocations"), "Retractions must be recorded privately.");
+assert(healthHistory.includes("aurassure_internal.station_incidents"), "Per-station incidents must be stored privately.");
+assert(healthHistory.includes("on conflict (observed_bucket,station_id) do nothing"), "Health snapshots must be idempotent.");
+assert(healthHistory.includes("'semear-aurassure-station-health-15min'"), "Health audit must be scheduled.");
+assert(healthHistory.includes("revoke all on aurassure_internal.station_health_history"), "Raw health history must not be anonymously readable.");
+console.log("Aurassure portal release contract: 30 checks passed.");
