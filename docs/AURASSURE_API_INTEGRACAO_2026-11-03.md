@@ -56,3 +56,31 @@ Janela máxima por chamada: 24 horas. Parâmetros e estações são restritos a 
 ## Teste local
 
 `node --experimental-strip-types scripts/aurassure-bridge-contract-test.mjs` — 10 verificações de contrato sem credenciais nem chamadas externas.
+
+## Continuação de 03/11/2026 — operador incremental
+
+**Implementado na mesma branch:** `scripts/aurassure-ops.mjs` (Node.js, sem dependências adicionais) e `scripts/aurassure-ops-test.mjs`. Foi adicionado `aurassure:verify` ao `package.json` e esse teste passou a compor `npm run verify`.
+
+**Preparação local sem conexão e sem credenciais:**
+
+```bash
+npm run aurassure:verify
+node scripts/aurassure-ops.mjs stations --dry-run
+node scripts/aurassure-ops.mjs backfill --from 2026-10-29 --to 2026-10-30 --period 900 --dry-run
+```
+
+**Após cadastrar os três segredos no Supabase e disponibilizar `AURASSURE_BRIDGE_TOKEN` exclusivamente como variável de ambiente do processo operador:**
+
+```bash
+node scripts/aurassure-ops.mjs stations --show-provider-response
+node scripts/aurassure-ops.mjs recent --minutes 60 --period 900
+node scripts/aurassure-ops.mjs backfill --from 2026-10-29 --to 2026-10-30 --period 900
+```
+
+O comando de recuperação divide o intervalo em chamadas de 24 horas (máximo de 31 dias por execução), respeitando o horário UTC−3 informado pela Aurassure para Volta Redonda em 2026. O operador só recebe uma senha de acesso à ponte, não as chaves originais do fornecedor. Nunca passar tokens como argumentos CLI, em URL ou em arquivos do repositório.
+
+**Estado verificado nesta rodada:** a função Edge permaneceu ativa; a migração está registrada; a tabela privada continua com RLS e sem grants de `anon`/`authenticated`. `pg_cron` e `pg_net` ainda não estão habilitados. Agendamento automático, captura real, ETL curado e dashboard público **não ativados**.
+
+**Próxima liberação:** confirmar autenticação real e formato da listagem, cadastrar o token exclusivamente em local seguro, recuperar um dia de médias e confrontar as unidades/timestamps com a metodologia. Não ativar a coleta periódica antes disso.
+
+**Bloqueio Vercel:** domínios `semearsf.org` e `www.semearsf.org` estão associados ao projeto `territoriosuff`. O último deploy de teste da mesma branch falhou por exceder o limite de funções do plano Hobby. Resolver com consolidação acompanhada de testes ou mudança de plano deliberada; não remover endpoints à força.
