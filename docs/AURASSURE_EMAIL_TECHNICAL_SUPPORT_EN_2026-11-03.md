@@ -25,6 +25,8 @@ The API integration and private historical ingestion are operational. We are wit
 
 All three stations also have absent records after 21 October 18:00 until different times on 22 October. Was there any common connectivity, infrastructure or platform event?
 
+**Additional exploratory pattern for engineering review.** Across all three stations there were seven resumptions after gaps of at least five hours for which three consecutive 15-minute averages were available. Six of seven showed a joint SO2 decline greater than 50% and CO decline greater than 30% over 30 minutes. In CRIAAD specifically, this occurred in five out of five such resumptions, versus 23 out of 694 ordinary 30-minute windows with initially positive SO2 and CO values (3.3%). The thresholds were selected during exploratory analysis, the observations are temporally dependent, and these proportions are NOT a calibrated fault rate or a formal causal test. Could you provide restart/warm-up diagnostics, raw sensor-channel outputs, validity flags and correction-model logs that could help distinguish instrument stabilization from environmental events?
+
 **5. Licence and API operation.** May the UFF SEMEAR public portal reproduce attributed historical observations and provide CSV export? Please clarify the API rate limits, backfill and retention policy, late data corrections, timezone conventions and any required attribution, permissions or licensing conditions.
 
 We intend to distinguish the supplementary Aurassure/UFF network from the official Brazilian INEA monitoring network, and will not assign national IQAr categories or emission sources without independent evidence.
