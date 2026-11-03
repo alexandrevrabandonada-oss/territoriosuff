@@ -150,3 +150,21 @@ O endpoint /data não inclui unidade em cada leitura. **Perguntar à Aurassure q
 ```sql
 select station_id, last_measured_at at time zone 'America/Sao_Paulo' as anterior_brt, next_measured_at at time zone 'America/Sao_Paulo' as posterior_brt, missing_15min_slots, interval_hours from aurassure_internal.measurement_gaps order by interval_hours desc limit 20;
 ```
+
+---
+
+## Atualização 03/11/2026, 17h — prévia Vercel validada, proteção de publicação e saúde por estação
+
+**Prévia Vercel funcional:** deployment `dpl_6CYhz1rKbnf4jPZ4jYU8CtuE7BvS`, commit `7694870d6247ffbedea4b4fbfc13551924fde202`, estado `READY`, target preview. A rota `https://territoriosuff-14d98y43c-alexandrevrabandonada-oss-projects.vercel.app/qualidade-ar/uff` retornou HTTP 200 com metadados SEO corretos. Foram consultadas rotas reais INEA: `export-manifest`, `stations`, `summary`, `latest`, `observability`, `analytics/data-gaps`, `analytics/monthly-profile`, `export-catalog`, todas HTTP 200 e JSON. Endpoint desconhecido retornou 404, `api/share/dados` sem parâmetro obrigatório retornou 400. Playwright e testes de acessibilidade do GitHub Actions aprovados. **Não houve promoção a produção**.
+
+**Bloqueio do limite Hobby tratado:** cinco arquivos de função Vercel em `api/` e deployment de prévia concluído. A informação anterior de prévia indisponível por HTTP 402 foi superada pela implantação automática de um preview pronto; um futuro deploy ainda pode estar sujeito à cota diária.
+
+**Captura em 16h54 BRT:** `aurassure_internal.pipeline_health` indica `operational`, 3.373 medições únicas, 35 snapshots de leituras; coleta às 16h45 e normalização às 16h50 concluídas. As últimas medições tinham timestamp 16h15. Seguem três bloqueios QA e **zero dados públicos**.
+
+**Barreira de publicação efetivamente testada:** migração `20261103165300_aurassure_enforce_public_release_provenance.sql` valida staging, estado `qa_status='approved_for_publication'`, ausência de anotação `block_release` aberta, hash SHA-256 correspondente a snapshot original, valores PM2,5 e PM10 sem divergência e documentação formal de unidade, método e revisor. Uma tentativa experimental de inserção de dado real ainda não aprovado foi rejeitada por SQLSTATE 23514. Trigger ativo; 0 dados públicos; `anon` não tem SELECT nas tabelas privadas nem INSERT na tabela curada.
+
+**Visão privada `aurassure_internal.station_health`:** separa estado de cada estação de saúde geral do pipeline. Na consulta próxima de 17h BRT: UFF 93/96 amostras de 15 min nas últimas 24h (96,88%, `receiving`); IFRJ 93/96 (96,88%, `receiving`); CRIAAD 73/96 (76,04%, `coverage_degraded`). É uma métrica de recebimento de dados, **não** atestado de qualidade do ar, de calibração ou de funcionamento metrológico.
+
+**Consulta técnica preparada, NÃO enviada:** `docs/AURASSURE_CONSULTA_METROLOGIA_E_QA_2026-11-03.md`. Solicita: unidade efetiva de `avg` e `value`, relação de `unit` com `default_unit`, método AQI, fichas e calibração dos equipamentos realmente instalados, interrupções simultâneas de 21–22/10, 58h45 de ausência no CRIAAD, além da autorização para publicação e exportação. As páginas públicas da Aurassure apresentam modelos e módulos configuráveis e não comprovam qual modelo foi instalado nos pontos UFF.
+
+**Ainda pendente:** resposta formal técnica e licença de republicação, promoção controlada do deployment após revisão e plano de rollback, além de rotação sincronizada dos segredos que foram expostos anteriormente no chat. Não mesclar o PR ainda.
