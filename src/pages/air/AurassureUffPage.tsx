@@ -181,7 +181,7 @@ export function AurassureUffPage() {
   }, [stationId, days, retry]);
 
   const selectedStation = STATIONS.find((station) => station.id === stationId) || STATIONS[0];
-  const latest = rows.at(-1);
+  const latest = rows.length ? rows[rows.length - 1] : undefined;
   const valid = rows.filter((row) => row[pollutant] !== null);
   const peak = valid.length ? Math.max(...valid.map((row) => row[pollutant] || 0)) : null;
   const average = valid.length ? valid.reduce((sum, row) => sum + (row[pollutant] || 0), 0) / valid.length : null;
