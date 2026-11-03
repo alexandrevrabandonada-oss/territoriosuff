@@ -57,10 +57,10 @@ async function runAssertions() {
 
   try {
     // Dynamically import the handlers so they read the updated process.env
-    const degradedDaysHandler = (await import('../api/air/inea/analytics/degraded-days')).default;
-    const stationRankingHandler = (await import('../api/air/inea/analytics/station-ranking')).default;
-    const monthlyProfileHandler = (await import('../api/air/inea/analytics/monthly-profile')).default;
-    const dataGapsHandler = (await import('../api/air/inea/analytics/data-gaps')).default;
+    const degradedDaysHandler = (await import('../server/air/inea/analytics/degraded-days')).default;
+    const stationRankingHandler = (await import('../server/air/inea/analytics/station-ranking')).default;
+    const monthlyProfileHandler = (await import('../server/air/inea/analytics/monthly-profile')).default;
+    const dataGapsHandler = (await import('../server/air/inea/analytics/data-gaps')).default;
 
     // Test 1: Fetch raw general AQI measurements and check for zero index values
     const { data: measurements, error } = await supabase

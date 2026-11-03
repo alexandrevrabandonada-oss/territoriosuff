@@ -87,13 +87,13 @@ async function run() {
   console.log("Starting INEA public API contract assertion suite...");
   await assertRpcReadinessOrThrow();
 
-  const summaryHandler = (await import("../api/air/inea/summary")).default;
-  const latestHandler = (await import("../api/air/inea/latest")).default;
-  const stationsHandler = (await import("../api/air/inea/stations")).default;
-  const stationsMetadataHandler = (await import("../api/air/inea/stations-metadata")).default;
-  const observabilityHandler = (await import("../api/air/inea/observability")).default;
-  const exportManifestHandler = (await import("../api/air/inea/export-manifest")).default;
-  const exportCatalogHandler = (await import("../api/air/inea/export-catalog")).default;
+  const summaryHandler = (await import("../server/air/inea/summary")).default;
+  const latestHandler = (await import("../server/air/inea/latest")).default;
+  const stationsHandler = (await import("../server/air/inea/stations")).default;
+  const stationsMetadataHandler = (await import("../server/air/inea/stations-metadata")).default;
+  const observabilityHandler = (await import("../server/air/inea/observability")).default;
+  const exportManifestHandler = (await import("../server/air/inea/export-manifest")).default;
+  const exportCatalogHandler = (await import("../server/air/inea/export-catalog")).default;
 
   const summaryRes = await invoke(summaryHandler, { method: "GET", query: {} });
   assert(summaryRes.statusCode === 200, statusMessage("summary", summaryRes));
