@@ -209,3 +209,37 @@ Nas cinco retomadas longas do CRIAAD as leituras de SO₂ e CO diminuíram, amba
 **Consulta técnica ao fornecedor atualizada:** o pedido em inglês `docs/AURASSURE_EMAIL_TECHNICAL_SUPPORT_EN_2026-11-03.md` inclui os números e solicita logs de reinício, aquecimento, QA de canal, correção e diagnóstico para distinguir hipóteses; segue **não enviado**.
 
 **Verificação final desta rodada:** GitHub Actions execução `41711453550` concluiu com **sucesso integral**, incluindo 34 asserts de contrato Aurassure/segurança, TypeScript, build, Playwright e acessibilidade. A execução automática do novo cron foi comprovada separadamente às 17h22 BRT. No instante da verificação, `aurassure_public_measurements` continuava com **0 linhas** e `aurassure_internal.publication_revocations` com **0 eventos persistidos** (os dois testes de revogação foram revertidos).
+
+---
+
+## Atualização 03/11/2026 — integração do status operacional ao portal /dados
+
+**Problema real apontado por captura de tela do usuário:** a página principal `/dados` do deployment de prévia antigo exibia a “Estação Piloto” offline; a homepage mostrava “Rede própria em implantação” e “Aguardando instalação dos equipamentos”. O conector privado Aurassure já estava operacional, mas o frontend principal seguia conectado ao esquema antigo de monitoramento. Não confundir backend conectado com interface publicada.
+
+### Banco de dados — status de coleta visível sem comprometer concentrações
+
+Migração aplicada e versionada: `supabase/migrations/20261103181000_aurassure_publish_operational_station_status_only.sql`.
+
+- Nova tabela `public.aurassure_public_station_status`: exatamente as 3 estações verificadas, com identificação, bairro, última medição, última captura, instante da checagem, registros de 15 minutos nas últimas 24h, percentual de cobertura e diagnóstico operacional.
+- **NENHUM** valor PM2,5, PM10, NO₂, SO₂, CO, O₃, AQI, credencial ou payload da API Aurassure é exposto por essa tabela.
+- RLS ativada, `anon` autorizado a consultar apenas os três registros de metadados, sem permissão de escrita ou leitura em `aurassure_measurements_staging`. Testado com `SET LOCAL ROLE anon` — `visible_stations=3`.
+- `aurassure_internal.refresh_public_station_status()` é executada dentro do agendamento já existente de verificação (`aurassure_internal.process_quality_cycle()`), a cada 15 minutos. A atualização **automática das 17h52 BRT** foi confirmada na tabela, além da execução do cron com estado `succeeded`.
+- Às 17h44 de 03/11/2026, UFF e IFRJ apresentaram 94/96 registros (97,92%) nas últimas 24h; CRIAAD, 74/96 (77,08%). Esses valores são indicadores de **disponibilidade**, não índice ou concentração de poluição.
+- Tabela de concentrações aprovada `public.aurassure_public_measurements` segue com **0 linhas** por decisão de revisão metrológica.
+
+### Código do portal — correção na branch
+
+- `src/App.tsx`: o caminho **`/dados`** agora abre `AurassureUffPage`, assim como `/qualidade-ar/uff`; o antigo painel da estação piloto segue em **`/dados/piloto`** com aviso de que não representa as três estações atuais. O legado não foi apagado.
+- `src/hooks/useAurassureStationStatus.ts`: consulta somente a tabela pública de status pelo cliente Supabase, sem segredos; atualiza enquanto a página está visível e informa quando a checagem fica desatualizada.
+- `src/pages/air/AurassureUffPage.tsx`: mostra UFF/IFRJ/CRIAAD, cobertura real, número de intervalos presentes, data da última medição e estado operacional, além de filtros e séries **somente para concentrações aprovadas**. Ausência de leituras não é confundida com ar limpo.
+- `src/pages/HomePage.tsx`: substitui textos incorretos de implantação futura e mostra os três pontos com status e cobertura efetiva.
+- `src/pages/air/RadarLandingPage.tsx`: opção SEMEAR UFF leva a `/dados` e descreve corretamente coleta em funcionamento e concentrações em revisão.
+- SEO atualizado para `/dados`; cliente Supabase ajustado para importação segura no pré-render SSR Node.
+- Testes para `/dados` atualizados: não exibir o piloto como principal, mostrar a cobertura das três estações, preservar INEA e acesso separado ao legado. O contrato de acesso público foi ampliado para **52 verificações**.
+
+### Estado de deployment e bloqueio efetivo
+
+A tentativa de **novo preview Vercel** para a correção respondeu **HTTP 402 / `api-deployments-free-per-day`**: o plano Hobby atingiu a quota de 100 deployments em 24 horas. A prévia existente em Vercel é de commit anterior e **não reflete as mudanças em `/dados`**. Não confundir sucesso no GitHub com publicação no domínio. Não realizar mudança de plano/faturamento sem autorização. Aguardar desbloqueio da quota, emitir **um único preview**, testar `/`, `/dados`, `/dados/piloto`, `/qualidade-ar/uff`, APIs INEA e SEO, e só então deliberar promoção a `semearsf.org`.
+
+**Observação central:** o pedido do usuário foi corrigir a ausência de integração na interface. A interface já consome **metadados operacionais reais**, enquanto **concentrações** ainda exigem confirmação de unidades, QA/calibração e autorização de publicação; não converter nem equiparar o AQI da Aurassure ao IQAr do INEA. O usuário precisará aprovar qualquer mudança de política de divulgação antecipada de PM2,5/PM10.
+
