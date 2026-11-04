@@ -10,6 +10,7 @@ type PortalHeroProps = {
   actions?: ReactNode;
   aside?: ReactNode;
   tone?: "default" | "warm" | "seed" | "lab" | "social";
+  headingLevel?: 1 | 2;
 };
 
 const toneClassMap: Record<NonNullable<PortalHeroProps["tone"]>, string> = {
@@ -20,14 +21,14 @@ const toneClassMap: Record<NonNullable<PortalHeroProps["tone"]>, string> = {
   social: "portal-stage-hero-social"
 };
 
-export function PortalHero({ badge, title, subtitle, metrics, actions, aside, tone = "default" }: PortalHeroProps) {
+export function PortalHero({ badge, title, subtitle, metrics, actions, aside, tone = "default", headingLevel = 1 }: PortalHeroProps) {
   return (
     <SurfaceCard className={`portal-stage-hero ${toneClassMap[tone]} overflow-hidden p-0`}>
       <div className="portal-stage-hero-inner portal-hero-split">
         <div className="portal-stage-copy space-y-4">
           {badge ? <div className="flex flex-wrap items-center gap-2.5">{badge}</div> : null}
           <div className="space-y-3">
-            <h1>{title}</h1>
+            {headingLevel === 1 ? <h1>{title}</h1> : <h2>{title}</h2>}
             {subtitle ? <p>{subtitle}</p> : null}
           </div>
           {metrics ? <div className="portal-hero-metrics">{metrics}</div> : null}

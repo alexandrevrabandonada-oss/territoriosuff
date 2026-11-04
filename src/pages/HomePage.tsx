@@ -6,6 +6,7 @@ import type {
   ReportDocument
 } from "../lib/api";
 import { PortalHero, PortalPageShell, PortalSectionHeader } from "../components/portal";
+import { AirQuickView } from "../components/AirQuickView";
 import { formatAurassureLocalTime, stationCollectionLabel, useAurassureStationStatus } from "../hooks/useAurassureStationStatus";
 
 const REPORT_KIND_LABEL: Record<ReportDocument["kind"], string> = {
@@ -66,7 +67,7 @@ function formatDate(value?: string | null) {
 }
 
 export function HomePage() {
-  const { stations: aurassureStations, loading: stationStatusLoading } = useAurassureStationStatus();
+  const { stations: aurassureStations, loading: stationStatusLoading, savedAt: stationStatusSavedAt } = useAurassureStationStatus();
   const [events, setEvents] = useState<Event[]>([]);
   const [pastEvents, setPastEvents] = useState<Event[]>([]);
   const [reports, setReports] = useState<ReportDocument[]>([]);
@@ -104,8 +105,10 @@ export function HomePage() {
     .slice(0, 3);
 
   return (
-    <PortalPageShell className="home-shell" aria-labelledby="home-title">
+    <PortalPageShell className="home-shell" aria-labelledby="quick-air-title">
+      <AirQuickView />
       <PortalHero
+        headingLevel={2}
         badge={
           <>
             <span className="badge-dados-abertos">Três estações UFF integradas</span>
@@ -234,7 +237,7 @@ export function HomePage() {
             <section className="home-now" aria-label="Situação das três estações UFF/Aurassure" aria-live="polite">
               <div className="home-now-head">
                 <h2>Rede UFF/Aurassure</h2>
-                <span><i />{aurassureStations.length ? "Cobertura consultável" : "Consultando rede"}</span>
+                <span><i />{stationStatusSavedAt ? "Consulta salva" : aurassureStations.length ? "Cobertura consultável" : stationStatusLoading ? "Consultando rede" : "Rede indisponível"}</span>
               </div>
               <div className="home-now-list">
                 {[
@@ -259,7 +262,7 @@ export function HomePage() {
                 })}
               </div>
               <p className="mt-3 text-xs leading-relaxed text-slate-300">
-                Percentuais: presença de médias de 15 minutos nas últimas 24 horas. Concentrações ainda sob revisão científica.
+                {stationStatusSavedAt ? `Consulta salva em ${formatAurassureLocalTime(stationStatusSavedAt)}; os dados podem estar desatualizados. ` : ""}Percentuais: presença de médias de 15 minutos nas últimas 24 horas. Concentrações ainda sob revisão científica.
               </p>
               <Link to="/dados" className="home-now-link">Ver as três estações integradas <span>+</span></Link>
             </section>

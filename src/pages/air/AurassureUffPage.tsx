@@ -169,7 +169,7 @@ export function AurassureUffPage() {
     title: "Leituras SEMEAR UFF e Aurassure | SEMEAR",
     description: "Acompanhe a rede complementar de três estações em Volta Redonda, o estágio de validação e, quando liberadas, as séries revisadas de qualidade do ar."
   });
-  const { stations: operationalStations, loading: statusLoading, error: statusError } = useAurassureStationStatus();
+  const { stations: operationalStations, loading: statusLoading, error: statusError, savedAt: statusSavedAt } = useAurassureStationStatus();
   const [stationId, setStationId] = useState<number>(46560);
   const [pollutant, setPollutant] = useState<Pollutant>("pm25_ug_m3");
   const [days, setDays] = useState<Days>(1);
@@ -246,7 +246,7 @@ export function AurassureUffPage() {
             {lastStatusUpdate ? "Conferido em " + formatAurassureLocalTime(lastStatusUpdate) : statusLoading ? "Consultando estados da rede…" : "Sem atualização disponível"}
           </p>
         </div>
-        {statusError ? <p role="alert" className="rounded-xl border border-amber-200 bg-amber-50 p-3 text-sm text-amber-900">{statusError} Os dados de concentração permanecem sob revisão.</p> : null}
+        {statusError ? <p role="alert" className="rounded-xl border border-amber-200 bg-amber-50 p-3 text-sm text-amber-900">{statusError} {statusSavedAt ? `Exibindo consulta salva em ${formatAurassureLocalTime(statusSavedAt)}, que pode estar desatualizada.` : ""} Os dados de concentração permanecem sob revisão.</p> : null}
         <div className="grid gap-4 md:grid-cols-3" role="group" aria-label="Selecionar estação da rede UFF">
         {STATIONS.map((station) => {
           const status = operationalStations.find((row) => row.station_id === station.id);
