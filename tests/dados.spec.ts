@@ -30,7 +30,7 @@ test.describe("Dados UFF/Aurassure @smoke", () => {
 
   test("legacy pilot remains separate, identified as historical", async ({ page }) => {
     await page.goto("/dados/piloto", { waitUntil: "domcontentloaded" });
-    await expect(page.getByText(/Painel piloto anterior/i)).toBeVisible();
+    await expect(page.getByText(/Painel piloto anterior — não corresponde/i)).toBeVisible();
     await expect(page.getByRole("link", { name: /Abrir as três estações integradas/i })).toHaveAttribute("href", "/dados");
   });
 
