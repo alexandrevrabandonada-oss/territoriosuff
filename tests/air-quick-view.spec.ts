@@ -32,8 +32,8 @@ test.describe("Consulta rápida do ar", () => {
     await expect(station).toHaveValue("46561");
     await expect(card).toContainText("Consulta salva em 01/01/2026");
     await expect(card).toContainText("Pode estar desatualizada");
-    await expect(card).toContainText("Qualidade do ar atual indisponível");
-    await expect(card).toContainText("aguardam validação técnica");
+    await expect(card).toContainText("Sem conexão. As concentrações não podem ser atualizadas agora.");
+    await expect(card).toContainText("A operação da estação não indica se o ar está bom ou ruim.");
   });
 
   test("informa ausência de consulta salva quando está offline", async ({ page, context }) => {

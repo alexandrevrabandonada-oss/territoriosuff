@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 import { formatAurassureLocalTime, stationCollectionLabel, useAurassureStationStatus } from "../hooks/useAurassureStationStatus";
+import { StationLiveReading } from "./StationLiveReading";
 
 const STATIONS = [
   { id: 46560, name: "UFF · Vila Santa Cecília" },
@@ -33,9 +34,9 @@ export function AirQuickView() {
         <div>
           <p className="text-sm font-bold text-teal-700">Observatório do Ar · Volta Redonda</p>
           <h1 id="quick-air-title" className="mt-2 text-3xl font-black tracking-tight sm:text-4xl">Acompanhe o ar da sua cidade</h1>
-          <p className="mt-3 max-w-xl text-sm leading-6 text-slate-700">Consulte a operação das estações e explore os dados históricos de qualidade do ar.</p>
+          <p className="mt-3 max-w-xl text-sm leading-6 text-slate-700">Acompanhe as estações da rede UFF/Aurassure e consulte as leituras liberadas para divulgação.</p>
           <div className="mt-5 flex flex-wrap gap-3">
-            <Link className="rounded-xl bg-teal-800 px-4 py-3 text-sm font-bold text-white" to="/qualidade-ar/inea?modo=mapa">Ver mapa</Link>
+            <Link className="rounded-xl bg-teal-800 px-4 py-3 text-sm font-bold text-white" to="/dados">Ver todas as estações</Link>
             <Link className="rounded-xl border border-slate-300 px-4 py-3 text-sm font-bold text-slate-800" to="/qualidade-ar/inea?modo=tempo">Explorar histórico INEA</Link>
           </div>
         </div>
@@ -44,6 +45,7 @@ export function AirQuickView() {
           <select id="quick-station" value={selected} onChange={(event) => selectStation(Number(event.target.value))} className="mt-2 w-full rounded-xl border border-slate-300 bg-white p-3 text-sm text-slate-900">
             {STATIONS.map((station) => <option key={station.id} value={station.id}>{station.name}</option>)}
           </select>
+          <StationLiveReading stationId={selected} />
           <div className="mt-4" aria-live="polite">
             <p className="text-xs font-bold uppercase tracking-wide text-slate-600">Operação da estação · UFF/Aurassure</p>
             <p className="mt-1 text-lg font-bold">{status ? stationCollectionLabel(status) : loading ? "Consultando estação…" : "Situação indisponível"}</p>
@@ -51,7 +53,7 @@ export function AirQuickView() {
             {savedAt && <p className="mt-1 text-sm font-semibold text-amber-800">Consulta salva em {formatAurassureLocalTime(savedAt)}. Pode estar desatualizada.</p>}
             {!status && !loading && <p className="mt-1 text-sm text-slate-700">{error || "Nenhum dado operacional disponível para esta estação."}</p>}
           </div>
-          <p className="mt-4 border-t border-slate-200 pt-4 text-sm leading-6 text-slate-700"><strong>Qualidade do ar atual indisponível.</strong> As concentrações da rede UFF aguardam validação técnica. A operação da estação não indica se o ar está bom ou ruim.</p>
+          <p className="mt-4 border-t border-slate-200 pt-4 text-sm leading-6 text-slate-700">A operação da estação não indica se o ar está bom ou ruim.</p>
           <p className="mt-2 text-xs leading-5 text-slate-600">O histórico INEA é uma base consolidada, não uma medição em tempo real.</p>
         </div>
       </div>
