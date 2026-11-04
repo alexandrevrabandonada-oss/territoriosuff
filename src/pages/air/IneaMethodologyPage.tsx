@@ -600,7 +600,7 @@ export function IneaMethodologyPage() {
                             {row.desc}
                           </td>
                           <td className="px-3 py-4 text-center">
-                            <span className="inline-block px-2 py-0.5 rounded-md bg-slate-100 font-mono text-[10px] text-slate-500">
+                            <span className="inline-block px-2 py-0.5 rounded-md bg-slate-100 font-mono text-[10px] text-slate-700">
                                 {row.format}
                             </span>
                           </td>
@@ -662,7 +662,7 @@ export function IneaMethodologyPage() {
                           {entry.description}
                         </td>
                         <td className="px-3 py-4 text-center">
-                          <span className="inline-block px-2 py-0.5 rounded-md bg-slate-100 font-mono text-[10px] text-slate-500">
+                          <span className="inline-block px-2 py-0.5 rounded-md bg-slate-100 font-mono text-[10px] text-slate-700">
                             {entry.unit}
                           </span>
                         </td>
