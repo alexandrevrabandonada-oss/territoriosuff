@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 
 import { SurfaceCard } from "../../components/BrandSystem";
+import { StationLiveReading } from "../../components/StationLiveReading";
 import { usePageMetadata } from "../../hooks/usePageMetadata";
 import { supabase } from "../../lib/supabase/client";
 import { formatAurassureLocalTime, stationCollectionLabel, stationCollectionTone, useAurassureStationStatus } from "../../hooks/useAurassureStationStatus";
@@ -36,7 +37,7 @@ const DAYS = [1, 7, 30] as const;
 type Days = typeof DAYS[number];
 
 const DATE_FORMAT = new Intl.DateTimeFormat("pt-BR", {
-  timeZone: "America/Sao_Paulo", day: "2-digit", month: "2-digit", hour: "2-digit", minute: "2-digit"
+  timeZone: "America/Sao_Paulo", day: "2-digit", month: "2-digit", year: "numeric", hour: "2-digit", minute: "2-digit"
 });
 const NUMBER_FORMAT = new Intl.NumberFormat("pt-BR", { maximumFractionDigits: 1 });
 const PAGE_SIZE = 500;
@@ -74,7 +75,7 @@ function buildSegments(points: PublicMeasurement[], pollutant: Pollutant, timeFr
       lastTime = null;
       continue;
     }
-    if (lastTime !== null && time - lastTime > 90 * 60_000) {
+    if (lastTime !== null && time - lastTime > 22.5 * 60_000) {
       if (current.length) paths.push(current.join(" "));
       current = [];
     }
@@ -109,7 +110,7 @@ function TrendChart({ points, pollutant }: { points: PublicMeasurement[]; pollut
   const minTime = new Date(valid[0].measured_at).getTime();
   const maxTime = new Date(valid[valid.length - 1].measured_at).getTime();
   const maxValue = Math.max(...valid.map((point) => point[pollutant] || 0), 1) * 1.12;
-  const segments = buildSegments(valid, pollutant, minTime, maxTime, maxValue);
+  const segments = buildSegments(points, pollutant, minTime, maxTime, maxValue);
   const last = valid[valid.length - 1];
   return (
     <div className="w-full overflow-x-auto">
@@ -180,16 +181,28 @@ export function AurassureUffPage() {
 
   useEffect(() => {
     let canceled = false;
+    let requestVersion = 0;
     setLoading(true);
     setError(null);
     setRows([]);
-    void fetchApproved(stationId, days)
-      .then((data) => { if (!canceled) setRows(data); })
+    function refresh() {
+      const version = ++requestVersion;
+      void fetchApproved(stationId, days)
+      .then((data) => { if (!canceled && version === requestVersion) { setRows(data); setError(null); } })
       .catch((cause: unknown) => {
-        if (!canceled) setError(cause instanceof Error ? cause.message : "Não foi possível consultar a série.");
+        if (!canceled && version === requestVersion) {
+          setRows([]);
+          setError(cause instanceof Error ? cause.message : "Não foi possível consultar a série.");
+        }
       })
-      .finally(() => { if (!canceled) setLoading(false); });
-    return () => { canceled = true; };
+      .finally(() => { if (!canceled && version === requestVersion) setLoading(false); });
+    }
+    refresh();
+    const timer = window.setInterval(() => { if (document.visibilityState === "visible") refresh(); }, 60_000);
+    const onVisibilityChange = () => { if (document.visibilityState === "visible") refresh(); };
+    document.addEventListener("visibilitychange", onVisibilityChange);
+    window.addEventListener("online", refresh);
+    return () => { canceled = true; window.clearInterval(timer); document.removeEventListener("visibilitychange", onVisibilityChange); window.removeEventListener("online", refresh); };
   }, [stationId, days, retry]);
 
   const selectedStation = STATIONS.find((station) => station.id === stationId) || STATIONS[0];
@@ -198,7 +211,7 @@ export function AurassureUffPage() {
   const valid = rows.filter((row) => row[pollutant] !== null);
   const peak = valid.length ? Math.max(...valid.map((row) => row[pollutant] || 0)) : null;
   const average = valid.length ? valid.reduce((sum, row) => sum + (row[pollutant] || 0), 0) / valid.length : null;
-  const isStale = latest ? (Date.now() - new Date(latest.measured_at).getTime() > 2 * 3600_000) : true;
+  const isStale = latest ? (Date.now() - new Date(latest.measured_at).getTime() > 45 * 60_000) : true;
 
   function exportCsv() {
     if (!rows.length) return;
@@ -285,6 +298,8 @@ export function AurassureUffPage() {
           Em caso de lacuna, não presumimos concentração zero.
         </p>
       </section>
+
+      <StationLiveReading stationId={stationId} />
 
       <SurfaceCard className="overflow-hidden border border-slate-200 bg-white p-5 md:p-8">
         <div className="flex flex-col gap-5 border-b border-slate-100 pb-6 lg:flex-row lg:items-start lg:justify-between">
