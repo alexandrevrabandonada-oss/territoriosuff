@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 import { formatAurassureLocalTime, stationCollectionLabel, useAurassureStationStatus } from "../hooks/useAurassureStationStatus";
+import { HistoricalAirSummary } from "./HistoricalAirSummary";
 
 const STATIONS = [
   { id: 46560, name: "UFF · Vila Santa Cecília" },
@@ -22,6 +23,8 @@ export function AirQuickView() {
   }, []);
 
   const status = stations.find((station) => station.station_id === selected);
+  const statusLabel = status ? stationCollectionLabel(status) : loading ? "Consultando estação…" : "Situação indisponível";
+  const statusSymbol = savedAt ? "◷" : statusLabel === "Recebendo medições" ? "●" : statusLabel === "Consultando estação…" ? "…" : "!";
   function selectStation(value: number) {
     setSelected(value);
     try { localStorage.setItem(FAVORITE_KEY, String(value)); } catch { /* Selection still works for this visit. */ }
@@ -40,21 +43,24 @@ export function AirQuickView() {
           </div>
         </div>
         <div className="rounded-2xl bg-slate-50 p-5 ring-1 ring-slate-200">
+          <h2 className="mb-3 text-xl font-black text-slate-950">Qualidade do ar atual</h2>
+          <p className="mb-4 text-sm font-semibold text-slate-800">Ainda não disponível: as concentrações aguardam validação técnica.</p>
           <label htmlFor="quick-station" className="block text-sm font-bold">Sua estação favorita</label>
           <select id="quick-station" value={selected} onChange={(event) => selectStation(Number(event.target.value))} className="mt-2 w-full rounded-xl border border-slate-300 bg-white p-3 text-sm text-slate-900">
             {STATIONS.map((station) => <option key={station.id} value={station.id}>{station.name}</option>)}
           </select>
           <div className="mt-4" aria-live="polite">
             <p className="text-xs font-bold uppercase tracking-wide text-slate-600">Operação da estação · UFF/Aurassure</p>
-            <p className="mt-1 text-lg font-bold">{status ? stationCollectionLabel(status) : loading ? "Consultando estação…" : "Situação indisponível"}</p>
+            <p className="mt-1 text-lg font-bold"><span aria-hidden="true" className="mr-2 text-teal-800">{statusSymbol}</span>{savedAt ? `Último estado registrado: ${statusLabel}` : statusLabel}</p>
             {status && <p className="mt-1 text-sm text-slate-700">Última medição recebida: {formatAurassureLocalTime(status.last_measured_at)}</p>}
             {savedAt && <p className="mt-1 text-sm font-semibold text-amber-800">Consulta salva em {formatAurassureLocalTime(savedAt)}. Pode estar desatualizada.</p>}
             {!status && !loading && <p className="mt-1 text-sm text-slate-700">{error || "Nenhum dado operacional disponível para esta estação."}</p>}
           </div>
-          <p className="mt-4 border-t border-slate-200 pt-4 text-sm leading-6 text-slate-700"><strong>Qualidade do ar atual indisponível.</strong> As concentrações da rede UFF aguardam validação técnica. A operação da estação não indica se o ar está bom ou ruim.</p>
+          <p className="mt-4 border-t border-slate-200 pt-4 text-sm leading-6 text-slate-700">A operação da estação não indica se o ar está bom ou ruim.</p>
           <p className="mt-2 text-xs leading-5 text-slate-600">O histórico INEA é uma base consolidada, não uma medição em tempo real.</p>
         </div>
       </div>
+      <div className="mt-6"><HistoricalAirSummary /></div>
     </section>
   );
 }

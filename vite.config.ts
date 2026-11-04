@@ -275,20 +275,6 @@ export default defineConfig({
           "assets/summary-*.js",
           "assets/attention-episodes-*.js",
           "assets/availability-matrix-*.js"
-        ],
-        additionalManifestEntries: [
-          { url: "/", revision: null },
-          { url: "/dados", revision: null },
-          { url: "/acervo", revision: null },
-          { url: "/acervo/linha", revision: null },
-          { url: "/blog", revision: null },
-          { url: "/relatorios", revision: null },
-          { url: "/transparencia", revision: null },
-          { url: "/status", revision: null },
-          { url: "/mapa", revision: null },
-          { url: "/governanca", revision: null },
-          { url: "/imprensa", revision: null },
-          { url: "/apresentacao", revision: null }
         ]
       }
     })
