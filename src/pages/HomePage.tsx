@@ -126,7 +126,7 @@ export function HomePage() {
               <p className="mt-1 text-sm text-text-secondary">UFF, IFRJ e CRIAAD · coleta automática integrada</p>
             </div>
             <div className="portal-kpi-card">
-              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-text-secondary">Base pública atual</p>
+              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-text-secondary">Base histórica pública</p>
               <p className="mt-2 text-3xl font-black text-text-primary">INEA</p>
               <p className="mt-1 text-sm text-text-secondary">dados abertos e séries históricas consolidadas</p>
             </div>

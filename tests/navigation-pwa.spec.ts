@@ -68,6 +68,39 @@ test.describe("Navigation and PWA @smoke", () => {
     await expect(offlineRegion.getByRole("status")).toContainText(/conexão indisponível/i);
   });
 
+  test("mobile install action explains manual installation when no prompt is available", async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto("/");
+    await page.getByRole("button", { name: "Abrir menu" }).click();
+    const dialogPromise = page.waitForEvent("dialog").then(async (dialog) => {
+      expect(dialog.message()).toContain("iPhone ou iPad");
+      expect(dialog.message()).toContain("Android");
+      await dialog.accept();
+    });
+    await page.getByRole("dialog", { name: "Menu de navegação" }).getByRole("button", { name: "Instalar aplicativo SEMEAR" }).click();
+    await dialogPromise;
+  });
+
+  test("dismissed install prompt is not reused", async ({ page }) => {
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await page.goto("/");
+    await page.evaluate(() => {
+      const event = Object.assign(new Event("beforeinstallprompt", { cancelable: true }), {
+        prompt: async () => {},
+        userChoice: Promise.resolve({ outcome: "dismissed", platform: "web" })
+      });
+      window.dispatchEvent(event);
+    });
+    const install = page.getByRole("button", { name: "Instalar aplicativo SEMEAR" });
+    await install.click();
+    const fallback = page.waitForEvent("dialog").then(async (dialog) => {
+      expect(dialog.message()).toContain("Adicionar à Tela de Início");
+      await dialog.accept();
+    });
+    await install.click();
+    await fallback;
+  });
+
   test("retired and unknown paths never masquerade as the home page", async ({ page }) => {
     await page.goto("/rota-que-nao-existe");
 
