@@ -19,7 +19,8 @@ test.describe("Portal Hero and Radar smoke @smoke", () => {
     await page.goto("/");
 
     await expect(page.locator(".portal-stage-hero")).toBeVisible();
-    await expect(page.getByRole("heading", { name: "Projeto UFF SEMEAR", level: 1 })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Acompanhe o ar da sua cidade", level: 1 })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Projeto UFF SEMEAR", level: 2 })).toBeVisible();
     await expect(page.locator(".portal-stage-hero .portal-kpi-card")).toHaveCount(3);
     await expect(page.locator(".home-search")).toBeVisible();
 

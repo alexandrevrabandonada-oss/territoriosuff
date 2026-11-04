@@ -394,6 +394,8 @@ export function IneaRadarPage() {
               onNavigate={navigateMode}
               onScrollToRecommendations={() => {
                 setCurrentMode("OVERVIEW");
+                const details = document.getElementById("radar-detailed-analysis") as HTMLDetailsElement | null;
+                if (details) details.open = true;
                 setTimeout(() => scrollToId("encaminhamentos"), 120);
               }}
             />
@@ -401,6 +403,8 @@ export function IneaRadarPage() {
         )}
 
         {currentMode === "OVERVIEW" && (
+          <details id="radar-detailed-analysis" className="rounded-2xl border border-slate-200 bg-white p-5">
+          <summary className="cursor-pointer text-base font-bold text-slate-900">Abrir análise histórica detalhada</summary>
           <RadarOverviewMode
             latestData={latestData}
             sortedRankings={sortedRankings}
@@ -411,6 +415,7 @@ export function IneaRadarPage() {
             onTop={() => scrollToId("top-anchor")}
             onScrollToRecommendations={() => scrollToId("encaminhamentos")}
           />
+          </details>
         )}
 
         {currentMode === "MAP" && (

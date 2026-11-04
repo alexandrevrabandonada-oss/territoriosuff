@@ -22,13 +22,38 @@ export function useAurassureStationStatus() {
   const [stations, setStations] = useState<AurassurePublicStationStatus[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [savedAt, setSavedAt] = useState<string | null>(null);
 
   useEffect(() => {
     let cancelled = false;
+    let requestVersion = 0;
 
     async function refresh() {
+      const currentRequest = ++requestVersion;
+      function restoreSaved() {
+        setStations([]);
+        setSavedAt(null);
+        try {
+          const raw = localStorage.getItem("semear-station-status-v1");
+          if (!raw) return;
+          const saved = JSON.parse(raw) as { stations: AurassurePublicStationStatus[]; savedAt: string };
+          if (Array.isArray(saved.stations) && typeof saved.savedAt === "string") {
+            setStations(saved.stations);
+            setSavedAt(saved.savedAt);
+          }
+        } catch { /* Unavailable or invalid storage is treated as no saved data. */ }
+      }
+      if (!navigator.onLine) {
+        if (!cancelled) {
+          restoreSaved();
+          setError("Sem conexão para atualizar a disponibilidade das estações.");
+          setLoading(false);
+        }
+        return;
+      }
       if (!supabase) {
         if (!cancelled) {
+          restoreSaved();
           setError("A conexão pública ao banco não está configurada.");
           setLoading(false);
         }
@@ -40,11 +65,17 @@ export function useAurassureStationStatus() {
         .select("station_id,station_name,neighborhood,source_label,last_measured_at,last_capture_at,last_checked_at,readings_last_24h,coverage_24h_percent,collection_status,release_status")
         .order("station_id", { ascending: true });
 
-      if (cancelled) return;
+      if (cancelled || currentRequest !== requestVersion) return;
       if (queryError) {
+        restoreSaved();
         setError("Não foi possível consultar a disponibilidade das estações.");
       } else {
-        setStations((data ?? []) as AurassurePublicStationStatus[]);
+        const publicStations = (data ?? []) as AurassurePublicStationStatus[];
+        setStations(publicStations);
+        setSavedAt(null);
+        try {
+          localStorage.setItem("semear-station-status-v1", JSON.stringify({ stations: publicStations, savedAt: new Date().toISOString() }));
+        } catch { /* Data can still be displayed without local storage. */ }
         setError(null);
       }
       setLoading(false);
@@ -58,14 +89,18 @@ export function useAurassureStationStatus() {
       if (document.visibilityState === "visible") void refresh();
     };
     document.addEventListener("visibilitychange", onVisibilityChange);
+    window.addEventListener("online", refresh);
+    window.addEventListener("offline", refresh);
     return () => {
       cancelled = true;
       window.clearInterval(interval);
       document.removeEventListener("visibilitychange", onVisibilityChange);
+      window.removeEventListener("online", refresh);
+      window.removeEventListener("offline", refresh);
     };
   }, []);
 
-  return { stations, loading, error };
+  return { stations, loading, error, savedAt };
 }
 
 export function stationCollectionLabel(
@@ -97,6 +132,6 @@ export function formatAurassureLocalTime(value: string | null | undefined) {
   if (Number.isNaN(time.getTime())) return "Horário indisponível";
   return new Intl.DateTimeFormat("pt-BR", {
     timeZone: "America/Sao_Paulo",
-    day: "2-digit",month: "2-digit",hour: "2-digit",minute: "2-digit"
+    day: "2-digit",month: "2-digit",year: "numeric",hour: "2-digit",minute: "2-digit"
   }).format(time) + " (Brasília)";
 }

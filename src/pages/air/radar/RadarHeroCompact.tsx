@@ -53,7 +53,7 @@ export function RadarHeroCompact({ onNavigate, summary, activeStations }: RadarH
           </div>
 
           <p className="max-w-3xl text-sm font-semibold leading-relaxed text-slate-200 md:text-base">
-            Localize estações, compare o histórico e confira cobertura e território com metodologia aberta.
+            Explore registros históricos do INEA, localize estações e compare períodos. Esta base não mostra a qualidade do ar em tempo real.
           </p>
 
           <div className="flex flex-wrap gap-2.5">
@@ -72,7 +72,7 @@ export function RadarHeroCompact({ onNavigate, summary, activeStations }: RadarH
         <aside className="grid grid-cols-2 gap-3 rounded-[1.75rem] border border-white/12 bg-white/[0.06] p-4 text-white backdrop-blur-sm" aria-label="Situação da base pública">
           <div className="rounded-2xl border border-white/10 bg-slate-950/35 p-4">
             <strong className="block text-2xl font-black">{stationCount}</strong>
-            <span className="mt-1 block text-xs font-bold text-slate-300">Estações auditadas</span>
+            <span className="mt-1 block text-xs font-bold text-slate-300">Estações da base pública</span>
           </div>
           <div className="rounded-2xl border border-white/10 bg-slate-950/35 p-4">
             <strong className="block text-xl font-black">{formatYearRange(summary)}</strong>
@@ -80,14 +80,14 @@ export function RadarHeroCompact({ onNavigate, summary, activeStations }: RadarH
           </div>
           <div className="rounded-2xl border border-emerald-400/20 bg-emerald-400/10 p-4">
             <strong className="block text-2xl font-black text-emerald-300">{coverageLabel}</strong>
-            <span className="mt-1 block text-xs font-bold text-emerald-100/85">Cobertura forte</span>
+            <span className="mt-1 block text-xs font-bold text-emerald-100/85">Linhas estação-ano de particulados com cobertura forte</span>
           </div>
           <div className="rounded-2xl border border-amber-300/20 bg-amber-300/[0.08] p-4">
             <strong className="block text-sm font-black text-amber-100">{formatBaseStatus(summary)}</strong>
             <span className="mt-1 block text-xs font-bold text-amber-50/80">Status dos dados</span>
           </div>
           <p className="col-span-2 border-t border-white/10 pt-3 text-xs font-semibold leading-relaxed text-slate-300">
-            Ciclo {releaseMetadata.cycleVersion}. Confirme cobertura e metodologia antes de citar resultados.
+            Ciclo {releaseMetadata.cycleVersion}. O total de estações e o período acima pertencem à base pública geral. A síntese de MP10 e MP2,5 usa outro recorte, com {historicalStations.size} estações e anos de {historicalYears[0]} a {historicalYears[historicalYears.length - 1]} (último ano parcial); por isso os números e períodos podem ser diferentes. Confira cobertura e metodologia antes de citar resultados.
           </p>
         </aside>
       </div>

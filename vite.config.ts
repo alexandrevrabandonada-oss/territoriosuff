@@ -270,7 +270,6 @@ export default defineConfig({
           "assets/vendor-pdf-*.js",
           "assets/vendor-maps-*.js",
           "assets/vendor-maps-*.css",
-          "assets/vendor-supabase-*.js",
           "assets/vendor-uplot-*.js",
           "assets/vendor-uplot-*.css",
           "assets/summary-*.js",

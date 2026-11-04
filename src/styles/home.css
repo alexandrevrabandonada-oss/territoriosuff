@@ -1078,7 +1078,8 @@
     padding: 1rem;
   }
 
-  .home-shell .portal-stage-copy h1 {
+  .home-shell .portal-stage-copy h1,
+  .home-shell .portal-stage-copy h2 {
     font-size: clamp(2.8rem, 14vw, 4rem);
     line-height: 0.92;
     letter-spacing: 0;

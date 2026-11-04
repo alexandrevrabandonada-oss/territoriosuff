@@ -190,7 +190,7 @@ export function IneaMethodologyPage() {
                 onClick={() => handleScrollTo(sec.id)}
                 className={`text-left px-3 py-2 text-xs font-black rounded-xl transition-all ${
                   activeSection === sec.id
-                    ? "bg-brand-primary text-white shadow-md shadow-brand-primary/10"
+                    ? "bg-teal-800 text-white shadow-md"
                     : "text-slate-600 hover:bg-slate-100 hover:text-slate-800"
                 }`}
               >

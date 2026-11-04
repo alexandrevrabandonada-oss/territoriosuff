@@ -121,12 +121,15 @@ export function Navbar() {
 
   const handleInstallClick = async () => {
     if (!prompt) {
-      alert("Para instalar o app, use um navegador compatível com PWA ou acesse pelo celular.");
+      alert("No iPhone ou iPad, abra este site no Safari, toque em Compartilhar e escolha Adicionar à Tela de Início. No Android, abra o menu do navegador e escolha Instalar aplicativo ou Adicionar à tela inicial.");
       return;
     }
-    await prompt.prompt();
-    const { outcome } = await prompt.userChoice;
-    if (outcome === "accepted") clearPrompt();
+    try {
+      await prompt.prompt();
+      await prompt.userChoice;
+    } finally {
+      clearPrompt();
+    }
   };
 
   return (

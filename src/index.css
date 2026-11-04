@@ -1017,7 +1017,8 @@ select {
     @apply h-14 w-14 rounded-2xl border-white/20 bg-white/10 text-white;
   }
 
-  .portal-stage-copy h1 {
+  .portal-stage-copy h1,
+  .home-shell .portal-stage-copy h2 {
     @apply max-w-4xl text-4xl font-black leading-[0.95] tracking-[-0.055em] text-white md:text-6xl;
   }
 
@@ -2466,7 +2467,8 @@ body.reader-mode-active main {
     padding: 1rem;
   }
 
-  .portal-stage-copy h1 {
+  .portal-stage-copy h1,
+  .home-shell .portal-stage-copy h2 {
     font-size: clamp(2.2rem, 12vw, 3rem);
     line-height: 0.98;
     letter-spacing: -0.035em;
