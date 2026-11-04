@@ -6,6 +6,7 @@ import type {
   ReportDocument
 } from "../lib/api";
 import { PortalHero, PortalPageShell, PortalSectionHeader } from "../components/portal";
+import { formatAurassureLocalTime, stationCollectionLabel, useAurassureStationStatus } from "../hooks/useAurassureStationStatus";
 
 const REPORT_KIND_LABEL: Record<ReportDocument["kind"], string> = {
   relatorio: "Relatório",
@@ -15,7 +16,7 @@ const REPORT_KIND_LABEL: Record<ReportDocument["kind"], string> = {
 };
 
 const navCards = [
-  { to: "/dados", label: "Dados", copy: "Indicadores, séries históricas e leitura pública contextualizada.", tone: "blue", icon: "chart" },
+  { to: "/dados", label: "Dados", copy: "Três estações UFF/Aurassure, cobertura real e séries em revisão.", tone: "blue", icon: "chart" },
   { to: "/acervo", label: "Acervo", copy: "Documentos, publicações e materiais técnicos.", tone: "green", icon: "archive" },
   { to: "/relatorios", label: "Relatórios", copy: "Relatórios, notas técnicas, boletins e anexos oficiais.", tone: "blue", icon: "file" },
   { to: "/agenda", label: "Agenda", copy: "Eventos, reuniões e atividades do projeto.", tone: "green", icon: "calendar" },
@@ -65,6 +66,7 @@ function formatDate(value?: string | null) {
 }
 
 export function HomePage() {
+  const { stations: aurassureStations, loading: stationStatusLoading } = useAurassureStationStatus();
   const [events, setEvents] = useState<Event[]>([]);
   const [pastEvents, setPastEvents] = useState<Event[]>([]);
   const [reports, setReports] = useState<ReportDocument[]>([]);
@@ -106,7 +108,7 @@ export function HomePage() {
       <PortalHero
         badge={
           <>
-            <span className="badge-dados-abertos">Rede própria em implantação</span>
+            <span className="badge-dados-abertos">Três estações UFF integradas</span>
             <span className="badge-metodologia">Projeto UFF</span>
           </>
         }
@@ -116,9 +118,9 @@ export function HomePage() {
         metrics={
           <>
             <div className="portal-kpi-card">
-              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-text-secondary">Monitoramento próprio</p>
-              <p className="mt-2 text-3xl font-black text-brand-primary">Em implantação</p>
-              <p className="mt-1 text-sm text-text-secondary">sensores UFF serão instalados em etapa posterior</p>
+              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-text-secondary">Rede UFF/Aurassure</p>
+              <p className="mt-2 text-3xl font-black text-brand-primary">3 estações</p>
+              <p className="mt-1 text-sm text-text-secondary">UFF, IFRJ e CRIAAD · coleta automática integrada</p>
             </div>
             <div className="portal-kpi-card">
               <p className="text-xs font-semibold uppercase tracking-[0.2em] text-text-secondary">Base pública atual</p>
@@ -127,8 +129,8 @@ export function HomePage() {
             </div>
             <div className="portal-kpi-card">
               <p className="text-xs font-semibold uppercase tracking-[0.2em] text-text-secondary">Próxima etapa</p>
-              <p className="mt-2 text-3xl font-black text-text-primary">Rede SEMEAR</p>
-              <p className="mt-1 text-sm text-text-secondary">instalação, calibração e publicação metodológica</p>
+              <p className="mt-2 text-3xl font-black text-text-primary">Validação técnica</p>
+              <p className="mt-1 text-sm text-text-secondary">unidades, calibração e aprovação de séries</p>
             </div>
           </>
         }
@@ -136,7 +138,7 @@ export function HomePage() {
           <div className="space-y-5">
             <p className="home-intro">
               Plataforma pública da UFF para pesquisa, análise e divulgação de dados ambientais com transparência,
-              rigor técnico e compromisso social. A rede própria de sensores será publicada após instalação e validação.
+              rigor técnico e compromisso social. As três estações UFF/Aurassure já enviam dados ao sistema; a publicação das concentrações depende de validação técnica.
             </p>
 
             <form
@@ -229,38 +231,37 @@ export function HomePage() {
               </svg>
             </div>
 
-            <section className="home-now" aria-label="Status da implantação da rede SEMEAR" aria-live="polite">
+            <section className="home-now" aria-label="Situação das três estações UFF/Aurassure" aria-live="polite">
               <div className="home-now-head">
-                <h2>Rede SEMEAR</h2>
-                <span><i />Implantação futura</span>
+                <h2>Rede UFF/Aurassure</h2>
+                <span><i />{aurassureStations.length ? "Cobertura consultável" : "Consultando rede"}</span>
               </div>
               <div className="home-now-list">
-                <div className="home-now-row">
-                  <span className="home-now-icon"><Icon name="chart" /></span>
-                  <div>
-                    <strong>Qualidade do ar própria</strong>
-                    <small>Aguardando instalação dos equipamentos</small>
-                  </div>
-                  <em>Futuro</em>
-                </div>
-                <div className="home-now-row">
-                  <span className="home-now-icon"><Icon name="calendar" /></span>
-                  <div>
-                    <strong>Meteorologia local</strong>
-                    <small>Será publicada após calibração e validação</small>
-                  </div>
-                  <em>Planejada</em>
-                </div>
-                <div className="home-now-row">
-                  <span className="home-now-icon"><Icon name="archive" /></span>
-                  <div>
-                    <strong>Transparência operacional</strong>
-                    <small>Metodologia e status serão documentados publicamente</small>
-                  </div>
-                  <em>Aberta</em>
-                </div>
+                {[
+                  { id: 46560, name: "UFF", neighborhood: "Vila Santa Cecília" },
+                  { id: 46561, name: "IFRJ", neighborhood: "Nossa Senhora das Graças" },
+                  { id: 46562, name: "CRIAAD", neighborhood: "Vila Mury" }
+                ].map((station) => {
+                  const status = aurassureStations.find((item) => item.station_id === station.id);
+                  const coverage = status ? Number(status.coverage_24h_percent) : null;
+                  return (
+                    <div className="home-now-row" key={station.id}>
+                      <span className="home-now-icon"><Icon name="chart" /></span>
+                      <div>
+                        <strong>{station.name} · {station.neighborhood}</strong>
+                        <small>{status
+                          ? stationCollectionLabel(status) + " · última medição " + formatAurassureLocalTime(status.last_measured_at)
+                          : stationStatusLoading ? "Consultando dados operacionais…" : "Status indisponível no momento"}</small>
+                      </div>
+                      <em>{coverage !== null && Number.isFinite(coverage) ? coverage.toLocaleString("pt-BR", { maximumFractionDigits: 1 }) + "%" : "—"}</em>
+                    </div>
+                  );
+                })}
               </div>
-              <Link to="/qualidade-ar/inea" className="home-now-link">Ver dados públicos atuais <span>+</span></Link>
+              <p className="mt-3 text-xs leading-relaxed text-slate-300">
+                Percentuais: presença de médias de 15 minutos nas últimas 24 horas. Concentrações ainda sob revisão científica.
+              </p>
+              <Link to="/dados" className="home-now-link">Ver as três estações integradas <span>+</span></Link>
             </section>
           </div>
         }

@@ -1,31 +1,42 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from "@playwright/test";
 
-test.describe('Dados Page @smoke', () => {
-  test('should load and display monitoring interface', async ({ page }) => {
-    await page.goto('/dados', { waitUntil: 'domcontentloaded' });
-    
-    // Check page title/heading
-    await expect(page.getByRole('heading', { name: /dados/i }).first()).toBeVisible();
-    
-    // The station control is rendered after the lazy page module is ready.
-    await expect(page.locator('.data-control-label').filter({ hasText: 'Estação' }).first()).toBeVisible();
-    
-    // Check for data visualization or table (flexible - could be chart, table, or loading state)
-    const hasDataDisplay = await page.locator('table, canvas, svg, [role="img"]').count() > 0;
-    const hasLoadingState = await page.getByText(/carregando|loading/i).count() > 0;
-    const hasEmptyState = await page.getByText(/nenhum|sem dados/i).count() > 0;
-    
-    expect(hasDataDisplay || hasLoadingState || hasEmptyState).toBeTruthy();
+test.describe("Dados UFF/Aurassure @smoke", () => {
+  test("main /dados route displays all three real stations, not the former offline pilot", async ({ page }) => {
+    await page.goto("/dados", { waitUntil: "domcontentloaded" });
+
+    await expect(page.getByRole("heading", { name: /O ar do território, observado por três estações/i })).toBeVisible();
+    for (const station of ["UFF", "IFRJ", "CRIAAD"]) {
+      await expect(page.getByRole("button", { name: new RegExp(station) })).toBeVisible();
+    }
+    await expect(page.getByText("Disponibilidade da rede integrada")).toBeVisible();
+    await expect(page.getByText("Cobertura nas últimas 24h")).toHaveCount(3);
+    await expect(page.getByText(/Concentrações em revisão técnica/)).toBeVisible();
+    await expect(page.getByText(/Estação Piloto/)).toHaveCount(0);
+    await expect(page.getByText(/Não transformamos automaticamente o AQI/i)).toBeVisible();
   });
 
-  test('should be responsive', async ({ page }) => {
-    await page.goto('/dados', { waitUntil: 'domcontentloaded' });
-    
-    // Verify page renders without errors
-    await expect(page.locator('body')).toBeVisible();
-    
-    // Check no major layout breaks (page has reasonable height)
-    const bodyHeight = await page.locator('body').boundingBox();
-    expect(bodyHeight?.height).toBeGreaterThan(200);
+  test("switches stations, plots only approved series and retains access to INEA", async ({ page }) => {
+    await page.goto("/dados", { waitUntil: "domcontentloaded" });
+
+    const ifrj = page.getByRole("button", { name: /IFRJ.*Nossa Senhora das Graças/i });
+    await ifrj.click();
+    await expect(ifrj).toHaveAttribute("aria-pressed", "true");
+    await expect(page.getByText(/Série revisada · Nossa Senhora das Graças/i)).toBeVisible();
+
+    await page.getByRole("button", { name: "7 dias" }).click();
+    await expect(page.getByRole("button", { name: "7 dias" })).toHaveAttribute("aria-pressed", "true");
+    await expect(page.getByRole("link", { name: "Abrir Radar INEA" })).toHaveAttribute("href", "/qualidade-ar/inea");
+  });
+
+  test("legacy pilot remains separate, identified as historical", async ({ page }) => {
+    await page.goto("/dados/piloto", { waitUntil: "domcontentloaded" });
+    await expect(page.getByText(/Painel piloto anterior/i)).toBeVisible();
+    await expect(page.getByRole("link", { name: /Abrir as três estações integradas/i })).toHaveAttribute("href", "/dados");
+  });
+
+  test("main readings page remains responsive", async ({ page }) => {
+    await page.goto("/dados", { waitUntil: "domcontentloaded" });
+    await expect(page.locator("body")).toBeVisible();
+    expect((await page.locator("body").boundingBox())?.height).toBeGreaterThan(200);
   });
 });

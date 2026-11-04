@@ -53,17 +53,17 @@ function assertShape(name: string, payload: unknown, expectedShape: ExpectedShap
 
 async function run() {
   const checks: Array<{ name: string; expectedShape: ExpectedShape; handler: Handler }> = [
-    { name: "summary", expectedShape: "object", handler: (await import("../api/air/inea/summary")).default },
-    { name: "stations", expectedShape: "array", handler: (await import("../api/air/inea/stations")).default },
-    { name: "latest", expectedShape: "object", handler: (await import("../api/air/inea/latest")).default },
-    { name: "observability", expectedShape: "object", handler: (await import("../api/air/inea/observability")).default },
-    { name: "export-catalog", expectedShape: "object", handler: (await import("../api/air/inea/export-catalog")).default },
-    { name: "classification-days", expectedShape: "object", handler: (await import("../api/air/inea/classification-days")).default },
-    { name: "analytics/degraded-days", expectedShape: "array", handler: (await import("../api/air/inea/analytics/degraded-days")).default },
-    { name: "analytics/controller-frequency", expectedShape: "array", handler: (await import("../api/air/inea/analytics/controller-frequency")).default },
-    { name: "analytics/monthly-profile", expectedShape: "array", handler: (await import("../api/air/inea/analytics/monthly-profile")).default },
-    { name: "analytics/station-ranking", expectedShape: "array", handler: (await import("../api/air/inea/analytics/station-ranking")).default },
-    { name: "analytics/data-gaps", expectedShape: "array", handler: (await import("../api/air/inea/analytics/data-gaps")).default }
+    { name: "summary", expectedShape: "object", handler: (await import("../server/air/inea/summary")).default },
+    { name: "stations", expectedShape: "array", handler: (await import("../server/air/inea/stations")).default },
+    { name: "latest", expectedShape: "object", handler: (await import("../server/air/inea/latest")).default },
+    { name: "observability", expectedShape: "object", handler: (await import("../server/air/inea/observability")).default },
+    { name: "export-catalog", expectedShape: "object", handler: (await import("../server/air/inea/export-catalog")).default },
+    { name: "classification-days", expectedShape: "object", handler: (await import("../server/air/inea/classification-days")).default },
+    { name: "analytics/degraded-days", expectedShape: "array", handler: (await import("../server/air/inea/analytics/degraded-days")).default },
+    { name: "analytics/controller-frequency", expectedShape: "array", handler: (await import("../server/air/inea/analytics/controller-frequency")).default },
+    { name: "analytics/monthly-profile", expectedShape: "array", handler: (await import("../server/air/inea/analytics/monthly-profile")).default },
+    { name: "analytics/station-ranking", expectedShape: "array", handler: (await import("../server/air/inea/analytics/station-ranking")).default },
+    { name: "analytics/data-gaps", expectedShape: "array", handler: (await import("../server/air/inea/analytics/data-gaps")).default }
   ];
 
   const results = await Promise.all(checks.map(async (check) => {

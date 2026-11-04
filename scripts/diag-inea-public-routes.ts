@@ -55,16 +55,16 @@ class MockResponse {
 }
 
 const routes = [
-  { name: "summary", path: "../api/air/inea/summary.ts" },
-  { name: "stations", path: "../api/air/inea/stations.ts" },
-  { name: "latest", path: "../api/air/inea/latest.ts" },
-  { name: "timeseries", path: "../api/air/inea/timeseries.ts", query: { stationId: "c2e564ad-1d22-488c-9c71-248dbb96277b", metricType: "GENERAL_AQI" } },
-  { name: "classification-days", path: "../api/air/inea/classification-days.ts" },
-  { name: "analytics/degraded-days", path: "../api/air/inea/analytics/degraded-days.ts" },
-  { name: "analytics/controller-frequency", path: "../api/air/inea/analytics/controller-frequency.ts" },
-  { name: "analytics/monthly-profile", path: "../api/air/inea/analytics/monthly-profile.ts" },
-  { name: "analytics/station-ranking", path: "../api/air/inea/analytics/station-ranking.ts" },
-  { name: "analytics/data-gaps", path: "../api/air/inea/analytics/data-gaps.ts" }
+  { name: "summary", path: "../server/air/inea/summary.ts" },
+  { name: "stations", path: "../server/air/inea/stations.ts" },
+  { name: "latest", path: "../server/air/inea/latest.ts" },
+  { name: "timeseries", path: "../server/air/inea/timeseries.ts", query: { stationId: "c2e564ad-1d22-488c-9c71-248dbb96277b", metricType: "GENERAL_AQI" } },
+  { name: "classification-days", path: "../server/air/inea/classification-days.ts" },
+  { name: "analytics/degraded-days", path: "../server/air/inea/analytics/degraded-days.ts" },
+  { name: "analytics/controller-frequency", path: "../server/air/inea/analytics/controller-frequency.ts" },
+  { name: "analytics/monthly-profile", path: "../server/air/inea/analytics/monthly-profile.ts" },
+  { name: "analytics/station-ranking", path: "../server/air/inea/analytics/station-ranking.ts" },
+  { name: "analytics/data-gaps", path: "../server/air/inea/analytics/data-gaps.ts" }
 ];
 
 async function runDiagnostics() {

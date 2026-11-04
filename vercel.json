@@ -87,31 +87,31 @@
   "rewrites": [
     {
       "source": "/s/acervo/:slug",
-      "destination": "/api/share/acervo?slug=:slug"
+      "destination": "/api/share-router?endpoint=acervo&slug=:slug"
     },
     {
       "source": "/s/blog/:slug",
-      "destination": "/api/share/blog?slug=:slug"
+      "destination": "/api/share-router?endpoint=blog&slug=:slug"
     },
     {
       "source": "/s/relatorios/:slug",
-      "destination": "/api/share/relatorios?slug=:slug"
+      "destination": "/api/share-router?endpoint=relatorios&slug=:slug"
     },
     {
       "source": "/s/boletim/:ym",
-      "destination": "/api/share/boletim?ym=:ym"
+      "destination": "/api/share-router?endpoint=boletim&ym=:ym"
     },
     {
       "source": "/s/dossies/:slug",
-      "destination": "/api/share/dossies?slug=:slug"
+      "destination": "/api/share-router?endpoint=dossies&slug=:slug"
     },
     {
       "source": "/s/agenda/:id",
-      "destination": "/api/share/agenda?eventId=:id"
+      "destination": "/api/share-router?endpoint=agenda&eventId=:id"
     },
     {
       "source": "/s/dados/:code",
-      "destination": "/api/share/dados?station_code=:code"
+      "destination": "/api/share-router?endpoint=dados&station_code=:code"
     },
     {
       "source": "/alertas",
@@ -124,6 +124,10 @@
     {
       "source": "/qualidade-ar",
       "destination": "/_seo/qualidade-ar.html"
+    },
+    {
+      "source": "/qualidade-ar/uff",
+      "destination": "/_seo/qualidade-ar--uff.html"
     },
     {
       "source": "/qualidade-ar/inea",
@@ -220,6 +224,94 @@
     {
       "source": "/offline",
       "destination": "/_seo/offline.html"
+    },
+    {
+      "source": "/api/air/inea/summary",
+      "destination": "/api/inea-router?endpoint=summary"
+    },
+    {
+      "source": "/api/air/inea/stations",
+      "destination": "/api/inea-router?endpoint=stations"
+    },
+    {
+      "source": "/api/air/inea/latest",
+      "destination": "/api/inea-router?endpoint=latest"
+    },
+    {
+      "source": "/api/air/inea/observability",
+      "destination": "/api/inea-router?endpoint=observability"
+    },
+    {
+      "source": "/api/air/inea/export-catalog",
+      "destination": "/api/inea-router?endpoint=export-catalog"
+    },
+    {
+      "source": "/api/air/inea/export-manifest",
+      "destination": "/api/inea-router?endpoint=export-manifest"
+    },
+    {
+      "source": "/api/air/inea/stations-metadata",
+      "destination": "/api/inea-router?endpoint=stations-metadata"
+    },
+    {
+      "source": "/api/air/inea/classification-days",
+      "destination": "/api/inea-router?endpoint=classification-days"
+    },
+    {
+      "source": "/api/air/inea/timeseries",
+      "destination": "/api/inea-router?endpoint=timeseries"
+    },
+    {
+      "source": "/api/air/inea/export",
+      "destination": "/api/inea-router?endpoint=export"
+    },
+    {
+      "source": "/api/air/inea/analytics/data-gaps",
+      "destination": "/api/inea-router?endpoint=analytics/data-gaps"
+    },
+    {
+      "source": "/api/air/inea/analytics/degraded-days",
+      "destination": "/api/inea-router?endpoint=analytics/degraded-days"
+    },
+    {
+      "source": "/api/air/inea/analytics/monthly-profile",
+      "destination": "/api/inea-router?endpoint=analytics/monthly-profile"
+    },
+    {
+      "source": "/api/air/inea/analytics/station-ranking",
+      "destination": "/api/inea-router?endpoint=analytics/station-ranking"
+    },
+    {
+      "source": "/api/air/inea/analytics/controller-frequency",
+      "destination": "/api/inea-router?endpoint=analytics/controller-frequency"
+    },
+    {
+      "source": "/api/share/blog",
+      "destination": "/api/share-router?endpoint=blog"
+    },
+    {
+      "source": "/api/share/dados",
+      "destination": "/api/share-router?endpoint=dados"
+    },
+    {
+      "source": "/api/share/acervo",
+      "destination": "/api/share-router?endpoint=acervo"
+    },
+    {
+      "source": "/api/share/agenda",
+      "destination": "/api/share-router?endpoint=agenda"
+    },
+    {
+      "source": "/api/share/dossies",
+      "destination": "/api/share-router?endpoint=dossies"
+    },
+    {
+      "source": "/api/share/boletim",
+      "destination": "/api/share-router?endpoint=boletim"
+    },
+    {
+      "source": "/api/share/relatorios",
+      "destination": "/api/share-router?endpoint=relatorios"
     },
     {
       "source": "/api/(.*)",

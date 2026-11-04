@@ -8,7 +8,7 @@ on:
 
 jobs:
   build-and-test:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 30
     env:
       # Public frontend configuration required by Vite at build time.
@@ -29,14 +29,17 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Install Playwright browsers
-        run: npx playwright install --with-deps chromium
+      - name: Aurassure private and public contract checks
+        run: npm run aurassure:verify
 
       - name: Typecheck
         run: npm run typecheck
 
       - name: Build
         run: npm run build
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium
 
       - name: Start Vite preview
         run: |

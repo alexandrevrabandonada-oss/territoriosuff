@@ -10,7 +10,7 @@
     "preview:prerender": "node tools/prerender-preview.mjs",
     "lint": "eslint .",
     "typecheck": "tsc -p tsconfig.json --noEmit",
-    "verify": "npm run lint && npm run typecheck && npm run inea:qa && npm run vercel:functions:smoke && npm run build && npm run seo:assert",
+    "verify": "npm run lint && npm run typecheck && npm run inea:qa && npm run aurassure:verify && npm run vercel:functions:smoke && npm run build && npm run seo:assert",
     "db:push": "node tools/db-push-safe.mjs",
     "db:status": "node tools/migration-status.mjs",
     "db:types": "node tools/db-types-safe.mjs",
@@ -34,7 +34,7 @@
     "audit:lighthouse": "node tools/lighthouse-audit.mjs",
     "seo:assert": "tsx scripts/seo-static-assert.ts",
     "prerender": "tsx scripts/prerender-routes.tsx",
-    "vercel:functions:imports": "tsx scripts/vercel-function-import-assert.ts",
+    "vercel:functions:imports": "tsx scripts/vercel-function-import-assert.ts && node scripts/vercel-consolidated-api-contract-test.mjs && tsx scripts/vercel-router-runtime-smoke.ts",
     "vercel:functions:smoke": "tsx scripts/inea-vercel-function-smoke.ts",
     "admin:fixture:report": "node tools/admin-reports-fixture.mjs",
     "acervo:import": "node tools/acervo-import.mjs",
@@ -71,7 +71,8 @@
     "press:report:snapshot-gap": "tsx scripts/press-preservation-snapshot-gap-report.ts",
     "press:report:pending-review": "tsx scripts/press-preservation-pending-review-report.ts",
     "press:report:executive": "tsx scripts/press-preservation-executive-report.ts",
-    "uploads:report:curation": "tsx scripts/upload-curation-queue-report.ts"
+    "uploads:report:curation": "tsx scripts/upload-curation-queue-report.ts",
+    "aurassure:verify": "node --experimental-strip-types scripts/aurassure-bridge-contract-test.mjs && node scripts/aurassure-ops-test.mjs && node scripts/aurassure-public-release-contract-test.mjs"
   },
   "dependencies": {
     "@sentry/react": "^10.45.0",
