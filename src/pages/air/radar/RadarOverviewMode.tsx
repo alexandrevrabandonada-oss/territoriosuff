@@ -373,6 +373,7 @@ export function RadarOverviewMode({
               </div>
             </div>
 
+            <p className="px-4 pt-3 text-xs leading-5 text-slate-700">IQAr é o Índice de Qualidade do Ar: um número calculado a partir dos poluentes medidos e usado para classificar a qualidade do ar. As leituras abaixo são históricas e não informam a situação atual.</p>
             <div className="overflow-x-auto px-2 py-2 md:px-3">
               <table className="min-w-[500px] w-full border-collapse text-left">
                 <thead>

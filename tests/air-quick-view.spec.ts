@@ -3,6 +3,26 @@ import { expect, test } from "@playwright/test";
 test.describe("Consulta rápida do ar", () => {
   test.use({ serviceWorkers: "allow" });
 
+  test("explica dados atuais e históricos e permite explorar a série", async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto("/");
+    await expect(page.getByRole("heading", { name: "Qualidade do ar atual" })).toBeVisible();
+    const historical = page.getByRole("region", { name: "O que o histórico mostra" });
+    await expect(historical).toContainText("não uma indicação da qualidade do ar agora");
+    await expect(historical).toContainText("Cobertura de dados:");
+    await historical.getByLabel("Estação histórica").selectOption("70");
+    await historical.getByLabel("Poluente").selectOption("PM10");
+    await expect(historical).toContainText("Retiro");
+    await historical.getByText("Ver gráfico e dados por ano").click();
+    await expect(historical.getByRole("list", { name: "Médias anuais de MP10 em Retiro" })).toBeVisible();
+    await historical.getByLabel("Período").selectOption("3");
+    await expect(historical.getByRole("listitem")).toHaveCount(3);
+    await expect(historical).toContainText("ano parcial");
+    await historical.getByLabel("Estação histórica").selectOption("71");
+    await historical.getByLabel("Período").selectOption("all");
+    await expect(historical).toContainText("cobertura baixa");
+  });
+
   test("preserva estação favorita e identifica a última consulta offline", async ({ page, context }) => {
     await page.setViewportSize({ width: 390, height: 844 });
     await page.goto("/");
@@ -32,7 +52,8 @@ test.describe("Consulta rápida do ar", () => {
     await expect(station).toHaveValue("46561");
     await expect(card).toContainText("Consulta salva em 01/01/2026");
     await expect(card).toContainText("Pode estar desatualizada");
-    await expect(card).toContainText("Qualidade do ar atual indisponível");
+    await expect(card).toContainText("Qualidade do ar atual");
+    await expect(card).toContainText("Ainda não disponível");
     await expect(card).toContainText("aguardam validação técnica");
   });
 
