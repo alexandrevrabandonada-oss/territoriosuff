@@ -18,6 +18,8 @@ test.describe("Consulta rápida do ar", () => {
     await historical.getByLabel("Período").selectOption("3");
     await expect(historical.getByRole("listitem")).toHaveCount(3);
     await expect(historical).toContainText("ano parcial");
+    await expect(historical).toContainText("dados até 05/2026");
+    await expect(historical).toContainText("sem controle de qualidade oficial informado por registro");
     await historical.getByLabel("Estação histórica").selectOption("71");
     await historical.getByLabel("Período").selectOption("all");
     await expect(historical).toContainText("cobertura baixa");

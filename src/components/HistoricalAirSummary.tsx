@@ -2,6 +2,8 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 
 import { PARTICULATE_TIMELINE } from "../data/air/particulate-timeline-2020-2026";
+import type { SummaryPayload } from "../lib/inea/summaryLoader";
+import partial2026 from "../../data/inea_weblakes_normalized/summary-2026.json";
 
 const stations = [
   { id: "69", name: "Belmonte" },
@@ -22,6 +24,10 @@ export function HistoricalAirSummary() {
   const max = Math.max(1, ...chartRows.map(({ row }) => row?.mean ?? 0));
   const label = pollutant === "PM2.5" ? "MP2,5" : "MP10";
   const name = stations.find((item) => item.id === station)?.name;
+  const partialMonths = (partial2026 as SummaryPayload)[station]?.pollutants[pollutant === "PM2.5" ? "20" : "18"]?.months;
+  const availableMonths = Object.entries(partialMonths ?? {}).filter(([, value]) => value.mean !== null).map(([month]) => month).sort();
+  const lastPartialMonth = availableMonths[availableMonths.length - 1];
+  const partialEnd = lastPartialMonth ? `${lastPartialMonth.slice(5, 7)}/${lastPartialMonth.slice(0, 4)}` : null;
 
   return (
     <section className="rounded-2xl border border-slate-200 bg-white p-5" aria-labelledby="historical-summary-title">
@@ -47,7 +53,7 @@ export function HistoricalAirSummary() {
           <p className="mt-1">Cobertura de dados: {format(latestComplete.coveragePct)}% do ano. Último ano completo com cobertura de pelo menos 75% nesta série.</p>
         </> : <p>Sem dados suficientes para resumir um ano completo nesta estação e poluente.</p>}
       </div>
-      <p className="mt-3 text-xs leading-5 text-slate-600">MP2,5 e MP10 são partículas presentes no ar. µg/m³ indica sua concentração. A série é uma análise experimental; ausência de dados não significa ar limpo.</p>
+      <p className="mt-3 text-xs leading-5 text-slate-600">MP2,5 e MP10 são partículas presentes no ar. µg/m³ indica sua concentração. A série é uma análise experimental, sem controle de qualidade oficial informado por registro; ausência de dados não significa ar limpo.</p>
       <details className="mt-4 border-t border-slate-200 pt-4">
         <summary className="cursor-pointer font-bold text-teal-800">Ver gráfico e dados por ano</summary>
         <div className="mt-4">
@@ -66,7 +72,7 @@ export function HistoricalAirSummary() {
               return <div key={year} role="listitem" className="grid grid-cols-[4rem_1fr] gap-x-3 text-sm">
                 <span className="font-bold">{year}{row?.partial ? "*" : ""}</span>
                 <div>
-                  {valid ? <><div aria-hidden="true" className="h-2 overflow-hidden rounded-full bg-slate-100"><div className="h-full rounded-full bg-teal-700" style={{ width: `${Math.max(1, (row.mean! / max) * 100)}%` }} /></div><p className="mt-1 text-xs text-slate-700">{format(row.mean!)} µg/m³ · cobertura {format(row.coveragePct)}%{row.coveragePct < 75 ? " · cobertura baixa" : ""}{row.partial ? " · ano parcial" : ""}</p></> : <p className="text-xs text-slate-600">Sem dados suficientes</p>}
+                  {valid ? <><div aria-hidden="true" className="h-2 overflow-hidden rounded-full bg-slate-100"><div className="h-full rounded-full bg-teal-700" style={{ width: `${Math.max(1, (row.mean! / max) * 100)}%` }} /></div><p className="mt-1 text-xs text-slate-700">{format(row.mean!)} µg/m³ · cobertura {format(row.coveragePct)}%{row.coveragePct < 75 ? " · cobertura baixa" : ""}{row.partial ? ` · ano parcial${year === 2026 && partialEnd ? `, dados até ${partialEnd}` : ""}` : ""}</p></> : <p className="text-xs text-slate-600">Sem dados suficientes</p>}
                 </div>
               </div>;
             })}
