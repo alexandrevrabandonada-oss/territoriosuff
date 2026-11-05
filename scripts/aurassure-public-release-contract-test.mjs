@@ -39,6 +39,7 @@ assert(preliminary.includes("security_barrier = true"), "Public view must preser
 assert(preliminary.includes("q.review_status = 'open'") && preliminary.includes("'review_required', 'block_release'"), "Open QA alerts must be excluded.");
 assert(preliminary.includes("p.publication_state = 'withheld'"), "Explicitly withheld readings must stay withheld.");
 assert(preliminary.includes("m.first_imported_at <= now() - interval '5 minutes'"), "Fresh observations must wait for the quality cycle.");
+assert(preliminary.includes("d.status = 'succeeded'") && preliminary.includes("d.start_time >= now() - interval '1 hour'"), "A recent successful QA cycle must precede publication.");
 assert(preliminary.includes("s.response_sha256 ~ '^[a-f0-9]{64}$'"), "Every reading must retain source provenance.");
 assert(!/grant\s+select\s+on\s+public\.(aurassure_measurements_staging|aurassure_api_snapshots)/i.test(preliminary), "Private tables must never be granted public access.");
 assert(!/\b(update|insert|delete)\s+(?:into\s+)?public\.aurassure_measurements_staging/i.test(preliminary), "Preliminary display must not mark readings as reviewed.");

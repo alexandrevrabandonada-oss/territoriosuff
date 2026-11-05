@@ -19,6 +19,14 @@ where m.station_id in (46560, 46561, 46562)
   and m.measured_at <= now()
   -- Allow the scheduled quality cycle to annotate fresh post-gap records.
   and m.first_imported_at <= now() - interval '5 minutes'
+  and m.first_imported_at <= coalesce((
+    select max(d.start_time)
+    from cron.job_run_details d
+    join cron.job j using (jobid)
+    where j.jobname = 'semear-aurassure-station-health-15min'
+      and j.active and d.status = 'succeeded'
+      and d.start_time >= now() - interval '1 hour'
+  ), '-infinity'::timestamptz)
   and s.operation = 'readings'
   and s.source_system = 'AURASSURE_UFF'
   and s.response_sha256 ~ '^[a-f0-9]{64}$'
