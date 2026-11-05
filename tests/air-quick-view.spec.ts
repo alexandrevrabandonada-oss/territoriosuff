@@ -28,7 +28,7 @@ test.describe("Consulta rápida do ar", () => {
     await expect.poll(() => page.evaluate(() => Boolean(navigator.serviceWorker.controller))).toBe(true);
     await context.setOffline(true);
     await page.reload();
-    const card = page.getByRole("region", { name: "Acompanhe o ar da sua cidade" }).first();
+    const card = page.getByRole("region", { name: "Acompanhe o ar de Volta Redonda" }).first();
     await expect(station).toHaveValue("46561");
     await expect(card).toContainText("Consulta salva em 01/01/2026");
     await expect(card).toContainText("Pode estar desatualizada");
@@ -43,7 +43,7 @@ test.describe("Consulta rápida do ar", () => {
     await expect.poll(() => page.evaluate(() => Boolean(navigator.serviceWorker.controller))).toBe(true);
     await context.setOffline(true);
     await page.reload();
-    const card = page.getByRole("region", { name: "Acompanhe o ar da sua cidade" }).first();
+    const card = page.getByRole("region", { name: "Acompanhe o ar de Volta Redonda" }).first();
     await expect(card).toContainText("Situação indisponível");
     await expect(card).toContainText("Sem conexão para atualizar");
     await expect(card).not.toContainText("Consulta salva em");
