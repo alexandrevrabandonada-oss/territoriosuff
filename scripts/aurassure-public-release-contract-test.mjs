@@ -20,7 +20,7 @@ const healthHistory = read("supabase/migrations/20261103174000_aurassure_private
 const postGap = read("supabase/migrations/20261103175000_aurassure_post_outage_correlated_gas_review.sql");
 const unresolvedReview = read("supabase/migrations/20261103175500_aurassure_fail_closed_unresolved_qa_post_gap_first_30m.sql");
 const operationalStatus = read("supabase/migrations/20261103181000_aurassure_publish_operational_station_status_only.sql");
-const preliminary = read("supabase/migrations/20261105013014_aurassure_preliminary_require_latest_qa.sql");
+const preliminary = read("supabase/migrations/20261105013717_aurassure_preliminary_reduce_delay.sql");
 const stationStatusHook = read("src/hooks/useAurassureStationStatus.ts");
 const home = read("src/pages/HomePage.tsx");
 
@@ -38,7 +38,7 @@ assert(page.includes("Ainda não há dados suficientes"), "No-data state must ex
 assert(preliminary.includes("security_barrier = true"), "Public view must preserve filtering boundaries.");
 assert(preliminary.includes("q.review_status = 'open'") && preliminary.includes("'review_required', 'block_release'"), "Open QA alerts must be excluded.");
 assert(preliminary.includes("p.publication_state = 'withheld'"), "Explicitly withheld readings must stay withheld.");
-assert(preliminary.includes("m.last_imported_at <= now() - interval '5 minutes'"), "Fresh observations must wait for the quality cycle.");
+assert(preliminary.includes("m.last_imported_at <= coalesce("), "Each observation must wait for a quality cycle after its last update.");
 assert(preliminary.includes("d.status = 'succeeded'") && preliminary.includes("d.start_time >= now() - interval '1 hour'"), "A recent successful QA cycle must precede publication.");
 assert(preliminary.includes("s.response_sha256 ~ '^[a-f0-9]{64}$'"), "Every reading must retain source provenance.");
 assert(!/grant\s+select\s+on\s+public\.(aurassure_measurements_staging|aurassure_api_snapshots)/i.test(preliminary), "Private tables must never be granted public access.");
