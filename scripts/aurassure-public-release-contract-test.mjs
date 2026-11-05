@@ -20,6 +20,7 @@ const healthHistory = read("supabase/migrations/20261103174000_aurassure_private
 const postGap = read("supabase/migrations/20261103175000_aurassure_post_outage_correlated_gas_review.sql");
 const unresolvedReview = read("supabase/migrations/20261103175500_aurassure_fail_closed_unresolved_qa_post_gap_first_30m.sql");
 const operationalStatus = read("supabase/migrations/20261103181000_aurassure_publish_operational_station_status_only.sql");
+const preliminary = read("supabase/migrations/20261105012124_aurassure_preliminary_public_readings.sql");
 const stationStatusHook = read("src/hooks/useAurassureStationStatus.ts");
 const home = read("src/pages/HomePage.tsx");
 
@@ -29,11 +30,19 @@ assert(landing.includes('to="/qualidade-ar/uff"'), "UFF route missing from netwo
 assert(metadata.includes('path: "/qualidade-ar/uff"'), "UFF SEO metadata missing.");
 assert(vercel.rewrites.some((route) => route.source === "/qualidade-ar/uff" && route.destination === "/_seo/qualidade-ar--uff.html"), "UFF Vercel rewrite missing.");
 assert(sitemap.includes("https://www.semearsf.org/qualidade-ar/uff"), "UFF canonical sitemap entry missing.");
-assert(page.includes('.from("aurassure_public_measurements")'), "Page must query the reviewed-only table.");
+assert(page.includes('.from("aurassure_preliminary_readings")'), "Page must query the limited preliminary view.");
 assert(!page.includes("aurassure_measurements_staging"), "Page must not query the private staging dataset.");
 assert(!page.includes("aurassure_api_snapshots"), "Page must not query original vendor snapshots.");
 assert(!page.includes("AURASSURE_BRIDGE_TOKEN") && !page.includes("AURASSURE_ACCESS_KEY"), "No operator or vendor secrets in the browser.");
-assert(page.includes("Ainda não há uma série aprovada"), "No-data state must explain publication approval.");
+assert(page.includes("Ainda não há dados suficientes"), "No-data state must explain missing data.");
+assert(preliminary.includes("security_barrier = true"), "Public view must preserve filtering boundaries.");
+assert(preliminary.includes("q.review_status = 'open'") && preliminary.includes("'review_required', 'block_release'"), "Open QA alerts must be excluded.");
+assert(preliminary.includes("p.publication_state = 'withheld'"), "Explicitly withheld readings must stay withheld.");
+assert(preliminary.includes("m.first_imported_at <= now() - interval '5 minutes'"), "Fresh observations must wait for the quality cycle.");
+assert(preliminary.includes("s.response_sha256 ~ '^[a-f0-9]{64}$'"), "Every reading must retain source provenance.");
+assert(!/grant\s+select\s+on\s+public\.(aurassure_measurements_staging|aurassure_api_snapshots)/i.test(preliminary), "Private tables must never be granted public access.");
+assert(!/\b(update|insert|delete)\s+(?:into\s+)?public\.aurassure_measurements_staging/i.test(preliminary), "Preliminary display must not mark readings as reviewed.");
+assert(page.includes("preliminar"), "Dashboard must identify preliminary data.");
 assert(page.includes("Não transformamos automaticamente o AQI"), "Page must distinguish the vendor AQI from the INEA IQAr.");
 assert(migration.includes("enable row level security"), "Public table must enable RLS.");
 assert(migration.includes("publication_state='published'"), "Public table policy must require publication approval.");
@@ -76,4 +85,4 @@ assert(operationalStatus.includes("enable row level security"), "Published opera
 assert(operationalStatus.includes("grant select on public.aurassure_public_station_status to anon,authenticated"), "Public read permission must be explicit.");
 assert(operationalStatus.includes("aurassure_internal.process_quality_cycle()"), "Operational status must refresh through the existing collection cycle.");
 assert(!operationalStatus.includes("pm25_ug_m3"), "Operational status must not leak unapproved concentrations.");
-console.log("Aurassure portal release contract: 52 checks passed.");
+console.log("Aurassure portal release contract passed.");

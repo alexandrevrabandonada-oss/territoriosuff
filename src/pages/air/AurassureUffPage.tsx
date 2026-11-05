@@ -19,13 +19,6 @@ type PublicMeasurement = {
   averaging_period_seconds: number;
   pm25_ug_m3: number | null;
   pm10_ug_m3: number | null;
-  temperature_c: number | null;
-  relative_humidity_pct: number | null;
-  published_at: string | null;
-  source_response_sha256: string;
-  reviewer_reference: string | null;
-  unit_validation_reference: string | null;
-  methodology_reference: string | null;
 };
 
 type Pollutant = "pm25_ug_m3" | "pm10_ug_m3";
@@ -100,9 +93,9 @@ function TrendChart({ points, pollutant }: { points: PublicMeasurement[]; pollut
     return (
       <div className="flex min-h-72 flex-col items-center justify-center gap-3 rounded-2xl border border-dashed border-slate-300 bg-slate-50 px-6 text-center">
         <span className="text-3xl" aria-hidden="true">◌</span>
-        <p className="max-w-md font-semibold text-slate-800">Ainda não há uma série aprovada para este recorte.</p>
+        <p className="max-w-md font-semibold text-slate-800">Ainda não há dados suficientes para este recorte.</p>
         <p className="max-w-md text-sm text-slate-600">
-          A integração já recebe informações da Aurassure, mas a publicação de concentrações depende de revisão técnica, unidades e metodologia verificadas.
+          Leituras ausentes ou com alertas de qualidade não são exibidas.
         </p>
       </div>
     );
@@ -115,7 +108,7 @@ function TrendChart({ points, pollutant }: { points: PublicMeasurement[]; pollut
   return (
     <div className="w-full overflow-x-auto">
       <svg viewBox="0 0 960 325" className="min-w-[540px] w-full" role="img"
-        aria-label={"Série temporal aprovada de " + POLLUTANT_LABELS[pollutant] + " em microgramas por metro cúbico"}>
+        aria-label={"Série temporal preliminar de " + POLLUTANT_LABELS[pollutant] + " em microgramas por metro cúbico"}>
         <defs>
           <linearGradient id="aurassureTrendStroke" x1="0" y1="0" x2="1" y2="1">
             <stop offset="0%" stopColor="#047857" />
@@ -150,14 +143,14 @@ async function fetchApproved(stationId: number, days: Days): Promise<PublicMeasu
   for (let page = 0; page < MAX_PAGES; page++) {
     const start = page * PAGE_SIZE;
     const { data, error } = await supabase
-      .from("aurassure_public_measurements")
-      .select("station_id,measured_at,averaging_period_seconds,pm25_ug_m3,pm10_ug_m3,temperature_c,relative_humidity_pct,published_at,source_response_sha256,reviewer_reference,unit_validation_reference,methodology_reference")
+      .from("aurassure_preliminary_readings")
+      .select("station_id,measured_at,averaging_period_seconds,pm25_ug_m3,pm10_ug_m3")
       .eq("station_id", stationId)
       .eq("averaging_period_seconds", 900)
       .gte("measured_at", from)
       .order("measured_at", { ascending: true })
       .range(start, start + PAGE_SIZE - 1);
-    if (error) throw new Error("Não foi possível carregar a série pública revisada.");
+    if (error) throw new Error("Não foi possível carregar a série preliminar.");
     const pageRows = (data || []) as PublicMeasurement[];
     result.push(...pageRows);
     if (pageRows.length < PAGE_SIZE) break;
@@ -168,7 +161,7 @@ async function fetchApproved(stationId: number, days: Days): Promise<PublicMeasu
 export function AurassureUffPage() {
   usePageMetadata({
     title: "Leituras SEMEAR UFF e Aurassure | SEMEAR",
-    description: "Acompanhe a rede complementar de três estações em Volta Redonda, o estágio de validação e, quando liberadas, as séries revisadas de qualidade do ar."
+    description: "Acompanhe as leituras preliminares da rede complementar de três estações em Volta Redonda."
   });
   const { stations: operationalStations, loading: statusLoading, error: statusError, savedAt: statusSavedAt } = useAurassureStationStatus();
   const [stationId, setStationId] = useState<number>(46560);
@@ -215,17 +208,16 @@ export function AurassureUffPage() {
 
   function exportCsv() {
     if (!rows.length) return;
-    const header = ["estacao","medido_em_utc","periodo_segundos","pm25_ug_m3","pm10_ug_m3","temperatura_c","umidade_pct","publicado_em_utc","sha256_fonte","referencia_revisao","referencia_unidades","referencia_metodologia"];
+    const header = ["estacao","medido_em_utc","periodo_segundos","pm25_ug_m3","pm10_ug_m3"];
     const values = rows.map((row) => [
       row.station_id,row.measured_at,row.averaging_period_seconds,row.pm25_ug_m3 ?? "",
-      row.pm10_ug_m3 ?? "",row.temperature_c ?? "",row.relative_humidity_pct ?? "",row.published_at ?? "",
-      row.source_response_sha256,row.reviewer_reference ?? "",row.unit_validation_reference ?? "",row.methodology_reference ?? ""
+      row.pm10_ug_m3 ?? ""
      ].map(csvCell).join(","));
     const blob = new Blob(["\uFEFF" + [header.map(csvCell).join(","), ...values].join("\r\n")], { type: "text/csv;charset=utf-8;" });
     const url = URL.createObjectURL(blob);
     const anchor = document.createElement("a");
     anchor.href = url;
-    anchor.download = "semear-uff-aurassure-aprovado-" + stationId + "-" + days + "d.csv";
+    anchor.download = "semear-uff-aurassure-preliminar-" + stationId + "-" + days + "d.csv";
     anchor.click();
     URL.revokeObjectURL(url);
   }
@@ -239,12 +231,12 @@ export function AurassureUffPage() {
             O ar do território, observado por três estações.
           </h1>
           <p className="max-w-2xl text-base leading-relaxed text-emerald-50/90">
-            Conexão técnica entre SEMEAR, UFF e a plataforma Aurassure. Dados capturados e auditados por estação, com publicação condicionada à revisão das unidades, do método e da qualidade de cada leitura.
+            Leituras preliminares de partículas das estações UFF/Aurassure. Sensores móveis têm limitações de precisão e não substituem estações de referência.
           </p>
           <div className="flex flex-wrap gap-2 text-xs font-semibold">
             <span className="rounded-full border border-emerald-300/40 bg-white/10 px-3 py-2">Três estações com coleta integrada</span>
             <span className="rounded-full border border-emerald-300/40 bg-white/10 px-3 py-2">Coleta programada a cada 15 min</span>
-            <span className="rounded-full border border-amber-200/40 bg-amber-300/10 px-3 py-2 text-amber-100">Concentrações em revisão técnica</span>
+            <span className="rounded-full border border-amber-200/40 bg-amber-300/10 px-3 py-2 text-amber-100">Leituras preliminares</span>
           </div>
         </div>
       </SurfaceCard>
@@ -259,7 +251,7 @@ export function AurassureUffPage() {
             {lastStatusUpdate ? "Conferido em " + formatAurassureLocalTime(lastStatusUpdate) : statusLoading ? "Consultando estados da rede…" : "Sem atualização disponível"}
           </p>
         </div>
-        {statusError ? <p role="alert" className="rounded-xl border border-amber-200 bg-amber-50 p-3 text-sm text-amber-900">{statusError} {statusSavedAt ? `Exibindo consulta salva em ${formatAurassureLocalTime(statusSavedAt)}, que pode estar desatualizada.` : ""} Os dados de concentração permanecem sob revisão.</p> : null}
+        {statusError ? <p role="alert" className="rounded-xl border border-amber-200 bg-amber-50 p-3 text-sm text-amber-900">{statusError} {statusSavedAt ? `Exibindo consulta salva em ${formatAurassureLocalTime(statusSavedAt)}, que pode estar desatualizada.` : ""}</p> : null}
         <div className="grid gap-4 md:grid-cols-3" role="group" aria-label="Selecionar estação da rede UFF">
         {STATIONS.map((station) => {
           const status = operationalStations.find((row) => row.station_id === station.id);
@@ -304,10 +296,10 @@ export function AurassureUffPage() {
       <SurfaceCard className="overflow-hidden border border-slate-200 bg-white p-5 md:p-8">
         <div className="flex flex-col gap-5 border-b border-slate-100 pb-6 lg:flex-row lg:items-start lg:justify-between">
           <div className="space-y-2">
-            <p className="text-xs font-black uppercase tracking-widest text-emerald-700">Série revisada · {selectedStation.neighborhood}</p>
+            <p className="text-xs font-black uppercase tracking-widest text-emerald-700">Série preliminar · {selectedStation.neighborhood}</p>
             <h2 className="text-2xl font-black tracking-tight text-slate-900 md:text-3xl">Histórico das partículas</h2>
             <p className="max-w-xl text-sm leading-relaxed text-slate-600">
-              A rede está conectada e sua disponibilidade acima é consultada diretamente no banco. O gráfico apresenta exclusivamente concentrações que já passaram pela aprovação técnica para divulgação.
+              O gráfico apresenta médias de 15 minutos; registros com alertas de qualidade ficam indisponíveis.
               A ausência de pontos não significa ausência de poluição.
             </p>
           </div>
@@ -340,11 +332,11 @@ export function AurassureUffPage() {
 
         {error ? (
           <div role="alert" className="rounded-2xl border border-rose-200 bg-rose-50 p-5 text-sm text-rose-900">
-            Não foi possível carregar dados revisados: {error}
+            Não foi possível carregar os dados: {error}
           </div>
         ) : loading ? (
           <div className="flex min-h-72 items-center justify-center rounded-2xl bg-slate-50 text-sm font-semibold text-slate-600" role="status">
-            Consultando registros aprovados…
+            Consultando registros…
           </div>
         ) : (
           <TrendChart points={rows} pollutant={pollutant} />
@@ -360,18 +352,16 @@ export function AurassureUffPage() {
             <p className="mt-1 text-2xl font-black text-slate-900">{formatNumber(peak)} <span className="text-xs font-semibold text-slate-500">µg/m³</span></p>
           </div>
           <div className="rounded-xl bg-slate-50 p-4">
-            <p className="text-xs font-bold uppercase tracking-widest text-slate-500">Último registro aprovado</p>
-            <p className="mt-2 text-sm font-bold text-slate-900">{latest ? formatDate(latest.measured_at) : "Aguardando revisão"}</p>
+            <p className="text-xs font-bold uppercase tracking-widest text-slate-500">Último registro disponível</p>
+            <p className="mt-2 text-sm font-bold text-slate-900">{latest ? formatDate(latest.measured_at) : "Sem leitura disponível"}</p>
             {latest && isStale ? <p className="mt-1 text-xs text-amber-700">O registro não é recente.</p> : null}
           </div>
         </div>
         <div className="mt-5 flex flex-wrap items-center justify-between gap-4 text-xs text-slate-500">
-          <span>{rows.length.toLocaleString("pt-BR")} registros aprovados exibidos neste recorte.
-            {latest ? " Origem auditável · SHA-256 " + latest.source_response_sha256.slice(0, 16) + "…" : ""}
-          </span>
+          <span>{rows.length.toLocaleString("pt-BR")} registros preliminares exibidos neste recorte.</span>
           <button type="button" onClick={exportCsv} disabled={!rows.length}
             className="rounded-lg border border-slate-200 px-3 py-2 font-bold text-slate-700 disabled:cursor-not-allowed disabled:opacity-40 hover:bg-slate-50">
-            Exportar CSV aprovado
+            Exportar CSV preliminar
           </button>
         </div>
       </SurfaceCard>
@@ -382,7 +372,7 @@ export function AurassureUffPage() {
           <h2 className="mt-2 text-xl font-black text-slate-900">O que é medido e o que pode ser publicado</h2>
           <p className="mt-3 text-sm leading-relaxed text-slate-600">
             A integração armazena respostas originais da Aurassure em área protegida, preserva a origem de cada medição e trata duplicações.
-            Só concentrações com unidade e método verificados podem ser liberadas nesta interface.
+            Registros com alertas de qualidade ficam fora desta interface enquanto aguardam revisão.
           </p>
           <p className="mt-3 text-sm leading-relaxed text-slate-600">
             A leitura de sensores complementares não equivale à rede regulatória do INEA e não determina, isoladamente, a fonte da poluição.

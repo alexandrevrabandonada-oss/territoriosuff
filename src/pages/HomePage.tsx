@@ -17,7 +17,7 @@ const REPORT_KIND_LABEL: Record<ReportDocument["kind"], string> = {
 };
 
 const navCards = [
-  { to: "/dados", label: "Dados", copy: "Três estações UFF/Aurassure, cobertura real e séries em revisão.", tone: "blue", icon: "chart" },
+  { to: "/dados", label: "Dados", copy: "Três estações UFF/Aurassure e suas leituras preliminares.", tone: "blue", icon: "chart" },
   { to: "/acervo", label: "Acervo", copy: "Documentos, publicações e materiais técnicos.", tone: "green", icon: "archive" },
   { to: "/relatorios", label: "Relatórios", copy: "Relatórios, notas técnicas, boletins e anexos oficiais.", tone: "blue", icon: "file" },
   { to: "/agenda", label: "Agenda", copy: "Eventos, reuniões e atividades do projeto.", tone: "green", icon: "calendar" },
@@ -141,7 +141,7 @@ export function HomePage() {
           <div className="space-y-5">
             <p className="home-intro">
               Plataforma pública da UFF para pesquisa, análise e divulgação de dados ambientais com transparência,
-              rigor técnico e compromisso social. As três estações UFF/Aurassure já enviam dados ao sistema; a publicação das concentrações depende de validação técnica.
+              rigor técnico e compromisso social. As três estações UFF/Aurassure fornecem leituras preliminares de partículas, com limitações de precisão.
             </p>
 
             <form
@@ -262,7 +262,7 @@ export function HomePage() {
                 })}
               </div>
               <p className="mt-3 text-xs leading-relaxed text-slate-300">
-                {stationStatusSavedAt ? `Consulta salva em ${formatAurassureLocalTime(stationStatusSavedAt)}; os dados podem estar desatualizados. ` : ""}Percentuais: presença de médias de 15 minutos nas últimas 24 horas. Concentrações ainda sob revisão científica.
+                {stationStatusSavedAt ? `Consulta salva em ${formatAurassureLocalTime(stationStatusSavedAt)}; os dados podem estar desatualizados. ` : ""}Percentuais: presença de médias de 15 minutos nas últimas 24 horas. Concentrações são preliminares.
               </p>
               <Link to="/dados" className="home-now-link">Ver as três estações integradas <span>+</span></Link>
             </section>
