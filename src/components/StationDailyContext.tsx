@@ -22,9 +22,11 @@ export function StationDailyContext({ stationId, measuredAt }: { stationId: numb
 
   useEffect(() => {
     let cancelled = false;
+    let requestVersion = 0;
     const end = new Date(measuredAt).getTime();
     setResult({ key, status: "loading", samples: [] });
     async function load() {
+      const version = ++requestVersion;
       if (!supabase || !navigator.onLine || !Number.isFinite(end)) {
         setResult({ key, status: "error", samples: [] });
         return;
@@ -36,7 +38,7 @@ export function StationDailyContext({ stationId, measuredAt }: { stationId: numb
           .gt("measured_at", new Date(end - 24 * 60 * 60_000).toISOString())
           .lte("measured_at", new Date(end).toISOString())
           .order("measured_at", { ascending: true }).limit(EXPECTED);
-        if (cancelled) return;
+        if (cancelled || version !== requestVersion) return;
         if (error) { setResult({ key, status: "error", samples: [] }); return; }
         const unique = new Map<string, Sample>();
         for (const sample of (data || []) as Sample[]) {
@@ -45,11 +47,22 @@ export function StationDailyContext({ stationId, measuredAt }: { stationId: numb
         }
         setResult({ key, status: "ready", samples: [...unique.values()] });
       } catch {
-        if (!cancelled) setResult({ key, status: "error", samples: [] });
+        if (!cancelled && version === requestVersion) setResult({ key, status: "error", samples: [] });
       }
     }
     void load();
-    return () => { cancelled = true; };
+    const timer = window.setInterval(() => { if (document.visibilityState === "visible") void load(); }, 60_000);
+    const onVisibilityChange = () => { if (document.visibilityState === "visible") void load(); };
+    document.addEventListener("visibilitychange", onVisibilityChange);
+    window.addEventListener("online", load);
+    window.addEventListener("offline", load);
+    return () => {
+      cancelled = true;
+      window.clearInterval(timer);
+      document.removeEventListener("visibilitychange", onVisibilityChange);
+      window.removeEventListener("online", load);
+      window.removeEventListener("offline", load);
+    };
   }, [key, measuredAt, stationId]);
 
   const current = result.key === key ? result : { key, status: "loading" as const, samples: [] };
