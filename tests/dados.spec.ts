@@ -10,18 +10,18 @@ test.describe("Dados UFF/Aurassure @smoke", () => {
     }
     await expect(page.getByText("Disponibilidade da rede integrada")).toBeVisible();
     await expect(page.getByText("Cobertura nas últimas 24h")).toHaveCount(3);
-    await expect(page.getByText(/Concentrações em revisão técnica/)).toBeVisible();
+    await expect(page.getByText("Leituras preliminares", { exact: true })).toBeVisible();
     await expect(page.getByText(/Estação Piloto/)).toHaveCount(0);
     await expect(page.getByText(/Não transformamos automaticamente o AQI/i)).toBeVisible();
   });
 
-  test("switches stations, plots only approved series and retains access to INEA", async ({ page }) => {
+  test("switches stations, identifies the preliminary series and retains access to INEA", async ({ page }) => {
     await page.goto("/dados", { waitUntil: "domcontentloaded" });
 
     const ifrj = page.getByRole("button", { name: /IFRJ.*Nossa Senhora das Graças/i });
     await ifrj.click();
     await expect(ifrj).toHaveAttribute("aria-pressed", "true");
-    await expect(page.getByText(/Série revisada · Nossa Senhora das Graças/i)).toBeVisible();
+    await expect(page.getByText(/Série preliminar · Nossa Senhora das Graças/i)).toBeVisible();
 
     await page.getByRole("button", { name: "7 dias" }).click();
     await expect(page.getByRole("button", { name: "7 dias" })).toHaveAttribute("aria-pressed", "true");

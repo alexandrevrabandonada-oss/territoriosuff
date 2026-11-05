@@ -16,7 +16,7 @@ type ReadingState = {
   reading: PublicSensorReading | null;
 };
 
-/** Only reads the existing review-gated public table; raw vendor data stays private. */
+/** Reads the limited public preliminary view; raw vendor data stays private. */
 export function useAurassureLatestReading(stationId: number) {
   const [state, setState] = useState<ReadingState>({ stationId, status: "loading", reading: null });
 
@@ -36,7 +36,7 @@ export function useAurassureLatestReading(stationId: number) {
       }
       try {
         const { data, error } = await supabase
-          .from("aurassure_public_measurements")
+          .from("aurassure_preliminary_readings")
           .select("station_id,measured_at,averaging_period_seconds,pm25_ug_m3,pm10_ug_m3")
           .eq("station_id", stationId)
           .eq("averaging_period_seconds", 900)

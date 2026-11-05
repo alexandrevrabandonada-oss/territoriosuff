@@ -1,7 +1,7 @@
 import { expect, test } from "@playwright/test";
 
 test.describe("Rede UFF / Aurassure @smoke", () => {
-  test("the review-gated portal route shows stations and provenance boundaries", async ({ page }) => {
+  test("the portal route shows stations and explains preliminary data", async ({ page }) => {
     await page.goto("/qualidade-ar/uff", { waitUntil: "domcontentloaded" });
 
     await expect(page.getByRole("heading", { name: /O ar do território, observado por três estações/i })).toBeVisible();
@@ -12,7 +12,7 @@ test.describe("Rede UFF / Aurassure @smoke", () => {
 
     await ifrj.click();
     await expect(ifrj).toHaveAttribute("aria-pressed", "true");
-    await expect(page.getByText(/Série revisada · Nossa Senhora das Graças/i)).toBeVisible();
+    await expect(page.getByText(/Série preliminar · Nossa Senhora das Graças/i)).toBeVisible();
 
     const sevenDays = page.getByRole("button", { name: "7 dias" });
     await sevenDays.click();

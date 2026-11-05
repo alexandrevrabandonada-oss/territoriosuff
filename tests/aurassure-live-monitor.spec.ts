@@ -4,7 +4,7 @@ const headers = { "content-type": "application/json", "access-control-allow-orig
 
 test.describe("Monitor público de estações", () => {
   test("mostra leitura pública, muda de estação e identifica valores ausentes e atrasados", async ({ page }) => {
-    await page.route("**/rest/v1/aurassure_public_measurements*", async (route) => {
+    await page.route("**/rest/v1/aurassure_preliminary_readings*", async (route) => {
       const station = new URL(route.request().url()).searchParams.get("station_id");
       const isIfrj = station === "eq.46561";
       const measuredAt = new Date(Date.now() - (isIfrj ? 90 : 10) * 60_000).toISOString();
@@ -27,7 +27,7 @@ test.describe("Monitor público de estações", () => {
   });
 
   test("não transforma ausência ou falha em medição", async ({ page }) => {
-    await page.route("**/rest/v1/aurassure_public_measurements*", async (route) => {
+    await page.route("**/rest/v1/aurassure_preliminary_readings*", async (route) => {
       const station = new URL(route.request().url()).searchParams.get("station_id");
       if (station === "eq.46561") {
         await route.fulfill({ status: 503, headers, body: JSON.stringify({ message: "unavailable" }) });
