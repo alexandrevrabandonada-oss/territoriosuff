@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 
 import { formatAurassureLocalTime } from "../hooks/useAurassureStationStatus";
 import { useAurassureLatestReading } from "../hooks/useAurassureLatestReading";
+import { StationDailyContext } from "./StationDailyContext";
 
 const formatValue = (value: number | null) =>
   typeof value === "number" && Number.isFinite(value) ? value.toLocaleString("pt-BR", { maximumFractionDigits: 1 }) : "—";
@@ -27,6 +28,7 @@ export function StationLiveReading({ stationId, showDetailsLink = true }: { stat
           <div className="rounded-xl bg-slate-50 p-3"><p className="text-xs font-bold text-slate-700">MP2,5 · partículas finas</p><p className="mt-1 text-2xl font-black text-slate-950">{formatValue(reading.pm25_ug_m3)} <span className="text-xs font-semibold">µg/m³</span></p></div>
           <div className="rounded-xl bg-slate-50 p-3"><p className="text-xs font-bold text-slate-700">MP10 · partículas inaláveis</p><p className="mt-1 text-2xl font-black text-slate-950">{formatValue(reading.pm10_ug_m3)} <span className="text-xs font-semibold">µg/m³</span></p></div>
         </div>
+        {!invalidTime && <StationDailyContext stationId={stationId} measuredAt={reading.measured_at} />}
         <p className="mt-3 text-xs leading-5 text-slate-700">Leitura preliminar da rede complementar UFF/Aurassure. Sensores móveis têm limitações de precisão e podem diferir de estações de referência. Não é classificação oficial nem diagnóstico de saúde. Traço indica valor indisponível.</p>
       </>}
       <p className="mt-3 text-xs leading-5 text-slate-600">Coleta programada a cada 15 minutos; consulta atualizada a cada minuto com o aplicativo aberto. Registros com alertas de qualidade ficam indisponíveis e a transmissão pode atrasar.</p>

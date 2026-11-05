@@ -33,7 +33,7 @@ export function AirQuickView() {
       <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.3fr)] lg:items-start lg:gap-10">
         <div className="lg:py-3">
           <p className="text-xs font-bold uppercase tracking-wide text-teal-700">Rede UFF/Aurassure · Volta Redonda</p>
-          <h1 id="quick-air-title" className="mt-2 text-2xl font-black tracking-tight sm:text-4xl">Acompanhe o ar da sua cidade</h1>
+          <h1 id="quick-air-title" className="mt-2 text-2xl font-black tracking-tight sm:text-4xl">Acompanhe o ar de Volta Redonda</h1>
           <p className="mt-2 max-w-xl text-sm leading-6 text-slate-700">Escolha uma estação para consultar sua última medição disponível.</p>
           <div className="mt-5 hidden flex-wrap gap-3 lg:flex">
             <Link className="rounded-xl bg-teal-800 px-4 py-3 text-sm font-bold text-white" to="/dados">Ver estações e histórico</Link>
