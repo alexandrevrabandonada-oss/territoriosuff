@@ -20,7 +20,7 @@ const healthHistory = read("supabase/migrations/20261103174000_aurassure_private
 const postGap = read("supabase/migrations/20261103175000_aurassure_post_outage_correlated_gas_review.sql");
 const unresolvedReview = read("supabase/migrations/20261103175500_aurassure_fail_closed_unresolved_qa_post_gap_first_30m.sql");
 const operationalStatus = read("supabase/migrations/20261103181000_aurassure_publish_operational_station_status_only.sql");
-const preliminary = read("supabase/migrations/20261105012124_aurassure_preliminary_public_readings.sql");
+const preliminary = read("supabase/migrations/20261105012750_aurassure_preliminary_public_readings.sql");
 const stationStatusHook = read("src/hooks/useAurassureStationStatus.ts");
 const home = read("src/pages/HomePage.tsx");
 
