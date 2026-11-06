@@ -8,7 +8,7 @@ test.describe("Transparencia Page @smoke", () => {
     await expect(page.getByRole("heading", { name: /escutas, território e devolutiva pública/i, level: 1 })).toBeVisible();
     await expect(page.getByText("Registros individuais de escuta", { exact: true })).toBeVisible();
     await expect(page.getByText("Atividades de campo", { exact: true })).toBeVisible();
-    await expect(page.getByText("Escutas consolidadas no mês", { exact: true })).toBeVisible();
+    await expect(page.getByText("Registros consolidados no mês", { exact: true })).toBeVisible();
     await expect(page.getByText(/fechamento mais recente dentro da série/i)).toBeVisible();
   });
 
