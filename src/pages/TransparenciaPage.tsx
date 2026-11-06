@@ -665,6 +665,7 @@ function PublishedMonthsStrip({
               </div>
 
               <p className="mt-4 text-sm leading-relaxed text-slate-600">{report.executive_summary}</p>
+              {report.source_note && <p className="mt-2 text-xs font-semibold text-slate-600">Fonte: síntese do relatório SEMEAR Territórios, exportado em 06/11/2026. O documento original é interno.</p>}
               {report.source_note && <p className="mt-2 text-sm leading-relaxed text-slate-700">{report.source_note}</p>}
               {report.individual_hearings_count !== undefined && <details className="mt-4 rounded-xl border border-slate-200 bg-white p-4">
                 <summary className="cursor-pointer text-sm font-bold text-slate-900">Ver atividades do mês</summary>
