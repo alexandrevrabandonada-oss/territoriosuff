@@ -85,7 +85,7 @@ function formatPublishedPeriod(reports: LiveTransparencyMonthlyReport[]) {
   const firstMonth = first.month_label.replace(/\s+de\s+\d{4}$/i, "");
 
   if (firstYear && firstYear === lastYear) {
-    return `${firstMonth} e ${last.month_label}`;
+    return `${firstMonth} a ${last.month_label} (meses publicados)`;
   }
 
   return `${first.month_label} a ${last.month_label}`;
@@ -212,10 +212,10 @@ function MonthlyVolumeChart({
       <div className="flex items-center justify-between gap-4">
         <div>
           <p className="text-xs font-black uppercase tracking-[0.18em] text-slate-600">Volume mensal</p>
-          <h3 className="mt-2 text-2xl font-black tracking-tight text-slate-950">Escutas e ações ao longo dos meses</h3>
+          <h3 className="mt-2 text-2xl font-black tracking-tight text-slate-950">Registros e ações ao longo dos meses</h3>
         </div>
         <div className="flex flex-wrap gap-3 text-[11px] font-black uppercase tracking-widest text-slate-500">
-          <span className="inline-flex items-center gap-2"><span className="h-3 w-3 rounded-full bg-emerald-500" /> Escutas</span>
+          <span className="inline-flex items-center gap-2"><span className="h-3 w-3 rounded-full bg-emerald-500" /> Registros</span>
           <span className="inline-flex items-center gap-2"><span className="h-3 w-3 rounded-full bg-slate-900" /> Ações x10</span>
         </div>
       </div>
@@ -239,7 +239,7 @@ function MonthlyVolumeChart({
               <div className="mt-4 text-center">
                 <p className="text-[10px] font-black uppercase tracking-[0.18em] text-slate-600">{formatShortMonth(report.month_key)}</p>
                 <p className="mt-2 text-xs font-semibold text-slate-600">
-                  {report.territorial_status === "critica"
+                  {report.individual_hearings_count === 0 ? "Sem escutas individuais" : report.individual_hearings_count === 1 ? "Base: 1 escuta individual" : report.territorial_status === "critica"
                     ? "Cobertura crítica"
                     : report.territorial_status === "adequada"
                       ? "Cobertura adequada"
@@ -275,8 +275,8 @@ function CoverageMeter({
       <PortalSectionHeader
         tone="dark"
         eyebrow="Qualidade da leitura"
-        title="Quanto desse ciclo já virou leitura territorial utilizável"
-        subtitle="Cobertura territorial não mede participação total. Mede quanto do material publicado já permite localizar a escuta com utilidade pública."
+        title="Território informado nas escutas individuais"
+        subtitle="O percentual mede preenchimento do território de referência nas escutas individuais, não representatividade da população."
       />
       <div className="mt-6 grid gap-5 xl:grid-cols-[minmax(0,1fr)_220px]">
         <div>
@@ -300,7 +300,7 @@ function CoverageMeter({
           <p className="text-xs font-black uppercase tracking-[0.18em] text-emerald-300">Cobertura atual</p>
           <p className="mt-3 text-4xl font-black tracking-tight">{formatPercent(report.territorial_coverage_pct)}%</p>
           <p className="mt-3 text-sm leading-relaxed text-white/75">
-            Percentual do fechamento mensal que já tem base territorial suficiente para leitura por bairro ou território.
+            {report.individual_hearings_count !== undefined ? `Base: ${report.individual_hearings_count} escuta(s) individual(is); relatos de roda não entram neste cálculo.` : "Percentual informado no fechamento mensal; não indica representatividade por bairro."}
           </p>
         </div>
       </div>
@@ -397,7 +397,7 @@ function TerritoryMap({
           Posicionamento aproximado por bairro ou território quando essa informação aparece nas publicações do portal.
         </p>
         <div className="mt-4 flex flex-wrap gap-3 text-[11px] font-black uppercase tracking-wide text-slate-500">
-          <span className="inline-flex items-center gap-2"><span className="h-3 w-3 rounded-full bg-emerald-500" /> Mais registros, maior círculo</span>
+          <span className="inline-flex items-center gap-2"><span className="h-3 w-3 rounded-full bg-emerald-500" /> Mais menções, maior círculo</span>
           <span className="inline-flex items-center gap-2"><span className="h-3 w-3 rounded-full border-2 border-slate-900 bg-emerald-500/60" /> Posição aproximada por território</span>
         </div>
       </div>
@@ -437,10 +437,10 @@ function MonthlyPulsePanel({
         <p className="mt-3 max-w-md text-sm leading-relaxed text-white/72">Fechamento mais recente dentro da série de devolutivas mensais já publicadas.</p>
       </div>
       <div className="rounded-[1.5rem] border border-slate-200 bg-white p-5 shadow-sm">
-        <p className="text-[11px] font-black uppercase tracking-[0.18em] text-slate-500">Escutas consolidadas no mês</p>
+        <p className="text-[11px] font-black uppercase tracking-[0.18em] text-slate-500">Registros consolidados no mês</p>
         <p className="mt-3 text-3xl font-black tracking-tight text-slate-950">{latest.hearings_count}</p>
         <p className="mt-2 text-sm leading-relaxed text-slate-600">
-          {hearingsDelta === null ? "Sem comparação com mês anterior." : `${hearingsDelta > 0 ? "+" : ""}${hearingsDelta} em relação ao fechamento anterior.`}
+          {latest.individual_hearings_count !== undefined ? `${latest.individual_hearings_count} escutas individuais e ${latest.group_reports_count ?? 0} relatos de roda.` : hearingsDelta === null ? "Sem comparação com mês anterior." : `${hearingsDelta > 0 ? "+" : ""}${hearingsDelta} em relação ao fechamento anterior.`}
         </p>
       </div>
       <div className="rounded-[1.5rem] border border-slate-200 bg-white p-5 shadow-sm">
@@ -571,7 +571,7 @@ function TerritorySpotlight({
         tone="dark"
         eyebrow="Territórios em foco"
         title="Onde a leitura pública pede mais atenção"
-        subtitle="Este bloco combina recorrência territorial e presença no fechamento mais recente para orientar a leitura de prioridade."
+        subtitle="Menções em publicações e listas territoriais dos fechamentos; não são contagens de pessoas ou de ações."
       />
       <div className="mt-5 grid gap-4 lg:grid-cols-3">
         {featured.length === 0 ? (
@@ -590,7 +590,7 @@ function TerritorySpotlight({
                     <h3 className="mt-2 text-2xl font-black tracking-tight text-white">{territory.name}</h3>
                   </div>
                   <span className="rounded-full bg-emerald-100 px-3 py-1 text-[11px] font-black uppercase tracking-wide text-emerald-800">
-                    {territory.count} registros
+                    {territory.count} menções
                   </span>
                 </div>
                 <p className="mt-4 text-sm leading-relaxed text-white/72">
@@ -631,11 +631,12 @@ function PublishedMonthsStrip({
       <PortalSectionHeader
         eyebrow="Fechamentos publicados"
         title="Meses já disponíveis para leitura pública"
-        subtitle="O painel trabalha com fechamentos mensais publicados. O mês mais recente ganha destaque, mas os anteriores continuam públicos e comparáveis."
+        subtitle="Sínteses agregadas dos fechamentos; as contagens de escutas individuais e relatos de roda devem ser lidas separadamente."
       />
       <div className="mt-5 grid gap-4 lg:grid-cols-2">
         {reports.map((report) => {
           const tone = getCoverageTone(report.territorial_status);
+          const noIndividual = report.individual_hearings_count === 0;
           return (
             <article key={report.id} className="rounded-[1.5rem] border border-slate-200 bg-slate-50/80 p-5 shadow-sm">
               <div className="flex flex-wrap items-start justify-between gap-3">
@@ -644,13 +645,13 @@ function PublishedMonthsStrip({
                   <h3 className="mt-2 text-2xl font-black tracking-tight text-slate-950">{report.month_label}</h3>
                 </div>
                 <span className={`rounded-full border px-3 py-1 text-[11px] font-black uppercase tracking-wide ${tone.chip}`}>
-                  {tone.label}
+                  {noIndividual ? "Sem escutas individuais" : report.individual_hearings_count === 1 ? "Base: 1 escuta individual" : tone.label}
                 </span>
               </div>
 
               <div className="mt-5 grid gap-3 sm:grid-cols-3">
                 <div className="rounded-[1.25rem] border border-slate-200 bg-white p-4">
-                  <p className="text-[10px] font-black uppercase tracking-[0.18em] text-slate-600">Escutas</p>
+                  <p className="text-[10px] font-black uppercase tracking-[0.18em] text-slate-600">Registros</p>
                   <p className="mt-2 text-2xl font-black text-slate-950">{report.hearings_count}</p>
                 </div>
                 <div className="rounded-[1.25rem] border border-slate-200 bg-white p-4">
@@ -659,11 +660,17 @@ function PublishedMonthsStrip({
                 </div>
                 <div className="rounded-[1.25rem] border border-slate-200 bg-white p-4">
                   <p className="text-[10px] font-black uppercase tracking-[0.18em] text-slate-600">Cobertura</p>
-                  <p className="mt-2 text-2xl font-black text-slate-950">{formatPercent(report.territorial_coverage_pct)}%</p>
+                  <p className="mt-2 text-2xl font-black text-slate-950">{noIndividual ? "Não calculável" : `${formatPercent(report.territorial_coverage_pct)}%`}</p>
                 </div>
               </div>
 
               <p className="mt-4 text-sm leading-relaxed text-slate-600">{report.executive_summary}</p>
+              {report.source_note && <p className="mt-2 text-xs font-semibold text-slate-600">Fonte: síntese do relatório SEMEAR Territórios, exportado em 06/11/2026. O documento original é interno.</p>}
+              {report.source_note && <p className="mt-2 text-sm leading-relaxed text-slate-700">{report.source_note}</p>}
+              {report.individual_hearings_count !== undefined && <details className="mt-4 rounded-xl border border-slate-200 bg-white p-4">
+                <summary className="cursor-pointer text-sm font-bold text-slate-900">Ver atividades do mês</summary>
+                <ul className="mt-3 space-y-2 text-sm text-slate-700">{report.actions_performed.map((action, index) => <li key={`${index}-${action}`}>{action}</li>)}</ul>
+              </details>}
 
               <div className="mt-4 flex flex-wrap gap-2">
                 {report.dominant_themes.slice(0, 4).map((theme) => (
@@ -789,7 +796,7 @@ export function TransparenciaPage() {
       previous,
       hearingsDelta: latest && previous ? latest.hearings_count - previous.hearings_count : null,
       actionsDelta: latest && previous ? latest.actions_count - previous.actions_count : null,
-      coverageDelta: latest && previous ? latest.territorial_coverage_pct - previous.territorial_coverage_pct : null
+      coverageDelta: latest && previous && latest.individual_hearings_count !== 0 && previous.individual_hearings_count !== 0 ? latest.territorial_coverage_pct - previous.territorial_coverage_pct : null
     };
   }, [monthlyReports]);
 
@@ -823,7 +830,7 @@ export function TransparenciaPage() {
       return {
         label: "Cobertura territorial",
         value: `${formatPercent(monthlyTransparency.latest.territorial_coverage_pct)}%`,
-        helper: "Percentual do fechamento publicado que já sustenta leitura territorial."
+        helper: monthlyTransparency.latest.individual_hearings_count !== undefined ? `Território informado em ${monthlyTransparency.latest.individual_hearings_count} escuta(s) individual(is); não mede representatividade.` : "Percentual informado no fechamento mensal; não mede representatividade."
       };
     }
 
@@ -937,7 +944,7 @@ export function TransparenciaPage() {
             <PortalSectionHeader
               eyebrow="Leitura territorial"
               title="Onde olhar primeiro"
-              subtitle="Territórios mais recorrentes nas publicações e no fechamento mais recente."
+              subtitle="Menções em publicações e listas territoriais dos fechamentos; não são contagens de pessoas ou ações."
             />
             <div className="mt-5 space-y-3">
               {liveTransparency.territoryCounts.slice(0, 8).map((territory, index) => (
@@ -1040,7 +1047,7 @@ export function TransparenciaPage() {
         <section className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_minmax(0,0.9fr)]">
           <HorizontalCountList
             title="Prioridades mais citadas"
-            subtitle="Recorrência quantitativa"
+            subtitle="Citações agrupadas; não representam quantidade de pessoas"
             items={monthlyTransparency.latest.grouped_priorities}
             colorClass="bg-slate-900"
           />

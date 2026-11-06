@@ -397,6 +397,9 @@ export type LiveTransparencyMonthlyReport = {
   exported_at: string | null;
   actions_count: number;
   hearings_count: number;
+  individual_hearings_count?: number;
+  group_reports_count?: number;
+  source_note?: string;
   territorial_coverage_pct: number;
   territorial_status: "critica" | "atencao" | "adequada";
   executive_summary: string;

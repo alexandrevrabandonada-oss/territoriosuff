@@ -35,7 +35,7 @@ export function TransparencyTerritoryMap({
           <Popup>
             <div className="min-w-[180px]">
               <p className="text-sm font-black text-slate-950">{territory.name}</p>
-              <p className="mt-1 text-sm text-slate-600">{territory.count} registro(s) publicados</p>
+              <p className="mt-1 text-sm text-slate-600">{territory.count} menção(ões) em publicações e listas mensais</p>
             </div>
           </Popup>
         </CircleMarker>
