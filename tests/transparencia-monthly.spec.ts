@@ -20,3 +20,16 @@ test("apresenta os três meses com bases e divergências explícitas @smoke", as
   await expect(august).toContainText("07/08/2026");
   await expect(august).toContainText("20/08/2026");
 });
+
+test("mantém a data de calendário da atividade no fuso de Brasília @smoke", async ({ browser }) => {
+  const context = await browser.newContext({ timezoneId: "America/Sao_Paulo" });
+  const page = await context.newPage();
+  await page.route("**/rest/v1/conversations*", (route) => route.fulfill({
+    status: 200, contentType: "application/json", headers: { "access-control-allow-origin": "*" },
+    body: JSON.stringify([{ id: "atividade-1", title: "Oficina na Vila Rica", status: "published", created_at: "2026-10-01T12:00:00Z", meta: { kind: "activity", activity_date: "2026-09-29" } }])
+  }));
+  await page.goto("/transparencia", { waitUntil: "domcontentloaded" });
+  const article = page.locator("article").filter({ has: page.getByRole("heading", { name: "Oficina na Vila Rica" }) });
+  await expect(article).toContainText(/29 de set\. de 2026/);
+  await context.close();
+});
